@@ -1,3 +1,9 @@
+2001-10-14  Lutz Müller <urc8@rz.uni-karlsruhe.de>
+
+	Suggestion from Colin Marquardt <colin@marquardt-home.de>:
+
+	* src/gtkam-tree.c: Show the number of files
+
 2001-10-11  Lutz Müller <urc8@rz.uni-karlsruhe.de>
 
 	* src/gtkam-chooser.c: "Detect" functionality

@@ -154,7 +154,7 @@ create_item (GtkamTree *tree, GtkTree *tree_to_add_to, const gchar *path)
 	CameraList *list;
 	GtkWidget *item, *pixmap, *label, *subtree, *hbox, *dialog, *window;
 	int result;
-	gchar *msg;
+	gchar *msg, *l;
 
 	item = gtk_tree_item_new ();
 	gtk_widget_show (item);
@@ -179,13 +179,33 @@ create_item (GtkamTree *tree, GtkTree *tree_to_add_to, const gchar *path)
 	gtk_widget_show (pixmap);
 	gtk_box_pack_start (GTK_BOX (hbox), pixmap, FALSE, FALSE, 0);
 
-	if (!strcmp (path, "/")) {
-		if (tree->priv->camera)
-			label = gtk_label_new (tree->priv->camera->model);
+	if (!tree->priv->camera)
+		label = gtk_label_new (_("No camera set"));
+	else {
+		gp_list_new (&list);
+		result = gp_camera_folder_list_files (tree->priv->camera,
+						      path, list);
+		if (result < 0) {
+			window = gtk_widget_get_ancestor (GTK_WIDGET (tree),
+							  GTK_TYPE_WINDOW);
+			msg = g_strdup_printf (_("Could not retreive file "
+				"list for folder '%s'"), path);
+			dialog = gtkam_error_new (msg, result,
+					tree->priv->camera, window);
+			gtk_widget_show (dialog);
+		}
+
+		if (!strcmp (path, "/"))
+			l = g_strdup_printf ("%s (%i)",
+					     tree->priv->camera->model,
+					     gp_list_count (list));
 		else
-			label = gtk_label_new (_("No camera set"));
-	} else
-		label = gtk_label_new (g_basename (path));
+			l = g_strdup_printf ("%s (%i)", g_basename (path),
+					     gp_list_count (list));
+		label = gtk_label_new (l);
+		g_free (l);
+		gp_list_unref (list);
+	}
 	gtk_widget_show (label);
 	gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
 

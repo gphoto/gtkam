@@ -895,7 +895,7 @@ gtkam_main_new (void)
 	gtk_menu_item_set_submenu (GTK_MENU_ITEM (item), menu);
 	accels = gtk_menu_ensure_uline_accel_group (GTK_MENU (menu));
 
-	item = item = gtk_menu_item_new_with_label ("");
+	item = gtk_menu_item_new_with_label ("");
 	gtk_widget_show (item);
 	gtk_widget_set_sensitive (item, FALSE);
 	key = gtk_label_parse_uline (GTK_LABEL (GTK_BIN (item)->child),
@@ -906,7 +906,7 @@ gtkam_main_new (void)
 			    GTK_SIGNAL_FUNC (on_make_dir_activate), m);
 	m->priv->make_dir = item;
 
-	item = item = gtk_menu_item_new_with_label ("");
+	item = gtk_menu_item_new_with_label ("");
 	gtk_widget_show (item);
 	gtk_widget_set_sensitive (item, FALSE);
 	key = gtk_label_parse_uline (GTK_LABEL (GTK_BIN (item)->child),
@@ -922,7 +922,7 @@ gtkam_main_new (void)
 	gtk_container_add (GTK_CONTAINER (menu), separator);
 	gtk_widget_set_sensitive (separator, FALSE);
 
-	item = item = gtk_menu_item_new_with_label ("");
+	item = gtk_menu_item_new_with_label ("");
 	gtk_widget_show (item);
 	gtk_widget_set_sensitive (item, FALSE);
 	key = gtk_label_parse_uline (GTK_LABEL (GTK_BIN (item)->child),

@@ -245,7 +245,9 @@ gtkam_list_set_path (GtkamList *list, const gchar *path)
 		g_free (list->path);
 	list->path = g_strdup (path);
 
+	gtk_icon_list_freeze (GTK_ICON_LIST (list));
 	gtk_icon_list_clear (GTK_ICON_LIST (list));
+	gtk_icon_list_thaw (GTK_ICON_LIST (list));
 
 	if (!list->priv->camera)
 		return;
@@ -266,12 +268,11 @@ gtkam_list_set_path (GtkamList *list, const gchar *path)
 	for (i = 0; i < gp_list_count (&flist); i++) {
 		gp_list_get_name (&flist, i, &name);
 
-		while (gtk_events_pending ())
-			gtk_main_iteration ();
-
+		gtk_icon_list_freeze (GTK_ICON_LIST (list));
 		item = gtk_icon_list_add_from_data (
 				GTK_ICON_LIST (list), no_thumbnail_xpm,
 				name, NULL);
+		gtk_icon_list_thaw (GTK_ICON_LIST (list));
 
 		if (list->priv->thumbnails &&
 		    (list->priv->camera->abilities->file_operations &

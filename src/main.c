@@ -121,8 +121,7 @@ int
 main (int argc, char *argv[])
 {
 	GtkWidget *m;
-	char buf[1024];
-	int x, y, log = -1;
+	int x, log = -1, load = 1;
 
 	gtk_set_locale ();
 	bindtextdomain (PACKAGE, GTKAM_LOCALEDIR);
@@ -137,12 +136,16 @@ main (int argc, char *argv[])
 			   !strcmp (argv[x], "-v")) {
 			printf ("%s\n", VERSION);
 			return (0);
+		} else if (!strcmp (argv[x], "--no-settings") ||
+			   !strcmp (argv[x], "-n")) {
+			load = 0;
 		} else if (!strcmp (argv[x], "--help") ||
 			   !strcmp (argv[x], "-h")) {
 			printf ("%s-%s\n", PACKAGE, VERSION);
-			printf (" -h --help      Print this message\n");
-			printf (" -d --debug     Print debugging output\n");
-			printf (" -v --version   Print version\n");
+			printf (" -h --help        Print this message\n");
+			printf (" -d --debug       Print debugging output\n");
+			printf (" -v --version     Print version\n");
+			printf (" -n --no-settings Don't read settings\n");
 			return (0);
 		} else
 			g_warning ("Unknown option '%s'!", argv[x]);
@@ -152,25 +155,15 @@ main (int argc, char *argv[])
 
 	/* Create the main window */
 	m = gtkam_main_new ();
-        if (gp_setting_get ("gtkam", "width", buf) == GP_OK) {
-		x = atoi (buf);
-		if (gp_setting_get ("gtkam", "height", buf) == GP_OK) {
-			y = atoi (buf);
-		        gtk_widget_set_usize (GTK_WIDGET (m), x, y);
-		}
-	}
 	gtk_widget_show (m);
 	gtk_signal_connect (GTK_OBJECT (m), "destroy",
 			    GTK_SIGNAL_FUNC (gtk_main_quit), NULL);
-	gtk_idle_add (idle_func, m);
+
+	/* Shall we load settings? */
+	if (load)
+		gtk_idle_add (idle_func, m);
 
 	gtk_main ();
-
-	/* Destroy the main window, but remember the size */
-	sprintf (buf, "%i", m->allocation.width);
-	gp_setting_set ("gtkam", "width", buf);
-	sprintf (buf, "%i", m->allocation.height);
-	gp_setting_set ("gtkam", "height", buf);
 
 	if (log < 0)
 		gp_log_remove_func (log);

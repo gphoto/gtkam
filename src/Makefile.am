@@ -41,15 +41,15 @@ libgtkam_a_SOURCES =					\
 	util.c			util.h
 
 bin_PROGRAMS = gtkam
-gtkam_SOURCES = 				\
+gtkam_SOURCES=					\
 	gtkam-debug.c gtkam-debug.h 		\
 	gtkam-exif.c gtkam-exif.h 		\
 	gtkam-main.c gtkam-main.h 		\
 	i18n.h main.c
-gtkam_LDADD =						\
+gtkam_LDADD=						\
 	libgtkam.a					\
 	$(EXIF_LIBS) $(GTKAM_LIBS) $(BONOBO_LIBS)	\
-	$(GNOME_LIBS)
+	$(GNOME_LIBS) $(INTLLIBS)
 
 if HAVE_GIMP
 gtkam_gimp_libexecdir = $(libdir)/gimp/1.3/plug-ins
@@ -57,6 +57,6 @@ gtkam_gimp_libexec_PROGRAMS = gtkam-gimp
 gtkam_gimp_SOURCES = gtkam-gimp.c
 gtkam_gimp_LDADD =					\
 	$(GTKAM_GIMP_LIBS) $(EXIF_LIBS) $(BONOBO_LIBS)	\
-	$(GNOME_LIBS)					\
+	$(GNOME_LIBS) $(INTLLIBS)			\
 	libgtkam.a
 endif

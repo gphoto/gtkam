@@ -22,10 +22,18 @@
 gtkam \- Graphical front end for gphoto2
 .SH "COMMANDS"
 
+.RS
+.Sh "Warning"
+
+
+New as it is, this man reference is already under revision to reflect the changes from gtkam v 0.1.3 to v.0.1.9. As such, there are several discrepancies and errors. There are also a number of screenshots which came from gtkam 0.1.3. Bear with us as we edit...
+
+.RE
+
 .Sh "File Menu"
 
 .TP
-FileSave Selected Photos...
+FileSave Photos
 Opens the dialog for saving the selected photos.
 
 .TP
@@ -37,22 +45,10 @@ FileDelete PhotosAll
 Deletes all photos in the camera
 
 .TP
-FileExit
-Exits gtkam.
+FileQuit
+Quits gtkam.
 
-.Sh "Folder Menu"
-
-.TP
-FolderCreate
-Opens dialog to create new folder (directory).
-
-.TP
-FolderRemove
-Opens a dialog to remove (delete) an existing folder (directory).
-
-.TP
-FolderUpload File...
-Opens a dialog to identify an image file for uploading to the camera.
+.Sh "View Menu"
 
 .Sh "Select Menu"
 
@@ -71,36 +67,11 @@ Undoes all selections so that no images are selected.
 .Sh "Camera Menu"
 
 .TP
-CameraSelect Camera...
+CameraAdd Camera...
 Opens a window to allow the user to define the camera and interface being used.
 "Simple" Select Camera Dialog
 "Enhanced" Select Camera Dialog
 Dialog for explicitly adding a path to the port to which the camera is attached.
-
-.TP
-CameraCapture...
-Opens a window to allow the user to trigger the camera to acquire an image. (This feature is not available on my camera, so I would appreciate some input on this item. -mjr)
-
-.TP
-CameraConfigure Camera...
-Opens a window with configurable options for the camers. This includes the name of the camera, it's owner, the date and time, firmware version, and power status..
-Camera configuration tab.
-Driver configuration tab.
-
-.TP
-CameraInformation
-Displays a window with information about the camera and its memory.
-
-.TP
-CameraManual
-I'm not sure what this should contain. Anyone? - mjr
-FIXME: need useful image
-
-.TP
-CameraAbout the Driver...
-Displays a window with information about the camera driver and its authors.
-
-This should include contact information for the maintainers of the drivers for your camera.
 
 .Sh "Help Menu"
 
@@ -139,6 +110,53 @@ Closes the debug window
 .TP
 HelpAbout...
 Opens the about gtKam window. This gives the current version, author credits, and contact information.
+
+.Sh "Right Click (over directory pane) Menu"
+
+.TP
+Right ClickUpload File
+Opens a dialog to identify an image file for uploading to the camera.
+
+.TP
+Right ClickMake directory
+Opens dialog to create new directory.
+
+.TP
+Right ClickRemove directory
+Opens a dialog to remove (delete) an existing folder (directory).
+
+.TP
+Right ClickCapture
+Opens a window to allow the user to trigger the camera to acquire an image. (This feature is not available on my camera, so I would appreciate some input on this item. -mjr)
+
+.TP
+Right ClickPreferences
+Opens a window with configurable options for the camers. This includes the name of the camera, it's owner, the date and time, firmware version, and power status..
+Camera configuration tab.
+Driver configuration tab.
+
+.TP
+Right ClickSummary
+Displays a window with information about the camera and its memory.
+
+.TP
+Right ClickManual
+I'm not sure what this should contain. Anyone? - mjr
+FIXME: need useful image
+
+.TP
+Right ClickAbout
+Displays a window with information about the camera driver and its authors.
+
+This should include contact information for the maintainers of the drivers for your camera.
+
+.TP
+Right ClickSelect Camera
+Selects the camera FIXME: what does this really do??
+
+.TP
+Right ClickRemove Camera
+Removes the camera from the directory pane.
 
 .SH AUTHOR
 .

@@ -17,3 +17,4 @@ src/gtkam-mkdir.c
 src/gtkam-preview.c
 src/gtkam-save.c
 src/gtkam-tree.c
+src/gtkam-util.c

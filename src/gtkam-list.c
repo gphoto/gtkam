@@ -59,7 +59,7 @@
 #include "gdk-pixbuf-hacks.h"
 #include "gtkam-info.h"
 #include "gtkam-delete.h"
-#include "gtkam-close.h"
+#include "gtkam-util.h"
 
 /* Should that be configurable? */
 #define ICON_WIDTH 80
@@ -175,47 +175,6 @@ gtkam_list_set_camera (GtkamList *list, Camera *camera, gboolean multi)
 	}
 
 	gtkam_list_refresh (list);
-}
-
-static GdkPixbuf *
-gdk_pixbuf_new_from_camera_file (CameraFile *file, GtkWidget *opt_window)
-{
-	GdkPixbufLoader *loader;
-	GdkPixbuf *pixbuf;
-	const char *data, *name, *type;
-	unsigned long size;
-	guint w, h;
-	gfloat scale;
-	GtkWidget *dialog;
-	gchar *msg;
-
-	gp_file_get_data_and_size (file, &data, &size);
-	loader = gdk_pixbuf_loader_new ();
-	if (!gdk_pixbuf_loader_write (loader, data, size)) {
-		gp_file_get_name (file, &name);
-		gp_file_get_mime_type (file, &type);
-		msg = g_strdup_printf (_("Could not display '%s'. Either "
-			"the image type ('%s') is not supported by gtk or "
-			"the file itself is corrupt."), name, type);
-		dialog = gtkam_close_new (msg, opt_window);
-		g_free (msg);
-		gtk_widget_show (dialog);
-		gtk_object_destroy (GTK_OBJECT (loader));
-		return (NULL);
-	}
-	gdk_pixbuf_loader_close (loader);
-	pixbuf = gdk_pixbuf_loader_get_pixbuf (loader);
-	w = gdk_pixbuf_get_width (pixbuf);
-	h = gdk_pixbuf_get_height (pixbuf);
-	if ((w > ICON_WIDTH) || (h > ICON_WIDTH)) {
-		scale = MIN ((gfloat) ICON_WIDTH / w, (gfloat) ICON_WIDTH / h);
-		pixbuf = gdk_pixbuf_scale_simple (pixbuf, scale * w, scale * h,
-						  GDK_INTERP_NEAREST);
-	} else
-		gdk_pixbuf_ref (pixbuf);
-	gtk_object_destroy (GTK_OBJECT (loader));
-
-	return (pixbuf);
 }
 
 static void
@@ -351,7 +310,8 @@ on_select_icon (GtkIconList *ilist, GtkIconListItem *item,
 			GdkPixmap *pixmap;
 			GdkBitmap *bitmap;
 
-			pixbuf = gdk_pixbuf_new_from_camera_file (file, w);
+			pixbuf = gdk_pixbuf_new_from_camera_file (file,
+								ICON_WIDTH, w);
 			if (pixbuf) {
 				gdk_pixbuf_render_pixmap_and_mask (pixbuf,
 						&pixmap, &bitmap, 127);
@@ -537,7 +497,7 @@ gtkam_list_set_path (GtkamList *list, const gchar *path)
 				gtk_widget_show (dialog);
 			} else {
 				tmp = gdk_pixbuf_new_from_camera_file (file,
-								       win);
+							ICON_WIDTH, win);
 				if (tmp) {
 					gdk_pixbuf_unref (pixbuf);
 					pixbuf = tmp;

@@ -43,6 +43,7 @@
 #include <gdk-pixbuf/gdk-pixbuf-loader.h>
 
 #include "gtkam-error.h"
+#include "gtkam-util.h"
 
 struct _GtkamCListPrivate
 {
@@ -255,11 +256,8 @@ idle_func (gpointer idle_data)
 	int result;
 	GdkPixmap *pixmap;
 	GdkBitmap *bitmap;
-	GtkWidget *dialog;
+	GtkWidget *dialog, *win;
 	gchar *msg;
-	const char *data;
-	long int size;
-	GdkPixbufLoader *loader;
 	GdkPixbuf *pixbuf;
 	guint w, h;
 
@@ -276,24 +274,24 @@ idle_func (gpointer idle_data)
 		g_free (msg);
 		gtk_widget_show (dialog);
 	} else {
-		gp_file_get_data_and_size (file, &data, &size);
-		loader = gdk_pixbuf_loader_new ();
-		gdk_pixbuf_loader_write (loader, data, size);
-		gdk_pixbuf_loader_close (loader);
-		pixbuf = gdk_pixbuf_loader_get_pixbuf (loader);
-		w = gdk_pixbuf_get_width (pixbuf);
-		h = gdk_pixbuf_get_height (pixbuf);
-		gdk_pixbuf_render_pixmap_and_mask (pixbuf,
-						   &pixmap, &bitmap, 127);
-		gtk_object_unref (GTK_OBJECT (loader));
-		gtk_clist_set_pixmap (GTK_CLIST (id->clist), id->row, 0,
-				      pixmap, bitmap);
-		gtk_clist_set_row_height (GTK_CLIST (id->clist),
+		win = gtk_widget_get_ancestor (GTK_WIDGET (id->clist),
+					       GTK_TYPE_WINDOW);
+		pixbuf = gdk_pixbuf_new_from_camera_file (file, 40, win);
+		if (pixbuf) {
+			w = gdk_pixbuf_get_width (pixbuf);
+			h = gdk_pixbuf_get_height (pixbuf);
+			gdk_pixbuf_render_pixmap_and_mask (pixbuf,
+						&pixmap, &bitmap, 127);
+			gdk_pixbuf_unref (pixbuf);
+			gtk_clist_set_pixmap (GTK_CLIST (id->clist), id->row,
+					      0, pixmap, bitmap);
+			gtk_clist_set_row_height (GTK_CLIST (id->clist),
 				MAX (h, GTK_CLIST (id->clist)->row_height));
-		if (pixmap)
-			gdk_pixmap_unref (pixmap);
-		if (bitmap)
-			gdk_bitmap_unref (bitmap);
+			if (pixmap)
+				gdk_pixmap_unref (pixmap);
+			if (bitmap)
+				gdk_bitmap_unref (bitmap);
+		}
 	}
 	gp_file_unref (file);
 

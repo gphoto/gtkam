@@ -44,7 +44,8 @@ struct _GtkamTreeClass
 	GtkTreeClass parent_class;
 
 	/* Signals */
-	void (* folder_selected) (GtkamTree *tree, const gchar *path);
+	void (* folder_selected)   (GtkamTree *tree, const gchar *path);
+	void (* folder_unselected) (GtkamTree *tree, const gchar *path);
 };
 
 GtkType    gtkam_tree_get_type (void);

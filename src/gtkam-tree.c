@@ -60,6 +60,8 @@ struct _GtkamTreePrivate
 	Camera *camera;
 
 	GtkWidget *root;
+
+	const gchar *folder;
 };
 
 #define PARENT_TYPE GTK_TYPE_TREE
@@ -67,6 +69,7 @@ static GtkTreeClass *parent_class;
 
 enum {
 	FOLDER_SELECTED,
+	FOLDER_UNSELECTED,
 	LAST_SIGNAL
 };
 
@@ -110,6 +113,10 @@ gtkam_tree_class_init (GtkamTreeClass *klass)
 		GTK_RUN_LAST, object_class->type,
 		GTK_SIGNAL_OFFSET (GtkamTreeClass, folder_selected),
 		gtk_marshal_NONE__POINTER, GTK_TYPE_NONE, 1, GTK_TYPE_POINTER);
+	signals[FOLDER_UNSELECTED] = gtk_signal_new ("folder_unselected",
+		GTK_RUN_LAST, object_class->type,
+		GTK_SIGNAL_OFFSET (GtkamTreeClass, folder_unselected),
+		gtk_marshal_NONE__POINTER, GTK_TYPE_NONE, 1, GTK_TYPE_POINTER);
 	gtk_object_class_add_signals (object_class, signals, LAST_SIGNAL);
 
 	parent_class = gtk_type_class (PARENT_TYPE);
@@ -141,12 +148,23 @@ gtkam_tree_get_type (void)
 }
 
 static void
-on_tree_item_select (GtkTreeItem *item, GtkamTree *tree)
+on_tree_selection_changed (GtkTree *tree)
 {
-	const gchar *path;
+	GtkTreeItem *item;
 
-	path = gtk_object_get_data (GTK_OBJECT (item), "path");
-	gtk_signal_emit (GTK_OBJECT (tree), signals[FOLDER_SELECTED], path);
+	if (GTKAM_TREE (tree)->priv->folder) {
+		gtk_signal_emit (GTK_OBJECT (tree), signals[FOLDER_UNSELECTED],
+				 GTKAM_TREE (tree)->priv->folder);
+		GTKAM_TREE (tree)->priv->folder = NULL;
+	}
+
+	if (g_list_length (tree->selection)) {
+		item = g_list_nth_data (tree->selection, 0);
+		GTKAM_TREE (tree)->priv->folder =
+			gtk_object_get_data (GTK_OBJECT (item), "path");
+		gtk_signal_emit (GTK_OBJECT (tree), signals[FOLDER_SELECTED],
+				 GTKAM_TREE (tree)->priv->folder);
+	}
 }
 
 static void
@@ -165,8 +183,6 @@ create_item (GtkamTree *tree, GtkTree *tree_to_add_to, const gchar *path)
 				  (GtkDestroyNotify) g_free);
 	gtk_signal_connect (GTK_OBJECT (item), "expand",
 			    GTK_SIGNAL_FUNC (on_tree_item_expand), tree);
-	gtk_signal_connect (GTK_OBJECT (item), "select",
-			    GTK_SIGNAL_FUNC (on_tree_item_select), tree);
 	if (!strcmp (path, "/"))
 		tree->priv->root = item;
 
@@ -279,6 +295,8 @@ gtkam_tree_new (void)
 	GtkamTree *tree;
 
 	tree = gtk_type_new (GTKAM_TYPE_TREE);
+	gtk_signal_connect (GTK_OBJECT (tree), "selection_changed",
+			    GTK_SIGNAL_FUNC (on_tree_selection_changed), NULL);
 
 	create_item (tree, GTK_TREE (tree), "/");
 

@@ -58,6 +58,7 @@
 #include <gtk/gtkmenubar.h>
 #include <gtk/gtkscrolledwindow.h>
 #include <gtk/gtkcheckbutton.h>
+#include <gtk/gtkfilesel.h>
 
 #include <gphoto2/gphoto2-camera.h>
 
@@ -89,6 +90,7 @@ struct _GtkamMainPrivate
 	GtkWidget *item_save, *item_information, *item_manual, *menu_delete;
 	GtkWidget *item_about_driver;
 	GtkWidget *select_all, *select_none, *select_inverse;
+	GtkWidget *make_dir, *remove_dir, *upload;
 
 	GtkWidget *debug;
 };
@@ -301,9 +303,49 @@ on_size_allocate (GtkWidget *widget, GtkAllocation *allocation, GtkamMain *m)
 }
 
 static void
+update_sensitivity_folder (GtkamMain *m)
+{
+	CameraAbilities a;
+
+	if (!m->priv->camera ||
+	    !g_list_length (GTK_TREE (m->priv->tree)->selection)) {
+		gtk_widget_set_sensitive (m->priv->make_dir, FALSE);
+		gtk_widget_set_sensitive (m->priv->remove_dir, FALSE);
+		gtk_widget_set_sensitive (m->priv->upload, FALSE);
+		return;
+	}
+
+	gp_camera_get_abilities (m->priv->camera, &a);
+
+	/* Directory creation and removal */
+	if (a.folder_operations & GP_FOLDER_OPERATION_MAKE_DIR)
+		gtk_widget_set_sensitive (m->priv->make_dir, TRUE);
+	else
+		gtk_widget_set_sensitive (m->priv->make_dir, FALSE);
+	if (a.folder_operations & GP_FOLDER_OPERATION_REMOVE_DIR)
+		gtk_widget_set_sensitive (m->priv->remove_dir, TRUE);
+	else
+		gtk_widget_set_sensitive (m->priv->remove_dir, FALSE);
+
+	/* Upload */
+	if (a.folder_operations & GP_FOLDER_OPERATION_PUT_FILE)
+		gtk_widget_set_sensitive (m->priv->upload, TRUE);
+	else
+		gtk_widget_set_sensitive (m->priv->upload, FALSE);
+}
+
+static void
 on_folder_selected (GtkamTree *tree, const gchar *folder, GtkamMain *m)
 {
 	gtkam_list_set_path (m->priv->list, folder);
+	update_sensitivity_folder (m);
+}
+
+static void
+on_folder_unselected (GtkamTree *tree, const gchar *folder, GtkamMain *m)
+{
+	gtk_icon_list_clear (GTK_ICON_LIST (m->priv->list));
+	update_sensitivity_folder (m);
 }
 
 static void
@@ -384,7 +426,7 @@ on_debug_activate (GtkMenuItem *item, GtkamMain *m)
 }
 
 static void
-on_about_activate (GtkamDebug *debug, GtkamMain *m)
+on_about_activate (GtkMenuItem *item, GtkamMain *m)
 {
 	GtkWidget *dialog;
 	char buf[4096];
@@ -406,6 +448,93 @@ on_about_activate (GtkamDebug *debug, GtkamMain *m)
 
 	dialog = gtkam_close_new (buf, GTK_WIDGET (m));
 	gtk_widget_show (dialog);
+}
+
+static void
+on_make_dir_activate (GtkMenuItem *item, GtkamMain *m)
+{
+	g_warning ("Not (yet) implemented!");
+}
+
+static void
+on_remove_dir_activate (GtkMenuItem *item, GtkamMain *m)
+{
+	const gchar *path;
+	gchar *dirname, *msg;
+	int result;
+	GtkWidget *dialog;
+
+	path = gtkam_tree_get_path (m->priv->tree);
+	dirname = g_dirname (path);
+	result = gp_camera_folder_remove_dir (m->priv->camera, dirname,
+					      g_basename (path));
+	if (result < 0) {
+		msg = g_strdup_printf (_("Could not remove '%s' from '%s'"),
+				       g_basename (path), dirname);
+		dialog = gtkam_error_new (msg, result, m->priv->camera,
+					  GTK_WIDGET (m));
+		g_free (msg);
+		gtk_widget_show (dialog);
+	}
+	g_free (dirname);
+}
+
+static void
+on_upload_ok_clicked (GtkButton *button, gboolean *ok)
+{
+	*ok = TRUE;
+	gtk_main_quit ();
+}
+
+static void
+on_upload_activate (GtkMenuItem *item, GtkamMain *m)
+{
+	CameraFile *file;
+	GtkWidget *fsel, *dialog;
+	gboolean ok = FALSE;
+	const char *path;
+	int r;
+	gchar *msg;
+	const char *folder;
+
+	folder = gtkam_tree_get_path (m->priv->tree);
+
+	fsel = gtk_file_selection_new (_("Upload"));
+	gtk_widget_show (fsel);
+	gtk_signal_connect (GTK_OBJECT (GTK_FILE_SELECTION (fsel)->ok_button),
+		"clicked", GTK_SIGNAL_FUNC (on_upload_ok_clicked), &ok);
+	gtk_signal_connect (GTK_OBJECT (GTK_FILE_SELECTION (fsel)->cancel_button),
+		"clicked", GTK_SIGNAL_FUNC (gtk_main_quit), NULL);
+	gtk_signal_connect (GTK_OBJECT (fsel), "delete_event",
+			    GTK_SIGNAL_FUNC (gtk_main_quit), NULL);
+	gtk_main ();
+
+	if (ok) {
+		path = gtk_file_selection_get_filename (
+						GTK_FILE_SELECTION (fsel));
+		gp_file_new (&file);
+		r = gp_file_open (file, path);
+		if (r < 0) {
+			msg = g_strdup_printf (_("Could not open '%s'"), path);
+			dialog = gtkam_error_new (msg, r, NULL, GTK_WIDGET (m));
+			g_free (msg);
+			gtk_widget_show (dialog);
+		} else {
+			r = gp_camera_folder_put_file (m->priv->camera,
+						       folder, file);
+			if (r < 0) {
+				msg = g_strdup_printf (_("Coult not upload "
+					"'%s' into folder '%s'"), path, folder);
+				dialog = gtkam_error_new (msg, r,
+					m->priv->camera, GTK_WIDGET (m));
+				g_free (msg);
+				gtk_widget_show (dialog);
+			}
+		}
+		gp_file_free (file);
+	}
+
+	gtk_object_destroy (GTK_OBJECT (fsel));
 }
 
 GtkWidget *
@@ -513,6 +642,59 @@ gtkam_main_new (void)
 	gtk_signal_connect (GTK_OBJECT (item), "activate",
 			    GTK_SIGNAL_FUNC (on_exit_activate), m);
 	gtk_container_add (GTK_CONTAINER (menu), item);
+
+	/*
+	 * Folder menu
+	 */
+	item = gtk_menu_item_new_with_label ("");
+	gtk_widget_show (item);
+	key = gtk_label_parse_uline (GTK_LABEL (GTK_BIN (item)->child),
+				     _("F_older"));
+	gtk_widget_add_accelerator (item, "activate_item", accel_group, key,
+				    GDK_MOD1_MASK, 0);
+	gtk_container_add (GTK_CONTAINER (menubar), item);
+	
+	menu = gtk_menu_new ();
+	gtk_menu_item_set_submenu (GTK_MENU_ITEM (item), menu);
+	accels = gtk_menu_ensure_uline_accel_group (GTK_MENU (menu));
+
+	item = item = gtk_menu_item_new_with_label ("");
+	gtk_widget_show (item);
+	gtk_widget_set_sensitive (item, FALSE);
+	key = gtk_label_parse_uline (GTK_LABEL (GTK_BIN (item)->child),
+				     _("_Create"));
+	gtk_widget_add_accelerator (item, "activate_item", accels, key, 0, 0);
+	gtk_container_add (GTK_CONTAINER (menu), item);
+	gtk_signal_connect (GTK_OBJECT (item), "activate",
+			    GTK_SIGNAL_FUNC (on_make_dir_activate), m);
+	m->priv->make_dir = item;
+
+	item = item = gtk_menu_item_new_with_label ("");
+	gtk_widget_show (item);
+	gtk_widget_set_sensitive (item, FALSE);
+	key = gtk_label_parse_uline (GTK_LABEL (GTK_BIN (item)->child),
+				     _("_Remove"));
+	gtk_widget_add_accelerator (item, "activate_item", accels, key, 0, 0);
+	gtk_container_add (GTK_CONTAINER (menu), item); 
+	gtk_signal_connect (GTK_OBJECT (item), "activate", 
+			    GTK_SIGNAL_FUNC (on_remove_dir_activate), m);
+	m->priv->remove_dir = item;
+
+	separator = gtk_menu_item_new (); 
+	gtk_widget_show (separator);
+	gtk_container_add (GTK_CONTAINER (menu), separator);
+	gtk_widget_set_sensitive (separator, FALSE);
+
+	item = item = gtk_menu_item_new_with_label ("");
+	gtk_widget_show (item);
+	gtk_widget_set_sensitive (item, FALSE);
+	key = gtk_label_parse_uline (GTK_LABEL (GTK_BIN (item)->child),
+				     _("_Upload file")); 
+	gtk_widget_add_accelerator (item, "activate_item", accels, key, 0, 0);
+	gtk_container_add (GTK_CONTAINER (menu), item);
+	gtk_signal_connect (GTK_OBJECT (item), "activate",
+			    GTK_SIGNAL_FUNC (on_upload_activate), m);
+	m->priv->upload = item;
 
 	/*
 	 * Select menu
@@ -793,6 +975,8 @@ gtkam_main_new (void)
 					       tree);
 	gtk_signal_connect (GTK_OBJECT (tree), "folder_selected",
 			    GTK_SIGNAL_FUNC (on_folder_selected), m);
+	gtk_signal_connect (GTK_OBJECT (tree), "folder_unselected",
+			    GTK_SIGNAL_FUNC (on_folder_unselected), m);
 	m->priv->tree = GTKAM_TREE (tree);
 
 	/*
@@ -907,6 +1091,8 @@ gtkam_main_set_camera (GtkamMain *m, Camera *camera)
 		gtk_widget_set_sensitive (m->priv->item_config, TRUE);
 	else
 		gtk_widget_set_sensitive (m->priv->item_config, FALSE);
+
+	update_sensitivity_folder (m);
 
 	/* The remaining */
 	if (camera) {

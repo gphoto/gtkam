@@ -30,14 +30,17 @@ libgtkam_a_SOURCES =				\
 bin_PROGRAMS = gtkam
 gtkam_SOURCES = \
 	gtkam-debug.c gtkam-debug.h \
+	gtkam-exif.c gtkam-exif.h \
 	gtkam-list.c gtkam-list.h \
 	gtkam-main.c gtkam-main.h \
 	gtkam-save.c gtkam-save.h \
 	main.c \
 	gtkiconlist.c gtkiconlist.h \
 	gtkitementry.c gtkitementry.h
-gtkam_LDADD = 							\
-	libgtkam.a						\
+gtkam_LDADD = 								\
+	$(top_builddir)/libexif/libexif/.libs/libexif.al		\
+	$(top_builddir)/libexif/libexif-gtk/.libs/libexif-gtk.al	\
+	libgtkam.a							\
 	 @GTK_LIBS@
 
 if HAVE_GIMP

@@ -250,13 +250,8 @@ on_exif_activate (GtkMenuItem *menu_item, PopupData *data)
 	GtkWidget *dialog, *w;
 
 	w = gtk_widget_get_ancestor (GTK_WIDGET (data->list), GTK_TYPE_WINDOW);
-#if 0
 	dialog = gtkam_exif_new (list->priv->camera, list->priv->multi, 
 				 list->path, data->item->label, w);
-#else
-	list = NULL;
-	dialog = gtkam_close_new ("Not implemented!", w);
-#endif
 	if (dialog)
 		gtk_widget_show (dialog);
 }

@@ -165,6 +165,7 @@ gtkam_exif_new (Camera *camera, gboolean multi,
 	gtk_exif_browser_set_data (GTK_EXIF_BROWSER (browser), edata);
 	exif_data_unref (edata);
 	gtk_widget_show (browser);
+	gtk_container_set_border_width (GTK_CONTAINER (browser), 5);
 	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (exif)->vbox), browser,
 			    TRUE, TRUE, 0);
 

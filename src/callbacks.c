@@ -916,6 +916,23 @@ void camera_delete_common(int all) {
 
 	if (!gp_gtk_camera_init)
 		if (camera_set()==GP_ERROR) {return;}
+
+	if (gp_setting_get("gtk-old", "camera", buf)==GP_ERROR) {
+		gp_camera_message(NULL, _("ERROR: please choose your camera model again"));
+		camera_select();
+		return;
+	}
+
+	if (gp_camera_abilities_by_name(buf, &a)==GP_ERROR) {
+		gp_camera_message(NULL, _("Could not retrieve the camera's abilities"));
+		return;
+	}
+
+	if (!a.file_delete) {
+		gp_camera_message(NULL, _("This camera does not support deleting photos."));
+		return;
+	}
+
 	if (all)
 		strcpy(buf, _("Are you sure you want to DELETE ALL the photos?"));
 	   else
@@ -923,22 +940,6 @@ void camera_delete_common(int all) {
 		
 	if (gp_camera_confirm(gp_gtk_camera,  buf)==0)
 		return;
-
-	if (gp_setting_get("gtk-old", "camera", buf)==GP_ERROR) {
-		gp_camera_message(NULL, _("ERROR: please choose your camera model again"));
-		camera_select();
-		return;
-	}
-	if (gp_camera_abilities_by_name(buf, &a)==GP_ERROR) {
-		gp_camera_message(NULL, _("Could not retrieve the camera's abilities"));
-		return;
-	}
-
-/* Not working? */
-	if (!a.file_delete) {
-		gp_camera_message(NULL, _("This camera does not support deleting photos."));
-		return;
-	}
 
 	icon_list = (GtkWidget*) lookup_widget(gp_gtk_main_window, "icons");
 	count = GTK_ICON_LIST(icon_list)->num_icons;

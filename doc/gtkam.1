@@ -22,61 +22,151 @@
 gtkam \- Graphical front end for gphoto2
 .SH "COMMANDS"
 
+.SS "File Menu"
+
+.TP
+File->Save Photos
+Gives options to save photos to the computer.
+
+
 .RS
-.Sh "Warning"
 
+.TP
+File->Save Photos->Selected
+Saves the selected photos from the camera to the computer.
 
-New as it is, this man reference is already under revision to reflect the changes from gtkam v 0.1.3 to v.0.1.9. As such, there are several discrepancies and errors. There are also a number of screenshots which came from gtkam 0.1.3. Bear with us as we edit...
+.TP
+File->Save Photos->All
+Saves all photos in the camera to the computer.
+
+.RE
+Both menu items open a "Save photos..." dialog box which allows the user to select the folder to save the images in, as well as a number of other options.
+
+.RS
+
+.TP
+What to save:
+
+.RS
+
+.TP
+
+This is a set of checkboxes which allows the user to select the forms in which data for the selected image(s) will be saved. Any or all of these options may be selected at once.
+
+.TP
+Save photos
+This is the default. It causes the photos being saved to be downloaded from the camera and saved to the identified folder.
+
+.TP
+Save raw data
+FIXME: What to say?
+
+.TP
+Save audio data
+Causes any audio data associated with the image to be saved to the selected folder.
+
+.TP
+Save thumbnails
+Saves a small version of the selected images to the identified folder.
+
+.TP
+Save EXIF data
+Saves the EXIF data associated with the images.
+
+FIXME: should we say more about the EXIF format?
 
 .RE
 
-.Sh "File Menu"
+.TP
+Open image(s) with:
+This allows the user to specify FIXME ??
 
 .TP
-FileSave Photos
-Opens the dialog for saving the selected photos.
+Use filename(s) provided by the camera.
+Causes the saved files to have the names provided by the camera.
 
 .TP
-FileDelete PhotosSelected
+Filename prefix:
+Defines a prefix to be used when creating filenames. This prefix is combined with the number starting with the number defined in:
+
+.TP
+Start numbering with:
+Defines the first number of the sequence of photos to be stored.
+
+.RE
+
+.TP
+File->Delete Photos
+Gives options to delete photos from the camera.
+
+.RS
+
+.TP
+File->Delete Photos->Selected
 Deletes selected photos from the camera.
 
 .TP
-FileDelete PhotosAll
-Deletes all photos in the camera
+File->Delete Photos->All
+Deletes all photos in the camera.
 
 .TP
-FileQuit
+
+Both of these menu items open a dialog to confirm the deletion of the photos. A list of photos is presented with a checkbox beside each photo name. Uncheck the box to prevent a specific file from being deleted.
+
+.RE
+
+.TP
+File->Quit
 Quits gtkam.
 
-.Sh "View Menu"
+.SS "View Menu"
 
-.Sh "Select Menu"
+.PP
+Gives options for previewing photos before downloading them from the camera.
 
 .TP
-SelectAll
+View->View Thumbnails
+This is the same command as the checkbox on the main gtkam window. It allows the user to select whether thumbnails of the photos are displayed, or just the file names.
+
+.TP
+View->Zoom In
+Enlarges the thumbnails.
+
+.TP
+View->Zoom 100
+Returns the thumbnails to default size.
+
+.TP
+View->Zoom Out
+Reduces the thumbnails.
+
+.SS "Select Menu"
+
+.TP
+Select->All
 Selects all pictures in the camera.
 
 .TP
-SelectInverse
+Select->Inverse
 Inverts the selections already made so that previously unselected images are now selected, and previously selected images are now unselected.
 
 .TP
-SelectNone
+Select->None
 Undoes all selections so that no images are selected.
 
-.Sh "Camera Menu"
+.SS "Camera Menu"
 
 .TP
-CameraAdd Camera...
+Camera->Add Camera...
 Opens a window to allow the user to define the camera and interface being used.
-"Simple" Select Camera Dialog
-"Enhanced" Select Camera Dialog
+"Simple" Select Camera Dialog.
+"Enhanced" Select Camera Dialog.
 Dialog for explicitly adding a path to the port to which the camera is attached.
 
-.Sh "Help Menu"
+.SS "Help Menu"
 
 .TP
-HelpDebug...
+Help->Debug...
 Opens the logging window which allows the user to select the type of messages to log.
 
 .RS
@@ -87,7 +177,7 @@ causes the logging of any error messages.
 
 .TP
 Verbose
-Increases the amount of information being logged. (I can't see what effect this has. - mjr)
+Increases the amount of information being logged. (I can't see what effect this has. \- mjr)
 
 .TP
 Debug
@@ -108,57 +198,74 @@ Closes the debug window
 .RE
 
 .TP
-HelpAbout...
+Help->About...
 Opens the about gtKam window. This gives the current version, author credits, and contact information.
 
-.Sh "Right Click (over directory pane) Menu"
+.SS "Right Click (over directory pane) Menu"
 
 .TP
-Right ClickUpload File
+Right Click->Upload File
 Opens a dialog to identify an image file for uploading to the camera.
 
 .TP
-Right ClickMake directory
+Right Click->Make directory
 Opens dialog to create new directory.
 
 .TP
-Right ClickRemove directory
+Right Click->Remove directory
 Opens a dialog to remove (delete) an existing folder (directory).
 
 .TP
-Right ClickCapture
-Opens a window to allow the user to trigger the camera to acquire an image. (This feature is not available on my camera, so I would appreciate some input on this item. -mjr)
+Right Click->Capture
+Opens a window to allow the user to trigger the camera to acquire an image if the camera and its gphoto2 driver supports this feature.. (This feature is not available on my camera, so I would appreciate some input on this item. \-mjr)
 
 .TP
-Right ClickPreferences
-Opens a window with configurable options for the camers. This includes the name of the camera, it's owner, the date and time, firmware version, and power status..
+Right Click->Preferences
 Camera configuration tab.
 Driver configuration tab.
 
 .TP
-Right ClickSummary
+Right Click->Summary
 Displays a window with information about the camera and its memory.
 
 .TP
-Right ClickManual
-I'm not sure what this should contain. Anyone? - mjr
+Right Click->Manual
+I'm not sure what this should contain. Anyone? \- mjr
 FIXME: need useful image
 
 .TP
-Right ClickAbout
+Right Click->About
 Displays a window with information about the camera driver and its authors.
 
 This should include contact information for the maintainers of the drivers for your camera.
 
 .TP
-Right ClickSelect Camera
-Selects the camera FIXME: what does this really do??
+Right Click->Select Camera
+Opens the Add Camera dialog.
 
 .TP
-Right ClickRemove Camera
+Right Click->Remove Camera
 Removes the camera from the directory pane.
 
+.SS "Right Click (over list pane) Menu"
+
+.TP
+Right Click->View with...->Built\-in viewer
+Downloads the image under the cursor and displays it in a new window. The window automatically resizes the image to fill the window.
+
+.TP
+Right Click->Info
+Presents file name, type, size, date and permissions information about the image under the cursor.
+
+.TP
+Right Click->Save
+Downloads the image under the cursor and opens a dialog to allow it to be saved to the computer.
+
+.TP
+Right Click->Delete
+Opens a dialog to allow the user to delete the image under the cursor.
+
 .SH AUTHOR
-.
+The gPhoto2 Team.
 .br
 Man page edited by Michael J. Rensing <michael.rensing@shaw.ca>.

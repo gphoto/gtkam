@@ -87,6 +87,7 @@ struct _GtkamMainPrivate
 	GtkWidget *item_delete, *item_delete_all, *item_capture, *item_config;
 	GtkWidget *item_save, *item_information, *item_manual, *menu_delete;
 	GtkWidget *item_about_driver;
+	GtkWidget *select_all, *select_none, *select_inverse;
 
 	GtkWidget *debug;
 };
@@ -524,30 +525,36 @@ gtkam_main_new (void)
 
 	item = gtk_menu_item_new_with_label ("");
 	gtk_widget_show (item);
+	gtk_widget_set_sensitive (item, FALSE);
 	key = gtk_label_parse_uline (GTK_LABEL (GTK_BIN (item)->child),
 				     _("_All"));
 	gtk_widget_add_accelerator (item, "activate_item", accels, key, 0, 0);
 	gtk_container_add (GTK_CONTAINER (menu), item);
 	gtk_signal_connect (GTK_OBJECT (item), "activate",
 			    GTK_SIGNAL_FUNC (on_select_all_activate), m);
+	m->priv->select_all = item;
 
 	item = gtk_menu_item_new_with_label ("");
 	gtk_widget_show (item);
+	gtk_widget_set_sensitive (item, FALSE);
 	key = gtk_label_parse_uline (GTK_LABEL (GTK_BIN (item)->child),
 				     _("_Inverse"));
 	gtk_widget_add_accelerator (item, "activate_item", accels, key, 0, 0);
 	gtk_container_add (GTK_CONTAINER (menu), item);
 	gtk_signal_connect (GTK_OBJECT (item), "activate",
 			    GTK_SIGNAL_FUNC (on_select_inverse_activate), m);
+	m->priv->select_inverse = item;
 
 	item = gtk_menu_item_new_with_label ("");
 	gtk_widget_show (item);
+	gtk_widget_set_sensitive (item, FALSE);
 	key = gtk_label_parse_uline (GTK_LABEL (GTK_BIN (item)->child),
 				     _("_None"));
 	gtk_widget_add_accelerator (item, "activate_item", accels, key, 0, 0);
 	gtk_container_add (GTK_CONTAINER (menu), item);
 	gtk_signal_connect (GTK_OBJECT (item), "activate",
 			    GTK_SIGNAL_FUNC (on_select_none_activate), m);
+	m->priv->select_none = item;
 
 	/*
 	 * Camera menu
@@ -918,4 +925,14 @@ gtkam_main_set_camera (GtkamMain *m, Camera *camera)
 		gp_camera_set_status_func (camera, status_func, m);
 		gp_camera_set_message_func (camera, message_func, m);
 	}
+}
+
+void
+gtkam_main_select_set_sensitive (GtkamMain *m, gboolean sensitive)
+{
+	g_return_if_fail (GTKAM_IS_MAIN (m));
+
+	gtk_widget_set_sensitive (m->priv->select_none, sensitive);
+	gtk_widget_set_sensitive (m->priv->select_all, sensitive);
+	gtk_widget_set_sensitive (m->priv->select_inverse, sensitive);
 }

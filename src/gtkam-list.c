@@ -50,6 +50,7 @@
 #include "util.h"
 #include "../pixmaps/no_thumbnail.xpm"
 #include "gtkam-save.h"
+#include "gtkam-main.h"
 
 struct _GtkamListPrivate
 {
@@ -226,7 +227,7 @@ gtkam_list_new (void)
 void
 gtkam_list_set_path (GtkamList *list, const gchar *path)
 {
-	GtkWidget *dialog, *window;
+	GtkWidget *dialog, *window, *m;
 	GtkIconListItem *item;
 	gchar *msg;
 	CameraList flist;
@@ -245,14 +246,18 @@ gtkam_list_set_path (GtkamList *list, const gchar *path)
 		g_free (list->path);
 	list->path = g_strdup (path);
 
+	window = gtk_widget_get_ancestor (GTK_WIDGET (list), GTK_TYPE_WINDOW);
+	m = gtk_widget_get_ancestor (GTK_WIDGET (list), GTKAM_TYPE_MAIN);
+
 	gtk_icon_list_freeze (GTK_ICON_LIST (list));
 	gtk_icon_list_clear (GTK_ICON_LIST (list));
 	gtk_icon_list_thaw (GTK_ICON_LIST (list));
 
+	if (m)
+		gtkam_main_select_set_sensitive (GTKAM_MAIN (m), FALSE);
+
 	if (!list->priv->camera)
 		return;
-
-	window = gtk_widget_get_ancestor (GTK_WIDGET (list), GTK_TYPE_WINDOW);
 
 	result = gp_camera_folder_list_files (list->priv->camera, path, &flist);
 	if (result < 0) {
@@ -294,6 +299,7 @@ gtkam_list_set_path (GtkamList *list, const gchar *path)
 						pixmap, bitmap);
 			}
 		}
+		gtkam_main_select_set_sensitive (GTKAM_MAIN (m), TRUE);
 	}
 	gp_file_unref (file);
 }
@@ -408,11 +414,16 @@ gtkam_list_delete_all (GtkamList *list)
 void
 gtkam_list_refresh (GtkamList *list)
 {
+	GtkWidget *m;
 	gchar *path = NULL;
 
 	g_return_if_fail (GTKAM_IS_LIST (list));
 
+	m = gtk_widget_get_ancestor (GTK_WIDGET (list), GTKAM_TYPE_MAIN);
+
 	gtk_icon_list_clear (GTK_ICON_LIST (list));
+	if (m)
+		gtkam_main_select_set_sensitive (GTKAM_MAIN (m), FALSE);
 
 	if (list->path && list->priv->camera) {
 		path = g_strdup (list->path);

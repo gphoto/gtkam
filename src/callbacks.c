@@ -140,12 +140,13 @@ int camera_set() {
 	gp_setting_get("gtkam", "speed", speed);
 
 	/* Create the new camera */
-	if (gp_camera_new_by_name(&new_camera, camera)!=GP_OK) {
+	if (gp_camera_new(&new_camera)!=GP_OK) {
 		gtk_widget_destroy(message);
 		return (GP_ERROR);
 	}
 
 	/* Set up the camera initialization */
+	strcpy(new_camera->model, camera);
 	strcpy(new_camera->port->path, port);
 	if (strlen(speed)>0)
 		new_camera->port->speed = atoi(speed);

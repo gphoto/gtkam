@@ -91,7 +91,6 @@ changequote([,])dnl
 
 AC_OUTPUT([
 Makefile
-gtkam.spec
 intl/Makefile
 art/Makefile
 pixmaps/Makefile

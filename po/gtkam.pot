@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2002-01-29 11:33+0100\n"
+"POT-Creation-Date: 2002-02-02 18:31+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -86,7 +86,7 @@ msgstr ""
 msgid "Enhanced"
 msgstr ""
 
-#: src/gtkam-chooser.c:656 src/gtkam-config.c:683 src/gtkam-fsel.c:357
+#: src/gtkam-chooser.c:656 src/gtkam-config.c:683 src/gtkam-fsel.c:349
 #: src/gtkam-info.c:632 src/gtkam-mkdir.c:266
 msgid "Ok"
 msgstr ""
@@ -95,7 +95,7 @@ msgstr ""
 msgid "Apply"
 msgstr ""
 
-#: src/gtkam-chooser.c:673 src/gtkam-delete.c:411 src/gtkam-fsel.c:365
+#: src/gtkam-chooser.c:673 src/gtkam-delete.c:411 src/gtkam-fsel.c:357
 #: src/gtkam-info.c:658 src/gtkam-mkdir.c:274
 msgid "Cancel"
 msgstr ""
@@ -253,7 +253,7 @@ msgid "Do you really want to delete ALL files in '%s'?"
 msgstr ""
 
 #. Delete
-#: src/gtkam-delete.c:404 src/gtkam-info.c:523 src/gtkam-list.c:413
+#: src/gtkam-delete.c:404 src/gtkam-info.c:523 src/gtkam-list.c:415
 msgid "Delete"
 msgstr ""
 
@@ -261,21 +261,21 @@ msgstr ""
 msgid "More"
 msgstr ""
 
-#: src/gtkam-fsel.c:220
+#: src/gtkam-fsel.c:212
 #, c-format
 msgid "Removing '%s' from '%s'..."
 msgstr ""
 
-#: src/gtkam-fsel.c:236
+#: src/gtkam-fsel.c:228
 #, c-format
 msgid "Could not remove '%s' from '%s'"
 msgstr ""
 
-#: src/gtkam-fsel.c:283
+#: src/gtkam-fsel.c:275
 msgid "Make"
 msgstr ""
 
-#: src/gtkam-fsel.c:289
+#: src/gtkam-fsel.c:281
 msgid "Remove"
 msgstr ""
 
@@ -393,26 +393,26 @@ msgid "Exif"
 msgstr ""
 
 #. Save
-#: src/gtkam-list.c:406
+#: src/gtkam-list.c:408
 msgid "Save"
 msgstr ""
 
-#: src/gtkam-list.c:500
+#: src/gtkam-list.c:502
 #, c-format
 msgid "Listing files in folder '%s'..."
 msgstr ""
 
-#: src/gtkam-list.c:517
+#: src/gtkam-list.c:519
 #, c-format
 msgid "Could not get file list for folder '%s'"
 msgstr ""
 
-#: src/gtkam-list.c:561
+#: src/gtkam-list.c:563
 #, c-format
 msgid "Getting preview of file '%s' in folder '%s'..."
 msgstr ""
 
-#: src/gtkam-list.c:589
+#: src/gtkam-list.c:591
 #, c-format
 msgid "Could not get preview of file '%s' in folder '%s'."
 msgstr ""
@@ -641,7 +641,7 @@ msgid "Capture"
 msgstr ""
 
 #: src/gtkam-preview.c:437
-msgid "0°"
+msgid "0 degrees"
 msgstr ""
 
 #: src/gtkam-preview.c:445
@@ -649,27 +649,27 @@ msgid "Don't rotate thumbnail"
 msgstr ""
 
 #: src/gtkam-preview.c:447
-msgid "-90°"
+msgid "-90 degrees"
 msgstr ""
 
 #: src/gtkam-preview.c:454
-msgid "Rotate thumbnail by -90°"
+msgid "Rotate thumbnail by -90 degrees"
 msgstr ""
 
 #: src/gtkam-preview.c:456
-msgid "+90°"
+msgid "+90 degrees"
 msgstr ""
 
 #: src/gtkam-preview.c:463
-msgid "Rotate thumbnail by 90°"
+msgid "Rotate thumbnail by 90 degrees"
 msgstr ""
 
 #: src/gtkam-preview.c:465
-msgid "180°"
+msgid "180 degrees"
 msgstr ""
 
 #: src/gtkam-preview.c:472
-msgid "Rotate thumbnail by 180°"
+msgid "Rotate thumbnail by 180 degrees"
 msgstr ""
 
 #: src/gtkam-preview.c:480

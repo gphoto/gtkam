@@ -1,0 +1,545 @@
+<?xml version="1.0"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
+"http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
+  <!ENTITY legal SYSTEM "legal.xml">
+  <!ENTITY appversion "0.1.12">
+  <!ENTITY manrevision "0.1.12">
+  <!ENTITY date "January 2004">
+  <!ENTITY app "<application>gtkam</application>">
+  <!-- Information about the entities
+       The legal.xml file contains legal information, there is no need to edit the file. 
+       Use the appversion entity to specify the version of the application.
+       Use the manrevision entity to specify the revision number of this manual.
+       Use the date entity to specify the release date of this manual.
+       Use the app entity to specify the name of the application. -->
+]>
+<!-- 
+      (Do not remove this comment block.)
+  Maintained by the GNOME Documentation Project
+  http://developer.gnome.org/projects/gdp
+  Template version: 2.0 beta
+  Template last modified Apr 11, 2002
+-->
+<!-- =============Document Header ============================= -->
+<article id="index" lang="ru">
+<!-- please do not change the id; for translations, change lang to -->
+<!-- appropriate code -->
+  <articleinfo> 
+    <title>&app; Руководство пользователя вер.&manrevision;</title>       
+
+    <copyright> 
+      <year>2003-2004</year> 
+      <holder>Andrew Burton</holder> 
+    </copyright> 
+<!-- translators: uncomment this:   -->
+
+  <copyright>
+   <year>2004</year>
+   <holder>Вячеслав Диконов (Vyacheslav Dikonov)</holder>
+  </copyright>
+
+
+<!-- An address can be added to the publisher information.  If a role is 
+     not specified, the publisher/author is the same for all versions of the 
+     document.  -->
+    <publisher> 
+      <publishername>Проект gPhoto</publishername> 
+    </publisher> 
+
+   <!-- This file  contains link to license for the documentation (GNU FDL), and 
+        other legal stuff such as "NO WARRANTY" statement. Please do not change 
+	any of this. -->
+
+    <authorgroup> 
+      <author> 
+		<firstname>Andrew</firstname> 
+		<surname>Burton</surname> 
+		<affiliation> 
+	  		<orgname>Проект gPhoto</orgname> 
+	  		<address> <email>adburton@users.sourceforge.net</email> </address> 
+		</affiliation> 
+      </author> 
+      
+<!-- This is appropriate place for other contributors: translators,
+     maintainers,  etc. Commented out by default.
+     
+      <othercredit role="translator">
+		<firstname>Latin</firstname> 
+		<surname>Translator 1</surname> 
+		<affiliation> 
+	  		<orgname>Latin Translation Team</orgname> 
+	  		<address> <email>translator@gnome.org</email> </address> 
+		</affiliation>
+		<contrib>Latin translation</contrib>
+      </othercredit>
+-->
+    </authorgroup>
+
+
+<!-- According to GNU FDL, revision history is mandatory if you are -->
+<!-- modifying/reusing someone else's document.  If not, you can omit it. -->
+<!-- Remember to remove the &manrevision; entity from the revision entries other
+-->
+<!-- than the current revision. -->
+<!-- The revision numbering system for GNOME manuals is as follows: -->
+<!-- * the revision number consists of two components -->
+<!-- * the first component of the revision number reflects the release version of the GNOME desktop. -->
+<!-- * the second component of the revision number is a decimal unit that is incremented with each revision of the manual. -->
+<!-- For example, if the GNOME desktop release is V2.x, the first version of the manual that -->
+<!-- is written in that desktop timeframe is V2.0, the second version of the manual is V2.1, etc. -->
+<!-- When the desktop release version changes to V3.x, the revision number of the manual changes -->
+<!-- to V3.0, and so on. -->  
+    <revhistory>
+      <revision> 
+		<revnumber>Руководство пользователя Gtkam вер.&manrevision;</revnumber> 
+		<date>&date;</date> 
+		<revdescription> 
+	  		<para role="author">Andrew Burton
+	    	<email>adburton@users.sourceforge.net</email>
+	  		</para>
+	  		<para role="publisher">Проект gPhoto</para>
+		</revdescription> 
+      </revision> 
+    </revhistory> 
+
+    <releaseinfo>Данное руководство соответствует Gtkam версии &appversion;.
+    </releaseinfo> 
+    <legalnotice> 
+      <title>Обратная связь</title> 
+      <para>Чтобы сообщить об ошибке или внести предложения, связанные с программой &app; или
+      данным руководством, следуйте указаниям на <ulink url="ghelp:gnome-feedback"
+	  type="help">странице обратной связи GNOME</ulink>. 
+      </para>
+<!-- Translators may also add here feedback address for translations -->
+    </legalnotice> 
+  </articleinfo> 
+
+  <indexterm zone="index"> 
+    <primary>Gtkam</primary> 
+  </indexterm> 
+  <indexterm zone="index"> 
+    <primary>gtkam</primary> 
+  </indexterm>
+
+<!-- ============= Document Body ============================= -->
+<!-- ============= Introduction ============================== -->
+<!-- Use the Introduction section to give a brief overview of what
+     the application is and what it does. -->
+  <sect1 id="myapp-introduction"> 
+    <title>Введение</title> 
+    <para>&app; - удобная и простая в использовании программа для просмотра и копирования фотографий и видеозаписей, сделанных с помощью цифрового фотоаппарата. 
+    &app; поддерживает почти 400 моделей фотоаппаратов.</para>
+    <para>&app; обладает следующими возможностями:</para>
+    <itemizedlist> 
+      <listitem> 
+	  <para>Поддержка фотоаппаратов, подключаемых как по последовательному порту, так и по USB.</para> 
+      </listitem> 
+      <listitem> 
+	  <para>Простой доступ к снимкам и видеозаписям в памяти фотоаппарата.</para> 
+      </listitem> 
+      <listitem> 
+	  <para>Поддержка копирования снимков и видеозаписей из фотоаппарата и загрузка файлов в фотоаппарат. </para> 
+      </listitem>
+      <listitem> 
+	  <para>Получение сведений о настройках и изменение настроек фотоаппарата. </para> 
+      </listitem>
+    </itemizedlist> 
+    <note>
+      <para>Некоторые модели фотоаппаратов не поддерживаются. Обратитесь к веб-страницам gPhoto, чтобы проверить, поддерживается ли ваша модель. Некоторые функции доступны не для всех фотоаппаратов.</para>
+    </note>
+  </sect1>
+
+<!-- =========== Getting Started ============================== -->
+<!-- Use the Getting Started section to describe the steps required
+     to start the application and to describe the user interface components
+     of the application. If there is other information that it is important
+     for readers to know before they start using the application, you should
+     also include this information here. 
+     If the information about how to get started is very short, you can 
+     include it in the Introduction and omit this section. -->
+
+  <sect1 id="myapp-getting-started"> 
+    <title>Интерфейс</title> 
+
+    <sect2 id="myapp-start">
+    <title>Запуск &app;</title>
+    <para>Программу <application>&app;</application> можно запустить следующими способами:
+    </para> 
+    <variablelist>
+    	<varlistentry>
+    		<term>Меню <guimenu>Приложения</guimenu></term>
+    		<listitem>
+    		<para>Выберите 
+    		<menuchoice>
+    		<guisubmenu>Графика </guisubmenu>
+    		<guimenuitem>Цифровой фотоаппарат</guimenuitem>
+    		</menuchoice>. </para>
+    		</listitem>
+    	</varlistentry>
+    	<varlistentry>
+    		<term>Командная строка</term>
+    		<listitem>
+    		<para>Чтобы запустить <application>&app;</application> из командной строки, введите следующую команду и нажмите клавишу
+    		 <keycap>Ввод</keycap>:</para>
+    		<para> 
+			<command>gtkam</command> 
+			<!--FIXME command line switches -->
+    		</para> 
+    		</listitem>
+    	</varlistentry>
+    </variablelist>
+    </sect2>
+
+    <sect2 id="myapp-when-start">
+    <title>Окно &app;</title>
+    <para>После запуска <application>&app;</application> появляется следующее окно.</para>
+
+    <!-- ==== Figure ==== -->
+      <figure id="mainwindow-fig"> 
+	<title>&app; Окно программы сразу после запуска</title> 
+	<screenshot> 
+	  <mediaobject> 
+	    <imageobject><imagedata
+		fileref="figures/gtkam_start_window.png" format="PNG"/> 
+	    </imageobject>
+	    <textobject> 
+	      <phrase>Главное окно &app;. Слева находится дерево фотоаппарата. Список файлов расположен справа.</phrase>
+	    </textobject> 
+	  </mediaobject> 
+	</screenshot> 
+      </figure>
+    <!-- ==== End of Figure ==== -->
+
+    <!-- Include any descriptions of the GUI immediately after the screenshot of the main UI, -->
+    <!-- for example, the items on the menubar and on the toolbar. This section is optional. -->
+
+    <para>Окно &app; включает в себя следующие элементы:
+    </para>
+      <variablelist>
+	<varlistentry>
+	<term>Меню. </term>
+	<listitem>
+	<para>Меню содержит все команды, необходимые для работы с фотоаппаратом в программе
+	<application>&app;</application>.</para>
+	</listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>Панель инструментов. </term>
+	<listitem>
+	<para>На панели инструментов расположены кнопки, которые позволяют изменять маштаб миниатюрных изображений. Воспользовавшись галочкой показа миниатюр можно включить или выключить их.</para>
+	<!--FIXME Add refresh button -->
+	</listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>Панель дерева фотоаппарата. </term>
+	<listitem>
+	<para>Дерево фотоаппарата содержит список всех добавленных фотокамер<!--FIXME - Refer to sec xxx-->. Если фотоаппарат подключен, то слева от его названия появляется стрелка. Нажав на стрелку можно увидеть список каталогов в памяти фотоаппарата.</para>
+	</listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>Панель файлов. </term>
+	<listitem>
+	<para>Правая панель показывает содержимое каталога, выбранного в дереве фотоаппарата. Галочка показа миниатюр позволяет показать или скрыть миниатюрные копии снимков.</para>
+	</listitem>
+	</varlistentry>
+	</variablelist>
+    </sect2>
+  </sect1>
+<!-- ================ Usage ================================ -->
+<!-- Use this section to describe how to use the application to perform the tasks for 
+  which the application is designed. -->
+  <sect1 id="gtkam-usage"> 
+    <title>Использование</title> 
+    <para>С помощью &app; можно выполнять следующие задачи: 
+      <itemizedlist> 
+	<listitem> 
+	  <para> 
+	    <xref linkend="gtkam-add-remove-cameras"/></para> 
+	</listitem> 
+	<listitem> 
+	  <para> 
+	    <xref linkend="gtkam-zoom-view-image"/></para> 
+	</listitem> 
+	<listitem> 
+	  <para> 
+	    <xref linkend="gtkam-save-images"/></para>
+	</listitem> 
+	<listitem> 
+	  <para> 
+	    <xref linkend="gtkam-delete-images"/></para>
+	</listitem> 
+	<listitem> 
+	  <para> 
+	    <xref linkend="gtkam-camera-operations"/></para>
+	</listitem> 
+      </itemizedlist> </para>
+    <!-- ================ Usage Subsection ================================ -->
+    <sect2 id="gtkam-add-remove-cameras"> 
+      <title>Добавление и удаление фотоаппаратов</title> 
+      <para>Прежде чем начать просматривать и копировать снимки, необходимо добавить фотоаппарат. Чтобы добавить фотоаппарат выберите в меню 
+	<menuchoice> 
+	  <guimenu>Фотоаппарат</guimenu> 
+	  <guimenuitem>Добавить</guimenuitem> 
+	</menuchoice> или выполните двойной щелчок в панели дерева фотоаппарата и выберите команду <!--FIXME markup-->Добавить фотоаппарат в появившемся меню.
+        На экране появится диалог <guilabel>Добавить фотоаппарат</guilabel>.</para>
+
+    <!-- ==== Figure ==== -->
+      <figure id="addcamera-fig"> 
+	<title>Диалог добавления фотоаппарата в &app;</title> 
+	<screenshot> 
+	  <mediaobject> 
+	    <imageobject><imagedata
+		fileref="figures/gtkam_add_camera_window.png" format="PNG"/> 
+	    </imageobject>
+	    <textobject> 
+	      <phrase>Диалог &app; Добавить фотоаппарат позволяет добавить в программу новый фотоаппарат. </phrase> 
+	    </textobject> 
+	  </mediaobject> 
+	</screenshot> 
+      </figure>
+    <!-- ==== End of Figure ==== -->
+
+<para>Убедитесь, что фотоаппарат включен и подсоединен к компьютеру. Затем нажмите кнопку <!--FIXME Markup --> Автоопределение. Модель фотоаппарата должна определиться автоматически.</para>
+
+<note>
+  <para>Некоторые фотоаппараты могут быть обнаружены программой &app; только, если они находятся в режиме воспроизведения снимков.</para>
+</note>
+
+<para>Модель также можно выбрать самостоятельно. Щелкните выпадающее меню <guilabel>Модель:</guilabel> и листайте его вниз, чтобы найти свою модель. Выпадающий список <guilabel>Порт:</guilabel> показывает возможные порты для подключения выбранного фотоаппарата.</para>
+
+<note>
+  <para>Работа &app; возможна только при наличии доступа на чтение к тому порту, к которому подключен фотоаппарат. Кроме того, для работы некоторых функций необходим доступ к порту на запись.</para>
+</note>
+
+<para>Дополнительные параметры доступны по нажатию кнопки Подробнее.</para>
+
+<itemizedlist>
+  <listitem>
+    <para>
+      <guilabel>Не блокировать устройство</guilabel> &mdash; позволяет другим программам обращаться к фотоаппарату во время работы &app;.
+    </para>
+  </listitem>
+  <listitem>
+    <para>
+      <guilabel>Добавить</guilabel> &mdash; позволяет указать путь к устройству, к которому подключен фотоаппарат.
+    </para>
+  </listitem>
+ <listitem>
+    <para>
+      <guilabel>Скорость</guilabel> &mdash; позволяет задать скорость передачи данных при копировании снимков из фотоаппарата. Этот параметр доступен только при подключении через последовательный порт.
+    </para>
+  </listitem>
+</itemizedlist>
+
+        <para>Настроив все параметры нажмите кнопку <!--FIXME Markup-->OK, чтобы закрыть диалог и вернуться к главному окну. Можно нажать кнопку <!--FIXME Markup-->Применить, чтобы добавить фотоаппарат и остаться в диалоге для дальнешей настройки.</para>
+	<para>Добавленный фотоаппарат останется в списке при следующем запуске &app;.
+</para>
+</sect2>
+
+
+
+    <!-- ================ Usage Subsection ================================ -->
+    <sect2 id="gtkam-zoom-view-image"> 
+      <title>Просмотр фотографий</title>
+<para>После того, как щелчком левой кнопки мыши будет выбран один из каталогов в панели дерева фотоаппарата, справа появится список файлов в каталоге. Для файлов фотоснимков и видеозаписей &app; показывает миниатюрные изображения кадров. Размеры миниатюр можно увеличить или уменьшить с помощью кнопок выбора масштаба.</para>
+
+<itemizedlist>
+  <listitem>
+    <para>
+      <guilabel>Показывать миниатюры</guilabel> &mdash; включает и отключает показ миниатюр при просмотре фотографий.
+    </para>
+  </listitem>
+  <listitem>
+    <para>
+      <guilabel>Увеличить</guilabel> &mdash; делает миниатюры крупнее.
+    </para>
+  </listitem>
+  <listitem>
+    <para>
+      <guilabel>В обычном размере</guilabel> &mdash; возвращает миниатюры к стандартному размеру.
+    </para>
+  </listitem>
+  <listitem>
+    <para>
+      <guilabel>Уменьшить</guilabel> &mdash; делает миниатюры мельче.
+    </para>
+  </listitem>
+</itemizedlist>
+<para>Если в системе установлены другие программы для просмотра изображений, их можно вызывать из &app; для показа снимков.</para>
+<!-- TODO Right-click on RHS, gtkam_fileinfo.png -->
+<!-- FIXME Recommendations for other viewers - eog, gthumb, totem-->
+    </sect2>
+
+    <!-- ================ Usage Subsection ================================ -->
+    <sect2 id="gtkam-save-images"> 
+      <title>Копирование фотографий</title> 
+<para>Сделанные снимки можно скопировать на ваш компьютер. Для этого выберите в меню
+	<menuchoice> 
+	  <guimenu>Файл</guimenu> 
+	  <guimenuitem>Копировать снимки</guimenuitem><guimenuitem>Выбранные</guimenuitem> 
+	</menuchoice> чтобы скопировать выделенные файлы, или
+	<menuchoice> 
+	  <guimenu>Файл</guimenu> 
+	  <guimenuitem>Копировать снимки</guimenuitem><guimenuitem>Все</guimenuitem> 
+	</menuchoice> чтобы скопировать все файлы в выделенном каталоге.
+	<!--FIXME Also, right-click -->
+</para>
+    <!-- ==== Figure ==== -->
+      <figure id="save-fig"> 
+	<title>окно копирования файлов &app;</title> 
+	<screenshot> 
+	  <mediaobject> 
+	    <imageobject><imagedata
+		fileref="figures/gtkam_save.png" format="PNG"/> 
+	    </imageobject>
+	    <textobject> 
+	      <phrase>Окно копирования файлов &app; позволяет сохранить фотографии на вашем компьютере.</phrase> 
+	    </textobject> 
+	  </mediaobject> 
+	</screenshot> 
+      </figure>
+    <!-- ==== End of Figure ==== -->
+
+<para>
+С помощью галочек можно указать, что нужно копировать. По умолчанию копируются только фотографии. Дополнительные типы данных можно выбрать, поставив соответствующие галочки. 
+</para>
+<para>Если вы хотите использовать собственные имена файлов вместо заданных фотоаппаратом, необходимо снять галочку <guilabel>Использовать присвоенные фотоаппаратом имена файлов</guilabel>. После этого можно будет ввести собственный <guilabel>префикс имен файлов</guilabel>. Например, если в качестве префикса ввести 'фото', то снимки будут сохранены как 'фото0001.jpg', 'фото0002.jpg' и так далее. Если нужно начать нумерацию с другой цифры, введите другое число в поле <guilabel>Начало нумерации</guilabel>.</para>
+<para>Если в целевом каталоге уже есть файлы с тем же префиксом, то автоматически выбирается следующее за наибольшим имеющимся номером число.</para>
+<para>
+В случае копирования всех снимков, в диалоге выбора файла доступны дополнительные параметры:
+</para>
+
+    <!-- ==== Figure ==== -->
+      <figure id="saveall-fig"> 
+	<title>Окно копирования всех файлов &app;</title> 
+	<screenshot> 
+	  <mediaobject> 
+	    <imageobject><imagedata
+		fileref="figures/gtkam_save_all.png" format="PNG"/> 
+	    </imageobject>
+	    <textobject> 
+	      <phrase>Окно копирования всех файлов &app; позволяет сохранить все фотографии на вашем компьютере.</phrase> 
+	    </textobject> 
+	  </mediaobject> 
+	</screenshot> 
+      </figure>
+    <!-- ==== End of Figure ==== -->
+    </sect2>
+
+    <sect2 id="gtkam-delete-images"> 
+      <title>Удаление фотографий</title> 
+<para>Чтобы удалить отдельный снимок, выделите удаляемый файл и выберите в меню
+<menuchoice>
+<guimenu>Файл</guimenu>
+<guimenuitem>Удалить снимки</guimenuitem><guimenuitem>Выбранные</guimenuitem>
+</menuchoice>. Чтобы удалить все файлы в каталоге, выберите в меню <menuchoice><guimenu>Файл</guimenu><guimenuitem>Удалить снимки</guimenuitem><guimenuitem>Все</guimenuitem></menuchoice>. Появится запрос подтверждения на удаление файлов. <!--TODO - SHOW WINDOW--> Если вы не хотите удалять файл, снимите галочку рядом с именем файла.</para>
+<!--FIXME Right-click -->
+
+      <warning>
+        <para>Удаленный из памяти фотоаппарата файл нельзя восстановить. Убедитесь, пожалуйста, в том, что действительно хотите удалить файлы, прежде чем нажать кнопку <guibutton>OK</guibutton>.</para>
+      </warning>
+    </sect2>
+
+    <sect2 id="gtkam-camera-operations"> 
+      <title>Функции фотоаппарата</title> 
+<para>Множество действий с фотоаппаратом доступны по двойному щелчку на его названии в панели дерева фотоаппарата. Появится контекстное меню, включающее следующие пункты:</para>
+<itemizedlist>
+  <listitem>
+    <para>
+      <guilabel>Создать каталог</guilabel> &mdash; эта команда запрашивает имя для нового каталога, который будет создан в текущем каталоге фотоаппарата.
+<!-- ==== Figure ==== -->
+      <figure id="makedir-fig"> 
+	<title>Диалог создания каталога &app;</title> 
+	<screenshot> 
+	  <mediaobject> 
+	    <imageobject><imagedata
+		fileref="figures/gtkam_makedir.png" format="PNG"/> 
+	    </imageobject>
+	    <textobject> 
+	      <phrase>Диалог создания каталога &app; появляется в процессе создания нового каталога в памяти фотоаппарата. </phrase> 
+	    </textobject> 
+	  </mediaobject> 
+	</screenshot> 
+      </figure>
+    <!-- ==== End of Figure ==== -->
+    </para>
+  </listitem>
+  <listitem>
+    <para>
+      <guilabel>Удалить каталог</guilabel> &mdash; удаляет каталог, выбранный в дереве фотоаппарата.
+    </para>
+  </listitem>
+  <listitem>
+    <para>
+      <guilabel>Сделать снимок</guilabel> &mdash; открывает окно, позволяющее сделать немедленно снимок. <!--FIXME If previewing is supported by camera, photo taken, else window -->
+    </para>
+  </listitem>
+  <listitem>
+    <para>
+      <guilabel>Настройки фотоаппарата</guilabel> &mdash; открывает окно с информацией о настройках фотоаппарата и используемого драйвера.
+    </para>
+  </listitem>
+  <listitem>
+    <para>
+      <guilabel>Сведения о фотоаппарате</guilabel> &mdash; открывает окно с информацией о фотоаппарате.
+    </para>
+  </listitem>
+  <listitem>
+    <para>
+      <guilabel>Справка фотоаппарата</guilabel>
+    </para>
+  </listitem>
+  <listitem>
+    <para>
+      <guilabel>Сведения о драйвере</guilabel> &mdash; выводит информацию о драйвере фотоаппарата и его авторах.
+    </para>
+  </listitem>
+  <listitem>
+    <para>
+      <guilabel>Выбрать модель</guilabel> &mdash; открывает <!--FIXME--> окно, позволяющее сменить модель и настройки фотоаппарата.
+    </para>
+  </listitem>
+  <listitem>
+    <para>
+      <guilabel>Удалить фотоаппарат</guilabel> &mdash; удаляет фотоаппарат из списка. При следующем запуске &app; этот фотоаппарат не будет отображаться в левой панели.
+    </para>
+  </listitem>
+</itemizedlist>
+    </sect2>
+
+  </sect1>
+
+<!-- ============= Bugs ================================== -->
+  <sect1 id="mayapp-bugs">
+  <title>Известные проблемы</title>
+  <para>&app; стремится обеспечить поддержку всех существующих фотоаппаратов. К сожалению, не все производители предоставляют детальную информацию о том, как работают их изделия. Поэтому некоторые функции вашего фотоаппарата могут быть недоступны.</para>
+  <para>На страницах gPhoto ведется <ulink url="http://www.gphoto.org/bugs/" type="http">список известных проблем</ulink>. Если вы обнаружите ошибку, сообщите нам об этом.</para>
+
+ </sect1>
+<!-- ============= About ================================== -->
+<!-- This section contains info about the program (not docs), such as
+      author's name(s), web page, license, feedback address. This
+      section is optional: primary place for this info is "About.." box of
+      the program. However, if you do wish to include this info in the
+      manual, this is the place to put it. Alternatively, you can put this information in the title page.-->
+  <sect1 id="myapp-about"> 
+    <title>О программе &app;</title> 
+    <para> &app; написана группой gPhoto. Чтобы больше узнать о
+      &app; посетите, пожалуйста, 
+      <ulink url="http://www.gphoto.org" type="http">веб-страницу gPhoto
+	</ulink>. </para>
+    <para>
+      Чтобы сообщить об ошибке или внести предложение, касающееся программы или 
+      руководства пользователя, следуйте указаниям в следующем 
+      <ulink url="ghelp:gnome-feedback" type="help">документе</ulink>.
+    </para>
+
+    <para> Эта программа распространяется на условиях лицензии GNU
+      General Public license версии 2 или (по вашему выбору)
+      любой последующей, опубликованной Фондом Свободного Программного Обеспечения (Free Software
+      Foundation). Текст лицензии доступен по следующему
+      <ulink url="ghelp:gpl" type="help">адресу</ulink>, или в файле 
+      COPYING, прилагаемому к исходному коду программы. </para>
+
+  </sect1> 
+</article>

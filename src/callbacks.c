@@ -25,16 +25,53 @@ void debug_print (char *message) {
 		printf("%s\n", message);
 }
 
-gboolean toggle_icon (GtkWidget *widget, gpointer data) {
+gboolean get_thumbnail (GtkWidget *widget, CameraListEntry *entry, GtkIconListItem *item)
+{
+	CameraFile *f;
+	char *folder;
+	GdkPixmap *pixmap;
+	GdkBitmap *bitmap;
+
+	/* Get the thumbnail */
+	f = gp_file_new();
+	folder = current_folder();
+	if (gp_camera_file_get_preview(gp_gtk_camera, f, 
+								   folder, entry->name) == GP_OK) {
+		gdk_image_new_from_data(f->data,f->size,1,&pixmap,&bitmap);
+		gtk_pixmap_set(GTK_PIXMAP(item->pixmap), pixmap, bitmap);
+	}
+	gp_file_free(f);
+
+	return TRUE;
+}
+
+gboolean toggle_icon (GtkWidget *widget, GdkEventButton *event, gpointer data) {
 
 	GtkWidget *icon_list = (GtkWidget*) lookup_widget(gp_gtk_main_window, "icons");
 	GtkIconListItem *item;
 	GList *child = GTK_ICON_LIST(icon_list)->icons;
+	CameraList list;
+	CameraListEntry *entry;
+	int x,count=0;
 
 	while (child) {
 		item = (GtkIconListItem*)child->data;
 		if ((item->eventbox == widget)||(item->entry == widget)) {
-
+			/* A double-click on an index icon retrieve the thumbnail */
+			if(event->type == GDK_2BUTTON_PRESS) {
+				if (gp_camera_file_list(gp_gtk_camera, &list, current_folder())==GP_ERROR) {
+					gp_camera_message(NULL, _("Could not retrieve the picture list."));
+					return TRUE;
+				}
+				count = gp_list_count(&list);
+				for (x=0;x<count;x++) {
+					entry = gp_list_entry(&list,x);
+					if(strcmp(entry->name,item->label)==0) {
+						get_thumbnail(widget, entry, item);
+						item->state = GTK_STATE_SELECTED;
+					}
+				}
+			}
 		   if (item->state == GTK_STATE_SELECTED)
 			gtk_icon_list_unselect_icon(GTK_ICON_LIST(icon_list), item);
 		     else

@@ -180,7 +180,7 @@ gtkam_info_update (GtkamInfo *info)
 	g_return_val_if_fail (GTKAM_IS_INFO (info), FALSE);
 
 	s = gtkam_status_new (_("Setting information for file '%s' in "
-			"'%s'..."), info->priv->info, info->priv->folder);
+			"'%s'..."), info->priv->name, info->priv->folder);
 	gtk_widget_show (s);
 	result = gp_camera_file_set_info (info->priv->camera->camera,
 		info->priv->folder, info->priv->name, info->priv->info_new,

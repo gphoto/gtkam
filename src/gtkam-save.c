@@ -140,14 +140,14 @@ gtkam_save_get_type (void)
 	if (!type) {
 		GTypeInfo ti;
 
-        	memset (&ti, 0, sizeof (GTypeInfo));
-	        ti.class_size     = sizeof (GtkamSaveClass);
-	        ti.class_init     = gtkam_save_class_init;
-	        ti.instance_size  = sizeof (GtkamSave);
-	        ti.instance_init  = gtkam_save_init;
+		memset (&ti, 0, sizeof (GTypeInfo));
+		ti.class_size     = sizeof (GtkamSaveClass);
+		ti.class_init     = gtkam_save_class_init;
+		ti.instance_size  = sizeof (GtkamSave);
+		ti.instance_init  = gtkam_save_init;
 
-        	type = g_type_register_static (PARENT_TYPE, "GtkamSave",
-					       &ti, 0);
+		type = g_type_register_static (PARENT_TYPE, "GtkamSave",
+				&ti, 0);
 	}
 
 	return (type);
@@ -162,28 +162,29 @@ on_cancel_clicked (GtkButton *button, GtkamSave *save)
 static int
 default_numbering_start(const GtkamSave *save)
 {
-
 	GDir *dir;
 	const gchar *file;
 	gchar *tail,*prefix;
-	int max=1;
-	int plen,current;
-/* ADB Temporarily commented out
-	if (!(dir=g_dir_open(gtk_file_selection_get_filename(
-		GTK_FILE_SELECTION(save)),0,NULL))) return 1;
-	prefix=g_strdup(gtk_entry_get_text(GTK_ENTRY(save->priv->prefix_entry)));
-	plen=strlen(prefix);
-	while ((file=g_dir_read_name(dir))) {
-		* compare prefix *
-		if (strncmp(prefix,file,plen)) continue;
-		* check number *
-		current=strtol(file+plen,&tail,10);
-		if (tail - (file+plen) != 4) continue;
-		* FIXME: check for regular file here *
-		if (max <= current) max = current+1;
+	int max = 1;
+	int plen, current;
+
+	if (!(dir = g_dir_open (gtk_file_chooser_get_filename (
+		GTK_FILE_CHOOSER (save)) , 0, NULL))) return 1;
+	prefix = g_strdup (gtk_entry_get_text
+					(GTK_ENTRY (save->priv->prefix_entry)));
+	plen = strlen (prefix);
+	while ((file = g_dir_read_name (dir))) {
+		/* compare prefix */
+		if (strncmp (prefix, file, plen)) continue;
+		/* check number */
+		current = strtol (file+plen, &tail, 10);
+		if (tail - (file + plen) != 4) continue;
+		/* FIXME: check for regular file here */
+		if (max <= current) max = current + 1;
 	}
-	g_free(prefix);
-	g_dir_close(dir);*/
+	
+	g_free (prefix);
+	g_dir_close (dir);
 	return max;
 }
 
@@ -203,7 +204,7 @@ on_filename_camera_toggled (GtkToggleButton *toggle, GtkamSave *save)
 		/* Calculate default start number */
 		gtk_spin_button_set_value (
 			GTK_SPIN_BUTTON (save->priv->spin_entry),
-			default_numbering_start(save));
+			default_numbering_start (save));
 	}
 }
 
@@ -263,46 +264,36 @@ save_file (GtkamSave *save, CameraFile *file, guint n)
 
 	fsel_path = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER_DIALOG (save));
 
-	if (save->priv->toggle_filename_camera->active) {
+	if ((save->priv->toggle_filename_camera->active) ||
+		(g_slist_length (save->priv->data) == 1)) {
 
 		/* Use filename provided by the CameraFile */
 		full_filename = create_full_filename (filename, type);
-		full_path = concat_dir_and_file (fsel_path, full_filename);
+
+		if (g_slist_length (save->priv->data) == 1)
+			full_path = g_strdup(fsel_path);
+		else
+			full_path = concat_dir_and_file (fsel_path, full_filename);
+
 		g_free (full_filename);
 
 	} else {
-		if (g_slist_length (save->priv->data) == 1) {
-
-			/* Use filename provided by the GtkFileChooser */
-			fsel_filename = g_path_get_basename (fsel_path);
-
-			full_filename = create_full_filename (fsel_filename,
-							      type);
-			dirname = g_path_get_dirname (fsel_path);
-			full_path = concat_dir_and_file (dirname,
-							 full_filename);
-			g_free (dirname);
-			g_free (full_filename);
-		
-		} else {
-
-			/* Use filename in prefix */
-			prefix = g_locale_from_utf8 (gtk_entry_get_text
+		/* Use filename in prefix */
+		prefix = g_locale_from_utf8 (gtk_entry_get_text
 					(GTK_ENTRY (save->priv->prefix_entry)), -1,
 					NULL, NULL, NULL);
-			if (!g_strcasecmp (prefix, "")) prefix = _("photo");
 
-			suffix = strrchr (mime_type, '/');
-			suffix++;
-			number_filename = g_strdup_printf ("%s%04i.%s", prefix,
-							   n, suffix);
-			full_filename = create_full_filename (number_filename,
-							      type);
-			g_free (number_filename);
-			full_path = concat_dir_and_file (fsel_path,
-							 full_filename);
-			g_free (full_filename);
-		}
+		suffix = strrchr (mime_type, '/');
+		suffix++;
+		number_filename = g_strdup_printf ("%s%04i.%s", prefix,
+								n, suffix);
+		full_filename = create_full_filename (number_filename,
+								type);
+		g_free (number_filename);
+		
+		full_path = concat_dir_and_file (fsel_path,
+							full_filename);
+		g_free (full_filename);
 	}
 
 	/* FIXME Check which is user, and prompt the user */
@@ -324,6 +315,7 @@ save_file (GtkamSave *save, CameraFile *file, guint n)
 	/* FIXME Check for sufficient disk space for this file, or
 	   calculate total disk space required for all files before
 	   save process starts */
+
 	result = gp_file_save (file, full_path);
 	if (result < 0) {
 		if (!save->priv->err_shown) {
@@ -403,10 +395,10 @@ store_save_settings(GtkamSave *save)
 	}
 	
 	/* toggle buttons */
-#define STORE_TOGGLE (NAME) \
-	snprintf (buf, sizeof (buf), "%d", gtk_toggle_button_get_active (	\
+#define STORE_TOGGLE(NAME) \
+	snprintf(buf,sizeof(buf), "%d", gtk_toggle_button_get_active(	\
 		save->priv->toggle_ ## NAME)); 				\
-	gp_setting_set ("gtkam","save-" #NAME,buf)
+	gp_setting_set("gtkam","save-" #NAME,buf)
 	
 	STORE_TOGGLE(preview);
 	STORE_TOGGLE(normal);
@@ -456,6 +448,33 @@ load_save_settings(GtkamSave *save)
 	g_free(dir);
 }
 
+static int
+count_items (GtkamSave *save)
+{
+	int items_to_save = 0;
+	
+	if (save->priv->toggle_normal &&
+		    save->priv->toggle_normal->active)
+		items_to_save++;
+
+	if (save->priv->toggle_preview &&
+	    save->priv->toggle_preview->active)
+		items_to_save++;
+
+	if (save->priv->toggle_raw &&
+	    save->priv->toggle_raw->active)
+		items_to_save++;
+
+	if (save->priv->toggle_audio &&
+	    save->priv->toggle_audio->active)
+		items_to_save++;
+
+	if (save->priv->toggle_exif &&
+	    save->priv->toggle_exif->active)
+		items_to_save++;
+
+	return items_to_save;
+}
 
 static void
 on_ok_clicked (GtkButton *button, GtkamSave *save)
@@ -468,6 +487,17 @@ on_ok_clicked (GtkButton *button, GtkamSave *save)
 	gchar *progname, *command;
 	GError *error;
 
+	if (count_items (save) == 0) {
+		if (!save->priv->err_shown) {
+			
+			dialog = gtkam_error_new (result, NULL,
+					GTK_WIDGET (save), _("There is nothing to be saved."));
+			gtk_widget_show (dialog);
+		}
+
+		return;
+	}
+			
 	store_save_settings(save);
 	gtk_widget_hide (GTK_WIDGET (save));
 

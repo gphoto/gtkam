@@ -41,6 +41,7 @@
 #endif
 
 #include <stdio.h>
+#include <string.h>
 
 #include <gtk/gtkmain.h>
 #include <gtk/gtksignal.h>

@@ -317,6 +317,10 @@ create_widgets (GtkamConfig *config, CameraWidget *widget)
 		if (type == GP_WIDGET_SECTION)
 			create_page (config, widget);
 
+		/* If window, set the window's label */
+		if (type == GP_WIDGET_WINDOW)
+			gtk_window_set_title (GTK_WINDOW (config), label);
+
 		/* Create sub-widgets */
 		for (i = 0; i < gp_widget_count_children (widget); i++) {
 			gp_widget_get_child (widget, i, &child);

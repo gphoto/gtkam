@@ -275,6 +275,7 @@ gtkam_cancel_new (GtkWidget *opt_window, const gchar *format, ...)
 	msg = g_strdup_vprintf (format, args);
 	va_end (args);
 	label = gtk_label_new (msg);
+	gtk_widget_show (label);
 	g_free (msg);
 	gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
 

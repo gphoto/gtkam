@@ -268,8 +268,8 @@ gtkam_fsel_new (Camera *camera, gboolean multi, GtkWidget *opt_window)
 
 	fsel->priv->status = gtk_vbox_new (FALSE, 0);
 	gtk_widget_show (fsel->priv->status);
-	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (fsel)->vbox),
-			    fsel->priv->status, FALSE, FALSE, 0);
+	gtk_box_pack_end (GTK_BOX (GTK_DIALOG (fsel)->vbox),
+			  fsel->priv->status, FALSE, FALSE, 0);
 
 	hbox = gtk_hbox_new (FALSE, 5);
 	gtk_widget_show (hbox);

@@ -214,6 +214,7 @@ get_file (Camera *camera, CameraFilePath path, gint nparams, GimpParam *param,
 	gp_file_new (&file);
 	c = gtkam_cancel_new (NULL, _("Downloading '%s' from '%s'..."),
 			      path.name, path.folder);
+	gtk_widget_show (c);
         result = gp_camera_file_get (camera, path.folder, path.name,
 		GP_FILE_TYPE_NORMAL, file, GTKAM_CANCEL (c)->context->context);
 	gp_camera_exit (camera, NULL);
@@ -225,6 +226,7 @@ get_file (Camera *camera, CameraFilePath path, gint nparams, GimpParam *param,
 		*return_vals = values;
 		values[0].type = GIMP_PDB_STATUS;
 		values[0].data.d_status = GIMP_PDB_CANCEL;
+		gtk_object_destroy (GTK_OBJECT (c));
 		return -1;
 	default:
                 gp_file_unref (file);
@@ -243,8 +245,10 @@ get_file (Camera *camera, CameraFilePath path, gint nparams, GimpParam *param,
 		*return_vals = values;
 		values[0].type = GIMP_PDB_STATUS;
 		values[0].data.d_status = GIMP_PDB_EXECUTION_ERROR;
+		gtk_object_destroy (GTK_OBJECT (c));
                 return -1;
         }
+	gtk_object_destroy (GTK_OBJECT (c));
 
 	gp_file_get_data_and_size (file, &data, &size);
         loader = gdk_pixbuf_loader_new ();

@@ -1,5 +1,9 @@
 2002-06-26  Lutz Müller <lutz@users.sourceforge.net>
 
+	* autogen.sh: Removed. Will check in a simplified version later.
+
+2002-06-26  Lutz Müller <lutz@users.sourceforge.net>
+
 	Patches by Arnaud Launay <asl@launay.org>:
 
 	* configure.in

@@ -429,7 +429,7 @@ on_folder_unselected (GtkamTree *tree, GtkamTreeFolderUnselectedData *data,
 }
 
 static void
-on_tree_file_uploaded (GtkamTree *tree, GtkamTreeFileUploadedData *data,
+on_tree_file_added (GtkamTree *tree, GtkamTreeFileAddedData *data,
 		       GtkamMain *m)
 {
 	if (gtkam_list_has_folder (GTKAM_LIST (m->priv->list), data->camera,
@@ -446,6 +446,13 @@ on_tree_new_error (GtkamTree *tree, GtkamTreeErrorData *e, GtkamMain *m)
 	d = gtkam_error_new (e->result, e->context, NULL, "%s", e->msg);
 	gtk_window_set_transient_for (GTK_WINDOW (d), GTK_WINDOW (m));
 	gtk_widget_show (d);
+}
+
+static void
+on_tree_new_dialog (GtkamTree *tree, GtkWidget *dialog, GtkamMain *m)
+{
+	gtk_window_set_transient_for (GTK_WINDOW (dialog), GTK_WINDOW (m));
+	gtk_widget_show (dialog);
 }
 
 #if 0
@@ -503,14 +510,12 @@ gtkam_main_add_status (GtkamMain *m, GtkWidget *status)
 {
 	g_return_if_fail (GTKAM_IS_MAIN (m));
 
-	gtk_widget_show (status);
 	gtk_box_pack_start (GTK_BOX (m->priv->status), status, FALSE, FALSE, 0);
-	while (gtk_events_pending ())
-		gtk_main_iteration ();
+	gtk_widget_show_now (status);
 }
 
 static void
-on_new_status (GtkamTree *tree, GtkWidget *status, GtkamMain *m)
+on_new_status (GObject *object, GtkWidget *status, GtkamMain *m)
 {
 	gtkam_main_add_status (m, status);
 }
@@ -800,8 +805,10 @@ gtkam_main_new (void)
 			  G_CALLBACK (on_new_status), m);
 	g_signal_connect (G_OBJECT (m->priv->tree), "new_error",
 			  G_CALLBACK (on_tree_new_error), m);
-	g_signal_connect (G_OBJECT (m->priv->tree), "file_uploaded",
-			  G_CALLBACK (on_tree_file_uploaded), m);
+	g_signal_connect (G_OBJECT (m->priv->tree), "file_added",
+			  G_CALLBACK (on_tree_file_added), m);
+	g_signal_connect (G_OBJECT (m->priv->tree), "new_dialog",
+			  G_CALLBACK (on_tree_new_dialog), m);
 
 	/*
 	 * Right
@@ -820,6 +827,8 @@ gtkam_main_new (void)
 			  G_CALLBACK (on_file_selected), m);
 	g_signal_connect (G_OBJECT (m->priv->list), "file_unselected",
 			  G_CALLBACK (on_file_unselected), m);
+	g_signal_connect (G_OBJECT (m->priv->list), "new_status",
+			  G_CALLBACK (on_new_status), m);
 
 	return (GTK_WIDGET (m));
 }

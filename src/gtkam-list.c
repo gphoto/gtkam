@@ -54,8 +54,6 @@
 #include <gtk/gtkcellrenderertext.h>
 #include <gtk/gtkcellrendererpixbuf.h>
 
-#include <gdk-pixbuf/gdk-pixbuf-loader.h>
-
 #include <gphoto2/gphoto2-list.h>
 #include <gphoto2/gphoto2-port-log.h>
 
@@ -297,7 +295,6 @@ get_thumbnail_idle (gpointer data)
 
 	s = gtkam_status_new (_("Downloading thumbnail of '%s' from "
 		"folder '%s'..."), d->name, d->folder);
-	gtk_widget_show (s);
 	g_signal_emit (G_OBJECT (d->list), signals[NEW_STATUS], 0, s);
 	gp_file_new (&file);
 	result = gp_camera_file_get (d->camera, d->folder, d->name,
@@ -319,7 +316,7 @@ get_thumbnail_idle (gpointer data)
 	gtk_tree_iter_free (d->iter);
 	g_free (d);
 
-	return (TRUE);
+	return (FALSE);
 }
 
 static gboolean
@@ -332,6 +329,7 @@ show_thumbnails_foreach_func (GtkTreeModel *model, GtkTreePath *path,
         gchar *folder, *name;
         CameraAbilities a;
 	GetThumbnailData *d;
+	CameraFileInfo info;
 
         camera = gtkam_list_get_camera_from_iter (list, iter);
         multi = gtkam_list_get_multi_from_iter (list, iter);
@@ -339,7 +337,9 @@ show_thumbnails_foreach_func (GtkTreeModel *model, GtkTreePath *path,
         name = gtkam_list_get_name_from_iter (list, iter);
 
         gp_camera_get_abilities (camera, &a);
-	if (a.file_operations & GP_FILE_OPERATION_PREVIEW) {
+	gp_camera_file_get_info (camera, folder, name, &info, NULL);
+	if ((a.file_operations & GP_FILE_OPERATION_PREVIEW) &&
+	    info.preview.fields) {
 		d = g_new0 (GetThumbnailData, 1);
 		d->camera = camera;
 		gp_camera_ref (camera);
@@ -352,6 +352,8 @@ show_thumbnails_foreach_func (GtkTreeModel *model, GtkTreePath *path,
 	}
 	g_free (folder);
 	g_free (name);
+	if (multi)
+		gp_camera_exit (camera, NULL);
 
         return (FALSE);
 }
@@ -785,89 +787,6 @@ gtkam_list_add_folder (GtkamList *list, Camera *camera, gboolean multi,
 		gtkam_list_show_thumbnails (list);
 
 #if 0
-	gp_camera_get_abilities (camera, &a);
-	for (i = 0; i < gp_list_count (&flist); i++) {
-		gp_list_get_name (&flist, i, &name);
-
-		/*
-		 * First step: Show the plain icon
-		 */
-		pixbuf = gdk_pixbuf_new_from_xpm_data (
-					(const char**) no_thumbnail_xpm);
-		gdk_pixbuf_render_pixmap_and_mask (pixbuf, &pixmap, &bitmap,
-						   127);
-		gtk_icon_list_freeze (GTK_ICON_LIST (list));
-		item = gtk_icon_list_add_from_pixmap (GTK_ICON_LIST (list),
-						pixmap, bitmap, name, NULL);
-		gtk_icon_list_thaw (GTK_ICON_LIST (list));
-
-		/* Remember some data */
-		gtk_object_set_data_full (GTK_OBJECT (item->entry), "camera",
-					  camera,
-					  (GtkDestroyNotify) gp_camera_unref);
-		gp_camera_ref (camera);
-		gtk_object_set_data_full (GTK_OBJECT (item->entry), "folder",
-					  g_strdup (folder),
-					  (GtkDestroyNotify) g_free);
-		gtk_object_set_data (GTK_OBJECT (item->entry), "multi",
-				     GINT_TO_POINTER (multi));
-
-		/*
-		 * Second step: Get information about the image.
-		 */
-		result = gp_camera_file_get_info (camera, folder,
-						  name, &info, NULL);
-		if (result != GP_OK) {
-			gp_log (GP_LOG_DEBUG, PACKAGE, "Could not get "
-				"information on '%s' in '%s': %s",
-				folder, name, gp_result_as_string (result));
-			continue;
-		}
-
-		/*
-		 * Third step: Show the preview if there is one and
-		 * 	       if it has been requested.
-		 */
-		if (list->priv->thumbnails &&
-		    (a.file_operations & GP_FILE_OPERATION_PREVIEW) &&
-		    info.preview.fields) {
-			gp_file_new (&file);
-			s = gtkam_status_new (_("Getting preview of file '%s' "
-				"in folder '%s'..."), name, folder);
-			gtk_widget_show (s);
-			gtk_box_pack_start (GTK_BOX (list->priv->status), s,
-				FALSE, FALSE, 0);
-			result = gp_camera_file_get (camera, folder,
-				name, GP_FILE_TYPE_PREVIEW, file,
-				GTKAM_STATUS (s)->context->context);
-			switch (result) {
-			case GP_OK:
-				tmp = gdk_pixbuf_new_from_camera_file (file,
-						ICON_WIDTH, win);
-				if (tmp) {
-					gdk_pixbuf_unref (pixbuf);
-					pixbuf = tmp;
-					gdk_pixbuf_render_pixmap_and_mask (
-						pixbuf, &pixmap, &bitmap, 127);
-					gtk_pixmap_set (
-						GTK_PIXMAP (item->pixmap),
-						pixmap, bitmap);
-				}
-				break;
-			case GP_ERROR_NOT_SUPPORTED:
-			case GP_ERROR_CANCEL:
-				break;
-			default:
-				dialog = gtkam_error_new (result,
-					GTKAM_STATUS (s)->context, win,
-					_("Could not get preview of file '%s' "
-					"in folder '%s'."), name, folder);
-				gtk_widget_show (dialog);
-			}
-			gtk_object_destroy (GTK_OBJECT (s));
-			gp_file_unref (file);
-		}
-
 		/*
 		 * Third step: Show additional information
 		 */
@@ -914,13 +833,6 @@ gtkam_list_add_folder (GtkamList *list, Camera *camera, gboolean multi,
 					&pixmap, &bitmap, 127);
 		gtk_pixmap_set (GTK_PIXMAP (item->pixmap), pixmap, bitmap);
 	}
-
-	if (!GTKAM_IS_LIST (list))
-		return;
-	
-	if (multi)
-		gp_camera_exit (camera, NULL);
-	gtk_signal_emit (GTK_OBJECT (list), signals[CHANGED]);
 #endif
 }
 

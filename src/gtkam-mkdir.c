@@ -115,7 +115,7 @@ gtkam_mkdir_class_init (gpointer g_class, gpointer class_data)
 	gobject_class->finalize = gtkam_mkdir_finalize;
 
 	signals[DIR_CREATED] = g_signal_new ("dir_created",
-		G_TYPE_FROM_CLASS (g_class), G_SIGNAL_RUN_LAST, 
+		G_TYPE_FROM_CLASS (g_class), G_SIGNAL_RUN_FIRST, 
 		G_STRUCT_OFFSET (GtkamMkdirClass, dir_created), NULL, NULL,
 		g_cclosure_marshal_VOID__POINTER, G_TYPE_NONE, 1,
 		G_TYPE_POINTER);
@@ -134,15 +134,22 @@ gtkam_mkdir_init (GTypeInstance *instance, gpointer g_class)
 GType
 gtkam_mkdir_get_type (void)
 {
-	GTypeInfo tinfo;
+	static GType type = 0;
 
-	memset (&tinfo, 0, sizeof (GTypeInfo));
-	tinfo.class_size     = sizeof (GtkamMkdirClass);
-	tinfo.class_init     = gtkam_mkdir_class_init;
-	tinfo.instance_size  = sizeof (GtkamMkdir);
-	tinfo.instance_init  = gtkam_mkdir_init;
+	if (!type) {
+		GTypeInfo ti;
 
-	return (g_type_register_static (PARENT_TYPE, "GtkamMkdir", &tinfo, 0));
+		memset (&ti, 0, sizeof (GTypeInfo));
+		ti.class_size     = sizeof (GtkamMkdirClass);
+		ti.class_init     = gtkam_mkdir_class_init;
+		ti.instance_size  = sizeof (GtkamMkdir);
+		ti.instance_init  = gtkam_mkdir_init;
+
+		type = g_type_register_static (PARENT_TYPE, "GtkamMkdir",
+					       &ti, 0);
+	}
+
+	return (type);
 }
 
 static void
@@ -164,7 +171,8 @@ on_ok_clicked (GtkButton *button, GtkamMkdir *mkdir)
 	s = gtkam_status_new (_("Creating folder '%s' in "
 		"folder '%s'..."), g_basename (path), mkdir->priv->path);
 	gtk_widget_show (s);
-	gtk_box_pack_end (GTK_BOX (GTK_DIALOG (mkdir)), s, FALSE, FALSE, 0);
+	gtk_box_pack_end (GTK_BOX (GTK_DIALOG (mkdir)->vbox), s,
+			  FALSE, FALSE, 0);
 	r = gp_camera_folder_make_dir (mkdir->priv->camera, mkdir->priv->path,
 			g_basename (path), GTKAM_STATUS (s)->context->context);
 	if (mkdir->priv->multi)
@@ -189,6 +197,7 @@ on_ok_clicked (GtkButton *button, GtkamMkdir *mkdir)
 		gtk_object_destroy (GTK_OBJECT (mkdir));
 		break;
 	case GP_ERROR_CANCEL:
+		gtk_object_destroy (GTK_OBJECT (mkdir));
 		break;
 	default:
 		dialog = gtkam_error_new (r, GTKAM_STATUS (s)->context,
@@ -196,14 +205,13 @@ on_ok_clicked (GtkButton *button, GtkamMkdir *mkdir)
 			_("Could not create folder '%s' in folder '%s'."),
 			g_basename (path), mkdir->priv->path);
 		gtk_widget_show (dialog);
+		gtk_object_destroy (GTK_OBJECT (s));
 		break;
 	}
-	gtk_object_destroy (GTK_OBJECT (s));
 }
 
 GtkWidget *
-gtkam_mkdir_new (Camera *camera, gboolean multi,
-		 const gchar *path, GtkWidget *opt_window)
+gtkam_mkdir_new (Camera *camera, gboolean multi, const gchar *path)
 {
 	GtkamMkdir *mkdir;
 	GtkWidget *label, *entry, *button, *hbox, *vbox, *image;
@@ -218,9 +226,6 @@ gtkam_mkdir_new (Camera *camera, gboolean multi,
 	mkdir->priv->camera = camera;
 	gp_camera_ref (camera);
 	mkdir->priv->multi = multi;
-	if (opt_window)
-		gtk_window_set_transient_for (GTK_WINDOW (mkdir),
-					      GTK_WINDOW (opt_window));
 
 	hbox = gtk_hbox_new (FALSE, 10);
 	gtk_widget_show (hbox);

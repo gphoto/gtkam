@@ -80,7 +80,7 @@ gdk_pixbuf_new_from_camera_file (CameraFile *file, guint max_dim,
                                                   GDK_INTERP_NEAREST);
         } else
                 gdk_pixbuf_ref (pixbuf);
-        gtk_object_destroy (GTK_OBJECT (loader));
+        g_object_unref (G_OBJECT (loader));
 
         return (pixbuf);
 }

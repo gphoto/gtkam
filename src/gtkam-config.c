@@ -151,15 +151,22 @@ gtkam_config_init (GTypeInstance *instance, gpointer g_class)
 GType
 gtkam_config_get_type (void)
 {
-	GTypeInfo ti;
+	static GType type = 0;
 
-	memset (&ti, 0, sizeof (GTypeInfo)); 
-	ti.class_size     = sizeof (GtkamConfigClass);
-	ti.class_init     = gtkam_config_class_init;
-	ti.instance_size  = sizeof (GtkamConfig);
-	ti.instance_init  = gtkam_config_init;
+	if (!type) {
+		GTypeInfo ti;
 
-	return (g_type_register_static (PARENT_TYPE, "GtkamConfig", &ti, 0));
+		memset (&ti, 0, sizeof (GTypeInfo)); 
+		ti.class_size     = sizeof (GtkamConfigClass);
+		ti.class_init     = gtkam_config_class_init;
+		ti.instance_size  = sizeof (GtkamConfig);
+		ti.instance_init  = gtkam_config_init;
+
+		type = g_type_register_static (PARENT_TYPE, "GtkamConfig",
+					       &ti, 0);
+	}
+
+	return (type);
 }
 
 static void

@@ -74,9 +74,7 @@ struct _GtkamPreviewPrivate
 	gboolean multi;
 
 	guint rotate;
-	gfloat zoom;
 
-	GtkToggleButton *zoom_100, *zoom_150, *zoom_200, *zoom_250;
 	GtkToggleButton *angle_0, *angle_90, *angle_180, *angle_270;
 
 	guint32 timeout_id;
@@ -154,22 +152,27 @@ gtkam_preview_init (GTypeInstance *instance, gpointer g_class)
 	GtkamPreview *preview = GTKAM_PREVIEW (instance);
 
 	preview->priv = g_new0 (GtkamPreviewPrivate, 1);
-	preview->priv->zoom = 1.;
 }
 
 GType
 gtkam_preview_get_type (void)
 {
-	GTypeInfo tinfo;
+	static GType type = 0;
 
-	memset (&tinfo, 0, sizeof (GTypeInfo));
-	tinfo.class_size    = sizeof (GtkamPreviewClass);
-	tinfo.class_init    = gtkam_preview_class_init;
-	tinfo.instance_size = sizeof (GtkamPreview);
-	tinfo.instance_init = gtkam_preview_init;
+	if (!type) {
+		GTypeInfo ti;
 
-	return (g_type_register_static (PARENT_TYPE, "GtkamPreview",
-					&tinfo, 0));
+		memset (&ti, 0, sizeof (GTypeInfo));
+		ti.class_size    = sizeof (GtkamPreviewClass);
+		ti.class_init    = gtkam_preview_class_init;
+		ti.instance_size = sizeof (GtkamPreview);
+		ti.instance_init = gtkam_preview_init;
+
+		type = g_type_register_static (PARENT_TYPE, "GtkamPreview",
+					       &ti, 0);
+	}
+
+	return (type);
 }
 
 static gboolean
@@ -200,9 +203,10 @@ on_preview_capture_clicked (GtkButton *button, GtkamPreview *preview)
 	GtkamPreviewCapturedData data;
 
 	s = gtkam_status_new (_("Capturing image..."));
-	gtk_widget_show (s);
 	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (preview)->vbox), s,
 			    FALSE, FALSE, 0);
+	gtk_widget_show_now (s);
+	
 	result = gp_camera_capture (preview->priv->camera,
 		GP_CAPTURE_IMAGE, &path, GTKAM_STATUS (s)->context->context);
 	if (preview->priv->multi)
@@ -235,8 +239,7 @@ timeout_func (gpointer user_data)
 	const char *data = NULL;
 	long int size = 0;
 	GdkPixbufLoader *loader;
-	GdkPixbuf *pixbuf, *rotated, *scaled;
-	guint w, h;
+	GdkPixbuf *pixbuf, *rotated;
 
 	GtkamPreview *preview = GTKAM_PREVIEW (user_data);
 
@@ -279,16 +282,11 @@ timeout_func (gpointer user_data)
 		return (FALSE);
 
 	pixbuf = gdk_pixbuf_loader_get_pixbuf (loader);
+	g_object_unref (G_OBJECT (loader));
 	rotated = gdk_pixbuf_rotate (pixbuf, preview->priv->rotate);
 	g_object_unref (G_OBJECT (loader));
-	w = gdk_pixbuf_get_width (rotated);
-	h = gdk_pixbuf_get_height (rotated);
-	scaled = gdk_pixbuf_scale_simple (rotated, w * preview->priv->zoom,
-					  h * preview->priv->zoom,
-					  GDK_INTERP_HYPER);
+	gtk_image_set_from_pixbuf (GTK_IMAGE (preview->priv->image), rotated);
 	gdk_pixbuf_unref (rotated);
-	gtk_image_set_from_pixbuf (GTK_IMAGE (preview->priv->image), scaled);
-	gdk_pixbuf_unref (scaled);
 
 	return (TRUE);
 }
@@ -334,34 +332,6 @@ on_radio_270_toggled (GtkToggleButton *toggle, GtkamPreview *preview)
 }
 
 static void
-on_radio_100_toggled (GtkToggleButton *toggle, GtkamPreview *preview)
-{
-	if (toggle->active)
-		preview->priv->zoom = 1;
-}
-
-static void
-on_radio_150_toggled (GtkToggleButton *toggle, GtkamPreview *preview)
-{
-	if (toggle->active)
-		preview->priv->zoom = 1.5;
-}
-
-static void
-on_radio_200_toggled (GtkToggleButton *toggle, GtkamPreview *preview)
-{
-	if (toggle->active)
-		preview->priv->zoom = 2.;
-}
-
-static void
-on_radio_250_toggled (GtkToggleButton *toggle, GtkamPreview *preview)
-{
-	if (toggle->active)
-		preview->priv->zoom = 2.5;
-}
-
-static void
 on_configure_clicked (GtkButton *button, GtkamPreview *preview)
 {
 	GtkWidget *dialog;
@@ -369,6 +339,34 @@ on_configure_clicked (GtkButton *button, GtkamPreview *preview)
 	dialog = gtkam_config_new (preview->priv->camera,
 				   preview->priv->multi, GTK_WIDGET (preview));
 	gtk_widget_show (dialog);
+}
+
+static void
+on_size_allocate (GtkWidget *widget, GtkAllocation *allocation,
+		  GtkamPreview *preview)
+{
+	GdkPixbuf *pixbuf, *scaled;
+	gint w, h, target_w, target_h;
+
+	g_return_if_fail (GTKAM_IS_PREVIEW (preview));
+
+	pixbuf = gtk_image_get_pixbuf (GTK_IMAGE (preview->priv->image));
+	if (!pixbuf)
+		return;
+
+	w = gdk_pixbuf_get_width (pixbuf);
+	h = gdk_pixbuf_get_height (pixbuf);
+
+	target_w = MIN (allocation->width, allocation->height * w / h);
+	target_h = MIN (allocation->height, allocation->width * h / w);
+
+	if ((target_w == w) || (target_h == h))
+		return;
+
+	scaled = gdk_pixbuf_scale_simple (pixbuf, target_w, target_h,
+					  GDK_INTERP_HYPER);
+	gtk_image_set_from_pixbuf (GTK_IMAGE (preview->priv->image), scaled);
+	gdk_pixbuf_unref (scaled);
 }
 
 GtkWidget *
@@ -389,6 +387,8 @@ gtkam_preview_new (Camera *camera, gboolean multi)
 	gp_camera_ref (camera);
 	preview->priv->multi = multi;
 	preview->priv->tooltips = gtk_tooltips_new ();
+	g_object_ref (G_OBJECT (preview->priv->tooltips));
+	gtk_object_sink (GTK_OBJECT (preview->priv->tooltips));
 
 	hbox = gtk_hbox_new (FALSE, 5);
 	gtk_container_set_border_width (GTK_CONTAINER (hbox), 5);
@@ -405,6 +405,8 @@ gtkam_preview_new (Camera *camera, gboolean multi)
 	gtk_widget_show (preview->priv->image); 
 	gtk_box_pack_start (GTK_BOX (hbox), preview->priv->image,
 			    TRUE, TRUE, 0);
+	g_signal_connect (G_OBJECT (preview->priv->image), "size_allocate",
+			  G_CALLBACK (on_size_allocate), preview);
 
 	/* Rotate */
 	vbox = gtk_vbox_new (FALSE, 0);
@@ -447,48 +449,6 @@ gtkam_preview_new (Camera *camera, gboolean multi)
 	gtk_tooltips_set_tip (preview->priv->tooltips, radio, 
 			      _("Rotate thumbnail by 180 degrees"), NULL);
 
-	/* Zoom */
-	hbox = gtk_hbox_new (FALSE, 0);
-	gtk_container_set_border_width (GTK_CONTAINER (hbox), 5);
-	gtk_widget_show (hbox);
-	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (preview)->vbox), hbox,
-			    FALSE, FALSE, 0);
-	radio = gtk_radio_button_new_with_label (NULL, _("100%"));
-	gtk_widget_show (radio);
-	gtk_box_pack_start (GTK_BOX (hbox), radio, FALSE, FALSE, 0);
-	g_signal_connect (GTK_OBJECT (radio), "toggled",
-			    GTK_SIGNAL_FUNC (on_radio_100_toggled), preview);
-	preview->priv->zoom_100 = GTK_TOGGLE_BUTTON (radio);
-	gtk_tooltips_set_tip (preview->priv->tooltips, radio,
-			      _("Don't enlarge thumbnail"), NULL);
-	group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (radio));
-	radio = gtk_radio_button_new_with_label (group, _("150%"));
-	gtk_widget_show (radio);
-	gtk_box_pack_start (GTK_BOX (hbox), radio, FALSE, FALSE, 0);
-	g_signal_connect (GTK_OBJECT (radio), "toggled",
-			    GTK_SIGNAL_FUNC (on_radio_150_toggled), preview);
-	preview->priv->zoom_150 = GTK_TOGGLE_BUTTON (radio);
-	gtk_tooltips_set_tip (preview->priv->tooltips, radio,
-			      _("Enlarge thumbnail by 50%"), NULL);
-	group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (radio));
-	radio = gtk_radio_button_new_with_label (group, _("200%"));
-	gtk_widget_show (radio);
-	gtk_box_pack_start (GTK_BOX (hbox), radio, FALSE, FALSE, 0);
-	g_signal_connect (GTK_OBJECT (radio), "toggled",
-			    GTK_SIGNAL_FUNC (on_radio_200_toggled), preview);
-	preview->priv->zoom_200 = GTK_TOGGLE_BUTTON (radio);
-	gtk_tooltips_set_tip (preview->priv->tooltips, radio,
-			      _("Enlarge thumbnail by 100%"), NULL);
-	group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (radio));
-	radio = gtk_radio_button_new_with_label (group, _("250%"));
-	gtk_widget_show (radio);
-	gtk_box_pack_start (GTK_BOX (hbox), radio, FALSE, FALSE, 0);
-	g_signal_connect (GTK_OBJECT (radio), "toggled",
-			    GTK_SIGNAL_FUNC (on_radio_250_toggled), preview);
-	preview->priv->zoom_250 = GTK_TOGGLE_BUTTON (radio);
-	gtk_tooltips_set_tip (preview->priv->tooltips, radio,
-			      _("Enlarge thumbnail by 150%"), NULL);
-
 	button = gtk_button_new_with_label (_("Capture"));
 	gtk_widget_show (button);
 	g_signal_connect (GTK_OBJECT (button), "clicked",
@@ -521,38 +481,6 @@ gtkam_preview_new (Camera *camera, gboolean multi)
 						     preview);
 
 	return (GTK_WIDGET (preview));
-}
-
-void
-gtkam_preview_set_zoom (GtkamPreview *preview, gfloat zoom)
-{
-	g_return_if_fail (GTKAM_IS_PREVIEW (preview));
-
-	switch ((guint) (zoom * 100.)) {
-	case 100:
-		gtk_toggle_button_set_active (preview->priv->zoom_100, TRUE);
-		break;
-	case 150:
-		gtk_toggle_button_set_active (preview->priv->zoom_150, TRUE);
-		break;
-	case 200:
-		gtk_toggle_button_set_active (preview->priv->zoom_200, TRUE);
-		break;
-	case 250:
-		gtk_toggle_button_set_active (preview->priv->zoom_250, TRUE);
-		break;
-	default:
-		g_warning ("Zoom of %f not implemented!", zoom);
-		break;
-	}
-}
-
-gfloat
-gtkam_preview_get_zoom (GtkamPreview *preview)
-{
-	g_return_val_if_fail (GTKAM_IS_PREVIEW (preview), 0.);
-
-	return (preview->priv->zoom);
 }
 
 void

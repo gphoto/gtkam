@@ -55,8 +55,8 @@ struct _GtkamTreeFolderUnselectedData {
 	const gchar *folder;
 };
 
-typedef struct _GtkamTreeFileUploadedData GtkamTreeFileUploadedData;
-struct _GtkamTreeFileUploadedData {
+typedef struct _GtkamTreeFileAddedData GtkamTreeFileAddedData;
+struct _GtkamTreeFileAddedData {
 	Camera *camera;
 	gboolean multi;
 	const gchar *folder;
@@ -79,10 +79,10 @@ struct _GtkamTreeClass
 				    GtkamTreeFolderSelectedData *);
 	void (* folder_unselected) (GtkamTree *,
 				    GtkamTreeFolderUnselectedData *);
-	void (* file_uploaded)     (GtkamTree *,
-				    GtkamTreeFileUploadedData *);
+	void (* file_added)        (GtkamTree *, GtkamTreeFileAddedData *);
 	void (* new_status)        (GtkamTree *tree, GtkWidget *status);
 	void (* new_error)         (GtkamTree *tree, GtkamTreeErrorData *);
+	void (* new_dialog)        (GtkamTree *tree, GtkWidget *dialog);
 };
 
 GType      gtkam_tree_get_type (void);

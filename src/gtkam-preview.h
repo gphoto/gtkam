@@ -61,9 +61,6 @@ GtkWidget *gtkam_preview_new      (Camera *camera, gboolean multi);
 Camera  *gtkam_preview_get_camera (GtkamPreview *preview);
 gboolean gtkam_preview_get_multi  (GtkamPreview *preview);
 
-void   gtkam_preview_set_zoom  (GtkamPreview *preview, gfloat zoom);
-gfloat gtkam_preview_get_zoom  (GtkamPreview *preview);
-
 void  gtkam_preview_set_angle  (GtkamPreview *preview, guint angle);
 guint gtkam_preview_get_angle  (GtkamPreview *preview);
 

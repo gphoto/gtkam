@@ -1,0 +1,42 @@
+gtkam works mostly correctly, too, here are some bugs/suggestions:
+
+During a gtkam session on a remote X server, one gets a lot of
+
+(gtkam:14632): Gtk-CRITICAL **: file ../../gtk/gtktreemodel.c: line 1096 
+(gtk_tree_model_row_changed): assertion `path != NULL' failed
+
+on the console from where one started it.
+
+Displaying thumbnails and images, browsing on the camera's card, 
+downloading photos works as before.
+
+PC-controlled photography changed: Before I could not adjust the zoom 
+with the "Preferences" dialog, now I can do so, but gtkam freezes after 
+the "Apply" button was clicked. I had to kill and restart it and then I 
+could take the photo with the new zoom setting, but after closing the 
+dialog for taking the photo gtkam was not able to read the camera's card 
+any more, so that I had to restart it again. I didn't need to turn off 
+and turn on the camera, restarting gtkam was enough.
+
+Then there is a new built-in photo viewer. When it opens, it shows the 
+gtkam icon at the left and the photo at the right. Only the photo is 
+shown so small that it would fit around nine times into the icon (the 
+initial window is only a bit bigger than the icon. Here it would be 
+better to have an initial window size of for example 640x480 pixels, 
+then the window fits on every screen and the user can see the picture. 
+The gtkam icon should better even appear in the title bar (as in the 
+main window) and not in the main area of the window. The "EOG Image 
+Viewer" opens also a much too small (stamp-sized) window.
+
+When one turns off the camera in the middle of the gtkam session and 
+turns it on again, one cannot read from the camera any more, one has to 
+restart gtkam. I told about this already at the previous release.
+
+*** Progress bars ***
+
+Till: For downloading the thumbnails it would be nice to have a progress bar, 
+as the download of 40 photos takes already a certain time. Also having a 
+progress bar for the image download on right-click and "View with" would 
+be nice.
+
+Lutz: Some camera drivers don't support reentrancy. Therefore, we can/should not call other functions from within idle functions.

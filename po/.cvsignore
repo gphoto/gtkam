@@ -1,6 +1,7 @@
 cat-id-tbl.c
 gphoto2-gtk.pot
 stamp-cat-id
+ChangeLog
 Makefile
 Makefile.in
 POTFILES

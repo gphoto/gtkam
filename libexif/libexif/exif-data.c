@@ -72,7 +72,7 @@ exif_data_new_from_data (const unsigned char *data, unsigned int size)
 
 	/* Search the exif marker */
 	for (o = 0; o < size; o++)
-		if (data[o] == JPEG_MARKER_EXIF)
+		if (data[o] == JPEG_MARKER_APP1)
 			break;
 	if (o == size)
 		return (NULL);

@@ -115,39 +115,68 @@ jpeg_data_new_from_data (const unsigned char *data,
                 case JPEG_MARKER_SOF1:
                 case JPEG_MARKER_SOF2:
                 case JPEG_MARKER_SOF3:
-                case JPEG_MARKER_SOME0:
+                case JPEG_MARKER_DHT:
                 case JPEG_MARKER_SOF5:
                 case JPEG_MARKER_SOF6:
                 case JPEG_MARKER_SOF7:
-                case JPEG_MARKER_SOF8:
+                case JPEG_MARKER_JPG:
                 case JPEG_MARKER_SOF9:
                 case JPEG_MARKER_SOF10:
                 case JPEG_MARKER_SOF11:
-                case JPEG_MARKER_SOME1:
+                case JPEG_MARKER_DAC:
                 case JPEG_MARKER_SOF13:
                 case JPEG_MARKER_SOF14:
                 case JPEG_MARKER_SOF15:
-                case JPEG_MARKER_UNKNOWN0:
-                case JPEG_MARKER_UNKNOWN1:
-                case JPEG_MARKER_UNKNOWN2:
-                case JPEG_MARKER_UNKNOWN3:
-                case JPEG_MARKER_UNKNOWN4:
-                case JPEG_MARKER_UNKNOWN5:
-                case JPEG_MARKER_UNKNOWN6:
-		case JPEG_MARKER_UNKNOWN7:
-                case JPEG_MARKER_UNKNOWN11:
-                case JPEG_MARKER_UNKNOWN12:
-                case JPEG_MARKER_UNKNOWN13:
-                case JPEG_MARKER_UNKNOWN14:
-                case JPEG_MARKER_UNKNOWN15:
-                case JPEG_MARKER_EXIF:
-		case JPEG_MARKER_JFIF:
+		case JPEG_MARKER_RST0:
+		case JPEG_MARKER_RST1:
+		case JPEG_MARKER_RST2:
+		case JPEG_MARKER_RST3:
+		case JPEG_MARKER_RST4:
+		case JPEG_MARKER_RST5:
+		case JPEG_MARKER_RST6:
+		case JPEG_MARKER_RST7:
+		case JPEG_MARKER_DQT:
+                case JPEG_MARKER_DNL:
+                case JPEG_MARKER_DRI:
+                case JPEG_MARKER_DHP:
+                case JPEG_MARKER_EXP:
+                case JPEG_MARKER_APP0:
+		case JPEG_MARKER_APP1:
+		case JPEG_MARKER_APP2:
+		case JPEG_MARKER_APP3:
+		case JPEG_MARKER_APP4:
+		case JPEG_MARKER_APP5:
+		case JPEG_MARKER_APP6:
+		case JPEG_MARKER_APP7:
+		case JPEG_MARKER_APP8:
+		case JPEG_MARKER_APP9:
+		case JPEG_MARKER_APP10:
+		case JPEG_MARKER_APP11:
+		case JPEG_MARKER_APP12:
+		case JPEG_MARKER_APP13:
+		case JPEG_MARKER_APP14:
+		case JPEG_MARKER_APP15:
+		case JPEG_MARKER_JPG0:
+		case JPEG_MARKER_JPG1:
+		case JPEG_MARKER_JPG2:
+		case JPEG_MARKER_JPG3:
+		case JPEG_MARKER_JPG4:
+		case JPEG_MARKER_JPG5:
+		case JPEG_MARKER_JPG6:
+		case JPEG_MARKER_JPG7:
+		case JPEG_MARKER_JPG8:
+		case JPEG_MARKER_JPG9:
+		case JPEG_MARKER_JPG10:
+		case JPEG_MARKER_JPG11:
+		case JPEG_MARKER_JPG12:
+		case JPEG_MARKER_JPG13:
+		case JPEG_MARKER_COM:
 			
 			/* Read the length of the section */
 			len = (data[o + i + 1] << 8) | data[o + i + 2];
 
 			switch (marker) {
-			case JPEG_MARKER_EXIF:
+			case JPEG_MARKER_APP1:
 				s->content.exif = exif_data_new_from_data (
 					&data[o + i], size - o - i);
 				break;
@@ -158,7 +187,6 @@ jpeg_data_new_from_data (const unsigned char *data,
 			case JPEG_MARKER_SOF5:
 			case JPEG_MARKER_SOF6:
 			case JPEG_MARKER_SOF7:
-			case JPEG_MARKER_SOF8:
 			case JPEG_MARKER_SOF9:
 			case JPEG_MARKER_SOF10:
 			case JPEG_MARKER_SOF11:
@@ -283,7 +311,6 @@ jpeg_data_free (JPEGData *data)
 				case JPEG_MARKER_SOF5:
 				case JPEG_MARKER_SOF6:
 				case JPEG_MARKER_SOF7:
-				case JPEG_MARKER_SOF8:
 				case JPEG_MARKER_SOF9:
 				case JPEG_MARKER_SOF10:
 				case JPEG_MARKER_SOF11:
@@ -295,7 +322,7 @@ jpeg_data_free (JPEGData *data)
 					if (s.content.sos.size)
 						free (s.content.sos.data);
 					break;
-				case JPEG_MARKER_EXIF:
+				case JPEG_MARKER_APP1:
 					if (s.content.exif)
 						exif_data_unref (
 							s.content.exif);
@@ -336,7 +363,6 @@ jpeg_data_dump (JPEGData *data)
                 case JPEG_MARKER_SOF5:
                 case JPEG_MARKER_SOF6:
                 case JPEG_MARKER_SOF7:
-                case JPEG_MARKER_SOF8:
                 case JPEG_MARKER_SOF9:
                 case JPEG_MARKER_SOF10:
                 case JPEG_MARKER_SOF11:
@@ -355,7 +381,7 @@ jpeg_data_dump (JPEGData *data)
                 case JPEG_MARKER_SOS:
                         printf ("  %i bytes.\n", content.sos.size);
                         break;
-                case JPEG_MARKER_EXIF:
+                case JPEG_MARKER_APP1:
 			exif_data_dump (content.exif);
 			break;
                 default:
@@ -371,10 +397,10 @@ jpeg_data_get_exif_data (JPEGData *data)
 	unsigned int i;
 
 	if (!data)
-		return;
+		return NULL;
 
 	for (i = 0; i < data->count; i++)
-		if (data->sections[i].marker == JPEG_MARKER_EXIF) {
+		if (data->sections[i].marker == JPEG_MARKER_APP1) {
 			exif_data_ref (data->sections[i].content.exif);
 			return (data->sections[i].content.exif);
 		}

@@ -512,11 +512,11 @@ action_about (gpointer callback_data, guint callback_action,
 		features = g_strjoinv(", ", &v[1]);
 
 		if (gcomments == NULL) {
-			gcomments = g_strdup_printf("%s\n\n%s %s with options: %s\n", 
+			gcomments = g_strdup_printf("%s\n\n%s %s with options:\n    %s\n", 
 						    _(comments), name, v[0], features);
 		} else {
 			gchar *old = gcomments;
-			gcomments = g_strdup_printf("%s\n%s %s with options: %s\n", 
+			gcomments = g_strdup_printf("%s\n%s %s with options:\n    %s\n", 
 						    gcomments, name, v[0], features);
 			free(old);
 		}

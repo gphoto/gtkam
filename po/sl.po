@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gphoto\n"
-"POT-Creation-Date: 2002-11-21 09:25+0100\n"
+"POT-Creation-Date: 2002-12-01 21:45+0100\n"
 "PO-Revision-Date: 2000-06-24 12:30+0200\n"
 "Last-Translator: Andraz Tori <andraz.tori1@guest.arnes.si>\n"
 "Language-Team: Slovenian <sl@li.org>\n"
@@ -13,377 +13,377 @@ msgstr ""
 "Content-Type: text/plain; charset=iso-8859-2\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/main.c:127
+#: src/main.c:111
 msgid "Image Download Program"
 msgstr ""
 
-#: src/gtkam-chooser.c:249 src/gtkam-chooser.c:271
+#: src/gtkam-chooser.c:231 src/gtkam-chooser.c:253
 #, fuzzy
 msgid "None"
 msgstr "Ne"
 
-#: src/gtkam-chooser.c:279 src/gtkam-chooser.c:412 src/gtkam-chooser.c:671
+#: src/gtkam-chooser.c:261 src/gtkam-chooser.c:394 src/gtkam-chooser.c:653
 #, fuzzy
 msgid "Best"
 msgstr "Ponastavi"
 
-#: src/gtkam-chooser.c:286
+#: src/gtkam-chooser.c:268
 #, fuzzy
 msgid "Initializing camera..."
 msgstr "Nisem uspel slikati."
 
-#: src/gtkam-chooser.c:300
+#: src/gtkam-chooser.c:282
 #, fuzzy
 msgid "Could not initialize camera."
 msgstr "Nisem uspel slikati."
 
-#: src/gtkam-chooser.c:403
+#: src/gtkam-chooser.c:385
 #, fuzzy, c-format
 msgid "Could not get abilities of model '%s'."
 msgstr "Ne morem dobiti ¹tevila slik"
 
-#: src/gtkam-chooser.c:451
+#: src/gtkam-chooser.c:433
 #, fuzzy
 msgid "Detecting cameras..."
 msgstr "Izberi model/vrata..."
 
-#: src/gtkam-chooser.c:459
+#: src/gtkam-chooser.c:441
 msgid "No cameras detected."
 msgstr ""
 
-#: src/gtkam-chooser.c:476
+#: src/gtkam-chooser.c:458
 #, fuzzy
 msgid "Could not detect any cameras."
 msgstr "Nisem uspel slikati."
 
-#: src/gtkam-chooser.c:602
+#: src/gtkam-chooser.c:584
 #, fuzzy
 msgid "Select Camera"
 msgstr "®iva slika!"
 
-#: src/gtkam-chooser.c:619
+#: src/gtkam-chooser.c:601
 #, fuzzy
 msgid "Model:"
 msgstr "Model fotoaparata:"
 
-#: src/gtkam-chooser.c:632
+#: src/gtkam-chooser.c:614
 msgid "Detect"
 msgstr ""
 
-#: src/gtkam-chooser.c:640
+#: src/gtkam-chooser.c:622
 #, fuzzy
 msgid "Detect USB camera"
 msgstr "Izberi model/vrata..."
 
-#: src/gtkam-chooser.c:642
+#: src/gtkam-chooser.c:624
 msgid "Port:"
 msgstr "Vrata:"
 
-#: src/gtkam-chooser.c:663
+#: src/gtkam-chooser.c:645
 msgid "Speed:"
 msgstr ""
 
-#: src/gtkam-chooser.c:677
+#: src/gtkam-chooser.c:659
 msgid "Allow multiple frontends"
 msgstr ""
 
-#: src/gtkam-chooser.c:687
+#: src/gtkam-chooser.c:669
 msgid "Enhanced"
 msgstr ""
 
-#: src/gtkam-chooser.c:753
+#: src/gtkam-chooser.c:735
 #, fuzzy
 msgid "Could not get number of supported camera models"
 msgstr "Ne morem dobiti ¹tevila slik"
 
-#: src/gtkam-chooser.c:783
+#: src/gtkam-chooser.c:765
 #, fuzzy
 msgid "Could not get number of ports."
 msgstr "Ne morem dobiti ¹tevila slik"
 
-#: src/gtkam-config.c:179
+#: src/gtkam-config.c:161
 #, fuzzy
 msgid "Applying configuration..."
 msgstr "Nastaviteve fotoaparata"
 
-#: src/gtkam-config.c:195
+#: src/gtkam-config.c:177
 #, fuzzy
 msgid "Could not apply configuration."
 msgstr "Nastaviteve fotoaparata"
 
-#: src/gtkam-config.c:243
+#: src/gtkam-config.c:225
 msgid "No additional information available. (1)"
 msgstr ""
 
-#: src/gtkam-config.c:248
+#: src/gtkam-config.c:230
 #, fuzzy
 msgid "General Settings"
 msgstr "Nstavitev barv"
 
-#: src/gtkam-config.c:323
+#: src/gtkam-config.c:305
 #, fuzzy
 msgid "Could not execute command."
 msgstr "NAPAKA: Ne morem zbrisati slike.\n"
 
-#: src/gtkam-config.c:527
+#: src/gtkam-config.c:509
 msgid "No additional information available. (2)"
 msgstr ""
 
-#: src/gtkam-config.c:563
+#: src/gtkam-config.c:545
 msgid "Set to system's time"
 msgstr ""
 
-#: src/gtkam-config.c:597
+#: src/gtkam-config.c:579
 msgid "No additional information available. (3)"
 msgstr ""
 
-#: src/gtkam-config.c:622
+#: src/gtkam-config.c:604
 msgid "No additional information available. (4)"
 msgstr ""
 
-#: src/gtkam-config.c:669
+#: src/gtkam-config.c:651
 msgid "No additional information available. (5)"
 msgstr ""
 
-#: src/gtkam-config.c:689
+#: src/gtkam-config.c:671
 msgid "No additional information available. (6)"
 msgstr ""
 
-#: src/gtkam-config.c:729
+#: src/gtkam-config.c:711
 #, fuzzy
 msgid "Getting configuration..."
 msgstr "Ne morem dobiti vzorca"
 
-#: src/gtkam-config.c:744
+#: src/gtkam-config.c:726
 #, fuzzy
 msgid "Could not get configuration."
 msgstr "Ne morem dobiti vzorca"
 
-#: src/gtkam-debug.c:258
+#: src/gtkam-debug.c:241
 #, fuzzy
 msgid "Save As..."
 msgstr "Shrani sliko/e..."
 
-#: src/gtkam-debug.c:280
+#: src/gtkam-debug.c:263
 #, fuzzy, c-format
 msgid "Could not open '%s'!"
 msgstr ""
 "Ne morem odpreti:\n"
 " %s"
 
-#: src/gtkam-debug.c:325
+#: src/gtkam-debug.c:308
 msgid "Type of messages to log:"
 msgstr ""
 
-#: src/gtkam-debug.c:329
+#: src/gtkam-debug.c:312
 msgid "Error"
 msgstr ""
 
-#: src/gtkam-debug.c:336
+#: src/gtkam-debug.c:319
 msgid "Verbose"
 msgstr ""
 
-#: src/gtkam-debug.c:343
+#: src/gtkam-debug.c:326
 msgid "Debug"
 msgstr ""
 
-#: src/gtkam-debug.c:350
+#: src/gtkam-debug.c:333
 msgid "Data"
 msgstr ""
 
-#: src/gtkam-delete.c:198
+#: src/gtkam-delete.c:180
 #, c-format
 msgid "Deleting all files in '%s'..."
 msgstr ""
 
-#: src/gtkam-delete.c:218
+#: src/gtkam-delete.c:200
 #, fuzzy, c-format
 msgid "Could not delete all files in '%s'."
 msgstr "Ne morem dobiti #%i"
 
-#: src/gtkam-delete.c:251
+#: src/gtkam-delete.c:233
 #, fuzzy, c-format
 msgid "Deleting file '%s' from folder '%s'..."
 msgstr "Ne morem dobiti #%i"
 
-#: src/gtkam-delete.c:272
+#: src/gtkam-delete.c:254
 #, fuzzy, c-format
 msgid "Could not delete file '%s' in folder '%s'."
 msgstr "Ne morem dobiti vzorca"
 
-#: src/gtkam-delete.c:386
+#: src/gtkam-delete.c:368
 msgid "Do you really want to delete the following file?"
 msgstr ""
 
-#: src/gtkam-delete.c:389
+#: src/gtkam-delete.c:371
 #, c-format
 msgid "Do you really want to delete the following %i files?"
 msgstr ""
 
-#: src/gtkam-delete.c:396
+#: src/gtkam-delete.c:378
 #, fuzzy, c-format
 msgid "'%s' in folder '%s'"
 msgstr "Ne morem dobiti vzorca"
 
-#: src/gtkam-delete.c:399
+#: src/gtkam-delete.c:381
 #, fuzzy, c-format
 msgid "All files in folder '%s'"
 msgstr "Ne morem dobiti vzorca"
 
-#: src/gtkam-error.c:214
+#: src/gtkam-error.c:196
 msgid "More"
 msgstr ""
 
-#: src/gtkam-exif.c:155
+#: src/gtkam-exif.c:137
 #, fuzzy, c-format
 msgid "Getting EXIF information for file '%s' in folder '%s'..."
 msgstr "Ne morem dobiti vzorca"
 
-#: src/gtkam-exif.c:171
+#: src/gtkam-exif.c:153
 #, fuzzy, c-format
 msgid "Could not get exif information for '%s' in folder '%s'"
 msgstr "Ne morem dobiti vzorca"
 
-#: src/gtkam-exif.c:184
+#: src/gtkam-exif.c:166
 #, fuzzy
 msgid "Could not interpret EXIF data."
 msgstr "Nisem uspel slikati."
 
-#: src/gtkam-exif.c:201
+#: src/gtkam-exif.c:183
 msgid "Gtkam has been compiled without exif support."
 msgstr ""
 
-#: src/gtkam-gimp.c:85
+#: src/gtkam-gimp.c:67
 msgid "Captures images from digital camera"
 msgstr ""
 
-#: src/gtkam-gimp.c:88
+#: src/gtkam-gimp.c:70
 msgid "<Toolbox>/File/Acquire/Capture from Camera..."
 msgstr ""
 
-#: src/gtkam-gimp.c:92
+#: src/gtkam-gimp.c:74
 msgid "Loads files from digital cameras"
 msgstr ""
 
-#: src/gtkam-gimp.c:96
+#: src/gtkam-gimp.c:78
 msgid "<Toolbox>/File/Acquire/Load from Camera..."
 msgstr ""
 
-#: src/gtkam-gimp.c:209 src/gtkam-list.c:506
+#: src/gtkam-gimp.c:191 src/gtkam-list.c:488
 #, c-format
 msgid "Downloading '%s' from '%s'..."
 msgstr ""
 
-#: src/gtkam-gimp.c:227
+#: src/gtkam-gimp.c:209
 #, fuzzy, c-format
 msgid "Could not download file '%s' from folder '%s'."
 msgstr "Ne morem dobiti vzorca"
 
-#: src/gtkam-gimp.c:260
+#: src/gtkam-gimp.c:242
 #, fuzzy
 msgid "Image"
 msgstr "Kazalo slik"
 
-#: src/gtkam-info.c:200
+#: src/gtkam-info.c:182
 #, fuzzy, c-format
 msgid "Setting information for file '%s' in '%s'..."
 msgstr "Ne morem dobiti vzorca"
 
-#: src/gtkam-info.c:227
+#: src/gtkam-info.c:209
 #, fuzzy, c-format
 msgid "Could not set file information for '%s' in folder '%s'"
 msgstr "Ne morem dobiti vzorca"
 
-#: src/gtkam-info.c:356
+#: src/gtkam-info.c:338
 #, fuzzy, c-format
 msgid "Getting information about file '%s' in folder '%s'..."
 msgstr "Ne morem dobiti vzorca"
 
-#: src/gtkam-info.c:368
+#: src/gtkam-info.c:350
 #, fuzzy, c-format
 msgid "Could not get information about file '%s' in folder '%s'."
 msgstr "Ne morem dobiti vzorca"
 
-#: src/gtkam-info.c:396
+#: src/gtkam-info.c:378
 msgid "File"
 msgstr ""
 
-#: src/gtkam-info.c:402
+#: src/gtkam-info.c:384
 msgid "Name:"
 msgstr ""
 
-#: src/gtkam-info.c:425 src/gtkam-info.c:533
+#: src/gtkam-info.c:407 src/gtkam-info.c:515
 msgid "Mime type:"
 msgstr ""
 
-#: src/gtkam-info.c:443
+#: src/gtkam-info.c:425
 msgid "Last modified:"
 msgstr ""
 
-#: src/gtkam-info.c:464 src/gtkam-info.c:550 src/gtkam-info.c:598
+#: src/gtkam-info.c:446 src/gtkam-info.c:532 src/gtkam-info.c:580
 msgid "Size:"
 msgstr ""
 
-#: src/gtkam-info.c:471
+#: src/gtkam-info.c:453
 #, c-format
 msgid "%li bytes"
 msgstr ""
 
-#: src/gtkam-info.c:485
+#: src/gtkam-info.c:467
 msgid "Permissions:"
 msgstr ""
 
-#: src/gtkam-info.c:497
+#: src/gtkam-info.c:479
 msgid "Read"
 msgstr ""
 
-#: src/gtkam-info.c:508
+#: src/gtkam-info.c:490
 msgid "Delete"
 msgstr ""
 
-#: src/gtkam-info.c:527 src/gtkam-list.c:947
+#: src/gtkam-info.c:509 src/gtkam-list.c:929
 #, fuzzy
 msgid "Preview"
 msgstr "Nazaj"
 
-#: src/gtkam-info.c:575
+#: src/gtkam-info.c:557
 msgid "Audio"
 msgstr ""
 
-#: src/gtkam-info.c:581
+#: src/gtkam-info.c:563
 msgid "Mime type: "
 msgstr ""
 
-#: src/gtkam-list.c:334
+#: src/gtkam-list.c:316
 #, fuzzy, c-format
 msgid "Downloading thumbnail of '%s' from folder '%s'..."
 msgstr "Ne morem dobiti vzorca"
 
-#: src/gtkam-list.c:872
+#: src/gtkam-list.c:854
 #, fuzzy, c-format
 msgid "Changing name of '%s' to '%s'..."
 msgstr "Ne morem dobiti vzorca"
 
-#: src/gtkam-list.c:882
+#: src/gtkam-list.c:864
 #, fuzzy, c-format
 msgid "Could not change the name of '%s' to '%s'."
 msgstr "Ne morem dobiti #%i"
 
-#: src/gtkam-list.c:953
+#: src/gtkam-list.c:935
 msgid "Name"
 msgstr ""
 
-#: src/gtkam-list.c:975
+#: src/gtkam-list.c:957
 #, c-format
 msgid "Listing files in folder '%s'..."
 msgstr ""
 
-#: src/gtkam-list.c:991
+#: src/gtkam-list.c:973
 #, c-format
 msgid "Could not get file list for folder '%s'"
 msgstr ""
 
-#: src/gtkam-main.c:465
+#: src/gtkam-main.c:452
 msgid ""
 "gtkam is a program that lets you download\n"
 "images from many digital cameras. It uses\n"
@@ -393,409 +393,409 @@ msgid ""
 "Enjoy the wonderful world of gphoto!"
 msgstr ""
 
-#: src/gtkam-main.c:476
+#: src/gtkam-main.c:463
 msgid "Many others"
 msgstr ""
 
-#: src/gtkam-main.c:572
+#: src/gtkam-main.c:593
 msgid "/_File"
 msgstr ""
 
-#: src/gtkam-main.c:573
+#: src/gtkam-main.c:594
 #, fuzzy
 msgid "/File/_Save Photos"
 msgstr "Shrani sliko/e..."
 
-#: src/gtkam-main.c:574
+#: src/gtkam-main.c:595
 msgid "/File/Save Photos/_Selected"
 msgstr ""
 
-#: src/gtkam-main.c:576
-msgid "/File/Save Photos/_All"
-msgstr ""
-
-#: src/gtkam-main.c:578
-#, fuzzy
-msgid "/File/_Delete Photos"
-msgstr "Zbri¹i izbrane slike"
-
-#: src/gtkam-main.c:579
-#, fuzzy
-msgid "/File/Delete Photos/_Selected"
-msgstr "Zbri¹i izbrane slike"
-
-#: src/gtkam-main.c:581
-#, fuzzy
-msgid "/File/Delete Photos/_All"
-msgstr "Zbri¹i izbrane slike"
-
-#: src/gtkam-main.c:584
-msgid "/File/_Quit"
-msgstr ""
-
-#: src/gtkam-main.c:586
-msgid "/_View"
-msgstr ""
-
-#: src/gtkam-main.c:587
-msgid "/View/_View Thumbnails"
-msgstr ""
-
-#: src/gtkam-main.c:590
-msgid "/View/Zoom _In"
-msgstr ""
-
-#: src/gtkam-main.c:592
-msgid "/View/Zoom _100"
-msgstr ""
-
-#: src/gtkam-main.c:594
-msgid "/View/Zoom _Out"
-msgstr ""
-
-#: src/gtkam-main.c:596
-#, fuzzy
-msgid "/_Select"
-msgstr "®iva slika!"
-
 #: src/gtkam-main.c:597
-msgid "/Select/_All"
-msgstr ""
-
-#: src/gtkam-main.c:598
-msgid "/Select/_Inverse"
+msgid "/File/Save Photos/_All"
 msgstr ""
 
 #: src/gtkam-main.c:599
 #, fuzzy
+msgid "/File/_Delete Photos"
+msgstr "Zbri¹i izbrane slike"
+
+#: src/gtkam-main.c:600
+#, fuzzy
+msgid "/File/Delete Photos/_Selected"
+msgstr "Zbri¹i izbrane slike"
+
+#: src/gtkam-main.c:602
+#, fuzzy
+msgid "/File/Delete Photos/_All"
+msgstr "Zbri¹i izbrane slike"
+
+#: src/gtkam-main.c:605
+msgid "/File/_Quit"
+msgstr ""
+
+#: src/gtkam-main.c:607
+msgid "/_View"
+msgstr ""
+
+#: src/gtkam-main.c:608
+msgid "/View/_View Thumbnails"
+msgstr ""
+
+#: src/gtkam-main.c:611
+msgid "/View/Zoom _In"
+msgstr ""
+
+#: src/gtkam-main.c:613
+msgid "/View/Zoom _100"
+msgstr ""
+
+#: src/gtkam-main.c:615
+msgid "/View/Zoom _Out"
+msgstr ""
+
+#: src/gtkam-main.c:617
+#, fuzzy
+msgid "/_Select"
+msgstr "®iva slika!"
+
+#: src/gtkam-main.c:618
+msgid "/Select/_All"
+msgstr ""
+
+#: src/gtkam-main.c:619
+msgid "/Select/_Inverse"
+msgstr ""
+
+#: src/gtkam-main.c:620
+#, fuzzy
 msgid "/Select/_None"
 msgstr "®iva slika!"
 
-#: src/gtkam-main.c:600
+#: src/gtkam-main.c:621
 #, fuzzy
 msgid "/_Camera"
 msgstr "®iva slika!"
 
-#: src/gtkam-main.c:601
+#: src/gtkam-main.c:622
 #, fuzzy
 msgid "/Camera/_Add Camera..."
 msgstr "Izberi model/vrata..."
 
-#: src/gtkam-main.c:602
+#: src/gtkam-main.c:623
 #, fuzzy
 msgid "/_Help"
 msgstr "Pomoè"
 
-#: src/gtkam-main.c:604
+#: src/gtkam-main.c:625
 msgid "/Help/_Contents"
 msgstr ""
 
-#: src/gtkam-main.c:607
+#: src/gtkam-main.c:628
 msgid "/Help/_Debug"
 msgstr ""
 
-#: src/gtkam-main.c:608
+#: src/gtkam-main.c:629
 msgid "/Help/_About"
 msgstr ""
 
-#: src/gtkam-main.c:675
+#: src/gtkam-main.c:696
 msgid "View Thumbnails"
 msgstr ""
 
-#: src/gtkam-main.c:696
+#: src/gtkam-main.c:717
 #, fuzzy
 msgid "_Help"
 msgstr "Pomoè"
 
-#: src/gtkam-main.c:708
+#: src/gtkam-main.c:729
 msgid "_Debug..."
 msgstr ""
 
-#: src/gtkam-main.c:717
+#: src/gtkam-main.c:738
 msgid "_About..."
 msgstr ""
 
-#: src/gtkam-mkdir.c:170
+#: src/gtkam-mkdir.c:152
 #, fuzzy, c-format
 msgid "Creating folder '%s' in folder '%s'..."
 msgstr "Ne morem dobiti vzorca"
 
-#: src/gtkam-mkdir.c:204
+#: src/gtkam-mkdir.c:186
 #, fuzzy, c-format
 msgid "Could not create folder '%s' in folder '%s'."
 msgstr "Ne morem dobiti vzorca"
 
-#: src/gtkam-mkdir.c:230
+#: src/gtkam-mkdir.c:212
 #, c-format
 msgid "Please choose a name for the directory that should be created in '%s':"
 msgstr ""
 
-#: src/gtkam-mkdir.c:246
+#: src/gtkam-mkdir.c:228
 #, fuzzy
 msgid "New directory"
 msgstr "Izhodni imenik:"
 
-#: src/gtkam-port.c:163
+#: src/gtkam-port.c:145
 #, fuzzy, c-format
 msgid "Could not find an io-driver for port '%s' ('%s')."
 msgstr "Ne morem dobiti #%i"
 
-#: src/gtkam-port.c:198
+#: src/gtkam-port.c:180
 msgid "Please specify the (extended) path to the port you would like to use:"
 msgstr ""
 
-#: src/gtkam-preview.c:205 src/gtkam-tree.c:791
+#: src/gtkam-preview.c:187 src/gtkam-tree.c:773
 #, fuzzy
 msgid "Capturing image..."
 msgstr "Natisni sliko..."
 
-#: src/gtkam-preview.c:227
+#: src/gtkam-preview.c:209
 #, fuzzy
 msgid "Could not capture image."
 msgstr "Nisem uspel slikati."
 
-#: src/gtkam-preview.c:363 src/gtkam-preview.c:426
+#: src/gtkam-preview.c:345 src/gtkam-preview.c:408
 #, fuzzy
 msgid "Capture"
 msgstr "Ustvari"
 
-#: src/gtkam-preview.c:389
+#: src/gtkam-preview.c:371
 msgid "0 degrees"
 msgstr ""
 
-#: src/gtkam-preview.c:397
+#: src/gtkam-preview.c:379
 #, fuzzy
 msgid "Don't rotate thumbnail"
 msgstr "Nalo¾i kazalo vzorcev"
 
-#: src/gtkam-preview.c:399
+#: src/gtkam-preview.c:381
 msgid "-90 degrees"
 msgstr ""
 
-#: src/gtkam-preview.c:406
+#: src/gtkam-preview.c:388
 msgid "Rotate thumbnail by -90 degrees"
 msgstr ""
 
-#: src/gtkam-preview.c:408
+#: src/gtkam-preview.c:390
 msgid "+90 degrees"
 msgstr ""
 
-#: src/gtkam-preview.c:415
+#: src/gtkam-preview.c:397
 msgid "Rotate thumbnail by 90 degrees"
 msgstr ""
 
-#: src/gtkam-preview.c:417
+#: src/gtkam-preview.c:399
 msgid "180 degrees"
 msgstr ""
 
-#: src/gtkam-preview.c:424
+#: src/gtkam-preview.c:406
 msgid "Rotate thumbnail by 180 degrees"
 msgstr ""
 
-#: src/gtkam-save.c:335
+#: src/gtkam-save.c:317
 #, c-format
 msgid "'%s' already exists."
 msgstr ""
 
-#: src/gtkam-save.c:349
+#: src/gtkam-save.c:331
 #, fuzzy, c-format
 msgid "Could not save file to '%s'."
 msgstr "Ne morem shraniti #%i"
 
-#: src/gtkam-save.c:385
+#: src/gtkam-save.c:367
 #, fuzzy, c-format
 msgid "Could not get '%s' from folder '%s'."
 msgstr "Ne morem dobiti vzorca"
 
-#: src/gtkam-save.c:407
+#: src/gtkam-save.c:389
 #, fuzzy
 msgid "Downloading file..."
 msgstr "Prena¹anje opravljeno."
 
-#: src/gtkam-save.c:409 src/gtkam-save.c:416
+#: src/gtkam-save.c:391 src/gtkam-save.c:398
 #, fuzzy, c-format
 msgid "Downloading %i files..."
 msgstr "Prena¹anje opravljeno."
 
-#: src/gtkam-save.c:491
+#: src/gtkam-save.c:473
 msgid "What to save:"
 msgstr ""
 
-#: src/gtkam-save.c:500
+#: src/gtkam-save.c:482
 msgid "Save photos"
 msgstr ""
 
-#: src/gtkam-save.c:506
+#: src/gtkam-save.c:488
 msgid "Photos will be saved if this is checked"
 msgstr ""
 
-#: src/gtkam-save.c:510
+#: src/gtkam-save.c:492
 msgid "Save raw data"
 msgstr ""
 
-#: src/gtkam-save.c:515
+#: src/gtkam-save.c:497
 msgid "Raw data will be saved if this is checked"
 msgstr ""
 
-#: src/gtkam-save.c:519
+#: src/gtkam-save.c:501
 msgid "Save audio data"
 msgstr ""
 
-#: src/gtkam-save.c:524
+#: src/gtkam-save.c:506
 msgid "Audio data will be saved if this is checked"
 msgstr ""
 
-#: src/gtkam-save.c:528
+#: src/gtkam-save.c:510
 #, fuzzy
 msgid "Save thumbnails"
 msgstr "vzorec-%03i.%s"
 
-#: src/gtkam-save.c:533
+#: src/gtkam-save.c:515
 msgid "Thumbnails will be saved if this is checked"
 msgstr ""
 
-#: src/gtkam-save.c:537
+#: src/gtkam-save.c:519
 msgid "Save EXIF data"
 msgstr ""
 
-#: src/gtkam-save.c:542
+#: src/gtkam-save.c:524
 msgid "EXIF data will be saved if this is checked"
 msgstr ""
 
-#: src/gtkam-save.c:551
+#: src/gtkam-save.c:533
 #, fuzzy
 msgid "Open image(s) with: "
 msgstr "Odpri sliko"
 
-#: src/gtkam-save.c:560
+#: src/gtkam-save.c:542
 msgid "Type in the name of the program you want to run, leave blank for none"
 msgstr ""
 
-#: src/gtkam-save.c:566
+#: src/gtkam-save.c:548
 msgid "Use filename(s) provided by the camera"
 msgstr ""
 
-#: src/gtkam-save.c:573
+#: src/gtkam-save.c:555
 msgid "Choose whether to use the filename provided by the camera"
 msgstr ""
 
-#: src/gtkam-save.c:588
+#: src/gtkam-save.c:570
 #, fuzzy
 msgid "Filename prefix: "
 msgstr "Predpona imena datoteke:"
 
-#: src/gtkam-save.c:599
+#: src/gtkam-save.c:581
 msgid "Start numbering with: "
 msgstr ""
 
-#: src/gtkam-save.c:641
+#: src/gtkam-save.c:623
 #, fuzzy, c-format
 msgid "Save '%s'..."
 msgstr "Shrani sliko/e..."
 
-#: src/gtkam-save.c:663
+#: src/gtkam-save.c:645
 #, fuzzy
 msgid "Save photos..."
 msgstr "Shrani sliko/e..."
 
-#: src/gtkam-tree.c:309
+#: src/gtkam-tree.c:291
 #, fuzzy, c-format
 msgid "Listing folders in '%s'..."
 msgstr "Ne morem dobiti vzorca"
 
-#: src/gtkam-tree.c:330
+#: src/gtkam-tree.c:312
 #, fuzzy, c-format
 msgid "Could not list folders in '%s'."
 msgstr "Ne morem dobiti #%i"
 
-#: src/gtkam-tree.c:427
+#: src/gtkam-tree.c:409
 #, fuzzy, c-format
 msgid "Could not open '%s'."
 msgstr ""
 "Ne morem odpreti:\n"
 " %s"
 
-#: src/gtkam-tree.c:434
+#: src/gtkam-tree.c:416
 #, fuzzy, c-format
 msgid "Uploading '%s' into folder '%s'..."
 msgstr "Ne morem dobiti vzorca"
 
-#: src/gtkam-tree.c:454
+#: src/gtkam-tree.c:436
 #, fuzzy, c-format
 msgid "Could not upload '%s' into '%s'."
 msgstr "Ne morem dobiti vzorca"
 
-#: src/gtkam-tree.c:478
+#: src/gtkam-tree.c:460
 #, fuzzy, c-format
 msgid "Upload into '%s'..."
 msgstr "Prena¹anje opravljeno."
 
-#: src/gtkam-tree.c:554
+#: src/gtkam-tree.c:536
 #, fuzzy, c-format
 msgid "Removing directory '%s'..."
 msgstr "Ne morem dobiti #%i"
 
-#: src/gtkam-tree.c:571
+#: src/gtkam-tree.c:553
 #, fuzzy, c-format
 msgid "Could not remove directory '%s'."
 msgstr "Ne morem dobiti #%i"
 
-#: src/gtkam-tree.c:600
+#: src/gtkam-tree.c:582
 #, fuzzy
 msgid "Getting information about the camera..."
 msgstr "Ne morem dobiti vzorca"
 
-#: src/gtkam-tree.c:604
+#: src/gtkam-tree.c:586
 #, fuzzy
 msgid "Getting information about the driver..."
 msgstr "Ne morem dobiti vzorca"
 
-#: src/gtkam-tree.c:608
+#: src/gtkam-tree.c:590
 #, fuzzy
 msgid "Getting manual..."
 msgstr "Dobivam vzorec #%i..."
 
-#: src/gtkam-tree.c:639
+#: src/gtkam-tree.c:621
 #, fuzzy
 msgid "Could not retrieve information."
 msgstr "Ne morem dobiti #%i"
 
-#: src/gtkam-tree.c:809
+#: src/gtkam-tree.c:791
 #, fuzzy
 msgid "Could not capture."
 msgstr "Nisem uspel slikati."
 
-#: src/gtkam-tree.c:880
+#: src/gtkam-tree.c:862
 #, fuzzy
 msgid "_Add Camera..."
 msgstr "Izberi model/vrata..."
 
-#: src/gtkam-tree.c:980
+#: src/gtkam-tree.c:962
 msgid "Please right-click to access additional menus"
 msgstr ""
 
-#: src/gtkam-tree.c:1005
+#: src/gtkam-tree.c:987
 msgid "Folder"
 msgstr ""
 
-#: src/gtkam-tree.c:1098
+#: src/gtkam-tree.c:1080
 #, fuzzy
 msgid "Loading cameras..."
 msgstr "Izberi model/vrata..."
 
-#: src/gtkam-util.c:64
+#: src/gtkam-util.c:46
 #, c-format
 msgid ""
 "Could not display '%s'. Either the image type ('%s') is not supported by gtk "
 "or the file itself is corrupt."
 msgstr ""
 
-#: src/gtkam-viewer.c:256
+#: src/gtkam-viewer.c:238
 #, fuzzy, c-format
 msgid "Downloading '%s' from folder '%s'..."
 msgstr "Ne morem dobiti vzorca"
 
-#: src/gtkam-viewer.c:307
+#: src/gtkam-viewer.c:289
 #, fuzzy, c-format
 msgid "Could not download '%s' from folder '%s'."
 msgstr "Ne morem dobiti vzorca"

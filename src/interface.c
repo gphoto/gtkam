@@ -22,97 +22,11 @@
 #include "support.h"
 #include "util.h"
 
-/* Not in gphoto API */
-int gp_interface_message_long(Camera *camera, char *message) {
-        GtkWidget *window, *ok, *text;
-
-        window = create_message_window_long();
-        text = (GtkWidget*) lookup_widget(window, "message");
-        ok   = (GtkWidget*) lookup_widget(window, "close");
-	gtk_label_set_text (GTK_LABEL(text), message);
-
-        wait_for_hide(window, ok, NULL);
-
-	gtk_widget_destroy(window);
-
-	return (GP_OK);
-}
-
-int gp_interface_message(Camera *camera, char *message) {
-
-	GtkWidget *window, *label, *ok;
-
-	if (strlen(message) > 1024) {
-		gp_interface_message_long(camera, message);
-		return (GP_OK);
-	}
-
-	if (GTK_WIDGET_VISIBLE(gp_gtk_progress_window)) {
-		label  = (GtkWidget*) lookup_widget(gp_gtk_progress_window, "message");
-		gtk_label_set_text(GTK_LABEL(label), message);
-		idle();
-		return (GP_OK);
-	}
-	
-	window = create_message_window();
-	label  = (GtkWidget*) lookup_widget(window, "message");
-        ok     = (GtkWidget*) lookup_widget(window, "close");
-
-	gtk_label_set_text(GTK_LABEL(label), message);
-
-	wait_for_hide(window, ok, NULL);
-
-	gtk_widget_destroy(window);
-
-	return (GP_OK);
-}
-
-int gp_interface_status(Camera *camera, char *message) {
-
-	GtkWidget *label;
-
-	if (GTK_WIDGET_VISIBLE(gp_gtk_progress_window)) {
-		label  = (GtkWidget*) lookup_widget(gp_gtk_progress_window, "message");
-		gtk_label_set_text(GTK_LABEL(label), message);
-		idle();
-		return (GP_OK);
-	}
-
-	return (GP_OK);
-}
-
-int gp_interface_progress(Camera *camera, CameraFile *file, float percentage) {
-
-	GtkWidget *progress = (GtkWidget*)lookup_widget(gp_gtk_progress_window, "progress_bar");
-
-	gtk_progress_set_percentage(GTK_PROGRESS(progress), percentage/100.0);
-	idle();
-
-	return (GP_OK);
-}
-
-int gp_interface_confirm(Camera *camera, char *message) {
-
-	GtkWidget *confirm = create_confirm_window();
-	GtkWidget *label   = (GtkWidget*) lookup_widget(confirm, "message");
-	GtkWidget *yes     = (GtkWidget*) lookup_widget(confirm, "yes");
-	GtkWidget *no      = (GtkWidget*) lookup_widget(confirm, "no");
-	int ret = 0;
-
-	gtk_label_set_text(GTK_LABEL(label), message);
-	ret = wait_for_hide(confirm, yes, no);
-
-	if (ret)
-		gtk_widget_destroy(confirm);
-
-	return (ret);
-}
-
 void hide_progress_window (GtkWidget *widget, gpointer data) {
-
-	gtk_widget_hide(gp_gtk_progress_window);
-	idle();
-}
+ 
+        gtk_widget_hide(gp_gtk_progress_window);
+        idle();
+} 
 
 GtkWidget*
 create_save_window (int directory_only)

@@ -15,6 +15,7 @@
 #include <gphoto2.h>
 
 #include "callbacks.h"
+#include "frontend.h"
 #include "interface.h"
 #include "support.h"
 
@@ -53,8 +54,8 @@ main (int argc, char *argv[])
 	gp_init(gp_gtk_debug);
 
 	/* Register my callbacks for interaction */
-	gp_frontend_register(gp_interface_status, gp_interface_progress,
-		gp_interface_message, gp_interface_confirm);
+	gp_frontend_register(frontend_status, frontend_progress,
+		frontend_message, frontend_confirm, frontend_prompt);
 
 	add_pixmap_directory (PACKAGE_DATA_DIR "/pixmaps");
 	add_pixmap_directory (PACKAGE_SOURCE_DIR "/pixmaps");

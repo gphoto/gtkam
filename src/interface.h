@@ -13,9 +13,3 @@ GtkWidget* create_message_window_notebook (void);
 void message_window_notebook_append(GtkWidget *window, char *label, char *text);
 
 GtkWidget* create_select_camera_window (void);
-
-int gp_interface_message(Camera *camera, char *message);
-int gp_interface_message_long(Camera *camera, char *message);
-int gp_interface_status(Camera *camera, char *message);
-int gp_interface_progress(Camera *camera, CameraFile *file, float percentage);
-int gp_interface_confirm(Camera *camera, char *message);

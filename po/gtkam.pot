@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2000-09-01 10:22-0500\n"
+"POT-Creation-Date: 2000-09-13 15:37-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -14,330 +14,323 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: ENCODING\n"
 
-#: src/interface.c:129
+#: src/interface.c:43
 msgid "Save selected photos..."
 msgstr ""
 
-#: src/interface.c:159
+#: src/interface.c:73
 msgid "Photos will be saved if this is checked."
 msgstr ""
 
-#: src/interface.c:169
+#: src/interface.c:83
 msgid "Thumbnails will be saved if this is checked."
 msgstr ""
 
-#: src/interface.c:196
+#: src/interface.c:110
 msgid ""
 "Type in the name of the program's executable you want to run. Leave blank "
 "for none."
 msgstr ""
 
-#: src/interface.c:208
+#: src/interface.c:122
 msgid "Choose whether to use the filename provided by the camera"
 msgstr ""
 
-#: src/interface.c:359 src/interface.c:1172 src/interface.c:1298
-#: src/interface.c:1383 src/interface.c:1490
+#: src/interface.c:273 src/interface.c:1086 src/interface.c:1212
+#: src/interface.c:1297 src/interface.c:1404
 msgid "gtKam"
 msgstr ""
 
-#: src/interface.c:379
+#: src/interface.c:293
 msgid "_File"
 msgstr ""
 
-#: src/interface.c:411
+#: src/interface.c:325
 msgid "_Save Selected Photos..."
 msgstr ""
 
-#: src/interface.c:470
+#: src/interface.c:384
 msgid "_Exit"
 msgstr ""
 
-#: src/interface.c:484
+#: src/interface.c:398
 msgid "_Edit"
 msgstr ""
 
-#: src/interface.c:502
+#: src/interface.c:416
 msgid "_Select"
 msgstr ""
 
-#: src/interface.c:520
+#: src/interface.c:434
 msgid "_All"
 msgstr ""
 
-#: src/interface.c:534
+#: src/interface.c:448
 msgid "_Inverse"
 msgstr ""
 
-#: src/interface.c:548
+#: src/interface.c:462
 msgid "_None"
 msgstr ""
 
-#: src/interface.c:562
+#: src/interface.c:476
 msgid "_Camera"
 msgstr ""
 
-#: src/interface.c:578
+#: src/interface.c:492
 msgid "Select Camera..."
 msgstr ""
 
-#: src/interface.c:660
+#: src/interface.c:574
 msgid "_Delete"
 msgstr ""
 
-#: src/interface.c:678
+#: src/interface.c:592
 msgid "_Selected Photos"
 msgstr ""
 
-#: src/interface.c:692
+#: src/interface.c:606
 msgid "_All Images"
 msgstr ""
 
-#: src/interface.c:714
+#: src/interface.c:628
 msgid "_Configure..."
 msgstr ""
 
-#: src/interface.c:725
+#: src/interface.c:639
 msgid "_Information..."
 msgstr ""
 
-#: src/interface.c:736
+#: src/interface.c:650
 msgid "_Manual..."
 msgstr ""
 
-#: src/interface.c:747
+#: src/interface.c:661
 msgid "_About the driver..."
 msgstr ""
 
-#: src/interface.c:758
+#: src/interface.c:672
 msgid "_Help"
 msgstr ""
 
-#: src/interface.c:776
+#: src/interface.c:690
 msgid "_User's Manual..."
 msgstr ""
 
-#: src/interface.c:791
+#: src/interface.c:705
 msgid "_Authors..."
 msgstr ""
 
-#: src/interface.c:802
+#: src/interface.c:716
 msgid "_License..."
 msgstr ""
 
-#: src/interface.c:813
+#: src/interface.c:727
 msgid "About _gtKam..."
 msgstr ""
 
-#: src/interface.c:854
+#: src/interface.c:768
 msgid "button2"
 msgstr ""
 
-#: src/interface.c:862
+#: src/interface.c:776
 msgid "Save selected photos"
 msgstr ""
 
-#: src/interface.c:878
+#: src/interface.c:792
 msgid "Delete selected photos"
 msgstr ""
 
-#: src/interface.c:882 src/interface.c:905 src/interface.c:928
+#: src/interface.c:796 src/interface.c:819 src/interface.c:842
 msgid "     "
 msgstr ""
 
-#: src/interface.c:893
+#: src/interface.c:807
 msgid "Refresh"
 msgstr ""
 
-#: src/interface.c:903
+#: src/interface.c:817
 msgid "Reload photo index"
 msgstr ""
 
-#: src/interface.c:916
+#: src/interface.c:830
 msgid "Configure"
 msgstr ""
 
-#: src/interface.c:924
+#: src/interface.c:838
 msgid "Configure the camera"
 msgstr ""
 
-#: src/interface.c:939
+#: src/interface.c:853
 msgid "Exit"
 msgstr ""
 
-#: src/interface.c:949
+#: src/interface.c:863
 msgid "Exit gtKam"
 msgstr ""
 
 #. __main
-#: src/interface.c:968
+#: src/interface.c:882
 msgid "Index Settings"
 msgstr ""
 
-#: src/interface.c:975
+#: src/interface.c:889
 msgid "View Thumbnails"
 msgstr ""
 
-#: src/interface.c:1209 src/interface.c:1326 src/interface.c:1410
+#: src/interface.c:1123 src/interface.c:1240 src/interface.c:1324
 msgid "    Close    "
 msgstr ""
 
-#: src/interface.c:1234
+#: src/interface.c:1148
 msgid "gtKam Confirmation"
 msgstr ""
 
-#: src/interface.c:1247
+#: src/interface.c:1161
 msgid "Are you sure?"
 msgstr ""
 
-#: src/interface.c:1269
+#: src/interface.c:1183
 msgid "Yes"
 msgstr ""
 
-#: src/interface.c:1276
+#: src/interface.c:1190
 msgid "No"
 msgstr ""
 
-#: src/interface.c:1311 src/interface.c:1446 src/interface.c:1503
+#: src/interface.c:1225 src/interface.c:1360 src/interface.c:1417
 msgid "No message."
 msgstr ""
 
-#: src/interface.c:1433
+#: src/interface.c:1347
 msgid "gtKam Progress"
 msgstr ""
 
-#: src/interface.c:1468
+#: src/interface.c:1382
 msgid "    Cancel    "
 msgstr ""
 
-#: src/interface.c:1539
+#: src/interface.c:1453
 msgid "Select Camera"
 msgstr ""
 
-#: src/interface.c:1566
+#: src/interface.c:1480
 msgid "Select Model:"
 msgstr ""
 
-#: src/interface.c:1595
+#: src/interface.c:1509
 msgid "Select Port:"
 msgstr ""
 
-#: src/interface.c:1617
+#: src/interface.c:1531
 msgid "Select Speed:"
 msgstr ""
 
-#: src/interface.c:1646
+#: src/interface.c:1560
 msgid "OK"
 msgstr ""
 
-#: src/interface.c:1653
+#: src/interface.c:1567
 msgid "Cancel"
 msgstr ""
 
-#: src/callbacks.c:63 src/callbacks.c:895
+#: src/callbacks.c:64 src/callbacks.c:887
 msgid "Could not retrieve the picture list."
 msgstr ""
 
-#: src/callbacks.c:128
+#: src/callbacks.c:129
 msgid "Initializing camera..."
 msgstr ""
 
-#: src/callbacks.c:132
+#: src/callbacks.c:133
 msgid "You must choose a camera"
 msgstr ""
 
-#. If not, error, and return
-#: src/callbacks.c:326 src/callbacks.c:389
-msgid ""
-"Camera did not suggest a filename.\n"
-"Please select \"Save\" again and specify a filename yourself."
-msgstr ""
-
-#: src/callbacks.c:594
+#: src/callbacks.c:586
 #, c-format
 msgid ""
 "Could not open folder\n"
 "%s"
 msgstr ""
 
-#: src/callbacks.c:691
+#: src/callbacks.c:683
 #, c-format
 msgid "Could not get abilities for %s"
 msgstr ""
 
-#: src/callbacks.c:698
+#: src/callbacks.c:690
 msgid "Could not retrieve number of ports"
 msgstr ""
 
-#: src/callbacks.c:739
+#: src/callbacks.c:731
 msgid "Error retrieving the port list"
 msgstr ""
 
-#: src/callbacks.c:772
+#: src/callbacks.c:764
 msgid "Could not retrieve number of cameras"
 msgstr ""
 
-#: src/callbacks.c:823
+#: src/callbacks.c:815
 msgid "You must choose a camera model"
 msgstr ""
 
-#: src/callbacks.c:828
+#: src/callbacks.c:820
 msgid "You must choose a port"
 msgstr ""
 
-#: src/callbacks.c:833
+#: src/callbacks.c:825
 msgid "You must choose a port speed"
 msgstr ""
 
-#: src/callbacks.c:885 src/callbacks.c:961
+#: src/callbacks.c:877 src/callbacks.c:953
 msgid "ERROR: please choose your camera model again"
 msgstr ""
 
-#: src/callbacks.c:890 src/callbacks.c:967
+#: src/callbacks.c:882 src/callbacks.c:959
 msgid "Could not retrieve the camera's abilities"
 msgstr ""
 
-#: src/callbacks.c:912
+#: src/callbacks.c:904
 #, c-format
 msgid ""
 "Getting Thumbnail #%04i of %04i\n"
 "%s"
 msgstr ""
 
-#: src/callbacks.c:972
+#: src/callbacks.c:964
 msgid "This camera does not support deleting photos."
 msgstr ""
 
-#: src/callbacks.c:977
+#: src/callbacks.c:969
 msgid "Are you sure you want to DELETE ALL the photos?"
 msgstr ""
 
-#: src/callbacks.c:979
+#: src/callbacks.c:971
 msgid "Are you sure you want to DELETE the selected photos?"
 msgstr ""
 
-#: src/callbacks.c:992 src/callbacks.c:1008
+#: src/callbacks.c:984 src/callbacks.c:1000
 #, c-format
 msgid "Could not delete photo #%04i. Stopping."
 msgstr ""
 
-#: src/callbacks.c:1315
+#: src/callbacks.c:1054
 msgid "Retrieving camera information..."
 msgstr ""
 
-#: src/callbacks.c:1321
+#: src/callbacks.c:1060
 msgid "Could not retrieve camera information"
 msgstr ""
 
-#: src/callbacks.c:1339
+#: src/callbacks.c:1078
 msgid "Could not retrieve the camera manual"
 msgstr ""
 
-#: src/callbacks.c:1357
+#: src/callbacks.c:1096
 msgid "Could not retrieve library information"
 msgstr ""
 
-#: src/callbacks.c:1373
+#: src/callbacks.c:1112
 msgid ""
 "gtKam was written by:\n"
 "Scott Fritzinger <scottf@unr.edu>\n"
@@ -347,43 +340,43 @@ msgid ""
 "http://www.gphoto.net"
 msgstr ""
 
-#: src/callbacks.c:1390
+#: src/callbacks.c:1129
 msgid "Can't find gtKam AUTHORS file"
 msgstr ""
 
-#: src/callbacks.c:1393
+#: src/callbacks.c:1132
 msgid "gtKam Authors"
 msgstr ""
 
-#: src/callbacks.c:1398
+#: src/callbacks.c:1137
 msgid "Can't find gPhoto2 AUTHORS file"
 msgstr ""
 
-#: src/callbacks.c:1401
+#: src/callbacks.c:1140
 msgid "gPhoto2 Authors"
 msgstr ""
 
-#: src/callbacks.c:1425
+#: src/callbacks.c:1164
 msgid "Can't find gtKam COPYING file"
 msgstr ""
 
-#: src/callbacks.c:1428
+#: src/callbacks.c:1167
 msgid "gtKam License"
 msgstr ""
 
-#: src/callbacks.c:1433
+#: src/callbacks.c:1172
 msgid "Can't find gPhoto2 COPYING file"
 msgstr ""
 
-#: src/callbacks.c:1436
+#: src/callbacks.c:1175
 msgid "gPhoto2 License"
 msgstr ""
 
-#: src/callbacks.c:1457
+#: src/callbacks.c:1196
 msgid "Can't find gtKam MANUAL file"
 msgstr ""
 
-#: src/callbacks.c:1462
+#: src/callbacks.c:1201
 msgid "gtKam Manual"
 msgstr ""
 

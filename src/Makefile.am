@@ -9,6 +9,7 @@ bin_PROGRAMS = gtkam
 gtkam_SOURCES = \
 	main.c \
 	support.c support.h \
+	frontend.c frontend.h \
 	interface.c interface.h \
 	callbacks.c callbacks.h \
 	util.c util.h \

@@ -235,7 +235,7 @@ on_model_changed (GtkEntry *entry, GtkamChooser *chooser)
 {
 	GtkWidget *dialog;
 	CameraAbilities a;
-	CameraPortInfo info;
+	GPPortInfo info;
 	const gchar *model;
 	gchar *msg;
 	int count, result;

@@ -22,6 +22,7 @@
 #ifndef __GTK_ITEM_ENTRY_H__
 #define __GTK_ITEM_ENTRY_H__
 
+#include <gtk/gtkentry.h>
 
 #ifdef __cplusplus
 extern "C" {

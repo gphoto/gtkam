@@ -1,5 +1,9 @@
 2001-10-06  Lutz Müller <urc8@rz.uni-karlsruhe.de>
 
+	* src/gtkam-list.[c,h]: New. Not yet finished.
+
+2001-10-06  Lutz Müller <urc8@rz.uni-karlsruhe.de>
+
 	* src/gtkam-tree.[c,h]: New
 
 2001-10-06  Lutz Müller <urc8@rz.uni-karlsruhe.de>

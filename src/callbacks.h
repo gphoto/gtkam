@@ -89,3 +89,4 @@ void on_about_activate (GtkMenuItem *menuitem, gpointer user_data);
 void on_debug_activate (GtkMenuItem *menuitem, gpointer user_data);
 
 void on_folder_selected (GtkamTree *tree, const gchar *path, gpointer data);
+void on_thumbnails_toggled (GtkToggleButton *toggle, gpointer data);

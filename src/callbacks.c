@@ -22,8 +22,7 @@
 #include <gtkam-error.h>
 #include <gtkam-preview.h>
 #include <gtkam-tree.h>
-
-#include "../pixmaps/no_thumbnail.xpm"
+#include <gtkam-list.h>
 
 char *current_folder();
 
@@ -33,68 +32,6 @@ char *current_folder();
 void debug_print (char *message) {
 	if (gp_gtk_debug)
 		printf("%s\n", message);
-}
-
-gboolean get_thumbnail (GtkWidget *widget, const char *name, GtkIconListItem *item)
-{
-	CameraFile *f;
-	char *folder;
-	GdkPixmap *pixmap;
-	GdkBitmap *bitmap;
-	const char *data;
-	long int size;
-
-	/* Get the thumbnail */
-	gp_file_new(&f);
-	folder = current_folder();
-	if (gp_camera_file_get(gp_gtk_camera, folder, name, GP_FILE_TYPE_PREVIEW, f) == GP_OK) {
-		gp_file_get_data_and_size (f, &data, &size);
-		gdk_image_new_from_data((char*)data,size,1,&pixmap,&bitmap);
-		gtk_pixmap_set(GTK_PIXMAP(item->pixmap), pixmap, bitmap);
-	}
-	gp_file_free(f);
-
-	return TRUE;
-}
-
-gboolean toggle_icon (GtkWidget *widget, GdkEventButton *event, gpointer data) {
-
-	GtkWidget *icon_list = (GtkWidget*) lookup_widget(gp_gtk_main_window, "icons");
-	GtkIconListItem *item;
-	GList *child = GTK_ICON_LIST(icon_list)->icons;
-	CameraList list;
-	const char *name;
-	int x,count=0;
-
-	while (child) {
-		item = (GtkIconListItem*)child->data;
-		if ((item->eventbox == widget)||(item->entry == widget)) {
-			/* A double-click on an index icon retrieve the thumbnail */
-			if(event->type == GDK_2BUTTON_PRESS) {
-				if (gp_camera_folder_list_files(gp_gtk_camera, current_folder(), &list)!=GP_OK) {
-					frontend_message(NULL, _("Could not retrieve the picture list."));
-					return TRUE;
-				}
-				count = gp_list_count(&list);
-				for (x=0;x<count;x++) {
-					gp_list_get_name (&list, x, &name);
-					if(strcmp(name,item->label)==0) {
-						get_thumbnail(widget, name, item);
-						item->state = GTK_STATE_SELECTED;
-					}
-				}
-			}
-		   if (item->state == GTK_STATE_SELECTED)
-			gtk_icon_list_unselect_icon(GTK_ICON_LIST(icon_list), item);
-		     else
-			gtk_icon_list_select_icon(GTK_ICON_LIST(icon_list), item);
-		   idle();
-		   gtk_entry_set_position(GTK_ENTRY(item->entry), 10000);
-		   return TRUE;
-		}
-		child = child->next;
-	}
-	return TRUE;
 }
 
 void idle() {
@@ -110,7 +47,7 @@ void idle() {
 
 void icon_resize(GtkWidget *window) {
 
-	GtkWidget *icon_list = (GtkWidget*)lookup_widget(gp_gtk_main_window, "icons");
+	GtkWidget *icon_list = (GtkWidget*)lookup_widget(gp_gtk_main_window, "file_list");
 	int x, y;
 
 	gdk_window_get_size(gp_gtk_main_window->window, &x, &y);
@@ -125,7 +62,7 @@ void icon_resize(GtkWidget *window) {
 
 int camera_set() {
 
-	GtkWidget *folder_tree, *message, *message_label, *icon_list;
+	GtkWidget *folder_tree, *message, *message_label, *file_list;
 	Camera *new_camera;
 	char camera[1024], port[1024], speed[1024];
 
@@ -171,11 +108,12 @@ int camera_set() {
 	gtk_widget_destroy(message);
 
 	/* Clear out the icon listing */
-	icon_list = (GtkWidget*) lookup_widget(gp_gtk_main_window, "icons");
-	gtk_icon_list_clear (GTK_ICON_LIST(icon_list));
+	file_list = lookup_widget (gp_gtk_main_window, "file_list");
+	gtkam_list_set_camera (GTKAM_LIST (file_list), new_camera);
+	gtkam_list_set_path (GTKAM_LIST (file_list), NULL);
 
 	/* Clear out the folder tree */
-	folder_tree = (GtkWidget*) lookup_widget(gp_gtk_main_window, "folder_tree");
+	folder_tree = lookup_widget (gp_gtk_main_window, "folder_tree");
 	gtkam_tree_set_camera (GTKAM_TREE (folder_tree), new_camera);
 
 	/* Mark the camera as init'd */
@@ -259,7 +197,7 @@ void save_selected_photos() {
 	debug_print("save selected photo");
 
 	/* Count the number of icons selected */
-	icon_list = (GtkWidget*)lookup_widget(gp_gtk_main_window, "icons");
+	icon_list = (GtkWidget*)lookup_widget(gp_gtk_main_window, "file_list");
 	for (x=0; x<GTK_ICON_LIST(icon_list)->num_icons; x++) {
 		item = gtk_icon_list_get_nth(GTK_ICON_LIST(icon_list), x);
 		if (item->state == GTK_STATE_SELECTED)
@@ -430,7 +368,7 @@ void close_photo() {
 /* ----------------------------------------------------------- */
 
 void select_all() {
-	GtkWidget *icon_list = (GtkWidget*) lookup_widget(gp_gtk_main_window, "icons");
+	GtkWidget *icon_list = (GtkWidget*) lookup_widget(gp_gtk_main_window, "file_list");
 	GtkIconListItem *item;
 	int x;
 
@@ -443,7 +381,7 @@ void select_all() {
 }
 
 void select_inverse() {
-	GtkWidget *icon_list = (GtkWidget*) lookup_widget(gp_gtk_main_window, "icons");
+	GtkWidget *icon_list = (GtkWidget*) lookup_widget(gp_gtk_main_window, "file_list");
 	GtkIconListItem *item;
 	int x;
 
@@ -459,7 +397,7 @@ void select_inverse() {
 }
 
 void select_none() {
-	GtkWidget *icon_list = (GtkWidget*) lookup_widget(gp_gtk_main_window, "icons");
+	GtkWidget *icon_list = (GtkWidget*) lookup_widget(gp_gtk_main_window, "file_list");
 	GtkIconListItem *item;
 	int x;
 
@@ -487,18 +425,11 @@ char *current_folder () {
 
 void folder_refresh (GtkWidget *widget, gpointer data) {
 
-	GtkWidget *icon_list;
+	GtkWidget *file_list;
 
-	debug_print("folder refresh");
+	file_list = lookup_widget (gp_gtk_main_window, "file_list");
 
-	if (!gp_gtk_camera_init)
-		CHECK_RESULT (camera_set ());
-
-	icon_list = (GtkWidget*) lookup_widget(gp_gtk_main_window, "icons");
-	gtk_icon_list_clear (GTK_ICON_LIST(icon_list));
-
-	//FIXME
-	camera_index(current_folder ());
+	gtkam_list_set_path (GTKAM_LIST (file_list), current_folder ());
 }
 
 /* Camera operations */
@@ -739,98 +670,17 @@ camera_select_again:
 	gtk_widget_destroy(window);
 }
 
-void camera_index (const gchar *path) {
-
-	CameraFile *f;
-	CameraAbilities a;
-	CameraList list;
-	GtkWidget *icon_list, *camera_tree, *use_thumbs;
-	GtkIconListItem *item;
-	GdkPixmap *pixmap;
-	GdkBitmap *bitmap;
-	char buf[1024];
-	int x, count=0, get_thumbnails = 1;
-	const char *name;
-	const char *data;
-	long int size;
-
-	debug_print("camera index");
-	
-	if (!gp_gtk_camera_init)
-		CHECK_RESULT (camera_set ());
-
-	icon_list   = (GtkWidget*) lookup_widget(gp_gtk_main_window, "icons");
-	GTK_ICON_LIST(icon_list)->is_editable = FALSE;
-
-	if (gp_setting_get("gtkam", "camera", buf)!=GP_OK) {
-		frontend_message(NULL, _("ERROR: please choose your camera model again"));
-		camera_select();
-		return;
-	}
-	if (gp_camera_abilities_by_name(buf, &a)!=GP_OK) {
-		frontend_message(NULL, _("Could not retrieve the camera's abilities"));
-		return;
-	}
-
-	if (gp_camera_folder_list_files(gp_gtk_camera, path, &list)!=GP_OK) {
-		frontend_message(NULL, _("Could not retrieve the picture list."));
-		return;
-	}
-
-	count = gp_list_count(&list);
-
-	if (count == 0)
-		return;
-
-	gtk_icon_list_clear (GTK_ICON_LIST(icon_list));
-	camera_tree = (GtkWidget*) lookup_widget(gp_gtk_main_window, "folder_tree");
-	use_thumbs  = (GtkWidget*) lookup_widget(gp_gtk_main_window, "use_thumbs");
-	gtk_widget_set_sensitive(camera_tree, FALSE);
-	gtk_widget_show(gp_gtk_progress_window);
-	x=0;
-	while ((x<count)&&(GTK_WIDGET_VISIBLE(gp_gtk_progress_window))) {
-		gp_list_get_name (&list, x, &name);
-		sprintf(buf,_("Getting Thumbnail #%04i of %04i\n%s"), x+1, count,
-			name);
-		frontend_message(NULL, buf);
-		idle();
-		if ((get_thumbnails)&&
-		    (a.file_operations & GP_FILE_OPERATION_PREVIEW)&&
-		    (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(use_thumbs)))) {
-			/* Get the thumbnails */
-			gp_file_new(&f);
-			if (gp_camera_file_get(gp_gtk_camera, 
-			    path, name, GP_FILE_TYPE_PREVIEW, f) == GP_OK) {
-				gp_file_get_data_and_size (f, &data, &size);
-				gdk_image_new_from_data((char*)data,size,1,&pixmap,&bitmap);
-				item = gtk_icon_list_add_from_data(GTK_ICON_LIST(icon_list),
-					no_thumbnail_xpm,name,NULL);
-				gtk_pixmap_set(GTK_PIXMAP(item->pixmap), pixmap, bitmap);
-			} else {
-				item = gtk_icon_list_add_from_data(GTK_ICON_LIST(icon_list),
-					no_thumbnail_xpm,name,NULL);
-			}
-			gp_file_free(f);
-		} else {
-			/* Use a dummy icon */
-			item = gtk_icon_list_add_from_data(GTK_ICON_LIST(icon_list),
-				no_thumbnail_xpm,name,NULL);
-		}
-		gtk_object_set_data(GTK_OBJECT(item->pixmap), "name", strdup(name));
-		gtk_signal_connect(GTK_OBJECT(item->eventbox), "button_press_event",
-			GTK_SIGNAL_FUNC(toggle_icon), NULL);
-		gtk_signal_connect(GTK_OBJECT(item->entry), "button_press_event",
-			GTK_SIGNAL_FUNC(toggle_icon), NULL);
-		x++;
-	}
-	gtk_widget_hide(gp_gtk_progress_window);
-	gtk_widget_set_sensitive(camera_tree, TRUE);
-}
-
 void
 on_folder_selected (GtkamTree *tree, const gchar *folder, gpointer data)
 {
-	camera_index (folder);
+	GtkWidget *file_list;
+
+	if (!gp_gtk_camera_init)
+		CHECK_RESULT (camera_set ());
+
+	file_list = lookup_widget (gp_gtk_main_window, "file_list");
+
+	gtkam_list_set_path (GTKAM_LIST (file_list), folder);
 }
 
 void camera_delete_common(int all) {
@@ -868,7 +718,7 @@ void camera_delete_common(int all) {
 	if (frontend_confirm(gp_gtk_camera,  buf)==0)
 		return;
 
-	icon_list = (GtkWidget*) lookup_widget(gp_gtk_main_window, "icons");
+	icon_list = (GtkWidget*) lookup_widget(gp_gtk_main_window, "file_list");
 	count = GTK_ICON_LIST(icon_list)->num_icons;
 
 	if (all) {
@@ -1225,4 +1075,14 @@ void on_debug_activate (GtkMenuItem *menuitem, gpointer user_data) {
 				    NULL);
 	}
 	gtk_widget_grab_focus (debug_window);
+}
+
+void
+on_thumbnails_toggled (GtkToggleButton *toggle, gpointer data)
+{
+	GtkWidget *file_list;
+
+	file_list = lookup_widget (gp_gtk_main_window, "file_list");
+
+	gtkam_list_set_thumbnails (GTKAM_LIST (file_list), toggle->active);
 }

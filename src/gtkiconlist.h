@@ -20,9 +20,9 @@
 #ifndef __GTK_ICON_LIST_H__
 #define __GTK_ICON_LIST_H__
 
-
-#include <gdk/gdk.h>
-#include <glib.h>
+#include <gtk/gtkfixed.h>
+#include <gtk/gtklist.h>
+#include <gtkitementry.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -118,6 +118,8 @@ struct _GtkIconListClass
 
 GtkType		gtk_icon_list_get_type	(void);
 GtkType		gtk_icon_list_item_get_type	(void);
+void            gtk_icon_list_construct         (GtkIconList *,
+						 guint icon_width, guint mode);
 GtkWidget*	gtk_icon_list_new		(guint icon_width,
 						 guint mode);
 void		gtk_icon_list_freeze		(GtkIconList *icon_list);

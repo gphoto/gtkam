@@ -740,17 +740,22 @@ unselect_all(GtkIconList *iconlist)
   iconlist->selection = NULL;
 }
 
+void
+gtk_icon_list_construct (GtkIconList *icon_list, guint icon_width, guint mode)
+{
+	icon_list->icon_width = icon_width;
+	icon_list->mode = mode;
+	icon_list->selection_mode = GTK_SELECTION_SINGLE;
+}
+
 GtkWidget*
 gtk_icon_list_new (guint icon_width, guint mode)
 {
   GtkIconList *icon_list;
 
   icon_list = gtk_type_new (gtk_icon_list_get_type ());
-  icon_list->icon_width = icon_width;
-  icon_list->mode = mode;
-  icon_list->icons = NULL;
-  icon_list->selection = NULL;
-  icon_list->selection_mode = GTK_SELECTION_SINGLE;
+  gtk_icon_list_construct (icon_list, icon_width, mode);
+
   return GTK_WIDGET (icon_list);
 }
 

@@ -16,12 +16,12 @@
 #include <gtk/gtk.h>
 
 #include "globals.h"
-#include "gtkiconlist.h"
 #include "callbacks.h"
 #include "interface.h"
 #include "support.h"
 #include "util.h"
 #include "gtkam-tree.h"
+#include "gtkam-list.h"
 
 void hide_progress_window (GtkWidget *widget, gpointer data) {
  
@@ -913,6 +913,8 @@ create_main_window (void)
   gtk_widget_show (checkbutton);
   gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(checkbutton), TRUE);
   gtk_container_add (GTK_CONTAINER(frame), checkbutton);
+  gtk_signal_connect (GTK_OBJECT (checkbutton), "toggled",
+		      GTK_SIGNAL_FUNC (on_thumbnails_toggled), NULL);
 
   scrolledwindow1 = gtk_scrolled_window_new (NULL, NULL);
   gtk_widget_ref (scrolledwindow1);
@@ -953,12 +955,11 @@ create_main_window (void)
   gtk_widget_show (viewport2);
   gtk_container_add (GTK_CONTAINER (scrolledwindow2), viewport2);
 
-  icons = gtk_icon_list_new(80, GTK_ICON_LIST_TEXT_BELOW);
+  icons = gtkam_list_new ();
   gtk_widget_ref (icons);
-  gtk_object_set_data_full (GTK_OBJECT (main_window), "icons", icons,
+  gtk_object_set_data_full (GTK_OBJECT (main_window), "file_list", icons,
                             (GtkDestroyNotify) gtk_widget_unref);
   gtk_widget_show (icons);
-  gtk_icon_list_set_selection_mode(GTK_ICON_LIST(icons), GTK_SELECTION_MULTIPLE);
   gtk_container_add (GTK_CONTAINER (viewport2), icons);
   
   status_bar = gtk_statusbar_new ();

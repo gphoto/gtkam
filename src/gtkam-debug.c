@@ -59,7 +59,7 @@ struct _GtkamDebugPrivate
 {
 	GtkText *text;
 
-	guint error_id, debug_id;
+	guint error_id, debug_id, data_id;
 
 	GPLogLevels levels;
 };
@@ -187,6 +187,20 @@ on_error_toggled (GtkToggleButton *toggle, GtkamDebug *debug)
 }
 
 static void
+on_data_toggled (GtkToggleButton *toggle, GtkamDebug *debug)
+{
+	if (toggle->active && !debug->priv->data_id) {
+		debug->priv->data_id = gp_log_add_func (GP_LOG_DATA,
+						       gp_log_func, debug);
+		debug->priv->levels |= GP_LOG_DATA;
+	} else if (!toggle->active && debug->priv->data_id) {
+		gp_log_remove_func (debug->priv->data_id);
+		debug->priv->data_id = 0;
+		debug->priv->levels &= ~GP_LOG_DATA;
+	}
+}
+
+static void
 on_ok_clicked (GtkButton *button, gboolean *ok)
 {
 	*ok = TRUE;
@@ -274,6 +288,13 @@ gtkam_debug_new (void)
 	gtk_signal_connect (GTK_OBJECT (check), "toggled",
 			    GTK_SIGNAL_FUNC (on_error_toggled), debug);
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (check), TRUE);
+
+	check = gtk_check_button_new_with_label (_("Data"));
+	gtk_widget_show (check);
+	gtk_box_pack_start (GTK_BOX (hbox), check, FALSE, FALSE, 0);
+	gtk_signal_connect (GTK_OBJECT (check), "toggled",
+			    GTK_SIGNAL_FUNC (on_data_toggled), debug);
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (check), FALSE); 
 
 	hbox = gtk_hbox_new (FALSE, 0);
 	gtk_widget_show (hbox);

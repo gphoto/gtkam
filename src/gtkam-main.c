@@ -438,6 +438,10 @@ gtkam_main_update_sensitivity (GtkamMain *m)
 static void
 on_folder_selected (GtkamTree *tree, const gchar *folder, GtkamMain *m)
 {
+	/* Make sure we aren't shutting down */
+	if (!GTKAM_IS_MAIN (m))
+		return;
+
 	/*
 	 * Don't let the user switch folders while the list is downloading
 	 * the file listing or thumbnails. If you want to give the user this
@@ -445,6 +449,10 @@ on_folder_selected (GtkamTree *tree, const gchar *folder, GtkamMain *m)
 	 */
 	gtk_widget_set_sensitive (m->priv->vbox, FALSE);
 	gtkam_list_set_path (m->priv->list, folder);
+
+	/* Again, make sure we aren't shutting down */
+	if (!GTKAM_IS_MAIN (m))
+		return;
 	gtk_widget_set_sensitive (m->priv->vbox, TRUE);
 
 	gtkam_main_update_sensitivity (m);
@@ -1171,7 +1179,11 @@ gtkam_main_new (void)
 static void
 status_func (Camera *camera, const char *status, void *data)
 {
-	GtkamMain *m = GTKAM_MAIN (data);
+	GtkamMain *m = data;
+
+	/* Make sure we are not sutting down */
+	if (!GTKAM_IS_MAIN (m))
+		return;
 
 	if (m->priv->message_id)
 		gtk_statusbar_remove (m->priv->status, m->priv->context_id,

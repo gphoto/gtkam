@@ -277,6 +277,11 @@ create_item (GtkamTree *tree, GtkTree *tree_to_add_to, const gchar *path)
 	/* Show the number of pictures in the folder */
 	gp_list_new (&list);
 	result = gp_camera_folder_list_files (tree->priv->camera, path, list);
+
+	/* Make sure we are not shutting down */
+	if (!GTKAM_IS_TREE (tree))
+		return;
+
 	if (result < 0) {
 		window = gtk_widget_get_ancestor (GTK_WIDGET (tree),
 						  GTK_TYPE_WINDOW);

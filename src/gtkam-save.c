@@ -477,7 +477,7 @@ gtkam_save_new (void)
 	GtkWidget *hbox, *frame, *check, *label, *entry;
 	GtkObject *a;
 	GtkTooltips *tooltips;
-//	CameraAbilities a;
+	gchar *t;
 
 	save = g_object_new (GTKAM_TYPE_SAVE, NULL);
 
@@ -497,7 +497,9 @@ gtkam_save_new (void)
 	gtk_widget_show (hbox);
 	gtk_container_add (GTK_CONTAINER (frame), hbox);
 
-	check = gtk_check_button_new_with_label (_("Save photos"));
+	t = g_locale_to_utf8 (_("Save photos"), -1, NULL, NULL, NULL);
+	check = gtk_check_button_new_with_label (t);
+	g_free (t);
 	gtk_widget_show (check);
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (check), TRUE);
 	gtk_box_pack_start (GTK_BOX (hbox), check, TRUE, TRUE, 0);
@@ -505,49 +507,50 @@ gtkam_save_new (void)
 			      "this is checked"), NULL);
 	save->priv->toggle_normal = GTK_TOGGLE_BUTTON (check);
 
-//	gp_camera_get_abilities (camera, &a);
-//	if (a.file_operations & GP_FILE_OPERATION_RAW) {
-		check = gtk_check_button_new_with_label (_("Save raw data"));
-		gtk_widget_show (check);
-		gtk_box_pack_start (GTK_BOX (hbox), check, TRUE, TRUE, 0);
-		gtk_tooltips_set_tip (tooltips, check, _("Raw data will be "
-				      "saved if this is checked"), NULL);
-		save->priv->toggle_raw = GTK_TOGGLE_BUTTON (check);
-//	}
+	t = g_locale_to_utf8 (_("Save raw data"), -1, NULL, NULL, NULL);
+	check = gtk_check_button_new_with_label (t);
+	g_free (t);
+	gtk_widget_show (check);
+	gtk_box_pack_start (GTK_BOX (hbox), check, TRUE, TRUE, 0);
+	gtk_tooltips_set_tip (tooltips, check, _("Raw data will be "
+			      "saved if this is checked"), NULL);
+	save->priv->toggle_raw = GTK_TOGGLE_BUTTON (check);
 
-//	if (a.file_operations & GP_FILE_OPERATION_AUDIO) {
-		check = gtk_check_button_new_with_label (_("Save audio data"));
-		gtk_widget_show (check);
-		gtk_box_pack_start (GTK_BOX (hbox), check, TRUE, TRUE, 0);
-		gtk_tooltips_set_tip (tooltips, check, _("Audio data will be "
-				      "saved if this is checked"), NULL);
-		save->priv->toggle_audio = GTK_TOGGLE_BUTTON (check);
-//	}
+	t = g_locale_to_utf8 (_("Save audio data"), -1, NULL, NULL, NULL);
+	check = gtk_check_button_new_with_label (t);
+	g_free (t);
+	gtk_widget_show (check);
+	gtk_box_pack_start (GTK_BOX (hbox), check, TRUE, TRUE, 0);
+	gtk_tooltips_set_tip (tooltips, check, _("Audio data will be "
+			      "saved if this is checked"), NULL);
+	save->priv->toggle_audio = GTK_TOGGLE_BUTTON (check);
 
-//	if (a.file_operations & GP_FILE_OPERATION_PREVIEW) {
-		check = gtk_check_button_new_with_label (_("Save thumbnails"));
-		gtk_widget_show (check);
-		gtk_box_pack_start (GTK_BOX (hbox), check, TRUE, TRUE, 0);
-		gtk_tooltips_set_tip (tooltips, check, _("Thumbnails will be "
-				      "saved if this is checked"), NULL);
-		save->priv->toggle_preview = GTK_TOGGLE_BUTTON (check);
-//	}
+	g_locale_to_utf8 (_("Save thumbnails"), -1, NULL, NULL, NULL);
+	check = gtk_check_button_new_with_label (t);
+	g_free (t);
+	gtk_widget_show (check);
+	gtk_box_pack_start (GTK_BOX (hbox), check, TRUE, TRUE, 0);
+	gtk_tooltips_set_tip (tooltips, check, _("Thumbnails will be "
+			      "saved if this is checked"), NULL);
+	save->priv->toggle_preview = GTK_TOGGLE_BUTTON (check);
 
-//	if (a.file_operations & GP_FILE_OPERATION_EXIF) {
-		check = gtk_check_button_new_with_label (_("Save EXIF data"));
-		gtk_widget_show (check);
-		gtk_box_pack_start (GTK_BOX (hbox), check, TRUE, TRUE, 0);
-		gtk_tooltips_set_tip (tooltips, check, _("EXIF data will be "
-			"saved if this is checked"), NULL);
-		save->priv->toggle_exif = GTK_TOGGLE_BUTTON (check);
-//	}
+	t = g_locale_to_utf8 (_("Save EXIF data"), -1, NULL, NULL, NULL);
+	check = gtk_check_button_new_with_label (t);
+	g_free (t);
+	gtk_widget_show (check);
+	gtk_box_pack_start (GTK_BOX (hbox), check, TRUE, TRUE, 0);
+	gtk_tooltips_set_tip (tooltips, check, _("EXIF data will be "
+		"saved if this is checked"), NULL);
+	save->priv->toggle_exif = GTK_TOGGLE_BUTTON (check);
 
 	hbox = gtk_hbox_new (FALSE, 0);
 	gtk_widget_show (hbox);
 	gtk_box_pack_start (GTK_BOX (GTK_FILE_SELECTION (save)->main_vbox),
 			    hbox, TRUE, TRUE, 0);
 
-	label = gtk_label_new (_("Open image(s) with: "));
+	t = g_locale_to_utf8 (_("Open image(s) with: "), -1, NULL, NULL, NULL);
+	label = gtk_label_new (t);
+	g_free (t);
 	gtk_widget_show (label);
 	gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
 
@@ -560,8 +563,10 @@ gtkam_save_new (void)
 	save->priv->program = GTK_ENTRY (entry);
 
 	/* Filenames provided by camera */
-	check = gtk_check_button_new_with_label (_("Use filename(s) provided "
-						 "by the camera"));
+	t = g_locale_to_utf8 (_("Use filename(s) provided by the camera"),
+			      -1, NULL, NULL, NULL);
+	check = gtk_check_button_new_with_label (t);
+	g_free (t);
 	gtk_widget_show (check);
 	gtk_box_pack_start (GTK_BOX (GTK_FILE_SELECTION (save)->main_vbox),
 			    check, TRUE, TRUE, 0);
@@ -580,7 +585,9 @@ gtkam_save_new (void)
                                hbox, 256);
 	save->priv->hbox_prefix = hbox;
 
-        label = gtk_label_new (_("Filename prefix: "));
+	t = g_locale_to_utf8 (_("Filename prefix: "), -1, NULL, NULL, NULL);
+        label = gtk_label_new (t);
+	g_free (t);
         gtk_widget_show (label);
         gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
 
@@ -589,7 +596,10 @@ gtkam_save_new (void)
         gtk_box_pack_start (GTK_BOX (hbox), save->priv->prefix_entry,
 			    TRUE, TRUE, 0);
 
-	label = gtk_label_new (_("Start numbering with: "));
+	t = g_locale_to_utf8 (_("Start numbering with: "),
+			      -1, NULL, NULL, NULL);
+	label = gtk_label_new (t);
+	g_free (t);
         gtk_widget_show (label);
         gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
 

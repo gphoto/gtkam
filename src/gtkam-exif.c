@@ -151,7 +151,7 @@ gtkam_exif_new (GtkamCamera *camera, const gchar *folder, const gchar *file)
 		gp_file_unref (cfile);
 		dialog = gtkam_error_new (result, GTKAM_CANCEL (c)->context,
 			NULL, _("Could not get exif information for "
-			"'%s' in folder '%s'"), file, folder);
+			"'%s' in folder '%s'."), file, folder);
 		gtk_widget_show (dialog);
 		gtk_object_destroy (GTK_OBJECT (c));
 		return (NULL);
@@ -189,7 +189,7 @@ gtkam_exif_new (GtkamCamera *camera, const gchar *folder, const gchar *file)
 	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (exif)->vbox), browser,
 			    TRUE, TRUE, 0);
 #else
-	label = gtk_label_new (_("Gtkam has been compiled without exif "
+	label = gtk_label_new (_("Gtkam has been compiled without EXIF "
 		"support."));
 	gtk_widget_show (label);
 	gtk_container_set_border_width (GTK_CONTAINER (label), 5);

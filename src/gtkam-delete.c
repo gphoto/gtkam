@@ -382,10 +382,10 @@ gtkam_delete_add (GtkamDelete *delete, GtkamCamera *camera,
 
 	if (delete->priv->deleteall)
 		msg = g_strdup_printf (_("Do you really want to "
-				"delete all the files in %s?"), data->folder);
+				"delete all the files in '%s'?"), data->folder);
 	else if (g_slist_length (delete->priv->data) == 1)
 		msg = g_strdup_printf (_("Do you really want to "
-				"delete %s?"), data->name);
+				"delete '%s'?"), data->name);
 	else
 		msg = g_strdup_printf (_("Do you really want to "
 				"delete the selected %i files?"),

@@ -213,8 +213,8 @@ delete_selected (GtkamMain *m)
 		item = g_list_nth_data (GTK_ICON_LIST (list)->selection, i);
 		files = g_list_append (files, item->label);
 	}
-	delete = gtkam_delete_new (m->priv->camera, list->path, files,
-				   GTK_WIDGET (m));
+	delete = gtkam_delete_new (m->priv->camera, m->priv->multi,
+				   list->path, files, GTK_WIDGET (m));
 	gtk_widget_show (delete);
 	gtk_signal_connect (GTK_OBJECT (delete), "file_deleted",
 			    GTK_SIGNAL_FUNC (on_file_deleted), m);
@@ -247,8 +247,8 @@ on_delete_all_photos_activate (GtkMenuItem *item, GtkamMain *m)
 	if (!m->priv->list->path)
 		return;
 
-	delete = gtkam_delete_new (m->priv->camera, m->priv->list->path,
-				   NULL, GTK_WIDGET (m));
+	delete = gtkam_delete_new (m->priv->camera, m->priv->multi,
+				   m->priv->list->path, NULL, GTK_WIDGET (m));
 	gtk_widget_show (delete);
 	gtk_signal_connect (GTK_OBJECT (delete), "file_deleted",
 			    GTK_SIGNAL_FUNC (on_file_deleted), m);

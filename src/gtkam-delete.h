@@ -49,7 +49,8 @@ struct _GtkamDeleteClass
 };
 
 GtkType    gtkam_delete_get_type (void);
-GtkWidget *gtkam_delete_new      (Camera *camera, const gchar *path,
+GtkWidget *gtkam_delete_new      (Camera *camera, gboolean multi,
+				  const gchar *path,
 				  GList *files, GtkWidget *opt_window);
 
 #endif /* __GTKAM_DELETE_H__ */

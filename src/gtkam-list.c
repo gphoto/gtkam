@@ -255,7 +255,8 @@ on_delete_activate (GtkMenuItem *menu_item, PopupData *data)
 
 	files = g_list_append (NULL, item->label);
 	w = gtk_widget_get_ancestor (GTK_WIDGET (list), GTK_TYPE_WINDOW);
-	delete = gtkam_delete_new (list->priv->camera, list->path, files, w);
+	delete = gtkam_delete_new (list->priv->camera, list->priv->multi, 
+				   list->path, files, w);
 	g_list_free (files);
 	gtk_widget_show (delete);
 	gtk_signal_connect_while_alive (GTK_OBJECT (delete), "file_deleted",

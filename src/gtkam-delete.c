@@ -55,6 +55,7 @@
 struct _GtkamDeletePrivate
 {
 	Camera *camera;
+	gboolean multi;
 	gchar *path;
 
 	GList *toggles;
@@ -205,7 +206,6 @@ delete_all (GtkamDelete *delete)
 				}
 			}
 		}
-
 		return (FALSE);
 	} else {
 		gtk_signal_emit (GTK_OBJECT (delete),
@@ -266,6 +266,9 @@ on_delete_clicked (GtkButton *button, GtkamDelete *delete)
 	} else if (!delete_all (delete))
 		success = FALSE;
 
+	if (delete->priv->multi)
+		gp_camera_exit (delete->priv->camera);
+
 	if (success)
 		gtk_object_destroy (GTK_OBJECT (delete));
 }
@@ -277,8 +280,8 @@ on_cancel_clicked (GtkButton *button, GtkamDelete *delete)
 }
 
 GtkWidget *
-gtkam_delete_new (Camera *camera, const gchar *path, GList *files,
-		  GtkWidget *opt_window)
+gtkam_delete_new (Camera *camera, gboolean multi, const gchar *path,
+		  GList *files, GtkWidget *opt_window)
 {
 	GtkamDelete *delete;
 	GtkWidget *label, *button, *image, *hbox, *vbox, *check;
@@ -297,6 +300,7 @@ gtkam_delete_new (Camera *camera, const gchar *path, GList *files,
 	delete->priv->camera = camera;
 	gp_camera_ref (camera);
 	delete->priv->path = g_strdup (path);
+	delete->priv->multi = multi;
 
 	hbox = gtk_hbox_new (FALSE, 10);
 	gtk_widget_show (hbox);

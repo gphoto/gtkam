@@ -2,7 +2,7 @@
 #
 # $Id$
 #
-# RPM spec file for gphoto2
+# RPM spec file for gtkam
 #
 # TODO list concerning packaging
 # - review and coordinate RPM packaging for gphoto2, libusb, gtkam
@@ -13,22 +13,32 @@
 Summary: Graphical frontend for libgphoto2
 Name: @PACKAGE@
 Version: @VERSION@
-Release: 3
+Release: 1
 License: LGPL
 Group: Applications/Multimedia
 BuildRoot: %{_tmppath}/%{name}-%{version}-root
 Source: http://www.gphoto.org/dist/@PACKAGE@-@VERSION@.tar.gz
 Url: http://www.gphoto.org/
-Requires: libusb >= 0.0.4
-Requires: gphoto
-PreReq: hotplug
-Provides: libgphoto2
-BuildRequires: gphoto-devel
-BuildRequires: findutils perl
+BuildRequires: gphoto2-devel gdk-pixbuf-devel gimp-devel
+BuildRequires: pkgconfig
+# BuildRequires: findutils perl
 
 ####################################
 %description
-gtkam is a GUI frontend for libgphoto2
+The gtkam package provides a gtk-based frontend to gphoto2. Install
+this package if you want to use a digital camera with a GUI interface.
+
+####################################
+%package gimp
+Summary: GIMP plug-in for direct digital camera through gphoto2
+Requires: %{name} = %{version}
+Requires: gimp >= 1.2
+PreReq: fileutils gawk sh-utils /usr/bin/gimp-config
+Group: Applications/Multimedia
+
+####################################
+%description gimp
+A GIMP plug-in for direct digital camera through gphoto2
 
 
 ########################################################################
@@ -37,74 +47,128 @@ gtkam is a GUI frontend for libgphoto2
 
 ####################################
 %prep
-rm -rf "${RPM_BUILD_DIR}/%{name}-%{version}"
+rm -rf "%{buildroot}"
 %setup -q -n %{name}-%{version}
 
 ####################################
 %build
-CFLAGS="${CFLAGS:-%optflags}" ; export CFLAGS ;
-CXXFLAGS="${CXXFLAGS:-%optflags}" ; export CXXFLAGS ;
-FFLAGS="${FFLAGS:-%optflags}" ; export FFLAGS ;
-%{?__libtoolize:[ -f configure.in ] && %{__libtoolize} --copy --force} ;
-./configure %{_target_platform} \
-        --prefix=%{_prefix} \
-        --exec-prefix=%{_exec_prefix} \
-        --bindir=%{_bindir} \
-        --sbindir=%{_sbindir} \
-        --sysconfdir=%{_sysconfdir} \
-        --datadir=%{_datadir} \
-        --includedir=%{_includedir} \
-        --libdir=%{_libdir} \
-        --libexecdir=%{_libexecdir} \
-        --localstatedir=%{_localstatedir} \
-        --sharedstatedir=%{_sharedstatedir} \
-        --mandir=%{_mandir} \
-        --infodir=%{_infodir} \
-        --with-html-dir=%{_docdir}/%{name}-%{version}/html
+%configure
 make
 
 ####################################
 %install
-rm -rf "${RPM_BUILD_ROOT}"
+%makeinstall
+%find_lang %{name}
 
-make DESTDIR=%{buildroot} \
-        prefix=%{_prefix} \
-        exec_prefix=%{_exec_prefix} \
-        bindir=%{_bindir} \
-        sbindir=%{_sbindir} \
-        sysconfdir=%{_sysconfdir} \
-        datadir=%{_datadir} \
-        docdir=%{_docdir}/%{name}-%{version} \
-        includedir=%{_includedir} \
-        libdir=%{_libdir} \
-        libexecdir=%{_libexecdir} \
-        localstatedir=%{_localstatedir} \
-        sharedstatedir=%{_sharedstatedir} \
-        mandir=%{_mandir} \
-        infodir=%{_infodir} \
-install
+# Desktop file
+mkdir -p %{buildroot}%{_sysconfdir}/X11/applnk/Graphics
+cat << EOF > %{buildroot}%{_sysconfdir}/X11/applnk/Graphics/gtkam.desktop
+[Desktop Entry]
+Name=gtKam
+Type=Application
+Description=A digital camera viewer
+Exec=gtkam
+Icon=/usr/share/gtkam/pixmaps/camera.xpm
+EOF
 
-# build file list
-find %{buildroot} -type f | sed 's!^%{buildroot}!!' | sort | grep -v '^/usr/doc/' > %{name}-%{version}.files
+####################################
+%post gimp
+GIMPPLUGINDIR=`/usr/bin/gimp-config --gimpplugindir`
+if [ -z "$GIMPPLUGINDIR" ]; then
+  GIMPPLUGINDIR=/usr/lib/gimp/1.2
+fi
+RELPATH=`echo $GIMPPLUGINDIR | awk '
+  BEGIN { FS="/"; i = 1} {while (i < NF) { printf("../"); i = i + 1} }'`
+if [ ! -s $GIMPPLUGINDIR/plug-ins/gtkam ]; then
+  ln -s $RELPATH/libexec/gtkam-gimp $GIMPPLUGINDIR/plug-ins/gtkam
+fi
 
+####################################
+%postun gimp
+if [ $1 = 0 ]; then
+  rm -f /usr/lib/gimp/*/plug-ins/gtkam
+fi
 
 ####################################
 %clean
-rm -rf "${RPM_BUILD_ROOT}"
+rm -rf "%{buildroot}"
 
 ########################################################################
 # file list and installation for main package
 ########################################################################
 
 ####################################
-%files -f %{name}-%{version}.files
+%files -f %{name}.lang
 %defattr(-,root,root)
 %doc README COPYING AUTHORS NEWS MANUAL
+%{_sysconfdir}/X11/applnk/Graphics/gtkam.desktop
+%{_bindir}/*
+%{_datadir}/gtkam
+%{_datadir}/images/gtkam
+
+####################################
+%files gimp
+%defattr(-,root,root)
+%{_libexecdir}/gtkam-gimp
 
 
 ########################################################################
 # ChangeLog
 ########################################################################
 %changelog
-* Wed Oct 31 2001 Hans Ulrich Niedermann <gp@n-dimensional.de>
-- moved to new RPM build mechanism (make rpm rulez!)
+* Sat May 18 2002 Hans Ulrich Niedermann <gp@n-dimensional.de>
+- adapted for "make rpm", tidiead spec file. :-)
+
+* Wed Mar  6 2002 Tim Waugh <twaugh@redhat.com> 0.1.3-0.cvs20020225.2
+- The gimp subpackage requires /usr/bin/gimp-config in its %%post
+  scriplet.
+
+* Mon Feb 25 2002 Tim Waugh <twaugh@redhat.com> 0.1.3-0.cvs20020225.1
+- Adapted for Red Hat Linux.  Tidied the spec file.
+- Made a desktop entry.
+- Fixed the gimp plug-in.
+
+* Mon Jan 28 2002 Till Kamppeter <till@mandrakesoft.com> 0.1-10mdk
+- Rebuilt for libusb 0.1.4.
+
+* Wed Jan 09 2002 David BAUDENS <baudens@mandrakesoft.com> 0.1-9mdk
+- Add %%defattr(-,root,root,-) for gtkam-gimp-plugin
+
+* Wed Jan 09 2002 David BAUDENS <baudens@mandrakesoft.com> 0.1-8mdk
+- Fix menu entry
+
+* Tue Dec  4 2001 Till Kamppeter <till@mandrakesoft.com> 0.1-7mdk
+- Updated to the CVS snapshot from 04/12/2001.
+
+* Sat Dec  1 2001 Till Kamppeter <till@mandrakesoft.com> 0.1-6mdk
+- Updated to the CVS of 01/12/2001.
+
+* Fri Nov 30 2001 Till Kamppeter <till@mandrakesoft.com> 0.1-5mdk
+- Updated to the CVS of 30/11/2001.
+
+* Mon Oct 08 2001 Stefan van der Eijk <stefan@eijk.nu> 0.1-4mdk
+- BuildRequires: gettext-devel
+
+* Thu Sep 13 2001 Stefan van der Eijk <stefan@eijk.nu> 0.1-3mdk
+- fixed BuildRequires
+- Copyright --> License
+
+* Mon Aug  6 2001 Till Kamppeter <till@mandrakesoft.com> 0.1-2mdk
+- Corrected the doc directory path again
+
+* Mon Aug  6 2001 Till Kamppeter <till@mandrakesoft.com> 0.1-1mdk
+- Moved to main
+- Corrected the doc directory
+- Added a menu entry
+- Updated from CVS
+
+* Mon Nov 27 2000 Lenny Cartier <lenny@mandrakesoft.com> 0.1-0.20001116mdk
+- new in contribs
+- macros
+- used srpm from rufus t firefly <rufus.t.firefly@linux-mandrake.com>
+   - v0.1-0.20001116mdk (initial packaging from CVS) 
+
+########################################################################
+# Local Variables:
+# mode: rpm-spec
+# End:

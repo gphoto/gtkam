@@ -122,19 +122,31 @@ main (int argc, char *argv[])
 {
 	GtkWidget *m;
 	char buf[1024];
-	int x, y, log;
+	int x, y, log = -1;
 
 	gtk_set_locale ();
 	bindtextdomain (PACKAGE, GTKAM_LOCALEDIR);
 	textdomain (PACKAGE);
 
-	/* Debugging? */
-	for (log = -1, x = 0; x < argc; x++)
+	/* Process command-line parameters */
+	for (x = 1; x < argc; x++) {
 		if (!strcmp (argv[x], "--debug") || !strcmp (argv[x], "-d")) {
 			log = gp_log_add_func (GP_LOG_DEBUG, log_func, NULL);
 			g_log_set_always_fatal (G_LOG_LEVEL_CRITICAL);
-			break;
-		}
+		} else if (!strcmp (argv[x], "--version") ||
+			   !strcmp (argv[x], "-v")) {
+			printf ("%s\n", VERSION);
+			return (0);
+		} else if (!strcmp (argv[x], "--help") ||
+			   !strcmp (argv[x], "-h")) {
+			printf ("%s-%s\n", PACKAGE, VERSION);
+			printf (" -h --help      Print this message\n");
+			printf (" -d --debug     Print debugging output\n");
+			printf (" -v --version   Print version\n");
+			return (0);
+		} else
+			g_warning ("Unknown option '%s'!", argv[x]);
+	}
 
 	gtk_init (&argc, &argv);
 

@@ -1,3 +1,8 @@
+2004-02-11  Andrew Burton <adburton@users.sourceforge.net>
+
+	* src/gtkam-viewer.c: Fixed compiler warnings, removed
+	redundant printf()s.
+
 2004-02-10  Andrew Burton <adburton@users.sourceforge.net>
 
 	* help/C/gtkam.xml: Minor changes prior to release.

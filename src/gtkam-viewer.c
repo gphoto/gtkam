@@ -129,29 +129,28 @@ on_close_clicked (GtkButton *button, GtkamViewer *viewer)
 static void
 show_pixbuf (GtkamViewer *v, GtkAllocation *allocation, gboolean force)
 {
-        GdkPixbuf *scaled, *p;
-        gint w, h, target_w, target_h, current_w, current_h;
+	GdkPixbuf *scaled, *p;
+	gint w, h, target_w, target_h, current_w, current_h;
 
 	g_return_if_fail (GTKAM_IS_VIEWER (v));
 
-        if (!v->priv->pixbuf)
-                return; 
+	if (!v->priv->pixbuf)
+		return; 
 
-        w = gdk_pixbuf_get_width (v->priv->pixbuf);
-        h = gdk_pixbuf_get_height (v->priv->pixbuf);
-printf("Size is %d %d\n", w, h);
-printf("Allocation size is %d %d\n", allocation->width, allocation->height);
+	w = gdk_pixbuf_get_width (v->priv->pixbuf);
+	h = gdk_pixbuf_get_height (v->priv->pixbuf);
+
 	p = gtk_image_get_pixbuf (GTK_IMAGE (v->priv->image));
 	current_w = (p ? gdk_pixbuf_get_width (p) : 0);
 	current_h = (p ? gdk_pixbuf_get_height (p) : 0);
-        target_w = MIN (allocation->width, allocation->height * w / h);
-        target_h = MIN (allocation->height, allocation->width * h / w);
+	target_w = MIN (allocation->width, allocation->height * w / h);
+	target_h = MIN (allocation->height, allocation->width * h / w);
 	if (((target_w == current_w) || (target_h == current_h)) && !force)
 		return;
-printf("About to scale to %d %d\n", target_w, target_h);
-        scaled = gdk_pixbuf_scale_simple (v->priv->pixbuf, target_w, target_h,
-                                          GDK_INTERP_HYPER);
-        gtk_image_set_from_pixbuf (GTK_IMAGE (v->priv->image), scaled);
+
+	scaled = gdk_pixbuf_scale_simple (v->priv->pixbuf, target_w, target_h,
+	                                  GDK_INTERP_HYPER);
+	gtk_image_set_from_pixbuf (GTK_IMAGE (v->priv->image), scaled);
 	gdk_pixbuf_unref (scaled);
 }
 
@@ -166,11 +165,11 @@ GtkWidget *
 gtkam_viewer_new (void)
 {
 	GtkamViewer *v;
-	GtkWidget *button;
+	GtkWidget *button, *hbox;
 
 	v = g_object_new (GTKAM_TYPE_VIEWER, NULL);
 	gtk_widget_hide (GTKAM_DIALOG (v)->image);	/* Hide camera pic */
-	GtkWidget *hbox = gtk_hbox_new (FALSE, 10);
+	hbox = gtk_hbox_new (FALSE, 10);
 	gtk_widget_show (hbox);
 	gtk_box_pack_end (GTK_BOX (GTKAM_DIALOG (v)->vbox), hbox,
 			  TRUE, TRUE, 0);	

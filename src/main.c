@@ -54,6 +54,11 @@
 #  include <bonobo/bonobo-ui-main.h>
 #endif
 
+#ifdef HAVE_GNOME
+#  include <libgnome/gnome-program.h>
+#  include <libgnomeui/gnome-ui-init.h>
+#endif
+
 #include "gtkam-main.h"
 #include "gtkam-error.h"
 #include "util.h"
@@ -115,7 +120,12 @@ main (int argc, char *argv[])
 			g_warning ("Unknown option '%s'!", argv[x]);
 	}
 
-#ifdef HAVE_BONOBO
+#ifdef HAVE_GNOME
+	gnome_program_init (PACKAGE, VERSION, LIBGNOMEUI_MODULE, argc, argv,
+			    GNOME_PARAM_HUMAN_READABLE_NAME,
+			    _("Image Download Program"),
+			    GNOME_PARAM_APP_DATADIR, APP_DATADIR, NULL);
+#elif HAVE_BONOBO
 	bonobo_ui_init (PACKAGE, VERSION, &argc, argv);
 #else
 	gtk_init (&argc, &argv);

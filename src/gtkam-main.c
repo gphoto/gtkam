@@ -66,7 +66,7 @@
 #include <gtk/gtkimage.h>
 
 #ifdef HAVE_GNOME
-#  include <libgnome/gnome-url.h>
+#  include <libgnome/gnome-help.h>
 #endif
 
 #include <gphoto2/gphoto2-camera.h>
@@ -427,10 +427,14 @@ action_help (gpointer callback_data, guint callback_action,
 	     GtkWidget *widget)
 {
 	GError *e = NULL;
+	GtkamMain *m = GTKAM_MAIN (callback_data);
+	GtkWidget *d;
 
-	gnome_url_show ("file://" MANUAL_DIR "/gphoto2.xml", &e);
+	gnome_help_display ("gtkam.xml", NULL, &e);
 	if (e) {
-		g_warning (e->message);
+		d = gtkam_close_new (e->message);
+		gtk_window_set_transient_for (GTK_WINDOW (d), GTK_WINDOW (m));
+		gtk_widget_show (d);
 		g_error_free (e);
 	}
 }

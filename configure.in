@@ -54,8 +54,8 @@ if $try_bonobo; then
 fi
 
 dnl ---------------------------------------------------------------------------
-dnl libgnome: If we want to display documentation, we need gnome_help_*
-dnl           and gphoto2-manual.
+dnl libgnomeui: If we want to display documentation, we need gnome_help_*
+dnl             and gphoto2-manual.
 dnl ---------------------------------------------------------------------------
 try_gnome=true
 gnome_msg=no
@@ -65,9 +65,9 @@ AC_ARG_WITH(gnome, [  --without-gnome         Don't compile with gnome], [
 		try_gnome=false
 	fi])
 if $try_gnome; then
-	if ${PKG_CONFIG} --exists libgnome-2.0 gphoto2-manual; then
-		MANUAL_DIR=`${PKG_CONFIG} --variable=xmldir gphoto2-manual`
-		PKG_CHECK_MODULES(GNOME, libgnome-2.0)
+	if ${PKG_CONFIG} --exists libgnomeui-2.0 gphoto2-manual; then
+		APP_DATADIR=`pkg-config --variable=datadir gphoto2-manual`
+		PKG_CHECK_MODULES(GNOME, libgnomeui-2.0)
 		AC_DEFINE(HAVE_GNOME,,[whether we use gnome])
 		gnome_msg=yes
 		have_gnome=true
@@ -75,7 +75,7 @@ if $try_gnome; then
 fi
 AC_SUBST(GNOME_CFLAGS)
 AC_SUBST(GNOME_LIBS)
-AC_SUBST(MANUAL_DIR)
+AC_SUBST(APP_DATADIR)
 
 dnl ---------------------------------------------------------------------------
 dnl GIMP plugin

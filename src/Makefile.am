@@ -6,10 +6,9 @@ INCLUDES =					\
  -DGTKAM_LOCALEDIR=\"$(datadir)/locale\"	\
  -DPACKAGE_DATA_DIR=\"$(datadir)/gtkam\"	\
  -DPACKAGE_SOURCE_DIR=\"$(top_srcdir)\"		\
- -DMANUAL_DIR=\"@MANUAL_DIR@\"			\
+ -DAPP_DATADIR=\"@APP_DATADIR@\"		\
  -DGTK_DISABLE_DEPRECATED			\
- $(EXIF_CFLAGS)					\
- $(GTKAM_CFLAGS)				\
+ $(EXIF_CFLAGS) $(GNOME_CFLAGS) $(GTKAM_CFLAGS)	\
  $(BONOBO_CFLAGS)				\
  $(GTKAM_GIMP_CFLAGS)
 
@@ -46,11 +45,17 @@ gtkam_SOURCES = 				\
 	gtkam-exif.c gtkam-exif.h 		\
 	gtkam-main.c gtkam-main.h 		\
 	main.c
-gtkam_LDADD = libgtkam.a $(EXIF_LIBS) $(GTKAM_LIBS) $(BONOBO_LIBS)
+gtkam_LDADD =						\
+	libgtkam.a					\
+	$(EXIF_LIBS) $(GTKAM_LIBS) $(BONOBO_LIBS)	\
+	$(GNOME_LIBS)
 
 if HAVE_GIMP
 libexecdir = $(libdir)/gimp/1.3/plug-ins
 libexec_PROGRAMS = gtkam-gimp
 gtkam_gimp_SOURCES = gtkam-gimp.c
-gtkam_gimp_LDADD = $(GTKAM_GIMP_LIBS) $(EXIF_LIBS) $(BONOBO_LIBS) libgtkam.a
+gtkam_gimp_LDADD =					\
+	$(GTKAM_GIMP_LIBS) $(EXIF_LIBS) $(BONOBO_LIBS)	\
+	$(GNOME_LIBS)					\
+	libgtkam.a
 endif

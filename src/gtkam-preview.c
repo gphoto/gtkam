@@ -375,6 +375,8 @@ idle_func (gpointer user_data)
 
 	gp_file_new (&file);
 	result = gp_camera_capture_preview (preview->priv->camera, file);
+	if (!GTKAM_IS_PREVIEW (preview))
+		return (FALSE);
 	if (preview->priv->multi)
 		gp_camera_exit (preview->priv->camera);
 	if (result != GP_OK) {

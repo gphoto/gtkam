@@ -62,7 +62,8 @@ struct _GtkamSavePrivate
 	gchar *path;
 	GSList *filenames;
 
-	GtkToggleButton *toggle_preview, *toggle_normal, *toggle_raw;
+	GtkToggleButton *toggle_preview, *toggle_normal, *toggle_raw,
+			*toggle_audio;
 	GtkToggleButton *toggle_filename_camera;
 	GtkEntry *program, *prefix_entry;
 
@@ -177,6 +178,9 @@ create_full_filename (const gchar *filename, CameraFileType type)
 		break;
 	case GP_FILE_TYPE_RAW:
 		full_filename = g_strdup_printf ("raw_%s", filename);
+		break;
+	case GP_FILE_TYPE_AUDIO:
+		full_filename = g_strdup_printf ("audio_%s", filename);
 		break;
 	default:
 		full_filename = g_strdup (filename);
@@ -346,6 +350,10 @@ on_ok_clicked (GtkButton *button, GtkamSave *save)
 		    save->priv->toggle_raw->active)
 			get_file (save, filename, GP_FILE_TYPE_RAW, file,
 				  i + 1);
+		if (save->priv->toggle_audio &&
+		    save->priv->toggle_audio->active)
+			get_file (save, filename, GP_FILE_TYPE_AUDIO, file,
+				  i + 1);
 	}
 
 	gp_file_unref (file);
@@ -423,6 +431,15 @@ gtkam_save_new (Camera *camera, const gchar *path, GSList *filenames,
 		gtk_tooltips_set_tip (tooltips, check, _("Raw data will be "
 				      "saved if this is checked"), NULL);
 		save->priv->toggle_raw = GTK_TOGGLE_BUTTON (check);
+	}
+
+	if (a.file_operations & GP_FILE_OPERATION_AUDIO) {
+		check = gtk_check_button_new_with_label (_("Save audio data"));
+		gtk_widget_show (check);
+		gtk_box_pack_start (GTK_BOX (hbox), check, TRUE, TRUE, 0);
+		gtk_tooltips_set_tip (tooltips, check, _("Audio data will be "
+				      "saved if this is checked"), NULL);
+		save->priv->toggle_audio = GTK_TOGGLE_BUTTON (check);
 	}
 
 	if (a.file_operations & GP_FILE_OPERATION_PREVIEW) {

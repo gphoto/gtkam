@@ -1,3 +1,7 @@
+2001-11-08  Lutz Müller <urc8@rz.uni-karlsruhe.de>
+
+	* src/gtkam-save.c: Support GP_FILE_TYPE_AUDIO
+
 2001-11-06  Lutz Müller <urc8@rz.uni-karlsruhe.de>
 
 	Patch from Colin Marquardt <colin@marquardt-home.de>, slightly

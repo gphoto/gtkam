@@ -23,6 +23,7 @@
 #include <gphoto2/gphoto2-port-info-list.h>
 
 #include "gtkam-port.h"
+#include "gtkam-error.h"
 #include "i18n.h"
 
 #include <string.h>

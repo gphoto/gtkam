@@ -70,7 +70,7 @@ struct _GtkamSavePrivate
 	GtkToggleButton *toggle_filename_camera;
 	GtkEntry *program, *prefix_entry;
 
-	gboolean quiet;
+	gboolean quiet, err_shown;
 
 	GtkWidget *status;
 };
@@ -329,10 +329,14 @@ get_file (GtkamSave *save, const gchar *filename, CameraFileType type, guint n,
 	case GP_ERROR_CANCEL:
 		break;
 	default:
-		dialog = gtkam_error_new (result, s->context, GTK_WIDGET (save),
-			_("Could not get '%s' from folder '%s'."),
-			filename, save->priv->path);
-		gtk_widget_show (dialog);
+		if (!save->priv->err_shown) {
+			dialog = gtkam_error_new (result, s->context,
+				GTK_WIDGET (save), _("Could not get '%s' "
+				"from folder '%s'."),
+				filename, save->priv->path);
+			gtk_widget_show (dialog);
+			save->priv->err_shown = TRUE;
+		}
 	}
 	gp_file_unref (file);
 }

@@ -1149,7 +1149,7 @@ gtkam_main_new (void)
 	gtk_widget_show (scrolled);
 	gtk_paned_pack2 (GTK_PANED (hpaned), scrolled, TRUE, TRUE);
 	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled),
-			GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
+			GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 
 	list = gtkam_list_new ();
 	gtk_widget_show (list);

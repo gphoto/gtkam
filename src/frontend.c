@@ -175,6 +175,13 @@ void frontend_prompt_build (CameraWidget *w, GtkWidget *box, GtkWidget **window)
 		gtk_entry_set_text (GTK_ENTRY(entry), vals);
 		gtk_object_set_data (GTK_OBJECT(*window), label, entry);
 
+                gp_widget_get_info (w, (const char**)(&vals));
+                if (vals) {
+                    GtkTooltips *tips;
+                    tips = gtk_tooltips_new();
+                    gtk_tooltips_set_tip(tips, entry, vals, "");
+                }
+
 		frame = gtk_frame_new (label);
 		gtk_widget_show(frame);
 		gtk_container_add(GTK_CONTAINER(frame), entry);
@@ -193,7 +200,15 @@ void frontend_prompt_build (CameraWidget *w, GtkWidget *box, GtkWidget **window)
 		gtk_scale_set_draw_value(GTK_SCALE(hscale), TRUE);
 		gtk_scale_set_digits(GTK_SCALE(hscale), 0);
 
-		frame = gtk_frame_new (label);
+                gp_widget_get_info (w, (const char**)(&vals));
+                if (vals) {
+                    GtkTooltips *tips;
+                    tips = gtk_tooltips_new();
+                    gtk_tooltips_set_tip(tips, hscale, vals, "");
+                }
+
+
+                frame = gtk_frame_new (label);
 		gtk_widget_show(frame);
 		gtk_container_add(GTK_CONTAINER(frame), hscale);
 		widget = frame;
@@ -204,6 +219,14 @@ void frontend_prompt_build (CameraWidget *w, GtkWidget *box, GtkWidget **window)
 		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(button), vali);
 		gtk_widget_show(button);
 		gtk_object_set_data (GTK_OBJECT(*window), label, button);
+
+                gp_widget_get_info (w, (const char**)(&vals));
+                if (vals) {
+                    GtkTooltips *tips;
+                    tips = gtk_tooltips_new();
+                    gtk_tooltips_set_tip(tips, button, vals, "");
+                }
+
 
 		widget = button;
 		break;
@@ -237,7 +260,13 @@ void frontend_prompt_build (CameraWidget *w, GtkWidget *box, GtkWidget **window)
 					    TRUE, 0);
 			if (strcmp (vals, choice) == 0)
 				gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON(button), TRUE);
-		}
+                        gp_widget_get_info (w, (const char**)(&vals));
+                        if (vals) {
+                            GtkTooltips *tips;
+                            tips = gtk_tooltips_new();
+                            gtk_tooltips_set_tip(tips, button, vals, "");
+                        }
+                }
 
 		frame = gtk_frame_new (label);
 		gtk_widget_show(frame);
@@ -259,6 +288,14 @@ void frontend_prompt_build (CameraWidget *w, GtkWidget *box, GtkWidget **window)
                 gtk_combo_set_popdown_strings(GTK_COMBO(menu), options);
                 gp_widget_get_value (w, &vals);
                 gtk_entry_set_text (GTK_ENTRY(GTK_COMBO(menu)->entry), vals);
+
+                gp_widget_get_info (w, (const char**)&vals);
+                if (vals) {
+                    GtkTooltips *tips;
+                    tips = gtk_tooltips_new();
+                    gtk_tooltips_set_tip(tips, GTK_COMBO(menu)->entry, vals, "");
+                }
+
 
 		frame = gtk_frame_new (label);
 		gtk_widget_show(frame);

@@ -366,7 +366,7 @@ gtkam_info_new (GtkamCamera *camera, const gchar *folder, const gchar *name)
 	default:
 		dialog = gtkam_error_new (result, GTKAM_CANCEL (c)->context,
 			NULL, _("Could not get information about file '%s' in "
-			"'%s' in folder '%s'."), name, folder);
+			"folder '%s'."), name, folder);
 		gtk_widget_show (dialog);
 		gtk_object_destroy (GTK_OBJECT (c));
 		return (NULL);

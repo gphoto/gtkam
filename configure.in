@@ -54,6 +54,27 @@ if $try_bonobo; then
 fi
 
 dnl ---------------------------------------------------------------------------
+dnl libgnome: If we want to display documentation, we need gnome_help_*.
+dnl ---------------------------------------------------------------------------
+try_gnome=true
+gnome_msg=no
+have_gnome=false
+AC_ARG_WITH(gnome, [  --without-gnome         Don't compile with gnome], [
+	if test x$withval = xno; then
+		try_gnome=false
+	fi])
+if $try_gnome; then
+	if ${PKG_CONFIG} --exists libgnome-2.0; then
+		PKG_CHECK_MODULES(GNOME, libgnome-2.0)
+		AC_SUBST(GNOME_CFLAGS)
+		AC_SUBST(GNOME_LIBS)
+		AC_DEFINE(HAVE_GNOME,,[whether we use gnome])
+		gnome_msg=yes
+		have_gnome=true
+	fi
+fi
+
+dnl ---------------------------------------------------------------------------
 dnl GIMP plugin
 dnl ---------------------------------------------------------------------------
 try_gimp=true
@@ -157,4 +178,5 @@ Configuration
 	GIMP plugin:          $gimp_msg
 	EXIF support:         $exif_msg
 	Bonobo support:       $bonobo_msg
+	GNOME support:        $gnome_msg
 "

@@ -416,6 +416,23 @@ on_new_dialog (GtkObject *object, GtkWidget *dialog, GtkamMain *m)
 	gtk_widget_show (dialog);
 }
 
+#ifdef HAVE_GNOME
+
+static void
+action_help (gpointer callback_data, guint callback_action,
+	     GtkWidget *widget)
+{
+	GError *e = NULL;
+
+	gnome_help_display ("gtkam.xml", NULL, &e);
+	if (e) {
+		g_warning (e->message);
+		g_error_free (e);
+	}
+}
+
+#endif
+
 static void
 action_debug (gpointer callback_data, guint callback_action,
 	      GtkWidget *widget)
@@ -550,6 +567,10 @@ static GtkItemFactoryEntry mi[] =
 	{"/_Camera", NULL, 0, 0, "<Branch>"},
 	{"/Camera/_Add Camera...", NULL, action_add_camera, 0, NULL},
 	{"/_Help", NULL, 0, 0, "<Branch>"},
+#ifdef HAVE_GNOME
+	{"/Help/_Contents", NULL, action_help, 0, "<StockItem>",
+						  GTK_STOCK_HELP},
+#endif
 	{"/Help/_Debug", NULL, action_debug, 0, NULL, NULL},
 	{"/Help/_About", NULL, action_about, 0, NULL, NULL},
 };

@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in
 
-EXTRA_DIST = 
+EXTRA_DIST =
 
 SUBDIRS = po src test intl art pixmaps packaging
 

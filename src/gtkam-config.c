@@ -24,8 +24,11 @@
 #include "i18n.h"
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <time.h>
+
+#include <gphoto2/gphoto2-setting.h>
 
 #include <gtk/gtkstock.h>
 #include <gtk/gtktooltips.h>
@@ -187,6 +190,19 @@ gtkam_config_close (GtkamConfig *config)
 		gtk_main_iteration ();
 
 	gtk_object_destroy (GTK_OBJECT (config));
+}
+
+static void
+on_size_allocate (GtkWidget *w, GtkAllocation *a)
+{
+	char *buf;
+
+	buf = g_strdup_printf ("%i", a->width);
+	gp_setting_set ("gtkam-config", "width", buf);
+	g_free (buf);
+	buf = g_strdup_printf ("%i", a->height);
+	gp_setting_set ("gtkam-config", "height", buf);
+	g_free (buf);
 }
 
 static void
@@ -706,6 +722,7 @@ gtkam_config_new (GtkamCamera *camera)
 	GtkWidget *button, *dialog, *cancel;
 	CameraWidget *config_widget;
 	int result;
+	char width[1024], height[1024];
 
 	g_return_val_if_fail (camera != NULL, NULL);
 
@@ -740,6 +757,14 @@ gtkam_config_new (GtkamCamera *camera)
 	config->priv->notebook = gtk_notebook_new ();
 	gtk_container_set_border_width (GTK_CONTAINER (config->priv->notebook),
 					5);
+
+	if ((gp_setting_get ("gtkam-config", "width", width) == GP_OK) &&
+		(gp_setting_get ("gtkam-config", "height", height) == GP_OK))
+		gtk_window_set_default_size (GTK_WINDOW(config), atoi (width),
+					     atoi (height));
+	g_signal_connect (GTK_OBJECT (config), "size_allocate", G_CALLBACK
+			  (on_size_allocate), NULL);
+
 	gtk_widget_show (config->priv->notebook);
 	gtk_box_pack_start (GTK_BOX (GTKAM_DIALOG (config)->vbox),
 			    config->priv->notebook, TRUE, TRUE, 0);

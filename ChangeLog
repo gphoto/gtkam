@@ -1,3 +1,7 @@
+2005-01-22  Patrick Mansfield <patmans@users.sourceforge.net>
+
+	* src/gtkam-config.c: Restore and store camera config window size.
+
 2005-01-17  Colin Marquardt  <colin@marquardt-home.de>
 
 	* po/ja.po: Update thanks to Tadashi Jokagi.

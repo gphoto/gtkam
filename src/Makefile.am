@@ -3,7 +3,9 @@
 INCLUDES =						\
 	-I$(top_srcdir)/intl				\
 	-DIMAGE_DIR=\"$(datadir)/images/gtkam\" 	\
-	-DGTKAM_LOCALEDIR=\""$(datadir)/locale"\"	\
+	-DGTKAM_LOCALEDIR=\"$(datadir)/locale\"		\
+	-DPACKAGE_DATA_DIR=\"$(datadir)/gtkam\"		\
+	-DPACKAGE_SOURCE_DIR=\"$(top_srcdir)\"		\
 	$(EXIF_CFLAGS)					\
 	$(GTK_CFLAGS)					\
 	$(GIMP_CFLAGS)					\

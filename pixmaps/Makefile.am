@@ -1,4 +1,4 @@
-pixmapdir = "$(datadir)/@PACKAGE@/pixmaps"
+pixmapdir = "$(datadir)/gtkam/pixmaps"
 
 pixmap_DATA = camera.xpm configure.xpm delete_images.xpm exit.xpm folder.xpm save_current_image.xpm
 

@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gtKam\n"
-"POT-Creation-Date: 2002-05-13 17:25+0200\n"
+"POT-Creation-Date: 2002-06-03 21:48+0200\n"
 "PO-Revision-Date: 2002-03-01 13:40+0100\n"
 "Last-Translator: Fabian Mandelbaum <fabman@mandrakesoft.com>\n"
 "Language-Team: gphoto-devel <gphoto-devel@gphoto.net>\n"
@@ -132,22 +132,22 @@ msgstr ""
 msgid "Filename"
 msgstr "_Archivo"
 
-#: src/gtkam-clist.c:222
+#: src/gtkam-clist.c:225
 #, c-format
 msgid "Getting file '%s' from folder '%s'..."
 msgstr ""
 
-#: src/gtkam-clist.c:255
+#: src/gtkam-clist.c:258
 #, fuzzy, c-format
 msgid "Could not get file '%s'."
 msgstr "No se pueden recuperar las funcionalidades de %s"
 
-#: src/gtkam-clist.c:300
+#: src/gtkam-clist.c:303
 #, c-format
 msgid "Getting list of files in folder '%s'..."
 msgstr ""
 
-#: src/gtkam-clist.c:316
+#: src/gtkam-clist.c:319
 #, fuzzy, c-format
 msgid "Could not get file list for folder '%s'."
 msgstr "No se pueden recuperar las funcionalidades de %s"
@@ -452,7 +452,7 @@ msgstr ""
 msgid "Could not get preview of file '%s' in folder '%s'."
 msgstr "No se pueden recuperar las funcionalidades de %s"
 
-#: src/gtkam-main.c:401
+#: src/gtkam-main.c:435
 #, fuzzy, c-format
 msgid ""
 "%s %s\n"
@@ -476,83 +476,125 @@ msgstr ""
 "Para mayor información consulte\n"
 "http://www.gphoto.net"
 
-#: src/gtkam-main.c:507
+#: src/gtkam-main.c:537
+#, fuzzy
+msgid "Getting information about the camera..."
+msgstr "_Acerca del controlador..."
+
+#: src/gtkam-main.c:541
+#, fuzzy
+msgid "Getting information about the driver..."
+msgstr "_Acerca del controlador..."
+
+#: src/gtkam-main.c:545
+#, fuzzy
+msgid "Getting manual..."
+msgstr "Obteniendo información de la cámara..."
+
+#: src/gtkam-main.c:576
+#, fuzzy
+msgid "Could not retrieve information."
+msgstr "No se puede obtener información de la cámara"
+
+#: src/gtkam-main.c:632
 msgid "_File"
 msgstr "_Archivo"
 
-#: src/gtkam-main.c:520
+#: src/gtkam-main.c:645
 msgid "_Save Selected Photos..."
 msgstr "_Guardar las fotos seleccionadas..."
 
-#: src/gtkam-main.c:532
+#: src/gtkam-main.c:657
 #, fuzzy
 msgid "_Delete Photos"
 msgstr "_Selección de fotos"
 
-#: src/gtkam-main.c:545
+#: src/gtkam-main.c:670
 #, fuzzy
 msgid "_Selected"
 msgstr "_Seleccionar"
 
-#: src/gtkam-main.c:556 src/gtkam-main.c:597
+#: src/gtkam-main.c:681 src/gtkam-main.c:722
 msgid "_All"
 msgstr "_Todo"
 
-#: src/gtkam-main.c:572
+#: src/gtkam-main.c:697
 msgid "_Exit"
 msgstr "_Salir"
 
-#: src/gtkam-main.c:584
+#: src/gtkam-main.c:709
 msgid "_Select"
 msgstr "_Seleccionar"
 
-#: src/gtkam-main.c:608
+#: src/gtkam-main.c:733
 msgid "_Inverse"
 msgstr "_Invertir"
 
-#: src/gtkam-main.c:619
+#: src/gtkam-main.c:744
 msgid "_None"
 msgstr "_Nada"
 
-#: src/gtkam-main.c:632
+#: src/gtkam-main.c:757
 msgid "_Camera"
 msgstr "_Cámara"
 
-#: src/gtkam-main.c:644
+#: src/gtkam-main.c:769
 #, fuzzy
 msgid "_Add Camera..."
 msgstr "Seleccionar cámara"
 
-#: src/gtkam-main.c:656
+#. Summary
+#: src/gtkam-main.c:781
+msgid "Summary"
+msgstr ""
+
+#. Manual
+#: src/gtkam-main.c:791
+#, fuzzy
+msgid "Manual"
+msgstr "_Manual..."
+
+#. About
+#: src/gtkam-main.c:801
+#, fuzzy
+msgid "About the driver"
+msgstr "_Acerca del controlador..."
+
+#. Preferences
+#: src/gtkam-main.c:812
+msgid "Preferences"
+msgstr ""
+
+#: src/gtkam-main.c:825
 msgid "_Help"
 msgstr "_Ayuda"
 
-#: src/gtkam-main.c:668
+#: src/gtkam-main.c:837
 msgid "_Debug..."
 msgstr ""
 
-#: src/gtkam-main.c:677
+#: src/gtkam-main.c:846
 #, fuzzy
 msgid "_About..."
 msgstr "_Autores..."
 
-#: src/gtkam-main.c:696
+#: src/gtkam-main.c:865
 msgid "Save selected photos..."
 msgstr "Guardar las fotos seleccionadas..."
 
-#: src/gtkam-main.c:706
+#: src/gtkam-main.c:875
 msgid "Delete selected photos"
 msgstr "Eliminar las fotos seleccionadas"
 
-#: src/gtkam-main.c:724
+#: src/gtkam-main.c:893
 msgid "Exit"
 msgstr "Salir"
 
-#: src/gtkam-main.c:752
+#: src/gtkam-main.c:921
 msgid "Index Settings"
 msgstr ""
 
-#: src/gtkam-main.c:756
+#: src/gtkam-main.c:925
 msgid "View Thumbnails"
 msgstr ""
 
@@ -674,121 +716,123 @@ msgstr ""
 msgid "Configure"
 msgstr "Configurar"
 
-#: src/gtkam-save.c:291
+#: src/gtkam-save.c:326
 #, c-format
 msgid "'%s' already exists."
 msgstr ""
 
-#: src/gtkam-save.c:303
+#: src/gtkam-save.c:338
 #, fuzzy, c-format
 msgid "Could not save file to '%s'."
 msgstr "No se pueden recuperar las funcionalidades de %s"
 
-#: src/gtkam-save.c:339
+#: src/gtkam-save.c:374
 #, fuzzy, c-format
 msgid "Could not get '%s' from folder '%s'."
 msgstr "No se pueden recuperar las funcionalidades de %s"
 
-#: src/gtkam-save.c:360 src/gtkam-save.c:365
+#: src/gtkam-save.c:395 src/gtkam-save.c:400
 #, fuzzy, c-format
 msgid "Downloading %i files..."
 msgstr "Error al cargar el archivo pixmap: %s"
 
-#: src/gtkam-save.c:441
+#: src/gtkam-save.c:478
 msgid "What to save:"
 msgstr ""
 
-#: src/gtkam-save.c:450
+#: src/gtkam-save.c:487
 #, fuzzy
 msgid "Save photos"
 msgstr "Guardar las fotos seleccionadas"
 
-#: src/gtkam-save.c:454
+#: src/gtkam-save.c:491
 #, fuzzy
 msgid "Photos will be saved if this is checked"
 msgstr "Marcar para guardar las fotos."
 
 #. 	gp_camera_get_abilities (camera, &a);
 #. 	if (a.file_operations & GP_FILE_OPERATION_RAW) {
-#: src/gtkam-save.c:460
+#: src/gtkam-save.c:497
 msgid "Save raw data"
 msgstr ""
 
-#: src/gtkam-save.c:463
+#: src/gtkam-save.c:500
 #, fuzzy
 msgid "Raw data will be saved if this is checked"
 msgstr "Marcar para guardar las fotos."
 
 #. 	}
 #. 	if (a.file_operations & GP_FILE_OPERATION_AUDIO) {
-#: src/gtkam-save.c:469
+#: src/gtkam-save.c:506
 msgid "Save audio data"
 msgstr ""
 
-#: src/gtkam-save.c:472
+#: src/gtkam-save.c:509
 #, fuzzy
 msgid "Audio data will be saved if this is checked"
 msgstr "Marcar para guardar las fotos."
 
 #. 	}
 #. 	if (a.file_operations & GP_FILE_OPERATION_PREVIEW) {
-#: src/gtkam-save.c:478
+#: src/gtkam-save.c:515
 msgid "Save thumbnails"
 msgstr ""
 
-#: src/gtkam-save.c:481
+#: src/gtkam-save.c:518
 #, fuzzy
 msgid "Thumbnails will be saved if this is checked"
 msgstr "Marcar para guardar las diapositivas"
 
 #. 	}
 #. 	if (a.file_operations & GP_FILE_OPERATION_EXIF) {
-#: src/gtkam-save.c:487
+#: src/gtkam-save.c:524
 msgid "Save EXIF data"
 msgstr ""
 
-#: src/gtkam-save.c:490
+#: src/gtkam-save.c:527
 #, fuzzy
 msgid "EXIF data will be saved if this is checked"
 msgstr "Marcar para guardar las fotos."
 
-#: src/gtkam-save.c:500
+#: src/gtkam-save.c:537
 msgid "Open image(s) with: "
 msgstr ""
 
-#: src/gtkam-save.c:507
+#: src/gtkam-save.c:544
 #, fuzzy
 msgid "Type in the name of the program you want to run, leave blank for none"
 msgstr ""
 "Ingrese el nombre del programa a ejecutar. Ninguno si lo deja en blanco"
 
 #. Filenames provided by camera
-#: src/gtkam-save.c:513
+#: src/gtkam-save.c:550
 #, fuzzy
-msgid "Use filenames provided by the camera"
+msgid "Use filename(s) provided by the camera"
 msgstr "¿Desea utilizar el nombre de archivo provisto por la cámara?"
 
-#: src/gtkam-save.c:518
+#: src/gtkam-save.c:555
 msgid "Choose whether to use the filename provided by the camera"
 msgstr "¿Desea utilizar el nombre de archivo provisto por la cámara?"
 
-#: src/gtkam-save.c:556
+#: src/gtkam-save.c:575
+msgid "Filename prefix: "
+msgstr ""
+
+#: src/gtkam-save.c:584
+msgid "Start numbering with: "
+msgstr ""
+
+#. First case: We have only one file.
+#: src/gtkam-save.c:622
 #, c-format
 msgid "Save '%s'..."
 msgstr ""
 
-#: src/gtkam-save.c:562
+#. Second case: We have multiple files to save.
+#: src/gtkam-save.c:644
 #, fuzzy
 msgid "Save photos..."
 msgstr "Guardar las fotos seleccionadas..."
-
-#: src/gtkam-save.c:574
-msgid "Filename prefix: "
-msgstr ""
-
-#: src/gtkam-save.c:591
-msgid "Start numbering with: "
-msgstr ""
 
 #: src/gtkam-tree.c:384
 #, fuzzy
@@ -817,16 +861,8 @@ msgstr "No se puede encontrar el archivo pixmap %s"
 #~ msgstr "No se pueden recuperar las funcionalidades de %s"
 
 #, fuzzy
-#~ msgid "Could not retrieve information."
-#~ msgstr "No se puede obtener información de la cámara"
-
-#, fuzzy
 #~ msgid "Could not retrieve manual."
 #~ msgstr "No se puede obtener el manual de la cámara"
-
-#, fuzzy
-#~ msgid "Getting information about the driver..."
-#~ msgstr "_Acerca del controlador..."
 
 #, fuzzy
 #~ msgid "Could not get information about the driver."
@@ -852,14 +888,6 @@ msgstr "No se puede encontrar el archivo pixmap %s"
 #, fuzzy
 #~ msgid "_Information"
 #~ msgstr "_Información..."
-
-#, fuzzy
-#~ msgid "_Manual"
-#~ msgstr "_Manual..."
-
-#, fuzzy
-#~ msgid "_About the Driver..."
-#~ msgstr "_Acerca del controlador..."
 
 #, fuzzy
 #~ msgid "Configure camera..."

@@ -1,7 +1,7 @@
 dnl Process this file with autoconf to produce a configure script.
 AC_PREREQ(2.50)
 AC_INIT(configure.in)
-AM_INIT_AUTOMAKE(gtkam, 0.1.6)
+AM_INIT_AUTOMAKE(gtkam, 0.1.7)
 AM_CONFIG_HEADER(config.h)
 
 AC_ISC_POSIX
@@ -60,16 +60,6 @@ fi
 AC_SUBST(GDK_PIXBUF_CFLAGS)
 AC_SUBST(GDK_PIXBUF_LIBS)
 
-dnl Set PACKAGE_DATA_DIR in config.h.
-if test "x${datadir}" = 'x${prefix}/share'; then
-  if test "x${prefix}" = "xNONE"; then
-    AC_DEFINE(PACKAGE_DATA_DIR, "${ac_default_prefix}/share/${PACKAGE}",[Where to find data])
-  else
-    AC_DEFINE(PACKAGE_DATA_DIR, "${prefix}/share/${PACKAGE}", [Where to find data])
-  fi
-else
-  AC_DEFINE(PACKAGE_DATA_DIR, "${datadir}/${PACKAGE}", [Where to find data])
-fi
 
 dnl ---------------------------------------------------------------------------
 dnl GIMP plugin
@@ -120,16 +110,6 @@ fi
 AM_CONDITIONAL(HAVE_EXIF, $have_exif)
 AC_SUBST(EXIF_CFLAGS)
 AC_SUBST(EXIF_LIBS)
-
-dnl Set PACKAGE_SOURCE_DIR in config.h.
-packagesrcdir=`cd $srcdir && pwd`
-AC_DEFINE(PACKAGE_SOURCE_DIR, "${packagesrcdir}", [Where to find the source])
-
-if test "x${prefix}" = "xNONE"; then
-  AC_DEFINE(DOCDIR, "${ac_default_prefix}/doc/gtkam", [Where to install documentation])
- else
-  AC_DEFINE(DOCDIR, "${prefix}/doc/gtkam", [Where to install documentation])
-fi
 
 dnl Use -Wall if we have gcc.
 changequote(,)dnl

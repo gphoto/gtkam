@@ -64,25 +64,15 @@ dnl -----------
 try_gimp=true
 gimp_msg=no
 have_gimp=false
-AC_ARG_WITH(gimp, [  --without-gimp  Don't compile GIMP plugin],
+AC_ARG_WITH(gimp, [  --without-gimp          Don't compile GIMP plugin],
 	if test x$withval = xno; then
 		try_gimp=false
 	fi)
 if $try_gimp; then
-	AC_PATH_PROG(GIMP_CONFIG,gimptool)
-	if test -n "${GIMP_CONFIG}"; then
-		CPPFLAGS_save="$CPPFLAGS"
-		CPPFLAGS="$CPPFLAGS `$GIMP_CONFIG --cflags`"
-		AC_CHECK_HEADER(libgimp/gimp.h,
-			have_gimp=true
-			gimp_msg=yes
-			AC_DEFINE(HAVE_GIMP)
-			GIMP_CFLAGS="`$GIMP_CONFIG --cflags`"
-			GIMP_LIBS="`$GIMP_CONFIG --libs`"
-			GIMP_PLUGIN_DIR="`$GIMP_CONFIG --gimpplugindir`"
-		)
-		CPPFLAGS="$CPPFLAGS_save"
-	fi
+	AM_PATH_GIMP(1.1.24,
+		have_gimp=true
+		gimp_msg=yes
+		AC_DEFINE(HAVE_GIMP))
 fi
 AM_CONDITIONAL(HAVE_GIMP, $have_gimp)
 AC_SUBST(GIMP_CFLAGS)

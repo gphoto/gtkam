@@ -1,3 +1,9 @@
+2002-04-28  Lutz Müller <lutz@users.sourceforge.net>
+
+	Patch by Arnaud Rouanet <rouanet@labri.fr>:
+
+	* configure.in: Use AM_PATH_GIMP.
+
 2002-04-17  Lutz Müller <lutz@users.sourceforge.net>
 
 	* src/*: Fix #536011. I probably broke everything else... I am going

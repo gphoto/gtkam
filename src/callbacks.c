@@ -912,7 +912,7 @@ void camera_index () {
 		frontend_message(NULL, buf);
 		idle();
 		if ((get_thumbnails)&&
-		    (a.file_preview)&&
+		    (a.file_operations & GP_FILE_OPERATION_PREVIEW)&&
 		    (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(use_thumbs)))) {
 			/* Get the thumbnails */
 			f = gp_file_new();
@@ -966,7 +966,7 @@ void camera_delete_common(int all) {
 		return;
 	}
 
-	if (!a.file_delete) {
+	if (!(a.file_operations & GP_FILE_OPERATION_DELETE)) {
 		frontend_message(NULL, _("This camera does not support deleting photos."));
 		return;
 	}

@@ -315,18 +315,11 @@ void save_selected_photos() {
 			   gtk_object_get_data(GTK_OBJECT(item->pixmap), "name"));
 			/* determine the name to use */
 			if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(use_camera_filename))) {
-			   if (strlen(f->name)>0) {
-				/* If the camera provided a filename */
 				slash = strrchr(path, '/');
 				*slash = 0;
-				sprintf(fname, "%s/%s", path, f->name);
+				sprintf(fname, "%s/%s", path,
+					(char*)gtk_object_get_data(GTK_OBJECT(item->pixmap), "name"));
 				*slash = '/';
-			   } else {
-				/* If not, error, and return */
-				gp_camera_message(NULL, _("Camera did not suggest a filename.\nPlease select \"Save\" again and specify a filename yourself."));
-				gp_file_free(f);
-				return;
-			   }
 			} else {
 			   if (num == 1) {
 				strcpy(fname, path);
@@ -378,18 +371,11 @@ void save_selected_photos() {
 			   gtk_object_get_data(GTK_OBJECT(item->pixmap), "name"));
 			/* determine the name to use */
 			if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(use_camera_filename))) {
-			   if (strlen(f->name)>0) {
-				/* If the camera provided a filename */
 				slash = strrchr(path, '/');
 				*slash = 0;
-				sprintf(fname, "%s/thumb_%s", path, f->name);
+				sprintf(fname, "%s/thumb_%s", path, 
+					(char*)gtk_object_get_data(GTK_OBJECT(item->pixmap), "name"));
 				*slash = '/';
-			   } else {
-				/* If not, error, and return */
-				gp_camera_message(NULL, _("Camera did not suggest a filename.\nPlease select \"Save\" again and specify a filename yourself."));
-				gp_file_free(f);
-				return;
-			   }
 			} else {
 			   if (num == 1) {
 				strcpy(fname, path);

@@ -44,7 +44,7 @@ main (int argc, char *argv[])
 
 	if (argc > 1) {
 		if (strcmp(argv[1], "-d")==0)
-			gp_gtk_debug = 1;
+			gp_gtk_debug = GP_DEBUG_HIGH;
 		   else
 			gp_gtk_debug = 0;
 	}

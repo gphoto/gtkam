@@ -45,6 +45,7 @@
 #include <time.h>
 
 #include <gtk/gtktooltips.h>
+#include <gtk/gtkscrolledwindow.h>
 #include <gtk/gtkframe.h>
 #include <gtk/gtknotebook.h>
 #include <gtk/gtkhscale.h>
@@ -218,7 +219,7 @@ on_config_close_clicked (GtkButton *button, GtkamConfig *config)
 static GtkWidget *
 create_page (GtkamConfig *config, CameraWidget *widget)
 {
-	GtkWidget *label, *vbox;
+	GtkWidget *label, *vbox, *scrolled;
 	int id;
 	const char *l = NULL, *info = NULL;
 
@@ -238,11 +239,22 @@ create_page (GtkamConfig *config, CameraWidget *widget)
 	gtk_widget_show (label);
 
 	/* VBox */
+	scrolled = gtk_scrolled_window_new (NULL, NULL);
+	gtk_widget_show (scrolled);
+	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled),
+				GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
+	gtk_container_set_border_width (GTK_CONTAINER (scrolled), 5);
+	gtk_notebook_append_page (GTK_NOTEBOOK (config->priv->notebook),
+				  scrolled, label);
 	vbox = gtk_vbox_new (FALSE, 10);
 	gtk_widget_show (vbox);
-	gtk_container_set_border_width (GTK_CONTAINER (vbox), 10);
-	gtk_notebook_append_page (GTK_NOTEBOOK (config->priv->notebook), vbox,
-				  label);
+	gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (scrolled),
+					       vbox);
+	gtk_container_set_border_width (GTK_CONTAINER (vbox), 2);
+#if 0
+	gtk_viewport_set_shadow_type (
+		GTK_VIEWPORT (GTK_BIN (scrolled)->child), GTK_SHADOW_NONE);
+#endif
 
 	if (widget) {
 		gp_widget_get_id (widget, &id);

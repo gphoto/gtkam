@@ -2,6 +2,10 @@
 
 	* src/gtkam-info.c: %li instead of %i to fix some compile warnings.
 	* src/gtkam-error.c: Check for context == NULL.
+	* src/gtkam-config.c: Put the configuration widgets into a 
+	  scrolled window. Like that, people can add as many configuration
+	  widgets to their drivers as they like.
+	  I am not quite satisfied with it, but for now it is ok.
 
 2002-02-02  Colin Marquardt  <colin@marquardt-home.de>
 

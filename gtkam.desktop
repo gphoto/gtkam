@@ -1,0 +1,10 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=gtkam
+Comment=Transfer pictures from your digital camera
+Exec=gtkam
+StartupNotify=true
+Terminal=false
+Type=Application
+Categories=GNOME;Application;Graphics;RasterGraphics;Viewer;
+X-GNOME-DocPath=gtkam/gtkam.xml

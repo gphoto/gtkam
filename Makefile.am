@@ -1,10 +1,18 @@
 ## Process this file with automake to produce Makefile.in
 
-SUBDIRS = art doc packaging pixmaps po src test
+SUBDIRS = intl art doc help omf-install packaging pixmaps po src test
 
 gtkamdocdir = $(datadir)/doc/gtkam
 gtkamdoc_DATA = AUTHORS COPYING
 
+desktopdir = $(datadir)/applications
+desktop_DATA = gtkam.desktop
+
+icondir = $(datadir)/pixmaps
+icon_DATA = gtkam.png
+
+INCLUDES = \
+       -DDATADIR=\""$(datadir)"\"
 
 if ENABLE_RPM
 

@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gtkam\n"
-"POT-Creation-Date: 2002-11-20 19:32+0100\n"
+"POT-Creation-Date: 2002-11-21 09:25+0100\n"
 "PO-Revision-Date: 2002-08-31 09:34+0200\n"
 "Last-Translator: unknown\n"
 "Language-Team: unknown\n"
@@ -502,7 +502,7 @@ msgstr ""
 
 #: src/gtkam-port.c:163
 #, c-format
-msgid "Could not find and io-driver for port '%s' ('%s')."
+msgid "Could not find an io-driver for port '%s' ('%s')."
 msgstr ""
 
 #: src/gtkam-port.c:198

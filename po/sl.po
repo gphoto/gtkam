@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gphoto\n"
-"POT-Creation-Date: 2002-11-20 19:32+0100\n"
+"POT-Creation-Date: 2002-11-21 09:25+0100\n"
 "PO-Revision-Date: 2000-06-24 12:30+0200\n"
 "Last-Translator: Andraz Tori <andraz.tori1@guest.arnes.si>\n"
 "Language-Team: Slovenian <sl@li.org>\n"
@@ -537,7 +537,7 @@ msgstr "Izhodni imenik:"
 
 #: src/gtkam-port.c:163
 #, fuzzy, c-format
-msgid "Could not find and io-driver for port '%s' ('%s')."
+msgid "Could not find an io-driver for port '%s' ('%s')."
 msgstr "Ne morem dobiti #%i"
 
 #: src/gtkam-port.c:198

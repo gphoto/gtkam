@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gtKam\n"
-"POT-Creation-Date: 2002-11-20 19:32+0100\n"
+"POT-Creation-Date: 2002-11-21 09:25+0100\n"
 "PO-Revision-Date: 2002-03-21 16:33GMT\n"
 "Last-Translator: Marcus Meissner <marcus@jet.franken.de>\n"
 "Language-Team: Deutsch <de@li.org>\n"
@@ -515,7 +515,7 @@ msgstr "Neues Verzeichnis"
 
 #: src/gtkam-port.c:163
 #, fuzzy, c-format
-msgid "Could not find and io-driver for port '%s' ('%s')."
+msgid "Could not find an io-driver for port '%s' ('%s')."
 msgstr "Konnte Verzeichnisliste des Verzeichnisses »%s« nicht herunterladen."
 
 #: src/gtkam-port.c:198

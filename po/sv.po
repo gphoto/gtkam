@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gphoto 0.4.3\n"
-"POT-Creation-Date: 2002-11-20 19:32+0100\n"
+"POT-Creation-Date: 2002-11-21 09:25+0100\n"
 "PO-Revision-Date: 2000-04-21 23:23+0200\n"
 "Last-Translator: Andreas Hyden <a.hyden@cyberpoint.se>\n"
 "Language-Team: Swedish <sv@li.org>\n"
@@ -537,7 +537,7 @@ msgstr "Utdata-katalog:"
 
 #: src/gtkam-port.c:163
 #, fuzzy, c-format
-msgid "Could not find and io-driver for port '%s' ('%s')."
+msgid "Could not find an io-driver for port '%s' ('%s')."
 msgstr "Kunde inte hämta #%i"
 
 #: src/gtkam-port.c:198

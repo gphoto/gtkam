@@ -59,6 +59,7 @@
 #include "gdk-pixbuf-hacks.h"
 #include "gtkam-info.h"
 #include "gtkam-delete.h"
+#include "gtkam-close.h"
 
 /* Should that be configurable? */
 #define ICON_WIDTH 80
@@ -177,18 +178,31 @@ gtkam_list_set_camera (GtkamList *list, Camera *camera, gboolean multi)
 }
 
 static GdkPixbuf *
-gdk_pixbuf_new_from_camera_file (CameraFile *file)
+gdk_pixbuf_new_from_camera_file (CameraFile *file, GtkWidget *opt_window)
 {
 	GdkPixbufLoader *loader;
 	GdkPixbuf *pixbuf;
-	const char *data;
+	const char *data, *name, *type;
 	unsigned long size;
 	guint w, h;
 	gfloat scale;
+	GtkWidget *dialog;
+	gchar *msg;
 
 	gp_file_get_data_and_size (file, &data, &size);
 	loader = gdk_pixbuf_loader_new ();
-	gdk_pixbuf_loader_write (loader, data, size);
+	if (!gdk_pixbuf_loader_write (loader, data, size)) {
+		gp_file_get_name (file, &name);
+		gp_file_get_mime_type (file, &type);
+		msg = g_strdup_printf (_("Could not display '%s'. Either "
+			"the image type ('%s') is not supported by gtk or "
+			"the file itself is corrupt."), name, type);
+		dialog = gtkam_close_new (msg, opt_window);
+		g_free (msg);
+		gtk_widget_show (dialog);
+		gtk_object_destroy (GTK_OBJECT (loader));
+		return (NULL);
+	}
 	gdk_pixbuf_loader_close (loader);
 	pixbuf = gdk_pixbuf_loader_get_pixbuf (loader);
 	w = gdk_pixbuf_get_width (pixbuf);
@@ -305,13 +319,14 @@ on_select_icon (GtkIconList *ilist, GtkIconListItem *item,
 		GdkEventButton *event, GtkamList *list)
 {
 	CameraAbilities a;
-	GtkWidget *dialog, *window;
+	GtkWidget *dialog, *w;
 	int result;
 	gchar *msg;
 
 	if (!event)
 		return (TRUE);
 
+	w = gtk_widget_get_ancestor (GTK_WIDGET (list), GTK_TYPE_WINDOW);
 	gp_camera_get_abilities (list->priv->camera, &a);
 	if ((event->type == GDK_2BUTTON_PRESS) &&
 	    (a.file_operations & GP_FILE_OPERATION_PREVIEW)) {
@@ -324,13 +339,11 @@ on_select_icon (GtkIconList *ilist, GtkIconListItem *item,
 		if (list->priv->multi)
 			gp_camera_exit (list->priv->camera);
 		if (result < 0) {
-			window = gtk_widget_get_ancestor (GTK_WIDGET (list),
-						  GTK_TYPE_WINDOW);
 			msg = g_strdup_printf (_("Could not get preview of "
 				"file '%s' in folder '%s'"), item->label,
 				list->path);
 			dialog = gtkam_error_new (msg, result,
-					  list->priv->camera, window);
+						  list->priv->camera, w);
 			g_free (msg);
 			gtk_widget_show (dialog);
 		} else {
@@ -338,13 +351,15 @@ on_select_icon (GtkIconList *ilist, GtkIconListItem *item,
 			GdkPixmap *pixmap;
 			GdkBitmap *bitmap;
 
-			pixbuf = gdk_pixbuf_new_from_camera_file (file);
-			gdk_pixbuf_render_pixmap_and_mask (pixbuf, &pixmap,
-							   &bitmap, 127);
-			gdk_pixbuf_unref (pixbuf);
-			gtk_pixmap_set (GTK_PIXMAP (item->pixmap),
-					pixmap, bitmap);
-			item->state = GTK_STATE_SELECTED;
+			pixbuf = gdk_pixbuf_new_from_camera_file (file, w);
+			if (pixbuf) {
+				gdk_pixbuf_render_pixmap_and_mask (pixbuf,
+						&pixmap, &bitmap, 127);
+				gdk_pixbuf_unref (pixbuf);
+				gtk_pixmap_set (GTK_PIXMAP (item->pixmap),
+						pixmap, bitmap);
+				item->state = GTK_STATE_SELECTED;
+			}
 		}
 		gp_file_unref (file);
 
@@ -433,7 +448,7 @@ gtkam_list_new (void)
 void
 gtkam_list_set_path (GtkamList *list, const gchar *path)
 {
-	GtkWidget *dialog, *window;
+	GtkWidget *dialog, *win;
 	GtkIconListItem *item;
 	gchar *msg;
 	CameraList flist;
@@ -466,7 +481,7 @@ gtkam_list_set_path (GtkamList *list, const gchar *path)
 	else
 		list->path = g_strdup (path);
 
-	window = gtk_widget_get_ancestor (GTK_WIDGET (list), GTK_TYPE_WINDOW);
+	win = gtk_widget_get_ancestor (GTK_WIDGET (list), GTK_TYPE_WINDOW);
 
 	/* If we don't have a camera, we can't do anything */
 	if (!list->priv->camera)
@@ -478,8 +493,7 @@ gtkam_list_set_path (GtkamList *list, const gchar *path)
 			gp_camera_exit (list->priv->camera);
 		msg = g_strdup_printf (_("Could not get file list for folder "
 				       "'%s'"), path);
-		dialog = gtkam_error_new (msg, result, list->priv->camera,
-					  window);
+		dialog = gtkam_error_new (msg, result, list->priv->camera, win);
 		gtk_widget_show (dialog);
 		return;
 	}
@@ -519,16 +533,20 @@ gtkam_list_set_path (GtkamList *list, const gchar *path)
 				msg = g_strdup_printf (_("Could not get file "
 						       "'%s'"), name);
 				dialog = gtkam_error_new (msg, result,
-							  list->priv->camera,
-							  window);
+						list->priv->camera, win);
 				gtk_widget_show (dialog);
 			} else {
-				gdk_pixbuf_unref (pixbuf);
-				pixbuf = gdk_pixbuf_new_from_camera_file (file);
-				gdk_pixbuf_render_pixmap_and_mask (pixbuf,
-							&pixmap, &bitmap, 127);
-				gtk_pixmap_set (GTK_PIXMAP (item->pixmap),
+				tmp = gdk_pixbuf_new_from_camera_file (file,
+								       win);
+				if (tmp) {
+					gdk_pixbuf_unref (pixbuf);
+					pixbuf = tmp;
+					gdk_pixbuf_render_pixmap_and_mask (
+						pixbuf, &pixmap, &bitmap, 127);
+					gtk_pixmap_set (
+						GTK_PIXMAP (item->pixmap),
 						pixmap, bitmap);
+				}
 			}
 			gp_file_unref (file);
 		}
@@ -614,7 +632,7 @@ gtkam_list_save_selected (GtkamList *list)
 {
 	GtkIconListItem *item;
 	GSList *filenames = NULL;
-	GtkWidget *save, *window;
+	GtkWidget *save, *w;
 	guint i;
 
 	g_return_if_fail (GTKAM_IS_LIST (list));
@@ -628,9 +646,8 @@ gtkam_list_save_selected (GtkamList *list)
 				gtk_entry_get_text (GTK_ENTRY (item->entry)));
 	}
 
-	window = gtk_widget_get_ancestor (GTK_WIDGET (list), GTK_TYPE_WINDOW);
-	save = gtkam_save_new (list->priv->camera, list->path,
-			       filenames, window);
+	w = gtk_widget_get_ancestor (GTK_WIDGET (list), GTK_TYPE_WINDOW);
+	save = gtkam_save_new (list->priv->camera, list->path, filenames, w);
 	g_slist_free (filenames);
 	gtk_widget_show (save);
 }

@@ -330,8 +330,13 @@ reorder_icons(GtkIconList *iconlist)
     gtk_icon_list_move(iconlist, item, x, y);
 
     item_size_request(iconlist, item, &req);
- 
-    vspace = req.height + iconlist->row_spacing;
+
+    /* Remember the size of the tallest icon in one row */
+    if (x == iconlist->col_spacing)
+      vspace = req.height + iconlist->row_spacing;
+    else
+      vspace = MAX (vspace, req.height + iconlist->row_spacing);
+
     hspace = req.width + iconlist->col_spacing;
 
     switch(iconlist->mode){

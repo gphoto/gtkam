@@ -150,7 +150,7 @@ gtkam_clock_update (GtkamClock *clock)
 	g_return_if_fail (GTKAM_IS_CLOCK (clock));
 
 	elapsed = g_timer_elapsed (clock->priv->timer, NULL);
-	time = clock->priv->time + elapsed;
+	time = (time_t) ((guint) clock->priv->time + (guint) elapsed);
 	tm = localtime (&time);
 	string = g_strdup_printf ("%02i:%02i:%02i", tm->tm_hour, tm->tm_min,
 				  tm->tm_sec);
@@ -323,6 +323,7 @@ gtkam_clock_new (void)
 
 	clock = gtk_type_new (GTKAM_TYPE_CLOCK);
 	gtk_box_set_spacing (GTK_BOX (clock), 0);
+	gtk_box_set_homogeneous (GTK_BOX (clock), FALSE);
 
 	button = gtk_button_new ();
 	gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);

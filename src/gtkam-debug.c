@@ -18,7 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <config.h>
+#include "config.h"
 #include "gtkam-debug.h"
 #include "gtkam-version.h"
 #include "i18n.h"

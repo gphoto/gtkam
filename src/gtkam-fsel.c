@@ -20,7 +20,7 @@
 
 #include <string.h>
 
-#include <config.h>
+#include "config.h"
 #include "gtkam-fsel.h"
 #include "i18n.h"
 

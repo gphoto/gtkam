@@ -1,368 +1,373 @@
-# gtkam ja.po
-# Copyright (C) 2001 Free Software Foundation, Inc.
-# Takeshi Aihana <aihana@gnome.gr.jp>, 2001.
+# gtkam ja.po.
+# Copyright (C) 2001-2002 Free Software Foundation, Inc.
+# Takeshi Aihana <aihana@gnome.gr.jp>, 2001-2002.
 # AMANO Kazuhiro <haa13142@jnb.odn.ne.jp>, 2002.
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: gtkam 20011126\n"
-"POT-Creation-Date: 2002-11-21 09:25+0100\n"
-"PO-Revision-Date: 2002-02-01 21:42+0900\n"
-"Last-Translator: AMANO Kazuhiro <haa13142@jnb.odn.ne.jp>\n"
+"Project-Id-Version: gtkam 0.1.10rc2\n"
+"POT-Creation-Date: 2002-11-26 01:23+0900\n"
+"PO-Revision-Date: 2002-11-26 01:23+0900\n"
+"Last-Translator: Takeshi Aihana <aihana@gnome.gr.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=euc-jp\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: src/main.c:127
 msgid "Image Download Program"
-msgstr ""
+msgstr "ç”»åƒãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰ãƒ»ãƒ—ãƒ­ã‚°ãƒ©ãƒ "
 
+#. Port?
 #: src/gtkam-chooser.c:249 src/gtkam-chooser.c:271
 msgid "None"
-msgstr "¤Ê¤·"
+msgstr "ãªã—"
 
+#. Speed?
 #: src/gtkam-chooser.c:279 src/gtkam-chooser.c:412 src/gtkam-chooser.c:671
 msgid "Best"
-msgstr "ºÇÅ¬"
+msgstr "æœ€é©"
 
+#.
+#. * Initialize the camera to check if it is really there. Exit
+#. * afterwards because other applications could need the camera, too.
+#.
 #: src/gtkam-chooser.c:286
 msgid "Initializing camera..."
-msgstr "¥«¥á¥é¤ò½é´ü²½¤·¤Æ¤¤¤Ş¤¹..."
+msgstr "ã‚«ãƒ¡ãƒ©ã®åˆæœŸåŒ–ä¸­..."
 
 #: src/gtkam-chooser.c:300
 msgid "Could not initialize camera."
-msgstr "¥«¥á¥é¤ò½é´ü²½¤¹¤ë¤³¤È¤¬½ĞÍè¤Ş¤»¤ó¤Ç¤·¤¿"
+msgstr "ã‚«ãƒ¡ãƒ©ã‚’åˆæœŸåŒ–ã™ã‚‹ã“ã¨ãŒå‡ºæ¥ã¾ã›ã‚“ã§ã—ãŸã€‚"
 
 #: src/gtkam-chooser.c:403
 #, c-format
 msgid "Could not get abilities of model '%s'."
-msgstr "·¿¼° '%s' ¤Î»ÅÍÍ¤¬¼èÆÀ¤Ç¤­¤Ş¤»¤ó¤Ç¤·¤¿"
+msgstr "å‹å¼ '%s' ã®ä»•æ§˜ãŒå–å¾—ã§ãã¾ã›ã‚“ã§ã—ãŸã€‚"
 
 #: src/gtkam-chooser.c:451
 msgid "Detecting cameras..."
-msgstr "¥«¥á¥é¤Î¸¡½Ğ..."
+msgstr "ã‚«ãƒ¡ãƒ©ã®æ¤œå‡ºä¸­..."
 
 #: src/gtkam-chooser.c:459
 msgid "No cameras detected."
-msgstr "¸¡½Ğ¤µ¤ì¤¿¥«¥á¥é¤¬¤¢¤ê¤Ş¤»¤ó¡£"
+msgstr "æ¤œå‡ºã•ã‚ŒãŸã‚«ãƒ¡ãƒ©ãŒã‚ã‚Šã¾ã›ã‚“ã€‚"
 
 #: src/gtkam-chooser.c:476
 msgid "Could not detect any cameras."
-msgstr "¥«¥á¥é¤ò°ì¤Ä¤â¸¡½Ğ¤¹¤ë¤³¤È¤¬½ĞÍè¤Ş¤»¤ó¤Ç¤·¤¿"
+msgstr "ã‚«ãƒ¡ãƒ©ã‚’ä¸€ã¤ã‚‚æ¤œå‡ºã™ã‚‹ã“ã¨ãŒå‡ºæ¥ã¾ã›ã‚“ã§ã—ãŸã€‚"
 
 #: src/gtkam-chooser.c:602
 msgid "Select Camera"
-msgstr "¥«¥á¥é¤òÁªÂò¤·¤Ş¤¹"
+msgstr "ã‚«ãƒ¡ãƒ©ã‚’é¸æŠã—ã¾ã™"
 
 #: src/gtkam-chooser.c:619
 msgid "Model:"
-msgstr "·¿¼°:"
+msgstr "å‹å¼:"
 
 #: src/gtkam-chooser.c:632
 msgid "Detect"
-msgstr "¸¡½Ğ"
+msgstr "æ¤œå‡º"
 
 #: src/gtkam-chooser.c:640
-#, fuzzy
 msgid "Detect USB camera"
-msgstr "¥«¥á¥é¤Î¸¡½Ğ..."
+msgstr "USB ã‚«ãƒ¡ãƒ©ã®æ¤œå‡º"
 
 #: src/gtkam-chooser.c:642
 msgid "Port:"
-msgstr "¥İ¡¼¥È:"
+msgstr "ãƒãƒ¼ãƒˆ:"
 
 #: src/gtkam-chooser.c:663
 msgid "Speed:"
-msgstr "¥¹¥Ô¡¼¥É:"
+msgstr "ã‚¹ãƒ”ãƒ¼ãƒ‰:"
 
 #: src/gtkam-chooser.c:677
 msgid "Allow multiple frontends"
-msgstr "Ê£¿ô¤Î¥Õ¥í¥ó¥È¥¨¥ó¥É¤ò»ÈÍÑ¤¹¤ë"
+msgstr "è¤‡æ•°ã®ãƒ•ãƒ­ãƒ³ãƒˆã‚¨ãƒ³ãƒ‰ã‚’ä½¿ç”¨ã™ã‚‹"
 
 #: src/gtkam-chooser.c:687
 msgid "Enhanced"
-msgstr "³ÈÄ¥"
+msgstr "æ‹¡å¼µ"
 
 #: src/gtkam-chooser.c:753
 msgid "Could not get number of supported camera models"
-msgstr "¥µ¥İ¡¼¥È¤·¤Æ¤¤¤ë¥«¥á¥é¤Î·¿¼°¿ô¤ò¼èÆÀ¤Ç¤­¤Ş¤»¤ó¤Ç¤·¤¿"
+msgstr "ã‚µãƒãƒ¼ãƒˆã—ã¦ã„ã‚‹ã‚«ãƒ¡ãƒ©ã®å‹å¼ã‚’å–å¾—ã§ãã¾ã›ã‚“ã§ã—ãŸ"
 
 #: src/gtkam-chooser.c:783
 msgid "Could not get number of ports."
-msgstr "¥İ¡¼¥È¿ô¤ò¼èÆÀ¤Ç¤­¤Ş¤»¤ó¤Ç¤·¤¿"
+msgstr "ãƒãƒ¼ãƒˆç•ªå·ãŒå–å¾—ã§ãã¾ã›ã‚“ã§ã—ãŸã€‚"
 
 #: src/gtkam-config.c:179
 msgid "Applying configuration..."
-msgstr "ÀßÄê¤òÅ¬ÍÑ¤·¤Æ¤¤¤Ş¤¹..."
+msgstr "è¨­å®šã®é©ç”¨ä¸­..."
 
 #: src/gtkam-config.c:195
 msgid "Could not apply configuration."
-msgstr "ÀßÄê¤òÅ¬ÍÑ¤¹¤ë¤³¤È¤¬½ĞÍè¤Ş¤»¤ó¤Ç¤·¤¿"
+msgstr "è¨­å®šã‚’é©ç”¨ã™ã‚‹ã“ã¨ãŒå‡ºæ¥ã¾ã›ã‚“ã§ã—ãŸã€‚"
 
 #: src/gtkam-config.c:243
 msgid "No additional information available. (1)"
-msgstr "Í­¸ú¤ÊÄÉ²Ã¾ğÊó¤Ï¤¢¤ê¤Ş¤»¤ó (1)"
+msgstr "æœ‰åŠ¹ãªè¿½åŠ æƒ…å ±ã¯ã‚ã‚Šã¾ã›ã‚“ã€‚ (1)"
 
 #: src/gtkam-config.c:248
 msgid "General Settings"
-msgstr "Á´ÈÌ¤ÎÀßÄê"
+msgstr "å…¨èˆ¬ã®è¨­å®š"
 
 #: src/gtkam-config.c:323
 msgid "Could not execute command."
-msgstr "¥³¥Ş¥ó¥É¤ò¼Â¹Ô¤¹¤ë¤³¤È¤¬½ĞÍè¤Ş¤»¤ó¤Ç¤·¤¿"
+msgstr "ã‚³ãƒãƒ³ãƒ‰ã‚’å®Ÿè¡Œã™ã‚‹ã“ã¨ãŒå‡ºæ¥ã¾ã›ã‚“ã§ã—ãŸã€‚"
 
 #: src/gtkam-config.c:527
 msgid "No additional information available. (2)"
-msgstr "Í­¸ú¤ÊÄÉ²Ã¾ğÊó¤Ï¤¢¤ê¤Ş¤»¤ó (2)"
+msgstr "æœ‰åŠ¹ãªè¿½åŠ æƒ…å ±ã¯ã‚ã‚Šã¾ã›ã‚“ã€‚ (2)"
 
+#. Make it easy for users to select the system's time
 #: src/gtkam-config.c:563
 msgid "Set to system's time"
-msgstr ""
+msgstr "ã‚·ã‚¹ãƒ†ãƒ æ™‚åˆ»ã«ã‚»ãƒƒãƒˆã™ã‚‹"
 
 #: src/gtkam-config.c:597
 msgid "No additional information available. (3)"
-msgstr "Í­¸ú¤ÊÄÉ²Ã¾ğÊó¤Ï¤¢¤ê¤Ş¤»¤ó (3)"
+msgstr "æœ‰åŠ¹ãªè¿½åŠ æƒ…å ±ã¯ã‚ã‚Šã¾ã›ã‚“ã€‚ (3)"
 
 #: src/gtkam-config.c:622
 msgid "No additional information available. (4)"
-msgstr "Í­¸ú¤ÊÄÉ²Ã¾ğÊó¤Ï¤¢¤ê¤Ş¤»¤ó (4)"
+msgstr "æœ‰åŠ¹ãªè¿½åŠ æƒ…å ±ã¯ã‚ã‚Šã¾ã›ã‚“ã€‚ (4)"
 
 #: src/gtkam-config.c:669
 msgid "No additional information available. (5)"
-msgstr "Í­¸ú¤ÊÄÉ²Ã¾ğÊó¤Ï¤¢¤ê¤Ş¤»¤ó (5)"
+msgstr "æœ‰åŠ¹ãªè¿½åŠ æƒ…å ±ã¯ã‚ã‚Šã¾ã›ã‚“ã€‚ (5)"
 
 #: src/gtkam-config.c:689
 msgid "No additional information available. (6)"
-msgstr "Í­¸ú¤ÊÄÉ²Ã¾ğÊó¤Ï¤¢¤ê¤Ş¤»¤ó (6)"
+msgstr "æœ‰åŠ¹ãªè¿½åŠ æƒ…å ±ã¯ã‚ã‚Šã¾ã›ã‚“ã€‚ (6)"
 
 #: src/gtkam-config.c:729
 msgid "Getting configuration..."
-msgstr "ÀßÄê¤ò¼èÆÀ¤·¤Æ¤¤¤Ş¤¹..."
+msgstr "è¨­å®šã®å–å¾—ä¸­..."
 
 #: src/gtkam-config.c:744
 msgid "Could not get configuration."
-msgstr "ÀßÄê¤ò¼èÆÀ¤¹¤ë¤³¤È¤¬½ĞÍè¤Ş¤»¤ó¤Ç¤·¤¿"
+msgstr "è¨­å®šã‚’å–å¾—ã™ã‚‹ã“ã¨ãŒå‡ºæ¥ã¾ã›ã‚“ã§ã—ãŸã€‚"
 
 #: src/gtkam-debug.c:258
 msgid "Save As..."
-msgstr "Ì¾Á°¤òÉÕ¤±¤ÆÊİÂ¸..."
+msgstr "åå‰ã‚’ä»˜ã‘ã¦ä¿å­˜..."
 
 #: src/gtkam-debug.c:280
 #, c-format
 msgid "Could not open '%s'!"
-msgstr "'%s' ¤¬³«¤±¤Ş¤»¤ó¤Ç¤·¤¿¡ª"
+msgstr "'%s' ãŒé–‹ã‘ã¾ã›ã‚“ã§ã—ãŸï¼"
 
 #: src/gtkam-debug.c:325
 msgid "Type of messages to log:"
-msgstr "¥í¥°¤¹¤ë¥á¥Ã¥»¡¼¥¸¤Î¼ïÎà:"
+msgstr "ãƒ­ã‚°ã™ã‚‹ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã®ç¨®é¡:"
 
 #: src/gtkam-debug.c:329
 msgid "Error"
-msgstr "¥¨¥é¡¼"
+msgstr "ã‚¨ãƒ©ãƒ¼"
 
 #: src/gtkam-debug.c:336
 msgid "Verbose"
-msgstr "¾ÜºÙ"
+msgstr "è©³ç´°"
 
 #: src/gtkam-debug.c:343
 msgid "Debug"
-msgstr "¥Ç¥Ğ¥Ã¥°"
+msgstr "ãƒ‡ãƒãƒƒã‚°"
 
 #: src/gtkam-debug.c:350
 msgid "Data"
-msgstr "¥Ç¡¼¥¿"
+msgstr "ãƒ‡ãƒ¼ã‚¿"
 
 #: src/gtkam-delete.c:198
 #, c-format
 msgid "Deleting all files in '%s'..."
-msgstr "'%s'Ãæ¤ÎÁ´¤Æ¤Î¥Õ¥¡¥¤¥ë¤ò¾Ãµî¤·¤Æ¤¤¤Ş¤¹..."
+msgstr "'%s' ã«ã‚ã‚‹å…¨ã¦ã®ãƒ•ã‚¡ã‚¤ãƒ«ã®å‰Šé™¤ä¸­..."
 
 #: src/gtkam-delete.c:218
 #, c-format
 msgid "Could not delete all files in '%s'."
-msgstr "'%s'Ãæ¤ÎÁ´¤Æ¤Î¥Õ¥¡¥¤¥ë¤ò¾Ãµî¤Ç¤­¤Ş¤»¤ó¤Ç¤·¤¿"
+msgstr "'%s' ã«ã‚ã‚‹å…¨ã¦ã®ãƒ•ã‚¡ã‚¤ãƒ«ã‚’å‰Šé™¤ã§ãã¾ã›ã‚“ã§ã—ãŸã€‚"
 
 #: src/gtkam-delete.c:251
 #, c-format
 msgid "Deleting file '%s' from folder '%s'..."
-msgstr "¥Õ¥©¥ë¥À '%2$s' ¤«¤é ¥Õ¥¡¥¤¥ë'%1$s' ¤ò¾Ãµî¤·¤Æ¤¤¤Ş¤¹..."
+msgstr "ãƒ•ã‚¡ã‚¤ãƒ« '%s' ã‚’ãƒ•ã‚©ãƒ«ãƒ€ '%s' ã‹ã‚‰å‰Šé™¤ä¸­..."
 
 #: src/gtkam-delete.c:272
 #, c-format
 msgid "Could not delete file '%s' in folder '%s'."
-msgstr "¥Õ¥©¥ë¥À '%2$s' ¤Ë¤¢¤ë ¥Õ¥¡¥¤¥ë'%1$s' ¤òºï½ü¤¹¤ë¤³¤È¤¬½ĞÍè¤Ş¤»¤ó¤Ç¤·¤¿"
+msgstr "ãƒ•ã‚¡ã‚¤ãƒ« '%s' ã‚’ãƒ•ã‚©ãƒ«ãƒ€ '%s' ã‹ã‚‰å‰Šé™¤ã§ãã¾ã›ã‚“ã§ã—ãŸã€‚"
 
 #: src/gtkam-delete.c:386
 msgid "Do you really want to delete the following file?"
-msgstr "°Ê²¼¤Î¥Õ¥¡¥¤¥ë¤òËÜÅö¤Ë¾Ãµî¤·¤Æ¤â¤è¤í¤·¤¤¤Ç¤¹¤«?"
+msgstr "æ¬¡ã®ãƒ•ã‚¡ã‚¤ãƒ«ã‚’æœ¬å½“ã«å‰Šé™¤ã—ã¦ã‚‚å®œã—ã„ã§ã™ã‹ï¼Ÿ"
 
 #: src/gtkam-delete.c:389
 #, c-format
 msgid "Do you really want to delete the following %i files?"
-msgstr "°Ê²¼¤Î%i¸Ä¤Î¥Õ¥¡¥¤¥ë¤òËÜÅö¤Ë¾Ãµî¤·¤Æ¤â¤è¤í¤·¤¤¤Ç¤¹¤«?"
+msgstr "æ¬¡ã® %i å€‹ã®ãƒ•ã‚¡ã‚¤ãƒ«ã‚’æœ¬å½“ã«å‰Šé™¤ã—ã¦ã‚‚å®œã—ã„ã§ã™ã‹ï¼Ÿ"
 
 #: src/gtkam-delete.c:396
-#, fuzzy, c-format
+#, c-format
 msgid "'%s' in folder '%s'"
-msgstr "'%s' ¤ò¥Õ¥©¥ë¥À '%s' ¤Ë¥¢¥Ã¥×¥í¡¼¥É¤·¤Æ¤¤¤Ş¤¹..."
+msgstr "'%s' (ãƒ•ã‚©ãƒ«ãƒ€ '%s' ã«ã‚ã‚‹)"
 
 #: src/gtkam-delete.c:399
-#, fuzzy, c-format
+#, c-format
 msgid "All files in folder '%s'"
-msgstr "¥Õ¥©¥ë¥À'%s'Ãæ¤Î¥Õ¥¡¥¤¥ë°ìÍ÷¤òºîÀ®¤·¤Æ¤¤¤Ş¤¹..."
+msgstr "ãƒ•ã‚©ãƒ«ãƒ€ '%s' ã«ã‚ã‚‹å…¨ã¦ã®ãƒ•ã‚¡ã‚¤ãƒ«"
 
 #: src/gtkam-error.c:214
 msgid "More"
-msgstr "¾ÜºÙ"
+msgstr "è©³ç´°"
 
 #: src/gtkam-exif.c:155
-#, fuzzy, c-format
+#, c-format
 msgid "Getting EXIF information for file '%s' in folder '%s'..."
-msgstr "¥Õ¥©¥ë¥À '%2$s' ¤Ë¤¢¤ë¥Õ¥¡¥¤¥ë '%1$s' ¤ò¼èÆÀ¤·¤Æ¤¤¤Ş¤¹..."
+msgstr "ãƒ•ã‚¡ã‚¤ãƒ« '%s' (ãƒ•ã‚©ãƒ«ãƒ€ '%s' ã«ã‚ã‚‹) ã® EXIF æƒ…å ±ã®å–å¾—ä¸­..."
 
 #: src/gtkam-exif.c:171
-#, fuzzy, c-format
+#, c-format
 msgid "Could not get exif information for '%s' in folder '%s'"
-msgstr "¥Õ¥©¥ë¥À '%2$s' ¤Ë¤¢¤ë¥Õ¥¡¥¤¥ë '%1$s' ¤Î¾ğÊó¤¬¼èÆÀ¤Ç¤­¤Ş¤»¤ó"
+msgstr "'%s' (ãƒ•ã‚©ãƒ«ãƒ€ '%s' ã«ã‚ã‚‹) ã® EXIF æƒ…å ±ã‚’å–å¾—ã§ãã¾ã›ã‚“ã§ã—ãŸã€‚"
 
 #: src/gtkam-exif.c:184
-#, fuzzy
 msgid "Could not interpret EXIF data."
-msgstr "¥«¥á¥é¤ò½é´ü²½¤¹¤ë¤³¤È¤¬½ĞÍè¤Ş¤»¤ó¤Ç¤·¤¿"
+msgstr "EXIF ãƒ‡ãƒ¼ã‚¿ã‚’ã‚¤ãƒ³ãƒãƒ¼ãƒˆå‡ºæ¥ã¾ã›ã‚“ã§ã—ãŸã€‚"
 
 #: src/gtkam-exif.c:201
 msgid "Gtkam has been compiled without exif support."
-msgstr ""
+msgstr "ã”åˆ©ç”¨ã® Gtkam ã¯ EXIF ã‚’ã‚µãƒãƒ¼ãƒˆã—ã¦ã„ã¾ã›ã‚“ã€‚"
 
 #: src/gtkam-gimp.c:85
 msgid "Captures images from digital camera"
-msgstr "¥Ç¥¸¥¿¥ë¥«¥á¥é¤«¤é²èÁü¤ò¥­¥ã¥×¥Á¥ã¤·¤Ş¤¹"
+msgstr "ãƒ‡ã‚£ã‚¸ã‚¿ãƒ«ãƒ»ã‚«ãƒ¡ãƒ©ã‹ã‚‰ç”»åƒã‚’ã‚­ãƒ£ãƒ—ãƒãƒ£ã—ã¾ã™"
 
 #: src/gtkam-gimp.c:88
 msgid "<Toolbox>/File/Acquire/Capture from Camera..."
-msgstr "<Toolbox>/File/Acquire/¥«¥á¥é¤«¤é¥­¥ã¥×¥Á¥ã..."
+msgstr "<Toolbox>/File/Acquire/ã‚«ãƒ¡ãƒ©ã‹ã‚‰ã‚­ãƒ£ãƒ—ãƒãƒ£..."
 
 #: src/gtkam-gimp.c:92
 msgid "Loads files from digital cameras"
-msgstr "¥Ç¥¸¥¿¥ë¥«¥á¥é¤«¤é¥Õ¥¡¥¤¥ë¤òÆÉ¤ß¹ş¤ß¤Ş¤¹"
+msgstr "ãƒ‡ã‚£ã‚¸ã‚¿ãƒ«ãƒ»ã‚«ãƒ¡ãƒ©ã‹ã‚‰ãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª­ã¿è¾¼ã¿ã¾ã™"
 
 #: src/gtkam-gimp.c:96
 msgid "<Toolbox>/File/Acquire/Load from Camera..."
-msgstr "<Toolbox>/File/Acquire/¥«¥á¥é¤«¤éÆÉ¤ß¹ş¤ß..."
+msgstr "<Toolbox>/File/Acquire/ã‚«ãƒ¡ãƒ©ã‹ã‚‰èª­ã¿è¾¼ã¿..."
 
 #: src/gtkam-gimp.c:209 src/gtkam-list.c:506
 #, c-format
 msgid "Downloading '%s' from '%s'..."
-msgstr "'%2$s' ¤«¤é '%1$s' ¤Î¥À¥¦¥ó¥í¡¼¥ÉÃæ..."
+msgstr "'%s' ã‚’ '%s' ã‹ã‚‰ãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰ä¸­..."
 
 #: src/gtkam-gimp.c:227
 #, c-format
 msgid "Could not download file '%s' from folder '%s'."
-msgstr "¥Õ¥©¥ë¥À '%2$s' ¤«¤é '%1$s' ¤ò¥À¥¦¥ó¥í¡¼¥É¤Ç¤­¤Ş¤»¤ó¤Ç¤·¤¿"
+msgstr "'%s' ã‚’ãƒ•ã‚©ãƒ«ãƒ€ '%s' ã‹ã‚‰ãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰ã§ãã¾ã›ã‚“ã§ã—ãŸã€‚"
 
 #: src/gtkam-gimp.c:260
 msgid "Image"
-msgstr ""
+msgstr "ç”»åƒ"
 
 #: src/gtkam-info.c:200
-#, fuzzy, c-format
+#, c-format
 msgid "Setting information for file '%s' in '%s'..."
-msgstr "'%2$s'Ãæ¤Î¥Õ¥¡¥¤¥ë'%1$s'¤Î¾ğÊó¤ò¼èÆÀ¤·¤Æ¤¤¤Ş¤¹..."
+msgstr "'%s' ('%s' ã«ã‚ã‚‹) ã®ãƒ•ã‚¡ã‚¤ãƒ«æƒ…å ±ã®è¨­å®šä¸­..."
 
 #: src/gtkam-info.c:227
-#, fuzzy, c-format
+#, c-format
 msgid "Could not set file information for '%s' in folder '%s'"
-msgstr "¥Õ¥©¥ë¥À '%2$s' ¤Ë¤¢¤ë¥Õ¥¡¥¤¥ë '%1$s' ¤Î¾ğÊó¤¬¼èÆÀ¤Ç¤­¤Ş¤»¤ó"
+msgstr "'%s' (ãƒ•ã‚©ãƒ«ãƒ€ '%s' ã«ã‚ã‚‹) ã®ãƒ•ã‚¡ã‚¤ãƒ«æƒ…å ±ã‚’ã‚»ãƒƒãƒˆã§ãã¾ã›ã‚“ã§ã—ãŸã€‚"
 
+#. Get file info
 #: src/gtkam-info.c:356
 #, c-format
 msgid "Getting information about file '%s' in folder '%s'..."
-msgstr "¥Õ¥©¥ë¥À '%2$s' ¤Ë¤¢¤ë¥Õ¥¡¥¤¥ë '%1$s' ¤ò¼èÆÀ¤·¤Æ¤¤¤Ş¤¹..."
+msgstr "'%s' (ãƒ•ã‚©ãƒ«ãƒ€ '%s' ã«ã‚ã‚‹) ã®ãƒ•ã‚¡ã‚¤ãƒ«æƒ…å ±ã®å–å¾—ä¸­..."
 
 #: src/gtkam-info.c:368
-#, fuzzy, c-format
+#, c-format
 msgid "Could not get information about file '%s' in folder '%s'."
-msgstr "¥Õ¥©¥ë¥À '%2$s' ¤Ë¤¢¤ë¥Õ¥¡¥¤¥ë '%1$s' ¤Î¾ğÊó¤¬¼èÆÀ¤Ç¤­¤Ş¤»¤ó"
+msgstr "'%s' (ãƒ•ã‚©ãƒ«ãƒ€ '%s' ã«ã‚ã‚‹) ã®ãƒ•ã‚¡ã‚¤ãƒ«æƒ…å ±ã‚’å–å¾—ã§ãã¾ã›ã‚“ã§ã—ãŸã€‚"
 
 #: src/gtkam-info.c:396
 msgid "File"
-msgstr "¥Õ¥¡¥¤¥ë"
+msgstr "ãƒ•ã‚¡ã‚¤ãƒ«"
 
 #: src/gtkam-info.c:402
 msgid "Name:"
-msgstr "Ì¾Á°:"
+msgstr "åå‰:"
 
 #: src/gtkam-info.c:425 src/gtkam-info.c:533
 msgid "Mime type:"
-msgstr "MIME ·¿:"
+msgstr "MIME å‹:"
 
 #: src/gtkam-info.c:443
 msgid "Last modified:"
-msgstr "ºÇ½ª¹¹¿·:"
+msgstr "æœ€çµ‚ä¿®æ­£æ—¥æ™‚:"
 
 #: src/gtkam-info.c:464 src/gtkam-info.c:550 src/gtkam-info.c:598
 msgid "Size:"
-msgstr "¥µ¥¤¥º"
+msgstr "ã‚µã‚¤ã‚º"
 
 #: src/gtkam-info.c:471
-#, fuzzy, c-format
+#, c-format
 msgid "%li bytes"
-msgstr "%i ¥Ğ¥¤¥È"
+msgstr "%li ãƒã‚¤ãƒˆ"
 
 #: src/gtkam-info.c:485
 msgid "Permissions:"
-msgstr "Êİ¸î:"
+msgstr "ä¿è­·:"
 
 #: src/gtkam-info.c:497
 msgid "Read"
-msgstr "ÆÉ¤ß¹ş¤ß"
+msgstr "èª­ã¿è¾¼ã¿"
 
 #: src/gtkam-info.c:508
 msgid "Delete"
-msgstr "ºï½ü"
+msgstr "å‰Šé™¤"
 
 #: src/gtkam-info.c:527 src/gtkam-list.c:947
 msgid "Preview"
-msgstr "¥×¥ì¥Ó¥å¡¼"
+msgstr "ãƒ—ãƒ¬ãƒ“ãƒ¥ãƒ¼"
 
 #: src/gtkam-info.c:575
 msgid "Audio"
-msgstr "¥ª¡¼¥Ç¥£¥ª"
+msgstr "ã‚ªãƒ¼ãƒ‡ã‚£ã‚ª"
 
 #: src/gtkam-info.c:581
 msgid "Mime type: "
-msgstr "MIME ·¿: "
+msgstr "MIME å‹: "
 
 #: src/gtkam-list.c:334
-#, fuzzy, c-format
+#, c-format
 msgid "Downloading thumbnail of '%s' from folder '%s'..."
-msgstr "¥Õ¥©¥ë¥À '%2$s' ¤Ë¤¢¤ë¥Õ¥¡¥¤¥ë '%1$s' ¤Î¥µ¥à¥Í¥¤¥ë¤ò¼èÆÀ¤·¤Æ¤¤¤Ş¤¹..."
+msgstr "'%s' ã®ã‚µãƒ ãƒã‚¤ãƒ«ã‚’ãƒ•ã‚©ãƒ«ãƒ€ '%s' ã‹ã‚‰ãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰ä¸­..."
 
 #: src/gtkam-list.c:872
-#, fuzzy, c-format
+#, c-format
 msgid "Changing name of '%s' to '%s'..."
-msgstr "'%s' ¤ò¥Õ¥©¥ë¥À '%s' ¤ËºîÀ®¤·¤Æ¤¤¤Ş¤¹..."
+msgstr "'%s' ã‚’ '%s' ã«åå‰ã®å¤‰æ›´ä¸­..."
 
 #: src/gtkam-list.c:882
-#, fuzzy, c-format
+#, c-format
 msgid "Could not change the name of '%s' to '%s'."
-msgstr "'%2$s' ¤ÎÃæ¤Ë¿·µ¬¥Ç¥£¥ì¥¯¥È¥ê '%1$s' ¤òºîÀ®¤Ç¤­¤Ş¤»¤ó¤Ç¤·¤¿"
+msgstr "'%s' ã‚’ '%s' ã«åå‰ã‚’å¤‰æ›´ã™ã‚‹ã“ã¨ãŒå‡ºæ¥ã¾ã›ã‚“ã§ã—ãŸã€‚"
 
 #: src/gtkam-list.c:953
-#, fuzzy
 msgid "Name"
-msgstr "Ì¾Á°:"
+msgstr "åå‰"
 
 #: src/gtkam-list.c:975
 #, c-format
 msgid "Listing files in folder '%s'..."
-msgstr "¥Õ¥©¥ë¥À'%s'Ãæ¤Î¥Õ¥¡¥¤¥ë°ìÍ÷¤òºîÀ®¤·¤Æ¤¤¤Ş¤¹..."
+msgstr "ãƒ•ã‚©ãƒ«ãƒ€ '%s' ã«ã‚ã‚‹ãƒ•ã‚¡ã‚¤ãƒ«ã®èª­ã¿è¾¼ã¿ä¸­..."
 
 #: src/gtkam-list.c:991
 #, c-format
 msgid "Could not get file list for folder '%s'"
-msgstr "¥Õ¥©¥ë¥À '%s' ¤Î¥Õ¥¡¥¤¥ë°ìÍ÷¤ò¼èÆÀ¤Ç¤­¤Ş¤»¤ó¤Ç¤·¤¿"
+msgstr "ãƒ•ã‚©ãƒ«ãƒ€ '%s' ã®ãƒ•ã‚¡ã‚¤ãƒ«ä¸€è¦§ã‚’å–å¾—ã§ãã¾ã›ã‚“ã§ã—ãŸ"
 
 #: src/gtkam-main.c:465
 msgid ""
@@ -373,386 +378,378 @@ msgid ""
 "\n"
 "Enjoy the wonderful world of gphoto!"
 msgstr ""
+"gtkam ã¯å¤šãã®ãƒ‡ã‚£ã‚¸ã‚¿ãƒ«ãƒ»ã‚«ãƒ¡ãƒ©ã‹ã‚‰\n"
+"ç”»åƒã‚’ãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰ã™ã‚‹ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã§ã™ã€‚\n"
+"libgphoto2 ã‚’åˆ©ç”¨ã—ã¦ã„ã¾ã™ã€‚\n"
+"è©³ç´°ãªæƒ…å ±ã«ã¤ã„ã¦ã¯\n"
+"http://www.gphoto.net/ ã‚’è¨ªã‚Œã¦ã¿ã¦ä¸‹ã•ã„ã€‚\n"
+"\n"
+"gPhoto ã®ç´ æ™´ã‚‰ã—ã„ä¸–ç•Œã‚’ãŠæ¥½ã—ã¿ä¸‹ã•ã„ï¼"
 
 #: src/gtkam-main.c:476
 msgid "Many others"
-msgstr ""
+msgstr "ãã®ä»–ã®å¤šã"
 
 #: src/gtkam-main.c:572
-#, fuzzy
 msgid "/_File"
-msgstr "¥Õ¥¡¥¤¥ë(_F)"
+msgstr "/ãƒ•ã‚¡ã‚¤ãƒ«(_F)"
 
 #: src/gtkam-main.c:573
-#, fuzzy
 msgid "/File/_Save Photos"
-msgstr "¼Ì¿¿¤ÎÊİÂ¸"
+msgstr "/ãƒ•ã‚¡ã‚¤ãƒ«(_F)/å†™çœŸã®ä¿å­˜(_S)"
 
 #: src/gtkam-main.c:574
 msgid "/File/Save Photos/_Selected"
-msgstr ""
+msgstr "/ãƒ•ã‚¡ã‚¤ãƒ«(_F)/å†™çœŸã®ä¿å­˜/é¸æŠæ¸ˆã¿ã®ã‚‚ã®(_S)"
 
 #: src/gtkam-main.c:576
-#, fuzzy
 msgid "/File/Save Photos/_All"
-msgstr "¼Ì¿¿¤ÎÊİÂ¸"
+msgstr "/ãƒ•ã‚¡ã‚¤ãƒ«(_F)/å†™çœŸã®ä¿å­˜(_S)/å…¨ã¦(_A)"
 
 #: src/gtkam-main.c:578
-#, fuzzy
 msgid "/File/_Delete Photos"
-msgstr "¼Ì¿¿¤Î¾Ãµî(_D)"
+msgstr "/ãƒ•ã‚¡ã‚¤ãƒ«(_F)/å†™çœŸã®å‰Šé™¤(_D)"
 
 #: src/gtkam-main.c:579
-#, fuzzy
 msgid "/File/Delete Photos/_Selected"
-msgstr "¼Ì¿¿¤Î¾Ãµî(_D)"
+msgstr "/ãƒ•ã‚¡ã‚¤ãƒ«(_F)/å†™çœŸã®å‰Šé™¤(_D)/é¸æŠæ¸ˆã®ã‚‚ã®(_S)"
 
 #: src/gtkam-main.c:581
-#, fuzzy
 msgid "/File/Delete Photos/_All"
-msgstr "¼Ì¿¿¤Î¾Ãµî(_D)"
+msgstr "/ãƒ•ã‚¡ã‚¤ãƒ«(_F)/å†™çœŸã®å‰Šé™¤(_D)/å…¨ã¦(_A)"
 
 #: src/gtkam-main.c:584
 msgid "/File/_Quit"
-msgstr ""
+msgstr "/ãƒ•ã‚¡ã‚¤ãƒ«(_F)/çµ‚äº†(_Q)"
 
 #: src/gtkam-main.c:586
 msgid "/_View"
-msgstr ""
+msgstr "/è¡¨ç¤º(_V)"
 
 #: src/gtkam-main.c:587
-#, fuzzy
 msgid "/View/_View Thumbnails"
-msgstr "¥µ¥à¥Í¥¤¥ë¤òÉ½¼¨¤¹¤ë"
+msgstr "/è¡¨ç¤º(_V)/ã‚µãƒ ãƒã‚¤ãƒ«ã®è¡¨ç¤º(_V)"
 
 #: src/gtkam-main.c:590
 msgid "/View/Zoom _In"
-msgstr ""
+msgstr "/è¡¨ç¤º(_V)/æ‹¡å¤§(_I)"
 
 #: src/gtkam-main.c:592
 msgid "/View/Zoom _100"
-msgstr ""
+msgstr "/è¡¨ç¤º(_V)/æ‹¡å¤§ 100(_1)"
 
 #: src/gtkam-main.c:594
 msgid "/View/Zoom _Out"
-msgstr ""
+msgstr "/è¡¨ç¤º(_V)/ç¸®å°(_O)"
 
 #: src/gtkam-main.c:596
-#, fuzzy
 msgid "/_Select"
-msgstr "ÁªÂò(_S)"
+msgstr "/é¸æŠ(_S)"
 
 #: src/gtkam-main.c:597
-#, fuzzy
 msgid "/Select/_All"
-msgstr "ÁªÂò(_S)"
+msgstr "/é¸æŠ(_S)/å…¨ã¦(_A)"
 
 #: src/gtkam-main.c:598
-#, fuzzy
 msgid "/Select/_Inverse"
-msgstr "È¿Å¾(_I)"
+msgstr "/é¸æŠ(_S)/åè»¢(_I)"
 
 #: src/gtkam-main.c:599
-#, fuzzy
 msgid "/Select/_None"
-msgstr "ÁªÂòºÑ(_S)"
+msgstr "/é¸æŠ(_S)/å–ã‚Šæ¶ˆã—(_N)"
 
 #: src/gtkam-main.c:600
-#, fuzzy
 msgid "/_Camera"
-msgstr "¥«¥á¥é(_C)"
+msgstr "/ã‚«ãƒ¡ãƒ©(_C)"
 
 #: src/gtkam-main.c:601
-#, fuzzy
 msgid "/Camera/_Add Camera..."
-msgstr "¥«¥á¥é¤ÎÁªÂò(_S)..."
+msgstr "/ã‚«ãƒ¡ãƒ©(_C)/ã‚«ãƒ¡ãƒ©ã®è¿½åŠ (_A)..."
 
 #: src/gtkam-main.c:602
-#, fuzzy
 msgid "/_Help"
-msgstr "¥Ø¥ë¥×(_H)"
+msgstr "/ãƒ˜ãƒ«ãƒ—(_H)"
 
 #: src/gtkam-main.c:604
 msgid "/Help/_Contents"
-msgstr ""
+msgstr "/ãƒ˜ãƒ«ãƒ—(_H)/ç›®æ¬¡(_C)"
 
 #: src/gtkam-main.c:607
 msgid "/Help/_Debug"
-msgstr ""
+msgstr "/ãƒ˜ãƒ«ãƒ—(_H)/ãƒ‡ãƒãƒƒã‚°(_D)"
 
 #: src/gtkam-main.c:608
 msgid "/Help/_About"
-msgstr ""
+msgstr "/ãƒ˜ãƒ«ãƒ—(_H)/æƒ…å ±(_A)"
 
 #: src/gtkam-main.c:675
 msgid "View Thumbnails"
-msgstr "¥µ¥à¥Í¥¤¥ë¤òÉ½¼¨¤¹¤ë"
+msgstr "ã‚µãƒ ãƒã‚¤ãƒ«ã‚’è¡¨ç¤ºã™ã‚‹"
 
 #: src/gtkam-main.c:696
 msgid "_Help"
-msgstr "¥Ø¥ë¥×(_H)"
+msgstr "ãƒ˜ãƒ«ãƒ—(_H)"
 
 #: src/gtkam-main.c:708
 msgid "_Debug..."
-msgstr "¥Ç¥Ğ¥Ã¥°(_D)..."
+msgstr "ãƒ‡ãƒãƒƒã‚°(_D)..."
 
 #: src/gtkam-main.c:717
 msgid "_About..."
-msgstr "gtkam¤Ë¤Ä¤¤¤Æ(_A)..."
+msgstr "æƒ…å ±(_A)..."
 
 #: src/gtkam-mkdir.c:170
 #, c-format
 msgid "Creating folder '%s' in folder '%s'..."
-msgstr "'%s' ¤ò¥Õ¥©¥ë¥À '%s' ¤ËºîÀ®¤·¤Æ¤¤¤Ş¤¹..."
+msgstr "ãƒ•ã‚©ãƒ«ãƒ€ '%s' ã‚’ãƒ•ã‚©ãƒ«ãƒ€ '%s' å†…ã«ä½œæˆä¸­..."
 
 #: src/gtkam-mkdir.c:204
 #, c-format
 msgid "Could not create folder '%s' in folder '%s'."
-msgstr "'%s' ¤ò¥Õ¥©¥ë¥À '%s' ¤ËºîÀ®¤¹¤ë¤³¤È¤¬¤Ç¤­¤Ş¤»¤ó¤Ç¤·¤¿"
+msgstr "ãƒ•ã‚©ãƒ«ãƒ€ '%s' ã‚’ãƒ•ã‚©ãƒ«ãƒ€ '%s' å†…ã«ä½œæˆã§ãã¾ã›ã‚“ã§ã—ãŸã€‚"
 
 #: src/gtkam-mkdir.c:230
 #, c-format
 msgid "Please choose a name for the directory that should be created in '%s':"
-msgstr "'%s' ¤ÎÃæ¤ËºîÀ®¤¹¤ë¥Ç¥£¥ì¥¯¥È¥êÌ¾¤òÆşÎÏ¤·¤Æ²¼¤µ¤¤:"
+msgstr "'%s' ã®ä¸­ã«ä½œæˆã™ã‚‹ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªåã‚’å…¥åŠ›ã—ã¦ä¸‹ã•ã„:"
 
 #: src/gtkam-mkdir.c:246
 msgid "New directory"
-msgstr "¿·µ¬¤Î¥Ç¥£¥ì¥¯¥È¥ê"
+msgstr "æ–°è¦ã®ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒª"
 
 #: src/gtkam-port.c:163
-#, fuzzy, c-format
-msgid "Could not find an io-driver for port '%s' ('%s')."
-msgstr "¥Õ¥©¥ë¥À '%s' ¤Î¥Õ¥©¥ë¥À°ìÍ÷¤ò¼èÆÀ¤Ç¤­¤Ş¤»¤ó¤Ç¤·¤¿"
+#, c-format
+msgid "Could not find and io-driver for port '%s' ('%s')."
+msgstr "ãƒãƒ¼ãƒˆ '%s' ('%s') ã® IO ãƒ‰ãƒ©ã‚¤ãƒãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“ã§ã—ãŸã€‚"
 
 #: src/gtkam-port.c:198
 msgid "Please specify the (extended) path to the port you would like to use:"
-msgstr ""
+msgstr "ä½¿ç”¨ã™ã‚‹ãƒãƒ¼ãƒˆã¸ã® (æ‹¡å¼µã•ã‚ŒãŸ) ãƒ‘ã‚¹åã‚’æŒ‡å®šã—ã¦ä¸‹ã•ã„:"
 
+#. The camera doesn't support previews. Capture an image.
 #: src/gtkam-preview.c:205 src/gtkam-tree.c:791
 msgid "Capturing image..."
-msgstr "²èÁü¤ò¥­¥ã¥×¥Á¥ã¤·¤Æ¤¤¤Ş¤¹..."
+msgstr "ç”»åƒã®ã‚­ãƒ£ãƒ—ãƒãƒ£ä¸­..."
 
 #: src/gtkam-preview.c:227
 msgid "Could not capture image."
-msgstr "¥­¥ã¥×¥Á¥ã¤Ç¤­¤Ş¤»¤ó¤Ç¤·¤¿"
+msgstr "ç”»åƒã‚’ã‚­ãƒ£ãƒ—ãƒãƒ£ã§ãã¾ã›ã‚“ã§ã—ãŸã€‚"
 
 #: src/gtkam-preview.c:363 src/gtkam-preview.c:426
 msgid "Capture"
-msgstr "¥­¥ã¥×¥Á¥ã"
+msgstr "ã‚­ãƒ£ãƒ—ãƒãƒ£"
 
 #: src/gtkam-preview.c:389
 msgid "0 degrees"
-msgstr "0¡ë"
+msgstr "0Â°"
 
 #: src/gtkam-preview.c:397
 msgid "Don't rotate thumbnail"
-msgstr "¥µ¥à¥Í¥¤¥ë¤ò²óÅ¾¤µ¤»¤Ş¤»¤ó"
+msgstr "ã‚µãƒ ãƒã‚¤ãƒ«ã‚’å›è»¢ã•ã›ã¾ã›ã‚“"
 
 #: src/gtkam-preview.c:399
 msgid "-90 degrees"
-msgstr "-90¡ë"
+msgstr "-90Â°"
 
 #: src/gtkam-preview.c:406
 msgid "Rotate thumbnail by -90 degrees"
-msgstr "¥µ¥à¥Í¥¤¥ë¤ò -90¡ë²óÅ¾¤µ¤»¤Ş¤¹"
+msgstr "ã‚µãƒ ãƒã‚¤ãƒ«ã‚’ -90Â°å›è»¢ã•ã›ã¾ã™"
 
 #: src/gtkam-preview.c:408
 msgid "+90 degrees"
-msgstr "+90¡ë"
+msgstr "+90Â°"
 
 #: src/gtkam-preview.c:415
 msgid "Rotate thumbnail by 90 degrees"
-msgstr "¥µ¥à¥Í¥¤¥ë¤ò 90¡ë²óÅ¾¤µ¤»¤Ş¤¹"
+msgstr "ã‚µãƒ ãƒã‚¤ãƒ«ã‚’ 90Â°å›è»¢ã•ã›ã¾ã™"
 
 #: src/gtkam-preview.c:417
 msgid "180 degrees"
-msgstr "180¡ë"
+msgstr "180Â°"
 
 #: src/gtkam-preview.c:424
 msgid "Rotate thumbnail by 180 degrees"
-msgstr "¥µ¥à¥Í¥¤¥ë¤ò 180¡ë²óÅ¾¤µ¤»¤Ş¤¹"
+msgstr "ã‚µãƒ ãƒã‚¤ãƒ«ã‚’ 180Â°å›è»¢ã•ã›ã¾ã™"
 
 #: src/gtkam-save.c:335
 #, c-format
 msgid "'%s' already exists."
-msgstr "'%s' ¤¬´û¤ËÂ¸ºß¤·¤Ş¤¹"
+msgstr "'%s' ãŒæ—¢ã«å­˜åœ¨ã—ã¾ã™"
 
 #: src/gtkam-save.c:349
 #, c-format
 msgid "Could not save file to '%s'."
-msgstr "¥Õ¥¡¥¤¥ë¤ò '%s' ¤ØÊİÂ¸¤Ç¤­¤Ş¤»¤ó¤Ç¤·¤¿"
+msgstr "ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ '%s' ã«ä¿å­˜ã§ãã¾ã›ã‚“ã§ã—ãŸã€‚"
 
 #: src/gtkam-save.c:385
 #, c-format
 msgid "Could not get '%s' from folder '%s'."
-msgstr "¥Õ¥©¥ë¥À '%s' ¤«¤é '%s' ¤ò¼èÆÀ¤Ç¤­¤Ş¤»¤ó¤Ç¤·¤¿"
+msgstr "'%s' ã‚’ãƒ•ã‚©ãƒ«ãƒ€ '%s' ã‹ã‚‰å–å¾—ã§ãã¾ã›ã‚“ã§ã—ãŸã€‚"
 
 #: src/gtkam-save.c:407
-#, fuzzy
 msgid "Downloading file..."
-msgstr "%i¸Ä¤Î¥Õ¥¡¥¤¥ë¤ò¥À¥¦¥ó¥í¡¼¥ÉÃæ..."
+msgstr "ãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰ä¸­..."
 
 #: src/gtkam-save.c:409 src/gtkam-save.c:416
 #, c-format
 msgid "Downloading %i files..."
-msgstr "%i¸Ä¤Î¥Õ¥¡¥¤¥ë¤ò¥À¥¦¥ó¥í¡¼¥ÉÃæ..."
+msgstr "%i å€‹ã®ãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰ä¸­..."
 
 #: src/gtkam-save.c:491
 msgid "What to save:"
-msgstr "ÊİÂ¸¤¹¤ë¤â¤Î:"
+msgstr "ä¿å­˜ã™ã‚‹ã‚‚ã®:"
 
 #: src/gtkam-save.c:500
 msgid "Save photos"
-msgstr "¼Ì¿¿¤ÎÊİÂ¸"
+msgstr "å†™çœŸã®ä¿å­˜"
 
 #: src/gtkam-save.c:506
 msgid "Photos will be saved if this is checked"
-msgstr "¤³¤ì¤ò¥Á¥§¥Ã¥¯¤¹¤ë¤È¡¢¼Ì¿¿¤¬ÊİÂ¸¤µ¤ì¤Ş¤¹"
+msgstr "ã“ã‚Œã‚’ãƒã‚§ãƒƒã‚¯ã™ã‚‹ã¨ã€å†™çœŸãŒä¿å­˜ã•ã‚Œã¾ã™"
 
 #: src/gtkam-save.c:510
 msgid "Save raw data"
-msgstr "raw¥Ç¡¼¥¿¤ÎÊİÂ¸"
+msgstr "ç”Ÿãƒ‡ãƒ¼ã‚¿ã®ä¿å­˜"
 
 #: src/gtkam-save.c:515
 msgid "Raw data will be saved if this is checked"
-msgstr "¤³¤ì¤ò¥Á¥§¥Ã¥¯¤¹¤ë¤È¡¢raw¥Ç¡¼¥¿¤¬ÊİÂ¸¤µ¤ì¤Ş¤¹"
+msgstr "ã“ã‚Œã‚’ãƒã‚§ãƒƒã‚¯ã™ã‚‹ã¨ã€ç”Ÿãƒ‡ãƒ¼ã‚¿ãŒä¿å­˜ã•ã‚Œã¾ã™"
 
 #: src/gtkam-save.c:519
 msgid "Save audio data"
-msgstr "¥ª¡¼¥Ç¥£¥ª¥Ç¡¼¥¿¤ÎÊİÂ¸"
+msgstr "ã‚ªãƒ¼ãƒ‡ã‚£ã‚ªãƒ‡ãƒ¼ã‚¿ã®ä¿å­˜"
 
 #: src/gtkam-save.c:524
 msgid "Audio data will be saved if this is checked"
-msgstr "¤³¤ì¤ò¥Á¥§¥Ã¥¯¤¹¤ë¤È¡¢¥ª¡¼¥Ç¥£¥ª¥Ç¡¼¥¿¤¬ÊİÂ¸¤µ¤ì¤Ş¤¹"
+msgstr "ã“ã‚Œã‚’ãƒã‚§ãƒƒã‚¯ã™ã‚‹ã¨ã€ã‚ªãƒ¼ãƒ‡ã‚£ã‚ªãƒ‡ãƒ¼ã‚¿ãŒä¿å­˜ã•ã‚Œã¾ã™"
 
 #: src/gtkam-save.c:528
 msgid "Save thumbnails"
-msgstr "¥µ¥à¥Í¥¤¥ë¤ÎÊİÂ¸"
+msgstr "ã‚µãƒ ãƒã‚¤ãƒ«ã®ä¿å­˜"
 
 #: src/gtkam-save.c:533
 msgid "Thumbnails will be saved if this is checked"
-msgstr "¤³¤ì¤ò¥Á¥§¥Ã¥¯¤¹¤ë¤È¡¢¥µ¥à¥Í¥¤¥ë¤¬ÊİÂ¸¤µ¤ì¤Ş¤¹"
+msgstr "ã“ã‚Œã‚’ãƒã‚§ãƒƒã‚¯ã™ã‚‹ã¨ã€ã‚µãƒ ãƒã‚¤ãƒ«ãŒä¿å­˜ã•ã‚Œã¾ã™"
 
 #: src/gtkam-save.c:537
 msgid "Save EXIF data"
-msgstr "EXIF¥Ç¡¼¥¿¤ÎÊİÂ¸"
+msgstr "EXIF ãƒ‡ãƒ¼ã‚¿ã®ä¿å­˜"
 
 #: src/gtkam-save.c:542
 msgid "EXIF data will be saved if this is checked"
-msgstr "¤³¤ì¤ò¥Á¥§¥Ã¥¯¤¹¤ë¤È¡¢EXIF¥Ç¡¼¥¿¤¬ÊİÂ¸¤µ¤ì¤Ş¤¹"
+msgstr "ã“ã‚Œã‚’ãƒã‚§ãƒƒã‚¯ã™ã‚‹ã¨ã€EXIF ãƒ‡ãƒ¼ã‚¿ãŒä¿å­˜ã•ã‚Œã¾ã™"
 
 #: src/gtkam-save.c:551
 msgid "Open image(s) with: "
-msgstr "²èÁü¤ò³«¤¯¥¢¥×¥ê:"
+msgstr "ç”»åƒã‚’é–‹ãã‚¢ãƒ—ãƒª: "
 
 #: src/gtkam-save.c:560
 msgid "Type in the name of the program you want to run, leave blank for none"
-msgstr "µ¯Æ°¤¹¤ë¥×¥í¥°¥é¥àÌ¾¤òÆşÎÏ¤·¤Æ²¼¤µ¤¤¡£¼Â¹Ô¤·¤Ê¤¤¾ì¹ç¤Ï¶õÇò¤Ë¤·¤Æ²¼¤µ¤¤"
+msgstr "èµ·å‹•ã™ã‚‹ãƒ—ãƒ­ã‚°ãƒ©ãƒ åã‚’å…¥åŠ›ã—ã¦ä¸‹ã•ã„ã€‚å®Ÿè¡Œã—ãªã„å ´åˆã¯ç©ºç™½ã«ã—ã¦ä¸‹ã•ã„"
 
+#. Filenames provided by camera
 #: src/gtkam-save.c:566
-#, fuzzy
 msgid "Use filename(s) provided by the camera"
-msgstr "¥«¥á¥é¤¬Äó¶¡¤¹¤ë¥Õ¥¡¥¤¥ëÌ¾¤ò»ÈÍÑ¤¹¤ë"
+msgstr "ã‚«ãƒ¡ãƒ©ãŒæä¾›ã™ã‚‹ãƒ•ã‚¡ã‚¤ãƒ«åã‚’ä½¿ç”¨ã™ã‚‹"
 
 #: src/gtkam-save.c:573
 msgid "Choose whether to use the filename provided by the camera"
-msgstr "¥«¥á¥é¤¬Äó¶¡¤¹¤ë¥Õ¥¡¥¤¥ëÌ¾¤ò»ÈÍÑ¤¹¤ë¤«¤É¤¦¤«¤òÁªÂò¤·¤Æ²¼¤µ¤¤"
+msgstr "ã‚«ãƒ¡ãƒ©ãŒæä¾›ã™ã‚‹ãƒ•ã‚¡ã‚¤ãƒ«åã‚’ä½¿ç”¨ã™ã‚‹ã‹ã©ã†ã‹ã‚’é¸æŠã—ã¦ä¸‹ã•ã„"
 
 #: src/gtkam-save.c:588
 msgid "Filename prefix: "
-msgstr "¥Õ¥¡¥¤¥ëÌ¾¤ÎÀÜÆ¬»Ò: "
+msgstr "ãƒ•ã‚¡ã‚¤ãƒ«åã®æ¥é ­å­: "
 
 #: src/gtkam-save.c:599
 msgid "Start numbering with: "
-msgstr ""
+msgstr "é–‹å§‹ç•ªå·: "
 
+#. First case: We have only one file.
 #: src/gtkam-save.c:641
 #, c-format
 msgid "Save '%s'..."
-msgstr "'%s'¤òÊİÂ¸..."
+msgstr "'%s' ã®ä¿å­˜..."
 
+#. Second case: We have multiple files to save.
 #: src/gtkam-save.c:663
 msgid "Save photos..."
-msgstr "¼Ì¿¿¤ÎÊİÂ¸..."
+msgstr "å†™çœŸã®ä¿å­˜..."
 
 #: src/gtkam-tree.c:309
-#, fuzzy, c-format
+#, c-format
 msgid "Listing folders in '%s'..."
-msgstr "¥Õ¥©¥ë¥À'%s'Ãæ¤Î¥Õ¥¡¥¤¥ë°ìÍ÷¤òºîÀ®¤·¤Æ¤¤¤Ş¤¹..."
+msgstr "'%s' ã®ä¸­ã«ã‚ã‚‹ãƒ•ã‚©ãƒ«ãƒ€ä¸€è¦§ã®ä½œæˆä¸­..."
 
 #: src/gtkam-tree.c:330
-#, fuzzy, c-format
+#, c-format
 msgid "Could not list folders in '%s'."
-msgstr "'%s'Ãæ¤ÎÁ´¤Æ¤Î¥Õ¥¡¥¤¥ë¤ò¾Ãµî¤Ç¤­¤Ş¤»¤ó¤Ç¤·¤¿"
+msgstr "'%s' ã®ä¸­ã«ã‚ã‚‹ãƒ•ã‚©ãƒ«ãƒ€ä¸€è¦§ã‚’ä½œæˆã§ãã¾ã›ã‚“ã§ã—ãŸã€‚"
 
 #: src/gtkam-tree.c:427
 #, c-format
 msgid "Could not open '%s'."
-msgstr "'%s' ¤ò³«¤¯¤³¤È¤¬½ĞÍè¤Ş¤»¤ó¤Ç¤·¤¿"
+msgstr "'%s' ãŒé–‹ã‘ã¾ã›ã‚“ã§ã—ãŸã€‚"
 
 #: src/gtkam-tree.c:434
-#, fuzzy, c-format
+#, c-format
 msgid "Uploading '%s' into folder '%s'..."
-msgstr "'%s' ¤ò¥Õ¥©¥ë¥À '%s' ¤Ë¥¢¥Ã¥×¥í¡¼¥É¤Ç¤­¤Ş¤»¤ó¤Ç¤·¤¿"
+msgstr "'%s' ã‚’ãƒ•ã‚©ãƒ«ãƒ€ '%s' ã«ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰ä¸­..."
 
 #: src/gtkam-tree.c:454
-#, fuzzy, c-format
+#, c-format
 msgid "Could not upload '%s' into '%s'."
-msgstr "'%s' ¤ò¥Õ¥©¥ë¥À '%s' ¤Ë¥¢¥Ã¥×¥í¡¼¥É¤Ç¤­¤Ş¤»¤ó¤Ç¤·¤¿"
+msgstr "'%s' ã‚’ '%s' ã«ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰ã§ãã¾ã›ã‚“ã§ã—ãŸã€‚"
 
 #: src/gtkam-tree.c:478
-#, fuzzy, c-format
+#, c-format
 msgid "Upload into '%s'..."
-msgstr "¥Õ¥¡¥¤¥ë¤Î¥¢¥Ã¥×¥í¡¼¥É(_U)..."
+msgstr "'%s' ã¸ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰..."
 
 #: src/gtkam-tree.c:554
-#, fuzzy, c-format
+#, c-format
 msgid "Removing directory '%s'..."
-msgstr "'%2$s' ¤«¤é '%1$s' ¤òºï½üÃæ..."
+msgstr "ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒª '%s' ã®å‰Šé™¤ä¸­ ..."
 
 #: src/gtkam-tree.c:571
-#, fuzzy, c-format
+#, c-format
 msgid "Could not remove directory '%s'."
-msgstr "'%2$s' ¤«¤é '%1$s' ¤òºï½ü¤¹¤ë¤³¤È¤¬½ĞÍè¤Ş¤»¤ó¤Ç¤·¤¿"
+msgstr "ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒª '%s' ã‚’å‰Šé™¤ã§ãã¾ã›ã‚“ã§ã—ãŸã€‚"
 
 #: src/gtkam-tree.c:600
 msgid "Getting information about the camera..."
-msgstr "¥«¥á¥é¤Î¾ğÊó¤ò¼èÆÀ¤·¤Æ¤¤¤Ş¤¹..."
+msgstr "ã‚«ãƒ¡ãƒ©æƒ…å ±ã®å–å¾—ä¸­..."
 
 #: src/gtkam-tree.c:604
 msgid "Getting information about the driver..."
-msgstr "¥É¥é¥¤¥Ğ¾ğÊó¤ò¼èÆÀ¤·¤Æ¤¤¤Ş¤¹..."
+msgstr "ãƒ‰ãƒ©ã‚¤ãƒæƒ…å ±ã®å–å¾—ä¸­..."
 
 #: src/gtkam-tree.c:608
 msgid "Getting manual..."
-msgstr "¥Ş¥Ë¥å¥¢¥ë¤ò¼èÆÀ¤·¤Æ¤¤¤Ş¤¹..."
+msgstr "ãƒãƒ‹ãƒ¥ã‚¢ãƒ«ã®å–å¾—ä¸­..."
 
 #: src/gtkam-tree.c:639
 msgid "Could not retrieve information."
-msgstr "¾ğÊó¤ò¼èÆÀ¤¹¤ë¤³¤È¤¬½ĞÍè¤Ş¤»¤ó¤Ç¤·¤¿"
+msgstr "ã‚«ãƒ¡ãƒ©æƒ…å ±ã‚’å–å¾—ã™ã‚‹ã“ã¨ãŒå‡ºæ¥ã¾ã›ã‚“ã§ã—ãŸã€‚"
 
 #: src/gtkam-tree.c:809
 msgid "Could not capture."
-msgstr "¥­¥ã¥×¥Á¥ã¤Ç¤­¤Ş¤»¤ó¤Ç¤·¤¿"
+msgstr "ã‚­ãƒ£ãƒ—ãƒãƒ£ã§ãã¾ã›ã‚“ã§ã—ãŸã€‚"
 
 #: src/gtkam-tree.c:880
-#, fuzzy
 msgid "_Add Camera..."
-msgstr "¥«¥á¥é¤ÎÁªÂò(_S)..."
+msgstr "ã‚«ãƒ¡ãƒ©ã®è¿½åŠ (_A)..."
 
 #: src/gtkam-tree.c:980
 msgid "Please right-click to access additional menus"
-msgstr ""
+msgstr "è¿½åŠ ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã«ã‚¢ã‚¯ã‚»ã‚¹ã™ã‚‹å ´åˆã¯å³ã‚¯ãƒªãƒƒã‚¯ã—ã¦ä¸‹ã•ã„ã€‚"
 
 #: src/gtkam-tree.c:1005
-#, fuzzy
 msgid "Folder"
-msgstr "¥Õ¥©¥ë¥À(_O)"
+msgstr "ãƒ•ã‚©ãƒ«ãƒ€"
 
 #: src/gtkam-tree.c:1098
-#, fuzzy
 msgid "Loading cameras..."
-msgstr "¥«¥á¥é¤Î¸¡½Ğ..."
+msgstr "ã‚«ãƒ¡ãƒ©ã®æ¤œå‡ºä¸­..."
 
 #: src/gtkam-util.c:64
 #, c-format
@@ -760,15 +757,15 @@ msgid ""
 "Could not display '%s'. Either the image type ('%s') is not supported by gtk "
 "or the file itself is corrupt."
 msgstr ""
-"'%s'¤òÉ½¼¨¤Ç¤­¤Ş¤»¤ó¤Ç¤·¤¿. ²èÁü·Á¼° ('%s')¤¬ gtk¤Ç¥µ¥İ¡¼¥È¤µ¤ì¤Æ¤¤¤Ê¤¤¤«¡¢¤¢"
-"¤ë¤¤¤Ï¥Õ¥¡¥¤¥ë¤½¤Î¤â¤Î¤¬²õ¤ì¤Æ¤¤¤Ş¤¹."
+"'%s' ã‚’è¡¨ç¤ºã™ã‚‹ã“ã¨ãŒå‡ºæ¥ã¾ã›ã‚“ã§ã—ãŸã€‚ç”»åƒã®å½¢å¼ ('%s') ãŒ Gtk+ ã§ã‚µãƒãƒ¼ãƒˆã•"
+"ã‚Œã¦ã„ãªã„ã‹ã€ã¾ãŸã¯ãƒ•ã‚¡ã‚¤ãƒ«è‡ªèº«ãŒå£Šã‚Œã¦ã„ã¾ã™ã€‚"
 
 #: src/gtkam-viewer.c:256
-#, fuzzy, c-format
+#, c-format
 msgid "Downloading '%s' from folder '%s'..."
-msgstr "'%2$s' ¤«¤é '%1$s' ¤Î¥À¥¦¥ó¥í¡¼¥ÉÃæ..."
+msgstr "'%s' ã‚’ãƒ•ã‚©ãƒ«ãƒ€ '%s' ã‹ã‚‰ãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰ä¸­..."
 
 #: src/gtkam-viewer.c:307
-#, fuzzy, c-format
+#, c-format
 msgid "Could not download '%s' from folder '%s'."
-msgstr "¥Õ¥©¥ë¥À '%2$s' ¤«¤é '%1$s' ¤ò¥À¥¦¥ó¥í¡¼¥É¤Ç¤­¤Ş¤»¤ó¤Ç¤·¤¿"
+msgstr "'%s' ã‚’ãƒ•ã‚©ãƒ«ãƒ€ '%s' ã‹ã‚‰ãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰ã§ãã¾ã›ã‚“ã§ã—ãŸã€‚"

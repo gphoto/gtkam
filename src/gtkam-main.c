@@ -457,6 +457,8 @@ action_debug (gpointer callback_data, guint callback_action,
 	gtk_widget_show (d);
 }
 
+#define CHECK_NULL(x) { if (x == NULL) { return; } }
+
 static void
 action_about (gpointer callback_data, guint callback_action,
 	      GtkWidget *widget)
@@ -536,6 +538,8 @@ action_about (gpointer callback_data, guint callback_action,
 	gtk_widget_show (d);
 	// FIXME free(gcomments);
 }
+
+#undef CHECK_NULL
 
 static gboolean
 selection_changed_idle (gpointer data)

@@ -1,3 +1,7 @@
+2002-11-07  Lutz Müller <lutz@users.sourceforge.net>
+
+	* tests/Makefile.am: Add $(EXIF_CFLAGS)
+
 2002-11-03  Mark McLoughlin <mark@skynet.ie>
 
 	* src/main.c: (main): use #elif defined(HAVE_BONOBO) instead of

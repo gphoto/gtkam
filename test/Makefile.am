@@ -1,7 +1,7 @@
 INCLUDES =			\
 	-I$(top_srcdir)		\
 	-I$(top_srcdir)/src	\
-	$(GTKAM_CFLAGS) $(BONOBO_CFLAGS) $(BONOBO_CFLAGS)
+	$(GTKAM_CFLAGS) $(BONOBO_CFLAGS) $(BONOBO_CFLAGS) $(EXIF_CFLAGS)
 
 noinst_PROGRAMS = test-fsel test-cancel
 

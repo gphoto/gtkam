@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gtkam 0.1.10rc2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-02-17 11:37+0100\n"
+"POT-Creation-Date: 2004-09-04 10:46+0200\n"
 "PO-Revision-Date: 2002-11-26 01:23+0900\n"
 "Last-Translator: Takeshi Aihana <aihana@gnome.gr.jp>\n"
 "Language-Team: Japanese <translation-team-ja@lists.sourceforge.net>\n"
@@ -170,44 +170,39 @@ msgstr "デバッグ"
 msgid "Data"
 msgstr "データ"
 
-#: src/gtkam-delete.c:180
+#: src/gtkam-delete.c:178
 #, c-format
 msgid "Deleting all files in '%s'..."
 msgstr "'%s' にある全てのファイルの削除中..."
 
-#: src/gtkam-delete.c:200
+#: src/gtkam-delete.c:198
 #, c-format
 msgid "Could not delete all files in '%s'."
 msgstr "'%s' にある全てのファイルを削除できませんでした。"
 
-#: src/gtkam-delete.c:233
+#: src/gtkam-delete.c:231
 #, c-format
 msgid "Deleting file '%s' from folder '%s'..."
 msgstr "ファイル '%s' をフォルダ '%s' から削除中..."
 
-#: src/gtkam-delete.c:254
+#: src/gtkam-delete.c:252
 #, c-format
 msgid "Could not delete file '%s' in folder '%s'."
 msgstr "ファイル '%s' をフォルダ '%s' から削除できませんでした。"
 
-#: src/gtkam-delete.c:368
-msgid "Do you really want to delete the following file?"
-msgstr "次のファイルを本当に削除しても宜しいですか？"
-
-#: src/gtkam-delete.c:371
-#, c-format
-msgid "Do you really want to delete the following %i files?"
+#: src/gtkam-delete.c:362
+#, fuzzy, c-format
+msgid "Do you really want to delete %s?"
 msgstr "次の %i 個のファイルを本当に削除しても宜しいですか？"
 
-#: src/gtkam-delete.c:378
-#, c-format
-msgid "'%s' in folder '%s'"
-msgstr "'%s' (フォルダ '%s' にある)"
+#: src/gtkam-delete.c:365
+#, fuzzy, c-format
+msgid "Do you really want to delete the selected %i files?"
+msgstr "次の %i 個のファイルを本当に削除しても宜しいですか？"
 
-#: src/gtkam-delete.c:381
-#, c-format
-msgid "All files in folder '%s'"
-msgstr "フォルダ '%s' にある全てのファイル"
+#: src/gtkam-delete.c:371
+msgid "Delete these files?"
+msgstr ""
 
 #: src/gtkam-exif.c:137
 #, c-format
@@ -223,37 +218,41 @@ msgstr "'%s' (フォルダ '%s' にある) の EXIF 情報を取得できませ�
 msgid "Could not interpret EXIF data."
 msgstr "EXIF データをインポート出来ませんでした。"
 
-#: src/gtkam-exif.c:183
+#: src/gtkam-exif.c:175
+msgid "The EXIF data could not be retrieved from the file."
+msgstr ""
+
+#: src/gtkam-exif.c:192
 msgid "Gtkam has been compiled without exif support."
 msgstr "ご利用の Gtkam は EXIF をサポートしていません。"
 
-#: src/gtkam-gimp.c:67
+#: src/gtkam-gimp.c:69 src/gtkam-gimp.c:70
 msgid "Captures images from digital camera"
 msgstr "ディジタル・カメラから画像をキャプチャします"
 
-#: src/gtkam-gimp.c:70
+#: src/gtkam-gimp.c:72
 msgid "<Toolbox>/File/Acquire/Capture from Camera..."
 msgstr "<Toolbox>/File/Acquire/カメラからキャプチャ..."
 
-#: src/gtkam-gimp.c:74
+#: src/gtkam-gimp.c:76 src/gtkam-gimp.c:77
 msgid "Loads files from digital cameras"
 msgstr "ディジタル・カメラからファイルを読み込みます"
 
-#: src/gtkam-gimp.c:78
+#: src/gtkam-gimp.c:81
 msgid "<Toolbox>/File/Acquire/Load from Camera..."
 msgstr "<Toolbox>/File/Acquire/カメラから読み込み..."
 
-#: src/gtkam-gimp.c:191 src/gtkam-list.c:511
+#: src/gtkam-gimp.c:194 src/gtkam-list.c:511
 #, c-format
 msgid "Downloading '%s' from '%s'..."
 msgstr "'%s' を '%s' からダウンロード中..."
 
-#: src/gtkam-gimp.c:209
+#: src/gtkam-gimp.c:212
 #, c-format
 msgid "Could not download file '%s' from folder '%s'."
 msgstr "'%s' をフォルダ '%s' からダウンロードできませんでした。"
 
-#: src/gtkam-gimp.c:242
+#: src/gtkam-gimp.c:245
 msgid "Image"
 msgstr "画像"
 
@@ -607,120 +606,120 @@ msgstr "180°"
 msgid "Rotate thumbnail by 180 degrees"
 msgstr "サムネイルを 180°回転させます"
 
-#: src/gtkam-save.c:327
+#: src/gtkam-save.c:330
 #, fuzzy
 msgid "photo"
 msgstr "写真の保存"
 
-#: src/gtkam-save.c:344
+#: src/gtkam-save.c:347
 #, fuzzy, c-format
 msgid "The file '%s' already exists."
 msgstr "'%s' が既に存在します"
 
-#: src/gtkam-save.c:366
+#: src/gtkam-save.c:368
 #, c-format
 msgid "Could not save file to '%s'."
 msgstr "ファイルを '%s' に保存できませんでした。"
 
-#: src/gtkam-save.c:416
+#: src/gtkam-save.c:408
 #, c-format
 msgid "Could not get '%s' from folder '%s'."
 msgstr "'%s' をフォルダ '%s' から取得できませんでした。"
 
-#: src/gtkam-save.c:514
+#: src/gtkam-save.c:509
 #, fuzzy
 msgid "Downloading file"
 msgstr "ファイルのダウンロード中..."
 
-#: src/gtkam-save.c:516
+#: src/gtkam-save.c:511
 #, fuzzy, c-format
 msgid "Downloading %i files"
 msgstr "%i 個のファイルのダウンロード中..."
 
-#: src/gtkam-save.c:523
+#: src/gtkam-save.c:518
 #, c-format
 msgid "Downloading %i files..."
 msgstr "%i 個のファイルのダウンロード中..."
 
-#: src/gtkam-save.c:573
+#: src/gtkam-save.c:569
 #, fuzzy, c-format
 msgid "Problem getting '%s' from folder '%s'."
 msgstr "'%s' をフォルダ '%s' から取得できませんでした。"
 
-#: src/gtkam-save.c:617
+#: src/gtkam-save.c:634
 msgid "What to save:"
 msgstr "保存するもの:"
 
-#: src/gtkam-save.c:626
+#: src/gtkam-save.c:643
 msgid "Save photos"
 msgstr "写真の保存"
 
-#: src/gtkam-save.c:630
+#: src/gtkam-save.c:647
 msgid "Photos will be saved if this is checked"
 msgstr "これをチェックすると、写真が保存されます"
 
-#: src/gtkam-save.c:634
+#: src/gtkam-save.c:651
 msgid "Save raw data"
 msgstr "生データの保存"
 
-#: src/gtkam-save.c:637
+#: src/gtkam-save.c:654
 msgid "Raw data will be saved if this is checked"
 msgstr "これをチェックすると、生データが保存されます"
 
-#: src/gtkam-save.c:641
+#: src/gtkam-save.c:658
 msgid "Save audio data"
 msgstr "オーディオデータの保存"
 
-#: src/gtkam-save.c:644
+#: src/gtkam-save.c:661
 msgid "Audio data will be saved if this is checked"
 msgstr "これをチェックすると、オーディオデータが保存されます"
 
-#: src/gtkam-save.c:648
+#: src/gtkam-save.c:665
 msgid "Save thumbnails"
 msgstr "サムネイルの保存"
 
-#: src/gtkam-save.c:651
+#: src/gtkam-save.c:668
 msgid "Thumbnails will be saved if this is checked"
 msgstr "これをチェックすると、サムネイルが保存されます"
 
-#: src/gtkam-save.c:655
+#: src/gtkam-save.c:672
 msgid "Save EXIF data"
 msgstr "EXIF データの保存"
 
-#: src/gtkam-save.c:658
+#: src/gtkam-save.c:675
 msgid "EXIF data will be saved if this is checked"
 msgstr "これをチェックすると、EXIF データが保存されます"
 
-#: src/gtkam-save.c:667
+#: src/gtkam-save.c:684
 msgid "Open image(s) with: "
 msgstr "画像を開くアプリ: "
 
-#: src/gtkam-save.c:674
+#: src/gtkam-save.c:691
 msgid "Type in the name of the program you want to run, leave blank for none"
 msgstr "起動するプログラム名を入力して下さい。実行しない場合は空白にして下さい"
 
-#: src/gtkam-save.c:680
+#: src/gtkam-save.c:697
 msgid "Use filename(s) provided by the camera"
 msgstr "カメラが提供するファイル名を使用する"
 
-#: src/gtkam-save.c:684
+#: src/gtkam-save.c:701
 msgid "Choose whether to use the filename provided by the camera"
 msgstr "カメラが提供するファイル名を使用するかどうかを選択して下さい"
 
-#: src/gtkam-save.c:699
+#: src/gtkam-save.c:716
 msgid "Filename prefix: "
 msgstr "ファイル名の接頭子: "
 
-#: src/gtkam-save.c:708
+#: src/gtkam-save.c:725
 msgid "Start numbering with: "
 msgstr "開始番号: "
 
-#: src/gtkam-save.c:751
+#: src/gtkam-save.c:768
 #, c-format
 msgid "Save '%s'..."
 msgstr "'%s' の保存..."
 
-#: src/gtkam-save.c:773
+#: src/gtkam-save.c:790
 msgid "Save photos..."
 msgstr "写真の保存..."
 
@@ -879,6 +878,15 @@ msgstr "'%s' をフォルダ '%s' からダウンロードできませんでし�
 #: src/main.c:111
 msgid "Image Download Program"
 msgstr "画像ダウンロード・プログラム"
+
+#~ msgid "Do you really want to delete the following file?"
+#~ msgstr "次のファイルを本当に削除しても宜しいですか？"
+
+#~ msgid "'%s' in folder '%s'"
+#~ msgstr "'%s' (フォルダ '%s' にある)"
+
+#~ msgid "All files in folder '%s'"
+#~ msgstr "フォルダ '%s' にある全てのファイル"
 
 #~ msgid "More"
 #~ msgstr "詳細"

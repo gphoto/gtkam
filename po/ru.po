@@ -5,29 +5,22 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gphoto\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-06-30 16:47+0400\n"
+"POT-Creation-Date: 2004-09-04 10:46+0200\n"
 "PO-Revision-Date: 2004-06-30 19:14+0400\n"
 "Last-Translator: Вячеслав Диконов (Vyacheslav Dikonov) <sdiconov@mail.ru>\n"
 "Language-Team: Russian <ru@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
-"Content-Transfer-Encoding: 8-bit"
+"Content-Transfer-Encoding: 8-bit\n"
 
-#. Port?
 #: src/gtkam-chooser.c:231 src/gtkam-chooser.c:253
 msgid "None"
 msgstr "Отсутствует"
 
-#. Speed?
-#. Update speed combo
 #: src/gtkam-chooser.c:261 src/gtkam-chooser.c:396 src/gtkam-chooser.c:649
 msgid "Best"
 msgstr "Лучшая"
 
-#.
-#. * Initialize the camera to check if it is really there. Exit
-#. * afterwards because other applications could need the camera, too.
-#.
 #: src/gtkam-chooser.c:268
 msgid "Initializing camera..."
 msgstr "Инициализация..."
@@ -117,7 +110,6 @@ msgstr "Невозможно выполнить команду."
 msgid "No additional information available. (2)"
 msgstr "Дополнительных сведений нет. (2)"
 
-#. Make it easy for users to select the system's time
 #: src/gtkam-config.c:546
 msgid "Set to system's time"
 msgstr "Установить системные часы"
@@ -231,33 +223,33 @@ msgstr "Невозможно извлечь из файла данные EXIF."
 msgid "Gtkam has been compiled without exif support."
 msgstr "Поддержка EXIF была отключена во время компиляции."
 
-#: src/gtkam-gimp.c:67
+#: src/gtkam-gimp.c:69 src/gtkam-gimp.c:70
 msgid "Captures images from digital camera"
 msgstr "Сделать снимок цифровым фотоаппаратом"
 
-#: src/gtkam-gimp.c:70
+#: src/gtkam-gimp.c:72
 msgid "<Toolbox>/File/Acquire/Capture from Camera..."
 msgstr "/Файл/Захватить/Изображение через фотоаппарат..."
 
-#: src/gtkam-gimp.c:74
+#: src/gtkam-gimp.c:76 src/gtkam-gimp.c:77
 msgid "Loads files from digital cameras"
 msgstr "Скопировать файлы из памяти цифрового фотоаппарата"
 
-#: src/gtkam-gimp.c:78
+#: src/gtkam-gimp.c:81
 msgid "<Toolbox>/File/Acquire/Load from Camera..."
 msgstr "/Файл/Захватить/Загрузить снимок из фотоаппарата.."
 
-#: src/gtkam-gimp.c:191 src/gtkam-list.c:511
+#: src/gtkam-gimp.c:194 src/gtkam-list.c:511
 #, c-format
 msgid "Downloading '%s' from '%s'..."
 msgstr "Идёт копирование '%s' из '%s'..."
 
-#: src/gtkam-gimp.c:209
+#: src/gtkam-gimp.c:212
 #, c-format
 msgid "Could not download file '%s' from folder '%s'."
 msgstr "Невозможно скопировать файл '%s' из каталога '%s'."
 
-#: src/gtkam-gimp.c:242
+#: src/gtkam-gimp.c:245
 msgid "Image"
 msgstr "Снимок"
 
@@ -271,7 +263,6 @@ msgstr "Запись данных о файле '%s' в '%s'..."
 msgid "Could not set file information for '%s' in folder '%s'"
 msgstr "Невозможно записать данные о '%s' в каталоге '%s'"
 
-#. Get file info
 #: src/gtkam-info.c:356
 #, c-format
 msgid "Getting information about file '%s' in folder '%s'..."
@@ -563,14 +554,12 @@ msgstr "Новый каталог"
 #, c-format
 msgid ""
 "The port '%s' could not be found. Please make sure that the port exists."
-msgstr ""
-"Порт '%s' не найден. Убедитесь, что указанный порт существует."
+msgstr "Порт '%s' не найден. Убедитесь, что указанный порт существует."
 
 #: src/gtkam-port.c:181
 msgid "Please specify the path to the port your camera is attached to:"
 msgstr "Укажите, пожалуйста, путь к порту, к которому подключен фотоаппарат:"
 
-#. The camera doesn't support previews. Capture an image.
 #: src/gtkam-preview.c:187 src/gtkam-tree.c:774
 msgid "Capturing image..."
 msgstr "Делается снимок..."
@@ -708,7 +697,6 @@ msgid "Type in the name of the program you want to run, leave blank for none"
 msgstr ""
 "Введите имя программы, которую хотите запустить, или оставьте поле пустым."
 
-#. Filenames provided by camera
 #: src/gtkam-save.c:697
 msgid "Use filename(s) provided by the camera"
 msgstr "Использовать присвоенные фотоаппаратом имена файлов"
@@ -725,13 +713,11 @@ msgstr "Префикс имени файла:"
 msgid "Start numbering with: "
 msgstr "Начало нумерации:"
 
-#. First case: We have only one file.
 #: src/gtkam-save.c:768
 #, c-format
 msgid "Save '%s'..."
 msgstr "Копировать '%s'..."
 
-#. Second case: We have multiple files to save.
 #: src/gtkam-save.c:790
 msgid "Save photos..."
 msgstr "Копировать снимки..."
@@ -869,8 +855,8 @@ msgid ""
 "ALWAYS INCLUDE THE FOLLOWING LINES WHEN SENDING DEBUG MESSAGES TO THE "
 "MAILING LIST:"
 msgstr ""
-"ВСЕГДА ВКЛЮЧАТЬ СЛЕДУЮЩИЕ СТРОКИ ПРИ ОТПРАВКЕ ОТЛАДОЧНОЙ ИНФОРМАЦИИ В "
-"СПИСОК РАССЫЛКИ:"
+"ВСЕГДА ВКЛЮЧАТЬ СЛЕДУЮЩИЕ СТРОКИ ПРИ ОТПРАВКЕ ОТЛАДОЧНОЙ ИНФОРМАЦИИ В СПИСОК "
+"РАССЫЛКИ:"
 
 #: src/gtkam-viewer.c:246
 #, c-format

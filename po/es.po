@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gtkam-es\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-02-17 11:37+0100\n"
+"POT-Creation-Date: 2004-09-04 10:46+0200\n"
 "PO-Revision-Date: 2003-07-10 15:36-0300\n"
 "Last-Translator: Fabian Mandelbaum <fabman@mandrakesoft.com>\n"
 "Language-Team: Español <es@li.org>\n"
@@ -172,44 +172,39 @@ msgstr "Depuración"
 msgid "Data"
 msgstr "Datos"
 
-#: src/gtkam-delete.c:180
+#: src/gtkam-delete.c:178
 #, c-format
 msgid "Deleting all files in '%s'..."
 msgstr "Borrando todos los archivos en '%s'..."
 
-#: src/gtkam-delete.c:200
+#: src/gtkam-delete.c:198
 #, c-format
 msgid "Could not delete all files in '%s'."
 msgstr "No se pudieron borrar todos los archivos en '%s'."
 
-#: src/gtkam-delete.c:233
+#: src/gtkam-delete.c:231
 #, c-format
 msgid "Deleting file '%s' from folder '%s'..."
 msgstr "Borrando el archivo '%s' de la carpeta '%s'..."
 
-#: src/gtkam-delete.c:254
+#: src/gtkam-delete.c:252
 #, c-format
 msgid "Could not delete file '%s' in folder '%s'."
 msgstr "No se pudo borrar el archivo '%s' en la carpeta '%s'."
 
-#: src/gtkam-delete.c:368
-msgid "Do you really want to delete the following file?"
-msgstr "¿Realmente desea borrar el archivo siguiente?"
-
-#: src/gtkam-delete.c:371
-#, c-format
-msgid "Do you really want to delete the following %i files?"
+#: src/gtkam-delete.c:362
+#, fuzzy, c-format
+msgid "Do you really want to delete %s?"
 msgstr "¿Realmente desea borrar los %i archivos siguientes?"
 
-#: src/gtkam-delete.c:378
-#, c-format
-msgid "'%s' in folder '%s'"
-msgstr "'%s' en la carpeta '%s'"
+#: src/gtkam-delete.c:365
+#, fuzzy, c-format
+msgid "Do you really want to delete the selected %i files?"
+msgstr "¿Realmente desea borrar los %i archivos siguientes?"
 
-#: src/gtkam-delete.c:381
-#, c-format
-msgid "All files in folder '%s'"
-msgstr "Todos los archivos en la carpeta '%s'"
+#: src/gtkam-delete.c:371
+msgid "Delete these files?"
+msgstr ""
 
 #: src/gtkam-exif.c:137
 #, c-format
@@ -225,37 +220,41 @@ msgstr "No se pudo obtener información EXIF para '%s' en la carpeta '%s'"
 msgid "Could not interpret EXIF data."
 msgstr "No se pudieron interpretar los datos EXIF."
 
-#: src/gtkam-exif.c:183
+#: src/gtkam-exif.c:175
+msgid "The EXIF data could not be retrieved from the file."
+msgstr ""
+
+#: src/gtkam-exif.c:192
 msgid "Gtkam has been compiled without exif support."
 msgstr "Gtkam se ha compilado sin soporte para EXIF."
 
-#: src/gtkam-gimp.c:67
+#: src/gtkam-gimp.c:69 src/gtkam-gimp.c:70
 msgid "Captures images from digital camera"
 msgstr "Capturar imágenes desde la cámara digital"
 
-#: src/gtkam-gimp.c:70
+#: src/gtkam-gimp.c:72
 msgid "<Toolbox>/File/Acquire/Capture from Camera..."
 msgstr "<Herramientas>/Fichero/Adquirir/Capturar desde cámara..."
 
-#: src/gtkam-gimp.c:74
+#: src/gtkam-gimp.c:76 src/gtkam-gimp.c:77
 msgid "Loads files from digital cameras"
 msgstr "Carga archivos desde cámaras digitales"
 
-#: src/gtkam-gimp.c:78
+#: src/gtkam-gimp.c:81
 msgid "<Toolbox>/File/Acquire/Load from Camera..."
 msgstr "<Herramientas>/Fichero/Adquirir/Cargar desde cámara..."
 
-#: src/gtkam-gimp.c:191 src/gtkam-list.c:511
+#: src/gtkam-gimp.c:194 src/gtkam-list.c:511
 #, c-format
 msgid "Downloading '%s' from '%s'..."
 msgstr "Descargando '%s' desde '%s'..."
 
-#: src/gtkam-gimp.c:209
+#: src/gtkam-gimp.c:212
 #, c-format
 msgid "Could not download file '%s' from folder '%s'."
 msgstr "No se pudo descargar el archivo '%s' desde la carpeta '%s'."
 
-#: src/gtkam-gimp.c:242
+#: src/gtkam-gimp.c:245
 msgid "Image"
 msgstr "Imagen"
 
@@ -617,120 +616,120 @@ msgstr "180 grados"
 msgid "Rotate thumbnail by 180 degrees"
 msgstr "Rotar la diapositva 180 grados"
 
-#: src/gtkam-save.c:327
+#: src/gtkam-save.c:330
 msgid "photo"
 msgstr "foto"
 
-#: src/gtkam-save.c:344
+#: src/gtkam-save.c:347
 #, fuzzy, c-format
 msgid "The file '%s' already exists."
 msgstr "'%s' ya existe."
 
-#: src/gtkam-save.c:366
+#: src/gtkam-save.c:368
 #, c-format
 msgid "Could not save file to '%s'."
 msgstr "No se pudo guardar archivo en '%s'."
 
-#: src/gtkam-save.c:416
+#: src/gtkam-save.c:408
 #, c-format
 msgid "Could not get '%s' from folder '%s'."
 msgstr "No se pudo obtener '%s' de la carpeta '%s'."
 
-#: src/gtkam-save.c:514
+#: src/gtkam-save.c:509
 msgid "Downloading file"
 msgstr "Descargando archivo"
 
-#: src/gtkam-save.c:516
+#: src/gtkam-save.c:511
 #, c-format
 msgid "Downloading %i files"
 msgstr "Descargando %i archivos"
 
-#: src/gtkam-save.c:523
+#: src/gtkam-save.c:518
 #, c-format
 msgid "Downloading %i files..."
 msgstr "Descargando %i archivos..."
 
-#: src/gtkam-save.c:573
+#: src/gtkam-save.c:569
 #, fuzzy, c-format
 msgid "Problem getting '%s' from folder '%s'."
 msgstr "No se pudo obtener '%s' de la carpeta '%s'."
 
-#: src/gtkam-save.c:617
+#: src/gtkam-save.c:634
 msgid "What to save:"
 msgstr "Qué guardar:"
 
-#: src/gtkam-save.c:626
+#: src/gtkam-save.c:643
 msgid "Save photos"
 msgstr "Guardar fotos"
 
-#: src/gtkam-save.c:630
+#: src/gtkam-save.c:647
 msgid "Photos will be saved if this is checked"
 msgstr "Si esto está marcado se guardarán las fotos"
 
-#: src/gtkam-save.c:634
+#: src/gtkam-save.c:651
 msgid "Save raw data"
 msgstr "Guardar datos crudos"
 
-#: src/gtkam-save.c:637
+#: src/gtkam-save.c:654
 msgid "Raw data will be saved if this is checked"
 msgstr "Si esto está marcado se guardarán los datos \"crudos\""
 
-#: src/gtkam-save.c:641
+#: src/gtkam-save.c:658
 msgid "Save audio data"
 msgstr "Guardar datos de audio"
 
-#: src/gtkam-save.c:644
+#: src/gtkam-save.c:661
 msgid "Audio data will be saved if this is checked"
 msgstr "Si esto está marcado se guardarán los datos de audio"
 
-#: src/gtkam-save.c:648
+#: src/gtkam-save.c:665
 msgid "Save thumbnails"
 msgstr "Guardar diapositivas"
 
-#: src/gtkam-save.c:651
+#: src/gtkam-save.c:668
 msgid "Thumbnails will be saved if this is checked"
 msgstr "Si esto está marcado se guardarán las diapositivas"
 
-#: src/gtkam-save.c:655
+#: src/gtkam-save.c:672
 msgid "Save EXIF data"
 msgstr "Guardar datos EXIF"
 
-#: src/gtkam-save.c:658
+#: src/gtkam-save.c:675
 msgid "EXIF data will be saved if this is checked"
 msgstr "Si esto está marcado se guardarán los datos EXIF"
 
-#: src/gtkam-save.c:667
+#: src/gtkam-save.c:684
 msgid "Open image(s) with: "
 msgstr "Abrir imágen(es) con: "
 
-#: src/gtkam-save.c:674
+#: src/gtkam-save.c:691
 msgid "Type in the name of the program you want to run, leave blank for none"
 msgstr ""
 "Ingrese el nombre del programa que desea ejecutar, ninguno si lo deja en "
 "blanco"
 
-#: src/gtkam-save.c:680
+#: src/gtkam-save.c:697
 msgid "Use filename(s) provided by the camera"
 msgstr "Usar nombre(s) de archivo provisto(s) por la cámara"
 
-#: src/gtkam-save.c:684
+#: src/gtkam-save.c:701
 msgid "Choose whether to use the filename provided by the camera"
 msgstr "Elija si desea utilizar los nombres de archivo provistos por la cámara"
 
-#: src/gtkam-save.c:699
+#: src/gtkam-save.c:716
 msgid "Filename prefix: "
 msgstr "Prefijo del nombre de archivo: "
 
-#: src/gtkam-save.c:708
+#: src/gtkam-save.c:725
 msgid "Start numbering with: "
 msgstr "Comenzar la numeración con: "
 
-#: src/gtkam-save.c:751
+#: src/gtkam-save.c:768
 #, c-format
 msgid "Save '%s'..."
 msgstr "Guardar '%s'..."
 
-#: src/gtkam-save.c:773
+#: src/gtkam-save.c:790
 msgid "Save photos..."
 msgstr "Guardar fotos..."
 
@@ -892,6 +891,15 @@ msgstr "No se pudo descargar '%s' desde la carpeta '%s'."
 #: src/main.c:111
 msgid "Image Download Program"
 msgstr "Programa de descarga de imágenes"
+
+#~ msgid "Do you really want to delete the following file?"
+#~ msgstr "¿Realmente desea borrar el archivo siguiente?"
+
+#~ msgid "'%s' in folder '%s'"
+#~ msgstr "'%s' en la carpeta '%s'"
+
+#~ msgid "All files in folder '%s'"
+#~ msgstr "Todos los archivos en la carpeta '%s'"
 
 #~ msgid "More"
 #~ msgstr "Más"

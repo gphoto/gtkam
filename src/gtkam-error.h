@@ -49,6 +49,10 @@ struct _GtkamErrorClass
 GtkType    gtkam_error_get_type (void);
 GtkWidget *gtkam_error_new      (int result, GtkamContext *context,
 				 GtkWidget *opt_window, const gchar *format,
-				 ...);
+				 ...)
+#ifdef __GNUC__
+__attribute__((__format__(printf,4,5)))
+#endif
+;
 
 #endif /* __GTKAM_ERROR_H__ */

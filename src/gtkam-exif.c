@@ -167,7 +167,7 @@ gtkam_exif_new (GtkamCamera *camera, const gchar *folder, const gchar *file)
 		gtk_widget_show (dialog);
 		return (NULL);
 	}
-printf("data is %s\n", data);	
+/*printf("data is %s\n", data);	*/
 	/* FIXME Hack, since library fails to return error code, instead
 	   populating edata with 'Exif' */
 	if (g_ascii_strcasecmp (data, "Exif") == 0) {

@@ -1,6 +1,6 @@
 /* gtkam-delete.h
  *
- * Copyright © 2001 Lutz Müller <lutz@users.sf.net>
+ * Copyright Â© 2001 Lutz MÃ¼ller <lutz@users.sf.net>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -65,6 +65,6 @@ GtkType    gtkam_delete_get_type (void);
 GtkWidget *gtkam_delete_new      (void);
 
 void       gtkam_delete_add      (GtkamDelete *delete, GtkamCamera *camera,
-				  const gchar *folder, const gchar *name);
+				  const gchar *folder, const gchar *name, gboolean all);
 
 #endif /* __GTKAM_DELETE_H__ */

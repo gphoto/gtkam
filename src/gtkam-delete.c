@@ -1,6 +1,6 @@
 /* gtkam-delete.c
  *
- * Copyright © 2001 Lutz Müller <lutz@users.sf.net>
+ * Copyright Â© 2001 Lutz MÃ¼ller <lutz@users.sf.net>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,6 +16,7 @@
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
+ADB Still to amend
  */
 
 #include "config.h"
@@ -49,6 +50,8 @@ struct _GtkamDeletePrivate
 	GtkWidget *vbox;
 
 	GtkWidget *msg;
+	
+	gboolean *deleteall;
 };
 
 #define PARENT_TYPE GTK_TYPE_DIALOG
@@ -264,26 +267,44 @@ on_delete_clicked (GtkButton *button, GtkamDelete *delete)
 	gint i;
 	GtkamDeleteData *data;
 
-	for (i = g_slist_length (delete->priv->data) - 1; i >= 0; i--) {
-		data = g_slist_nth_data (delete->priv->data, i);
-		if (data->name) {
+	if (delete->priv->deleteall) {
+		data = g_slist_nth_data (delete->priv->data, 0);
+
+		if (delete_all (delete, data->camera, data->folder)) {
+/*			g_object_unref (data->camera);
+			g_free (data->name);
+			g_free (data->folder);
+			delete->priv->data = g_slist_remove (
+					delete->priv->data, data);
+			g_free (data);*/
+		} else
+			success = FALSE;
+	} else {
+		for (i = g_slist_length (delete->priv->data) - 1; i >= 0; i--) {
+			data = g_slist_nth_data (delete->priv->data, i);
+
 			if (delete_one (delete, data->camera,
 					data->folder, data->name)) {
+/*				g_object_unref (data->camera);
+				g_free (data->name);
+				g_free (data->folder);
+				delete->priv->data = g_slist_remove (
+						delete->priv->data, data);
+				g_free (data);*/
+			} else
+				success = FALSE;
+		}
+	}
+
+	if (success) {
 				g_object_unref (data->camera);
 				g_free (data->name);
 				g_free (data->folder);
 				delete->priv->data = g_slist_remove (
-					delete->priv->data, data);
-				g_free (data);
-			} else
-				success = FALSE;
-		} else if (!delete_all (delete, data->camera,
-					data->folder))
-			success = FALSE;
-	}
-
-	if (success)
+						delete->priv->data, data);
+				g_free (data);		
 		gtk_object_destroy (GTK_OBJECT (delete));
+	}
 }
 
 static void
@@ -342,7 +363,7 @@ gtkam_delete_new (void)
 
 void
 gtkam_delete_add (GtkamDelete *delete, GtkamCamera *camera,
-		  const gchar *folder, const gchar *name)
+		  const gchar *folder, const gchar *name, gboolean all)
 {
 	GtkamDeleteData *data;
 	gchar *msg;
@@ -356,21 +377,25 @@ gtkam_delete_add (GtkamDelete *delete, GtkamCamera *camera,
 	g_object_ref (G_OBJECT (camera));
 	data->folder = g_strdup (folder);
 	data->name = g_strdup (name);
+	delete->priv->deleteall = all;
 	delete->priv->data = g_slist_append (delete->priv->data, data);
 
-	if (g_slist_length (delete->priv->data) == 1)
+	if (delete->priv->deleteall)
 		msg = g_strdup_printf (_("Do you really want to "
-					 "delete %s?"), data->name);
+				"delete all the files in %s?"), data->folder);
+	else if (g_slist_length (delete->priv->data) == 1)
+		msg = g_strdup_printf (_("Do you really want to "
+				"delete %s?"), data->name);
 	else
 		msg = g_strdup_printf (_("Do you really want to "
-					"delete the selected %i files?"),
-					g_slist_length (delete->priv->data));
+				"delete the selected %i files?"),
+				g_slist_length (delete->priv->data));
 	gtk_label_set_markup (GTK_LABEL (delete->priv->msg),
-					g_strdup_printf("%s%s%s%s%s",
-		            				"<span weight=\"bold\" size=\"larger\">",
-									_("Delete these files?"),
-									"</span>\n\n", 
-									msg,
-									" Deleted files cannot be undeleted."));
+				g_strdup_printf("%s%s%s%s%s",
+		           				"<span weight=\"bold\" size=\"larger\">",
+								_("Delete these files?"),
+								"</span>\n\n", 
+								msg,
+								" Deleted files cannot be undeleted."));
 	g_free (msg);
 }

@@ -1,3 +1,9 @@
+2005-02-02  Andrew Burton <adburton@users.sourceforge.net>
+
+	* src/gtkam-delete.c, src/gtkam-delete.h, src/gtkam-list.c: Delete All
+	  command now calls gp_camera_folder_delete_all, instead of
+	  gp_camera_file_delete for each file. Fixes bug #695074.
+
 2005-01-30  Andrew Burton <adburton@users.sourceforge.net>
 
 	* src/gtkam-config.c: Remove Apply/Close buttons, replace with Cancel.

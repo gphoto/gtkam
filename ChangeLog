@@ -1,4 +1,8 @@
-2003-01-14  Andrew Burton <adburton@users.sourceforge.net>
+2004-01-17  Marcus Meissner <marcus@jet.franken.de>
+	
+	* src/gtkam-save.c: Fixed small memleak.
+	
+2004-01-14  Andrew Burton <adburton@users.sourceforge.net>
 
 	* src/gtkam-tree.c: When loading cameras, destroy status widget
 	when finished to prevent duplicate status lines appearing.
@@ -9,17 +13,17 @@
 	loading so thumbnails for all possible files are shown, not just
 	pictures (fixes Debian bug #198335, SF feature request #358874).
 
-2003-01-14  Andrew Burton <adburton@users.sourceforge.net>
+2004-01-14  Andrew Burton <adburton@users.sourceforge.net>
 
 	* src/gtkam-tree.c: Set window title to Select Camera 
 	when right-clicking on camera name
 
-2003-01-14  Andrew Burton <adburton@users.sourceforge.net>
+2004-01-14  Andrew Burton <adburton@users.sourceforge.net>
 
 	* src/gtkam-viewer.c: Modify built-in viewer to open image at
 	  640x480 with no camera icon, set window title to be the filename.
 
-2003-01-13  Andrew Burton <adburton@users.sourceforge.net>
+2004-01-13  Andrew Burton <adburton@users.sourceforge.net>
 
 	* src/gtkam-chooser.c: Change window title to Add Camera for
 	consistency with menu items.
@@ -29,7 +33,7 @@
 	* configure.in: Remove check for gphoto-manual
 	* src/Makefile.am: Modify APP_DATADIR location
 
-2003-01-10  Andrew Burton <adburton@users.sourceforge.net>
+2004-01-10  Andrew Burton <adburton@users.sourceforge.net>
 
 	Modify Save and Delete menu option sensitivity handling:
 
@@ -41,11 +45,11 @@
 	* Makefile.am: Add help omf-install to SUBDIRS
 	  Add gtkamdoc_DATA, desktop_DATA and icon_DATA handling
 
-2003-01-10  Lutz Mueller <lutz@users.sourceforge.net>
+2004-01-10  Lutz Mueller <lutz@users.sourceforge.net>
 
 	* src/gtkam-save.c: Fix my latest commit.
 
-2003-01-08  Lutz Mueller <lutz@users.sourceforge.net>
+2004-01-08  Lutz Mueller <lutz@users.sourceforge.net>
 
 	Fix by Nils Rennebarth <Nils.Rennebarth@web.de>:
 

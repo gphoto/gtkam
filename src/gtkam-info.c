@@ -426,6 +426,25 @@ gtkam_info_new (Camera *camera, const gchar *path, GtkWidget *opt_window)
 						   1, 2, 1, 2);
 		}
 
+		/* Time */
+		if (info->priv->info.file.fields & GP_FILE_INFO_TIME) {
+			label = gtk_label_new (_("Creation time:"));
+			gtk_widget_show (label);
+			gtk_label_set_justify (GTK_LABEL (label),
+					       GTK_JUSTIFY_LEFT);
+			gtk_table_attach (GTK_TABLE (page), label,
+					  0, 1, 2, 3, GTK_FILL, 0, 0, 0);
+			gtk_misc_set_alignment (GTK_MISC (label), 0, 0);
+			label = gtk_label_new (
+					ctime (&info->priv->info.file.time));
+			gtk_widget_show (label);
+			gtk_label_set_justify (GTK_LABEL (label),
+					       GTK_JUSTIFY_LEFT);
+			gtk_table_attach (GTK_TABLE (page), label,
+					  1, 2, 2, 3, GTK_FILL, 0, 0, 0);
+			gtk_misc_set_alignment (GTK_MISC (label), 0, 0);
+		}
+
 		/* Size */
 		if (info->priv->info.file.fields & GP_FILE_INFO_SIZE) {
 			label = gtk_label_new (_("Size:"));
@@ -433,7 +452,7 @@ gtkam_info_new (Camera *camera, const gchar *path, GtkWidget *opt_window)
 			gtk_label_set_justify (GTK_LABEL (label),
 					       GTK_JUSTIFY_LEFT);
 			gtk_table_attach (GTK_TABLE (page), label,
-					  0, 1, 2, 3, GTK_FILL, 0, 0, 0);
+					  0, 1, 3, 4, GTK_FILL, 0, 0, 0);
 			gtk_misc_set_alignment (GTK_MISC (label), 0, 0);
 			msg = g_strdup_printf (_("%i bytes"),
 						info->priv->info.file.size);
@@ -442,8 +461,9 @@ gtkam_info_new (Camera *camera, const gchar *path, GtkWidget *opt_window)
 			gtk_widget_show (label);
 			gtk_label_set_justify (GTK_LABEL (label),
 					       GTK_JUSTIFY_LEFT);
-			gtk_table_attach_defaults (GTK_TABLE (page), label,
-						   1, 2, 2, 3);
+			gtk_table_attach (GTK_TABLE (page), label,
+					  1, 2, 3, 4, GTK_FILL, 0, 0, 0);
+			gtk_misc_set_alignment (GTK_MISC (label), 0, 0);
 		}
 
 		/* Permissions */
@@ -453,13 +473,13 @@ gtkam_info_new (Camera *camera, const gchar *path, GtkWidget *opt_window)
 			gtk_label_set_justify (GTK_LABEL (label),
 					       GTK_JUSTIFY_LEFT);
 			gtk_table_attach (GTK_TABLE (page), label,
-					  0, 1, 3, 4, GTK_FILL, 0, 0, 0);
+					  0, 1, 4, 5, GTK_FILL, 0, 0, 0);
 			gtk_misc_set_alignment (GTK_MISC (label), 0, 0);
 
 			hbox = gtk_hbox_new (FALSE, 5);
 			gtk_widget_show (hbox);
 			gtk_table_attach_defaults (GTK_TABLE (page), hbox,
-						   1, 2, 3, 4);
+						   1, 2, 4, 5);
 			check = gtk_check_button_new_with_label (_("Read"));
 			gtk_widget_show (check);
 			gtk_container_add (GTK_CONTAINER (hbox), check);

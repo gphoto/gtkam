@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "POT-Creation-Date: 2002-01-19 16:32+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2002-01-20 18:56+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -283,14 +283,24 @@ msgstr ""
 msgid "Captures images from digital camera"
 msgstr ""
 
+# Translators: make sure you use the exact translations from The Gimp
+# here (for "File/Acquire").  If the menu translations don't match
+# exactly, you'll get two menu items, not one as intended.  
+#
+# If in doubt, leave it fuzzy.
 #: src/gtkam-gimp.c:84
 msgid "<Toolbox>/File/Acquire/Capture from Camera..."
-msgstr ""
+msgstr "<Toolbox>/File/Acquire/Capture from Camera..."
 
 #: src/gtkam-gimp.c:88
 msgid "Loads files from digital cameras"
 msgstr ""
 
+# Translators: make sure you use the exact translations from The Gimp
+# here (for "File/Acquire").  If the menu translations don't match
+# exactly, you'll get two menu items, not one as intended.  
+#
+# If in doubt, leave it fuzzy.
 #: src/gtkam-gimp.c:92
 msgid "<Toolbox>/File/Acquire/Load from Camera..."
 msgstr ""

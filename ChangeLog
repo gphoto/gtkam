@@ -1,3 +1,7 @@
+2002-01-20  Colin Marquardt  <colin@marquardt-home.de>
+
+	* configure.in: Add pt_BR and pt_PT to ALL_LINGUAS.
+
 2002-01-19  Colin Marquardt  <colin@marquardt-home.de>
 
 	* src/gtkam-save.c: Use full sentences in user output.

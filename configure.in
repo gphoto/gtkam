@@ -16,7 +16,7 @@ AM_PATH_GTK(1.2.0, ,
             AC_MSG_ERROR(Cannot find GTK: Is gtk-config in path?))
 
 dnl Add the languages which your application supports here.
-ALL_LINGUAS="fr de da hu it no ru sl sv uk"
+ALL_LINGUAS="fr de da hu it no pt_BR pt_PT ru sl sv uk"
 AM_GNU_GETTEXT
 
 dnl Check for gPhoto2 configuration

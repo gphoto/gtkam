@@ -1,12 +1,12 @@
-# gtKam
-# Copyright (C) 2000 Scott Fritzinger
-# Scott Fritzinger <scottf@unr.edu>, 2000.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Free Software Foundation, Inc.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2000-08-29 13:15-0500\n"
+"POT-Creation-Date: 2000-08-29 13:37-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -37,7 +37,7 @@ msgid "Choose whether to use the filename provided by the camera"
 msgstr ""
 
 #: src/interface.c:359 src/interface.c:1172 src/interface.c:1298
-#: src/interface.c:1381 src/interface.c:1488
+#: src/interface.c:1383 src/interface.c:1490
 msgid "gtKam"
 msgstr ""
 
@@ -169,7 +169,7 @@ msgstr ""
 msgid "Exit gPhoto"
 msgstr ""
 
-#: src/interface.c:1209 src/interface.c:1326 src/interface.c:1408
+#: src/interface.c:1209 src/interface.c:1326 src/interface.c:1410
 msgid "    Close    "
 msgstr ""
 
@@ -189,39 +189,39 @@ msgstr ""
 msgid "No"
 msgstr ""
 
-#: src/interface.c:1311 src/interface.c:1444 src/interface.c:1501
+#: src/interface.c:1311 src/interface.c:1446 src/interface.c:1503
 msgid "No message."
 msgstr ""
 
-#: src/interface.c:1431
+#: src/interface.c:1433
 msgid "gtKam Progress"
 msgstr ""
 
-#: src/interface.c:1466
+#: src/interface.c:1468
 msgid "    Cancel    "
 msgstr ""
 
-#: src/interface.c:1537
+#: src/interface.c:1539
 msgid "Select Camera"
 msgstr ""
 
-#: src/interface.c:1564
+#: src/interface.c:1566
 msgid "Select Model:"
 msgstr ""
 
-#: src/interface.c:1593
+#: src/interface.c:1595
 msgid "Select Port:"
 msgstr ""
 
-#: src/interface.c:1615
+#: src/interface.c:1617
 msgid "Select Speed:"
 msgstr ""
 
-#: src/interface.c:1644
+#: src/interface.c:1646
 msgid "OK"
 msgstr ""
 
-#: src/interface.c:1651
+#: src/interface.c:1653
 msgid "Cancel"
 msgstr ""
 

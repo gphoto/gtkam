@@ -1354,12 +1354,14 @@ void message_window_notebook_append(GtkWidget *window, char *label, char *text) 
   gtk_widget_show (scrolledwindow4);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolledwindow4), GTK_POLICY_NEVER, GTK_POLICY_ALWAYS);
 
-  message_window_text = gtk_label_new (text);
+  message_window_text = gtk_text_new (NULL, NULL);
   gtk_widget_ref (message_window_text);
   gtk_object_set_data_full (GTK_OBJECT (window), "message", message_window_text,
                             (GtkDestroyNotify) gtk_widget_unref);
   gtk_widget_show (message_window_text);
-  gtk_label_set_line_wrap (GTK_LABEL (message_window_text), TRUE);
+  gtk_text_insert (GTK_TEXT (message_window_text), NULL, &message_window_text->style->black, 
+	NULL, text, -1);
+  gtk_text_set_editable (GTK_TEXT (message_window_text), FALSE);
   gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (scrolledwindow4), 
 	message_window_text);
 
@@ -1381,7 +1383,7 @@ create_message_window_notebook (void)
   gtk_window_set_title (GTK_WINDOW (message_window), _("gtKam"));
   gtk_window_set_position (GTK_WINDOW (message_window), GTK_WIN_POS_CENTER);
   gtk_window_set_modal (GTK_WINDOW (message_window), TRUE);
-  gtk_window_set_default_size (GTK_WINDOW (message_window), 350, 400);
+  gtk_window_set_default_size (GTK_WINDOW (message_window), 500, 400);
   gtk_container_set_border_width (GTK_CONTAINER (message_window), 5);
 
   vbox5 = gtk_vbox_new (FALSE, 0);

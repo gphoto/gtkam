@@ -21,7 +21,7 @@
 #ifndef __GTKAM_EXIF_H__
 #define __GTKAM_EXIF_H__
 
-#include <gphoto2/gphoto2-camera.h>
+#include <gtkam-camera.h>
 #include <gtk/gtkdialog.h>
 
 #define GTKAM_TYPE_EXIF  (gtkam_exif_get_type ())
@@ -45,8 +45,7 @@ struct _GtkamExifClass
 };
 
 GtkType    gtkam_exif_get_type (void);
-GtkWidget *gtkam_exif_new      (Camera *camera, gboolean multi,
-				const gchar *folder, const gchar *file,
-				GtkWidget *opt_window);
+GtkWidget *gtkam_exif_new      (GtkamCamera *, const gchar *folder,
+				const gchar *file);
 
 #endif /* __GTKAM_EXIF_H__ */

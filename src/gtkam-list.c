@@ -373,31 +373,6 @@ gtkam_list_hide_thumbnails (GtkamList *list)
 	gtk_tree_view_column_set_visible (list->priv->col_previews, FALSE);
 }
 
-#if 0
-static void
-on_exif_activate (GtkMenuItem *menu_item, PopupData *data)
-{
-	GtkamList *list = data->list;
-	GtkWidget *dialog, *w;
-	GtkIconListItem *item = data->item;
-	Camera *camera;
-	const gchar *folder;
-	gboolean multi;
-
-	list = NULL;
-
-	folder = gtk_object_get_data (GTK_OBJECT (item->entry), "folder");
-	camera = gtk_object_get_data (GTK_OBJECT (item->entry), "camera");
-	multi = GPOINTER_TO_INT (gtk_object_get_data (GTK_OBJECT (item->entry),
-						      "multi"));
-
-	w = gtk_widget_get_ancestor (GTK_WIDGET (data->list), GTK_TYPE_WINDOW);
-	dialog = gtkam_exif_new (camera, multi, folder, item->label, w);
-	if (dialog)
-		gtk_widget_show (dialog);
-}
-#endif
-
 static gboolean
 selection_func (GtkTreeSelection *selection, GtkTreeModel *model,
 		GtkTreePath *path, gboolean path_currently_selected,
@@ -519,7 +494,23 @@ action_info (gpointer callback_data, guint callback_action, GtkWidget *widget)
 static void
 action_exif (gpointer callback_data, guint callback_action, GtkWidget *widget)
 {
-	g_warning ("Fixme: action_exif");
+	GtkamList *list = GTKAM_LIST (callback_data);
+	GtkamCamera *camera;
+	gchar *folder;
+	gchar *name;
+	GtkWidget *d;
+
+	camera = gtkam_list_get_camera_from_iter (list, &list->priv->iter);
+	folder = gtkam_list_get_folder_from_iter (list, &list->priv->iter);
+	name   = gtkam_list_get_name_from_iter   (list, &list->priv->iter);
+
+	d = gtkam_exif_new (camera, folder, name);
+	g_free (folder);
+	g_free (name);
+	if (!d)
+		return;
+	g_signal_emit (G_OBJECT (list), signals[NEW_DIALOG], 0, d);
+	g_object_unref (G_OBJECT (d));
 }
 #endif
 

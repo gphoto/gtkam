@@ -25,6 +25,7 @@ libgtkam_a_SOURCES =					\
 	gtkam-delete.c  	gtkam-delete.h		\
 	gtkam-dialog.c          gtkam-dialog.h		\
 	gtkam-error.c   	gtkam-error.h     	\
+	gtkam-exif.c		gtkam-exif.h		\
 	gtkam-fsel.c    	gtkam-fsel.h		\
 	gtkam-info.c    	gtkam-info.h		\
 	gtkam-list.c		gtkam-list.h		\

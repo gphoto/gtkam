@@ -108,15 +108,20 @@ gtkam_exif_init (GTypeInstance *instance, gpointer g_class)
 GType
 gtkam_exif_get_type (void)
 {
+	static GType t = 0;
 	GTypeInfo ti;
 
-	memset (&ti, 0, sizeof (GTypeInfo));
-	ti.class_size     = sizeof (GtkamExifClass);
-	ti.class_init     = gtkam_exif_class_init;
-	ti.instance_size  = sizeof (GtkamExif);
-	ti.instance_init  = gtkam_exif_init; 
+	if (!t) {
+		memset (&ti, 0, sizeof (GTypeInfo));
+		ti.class_size     = sizeof (GtkamExifClass);
+		ti.class_init     = gtkam_exif_class_init;
+		ti.instance_size  = sizeof (GtkamExif);
+		ti.instance_init  = gtkam_exif_init;
 
-	return (g_type_register_static (PARENT_TYPE, "GtkamExif", &ti, 0));
+		t = g_type_register_static (PARENT_TYPE, "GtkamExif", &ti, 0);
+	}
+
+	return (t);
 }
 
 static void
@@ -126,8 +131,7 @@ on_exif_close_clicked (GtkButton *button, GtkamExif *exif)
 }
 
 GtkWidget *
-gtkam_exif_new (Camera *camera, gboolean multi,
-		const gchar *folder, const gchar *file, GtkWidget *opt_window)
+gtkam_exif_new (GtkamCamera *camera, const gchar *folder, const gchar *file)
 {
 	GtkamExif *exif;
 	GtkWidget *button;
@@ -142,7 +146,7 @@ gtkam_exif_new (Camera *camera, gboolean multi,
 	GtkWidget *label;
 #endif
 
-	g_return_val_if_fail (camera != NULL, NULL);
+	g_return_val_if_fail (GTKAM_IS_CAMERA (camera), NULL);
 
 #ifdef HAVE_EXIF
 	/* Get exif data */
@@ -151,10 +155,10 @@ gtkam_exif_new (Camera *camera, gboolean multi,
 		_("Getting EXIF information for file '%s' in "
 		"folder '%s'..."), file, folder);
 	gtk_widget_show (c);
-	result = gp_camera_file_get (camera, folder, file, GP_FILE_TYPE_EXIF,
-			     cfile, GTKAM_CANCEL (c)->context->context);
-	if (multi)
-		gp_camera_exit (camera, NULL);
+	result = gp_camera_file_get (camera->camera, folder, file,
+		GP_FILE_TYPE_EXIF, cfile, GTKAM_CANCEL (c)->context->context);
+	if (camera->multi)
+		gp_camera_exit (camera->camera, NULL);
 	switch (result) {
 	case GP_OK:
 		break;
@@ -164,7 +168,7 @@ gtkam_exif_new (Camera *camera, gboolean multi,
 	default:
 		gp_file_unref (cfile);
 		dialog = gtkam_error_new (result, GTKAM_CANCEL (c)->context,
-			opt_window, _("Could not get exif information for "
+			NULL, _("Could not get exif information for "
 			"'%s' in folder '%s'"), file, folder);
 		gtk_widget_show (dialog);
 		gtk_object_destroy (GTK_OBJECT (c));
@@ -177,7 +181,7 @@ gtkam_exif_new (Camera *camera, gboolean multi,
 	gp_file_unref (cfile);
 	if (!edata) {
 		dialog = gtkam_error_new (GP_ERROR_CORRUPTED_DATA, NULL,
-			opt_window, _("Could not interpret EXIF data."));
+			NULL, _("Could not interpret EXIF data."));
 		gtk_widget_show (dialog);
 		return (NULL);
 	}
@@ -209,10 +213,6 @@ gtkam_exif_new (Camera *camera, gboolean multi,
 	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (exif)->action_area),
 			   button);
 	gtk_widget_grab_focus (button);
-
-	if (opt_window)
-		gtk_window_set_transient_for (GTK_WINDOW (exif),
-					      GTK_WINDOW (opt_window));
 
 	return (GTK_WIDGET (exif));
 }

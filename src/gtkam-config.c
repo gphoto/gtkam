@@ -342,6 +342,13 @@ adjust_time (GtkCalendar *calendar, GtkamClock *clock, CameraWidget *widget)
 	gtkam_clock_get (clock, (guchar*) &tm.tm_hour,
 			 (guchar*) &tm.tm_min, (guchar*) &tm.tm_sec);
 	gtk_calendar_get_date (calendar, &tm.tm_year, &tm.tm_mon, &tm.tm_mday);
+
+	/*
+	 * According to Patrick Mansfield <patman@aracnet.com>, tm_year
+	 * starts counting at 1900, whereas gtk_calendar starts counting at 0.
+	 */
+	tm.tm_year = tm.tm_year - 1900;
+
 	time = mktime (&tm);
 	gp_widget_set_value (widget, (int*) &time);
 }

@@ -54,6 +54,7 @@ enum _JPEGMarker {
         JPEG_MARKER_UNKNOWN13   = 0xdd,
         JPEG_MARKER_UNKNOWN14   = 0xde,
         JPEG_MARKER_UNKNOWN15   = 0xdf,
+	JPEG_MARKER_JFIF	= 0xe0,
         JPEG_MARKER_EXIF        = 0xe1,
         JPEG_MARKER_COM         = 0xfe
 };
@@ -63,6 +64,7 @@ enum _JPEGMarker {
                            (((m) >= JPEG_MARKER_UNKNOWN0) &&    \
                             ((m) <= JPEG_MARKER_UNKNOWN15)) ||  \
                            ((m) == JPEG_MARKER_EXIF) ||         \
+			   ((m) == JPEG_MARKER_JFIF) ||		\
                            ((m) == JPEG_MARKER_COM))
 
 const char *jpeg_marker_get_name        (JPEGMarker marker);

@@ -1,6 +1,3 @@
-# List of source files containing translatable strings.
-
-src/main.c
 src/gtkam-cancel.c
 src/gtkam-chooser.c
 src/gtkam-close.c
@@ -22,4 +19,6 @@ src/gtkam-save.c
 src/gtkam-status.c
 src/gtkam-tree.c
 src/gtkam-util.c
+src/gtkam-version.c
 src/gtkam-viewer.c
+src/main.c

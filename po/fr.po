@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gtKam\n"
-"POT-Creation-Date: 2003-07-10 14:27+0200\n"
+"POT-Creation-Date: 2003-07-11 18:11+0200\n"
 "PO-Revision-Date: 2002-01-26 21:30MET\n"
 "Last-Translator: Jérôme Fenal <jerome@fenal.org>\n"
 "Language-Team: Français <traduc@traduc.org>\n"
@@ -13,10 +13,6 @@ msgstr ""
 "Content-Type: text/plain; charset=ISO-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 0.9.5\n"
-
-#: src/main.c:111
-msgid "Image Download Program"
-msgstr "Programme de récupération d'images"
 
 #: src/gtkam-chooser.c:231 src/gtkam-chooser.c:253
 msgid "None"
@@ -851,6 +847,14 @@ msgstr ""
 "Impossible d'afficher '%s'. Soit le type d'image ('%s') n'est pas supporté "
 "par GTK, soit le fichier lui-même est corrompu."
 
+#: src/gtkam-version.c:102
+msgid ""
+"ALWAYS INCLUDE THE FOLLOWING LINES WHEN SENDING DEBUG MESSAGES TO THE "
+"MAILING LIST:"
+msgstr ""
+"TOUJOURS FOURNIR LES LIGNES CI-DESSOUS LORS DE L'ENVOI DE MESSAGE(S) DE "
+"DÉBOGAGE À LA LISTE DE DIFFUSION :"
+
 #: src/gtkam-viewer.c:238
 #, c-format
 msgid "Downloading '%s' from folder '%s'..."
@@ -860,3 +864,7 @@ msgstr "Chargement de '%s' à partir du dossier '%s'..."
 #, c-format
 msgid "Could not download '%s' from folder '%s'."
 msgstr "Impossible de charger '%s' à partir du dossier '%s'."
+
+#: src/main.c:111
+msgid "Image Download Program"
+msgstr "Programme de récupération d'images"

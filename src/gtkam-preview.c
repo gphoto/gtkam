@@ -70,8 +70,7 @@ struct _GtkamPreviewPrivate
 	guint rotate;
 	gfloat zoom;
 
-	guint32 timeout;
-	guint32 timeout_id;
+	guint32 idle_id;
 };
 
 #define PARENT_TYPE GTK_TYPE_DIALOG
@@ -89,9 +88,9 @@ gtkam_preview_destroy (GtkObject *object)
 {
 	GtkamPreview *preview = GTKAM_PREVIEW (object);
 
-	if (preview->priv->timeout_id) {
-		gtk_timeout_remove (preview->priv->timeout_id);
-		preview->priv->timeout_id = 0;
+	if (preview->priv->idle_id) {
+		gtk_idle_remove (preview->priv->idle_id);
+		preview->priv->idle_id = 0;
 	}
 
 	if (preview->priv->camera) {
@@ -135,7 +134,6 @@ static void
 gtkam_preview_init (GtkamPreview *preview)
 {
 	preview->priv = g_new0 (GtkamPreviewPrivate, 1);
-	preview->priv->timeout = 5000;
 	preview->priv->zoom = 1.;
 }
 
@@ -350,7 +348,7 @@ gdk_pixbuf_rotate (GdkPixbuf *pixbuf, guint angle)
 }
 
 static gboolean
-timeout_func (gpointer user_data)
+idle_func (gpointer user_data)
 {
 	int result;
 	CameraFile *file;
@@ -364,6 +362,11 @@ timeout_func (gpointer user_data)
 
 	GtkamPreview *preview = GTKAM_PREVIEW (user_data);
 
+	while (gtk_events_pending ())
+		gtk_main_iteration ();
+	if (!GTKAM_IS_PREVIEW (preview))
+		return (FALSE);
+
 	gp_file_new (&file);
 	result = gp_camera_capture_preview (preview->priv->camera, file);
 	if (result != GP_OK) {
@@ -373,11 +376,21 @@ timeout_func (gpointer user_data)
 		return (TRUE);
 	}
 
+	while (gtk_events_pending ())
+		gtk_main_iteration ();
+	if (!GTKAM_IS_PREVIEW (preview))
+		return (FALSE);
+
 	gp_file_get_data_and_size (file, &data, &size);
 	loader = gdk_pixbuf_loader_new ();
 	gdk_pixbuf_loader_write (loader, data, size);
 	gp_file_unref (file);
 	gdk_pixbuf_loader_close (loader);
+
+	while (gtk_events_pending ())
+		gtk_main_iteration ();
+	if (!GTKAM_IS_PREVIEW (preview))
+		return (FALSE);
 
 	pixbuf = gdk_pixbuf_loader_get_pixbuf (loader);
 	rotated = gdk_pixbuf_rotate (pixbuf, preview->priv->rotate);
@@ -391,6 +404,11 @@ timeout_func (gpointer user_data)
 	gdk_pixbuf_render_pixmap_and_mask (scaled, &pixmap, &bitmap, 127);
 	gdk_pixbuf_unref (scaled);
 
+	while (gtk_events_pending ()) 
+		gtk_main_iteration ();
+	if (!GTKAM_IS_PREVIEW (preview))
+		return (FALSE);
+
 	/* Show the new preview */
 	gtk_pixmap_set (preview->priv->image, pixmap, bitmap);
 	if (pixmap)
@@ -399,31 +417,6 @@ timeout_func (gpointer user_data)
 		gdk_bitmap_unref (bitmap);
 
 	return (TRUE);
-}
-
-static void
-on_refresh_toggled (GtkToggleButton *toggle, GtkamPreview *preview)
-{
-	g_return_if_fail (GTK_IS_TOGGLE_BUTTON (toggle));
-	g_return_if_fail (GTKAM_IS_PREVIEW (preview));
-
-	if (!toggle->active && preview->priv->timeout_id) {
-		gtk_timeout_remove (preview->priv->timeout_id);
-		preview->priv->timeout_id = 0;
-		gtk_widget_set_sensitive (preview->priv->spin, FALSE);
-	}
-
-	if (toggle->active && !preview->priv->timeout_id) {
-		preview->priv->timeout_id = gtk_timeout_add (
-				preview->priv->timeout, timeout_func, preview);
-		gtk_widget_set_sensitive (preview->priv->spin, TRUE);
-	}
-}
-
-static void
-on_adjustment_value_changed (GtkAdjustment *adj, GtkamPreview *preview)
-{
-	preview->priv->timeout = adj->value * 1000;
 }
 
 static void
@@ -476,7 +469,7 @@ GtkWidget *
 gtkam_preview_new (Camera *camera)
 {
 	GtkamPreview *preview;
-	GtkWidget *button, *check, *label, *hbox, *image, *vbox, *radio, *scale;
+	GtkWidget *button, *label, *hbox, *image, *vbox, *radio, *scale;
 	GtkObject *adj;
 	GdkPixbuf *pixbuf;
 	GdkPixmap *pixmap;
@@ -490,7 +483,7 @@ gtkam_preview_new (Camera *camera)
 	preview->priv->camera = camera;
 	gp_camera_ref (camera);
 
-	hbox = gtk_hbox_new (FALSE, 0);
+	hbox = gtk_hbox_new (FALSE, 5);
 	gtk_container_set_border_width (GTK_CONTAINER (hbox), 5);
 	gtk_widget_show (hbox);
 	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (preview)->vbox),
@@ -562,41 +555,15 @@ gtkam_preview_new (Camera *camera)
 	label = gtk_label_new (_("Zoom: "));
 	gtk_widget_show (label);
 	gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
-	adj = gtk_adjustment_new (preview->priv->zoom, 1., 2., 0.01, 0.1, 4.);
+	adj = gtk_adjustment_new (preview->priv->zoom, 1, 2, 0.01, 0.1, 4.);
+	gtk_signal_connect (GTK_OBJECT (adj), "value_changed",
+			    GTK_SIGNAL_FUNC (on_zoom_value_changed), preview);
 	scale = gtk_hscale_new (GTK_ADJUSTMENT (adj));
 	gtk_scale_set_digits (GTK_SCALE (scale), 2);
 	gtk_widget_show (scale);
 	gtk_box_pack_start (GTK_BOX (hbox), scale, TRUE, TRUE, 0);
-	gtk_signal_connect (GTK_OBJECT (adj), "value_changed",
-			    GTK_SIGNAL_FUNC (on_zoom_value_changed), preview);
-
-	hbox = gtk_hbox_new (FALSE, 0);
-	gtk_container_set_border_width (GTK_CONTAINER (hbox), 5);
-	gtk_widget_show (hbox);
-	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (preview)->vbox), hbox,
-			    FALSE, FALSE, 0);
-	check = gtk_check_button_new_with_label (_("Refresh every "));
-	gtk_widget_show (check);
-	gtk_box_pack_start (GTK_BOX (hbox), check, FALSE, FALSE, 0);
-	gtk_signal_connect (GTK_OBJECT (check), "toggled",
-			    GTK_SIGNAL_FUNC (on_refresh_toggled), preview);
-
-	adj = gtk_adjustment_new (preview->priv->timeout / 1000,
-				  1., 10., 1., 0., 0.);
-	preview->priv->spin = gtk_spin_button_new (GTK_ADJUSTMENT (adj),
-						   1., 0.);
-	gtk_widget_show (preview->priv->spin);
-	gtk_box_pack_start (GTK_BOX (hbox), preview->priv->spin,
-			    FALSE, FALSE, 0);
-	gtk_signal_connect (GTK_OBJECT (adj), "value_changed",
-			    GTK_SIGNAL_FUNC (on_adjustment_value_changed), 
-			    preview);
-
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (check), TRUE);
-
-	label = gtk_label_new (_(" second(s)"));
-	gtk_widget_show (label);
-	gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
+	gtk_range_set_update_policy (GTK_RANGE (scale),
+				     GTK_UPDATE_DISCONTINUOUS);
 
 	button = gtk_button_new_with_label (_("Capture"));
 	gtk_widget_show (button);
@@ -614,8 +581,8 @@ gtkam_preview_new (Camera *camera)
 	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (preview)->action_area),
 			   button);
 
-	/* Capture preview now */
-	timeout_func (preview);
+	/* Start capturing previews */
+	preview->priv->idle_id = gtk_idle_add (idle_func, preview);
 
 	return (GTK_WIDGET (preview));
 }

@@ -460,17 +460,38 @@ on_radio_270_toggled (GtkToggleButton *toggle, GtkamPreview *preview)
 }
 
 static void
-on_zoom_value_changed (GtkAdjustment *adj, GtkamPreview *preview)
+on_radio_100_toggled (GtkToggleButton *toggle, GtkamPreview *preview)
 {
-	preview->priv->zoom = adj->value;
+	if (toggle->active)
+		preview->priv->zoom = 1;
+}
+
+static void
+on_radio_150_toggled (GtkToggleButton *toggle, GtkamPreview *preview)
+{
+	if (toggle->active)
+		preview->priv->zoom = 1.5;
+}
+
+static void
+on_radio_200_toggled (GtkToggleButton *toggle, GtkamPreview *preview)
+{
+	if (toggle->active)
+		preview->priv->zoom = 2.;
+}
+
+static void
+on_radio_250_toggled (GtkToggleButton *toggle, GtkamPreview *preview)
+{
+	if (toggle->active)
+		preview->priv->zoom = 2.5;
 }
 
 GtkWidget *
 gtkam_preview_new (Camera *camera)
 {
 	GtkamPreview *preview;
-	GtkWidget *button, *label, *hbox, *image, *vbox, *radio, *scale;
-	GtkObject *adj;
+	GtkWidget *button, *hbox, *image, *vbox, *radio;
 	GdkPixbuf *pixbuf;
 	GdkPixmap *pixmap;
 	GdkBitmap *bitmap;
@@ -552,18 +573,29 @@ gtkam_preview_new (Camera *camera)
 	gtk_widget_show (hbox);
 	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (preview)->vbox), hbox,
 			    FALSE, FALSE, 0);
-	label = gtk_label_new (_("Zoom: "));
-	gtk_widget_show (label);
-	gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
-	adj = gtk_adjustment_new (preview->priv->zoom, 1, 2, 0.01, 0.1, 4.);
-	gtk_signal_connect (GTK_OBJECT (adj), "value_changed",
-			    GTK_SIGNAL_FUNC (on_zoom_value_changed), preview);
-	scale = gtk_hscale_new (GTK_ADJUSTMENT (adj));
-	gtk_scale_set_digits (GTK_SCALE (scale), 2);
-	gtk_widget_show (scale);
-	gtk_box_pack_start (GTK_BOX (hbox), scale, TRUE, TRUE, 0);
-	gtk_range_set_update_policy (GTK_RANGE (scale),
-				     GTK_UPDATE_DISCONTINUOUS);
+	radio = gtk_radio_button_new_with_label (NULL, _("100%"));
+	gtk_widget_show (radio);
+	gtk_box_pack_start (GTK_BOX (hbox), radio, FALSE, FALSE, 0);
+	gtk_signal_connect (GTK_OBJECT (radio), "toggled",
+			    GTK_SIGNAL_FUNC (on_radio_100_toggled), preview);
+	group = gtk_radio_button_group (GTK_RADIO_BUTTON (radio));
+	radio = gtk_radio_button_new_with_label (group, _("150%"));
+	gtk_widget_show (radio);
+	gtk_box_pack_start (GTK_BOX (hbox), radio, FALSE, FALSE, 0);
+	gtk_signal_connect (GTK_OBJECT (radio), "toggled",
+			    GTK_SIGNAL_FUNC (on_radio_150_toggled), preview);
+	group = gtk_radio_button_group (GTK_RADIO_BUTTON (radio));
+	radio = gtk_radio_button_new_with_label (group, _("200%"));
+	gtk_widget_show (radio);
+	gtk_box_pack_start (GTK_BOX (hbox), radio, FALSE, FALSE, 0);
+	gtk_signal_connect (GTK_OBJECT (radio), "toggled",
+			    GTK_SIGNAL_FUNC (on_radio_200_toggled), preview);
+	group = gtk_radio_button_group (GTK_RADIO_BUTTON (radio));
+	radio = gtk_radio_button_new_with_label (group, _("250%"));
+	gtk_widget_show (radio);
+	gtk_box_pack_start (GTK_BOX (hbox), radio, FALSE, FALSE, 0);
+	gtk_signal_connect (GTK_OBJECT (radio), "toggled",
+			    GTK_SIGNAL_FUNC (on_radio_250_toggled), preview);
 
 	button = gtk_button_new_with_label (_("Capture"));
 	gtk_widget_show (button);

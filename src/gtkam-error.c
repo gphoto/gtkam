@@ -157,7 +157,6 @@ gtkam_error_new (int result, GtkamContext *context, GtkWidget *opt_window,
 	va_list args;
 	unsigned int i;
 	GtkTextBuffer *buf;
-	GtkTextIter iter;
 
 	g_return_val_if_fail (result < 0, NULL);
 
@@ -194,9 +193,10 @@ gtkam_error_new (int result, GtkamContext *context, GtkWidget *opt_window,
 
 	buf = gtk_text_buffer_new (NULL);
 	for (i = 0; context && (i < context->errors->len); i++) {
-		gtk_text_buffer_insert (buf, &iter, context->errors->pdata[i],
-					strlen (context->errors->pdata[i]));
-		gtk_text_buffer_insert (buf, &iter, "\n", 1);
+		gtk_text_buffer_insert_at_cursor (buf,
+			context->errors->pdata[i],
+			strlen (context->errors->pdata[i]));
+		gtk_text_buffer_insert_at_cursor (buf, "\n", 1);
 	}
 	text = gtk_text_view_new_with_buffer (buf);
 	gtk_widget_show (text);

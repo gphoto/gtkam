@@ -43,7 +43,7 @@ typedef struct _GtkamListFileSelectedData GtkamListFileSelectedData;
 struct _GtkamListFileSelectedData {
 	Camera *camera;
 	gboolean multi;
-	const char *path;
+	const char *folder;
 	const char *name;
 };
 
@@ -51,7 +51,7 @@ typedef struct _GtkamListFileUnselectedData GtkamListFileUnselectedData;
 struct _GtkamListFileUnselectedData {
 	Camera *camera;
 	gboolean multi;
-	const char *path;
+	const char *folder;
 	const char *name;
 };
 
@@ -76,7 +76,8 @@ void       gtkam_list_remove_folder  (GtkamList *list, Camera *camera,
 void       gtkam_list_update_folder  (GtkamList *list, Camera *camera,
 				      gboolean multi, const gchar *folder);
 
-void       gtkam_list_set_thumbnails (GtkamList *list, gboolean thumbnails);
+void       gtkam_list_show_thumbnails (GtkamList *list);
+void       gtkam_list_hide_thumbnails (GtkamList *list);
 
 void       gtkam_list_save_selected  (GtkamList *list);
 void       gtkam_list_save_all       (GtkamList *list);

@@ -62,6 +62,7 @@
 #include <gtk/gtkscrolledwindow.h>
 #include <gtk/gtkcheckbutton.h>
 #include <gtk/gtkfilesel.h>
+#include <gtk/gtktreeselection.h>
 
 #include <gphoto2/gphoto2-camera.h>
 
@@ -84,8 +85,6 @@ struct _GtkamMainPrivate
 {
 	GtkWidget *tree, *list;
 	GtkItemFactory *factory;
-
-	GtkToggleButton *toggle_preview;
 
 	GtkWidget *item_summary, *item_about, *item_manual, *item_config;
 
@@ -167,9 +166,60 @@ gtkam_main_get_type (void)
 }
 
 static void
+gtkam_main_update_sensitivity (GtkamMain *m)
+{
+#if 0
+        CameraAbilities a;
+#endif
+        guint i, s;
+
+        i = gtkam_list_count_all (GTKAM_LIST (m->priv->list));
+        s = gtkam_list_count_selected (GTKAM_LIST (m->priv->list));
+
+        gtk_widget_set_sensitive (
+                gtk_item_factory_get_widget (m->priv->factory, "/Select/None"),
+                (s != 0));
+        gtk_widget_set_sensitive (
+                gtk_item_factory_get_widget (m->priv->factory,
+                                             "/File/Delete Photos/Selected"),
+                (s != 0));
+        gtk_widget_set_sensitive (
+                gtk_item_factory_get_widget (m->priv->factory,
+                                             "/File/Save Photos/Selected"),
+                (s != 0));
+        gtk_widget_set_sensitive (
+                gtk_item_factory_get_widget (m->priv->factory, "/Select/All"),
+                (s != i));
+        gtk_widget_set_sensitive (
+                gtk_item_factory_get_widget (m->priv->factory,
+                                             "/Select/Inverse"),
+                (i != 0));
+
+#if 0
+        /* Camera menu */
+        gtk_widget_set_sensitive (m->priv->item_summary, FALSE);
+        gtk_widget_set_sensitive (m->priv->item_manual, FALSE);
+        gtk_widget_set_sensitive (m->priv->item_about, FALSE);
+        gtk_widget_set_sensitive (m->priv->item_config, FALSE);
+        if (m->priv->camera) {
+                gtk_widget_set_sensitive (m->priv->item_summary, TRUE);
+                gtk_widget_set_sensitive (m->priv->item_manual, TRUE);
+                gtk_widget_set_sensitive (m->priv->item_about, TRUE);
+
+                gp_camera_get_abilities (m->priv->camera, &a);
+                if (a.operations & GP_OPERATION_CONFIG)
+                        gtk_widget_set_sensitive (m->priv->item_config, TRUE);
+        }
+#endif
+}
+
+static void
 on_thumbnails_toggled (GtkToggleButton *toggle, GtkamMain *m)
 {
-	gtkam_list_set_thumbnails (GTKAM_LIST (m->priv->list), toggle->active);
+	if (toggle->active)
+		gtkam_list_show_thumbnails (GTKAM_LIST (m->priv->list));
+	else
+		gtkam_list_hide_thumbnails (GTKAM_LIST (m->priv->list));
 }
 
 static void
@@ -286,40 +336,52 @@ static void
 action_select_all (gpointer callback_data, guint callback_action,
 		   GtkWidget *widget)
 {
-#if 0
-	GtkIconList *ilist = GTK_ICON_LIST (m->priv->list);
-	guint i;
+	GtkTreeSelection *s;
+	GtkamMain *m = GTKAM_MAIN (callback_data);
 
-	for (i = 0; i < g_list_length (ilist->icons); i++)
-		gtk_icon_list_select_icon (ilist,
-				g_list_nth_data (ilist->icons, i));
-#endif
+	s = gtk_tree_view_get_selection (GTK_TREE_VIEW (m->priv->list));
+	gtk_tree_selection_select_all (s);
+	gtkam_main_update_sensitivity (m);
 }
 
 static void
 action_select_none (gpointer callback_data, guint callback_action,
 		    GtkWidget *widget)
 {
-//	gtk_icon_list_unselect_all (GTK_ICON_LIST (m->priv->list));
+	GtkTreeSelection *s;
+	GtkamMain *m = GTKAM_MAIN (callback_data);
+
+	s = gtk_tree_view_get_selection (GTK_TREE_VIEW (m->priv->list));
+	gtk_tree_selection_unselect_all (s);
+	gtkam_main_update_sensitivity (m);
+}
+
+static gboolean
+select_inverse_foreach_func (GtkTreeModel *model, GtkTreePath *path,
+			     GtkTreeIter *iter, gpointer data)
+{
+	GtkTreeSelection *s = GTK_TREE_SELECTION (data);
+
+	if (gtk_tree_selection_path_is_selected (s, path))
+		gtk_tree_selection_unselect_path (s, path);
+	else
+		gtk_tree_selection_select_path (s, path);
+
+	return (TRUE);
 }
 
 static void
 action_select_inverse (gpointer callback_data, guint callback_action,
 		       GtkWidget *widget)
 {
-#if 0
-	GtkIconList *ilist = GTK_ICON_LIST (m->priv->list);
-	GtkIconListItem *item;
-	guint i;
+	GtkTreeModel *model;
+	GtkTreeSelection *s;
+	GtkamMain *m = GTKAM_MAIN (callback_data);
 
-	for (i = 0; i < g_list_length (ilist->icons); i++) {
-		item = g_list_nth_data (ilist->icons, i);
-		if (item->state == GTK_STATE_SELECTED)
-			gtk_icon_list_unselect_icon (ilist, item);
-		else
-			gtk_icon_list_select_icon (ilist, item);
-	}
-#endif
+	model = gtk_tree_view_get_model (GTK_TREE_VIEW (m->priv->list));
+	s = gtk_tree_view_get_selection (GTK_TREE_VIEW (m->priv->list));
+	gtk_tree_model_foreach (model, select_inverse_foreach_func, s);
+	gtkam_main_update_sensitivity (m);
 }
 
 static void
@@ -346,54 +408,6 @@ action_add_camera (gpointer callback_data, guint callback_action,
 	gtk_widget_show (dialog);
 	g_signal_connect (GTK_OBJECT (dialog), "camera_selected",
 			  G_CALLBACK (on_camera_selected), m);
-}
-
-static void
-gtkam_main_update_sensitivity (GtkamMain *m)
-{
-#if 0
-	CameraAbilities a;
-#endif
-	guint i, s;
-
-	i = gtkam_list_count_all (GTKAM_LIST (m->priv->list));
-	s = gtkam_list_count_selected (GTKAM_LIST (m->priv->list));
-
-	gtk_widget_set_sensitive (
-		gtk_item_factory_get_widget (m->priv->factory, "/Select/None"),
-		(s != 0));
-	gtk_widget_set_sensitive (
-		gtk_item_factory_get_widget (m->priv->factory, 
-					     "/File/Delete Photos/Selected"),
-		(s != 0));
-	gtk_widget_set_sensitive (
-		gtk_item_factory_get_widget (m->priv->factory,
-					     "/File/Save Photos/Selected"),
-		(s != 0));
-	gtk_widget_set_sensitive (
-		gtk_item_factory_get_widget (m->priv->factory, "/Select/All"),
-		(s != i));
-	gtk_widget_set_sensitive (
-		gtk_item_factory_get_widget (m->priv->factory,
-					     "/Select/Inverse"),
-		(i != 0));
-
-#if 0
-	/* Camera menu */
-	gtk_widget_set_sensitive (m->priv->item_summary, FALSE);
-	gtk_widget_set_sensitive (m->priv->item_manual, FALSE);
-	gtk_widget_set_sensitive (m->priv->item_about, FALSE);
-	gtk_widget_set_sensitive (m->priv->item_config, FALSE);
-	if (m->priv->camera) {
-		gtk_widget_set_sensitive (m->priv->item_summary, TRUE);
-		gtk_widget_set_sensitive (m->priv->item_manual, TRUE);
-		gtk_widget_set_sensitive (m->priv->item_about, TRUE);
-
-		gp_camera_get_abilities (m->priv->camera, &a);
-		if (a.operations & GP_OPERATION_CONFIG)
-			gtk_widget_set_sensitive (m->priv->item_config, TRUE);
-	}
-#endif
 }
 
 static void
@@ -454,14 +468,14 @@ static void
 on_file_selected (GtkamList *list, GtkamListFileSelectedData *data,
 		  GtkamMain *m)
 {
-	g_warning ("Fixme: Update sensitivity!");
+	gtkam_main_update_sensitivity (m);
 }
 
 static void
 on_file_unselected (GtkamList *list, GtkamListFileUnselectedData *data,
 		    GtkamMain *m)
 {
-	g_warning ("Fixme: Update sensitivity!");
+	gtkam_main_update_sensitivity (m);
 }
 
 static void
@@ -743,12 +757,10 @@ gtkam_main_new (void)
 
 	check = gtk_check_button_new_with_label (_("View Thumbnails"));
 	gtk_widget_show (check);
-	gtk_widget_set_sensitive (check, FALSE);
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (check), TRUE);
 	gtk_container_add (GTK_CONTAINER (frame), check);
 	g_signal_connect (G_OBJECT (check), "toggled",
 			  G_CALLBACK (on_thumbnails_toggled), m);
-	m->priv->toggle_preview = GTK_TOGGLE_BUTTON (check);
 
 	scrolled = gtk_scrolled_window_new (NULL, NULL);
 	gtk_widget_show (scrolled);

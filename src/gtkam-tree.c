@@ -53,7 +53,7 @@
 #include <gtk/gtkbutton.h>
 #include <gtk/gtktreestore.h>
 #include <gtk/gtkpixmap.h>
-#include <gtk/gtkmenuitem.h>
+#include <gtk/gtkitemfactory.h>
 #include <gtk/gtkmenu.h>
 #include <gtk/gtkcellrenderertext.h>
 #include <gtk/gtktreeselection.h>
@@ -66,6 +66,7 @@
 #include "support.h"
 #include "gtkam-error.h"
 #include "gtkam-status.h"
+#include "gtkam-chooser.h"
 
 typedef struct _GtkamTreeCameraData GtkamTreeCameraData;
 struct _GtkamTreeCameraData {
@@ -77,6 +78,12 @@ struct _GtkamTreeCameraData {
 struct _GtkamTreePrivate
 {
 	GtkTreeStore *store;
+
+	GtkItemFactory *factory;
+
+	struct {
+		GtkTreeIter iter;
+	} popup;
 
 	GPtrArray *cameras;
 };
@@ -322,7 +329,7 @@ gtkam_tree_get_path_rec (GtkamTree *tree, GtkTreeIter *iter, const gchar *path)
 }
 
 static gchar *
-gtkam_tree_get_path (GtkamTree *tree, GtkTreeIter *iter)
+gtkam_tree_get_path_from_iter (GtkamTree *tree, GtkTreeIter *iter)
 {
 	GtkTreeIter parent;
 	GValue value = {0};
@@ -351,7 +358,7 @@ gtkam_tree_update_iter (GtkamTree *tree, GtkTreeIter *iter)
 	int result;
 	Camera *camera = NULL;
 	gboolean multi = FALSE;
-	GtkWidget *s;
+	GtkWidget *s, *d, *w;
 	gchar *folder = NULL;
 
 	g_return_if_fail (GTKAM_IS_TREE (tree));
@@ -359,6 +366,7 @@ gtkam_tree_update_iter (GtkamTree *tree, GtkTreeIter *iter)
 	/* Look up the corresponding camera */
 	camera = gtkam_tree_get_camera_from_iter (tree, iter);
 	multi = gtkam_tree_get_multi_from_iter (tree, iter);
+	g_return_if_fail (camera != NULL);
 
 	n = gtk_tree_model_iter_n_children (
 			GTK_TREE_MODEL (tree->priv->store), iter);
@@ -370,7 +378,7 @@ gtkam_tree_update_iter (GtkamTree *tree, GtkTreeIter *iter)
 	}
 
 	/* Which folder? */
-	folder = gtkam_tree_get_path (tree, iter);
+	folder = gtkam_tree_get_path_from_iter (tree, iter);
 
 	s = gtkam_status_new (_("Listing folders in '%s'..."), folder);
 	g_signal_emit (G_OBJECT (tree), signals[NEW_STATUS], 0, s);
@@ -389,8 +397,11 @@ gtkam_tree_update_iter (GtkamTree *tree, GtkTreeIter *iter)
 	} else if (result == GP_ERROR_NOT_SUPPORTED) {
 		/* Do nothing */
 	} else {
-		g_warning ("Listing folders in '%s' failed (%i: '%s').",
-			folder, result, gp_result_as_string (result));
+		w = gtk_widget_get_ancestor (GTK_WIDGET (tree),
+					     GTK_TYPE_WINDOW);
+		d = gtkam_error_new (result, GTKAM_STATUS (s)->context, w,
+			_("Listing folders in '%s' failed."), folder);
+		gtk_widget_show (d);
 	}
 	g_free (folder);
 	gp_list_unref (list);
@@ -430,7 +441,7 @@ selection_func (GtkTreeSelection *selection, GtkTreeModel *model,
 	GtkamTreeFolderUnselectedData ud;
 
 	gtk_tree_model_get_iter (model, &iter, path);
-	folder = gtkam_tree_get_path (tree, &iter);
+	folder = gtkam_tree_get_path_from_iter (tree, &iter);
 	if (path_currently_selected) {
 		ud.camera = gtkam_tree_get_camera_from_iter (tree, &iter);
 		ud.multi = gtkam_tree_get_multi_from_iter (tree, &iter);
@@ -449,15 +460,202 @@ selection_func (GtkTreeSelection *selection, GtkTreeModel *model,
 	return (TRUE);
 }
 
+static void
+action_upload (gpointer callback_data, guint callback_action,
+	       GtkWidget *widget)
+{
+	g_warning ("Fixme: action_upload");
+}
+
+static void
+action_mkdir (gpointer callback_data, guint callback_action,
+	      GtkWidget *widget)
+{
+	g_warning ("Fixme: action_mkdir");
+}
+
+static void
+action_rmdir (gpointer callback_data, guint callback_action,
+	      GtkWidget *widget)
+{
+	g_warning ("Fixme: action_rmdir");
+}
+
+static void
+action_summary (gpointer callback_data, guint callback_action,
+		GtkWidget *widget)
+{
+	g_warning ("Fixme: action_summary");
+}
+
+static void
+action_preferences (gpointer callback_data, guint callback_action,
+		    GtkWidget *widget)
+{
+	g_warning ("Fixme: action_preferences");
+}
+
+static void
+action_about (gpointer callback_data, guint callback_action,
+	      GtkWidget *widget)
+{
+	g_warning ("Fixme: action_about");
+}
+
+static void
+action_online (gpointer callback_data, guint callback_action,
+	       GtkWidget *widget)
+{
+	g_warning ("Fixme: action_online");
+}
+
+static void
+gtkam_tree_remove_camera_from_iter (GtkamTree *tree, GtkTreeIter *iter)
+{
+	GtkamTreeCameraData *cd;
+
+	g_return_if_fail (GTKAM_IS_TREE (tree));
+
+	cd = gtkam_tree_get_camera_data (tree, iter);
+	gtk_tree_store_remove (tree->priv->store, iter);
+	g_assert (g_ptr_array_remove_fast (tree->priv->cameras, cd));
+	gtk_tree_path_free (cd->path);
+	gp_camera_unref (cd->camera);
+	g_free (cd);
+
+	gtkam_tree_save (tree);
+}
+
+typedef struct _CameraSelectedData CameraSelectedData;
+struct _CameraSelectedData {
+	GtkamTree *tree;
+	GtkTreeIter *iter;
+};
+
+static void
+on_camera_selected (GtkamChooser *chooser, GtkamChooserCameraSelectedData *d,
+		    CameraSelectedData *data)
+{
+	gtkam_tree_remove_camera_from_iter (data->tree, data->iter);
+	gtkam_tree_add_camera (data->tree, d->camera, d->multi);
+}
+
+static void
+camera_selected_data_destroy (gpointer data)
+{
+	CameraSelectedData *d = data;
+
+	gtk_tree_iter_free (d->iter);
+	g_free (d);
+}
+
+static void
+action_remove_camera (gpointer callback_data, guint callback_action,
+		      GtkWidget *widget)
+{
+	GtkamTree *tree = GTKAM_TREE (callback_data);
+
+	gtkam_tree_remove_camera_from_iter (tree, &tree->priv->popup.iter);
+}
+
+static void
+action_select_camera (gpointer callback_data, guint callback_action,
+		      GtkWidget *widget)
+{
+	GtkWidget *d;
+	GtkamTree *tree = GTKAM_TREE (callback_data);
+	CameraSelectedData *data;
+
+	d = gtkam_chooser_new ();
+	gtk_widget_show (d);
+	gtkam_chooser_set_camera (GTKAM_CHOOSER (d),
+		gtkam_tree_get_camera_from_iter (tree,
+						 &tree->priv->popup.iter));
+	gtkam_chooser_set_multi (GTKAM_CHOOSER (d),
+		gtkam_tree_get_multi_from_iter (tree,
+						&tree->priv->popup.iter));
+	data = g_new0 (CameraSelectedData, 1);
+	data->tree = tree;
+	data->iter = gtk_tree_iter_copy (&tree->priv->popup.iter);
+	g_signal_connect (G_OBJECT (d), "camera_selected",
+			  G_CALLBACK (on_camera_selected), data);
+	g_object_set_data_full (G_OBJECT (d), "data", data,
+				camera_selected_data_destroy);
+}
+
+static void
+action_capture (gpointer callback_data, guint callback_action,
+		GtkWidget *widget)
+{
+	g_warning ("Fixme: action_capture");
+}
+
+static void
+action_manual (gpointer callback_data, guint callback_action,
+	       GtkWidget *widget)
+{
+	g_warning ("Fixme: action_manual");
+}
+
+static GtkItemFactoryEntry mi[] =
+{
+	{"/Upload file", NULL, action_upload, 0, NULL},
+	{"/Make directory", NULL, action_mkdir, 0, NULL},
+	{"/Remove directory", NULL, action_rmdir, 0, NULL},
+	{"/sep1", NULL, NULL, 0, "<Separator>"},
+	{"/Capture", NULL, action_capture, 0, NULL},
+	{"/Preferences", NULL, action_preferences, 0, NULL},
+	{"/Summary", NULL, action_summary, 0, NULL},
+	{"/Manual", NULL, action_manual, 0, NULL},
+	{"/About", NULL, action_about, 0, NULL},
+	{"/sep2", NULL, NULL, 0, "<Separator>"},
+	{"/Select Camera", NULL, action_select_camera, 0, NULL},
+	{"/Remove Camera", NULL, action_remove_camera, 0, NULL},
+	{"/Online", NULL, action_online, 0, "<CheckItem>"}
+};
+static int nmi = sizeof (mi) / sizeof (mi[0]);
+
+static gint
+on_button_press_event (GtkWidget *widget, GdkEventButton *event,
+		       GtkamTree *tree)
+{
+	GtkTreePath *path = NULL;
+	GtkTreeViewColumn *column;
+	gint cell_x, cell_y;
+
+	switch (event->button) {
+	case 3:
+		gtk_tree_view_get_path_at_pos (GTK_TREE_VIEW (tree),
+			event->x, event->y, &path, &column, &cell_x, &cell_y);
+		gtk_tree_model_get_iter (GTK_TREE_MODEL (tree->priv->store),
+					 &tree->priv->popup.iter, path);
+		gtk_tree_path_free (path);
+		gtk_item_factory_popup (tree->priv->factory, event->x_root,
+				event->y_root, event->button, event->time);
+
+		return (TRUE);
+	default:
+		return (FALSE);
+	}
+}
+
 GtkWidget *
 gtkam_tree_new (void)
 {
         GtkamTree *tree;
         GtkCellRenderer *renderer;
 	GtkTreeSelection *selection;
+	GtkAccelGroup *ag;
 
         tree = g_object_new (GTKAM_TYPE_TREE, NULL);
 	gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (tree), FALSE);
+	g_signal_connect (G_OBJECT (tree), "button_press_event",
+			  G_CALLBACK (on_button_press_event), tree);
+
+	ag = gtk_accel_group_new ();
+	tree->priv->factory = gtk_item_factory_new (GTK_TYPE_MENU,
+						    "<popup>", ag);
+	gtk_item_factory_create_items (tree->priv->factory, nmi, mi, tree);
 
 	selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (tree));
 	gtk_tree_selection_set_mode (selection, GTK_SELECTION_MULTIPLE);
@@ -493,13 +691,17 @@ gtkam_tree_add_camera (GtkamTree *tree, Camera *camera, gboolean multi)
         gtk_tree_store_append (tree->priv->store, &iter, NULL);
         gtk_tree_store_set (tree->priv->store, &iter,
                             FOLDER_COLUMN, a.model, -1);
+
         data = g_new0 (GtkamTreeCameraData, 1);
         data->camera = camera;
+	gp_camera_ref (camera);
         data->multi = multi;
         data->path = gtk_tree_model_get_path (
                 GTK_TREE_MODEL (tree->priv->store), &iter);
         g_ptr_array_add (tree->priv->cameras, data);
+
         gtkam_tree_update_iter (tree, &iter);
+
         gtkam_tree_save (tree);
 }
 
@@ -641,10 +843,12 @@ gtkam_tree_load (GtkamTree *tree)
 		/* Remember the camera */
 		data = g_new0 (GtkamTreeCameraData, 1);
 		data->camera = camera;
+		gp_camera_ref (camera);
 		data->multi = atoi (multi);
 		data->path = gtk_tree_model_get_path (
 				GTK_TREE_MODEL (tree->priv->store), &iter);
 		g_ptr_array_add (tree->priv->cameras, data);
+
 		gtkam_tree_update_iter (tree, &iter);
 	}
 

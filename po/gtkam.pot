@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2002-01-18 01:13+0100\n"
+"POT-Creation-Date: 2002-01-19 16:32+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -722,12 +722,12 @@ msgstr ""
 
 #: src/gtkam-save.c:298
 #, c-format
-msgid "Could not save file to '%s'"
+msgid "Could not save file to '%s'."
 msgstr ""
 
 #: src/gtkam-save.c:333
 #, c-format
-msgid "Could not get '%s' from folder '%s'"
+msgid "Could not get '%s' from folder '%s'."
 msgstr ""
 
 #: src/gtkam-save.c:351 src/gtkam-save.c:356

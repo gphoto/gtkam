@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gtKam\n"
-"POT-Creation-Date: 2002-01-18 01:13+0100\n"
-"PO-Revision-Date: 2002-01-18 01:15+0100\n"
+"POT-Creation-Date: 2002-01-19 16:32+0100\n"
+"PO-Revision-Date: 2002-01-19 16:32+0100\n"
 "Last-Translator: Colin Marquardt <colin@marquardt-home.de>\n"
 "Language-Team: German <de@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -741,18 +741,18 @@ msgstr "»%s« existiert bereits."
 
 #: src/gtkam-save.c:298
 #, c-format
-msgid "Could not save file to '%s'"
-msgstr "Konnte Datei nicht unter »%s« speichern"
+msgid "Could not save file to '%s'."
+msgstr "Konnte Datei nicht unter »%s« speichern."
 
 #: src/gtkam-save.c:333
 #, c-format
-msgid "Could not get '%s' from folder '%s'"
-msgstr "Konnte Datei »%s« nicht aus Verzeichnis »%s« holen"
+msgid "Could not get '%s' from folder '%s'."
+msgstr "Konnte Datei »%s« nicht aus Verzeichnis »%s« holen."
 
 #: src/gtkam-save.c:351 src/gtkam-save.c:356
 #, c-format
 msgid "Downloading %i files..."
-msgstr "Lade %i« Dateien herunter..."
+msgstr "Lade %i Dateien herunter..."
 
 #: src/gtkam-save.c:429
 #, c-format

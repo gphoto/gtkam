@@ -44,17 +44,21 @@ struct _GtkamTreeClass
 	GtkTreeClass parent_class;
 
 	/* Signals */
-	void (* folder_selected)   (GtkamTree *tree, const gchar *path);
-	void (* folder_unselected) (GtkamTree *tree, const gchar *path);
+	void (* folder_selected)   (GtkamTree *tree, Camera *camera,
+				    gboolean multi, const gchar *folder);
+	void (* folder_unselected) (GtkamTree *tree, Camera *camera,
+				    gboolean multi, const gchar *folder);
+	void (* file_uploaded)     (GtkamTree *tree, Camera *camera,
+				    gboolean multi, const gchar *folder,
+				    const gchar *name);
 };
 
-GtkType    gtkam_tree_get_type (void);
-GtkWidget *gtkam_tree_new      (GtkWidget *vbox);
+GtkType      gtkam_tree_get_type (void);
+GtkWidget   *gtkam_tree_new      (GtkWidget *vbox);
 
-void         gtkam_tree_set_camera (GtkamTree *tree, Camera *camera,
+void         gtkam_tree_add_camera (GtkamTree *tree, Camera *camera,
 				    gboolean multi);
-const gchar *gtkam_tree_get_path   (GtkamTree *tree);
-void         gtkam_tree_remove_dir (GtkamTree *tree, const gchar *path);
-void         gtkam_tree_make_dir   (GtkamTree *tree, const gchar *path);
+void         gtkam_tree_update     (GtkamTree *tree, Camera *camera,
+				    gboolean multi, const gchar *path);
 
 #endif /* __GTKAM_TREE_H__ */

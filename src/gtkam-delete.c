@@ -54,14 +54,24 @@
 #include "gtkam-error.h"
 #include "gtkam-status.h"
 
+typedef struct _GtkamDeleteData GtkamDeleteData;
+struct _GtkamDeleteData {
+	Camera *camera;
+	gboolean multi;
+	gchar *folder;
+	gchar *name;
+	GtkWidget *check;
+};
+
 struct _GtkamDeletePrivate
 {
 	Camera *camera;
 	gboolean multi;
-	gchar *path;
 
-	GList *toggles;
-	GtkWidget *vbox;
+	GSList *data;
+	GtkWidget *vbox, *status;
+
+	GtkWidget *msg;
 };
 
 #define PARENT_TYPE GTK_TYPE_DIALOG
@@ -79,15 +89,19 @@ static void
 gtkam_delete_destroy (GtkObject *object)
 {
 	GtkamDelete *delete = GTKAM_DELETE (object);
+	gint i;
+	GtkamDeleteData *data;
 
-	if (delete->priv->camera) {
-		gp_camera_unref (delete->priv->camera);
-		delete->priv->camera = NULL;
-	}
-
-	if (delete->priv->path) {
-		g_free (delete->priv->path);
-		delete->priv->path = NULL;
+	if (delete->priv->data) {
+		for (i = g_slist_length (delete->priv->data) - 1; i >= 0; i--) {
+			data = g_slist_nth_data (delete->priv->data, i);
+			gp_camera_unref (data->camera);
+			g_free (data->folder);
+			g_free (data->name);
+			g_free (data);
+		}
+		g_slist_free (delete->priv->data);
+		delete->priv->data = NULL;
 	}
 
 	GTK_OBJECT_CLASS (parent_class)->destroy (object);
@@ -103,6 +117,42 @@ gtkam_delete_finalize (GtkObject *object)
 	GTK_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
+typedef void (* GtkamSignal_NONE__POINTER_BOOL_POINTER_POINTER)
+        (GtkObject *object, gpointer arg1, gboolean arg2, gpointer arg3,
+         gpointer arg4, gpointer user_data);
+
+static void
+gtkam_marshal_NONE__POINTER_BOOL_POINTER_POINTER (GtkObject *object,
+                                                  GtkSignalFunc func,
+                                                  gpointer func_data,
+                                                  GtkArg *args)
+{
+        GtkamSignal_NONE__POINTER_BOOL_POINTER_POINTER rfunc;
+
+        rfunc = (GtkamSignal_NONE__POINTER_BOOL_POINTER_POINTER) func;
+        (*rfunc) (object, GTK_VALUE_POINTER (args[0]),
+                          GTK_VALUE_BOOL (args[1]),
+                          GTK_VALUE_POINTER (args[2]),
+                          GTK_VALUE_POINTER (args[3]), func_data);
+}
+
+typedef void (* GtkamSignal_NONE__POINTER_BOOL_POINTER) (GtkObject *object,
+         gpointer arg1, gboolean arg2, gpointer arg3, gpointer user_data);
+
+static void
+gtkam_marshal_NONE__POINTER_BOOL_POINTER (GtkObject *object,
+                                          GtkSignalFunc func,
+                                          gpointer func_data,
+                                          GtkArg *args)
+{
+        GtkamSignal_NONE__POINTER_BOOL_POINTER rfunc;
+
+        rfunc = (GtkamSignal_NONE__POINTER_BOOL_POINTER) func;
+        (*rfunc) (object, GTK_VALUE_POINTER (args[0]),
+                          GTK_VALUE_BOOL (args[1]),
+                          GTK_VALUE_POINTER (args[2]), func_data);
+}
+
 static void
 gtkam_delete_class_init (GtkamDeleteClass *klass)
 {
@@ -115,12 +165,14 @@ gtkam_delete_class_init (GtkamDeleteClass *klass)
 	signals[FILE_DELETED] = gtk_signal_new ("file_deleted",
 		GTK_RUN_FIRST, object_class->type,
 		GTK_SIGNAL_OFFSET (GtkamDeleteClass, file_deleted),
-		gtk_marshal_NONE__POINTER, GTK_TYPE_NONE, 1,
-		GTK_TYPE_POINTER);
+		gtkam_marshal_NONE__POINTER_BOOL_POINTER_POINTER,
+		GTK_TYPE_NONE, 4, GTK_TYPE_POINTER, GTK_TYPE_BOOL,
+		GTK_TYPE_POINTER, GTK_TYPE_POINTER);
 	signals[ALL_DELETED] = gtk_signal_new ("all_deleted",
 		GTK_RUN_FIRST, object_class->type,
 		GTK_SIGNAL_OFFSET (GtkamDeleteClass, all_deleted),
-		gtk_marshal_NONE__POINTER, GTK_TYPE_NONE, 1,
+		gtkam_marshal_NONE__POINTER_BOOL_POINTER,
+		GTK_TYPE_NONE, 3, GTK_TYPE_POINTER, GTK_TYPE_BOOL,
 		GTK_TYPE_POINTER);
 	gtk_object_class_add_signals (object_class, signals, LAST_SIGNAL);
 
@@ -168,27 +220,25 @@ gp_list_lookup_name (CameraList *list, const char *name)
 }
 
 static gboolean
-delete_all (GtkamDelete *delete)
+delete_all (GtkamDelete *delete, Camera *camera, gboolean multi,
+	    const gchar *folder)
 {
 	GtkWidget *d, *s;
-	gchar *path;
 	int result, r1, r2;
 	CameraList l1, l2;
 	const char *name;
 
-	s = gtkam_status_new (_("Deleting all files in '%s'..."), 
-			      delete->priv->path);
+	s = gtkam_status_new (_("Deleting all files in '%s'..."), folder);
 	gtk_widget_show (s);
 	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (delete)->vbox), s,
 			    FALSE, FALSE, 0);
-	r1 = gp_camera_folder_list_files (delete->priv->camera,
-					  delete->priv->path, &l1, NULL);
-	result = gp_camera_folder_delete_all (delete->priv->camera,
-		delete->priv->path, GTKAM_STATUS (s)->context->context);
+	r1 = gp_camera_folder_list_files (camera, folder, &l1, NULL);
+	result = gp_camera_folder_delete_all (camera, folder,
+					GTKAM_STATUS (s)->context->context);
 	switch (result) {
 	case GP_OK:
 		gtk_signal_emit (GTK_OBJECT (delete),
-				 signals[ALL_DELETED], delete->priv->path);
+			signals[ALL_DELETED], camera, multi, folder);
 		gtk_object_destroy (GTK_OBJECT (s));
 		return (TRUE);
 	case GP_ERROR_CANCEL:
@@ -197,29 +247,19 @@ delete_all (GtkamDelete *delete)
 	default:
 		d = gtkam_error_new (result, GTKAM_STATUS (s)->context,
 			GTK_WIDGET (delete), _("Could not delete all files "
-			"in '%s'."), delete->priv->path);
+			"in '%s'."), folder);
 		gtk_widget_show (d);
 		gtk_object_destroy (GTK_OBJECT (s));
 
 		/* See what files have been deleted */
-		r2 = gp_camera_folder_list_files (delete->priv->camera,
-						  delete->priv->path, &l2, 
-						  NULL);
+		r2 = gp_camera_folder_list_files (camera, folder, &l2, NULL);
 		if ((r1 == GP_OK) && (r2 == GP_OK)) {
 			for (r1 = 0; r1 < gp_list_count (&l1); r1++) {
 				gp_list_get_name (&l1, r1, &name);
-				if (gp_list_lookup_name (&l2, name) >= 0) {
-					if (strlen (delete->priv->path) == 1)
-						path = g_strdup_printf ("/%s",
-									name);
-					else
-						path = g_strdup_printf ("%s/%s",
-							delete->priv->path,
-							name);
+				if (gp_list_lookup_name (&l2, name) >= 0)
 					gtk_signal_emit (GTK_OBJECT (delete),
-						signals[FILE_DELETED], path);
-					g_free (path);
-				}
+						signals[FILE_DELETED], camera,
+						multi, folder, name);
 			}
 		}
 		return (FALSE);
@@ -227,30 +267,24 @@ delete_all (GtkamDelete *delete)
 }
 
 static gboolean
-delete_one (GtkamDelete *delete, const gchar *file)
+delete_one (GtkamDelete *delete, Camera *camera, gboolean multi,
+	    const gchar *folder, const gchar *name)
 {
 	GtkWidget *d, *s;
-	gchar *path;
 	int result;
 
 	s = gtkam_status_new (_("Deleting file '%s' from folder '%s'..."),
-			      file, delete->priv->path);
+			      name, folder);
 	gtk_widget_show (s);
 	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (delete)->vbox), s,
 			    FALSE, FALSE, 0);
-	result = gp_camera_file_delete (delete->priv->camera,
-		delete->priv->path, file, GTKAM_STATUS (s)->context->context);
+	result = gp_camera_file_delete (camera, folder, name,
+				        GTKAM_STATUS (s)->context->context);
 	switch (result) {
 	case GP_OK:
 		gtk_object_destroy (GTK_OBJECT (s));
-		if (strlen (delete->priv->path) == 1)
-			path = g_strdup_printf ("/%s", file);
-		else
-			path = g_strdup_printf ("%s/%s", delete->priv->path,
-						file);
 		gtk_signal_emit (GTK_OBJECT (delete), signals[FILE_DELETED],
-				 path);
-		g_free (path);
+				 camera, multi, folder, name);
 		return (TRUE);
 	case GP_ERROR_CANCEL:
 		gtk_object_destroy (GTK_OBJECT (s));
@@ -258,8 +292,7 @@ delete_one (GtkamDelete *delete, const gchar *file)
 	default:
 		d = gtkam_error_new (result, GTKAM_STATUS (s)->context,
 			GTK_WIDGET (delete), _("Could not delete "
-			"file '%s' in folder '%s'."),
-			file, delete->priv->path);
+			"file '%s' in folder '%s'."), name, folder);
 		gtk_widget_show (d);
 		gtk_object_destroy (GTK_OBJECT (s));
 		return (FALSE);
@@ -269,27 +302,32 @@ delete_one (GtkamDelete *delete, const gchar *file)
 static void
 on_delete_clicked (GtkButton *button, GtkamDelete *delete)
 {
-	GList *t;
-	const gchar *file;
 	gboolean success = TRUE;
+	gint i;
+	GtkamDeleteData *data;
 
-	if (delete->priv->toggles) {
-		for (t = delete->priv->toggles; t; t = t->next) {
-			if (!GTK_TOGGLE_BUTTON (t->data)->active)
-				continue;
-			file = GTK_LABEL (GTK_BIN (t->data)->child)->label;
-			if (delete_one (delete, file))
+	for (i = g_slist_length (delete->priv->data) - 1; i >= 0; i--) {
+		data = g_slist_nth_data (delete->priv->data, i);
+		if (!GTK_TOGGLE_BUTTON (data->check)->active)
+			continue;
+		if (data->name) {
+			if (delete_one (delete, data->camera, data->multi,
+					data->folder, data->name)) {
+				gp_camera_unref (data->camera);
+				g_free (data->name);
+				g_free (data->folder);
+				delete->priv->data = g_slist_remove (
+					delete->priv->data, data);
 				gtk_container_remove (
 					GTK_CONTAINER (delete->priv->vbox),
-					GTK_WIDGET (t->data));
-			else
+					GTK_WIDGET (data->check));
+				g_free (data);
+			} else
 				success = FALSE;
-		}
-	} else if (!delete_all (delete))
-		success = FALSE;
-
-	if (delete->priv->multi)
-		gp_camera_exit (delete->priv->camera, NULL);
+		} else if (!delete_all (delete, data->camera, data->multi,
+					data->folder))
+			success = FALSE;
+	}
 
 	if (success)
 		gtk_object_destroy (GTK_OBJECT (delete));
@@ -302,27 +340,20 @@ on_cancel_clicked (GtkButton *button, GtkamDelete *delete)
 }
 
 GtkWidget *
-gtkam_delete_new (Camera *camera, gboolean multi, const gchar *path,
-		  GList *files, GtkWidget *opt_window)
+gtkam_delete_new (GtkWidget *status)
 {
 	GtkamDelete *delete;
-	GtkWidget *label, *button, *image, *hbox, *vbox, *check, *scrolled;
+	GtkWidget *button, *image, *hbox, *vbox, *scrolled;
 	GdkPixmap *pixmap;
 	GdkBitmap *bitmap;
 	GdkPixbuf *pixbuf;
-	guint i;
-	gchar *msg;
 
-	g_return_val_if_fail (camera != NULL, NULL);
-	g_return_val_if_fail (path != NULL, NULL);
+	g_return_val_if_fail (status != NULL, NULL);
 
 	delete = gtk_type_new (GTKAM_TYPE_DELETE);
 	gtk_signal_connect (GTK_OBJECT (delete), "delete_event",
 			    GTK_SIGNAL_FUNC (gtk_object_destroy), NULL);
-	delete->priv->camera = camera;
-	gp_camera_ref (camera);
-	delete->priv->path = g_strdup (path);
-	delete->priv->multi = multi;
+	delete->priv->status = status;
 
 	hbox = gtk_hbox_new (FALSE, 10);
 	gtk_widget_show (hbox);
@@ -345,61 +376,29 @@ gtkam_delete_new (Camera *camera, gboolean multi, const gchar *path,
 		gtk_box_pack_start (GTK_BOX (hbox), image, FALSE, FALSE, 0);
 	}
 
-	if (files) {
-		vbox = gtk_vbox_new (FALSE, 5);
-		gtk_widget_show (vbox);
-		gtk_box_pack_start (GTK_BOX (hbox), vbox, TRUE, TRUE, 0);
-		delete->priv->vbox = vbox;
-		
-		if (g_list_length (files) == 1)
-			msg = g_strdup_printf (_("Do you really want to "
-				"delete the following file?"));
-		else
-			msg = g_strdup_printf (_("Do you really want to "
-				"delete the following %i files?"),
-				g_list_length (files));
-		label = gtk_label_new (msg);
-		g_free (msg);
-		gtk_widget_show (label);
-		gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
-		gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
-		gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
+	/* VBox for message and scrolled window */
+	vbox = gtk_vbox_new (FALSE, 5);
+	gtk_widget_show (vbox);
+	gtk_box_pack_start (GTK_BOX (hbox), vbox, TRUE, TRUE, 0);
 
-		if (g_list_length (files) >= 5) {
-			scrolled = gtk_scrolled_window_new (NULL, NULL);
-			gtk_widget_show (scrolled);
-			gtk_box_pack_start (GTK_BOX (vbox), scrolled, 
-					    TRUE, TRUE, 0);
-			gtk_scrolled_window_set_policy (
+	/* Message */
+	delete->priv->msg = gtk_label_new ("");
+	gtk_widget_show (delete->priv->msg);
+	gtk_label_set_justify (GTK_LABEL (delete->priv->msg), GTK_JUSTIFY_LEFT);
+	gtk_label_set_line_wrap (GTK_LABEL (delete->priv->msg), TRUE);
+	gtk_box_pack_start (GTK_BOX (vbox), delete->priv->msg, FALSE, FALSE, 0);
+
+	/* Scrolled window */
+	scrolled = gtk_scrolled_window_new (NULL, NULL);
+	gtk_widget_show (scrolled);
+	gtk_box_pack_start (GTK_BOX (vbox), scrolled, TRUE, TRUE, 0);
+	gtk_scrolled_window_set_policy (
 				GTK_SCROLLED_WINDOW (scrolled),
 				GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
-			vbox = gtk_vbox_new (FALSE, 0);
-			gtk_widget_show (vbox);
-			gtk_scrolled_window_add_with_viewport (
-				GTK_SCROLLED_WINDOW (scrolled), vbox);
-		}
-
-		for (i = 0; i < g_list_length (files); i++) {
-			check = gtk_check_button_new_with_label (
-						g_list_nth_data (files, i));
-			gtk_widget_show (check);
-			gtk_toggle_button_set_active (
-					GTK_TOGGLE_BUTTON (check), TRUE);
-			gtk_box_pack_start (GTK_BOX (vbox), check,
-					    FALSE, FALSE, 0);
-			delete->priv->toggles = g_list_append (
-						delete->priv->toggles, check);
-		}
-	} else {
-		msg = g_strdup_printf (_("Do you really want to delete ALL "
-			"files in '%s'?"), path);
-		label = gtk_label_new (msg);
-		g_free (msg);
-		gtk_widget_show (label);
-		gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
-		gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
-		gtk_box_pack_start (GTK_BOX (hbox), label, TRUE, TRUE, 0);
-	}
+	delete->priv->vbox = gtk_vbox_new (FALSE, 0);
+	gtk_widget_show (delete->priv->vbox);
+	gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (scrolled),
+					       delete->priv->vbox);
 
 	button = gtk_button_new_with_label (_("Delete"));
 	gtk_widget_show (button);
@@ -416,9 +415,44 @@ gtkam_delete_new (Camera *camera, gboolean multi, const gchar *path,
 			   button);
 	gtk_widget_grab_focus (button);
 
-	if (opt_window)
-		gtk_window_set_transient_for (GTK_WINDOW (delete),
-					      GTK_WINDOW (opt_window));
-
 	return (GTK_WIDGET (delete));
+}
+
+void
+gtkam_delete_add (GtkamDelete *delete, Camera *camera, gboolean multi,
+		  const gchar *folder, const gchar *name)
+{
+	GtkamDeleteData *data;
+	gchar *label, *msg;
+
+	data = g_new0 (GtkamDeleteData, 1);
+	data->camera = camera;
+	gp_camera_ref (camera);
+	data->multi = multi;
+	data->folder = g_strdup (folder);
+	data->name = g_strdup (name);
+	delete->priv->data = g_slist_append (delete->priv->data, data);
+
+	if (g_slist_length (delete->priv->data) == 1)
+		msg = g_strdup_printf (_("Do you really want to "
+					 "delete the following file?"));
+	else
+		msg = g_strdup_printf (_("Do you really want to "
+					 "delete the following %i files?"),
+					g_slist_length (delete->priv->data));
+	gtk_label_set_text (GTK_LABEL (delete->priv->msg), msg);
+	g_free (msg);
+
+	if (name)
+		label = g_strdup_printf (_("'%s' in folder '%s'"), name,
+					 folder);
+	else
+		label = g_strdup_printf (_("All files in folder '%s'"),
+					 folder);
+	data->check = gtk_check_button_new_with_label (label);
+	g_free (label);
+	gtk_widget_show (data->check);
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (data->check), TRUE);
+	gtk_box_pack_start (GTK_BOX (delete->priv->vbox), data->check,
+			    FALSE, FALSE, 0);
 }

@@ -27,6 +27,9 @@ libgtkam_a_SOURCES =				\
 	gtkam-preview.c gtkam-preview.h		\
 	gtkam-status.c  gtkam-status.h		\
 	gtkam-tree.c    gtkam-tree.h		\
+	gtkam-tree-item.c	gtkam-tree-item.h	\
+	gtkam-tree-item-cam.c	gtkam-tree-item-cam.h	\
+	gtkam-tree-item-dir.c	gtkam-tree-item-dir.h	\
 	gtkam-util.c    gtkam-util.h		\
 	util.c util.h				\
 	support.c support.h

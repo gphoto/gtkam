@@ -44,7 +44,9 @@ struct _GtkamInfoClass
 	GtkDialogClass parent_class;
 
 	/* Signals */
-	void (* info_updated) (GtkamInfo *info, const gchar *path);
+	void (* info_updated) (GtkamInfo *info, Camera *camera,
+			       gboolean multi, const gchar *folder,
+			       const gchar *name);
 };
 
 GtkType    gtkam_info_get_type (void);

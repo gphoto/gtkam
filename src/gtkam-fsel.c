@@ -180,14 +180,9 @@ on_file_unselected (GtkamCList *clist, const gchar *path, GtkamFSel *fsel)
 }
 
 static void
-on_dir_created (GtkamMkdir *mkdir, const char *path, GtkamFSel *fsel)
-{
-	gtkam_tree_make_dir (fsel->priv->tree, path);
-}
-
-static void
 on_mkdir_clicked (GtkButton *button, GtkamFSel *fsel)
 {
+#if 0
 	GtkWidget *mkdir;
 	const gchar *path;
 
@@ -195,13 +190,15 @@ on_mkdir_clicked (GtkButton *button, GtkamFSel *fsel)
 	mkdir = gtkam_mkdir_new (fsel->priv->camera, fsel->priv->multi, path,
 				 NULL);
 	gtk_widget_show (mkdir);
-	gtk_signal_connect (GTK_OBJECT (mkdir), "dir_created",
-			    GTK_SIGNAL_FUNC (on_dir_created), fsel);
+#else
+	g_warning ("FIXME!");
+#endif
 }
 
 static void
 on_rmdir_clicked (GtkButton *button, GtkamFSel *fsel)
 {
+#if 0
 	const gchar *path;
         gchar *dirname;
         int result;
@@ -219,7 +216,6 @@ on_rmdir_clicked (GtkButton *button, GtkamFSel *fsel)
 		gp_camera_exit (fsel->priv->camera, NULL);
 	switch (result) {
 	case GP_OK:
-		gtkam_tree_remove_dir (fsel->priv->tree, path);
 		break;
 	case GP_ERROR_CANCEL:
 		break;
@@ -231,6 +227,9 @@ on_rmdir_clicked (GtkButton *button, GtkamFSel *fsel)
         }
 	gtk_object_destroy (GTK_OBJECT (s));
         g_free (dirname);
+#else 
+	g_warning ("FIXME!");
+#endif
 }
 
 GtkWidget *
@@ -322,7 +321,7 @@ gtkam_fsel_new (Camera *camera, gboolean multi, GtkWidget *opt_window)
 	gtk_widget_show (tree);
 	gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (scrolled),
 					       tree);
-	gtkam_tree_set_camera (GTKAM_TREE (tree), camera, multi);
+	gtkam_tree_add_camera (GTKAM_TREE (tree), camera, multi);
 	fsel->priv->tree = GTKAM_TREE (tree);
 	gtk_signal_connect (GTK_OBJECT (tree), "folder_selected",
 			    GTK_SIGNAL_FUNC (on_folder_selected), fsel);
@@ -373,5 +372,8 @@ gtkam_fsel_get_path (GtkamFSel *fsel)
 {
 	g_return_val_if_fail (GTKAM_IS_FSEL (fsel), NULL);
 
+	return ("FIXME!");
+#if 0
 	return (gtkam_tree_get_path (fsel->priv->tree));
+#endif
 }

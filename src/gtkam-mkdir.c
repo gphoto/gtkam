@@ -112,7 +112,7 @@ gtkam_mkdir_class_init (GtkamMkdirClass *klass)
 	object_class->finalize = gtkam_mkdir_finalize;
 
 	signals[DIR_CREATED] = gtk_signal_new ("dir_created",
-		GTK_RUN_LAST, object_class->type,
+		GTK_RUN_FIRST, object_class->type,
 		GTK_SIGNAL_OFFSET (GtkamMkdirClass, dir_created),
 		gtk_marshal_NONE__POINTER, GTK_TYPE_NONE, 1, GTK_TYPE_POINTER);
 	gtk_object_class_add_signals (object_class, signals, LAST_SIGNAL);

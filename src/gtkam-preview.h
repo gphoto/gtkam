@@ -44,11 +44,15 @@ struct _GtkamPreviewClass
 	GtkDialogClass parent_class;
 
 	/* Signals */
-	void (* captured) (GtkamPreview *preview, const gchar *path);
+	void (* captured) (GtkamPreview *preview, const gchar *folder,
+			   const gchar *name);
 };
 
 GtkType    gtkam_preview_get_type (void);
 GtkWidget *gtkam_preview_new      (Camera *camera, gboolean multi);
+
+Camera  *gtkam_preview_get_camera (GtkamPreview *preview);
+gboolean gtkam_preview_get_multi  (GtkamPreview *preview);
 
 void   gtkam_preview_set_zoom  (GtkamPreview *preview, gfloat zoom);
 gfloat gtkam_preview_get_zoom  (GtkamPreview *preview);

@@ -56,14 +56,20 @@
 #include "gtkam-close.h"
 #include "gtkam-status.h"
 
+typedef struct _GtkamSaveData GtkamSaveData;
+struct _GtkamSaveData {
+	Camera *camera;
+	gboolean multi;
+	gchar *folder;
+	gchar *name;
+};
+
+
 struct _GtkamSavePrivate
 {
 	GtkWidget *file_list;
 
-	Camera *camera;
-	gboolean multi;
-	gchar *path;
-	GSList *filenames;
+	GSList *data;
 
 	GtkToggleButton *toggle_preview, *toggle_normal, *toggle_raw,
 			*toggle_audio, *toggle_exif;
@@ -83,28 +89,24 @@ static void
 gtkam_save_destroy (GtkObject *object)
 {
 	GtkamSave *save = GTKAM_SAVE (object);
-	guint i;
+	gint i;
+	GtkamSaveData *data;
 
 	if (save->priv->status) {
 		gtk_object_unref (GTK_OBJECT (save->priv->status));
 		save->priv->status = NULL;
 	}
 
-	if (save->priv->camera) {
-		gp_camera_unref (save->priv->camera);
-		save->priv->camera = NULL;
-	}
-
-	if (save->priv->path) {
-		g_free (save->priv->path);
-		save->priv->path = NULL;
-	}
-
-	if (save->priv->filenames) {
-		for (i = 0; i < g_slist_length (save->priv->filenames); i++)
-			g_free (g_slist_nth_data (save->priv->filenames, i));
-		g_slist_free (save->priv->filenames);
-		save->priv->filenames = NULL;
+	if (save->priv->data) {
+		for (i = g_slist_length (save->priv->data) - 1; i >= 0; i--) {
+			data = g_slist_nth_data (save->priv->data, i);
+			gp_camera_unref (data->camera);
+			g_free (data->folder);
+			g_free (data->name);
+			g_free (data);
+		}
+		g_slist_free (save->priv->data);
+		save->priv->data = NULL;
 	}
 
 	GTK_OBJECT_CLASS (parent_class)->destroy (object);
@@ -239,7 +241,7 @@ save_file (GtkamSave *save, CameraFile *file, guint n)
 		/* Use filename provided by the CameraFile */
 		full_filename = create_full_filename (filename, type);
 
-		if (g_slist_length (save->priv->filenames) > 1) {
+		if (g_slist_length (save->priv->data) > 1) {
 			dirname = g_dirname (fsel_path);
 			full_path = concat_dir_and_file (dirname,
 							 full_filename);
@@ -251,7 +253,7 @@ save_file (GtkamSave *save, CameraFile *file, guint n)
 		g_free (full_filename);
 
 	} else {
-		if (g_slist_length (save->priv->filenames) == 1) {
+		if (g_slist_length (save->priv->data) == 1) {
 
 			/* Use filename provided by the GtkFileSelection */
 			fsel_filename = g_basename (fsel_path);
@@ -312,7 +314,8 @@ save_file (GtkamSave *save, CameraFile *file, guint n)
 }
 
 static void
-get_file (GtkamSave *save, const gchar *filename, CameraFileType type, guint n,
+get_file (GtkamSave *save, Camera *camera, gboolean multi,
+	  const gchar *folder, const gchar *name, CameraFileType type, guint n,
 	  GtkamStatus *s)
 {
 	int result;
@@ -320,11 +323,10 @@ get_file (GtkamSave *save, const gchar *filename, CameraFileType type, guint n,
 	CameraFile *file;
 
 	gp_file_new (&file);
-	result = gp_camera_file_get (save->priv->camera,
-				     save->priv->path, filename, type, file,
+	result = gp_camera_file_get (camera, folder, name, type, file,
 				     s->context->context);
-	if (save->priv->multi)
-		gp_camera_exit (save->priv->camera, NULL);
+	if (multi)
+		gp_camera_exit (camera, NULL);
 	switch (result) {
 	case GP_OK:
 		save_file (save, file, n);
@@ -336,7 +338,7 @@ get_file (GtkamSave *save, const gchar *filename, CameraFileType type, guint n,
 			dialog = gtkam_error_new (result, s->context,
 				GTK_WIDGET (save), _("Could not get '%s' "
 				"from folder '%s'."),
-				filename, save->priv->path);
+				name, folder);
 			gtk_widget_show (dialog);
 			save->priv->err_shown = TRUE;
 		}
@@ -348,13 +350,13 @@ static void
 on_ok_clicked (GtkButton *button, GtkamSave *save)
 {
 	guint i, count, j = 1;
-	const gchar *filename;
 	GtkWidget *s;
 	unsigned int id;
+	GtkamSaveData *data;
 
 	gtk_widget_hide (GTK_WIDGET (save));
 
-	count = g_slist_length (save->priv->filenames);
+	count = g_slist_length (save->priv->data);
 	s = gtkam_status_new (_("Downloading %i files..."), count);
 	gtk_widget_show (s);
 	gtk_box_pack_start (GTK_BOX (save->priv->status), s, FALSE, FALSE, 0);
@@ -366,7 +368,7 @@ on_ok_clicked (GtkButton *button, GtkamSave *save)
 		j = gtk_spin_button_get_value_as_int (save->priv->spin_entry);
 	
 	for (i = 0; i < count; i++) {
-		filename = g_slist_nth_data (save->priv->filenames, i);
+		data = g_slist_nth_data (save->priv->data, i);
 
 		/* Check for shutdown */
 		if (!GTKAM_IS_SAVE (save))
@@ -374,23 +376,30 @@ on_ok_clicked (GtkButton *button, GtkamSave *save)
 
 		if (save->priv->toggle_normal &&
 		    save->priv->toggle_normal->active)
-			get_file (save, filename, GP_FILE_TYPE_NORMAL,
-				  i + j, GTKAM_STATUS (s));
+			get_file (save, data->camera, data->multi,
+				  data->folder, data->name,
+				  GP_FILE_TYPE_NORMAL, i + j,
+				  GTKAM_STATUS (s));
 		if (save->priv->toggle_preview &&
 		    save->priv->toggle_preview->active)
-			get_file (save, filename, GP_FILE_TYPE_PREVIEW,
-				  i + j, GTKAM_STATUS (s));
+			get_file (save, data->camera, data->multi,
+				  data->folder, data->name,
+				  GP_FILE_TYPE_PREVIEW, i + j,
+				  GTKAM_STATUS (s));
 		if (save->priv->toggle_raw &&
 		    save->priv->toggle_raw->active)
-			get_file (save, filename, GP_FILE_TYPE_RAW,
+			get_file (save, data->camera, data->multi,
+				  data->folder, data->name, GP_FILE_TYPE_RAW,
 				  i + j, GTKAM_STATUS (s));
 		if (save->priv->toggle_audio &&
 		    save->priv->toggle_audio->active)
-			get_file (save, filename, GP_FILE_TYPE_AUDIO,
+			get_file (save, data->camera, data->multi,
+				  data->folder, data->name, GP_FILE_TYPE_AUDIO,
 				  i + j, GTKAM_STATUS (s));
 		if (save->priv->toggle_exif &&
 		    save->priv->toggle_exif->active)
-			get_file (save, filename, GP_FILE_TYPE_EXIF,
+			get_file (save, data->camera, data->multi,
+				  data->folder, data->name, GP_FILE_TYPE_EXIF,
 				  i + j, GTKAM_STATUS (s));
 
 		gp_context_progress_update (GTKAM_STATUS (s)->context->context,
@@ -403,33 +412,17 @@ on_ok_clicked (GtkButton *button, GtkamSave *save)
 }
 
 GtkWidget *
-gtkam_save_new (Camera *camera, gboolean multi, const gchar *path,
-		GSList *filenames, GtkWidget *vbox)
+gtkam_save_new (GtkWidget *vbox)
 {
 	GtkamSave *save;
-	GtkWidget *hbox, *frame, *check, *label, *entry, *spin_entry, *w;
-	GtkAdjustment *spin_entry_adj;
+	GtkWidget *hbox, *frame, *check, *label, *entry, *w;
 	GtkTooltips *tooltips;
 	GList *child;
-	guint i;
-	CameraAbilities a;
-	gchar *title;
+//	CameraAbilities a;
 
-	g_return_val_if_fail (camera != NULL, NULL);
-	g_return_val_if_fail (path != NULL, NULL);
-	g_return_val_if_fail (filenames != NULL, NULL);
 	g_return_val_if_fail (GTK_IS_VBOX (vbox), NULL);
 
 	save = gtk_type_new (GTKAM_TYPE_SAVE);
-
-	save->priv->camera = camera;
-	gp_camera_ref (camera);
-	save->priv->multi = multi;
-	save->priv->path = g_strdup (path);
-	for (i = 0; i < g_slist_length (filenames); i++)
-		save->priv->filenames = g_slist_append (
-			save->priv->filenames,
-			g_strdup (g_slist_nth_data (filenames, i)));
 
 	child = gtk_container_children (
 			GTK_CONTAINER (GTK_FILE_SELECTION (save)->main_vbox));
@@ -437,12 +430,6 @@ gtkam_save_new (Camera *camera, gboolean multi, const gchar *path,
 			GTK_CONTAINER (child->next->next->data));
 	save->priv->file_list = GTK_WIDGET (child->next->data);
 
-	if (g_slist_length (filenames) == 1)
-		title = g_strdup_printf (_("Save '%s'..."),
-					 (gchar*) filenames->data);
-	else
-		title = g_strdup (_("Save photos..."));
-	gtk_window_set_title (GTK_WINDOW (save), title);
 	gtk_signal_connect (GTK_OBJECT (GTK_FILE_SELECTION (save)->ok_button),
 			    "clicked", GTK_SIGNAL_FUNC (on_ok_clicked), save);
 	gtk_signal_connect (
@@ -468,42 +455,42 @@ gtkam_save_new (Camera *camera, gboolean multi, const gchar *path,
 			      "this is checked"), NULL);
 	save->priv->toggle_normal = GTK_TOGGLE_BUTTON (check);
 
-	gp_camera_get_abilities (camera, &a);
-	if (a.file_operations & GP_FILE_OPERATION_RAW) {
+//	gp_camera_get_abilities (camera, &a);
+//	if (a.file_operations & GP_FILE_OPERATION_RAW) {
 		check = gtk_check_button_new_with_label (_("Save raw data"));
 		gtk_widget_show (check);
 		gtk_box_pack_start (GTK_BOX (hbox), check, TRUE, TRUE, 0);
 		gtk_tooltips_set_tip (tooltips, check, _("Raw data will be "
 				      "saved if this is checked"), NULL);
 		save->priv->toggle_raw = GTK_TOGGLE_BUTTON (check);
-	}
+//	}
 
-	if (a.file_operations & GP_FILE_OPERATION_AUDIO) {
+//	if (a.file_operations & GP_FILE_OPERATION_AUDIO) {
 		check = gtk_check_button_new_with_label (_("Save audio data"));
 		gtk_widget_show (check);
 		gtk_box_pack_start (GTK_BOX (hbox), check, TRUE, TRUE, 0);
 		gtk_tooltips_set_tip (tooltips, check, _("Audio data will be "
 				      "saved if this is checked"), NULL);
 		save->priv->toggle_audio = GTK_TOGGLE_BUTTON (check);
-	}
+//	}
 
-	if (a.file_operations & GP_FILE_OPERATION_PREVIEW) {
+//	if (a.file_operations & GP_FILE_OPERATION_PREVIEW) {
 		check = gtk_check_button_new_with_label (_("Save thumbnails"));
 		gtk_widget_show (check);
 		gtk_box_pack_start (GTK_BOX (hbox), check, TRUE, TRUE, 0);
 		gtk_tooltips_set_tip (tooltips, check, _("Thumbnails will be "
 				      "saved if this is checked"), NULL);
 		save->priv->toggle_preview = GTK_TOGGLE_BUTTON (check);
-	}
+//	}
 
-	if (a.file_operations & GP_FILE_OPERATION_EXIF) {
+//	if (a.file_operations & GP_FILE_OPERATION_EXIF) {
 		check = gtk_check_button_new_with_label (_("Save EXIF data"));
 		gtk_widget_show (check);
 		gtk_box_pack_start (GTK_BOX (hbox), check, TRUE, TRUE, 0);
 		gtk_tooltips_set_tip (tooltips, check, _("EXIF data will be "
 			"saved if this is checked"), NULL);
 		save->priv->toggle_exif = GTK_TOGGLE_BUTTON (check);
-	}
+//	}
 
 	hbox = gtk_hbox_new (FALSE, 0);
 	gtk_widget_show (hbox);
@@ -540,50 +527,77 @@ gtkam_save_new (Camera *camera, gboolean multi, const gchar *path,
 	save->priv->status = vbox;
 	gtk_object_ref (GTK_OBJECT (vbox));
 
-	/* If we don't save multiple files, we are done */
-	if (g_slist_length (filenames) <= 1)
-		return (GTK_WIDGET (save));
-	
-	gtk_widget_set_sensitive (GTK_FILE_SELECTION (save)->selection_entry,
-				  FALSE);
-	gtk_widget_hide (save->priv->file_list);
-
-	hbox = gtk_hbox_new (FALSE, 5);
-	gtk_widget_show (hbox);
-	gtk_box_pack_start (GTK_BOX (GTK_FILE_SELECTION (save)->main_vbox),
-			    hbox, TRUE, TRUE, 0);
-	gtk_box_reorder_child (GTK_BOX (GTK_FILE_SELECTION (save)->main_vbox),
-			       hbox, 256);
-	
-	label = gtk_label_new (_("Filename prefix: "));
-	gtk_widget_show (label);
-	gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
-
-	entry = gtk_entry_new ();
-	gtk_widget_show (entry);
-	gtk_box_pack_start (GTK_BOX (hbox), entry, TRUE, TRUE, 0);
-	save->priv->prefix_entry = GTK_ENTRY (entry);
-	gtk_widget_set_sensitive (entry, FALSE);
-
-	hbox = gtk_hbox_new (FALSE, 5);
-	gtk_widget_show (hbox);
-	gtk_box_pack_start (GTK_BOX (GTK_FILE_SELECTION (save)->main_vbox),
-			    hbox, TRUE, TRUE, 0);
-	gtk_box_reorder_child (GTK_BOX (GTK_FILE_SELECTION (save)->main_vbox),
-			       hbox, 256);
-	
-	label = gtk_label_new (_("Start numbering with: "));
-	gtk_widget_show (label);
-	gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
-
-	spin_entry_adj = GTK_ADJUSTMENT (gtk_adjustment_new(1.0, 1.0, 10000.0, 1.0, 10.0, 10.0));
-	spin_entry = gtk_spin_button_new (spin_entry_adj, 1.0, 0);
-	gtk_widget_show (spin_entry);
-	gtk_box_pack_start (GTK_BOX (hbox), spin_entry, TRUE, TRUE, 0);
-	save->priv->spin_entry = GTK_SPIN_BUTTON (spin_entry);
-	gtk_widget_set_sensitive (spin_entry, FALSE);
-
-	gtk_widget_set_sensitive (save->priv->file_list, FALSE);
-
 	return (GTK_WIDGET (save));
+}
+
+void
+gtkam_save_add (GtkamSave *save, Camera *camera, gboolean multi,
+		const gchar *folder, const gchar *name)
+{
+	GtkamSaveData *data;
+	GtkWidget *label, *hbox, *entry, *spin_entry;
+	GtkAdjustment *spin_entry_adj;
+
+	g_return_if_fail (GTKAM_IS_SAVE (save));
+	g_return_if_fail (camera != NULL);
+	g_return_if_fail (folder != NULL);
+	g_return_if_fail (name != NULL);
+
+	data = g_new0 (GtkamSaveData, 1);
+	data->camera = camera;
+	gp_camera_ref (camera);
+	data->multi = multi;
+	data->folder = g_strdup (folder);
+	data->name = g_strdup (name);
+	save->priv->data = g_slist_append (save->priv->data, data);
+
+	/* If we only have 1 file, things are easy. */
+	if (g_slist_length (save->priv->data) == 1) {
+		gchar *title = g_strdup_printf (_("Save '%s'..."), name);
+		gtk_window_set_title (GTK_WINDOW (save), title);
+		g_free (title);
+		return;
+	}
+
+	gtk_window_set_title (GTK_WINDOW (save), _("Save photos..."));
+        gtk_widget_set_sensitive (GTK_FILE_SELECTION (save)->selection_entry,
+                                  FALSE);
+        gtk_widget_hide (save->priv->file_list);
+
+        hbox = gtk_hbox_new (FALSE, 5);
+        gtk_widget_show (hbox);
+        gtk_box_pack_start (GTK_BOX (GTK_FILE_SELECTION (save)->main_vbox),
+                            hbox, TRUE, TRUE, 0);
+        gtk_box_reorder_child (GTK_BOX (GTK_FILE_SELECTION (save)->main_vbox),
+                               hbox, 256);
+        
+        label = gtk_label_new (_("Filename prefix: "));
+        gtk_widget_show (label);
+        gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
+
+        entry = gtk_entry_new ();
+        gtk_widget_show (entry);
+        gtk_box_pack_start (GTK_BOX (hbox), entry, TRUE, TRUE, 0);
+        save->priv->prefix_entry = GTK_ENTRY (entry);
+        gtk_widget_set_sensitive (entry, FALSE);
+
+        hbox = gtk_hbox_new (FALSE, 5);
+        gtk_widget_show (hbox);
+        gtk_box_pack_start (GTK_BOX (GTK_FILE_SELECTION (save)->main_vbox),
+                            hbox, TRUE, TRUE, 0);
+        gtk_box_reorder_child (GTK_BOX (GTK_FILE_SELECTION (save)->main_vbox),
+                               hbox, 256);
+        
+        label = gtk_label_new (_("Start numbering with: "));
+        gtk_widget_show (label);
+        gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
+
+        spin_entry_adj = GTK_ADJUSTMENT (gtk_adjustment_new(1.0, 1.0, 10000.0, 1.0, 10.0, 10.0));
+        spin_entry = gtk_spin_button_new (spin_entry_adj, 1.0, 0);
+        gtk_widget_show (spin_entry);
+        gtk_box_pack_start (GTK_BOX (hbox), spin_entry, TRUE, TRUE, 0);
+        save->priv->spin_entry = GTK_SPIN_BUTTON (spin_entry);
+        gtk_widget_set_sensitive (spin_entry, FALSE);
+
+        gtk_widget_set_sensitive (save->priv->file_list, FALSE);
 }

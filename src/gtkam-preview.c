@@ -68,6 +68,7 @@ struct _GtkamPreviewPrivate
 	GtkPixmap *image;
 
 	Camera *camera;
+	gboolean multi;
 
 	guint rotate;
 	gfloat zoom;
@@ -78,8 +79,6 @@ struct _GtkamPreviewPrivate
 	guint32 timeout_id;
 
 	GtkTooltips *tooltips;
-
-	gboolean multi;
 };
 
 #define PARENT_TYPE GTK_TYPE_DIALOG
@@ -137,8 +136,8 @@ gtkam_preview_class_init (GtkamPreviewClass *klass)
 	signals[CAPTURED] = gtk_signal_new ("captured", GTK_RUN_FIRST,
 		object_class->type,
 		GTK_SIGNAL_OFFSET (GtkamPreviewClass, captured),
-		gtk_marshal_NONE__POINTER, GTK_TYPE_NONE, 1,
-		GTK_TYPE_POINTER);
+		gtk_marshal_NONE__POINTER_POINTER, GTK_TYPE_NONE, 2,
+		GTK_TYPE_POINTER, GTK_TYPE_POINTER);
 	gtk_object_class_add_signals (object_class, signals, LAST_SIGNAL);
 
 	parent_class = gtk_type_class (PARENT_TYPE);
@@ -182,7 +181,6 @@ on_preview_capture_clicked (GtkButton *button, GtkamPreview *preview)
 	int result;
 	CameraFilePath path;
 	GtkWidget *dialog, *s;
-	gchar *full_path;
 
 	s = gtkam_status_new (_("Capturing image..."));
 	gtk_widget_show (s);
@@ -194,14 +192,8 @@ on_preview_capture_clicked (GtkButton *button, GtkamPreview *preview)
 		gp_camera_exit (preview->priv->camera, NULL);
 	switch (result) {
 	case GP_OK:
-		if (!strcmp (path.folder, "/"))
-			full_path = g_strdup_printf ("/%s", path.name);
-		else
-			full_path = g_strdup_printf ("%s/%s", path.folder,
-					path.name);
 		gtk_signal_emit (GTK_OBJECT (preview), signals[CAPTURED],
-				 full_path);
-		g_free (full_path);
+				 path.folder, path.name);
 		break;
 	case GP_ERROR_CANCEL:
 		break;
@@ -608,4 +600,20 @@ gtkam_preview_get_angle (GtkamPreview *preview)
 	g_return_val_if_fail (GTKAM_IS_PREVIEW (preview), 0);
 
 	return (preview->priv->rotate);
+}
+
+Camera *
+gtkam_preview_get_camera (GtkamPreview *preview)
+{
+	g_return_val_if_fail (GTKAM_IS_PREVIEW (preview), NULL);
+
+	return (preview->priv->camera);
+}
+
+gboolean
+gtkam_preview_get_multi (GtkamPreview *preview)
+{
+	g_return_val_if_fail (GTKAM_IS_PREVIEW (preview), FALSE);
+
+	return (preview->priv->multi);
 }

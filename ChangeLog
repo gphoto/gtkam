@@ -1,3 +1,8 @@
+2002-04-17  Lutz Müller <lutz@users.sourceforge.net>
+
+	* src/*: Fix #536011. I probably broke everything else... I am going
+	  to clean up the mess later.
+
 2002-04-09  Lutz Müller <lutz@users.sourceforge.net>
 
 	Bug noticed by Patrick Mansfield <patman@aracnet.com>:

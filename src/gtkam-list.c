@@ -70,10 +70,7 @@
 
 struct _GtkamListPrivate
 {
-	Camera *camera;
-
 	gboolean thumbnails;
-	gboolean multi;
 
 	GtkWidget *status;
 };
@@ -96,16 +93,6 @@ gtkam_list_destroy (GtkObject *object)
 	if (list->priv->status) {
 		gtk_object_unref (GTK_OBJECT (list->priv->status));
 		list->priv->status = NULL;
-	}
-
-	if (list->priv->camera) {
-		gp_camera_unref (list->priv->camera);
-		list->priv->camera = NULL;
-	}
-
-	if (list->path) {
-		g_free (list->path);
-		list->path = NULL;
 	}
 
 	GTK_OBJECT_CLASS (parent_class)->destroy (object);
@@ -166,32 +153,37 @@ gtkam_list_get_type (void)
 }
 
 void
-gtkam_list_set_camera (GtkamList *list, Camera *camera, gboolean multi)
+gtkam_list_update_folder (GtkamList *list, Camera *camera, gboolean multi,
+			  const gchar *folder)
 {
-	g_return_if_fail (GTKAM_IS_LIST (list));
+	GtkIconListItem *item;
+	gint i;
+	Camera *c;
+	const gchar *f;
 
-	if (list->priv->camera) {
-		gp_camera_unref (list->priv->camera);
-		list->priv->camera = NULL;
+	/* Check if we are displaying this folder */
+	for (i = g_list_length (GTK_ICON_LIST (list)->icons) - 1; i >= 0; i--) {
+		item = g_list_nth_data (GTK_ICON_LIST (list)->icons, i);
+		c = gtk_object_get_data (GTK_OBJECT (item->entry), "camera");
+		if (c != camera)
+			continue;
+		f = gtk_object_get_data (GTK_OBJECT (item->entry), "folder");
+		if (!f || strcmp (f, folder))
+			continue;
+		break;
 	}
-	if (camera) {
-		list->priv->camera = camera;
-		gp_camera_ref (camera);
-		list->priv->multi = multi;
+	if (i >= 0) {
+		gtkam_list_remove_folder (list, camera, multi, folder);
+		gtkam_list_add_folder (list, camera, multi, folder);
+		gtk_icon_list_update (GTK_ICON_LIST (list));
 	}
-
-	if (list->path) {
-		g_free (list->path);
-		list->path = NULL;
-	}
-
-	gtkam_list_refresh (list);
 }
 
 static void
-on_info_updated (GtkamInfo *info, const gchar *path, GtkamList *list)
+on_info_updated (GtkamInfo *info, Camera *camera, gboolean multi,
+		 const gchar *folder, const gchar *name, GtkamList *list)
 {
-	gtkam_list_refresh (list);
+	gtkam_list_update_folder (list, camera, multi, folder);
 }
 
 typedef struct {
@@ -201,19 +193,28 @@ typedef struct {
 } PopupData;
 
 static void
-on_info_activate (GtkMenuItem *item, PopupData *data)
+on_info_activate (GtkMenuItem *i, PopupData *data)
 {
 	GtkamList *list = data->list;
+	GtkIconListItem *item = data->item;
 	GtkWidget *w, *info;
 	gchar *path;
+	const gchar *folder;
+	Camera *camera;
+	gboolean multi;
+
+	folder = gtk_object_get_data (GTK_OBJECT (item->entry), "folder");
+	camera = gtk_object_get_data (GTK_OBJECT (item->entry), "camera");
+	multi = GPOINTER_TO_INT (gtk_object_get_data (GTK_OBJECT (item->entry),
+						      "multi"));
+	g_return_if_fail (folder && camera);
 
 	w = gtk_widget_get_ancestor (GTK_WIDGET (list), GTK_TYPE_WINDOW);
-	if (strlen (list->path) == 1)
-		path = g_strdup_printf ("/%s", data->item->label);
+	if (strlen (folder) == 1)
+		path = g_strdup_printf ("/%s", item->label);
 	else
-		path = g_strdup_printf ("%s/%s", list->path,
-					data->item->label);
-	info = gtkam_info_new (list->priv->camera, path, w);
+		path = g_strdup_printf ("%s/%s", folder, item->label);
+	info = gtkam_info_new (camera, path, w);
 	g_free (path);
 	if (info) {
 		gtk_widget_show (info);
@@ -224,14 +225,10 @@ on_info_activate (GtkMenuItem *item, PopupData *data)
 }
 
 static void
-on_file_deleted (GtkamDelete *delete, const gchar *path, GtkamList *list)
+on_file_deleted (GtkamDelete *delete, Camera *camera, gboolean multi,
+		 const gchar *folder, const gchar *name, GtkamList *list)
 {
-	gchar *dir;
-
-	dir = g_dirname (path);
-	if (!strcmp (dir, list->path))
-		gtkam_list_refresh (list);
-	g_free (dir);
+	gtkam_list_update_folder (list, camera, multi, folder);
 }
 
 static void
@@ -240,16 +237,20 @@ on_delete_activate (GtkMenuItem *menu_item, PopupData *data)
 	GtkamList *list = data->list;
 	GtkIconListItem *item = data->item;
 	GtkWidget *delete, *w;
-	GList *files;
 
-	files = g_list_append (NULL, item->label);
-	w = gtk_widget_get_ancestor (GTK_WIDGET (list), GTK_TYPE_WINDOW);
-	delete = gtkam_delete_new (list->priv->camera, list->priv->multi, 
-				   list->path, files, w);
-	g_list_free (files);
-	gtk_widget_show (delete);
+	delete = gtkam_delete_new (list->priv->status);
+	gtkam_delete_add (GTKAM_DELETE (delete), 
+		gtk_object_get_data (GTK_OBJECT (item->entry), "camera"),
+		GPOINTER_TO_INT (gtk_object_get_data (GTK_OBJECT (item->entry),
+						"multi")),
+		gtk_object_get_data (GTK_OBJECT (item->entry), "folder"),
+		item->label);
 	gtk_signal_connect_while_alive (GTK_OBJECT (delete), "file_deleted",
 		GTK_SIGNAL_FUNC (on_file_deleted), list, GTK_OBJECT (list));
+
+	w = gtk_widget_get_ancestor (GTK_WIDGET (list), GTK_TYPE_WINDOW);
+	gtk_window_set_transient_for (GTK_WINDOW (delete), GTK_WINDOW (w));
+	gtk_widget_show (delete);
 }
 
 static void
@@ -257,10 +258,20 @@ on_exif_activate (GtkMenuItem *menu_item, PopupData *data)
 {
 	GtkamList *list = data->list;
 	GtkWidget *dialog, *w;
+	GtkIconListItem *item = data->item;
+	Camera *camera;
+	const gchar *folder;
+	gboolean multi;
+
+	list = NULL;
+
+	folder = gtk_object_get_data (GTK_OBJECT (item->entry), "folder");
+	camera = gtk_object_get_data (GTK_OBJECT (item->entry), "camera");
+	multi = GPOINTER_TO_INT (gtk_object_get_data (GTK_OBJECT (item->entry),
+						      "multi"));
 
 	w = gtk_widget_get_ancestor (GTK_WIDGET (data->list), GTK_TYPE_WINDOW);
-	dialog = gtkam_exif_new (list->priv->camera, list->priv->multi, 
-				 list->path, data->item->label, w);
+	dialog = gtkam_exif_new (camera, multi, folder, item->label, w);
 	if (dialog)
 		gtk_widget_show (dialog);
 }
@@ -271,12 +282,14 @@ on_save_activate (GtkMenuItem *menu_item, PopupData *data)
 	GtkamList *list = data->list;
 	GtkIconListItem *item = data->item;
 	GtkWidget *save;
-	GSList *files;
 
-	files = g_slist_append (NULL, item->label);
-	save = gtkam_save_new (list->priv->camera, list->priv->multi,
-			       list->path, files, list->priv->status);
-	g_slist_free (files);
+	save = gtkam_save_new (list->priv->status);
+	gtkam_save_add (GTKAM_SAVE (save),
+		gtk_object_get_data (GTK_OBJECT (item->entry), "camera"),
+		GPOINTER_TO_INT (gtk_object_get_data (GTK_OBJECT (item->entry),
+						      "multi")),
+		gtk_object_get_data (GTK_OBJECT (item->entry), "folder"),
+		item->label);
 	gtk_widget_show (save);
 }
 
@@ -308,13 +321,21 @@ on_select_icon (GtkIconList *ilist, GtkIconListItem *item,
 	GdkPixbuf *pixbuf;
 	GdkPixmap *pixmap;
 	GdkBitmap *bitmap;
+	Camera *camera;
+	const gchar *folder;
+	gboolean multi;
+
+	folder = gtk_object_get_data (GTK_OBJECT (item->entry), "folder");
+	camera = gtk_object_get_data (GTK_OBJECT (item->entry), "camera");
+	multi = GPOINTER_TO_INT (gtk_object_get_data (GTK_OBJECT (item->entry),
+						      "multi")); 
 
 	if (!event)
 		return (TRUE);
 
 	w = gtk_widget_get_ancestor (GTK_WIDGET (list), GTK_TYPE_WINDOW);
 
-	gp_camera_get_abilities (list->priv->camera, &a);
+	gp_camera_get_abilities (camera, &a);
 	if ((event->type == GDK_2BUTTON_PRESS) &&
 	    (a.file_operations & GP_FILE_OPERATION_PREVIEW)) {
 		CameraFile *file;
@@ -322,15 +343,15 @@ on_select_icon (GtkIconList *ilist, GtkIconListItem *item,
 		/* Double-click: Get thumbnail */
 		gp_file_new (&file);
 		s = gtkam_status_new (_("Getting thumbnail of file '%s' in "
-			"folder '%s'..."), item->label, list->path);
+			"folder '%s'..."), item->label, folder);
 		gtk_widget_show (s);
 		gtk_box_pack_start (GTK_BOX (list->priv->status), s,
 				    FALSE, FALSE, 0);
-		result = gp_camera_file_get (list->priv->camera,
-			list->path, item->label, GP_FILE_TYPE_PREVIEW, file,
+		result = gp_camera_file_get (camera, folder,
+			item->label, GP_FILE_TYPE_PREVIEW, file,
 			GTKAM_STATUS (s)->context->context);
-		if (list->priv->multi)
-			gp_camera_exit (list->priv->camera, NULL);
+		if (multi)
+			gp_camera_exit (camera, NULL);
 		switch (result) {
 		case GP_OK:
 			pixbuf = gdk_pixbuf_new_from_camera_file (file,
@@ -352,7 +373,7 @@ on_select_icon (GtkIconList *ilist, GtkIconListItem *item,
 				GTKAM_STATUS (s)->context, w,
 				_("Could not get preview of "
 				"file '%s' in folder '%s'"),
-				item->label, list->path);
+				item->label, folder);
 			gtk_widget_show (dialog);
 			break;
 		}
@@ -393,8 +414,8 @@ on_select_icon (GtkIconList *ilist, GtkIconListItem *item,
 			gtk_signal_connect (GTK_OBJECT (i), "activate",
 				GTK_SIGNAL_FUNC (on_exif_activate), data);
 			gp_file_new (&file);
-			if (gp_camera_file_get (list->priv->camera,
-				list->path, item->label, GP_FILE_TYPE_EXIF,
+			if (gp_camera_file_get (camera, folder,
+				item->label, GP_FILE_TYPE_EXIF,
 				file, NULL) < 0)
 				gtk_widget_set_sensitive (i, FALSE);
 			gp_file_unref (file);
@@ -415,8 +436,8 @@ on_select_icon (GtkIconList *ilist, GtkIconListItem *item,
 			i = gtk_menu_item_new_with_label (_("Delete"));
 			gtk_widget_show (i);
 			if (!(a.file_operations & GP_FILE_OPERATION_DELETE) ||
-			    (!gp_camera_file_get_info (list->priv->camera,
-					list->path, item->label, &info, NULL) &&
+			    (!gp_camera_file_get_info (camera, folder,
+					item->label, &info, NULL) &&
 			     (info.file.fields & GP_FILE_INFO_PERMISSIONS) && 
 			     (!(info.file.permissions & GP_FILE_PERM_DELETE))))
 				gtk_widget_set_sensitive (i, FALSE);
@@ -459,7 +480,8 @@ gtkam_list_new (GtkWidget *vbox)
 }
 
 void
-gtkam_list_set_path (GtkamList *list, const gchar *path)
+gtkam_list_add_folder (GtkamList *list, Camera *camera, gboolean multi,
+		       const gchar *folder)
 {
 	GtkWidget *dialog, *win, *s;
 	GtkIconListItem *item;
@@ -477,54 +499,34 @@ gtkam_list_set_path (GtkamList *list, const gchar *path)
 
 	g_return_if_fail (GTKAM_IS_LIST (list));
 
-	/* Remove all current items */
-	gtk_icon_list_freeze (GTK_ICON_LIST (list));
-	gtk_icon_list_clear (GTK_ICON_LIST (list));
-	gtk_icon_list_thaw (GTK_ICON_LIST (list));
-	gtk_signal_emit (GTK_OBJECT (list), signals[CHANGED]);
-
-	/* If we don't have a path, that's it */
-	if (list->path) {
-		g_free (list->path);
-		list->path = NULL;
-	}
-	if (!path)
-		return;
-	else
-		list->path = g_strdup (path);
-
 	win = gtk_widget_get_ancestor (GTK_WIDGET (list), GTK_TYPE_WINDOW);
 
-	/* If we don't have a camera, we can't do anything */
-	if (!list->priv->camera)
-		return;
-
-	s = gtkam_status_new (_("Listing files in folder '%s'..."), path);
+	s = gtkam_status_new (_("Listing files in folder '%s'..."), folder);
 	gtk_widget_show (s);
 	gtk_box_pack_start (GTK_BOX (list->priv->status), s, FALSE, FALSE, 0);
-	result = gp_camera_folder_list_files (list->priv->camera, path, &flist,
+	result = gp_camera_folder_list_files (camera, folder, &flist,
 					GTKAM_STATUS (s)->context->context);
 	switch (result) {
 	case GP_OK:
 		break;
 	case GP_ERROR_CANCEL:
-		if (list->priv->multi)
-			gp_camera_exit (list->priv->camera, NULL);
+		if (multi)
+			gp_camera_exit (camera, NULL);
 		gtk_object_destroy (GTK_OBJECT (s));
 		return;
 	default:
-		if (list->priv->multi)
-			gp_camera_exit (list->priv->camera, NULL);
+		if (multi)
+			gp_camera_exit (camera, NULL);
 		dialog = gtkam_error_new (result, GTKAM_STATUS (s)->context,
 			win, _("Could not get file list for folder "
-			"'%s'"), path);
+			"'%s'"), folder);
 		gtk_widget_show (dialog);
 		gtk_object_destroy (GTK_OBJECT (s));
 		return;
 	}
 	gtk_object_destroy (GTK_OBJECT (s));
 
-	gp_camera_get_abilities (list->priv->camera, &a);
+	gp_camera_get_abilities (camera, &a);
 	for (i = 0; i < gp_list_count (&flist); i++) {
 		gp_list_get_name (&flist, i, &name);
 
@@ -540,15 +542,26 @@ gtkam_list_set_path (GtkamList *list, const gchar *path)
 						pixmap, bitmap, name, NULL);
 		gtk_icon_list_thaw (GTK_ICON_LIST (list));
 
+		/* Remember some data */
+		gtk_object_set_data_full (GTK_OBJECT (item->entry), "camera",
+					  camera,
+					  (GtkDestroyNotify) gp_camera_unref);
+		gp_camera_ref (camera);
+		gtk_object_set_data_full (GTK_OBJECT (item->entry), "folder",
+					  g_strdup (folder),
+					  (GtkDestroyNotify) g_free);
+		gtk_object_set_data (GTK_OBJECT (item->entry), "multi",
+				     GINT_TO_POINTER (multi));
+
 		/*
 		 * Second step: Get information about the image.
 		 */
-		result = gp_camera_file_get_info (list->priv->camera, path,
+		result = gp_camera_file_get_info (camera, folder,
 						  name, &info, NULL);
 		if (result != GP_OK) {
 			gp_log (GP_LOG_DEBUG, PACKAGE, "Could not get "
 				"information on '%s' in '%s': %s",
-				path, name, gp_result_as_string (result));
+				folder, name, gp_result_as_string (result));
 			continue;
 		}
 
@@ -561,11 +574,11 @@ gtkam_list_set_path (GtkamList *list, const gchar *path)
 		    info.preview.fields) {
 			gp_file_new (&file);
 			s = gtkam_status_new (_("Getting preview of file '%s' "
-				"in folder '%s'..."), name, path);
+				"in folder '%s'..."), name, folder);
 			gtk_widget_show (s);
 			gtk_box_pack_start (GTK_BOX (list->priv->status), s,
 				FALSE, FALSE, 0);
-			result = gp_camera_file_get (list->priv->camera, path,
+			result = gp_camera_file_get (camera, folder,
 				name, GP_FILE_TYPE_PREVIEW, file,
 				GTKAM_STATUS (s)->context->context);
 			switch (result) {
@@ -589,7 +602,7 @@ gtkam_list_set_path (GtkamList *list, const gchar *path)
 				dialog = gtkam_error_new (result,
 					GTKAM_STATUS (s)->context, win,
 					_("Could not get preview of file '%s' "
-					"in folder '%s'."), name, path);
+					"in folder '%s'."), name, folder);
 				gtk_widget_show (dialog);
 			}
 			gtk_object_destroy (GTK_OBJECT (s));
@@ -646,8 +659,8 @@ gtkam_list_set_path (GtkamList *list, const gchar *path)
 	if (!GTKAM_IS_LIST (list))
 		return;
 	
-	if (list->priv->multi)
-		gp_camera_exit (list->priv->camera, NULL);
+	if (multi)
+		gp_camera_exit (camera, NULL);
 	gtk_signal_emit (GTK_OBJECT (list), signals[CHANGED]);
 }
 
@@ -660,14 +673,38 @@ gtkam_list_set_thumbnails (GtkamList *list, gboolean thumbnails)
 		return;
 
 	list->priv->thumbnails = thumbnails;
-	gtkam_list_refresh (list);
+	g_warning ("FIXME!");
+}
+
+void
+gtkam_list_remove_folder (GtkamList *list, Camera *camera,
+			  gboolean multi, const gchar *folder)
+{
+	GtkIconListItem *item;
+	gint i;
+	Camera *c;
+	const gchar *f;
+
+	for (i = g_list_length (GTK_ICON_LIST (list)->icons) - 1; i >= 0; i--) {
+		item = g_list_nth_data (GTK_ICON_LIST (list)->icons, i);
+		c = gtk_object_get_data (GTK_OBJECT (item->entry), "camera");
+		if (c != camera)
+			continue;
+		f = gtk_object_get_data (GTK_OBJECT (item->entry), "folder");
+		if (!f || strcmp (f, folder))
+			continue;
+		
+		/* Remove this icon */
+		gtk_icon_list_remove (GTK_ICON_LIST (list), item);
+	}
+
+	gtk_icon_list_update (GTK_ICON_LIST (list));
 }
 
 void
 gtkam_list_save_selected (GtkamList *list)
 {
 	GtkIconListItem *item;
-	GSList *filenames = NULL;
 	GtkWidget *save;
 	guint i;
 
@@ -676,30 +713,18 @@ gtkam_list_save_selected (GtkamList *list)
 	if (!g_list_length (GTK_ICON_LIST (list)->selection))
 		return;
 
+	save = gtkam_save_new (list->priv->status);
 	for (i = 0; i < g_list_length (GTK_ICON_LIST (list)->selection); i++) {
 		item = g_list_nth_data (GTK_ICON_LIST (list)->selection, i);
-		filenames = g_slist_append (filenames,
-				gtk_entry_get_text (GTK_ENTRY (item->entry)));
+		gtkam_save_add (GTKAM_SAVE (save),
+			gtk_object_get_data (GTK_OBJECT (item->entry),
+				"camera"),
+			GPOINTER_TO_INT (
+				gtk_object_get_data (GTK_OBJECT (item->entry),
+					"multi")),
+			gtk_object_get_data (GTK_OBJECT (item->entry),
+				"folder"),
+			gtk_entry_get_text (GTK_ENTRY (item->entry)));
 	}
-
-	save = gtkam_save_new (list->priv->camera, list->priv->multi, 
-			       list->path, filenames, list->priv->status);
-	g_slist_free (filenames);
 	gtk_widget_show (save);
-}
-
-void
-gtkam_list_refresh (GtkamList *list)
-{
-	gchar *path = NULL;
-
-	g_return_if_fail (GTKAM_IS_LIST (list));
-
-	gtk_icon_list_clear (GTK_ICON_LIST (list));
-
-	if (list->path && list->priv->camera) {
-		path = g_strdup (list->path);
-		gtkam_list_set_path (list, path);
-		g_free (path);
-	}
 }

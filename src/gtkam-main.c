@@ -72,10 +72,10 @@
 #include "gtkam-delete.h"
 #include "gtkam-error.h"
 #include "gtkam-list.h"
-#include "gtkam-mkdir.h"
 #include "gtkam-preview.h"
 #include "gtkam-status.h"
 #include "gtkam-tree.h"
+#include "gtkam-tree-item.h"
 
 #include "support.h"
 
@@ -92,7 +92,6 @@ struct _GtkamMainPrivate
 	GtkWidget *item_save, *item_information, *item_manual, *menu_delete;
 	GtkWidget *item_about_driver;
 	GtkWidget *select_all, *select_none, *select_inverse;
-	GtkWidget *make_dir, *remove_dir, *upload;
 
 	GtkWidget *status;
 
@@ -189,14 +188,10 @@ on_exit_activate (GtkMenuItem *item, GtkamMain *m)
 }
 
 static void
-on_file_deleted (GtkamDelete *delete, const gchar *path, GtkamMain *m)
+on_file_deleted (GtkamDelete *delete, Camera *camera, gboolean multi,
+		 const gchar *folder, const gchar *name, GtkamMain *m)
 {
-	gchar *dir;
-
-	dir = g_dirname (path);
-	if (m->priv->list->path && !strcmp (dir, m->priv->list->path))
-		gtkam_list_refresh (m->priv->list);
-	g_free (dir);
+	gtkam_list_update_folder (m->priv->list, camera, multi, folder);
 }
 
 static void
@@ -206,20 +201,27 @@ delete_selected (GtkamMain *m)
 	GtkamList *list = m->priv->list;
 	guint i;
 	GtkWidget *delete;
-	GList *files = NULL;
 
-	if (!list->path || !g_list_length (GTK_ICON_LIST (list)->selection))
+	if (!g_list_length (GTK_ICON_LIST (list)->selection))
 		return;
 
-	for (i = 0; i < g_list_length (GTK_ICON_LIST (list)->selection); i++) {
-		item = g_list_nth_data (GTK_ICON_LIST (list)->selection, i);
-		files = g_list_append (files, item->label);
-	}
-	delete = gtkam_delete_new (m->priv->camera, m->priv->multi,
-				   list->path, files, GTK_WIDGET (m));
-	gtk_widget_show (delete);
+	delete = gtkam_delete_new (m->priv->status);
+	gtk_window_set_transient_for (GTK_WINDOW (delete), GTK_WINDOW (m));
 	gtk_signal_connect (GTK_OBJECT (delete), "file_deleted",
 			    GTK_SIGNAL_FUNC (on_file_deleted), m);
+	for (i = 0; i < g_list_length (GTK_ICON_LIST (list)->selection); i++) {
+		item = g_list_nth_data (GTK_ICON_LIST (list)->selection, i);
+		gtkam_delete_add (GTKAM_DELETE (delete),
+			gtk_object_get_data (GTK_OBJECT (item->entry),
+				"camera"),
+			GPOINTER_TO_INT (
+				gtk_object_get_data (GTK_OBJECT (item->entry),
+					"multi")),
+			gtk_object_get_data (GTK_OBJECT (item->entry),
+				"folder"),
+			item->label);
+	}
+	gtk_widget_show (delete);
 }
 
 static void
@@ -229,12 +231,12 @@ on_delete_selected_photos_activate (GtkMenuItem *item, GtkamMain *m)
 }
 
 static void
-on_all_deleted (GtkamDelete *delete, const gchar *path, GtkamMain *m)
+on_all_deleted (GtkamDelete *delete, Camera *camera, gboolean multi,
+		const gchar *folder, GtkamMain *m)
 {
 	g_return_if_fail (GTKAM_IS_MAIN (m));
 
-	if (m->priv->list->path && !strcmp (path, m->priv->list->path))
-		gtkam_list_refresh (m->priv->list);
+	gtkam_list_update_folder (m->priv->list, camera, multi, folder);
 }
 
 static void
@@ -244,20 +246,32 @@ on_delete_selected_photos_clicked (GtkButton *button, GtkamMain *m)
 }
 
 static void
-on_delete_all_photos_activate (GtkMenuItem *item, GtkamMain *m)
+on_delete_all_photos_activate (GtkMenuItem *menu_item, GtkamMain *m)
 {
 	GtkWidget *delete;
+	GtkamTreeItem *item;
+	GList *selection;
+	gint i;
 
-	if (!m->priv->list->path)
+	selection = GTK_TREE (m->priv->tree)->selection;
+	if (!g_list_length (selection))
 		return;
 
-	delete = gtkam_delete_new (m->priv->camera, m->priv->multi,
-				   m->priv->list->path, NULL, GTK_WIDGET (m));
-	gtk_widget_show (delete);
+	delete = gtkam_delete_new (m->priv->status);
+	for (i = 0; i < g_list_length (selection); i++) {
+		item = g_list_nth_data (selection, i);
+		gtkam_delete_add (GTKAM_DELETE (delete),
+			gtkam_tree_item_get_camera (item),
+			gtkam_tree_item_get_multi (item),
+			gtkam_tree_item_get_folder (item), NULL);
+	}
 	gtk_signal_connect (GTK_OBJECT (delete), "file_deleted",
 			    GTK_SIGNAL_FUNC (on_file_deleted), m);
 	gtk_signal_connect (GTK_OBJECT (delete), "all_deleted",
 			    GTK_SIGNAL_FUNC (on_all_deleted), m);
+
+	gtk_window_set_transient_for (GTK_WINDOW (delete), GTK_WINDOW (m));
+	gtk_widget_show (delete);
 }
 
 static void
@@ -313,14 +327,12 @@ on_select_camera_activate (GtkMenuItem *item, GtkamMain *m)
 }
 
 static void
-on_captured (GtkamPreview *preview, const gchar *path, GtkamMain *m)
+on_captured (GtkamPreview *preview, const gchar *folder, const gchar *name,
+	     GtkamMain *m)
 {
-	gchar *dirname;
-
-	dirname = g_dirname (path);
-	if (m->priv->list->path && !strcmp (dirname, m->priv->list->path))
-		gtkam_list_refresh (m->priv->list);
-	g_free (dirname);
+	gtkam_list_update_folder (m->priv->list,
+				  gtkam_preview_get_camera (preview),
+				  gtkam_preview_get_multi (preview), folder);
 }
 
 static void
@@ -356,9 +368,8 @@ on_capture_activate (GtkMenuItem *item, GtkamMain *m)
 		gp_camera_exit (m->priv->camera, NULL);
 	switch (result) {
 	case GP_OK:
-		if (m->priv->list->path && !strcmp (path.folder,
-						    m->priv->list->path))
-			gtkam_list_refresh (m->priv->list);
+		gtkam_list_update_folder (m->priv->list, m->priv->camera,
+					  m->priv->multi, path.folder);
 		break;
 	case GP_ERROR_CANCEL:
 		break;
@@ -412,34 +423,13 @@ gtkam_main_update_sensitivity (GtkamMain *m)
 	/* Make sure we are not shutting down */
 	while (gtk_events_pending ())
 		gtk_main_iteration ();
-	if (!GTKAM_IS_MAIN (m) || !GTK_IS_WIDGET (m->priv->make_dir))
+	if (!GTKAM_IS_MAIN (m))
 		return;
 
-	if (!m->priv->camera ||
-	    !g_list_length (GTK_TREE (m->priv->tree)->selection)) {
-		gtk_widget_set_sensitive (m->priv->make_dir, FALSE);
-		gtk_widget_set_sensitive (m->priv->remove_dir, FALSE);
-		gtk_widget_set_sensitive (m->priv->upload, FALSE);
+	if (!m->priv->camera)
 		return;
-	}
 
 	gp_camera_get_abilities (m->priv->camera, &a);
-
-	/* Directory creation and removal */
-	if (a.folder_operations & GP_FOLDER_OPERATION_MAKE_DIR)
-		gtk_widget_set_sensitive (m->priv->make_dir, TRUE);
-	else
-		gtk_widget_set_sensitive (m->priv->make_dir, FALSE);
-	if (a.folder_operations & GP_FOLDER_OPERATION_REMOVE_DIR)
-		gtk_widget_set_sensitive (m->priv->remove_dir, TRUE);
-	else
-		gtk_widget_set_sensitive (m->priv->remove_dir, FALSE);
-
-	/* Upload */
-	if (a.folder_operations & GP_FOLDER_OPERATION_PUT_FILE)
-		gtk_widget_set_sensitive (m->priv->upload, TRUE);
-	else
-		gtk_widget_set_sensitive (m->priv->upload, FALSE);
 
 	/* Select */
 	i = g_list_length (GTK_ICON_LIST (m->priv->list)->icons);
@@ -450,19 +440,16 @@ gtkam_main_update_sensitivity (GtkamMain *m)
 }
 
 static void
-on_folder_selected (GtkamTree *tree, const gchar *folder, GtkamMain *m)
+on_folder_selected (GtkamTree *tree, Camera *camera, gboolean multi,
+		    const gchar *folder, GtkamMain *m)
 {
-	/* Make sure we aren't shutting down */
-	if (!GTKAM_IS_MAIN (m))
-		return;
-
 	/*
 	 * Don't let the user switch folders while the list is downloading
 	 * the file listing or thumbnails. If you want to give the user this
 	 * possibility, you need to fix a reentrancy issue first.
 	 */
 	gtk_widget_set_sensitive (m->priv->vbox, FALSE);
-	gtkam_list_set_path (m->priv->list, folder);
+	gtkam_list_add_folder (m->priv->list, camera, multi, folder);
 
 	/* Again, make sure we aren't shutting down */
 	if (!GTKAM_IS_MAIN (m))
@@ -473,9 +460,10 @@ on_folder_selected (GtkamTree *tree, const gchar *folder, GtkamMain *m)
 }
 
 static void
-on_folder_unselected (GtkamTree *tree, const gchar *folder, GtkamMain *m)
+on_folder_unselected (GtkTree *tree, Camera *camera, gboolean multi,
+		      const gchar *folder, GtkamMain *m)
 {
-	gtkam_list_set_path (m->priv->list, NULL);
+	gtkam_list_remove_folder (m->priv->list, camera, multi, folder);
 	gtkam_main_update_sensitivity (m);
 }
 
@@ -610,133 +598,6 @@ on_about_activate (GtkMenuItem *item, GtkamMain *m)
 
 	dialog = gtkam_close_new (buf, GTK_WIDGET (m));
 	gtk_widget_show (dialog);
-}
-
-static void
-on_dir_created (GtkamMkdir *mkdir, const gchar *path, GtkamMain *m)
-{
-	gtkam_tree_make_dir (m->priv->tree, path);
-}
-
-static void
-on_make_dir_activate (GtkMenuItem *item, GtkamMain *m)
-{
-	GtkWidget *mkdir;
-	const gchar *path;
-
-	path = gtkam_tree_get_path (m->priv->tree);
-	mkdir = gtkam_mkdir_new (m->priv->camera, m->priv->multi, path,
-				 GTK_WIDGET (m));
-	gtk_widget_show (mkdir);
-	gtk_signal_connect (GTK_OBJECT (mkdir), "dir_created",
-			    GTK_SIGNAL_FUNC (on_dir_created), m);
-}
-
-static void
-on_remove_dir_activate (GtkMenuItem *item, GtkamMain *m)
-{
-	const gchar *path;
-	gchar *dirname;
-	int result;
-	GtkWidget *dialog, *s;
-
-	path = gtkam_tree_get_path (m->priv->tree);
-	dirname = g_dirname (path);
-	s = gtkam_status_new (_("Removing folder '%s' from folder '%s'..."),
-			      dirname, path);
-	gtk_widget_show (s);
-	gtk_box_pack_start (GTK_BOX (m->priv->status), s, FALSE, FALSE, 0);
-	result = gp_camera_folder_remove_dir (m->priv->camera, dirname,
-			g_basename (path), GTKAM_STATUS (s)->context->context);
-	if (m->priv->multi)
-		gp_camera_exit (m->priv->camera, NULL);
-	switch (result) {
-	case GP_OK:
-		gtkam_tree_remove_dir (m->priv->tree, path);
-		break;
-	case GP_ERROR_CANCEL:
-		break;
-	default:
-		dialog = gtkam_error_new (result, GTKAM_STATUS (s)->context, 
-			GTK_WIDGET (m), _("Could not remove '%s' from '%s'."),
-			g_basename (path), dirname);
-		gtk_widget_show (dialog);
-		break;
-	}
-	gtk_object_destroy (GTK_OBJECT (s));
-	g_free (dirname);
-}
-
-static void
-on_upload_ok_clicked (GtkButton *button, gboolean *ok)
-{
-	*ok = TRUE;
-	gtk_main_quit ();
-}
-
-static void
-on_upload_activate (GtkMenuItem *item, GtkamMain *m)
-{
-	CameraFile *file;
-	GtkWidget *fsel, *dialog, *s;
-	gboolean ok = FALSE;
-	const char *path;
-	int r;
-	const char *folder;
-
-	folder = gtkam_tree_get_path (m->priv->tree);
-
-	fsel = gtk_file_selection_new (_("Upload..."));
-	gtk_widget_show (fsel);
-	gtk_signal_connect (GTK_OBJECT (GTK_FILE_SELECTION (fsel)->ok_button),
-		"clicked", GTK_SIGNAL_FUNC (on_upload_ok_clicked), &ok);
-	gtk_signal_connect (GTK_OBJECT (GTK_FILE_SELECTION (fsel)->cancel_button),
-		"clicked", GTK_SIGNAL_FUNC (gtk_main_quit), NULL);
-	gtk_signal_connect (GTK_OBJECT (fsel), "delete_event",
-			    GTK_SIGNAL_FUNC (gtk_main_quit), NULL);
-	gtk_main ();
-
-	if (ok) {
-		path = gtk_file_selection_get_filename (
-						GTK_FILE_SELECTION (fsel));
-		gp_file_new (&file);
-		r = gp_file_open (file, path);
-		if (r < 0) {
-			dialog = gtkam_error_new (r, NULL, GTK_WIDGET (m),
-				_("Could not open '%s'."), path);
-			gtk_widget_show (dialog);
-		} else {
-			gtk_widget_hide (fsel);
-			s = gtkam_status_new (_("Uploading '%s' into "
-				"folder '%s'..."), g_basename (path), folder);
-			gtk_widget_show (s);
-			gtk_box_pack_start (GTK_BOX (m->priv->status), s,
-					    FALSE, FALSE, 0);
-			r = gp_camera_folder_put_file (m->priv->camera,
-				folder, file,
-				GTKAM_STATUS (s)->context->context);
-			if (m->priv->multi)
-				gp_camera_exit (m->priv->camera, NULL);
-			switch (r) {
-			case GP_OK:
-				gtkam_list_refresh (m->priv->list);
-				break;
-			case GP_ERROR_CANCEL:
-				break;
-			default:
-				dialog = gtkam_error_new (r,
-					GTKAM_STATUS (s)->context,
-					GTK_WIDGET (m),
-					_("Coult not upload '%s' into folder "
-					"'%s'."), path, folder);
-				gtk_widget_show (dialog);
-			}
-			gtk_object_destroy (GTK_OBJECT (s));
-		}
-		gp_file_unref (file);
-	}
-
-	gtk_object_destroy (GTK_OBJECT (fsel));
 }
 
 static gboolean
@@ -880,59 +741,6 @@ gtkam_main_new (void)
 	gtk_signal_connect (GTK_OBJECT (item), "activate",
 			    GTK_SIGNAL_FUNC (on_exit_activate), m);
 	gtk_container_add (GTK_CONTAINER (menu), item);
-
-	/*
-	 * Folder menu
-	 */
-	item = gtk_menu_item_new_with_label ("");
-	gtk_widget_show (item);
-	key = gtk_label_parse_uline (GTK_LABEL (GTK_BIN (item)->child),
-				     _("F_older"));
-	gtk_widget_add_accelerator (item, "activate_item", accel_group, key,
-				    GDK_MOD1_MASK, 0);
-	gtk_container_add (GTK_CONTAINER (menubar), item);
-	
-	menu = gtk_menu_new ();
-	gtk_menu_item_set_submenu (GTK_MENU_ITEM (item), menu);
-	accels = gtk_menu_ensure_uline_accel_group (GTK_MENU (menu));
-
-	item = gtk_menu_item_new_with_label ("");
-	gtk_widget_show (item);
-	gtk_widget_set_sensitive (item, FALSE);
-	key = gtk_label_parse_uline (GTK_LABEL (GTK_BIN (item)->child),
-				     _("_Create..."));
-	gtk_widget_add_accelerator (item, "activate_item", accels, key, 0, 0);
-	gtk_container_add (GTK_CONTAINER (menu), item);
-	gtk_signal_connect (GTK_OBJECT (item), "activate",
-			    GTK_SIGNAL_FUNC (on_make_dir_activate), m);
-	m->priv->make_dir = item;
-
-	item = gtk_menu_item_new_with_label ("");
-	gtk_widget_show (item);
-	gtk_widget_set_sensitive (item, FALSE);
-	key = gtk_label_parse_uline (GTK_LABEL (GTK_BIN (item)->child),
-				     _("_Remove..."));
-	gtk_widget_add_accelerator (item, "activate_item", accels, key, 0, 0);
-	gtk_container_add (GTK_CONTAINER (menu), item); 
-	gtk_signal_connect (GTK_OBJECT (item), "activate", 
-			    GTK_SIGNAL_FUNC (on_remove_dir_activate), m);
-	m->priv->remove_dir = item;
-
-	separator = gtk_menu_item_new (); 
-	gtk_widget_show (separator);
-	gtk_container_add (GTK_CONTAINER (menu), separator);
-	gtk_widget_set_sensitive (separator, FALSE);
-
-	item = gtk_menu_item_new_with_label ("");
-	gtk_widget_show (item);
-	gtk_widget_set_sensitive (item, FALSE);
-	key = gtk_label_parse_uline (GTK_LABEL (GTK_BIN (item)->child),
-				     _("_Upload file...")); 
-	gtk_widget_add_accelerator (item, "activate_item", accels, key, 0, 0);
-	gtk_container_add (GTK_CONTAINER (menu), item);
-	gtk_signal_connect (GTK_OBJECT (item), "activate",
-			    GTK_SIGNAL_FUNC (on_upload_activate), m);
-	m->priv->upload = item;
 
 	/*
 	 * Select menu
@@ -1236,16 +1044,22 @@ void
 gtkam_main_set_camera (GtkamMain *m, Camera *camera, gboolean multi)
 {
 	CameraAbilities a;
+	GList *list;
+	gint i;
 
 	g_return_if_fail (GTKAM_IS_MAIN (m));
 	g_return_if_fail (camera != NULL);
 
-	if (m->priv->camera)
+	if (m->priv->camera) {
 		gp_camera_unref (m->priv->camera);
-	m->priv->camera = camera;
-	if (camera)
+		m->priv->camera = NULL;
+	}
+
+	if (camera) {
+		m->priv->camera = camera;
 		gp_camera_ref (camera);
-	m->priv->multi = multi;
+		m->priv->multi = multi;
+	}
 
 	gp_camera_get_abilities (camera, &a);
 
@@ -1306,6 +1120,12 @@ gtkam_main_set_camera (GtkamMain *m, Camera *camera, gboolean multi)
 		gtk_widget_set_sensitive (m->priv->item_about_driver, FALSE);
 	}
 
-	gtkam_list_set_camera (m->priv->list, camera, multi);
-	gtkam_tree_set_camera (m->priv->tree, camera, multi);
+	/* FIXME! */
+	list = gtk_container_children (GTK_CONTAINER (m->priv->tree));
+	for (i = 0; i < g_list_length (list); i++)
+		gtk_container_remove (GTK_CONTAINER (m->priv->tree),
+			g_list_nth_data (list, i));
+	g_list_free (list);
+	gtkam_tree_add_camera (m->priv->tree, camera, multi);
+	gtk_icon_list_clear (GTK_ICON_LIST (m->priv->list));
 }

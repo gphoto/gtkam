@@ -44,13 +44,18 @@ struct _GtkamDeleteClass
 	GtkDialogClass parent_class;
 
 	/* Signals */
-	void (* all_deleted)  (GtkamDelete *delete, const gchar *path);
-	void (* file_deleted) (GtkamDelete *delete, const gchar *path);
+	void (* all_deleted)  (GtkamDelete *delete, Camera *camera,
+			       gboolean multi, const gchar *folder);
+	void (* file_deleted) (GtkamDelete *delete, Camera *camera,
+			       gboolean multi, const gchar *folder,
+			       const gchar *name);
 };
 
 GtkType    gtkam_delete_get_type (void);
-GtkWidget *gtkam_delete_new      (Camera *camera, gboolean multi,
-				  const gchar *path,
-				  GList *files, GtkWidget *opt_window);
+GtkWidget *gtkam_delete_new      (GtkWidget *vbox);
+
+void       gtkam_delete_add      (GtkamDelete *delete, Camera *camera,
+				  gboolean multi, const gchar *folder,
+				  const gchar *name);
 
 #endif /* __GTKAM_DELETE_H__ */

@@ -61,6 +61,7 @@
 struct _GtkamInfoPrivate
 {
 	Camera *camera;
+	gboolean multi;
 
 	CameraFileInfo info;
 	CameraFileInfo info_new;
@@ -118,6 +119,25 @@ gtkam_info_finalize (GtkObject *object)
 	GTK_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
+typedef void (* GtkamSignal_NONE__POINTER_BOOL_POINTER_POINTER)
+        (GtkObject *object, gpointer arg1, gboolean arg2, gpointer arg3,
+         gpointer arg4, gpointer user_data);
+
+static void
+gtkam_marshal_NONE__POINTER_BOOL_POINTER_POINTER (GtkObject *object,
+                                                  GtkSignalFunc func,
+                                                  gpointer func_data,
+                                                  GtkArg *args)
+{
+        GtkamSignal_NONE__POINTER_BOOL_POINTER_POINTER rfunc;
+
+        rfunc = (GtkamSignal_NONE__POINTER_BOOL_POINTER_POINTER) func;
+        (*rfunc) (object, GTK_VALUE_POINTER (args[0]),
+                          GTK_VALUE_BOOL (args[1]),
+                          GTK_VALUE_POINTER (args[2]),
+                          GTK_VALUE_POINTER (args[3]), func_data);
+}
+
 static void
 gtkam_info_class_init (GtkamInfoClass *klass)
 {
@@ -130,7 +150,9 @@ gtkam_info_class_init (GtkamInfoClass *klass)
 	signals[INFO_UPDATED] = gtk_signal_new ("info_updated",
 		GTK_RUN_LAST, object_class->type,
 		GTK_SIGNAL_OFFSET (GtkamInfoClass, info_updated),
-		gtk_marshal_NONE__POINTER, GTK_TYPE_NONE, 1, GTK_TYPE_POINTER);
+		gtkam_marshal_NONE__POINTER_BOOL_POINTER_POINTER,
+		GTK_TYPE_NONE, 1, GTK_TYPE_POINTER, GTK_TYPE_BOOL,
+		GTK_TYPE_POINTER, GTK_TYPE_POINTER);
 	gtk_object_class_add_signals (object_class, signals, LAST_SIGNAL);
 
 	parent_class = gtk_type_class (PARENT_TYPE);
@@ -197,7 +219,8 @@ gtkam_info_update (GtkamInfo *info)
 			NULL);
 	g_free (dir);
 	gtk_signal_emit (GTK_OBJECT (info), signals[INFO_UPDATED],
-			 info->priv->path);
+			 info->priv->camera, info->priv->multi,
+			 dir, g_basename (info->priv->path));
 	switch (result) {
 	case GP_OK:
 		break;

@@ -36,8 +36,6 @@ struct _GtkamList
 {
 	GtkIconList parent;
 
-	gchar *path;
-
 	GtkamListPrivate *priv;
 };
 
@@ -52,12 +50,15 @@ struct _GtkamListClass
 GtkType    gtkam_list_get_type (void);
 GtkWidget *gtkam_list_new      (GtkWidget *vbox);
 
-void       gtkam_list_set_camera     (GtkamList *list, Camera *camera,
-				      gboolean multi);
-void       gtkam_list_set_path       (GtkamList *list, const gchar *path);
+void       gtkam_list_add_folder     (GtkamList *list, Camera *camera,
+				      gboolean multi, const gchar *folder);
+void       gtkam_list_remove_folder  (GtkamList *list, Camera *camera,
+				      gboolean multi, const gchar *folder);
+void       gtkam_list_update_folder  (GtkamList *list, Camera *camera,
+				      gboolean multi, const gchar *folder);
+
 void       gtkam_list_set_thumbnails (GtkamList *list, gboolean thumbnails);
 
 void       gtkam_list_save_selected   (GtkamList *list);
-void       gtkam_list_refresh         (GtkamList *list);
 
 #endif /* __GTKAM_LIST_H__ */

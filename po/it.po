@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: gtkam 0.1.12\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-02-03 08:19+0100\n"
-"PO-Revision-Date: 2005-02-02 21:25+0000\n"
+"PO-Revision-Date: 2005-02-03 13:04+0000\n"
 "Last-Translator: Marco Colombo <m.colombo@ed.ac.uk>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "MIME-Version: 1.0\n"
@@ -191,11 +191,13 @@ msgstr "Eliminazione del file \"%s\" dalla cartella \"%s\" in corso..."
 msgid "Could not delete file '%s' in folder '%s'."
 msgstr "Impossibile eliminare il file \"%s\" nella cartella \"%s\"."
 
+# FIXME UPSTREAM: should be '%s'
 #: src/gtkam-delete.c:384
-#, fuzzy, c-format
+#, c-format
 msgid "Do you really want to delete all the files in %s?"
-msgstr "Si vuole veramente eliminare i %i file selezionati?"
+msgstr "Si vuole veramente eliminare tutti i file in \"%s\"?"
 
+# FIXME UPSTREAM: should be '%s'
 #: src/gtkam-delete.c:387
 #, c-format
 msgid "Do you really want to delete %s?"
@@ -217,7 +219,7 @@ msgstr ""
 "Lettura delle informazioni EXIF per il file \"%s\" nella cartella \"%s\" in "
 "corso..."
 
-# FIXME UPSTREAM: final '.'
+# FIXME UPSTREAM: final '.' and 'exif'
 #: src/gtkam-exif.c:153
 #, c-format
 msgid "Could not get exif information for '%s' in folder '%s'"
@@ -233,6 +235,7 @@ msgstr "Impossibile interpretare i dati EXIF."
 msgid "The EXIF data could not be retrieved from the file."
 msgstr "Lettura dei dati EXIF dal file non riuscita."
 
+# FIXME UPSTREAM: 'exif'
 #: src/gtkam-exif.c:192
 msgid "Gtkam has been compiled without exif support."
 msgstr "Gtkam è stato compilato senza supporto per EXIF."
@@ -313,9 +316,9 @@ msgid "Size:"
 msgstr "Dimensione:"
 
 #: src/gtkam-info.c:411 src/gtkam-info.c:547
-#, fuzzy, c-format
+#, c-format
 msgid "%iK (%li bytes)"
-msgstr "%li byte"
+msgstr "%iK (%li byte)"
 
 #: src/gtkam-info.c:426
 msgid "Permissions:"
@@ -334,18 +337,16 @@ msgid "Preview"
 msgstr "Anteprima"
 
 #: src/gtkam-info.c:474
-#, fuzzy
 msgid "MIME type:"
-msgstr "Tipo Mime:"
+msgstr "Tipo MIME:"
 
 #: src/gtkam-info.c:517
 msgid "Audio"
 msgstr "Audio"
 
 #: src/gtkam-info.c:523
-#, fuzzy
 msgid "MIME type: "
-msgstr "Tipo Mime: "
+msgstr "Tipo MIME: "
 
 #: src/gtkam-list.c:322
 #, c-format
@@ -652,7 +653,7 @@ msgstr "Impossibile ottenere \"%s\" dalla cartella \"%s\"."
 
 #: src/gtkam-save.c:494
 msgid "There is nothing to be saved."
-msgstr ""
+msgstr "Non c'è niente da salvare."
 
 #: src/gtkam-save.c:506
 msgid "Downloading file"
@@ -795,11 +796,11 @@ msgstr "Impossibile rimuovere la directory \"%s\"."
 
 #: src/gtkam-tree.c:582
 msgid "Getting information about the camera..."
-msgstr ""
+msgstr "Lettura delle informazioni sulla fotocamera in corso..."
 
 #: src/gtkam-tree.c:586
 msgid "Getting information about the driver..."
-msgstr ""
+msgstr "Lettura delle informazioni sul driver in corso..."
 
 #: src/gtkam-tree.c:590
 msgid "Getting manual..."
@@ -904,21 +905,22 @@ msgstr "Impossibile scaricare \"%s\" dalla cartella \"%s\"."
 msgid "Image Download Program"
 msgstr "Programma per scaricamento le immagini"
 
-#~ msgid "photo"
-#~ msgstr "foto"
+#, fuzzy
+msgid "photo"
+msgstr "Salva foto"
 
 #, fuzzy
-#~ msgid "'%s' in folder '%s'"
-#~ msgstr "Caricamento di \"%s\" nella cartella \"%s\" in corso..."
+msgid "'%s' in folder '%s'"
+msgstr "Caricamento di \"%s\" nella cartella \"%s\" in corso..."
 
 #, fuzzy
-#~ msgid "All files in folder '%s'"
-#~ msgstr "Elencazione dei file nella cartella \"%s\" in corso..."
+msgid "All files in folder '%s'"
+msgstr "Elencazione dei file nella cartella \"%s\" in corso..."
 
 #, fuzzy
-#~ msgid "Could not find an io-driver for port '%s' ('%s')."
-#~ msgstr "Impossibile rinominare \"%s\" in \"%s\"."
+msgid "Could not find an io-driver for port '%s' ('%s')."
+msgstr "Impossibile rinominare \"%s\" in \"%s\"."
 
 #, fuzzy
-#~ msgid "/Capture"
-#~ msgstr "Cattura"
+msgid "/Capture"
+msgstr "Cattura"

@@ -1,3 +1,7 @@
+2001-11-01 Lutz Müller <urc8@rz.uni-karlsruhe.de>
+
+	* src: Bug fixes with regard to directory creation and removal
+
 2001-10-31 Hans Ulrich Niedermann <gp@n-dimensional.de>
 
 	* INSTALL: copied from gphoto2 - updated install instructions

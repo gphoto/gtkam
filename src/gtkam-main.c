@@ -460,7 +460,7 @@ on_about_activate (GtkMenuItem *item, GtkamMain *m)
 static void
 on_dir_created (GtkamMkdir *mkdir, const gchar *path, GtkamMain *m)
 {
-	gtkam_tree_refresh (m->priv->tree, path);
+	gtkam_tree_make_dir (m->priv->tree, path);
 }
 
 static void

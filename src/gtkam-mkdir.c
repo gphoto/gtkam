@@ -152,21 +152,28 @@ on_ok_clicked (GtkButton *button, GtkamMkdir *mkdir)
 	GtkWidget *dialog;
 	int r;
 	const gchar *path;
-	gchar *msg;
+	gchar *msg, *full_path;
 
 	path = gtk_entry_get_text (mkdir->priv->entry);
 	r = gp_camera_folder_make_dir (mkdir->priv->camera, mkdir->priv->path,
 				       g_basename (path));
 	if (r < 0) {
 		msg = g_strdup_printf (_("Could not create new directory "
-				       "'%s'"), path);
+				"'%s' in '%s'"), path, mkdir->priv->path);
 		dialog = gtkam_error_new (msg, r, mkdir->priv->camera,
 					  GTK_WIDGET (mkdir));
 		g_free (msg);
 		gtk_widget_show (dialog);
-	} else
+	} else {
+		if (strlen (mkdir->priv->path) > 1)
+			full_path = g_strdup_printf ("%s/%s",
+						     mkdir->priv->path, path);
+		else
+			full_path = g_strdup_printf ("/%s", path);
 		gtk_signal_emit (GTK_OBJECT (mkdir),
-				 signals[DIR_CREATED], path);
+				 signals[DIR_CREATED], full_path);
+		g_free (full_path);
+	}
 	gtk_object_destroy (GTK_OBJECT (mkdir));
 }
 

@@ -260,8 +260,10 @@ on_tree_item_expand (GtkTreeItem *item, GtkamTree *tree)
 	CameraList *list;
 	const char *name;
 	const gchar *path;
-	gchar *new_path;
+	gchar *new_path, *msg;
 	gint i;
+	int result;
+	GtkWidget *dialog, *window;
 
 	/* Check if we've expanded this item before */
 	if (gtk_object_get_data (GTK_OBJECT (item), "expanded"))
@@ -269,24 +271,47 @@ on_tree_item_expand (GtkTreeItem *item, GtkamTree *tree)
 
 	path = gtk_object_get_data (GTK_OBJECT (item), "path");
 	list = gtk_object_get_data (GTK_OBJECT (item), "list");
-	if (list) {
-		for (i = 0; i < gp_list_count (list); i++) {
-			gp_list_get_name (list, i, &name);
-			if (!strcmp (path, "/"))
-				new_path = g_strdup_printf ("/%s", name);
-			else
-				new_path = g_strdup_printf ("%s/%s",
-							    path, name);
-			create_item (tree,
-				GTK_TREE (GTK_TREE_ITEM_SUBTREE (item)),
-				new_path);
-			g_free (new_path);
-		}
 
-		gtk_object_set_data (GTK_OBJECT (item), "expanded", 
-				     GINT_TO_POINTER (TRUE));
-		gtk_tree_item_expand (item);
+	/* If we don't have a list, get one. */
+	if (!list) {
+		gp_list_new (&list);
+		result = gp_camera_folder_list_folders (tree->priv->camera,
+							path, list);
+		if (result < 0) {
+			window = gtk_widget_get_ancestor (GTK_WIDGET (tree),
+							  GTK_TYPE_WINDOW);
+			msg = g_strdup_printf (_("Could not get list of "
+				"folders for folder '%s'."), path);
+			dialog = gtkam_error_new (msg, result,
+						  tree->priv->camera, window);
+			g_free (msg);
+			gtk_widget_show (dialog);
+			gp_list_unref (list);
+			list = NULL;
+		} else
+			gtk_object_set_data_full (GTK_OBJECT (item), "list",
+				list, (GtkDestroyNotify) gp_list_unref);
 	}
+
+	/* If we've got a list, populate the subtree */
+        if (list) {
+                for (i = 0; i < gp_list_count (list); i++) {
+                        gp_list_get_name (list, i, &name);
+                        if (!strcmp (path, "/"))
+                                new_path = g_strdup_printf ("/%s", name);
+                        else
+                                new_path = g_strdup_printf ("%s/%s",
+                                                            path, name);
+                        create_item (tree,
+                                GTK_TREE (GTK_TREE_ITEM_SUBTREE (item)),
+                                new_path);
+                        g_free (new_path);
+                }
+
+                gtk_object_set_data (GTK_OBJECT (item), "expanded",
+                                     GINT_TO_POINTER (TRUE));
+                gtk_tree_item_expand (item);
+        }
 }
 
 GtkWidget *
@@ -332,7 +357,7 @@ gtkam_tree_get_path (GtkamTree *tree)
 }
 
 static void
-delete_item (GtkTree *tree, const gchar *path)
+remove_dir (GtkTree *tree, const gchar *path)
 {
 	guint i;
 	GtkTreeItem *item;
@@ -349,12 +374,12 @@ delete_item (GtkTree *tree, const gchar *path)
 			/* This is the item to remove */
 			gtk_container_remove (GTK_CONTAINER (tree),
 					      GTK_WIDGET (item));
-			return;
+			break;
 		} else if (!strncmp (item_path, path, strlen (item_path))) {
 
 			/* The item we are looking for is in this branch */
-			delete_item (GTK_TREE (item->subtree), path);
-			return;
+			remove_dir (GTK_TREE (item->subtree), path);
+			break;
 		}
 	}
 }
@@ -364,12 +389,64 @@ gtkam_tree_remove_dir (GtkamTree *tree, const gchar *path)
 {
 	g_return_if_fail (GTKAM_IS_TREE (tree));
 
-	delete_item (GTK_TREE (tree), path);
+	remove_dir (GTK_TREE (tree), path);
+}
+
+static void
+make_dir (GtkamTree *tree, GtkTree *subtree, const gchar *path)
+{
+	CameraList *list;
+	gchar *dirname;
+	GtkTreeItem *item;
+	GtkWidget *subsubtree;
+	guint i;
+	const gchar *item_path;
+
+	dirname = g_dirname (path);
+	for (i = 0; i < g_list_length (subtree->children); i++) {
+		item = g_list_nth_data (subtree->children, i);
+		item_path = gtk_object_get_data (GTK_OBJECT (item), "path");
+		if (!strcmp (item_path, dirname)) {
+
+			list = gtk_object_get_data (GTK_OBJECT (item), "list");
+			gp_list_append (list, g_basename (path), NULL);
+			gp_list_sort (list);
+
+			/* Create the subtree if needed */
+			if (!item->subtree) {
+				subsubtree = gtk_tree_new ();
+				gtk_widget_show (subsubtree);
+				gtk_tree_item_set_subtree (item, subsubtree);
+			}
+
+			/*
+			 * Create the item if parent has already been
+			 * expanded. It will be appended to the end - no
+			 * sorting here (if the parent has already been 
+			 * expanded).
+			 */
+			if (gtk_object_get_data (GTK_OBJECT (item),
+						 "expanded"))
+				create_item (tree,
+					     GTK_TREE (item->subtree), path);
+
+			break;
+		}  else if (!strncmp (item_path, dirname, strlen (item_path))) {
+
+			/* The item we are looking for is in this branch */
+			if (item->subtree)
+				make_dir (tree, GTK_TREE (item->subtree), path);
+			break;
+		}
+	}
+	g_free (dirname);
 }
 
 void
-gtkam_tree_refresh (GtkamTree *tree, const gchar *path)
+gtkam_tree_make_dir (GtkamTree *tree, const gchar *path)
 {
 	g_return_if_fail (GTKAM_IS_TREE (tree));
 	g_return_if_fail (path != NULL);
+
+	make_dir (tree, GTK_TREE (tree), path);
 }

@@ -24,6 +24,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 #include <gtk/gtktogglebutton.h>
 #include <gtk/gtkhbox.h>
@@ -155,6 +156,33 @@ on_cancel_clicked (GtkButton *button, GtkamSave *save)
 	gtk_widget_destroy (GTK_WIDGET (save));
 }
 
+static int
+default_numbering_start(const GtkamSave *save)
+{
+	GDir *dir;
+	const gchar *file;
+	gchar *tail,*prefix;
+	int max=1;
+	int plen,current;
+
+	if (!(dir=g_dir_open(gtk_file_selection_get_filename(
+		GTK_FILE_SELECTION(save)),0,NULL))) return 1;
+	prefix=g_strdup(gtk_entry_get_text(GTK_ENTRY(save->priv->prefix_entry)));
+	plen=strlen(prefix);
+	while ((file=g_dir_read_name(dir))) {
+		/* compare prefix */
+		if (strncmp(prefix,file,plen)) continue;
+		/* check number */
+		current=strtol(file+plen,&tail,10);
+		if (tail - (file+plen) != 4) continue;
+		/* FIXME: check for regular file here */
+		if (max <= current) max = current+1;
+	}
+	g_free(prefix);
+	g_dir_close(dir);
+	return max;
+}
+
 static void
 on_filename_camera_toggled (GtkToggleButton *toggle, GtkamSave *save)
 {
@@ -195,6 +223,12 @@ on_filename_camera_toggled (GtkToggleButton *toggle, GtkamSave *save)
 			!toggle->active);
 		gtk_widget_set_sensitive (GTK_WIDGET (save->priv->spin_entry),
 			!toggle->active);
+		if (!toggle->active) {
+			/* calculate default start number */
+			gtk_spin_button_set_value (
+				GTK_SPIN_BUTTON (save->priv->spin_entry),
+				default_numbering_start(save));
+		}
 
 		gtk_widget_hide (GTK_FILE_SELECTION (save)->file_list);
 		gtk_widget_set_sensitive (GTK_FILE_SELECTION (save)->file_list,
@@ -378,6 +412,79 @@ get_file (GtkamSave *save, GtkamCamera *camera,
 }
 
 static void
+store_save_settings(GtkamSave *save)
+{
+	gchar *savedir,*t;
+	gchar buf[5];
+
+	/* directory */
+	savedir=g_strdup(gtk_file_selection_get_filename(
+			      GTK_FILE_SELECTION (save)));
+	if (savedir) {
+		if (strlen(savedir) > 255) savedir[255]='\0';
+		if (!g_file_test(savedir,G_FILE_TEST_IS_DIR)) {
+			t=g_path_get_dirname(savedir);
+			g_free(savedir);
+			savedir=t;
+		}
+		gp_setting_set("gtkam","save-dir",savedir);
+		g_free(savedir);
+	}
+	/* toggle buttons */
+#define STORE_TOGGLE(NAME) \
+	snprintf(buf,sizeof(buf), "%d", gtk_toggle_button_get_active(	\
+		save->priv->toggle_ ## NAME)); 				\
+	gp_setting_set("gtkam","save-" #NAME,buf)
+	
+	STORE_TOGGLE(preview);
+	STORE_TOGGLE(normal);
+	STORE_TOGGLE(raw);
+	STORE_TOGGLE(audio);
+	STORE_TOGGLE(exif);
+	STORE_TOGGLE(filename_camera);
+	/* prefix entry */
+	if (g_slist_length (save->priv->data) > 1) {
+		/* only when saving several files */
+		gp_setting_set("gtkam","save-prefix",(gchar *)
+			gtk_entry_get_text(GTK_ENTRY(save->priv->prefix_entry)));
+	}
+}
+
+static void
+load_save_settings(GtkamSave *save)
+{
+	gchar buf[1024];
+	gchar *dir;
+
+	/* directory */
+	if (gp_setting_get("gtkam","save-dir",buf) == GP_OK) {
+		dir=g_strdup(buf);
+		strcat(buf,G_DIR_SEPARATOR_S);
+		gtk_file_selection_set_filename(GTK_FILE_SELECTION(save),buf);
+	} else {
+		dir=g_strdup(gtk_file_selection_get_filename(
+			GTK_FILE_SELECTION(save) ));
+	}
+	/* prefix entry */
+	gp_setting_get("gtkam","save-prefix",buf);
+	gtk_entry_set_text(GTK_ENTRY(save->priv->prefix_entry), buf);
+
+	/* toggle buttons */
+#define LOAD_TOGGLE(NAME) \
+	gp_setting_get("gtkam","save-" #NAME,buf); 			\
+	gtk_toggle_button_set_active(save->priv->toggle_ ## NAME, atoi(buf))
+
+	LOAD_TOGGLE(preview);
+	LOAD_TOGGLE(normal);
+	LOAD_TOGGLE(raw);
+	LOAD_TOGGLE(audio);
+	LOAD_TOGGLE(exif);
+	LOAD_TOGGLE(filename_camera);
+	g_free(dir);
+}
+
+
+static void
 on_ok_clicked (GtkButton *button, GtkamSave *save)
 {
 	guint i, count, j = 1;
@@ -385,6 +492,7 @@ on_ok_clicked (GtkButton *button, GtkamSave *save)
 	unsigned int id = 0;
 	GtkamSaveData *data;
 
+	store_save_settings(save);
 	gtk_widget_hide (GTK_WIDGET (save));
 
 	count = g_slist_length (save->priv->data);
@@ -575,6 +683,7 @@ gtkam_save_new (GtkWindow *main_window)
         gtk_box_pack_start (GTK_BOX (hbox), save->priv->spin_entry,
 			    FALSE, FALSE, 0);
 
+	load_save_settings(save);
 	gtk_widget_grab_focus (GTK_FILE_SELECTION (save)->ok_button);
 
 	/* Remember the main window (if given) */

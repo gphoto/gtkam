@@ -1,3 +1,9 @@
+2004-01-26  Andrew Burton <adburton@users.sourceforge.net>
+
+	* src/gtkam-save.c: Applied patch from Nils Rennebarth
+	(nilsr@users.sourceforge.net) to make save dialog remember
+	defaults (fixes SF feature request 865910).
+
 2004-01-22  Andrew Burton <adburton@users.sourceforge.net>
 
 	* Makefile.am: Add EXTRA_DIST clause so gtkam.desktop and

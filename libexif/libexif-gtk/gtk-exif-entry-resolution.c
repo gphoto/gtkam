@@ -73,6 +73,8 @@ struct _GtkExifEntryResolutionPrivate
 	GtkToggleButton *check;
 	ResolutionObjects ox, oy;
 	ResolutionUnitObjects u;
+
+	ExifTag tag_x, tag_y, tag_u;
 };
 
 #define PARENT_TYPE GTK_EXIF_TYPE_ENTRY
@@ -152,7 +154,7 @@ on_inch_activate (GtkMenuItem *item, GtkExifEntryResolution *entry)
 	ExifEntry *e;
 
 	e = exif_content_get_entry (entry->priv->content,
-				    EXIF_TAG_RESOLUTION_UNIT);
+				    entry->priv->tag_u);
 	g_return_if_fail (e != NULL);
 	exif_set_short (e->data, e->order, 2);
 }
@@ -163,7 +165,7 @@ on_centimeter_activate (GtkMenuItem *item, GtkExifEntryResolution *entry)
 	ExifEntry *e;
 
 	e = exif_content_get_entry (entry->priv->content,
-				    EXIF_TAG_RESOLUTION_UNIT);
+				    entry->priv->tag_u);
 	g_return_if_fail (e != NULL);
 	exif_set_short (e->data, e->order, 3);
 }
@@ -174,7 +176,7 @@ on_wp_value_changed (GtkAdjustment *a, GtkExifEntryResolution *entry)
 	ExifEntry *e;
 
 	e = exif_content_get_entry (entry->priv->content,
-				    EXIF_TAG_X_RESOLUTION);
+				    entry->priv->tag_x);
 	g_return_if_fail (e != NULL);
 	exif_set_rational (e->data, e->order, entry->priv->ox.ap->value, 
 					      entry->priv->ox.aq->value);
@@ -186,7 +188,7 @@ on_wq_value_changed (GtkAdjustment *a, GtkExifEntryResolution *entry)
 	ExifEntry *e;
 
 	e = exif_content_get_entry (entry->priv->content,
-				    EXIF_TAG_X_RESOLUTION);
+				    entry->priv->tag_x);
 	g_return_if_fail (e != NULL);
 	exif_set_rational (e->data, e->order, entry->priv->ox.ap->value,
 					      entry->priv->ox.aq->value);
@@ -198,7 +200,7 @@ on_hp_value_changed (GtkAdjustment *a, GtkExifEntryResolution *entry)
 	ExifEntry *e;
 
 	e = exif_content_get_entry (entry->priv->content,
-				    EXIF_TAG_Y_RESOLUTION);
+				    entry->priv->tag_y);
 	g_return_if_fail (e != NULL);
 	exif_set_rational (e->data, e->order, entry->priv->oy.ap->value,
 					      entry->priv->oy.aq->value);
@@ -210,7 +212,7 @@ on_hq_value_changed (GtkAdjustment *a, GtkExifEntryResolution *entry)
 	ExifEntry *e;
 
 	e = exif_content_get_entry (entry->priv->content,
-				    EXIF_TAG_Y_RESOLUTION);
+				    entry->priv->tag_y);
 	g_return_if_fail (e != NULL);
 	exif_set_rational (e->data, e->order, entry->priv->oy.ap->value,
 					      entry->priv->oy.aq->value);
@@ -286,12 +288,12 @@ on_cw_toggled (GtkToggleButton *toggle, GtkExifEntryResolution *entry)
 	ExifEntry *e;
 
 	e = exif_content_get_entry (entry->priv->content,
-				    EXIF_TAG_X_RESOLUTION);
-	gtk_widget_set_sensitive (entry->priv->ox.sp, (e != NULL));
-	gtk_widget_set_sensitive (entry->priv->ox.sq, (e != NULL));
+				    entry->priv->tag_x);
+	gtk_widget_set_sensitive (entry->priv->ox.sp, toggle->active);
+	gtk_widget_set_sensitive (entry->priv->ox.sq, toggle->active);
 	if (toggle->active && !e) { 
 		e = exif_entry_new ();
-		exif_entry_initialize (e, EXIF_TAG_Y_RESOLUTION);
+		exif_entry_initialize (e, entry->priv->tag_x);
 		exif_content_add_entry (entry->priv->content, e);
 		gtk_exif_entry_resolution_load (entry, e);
 		exif_entry_unref (e);
@@ -306,12 +308,12 @@ on_ch_toggled (GtkToggleButton *toggle, GtkExifEntryResolution *entry)
         ExifEntry *e;
 
         e = exif_content_get_entry (entry->priv->content,
-                                    EXIF_TAG_Y_RESOLUTION);
-	gtk_widget_set_sensitive (entry->priv->oy.sp, (e != NULL));
-	gtk_widget_set_sensitive (entry->priv->oy.sq, (e != NULL));
+                                    entry->priv->tag_y);
+	gtk_widget_set_sensitive (entry->priv->oy.sp, toggle->active);
+	gtk_widget_set_sensitive (entry->priv->oy.sq, toggle->active);
         if (toggle->active && !e) {
 		e = exif_entry_new ();
-		exif_entry_initialize (e, EXIF_TAG_Y_RESOLUTION);
+		exif_entry_initialize (e, entry->priv->tag_y);
 		exif_content_add_entry (entry->priv->content, e);
 		gtk_exif_entry_resolution_load (entry, e);
 		exif_entry_unref (e);
@@ -326,12 +328,12 @@ on_unit_toggled (GtkToggleButton *toggle, GtkExifEntryResolution *entry)
 	ExifEntry *e;
 
 	e = exif_content_get_entry (entry->priv->content,
-				    EXIF_TAG_RESOLUTION_UNIT);
+				    entry->priv->tag_u);
 	gtk_widget_set_sensitive (GTK_WIDGET (entry->priv->u.menu),
-				  (e != NULL));
+				  toggle->active);
 	if (toggle->active && !e) {
 		e = exif_entry_new ();
-		exif_entry_initialize (e, EXIF_TAG_RESOLUTION_UNIT);
+		exif_entry_initialize (e, entry->priv->tag_u);
 		exif_content_add_entry (entry->priv->content, e);
 		gtk_exif_entry_resolution_load_unit (entry, e);
 		exif_entry_unref (e);
@@ -341,7 +343,7 @@ on_unit_toggled (GtkToggleButton *toggle, GtkExifEntryResolution *entry)
 }
 
 GtkWidget *
-gtk_exif_entry_resolution_new (ExifContent *content)
+gtk_exif_entry_resolution_new (ExifContent *content, gboolean focal_plane)
 {
 	GtkExifEntryResolution *entry;
 	GtkWidget *hbox, *sp, *sq, *label, *menu, *item, *o, *c;
@@ -353,11 +355,25 @@ gtk_exif_entry_resolution_new (ExifContent *content)
 	entry = gtk_type_new (GTK_EXIF_TYPE_ENTRY_RESOLUTION);
 	entry->priv->content = content;
 	exif_content_ref (content);
-	gtk_exif_entry_construct (GTK_EXIF_ENTRY (entry), _("Resolution"),
-		_("The number of pixels per unit."));
+
+	if (focal_plane) {
+		gtk_exif_entry_construct (GTK_EXIF_ENTRY (entry), 
+			_("Focal Plane Resolution"),
+			_("The number of pixels on the camera focal plane."));
+		entry->priv->tag_x = EXIF_TAG_FOCAL_PLANE_X_RESOLUTION;
+		entry->priv->tag_y = EXIF_TAG_FOCAL_PLANE_Y_RESOLUTION;
+		entry->priv->tag_u = EXIF_TAG_FOCAL_PLANE_RESOLUTION_UNIT;
+	} else {
+		gtk_exif_entry_construct (GTK_EXIF_ENTRY (entry),
+			_("Resolution"),
+			_("The number of pixels per unit."));
+		entry->priv->tag_x = EXIF_TAG_X_RESOLUTION;
+		entry->priv->tag_y = EXIF_TAG_Y_RESOLUTION;
+		entry->priv->tag_u = EXIF_TAG_RESOLUTION_UNIT;
+	}
 
 	/* Width */
-	e = exif_content_get_entry (content, EXIF_TAG_X_RESOLUTION);
+	e = exif_content_get_entry (content, entry->priv->tag_x);
 	hbox = gtk_hbox_new (FALSE, 5);
 	gtk_widget_show (hbox);
 	gtk_box_pack_start (GTK_BOX (entry), hbox, TRUE, FALSE, 0);
@@ -393,7 +409,7 @@ gtk_exif_entry_resolution_new (ExifContent *content)
 		gtk_exif_entry_resolution_load (entry, e);
 
 	/* Height */
-	e = exif_content_get_entry (content, EXIF_TAG_Y_RESOLUTION);
+	e = exif_content_get_entry (content, entry->priv->tag_y);
 	hbox = gtk_hbox_new (FALSE, 5);
 	gtk_widget_show (hbox);
 	gtk_box_pack_start (GTK_BOX (entry), hbox, TRUE, FALSE, 0);
@@ -429,7 +445,7 @@ gtk_exif_entry_resolution_new (ExifContent *content)
 		gtk_exif_entry_resolution_load (entry, e);
 
 	/* Unit */
-	e = exif_content_get_entry (content, EXIF_TAG_RESOLUTION_UNIT);
+	e = exif_content_get_entry (content, entry->priv->tag_u);
 	hbox = gtk_hbox_new (FALSE, 5);
 	gtk_widget_show (hbox);
 	gtk_box_pack_start (GTK_BOX (entry), hbox, TRUE, FALSE, 0);

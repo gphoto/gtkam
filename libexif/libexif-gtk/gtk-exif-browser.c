@@ -27,6 +27,7 @@
 
 #include "gtk-exif-tree.h"
 #include "gtk-exif-content-list.h"
+#include "gtk-exif-entry-ascii.h"
 #include "gtk-exif-entry-flash.h"
 #include "gtk-exif-entry-generic.h"
 #include "gtk-exif-entry-resolution.h"
@@ -135,7 +136,18 @@ on_entry_selected (GtkExifContentList *list, ExifEntry *entry,
 	case EXIF_TAG_X_RESOLUTION:
 	case EXIF_TAG_Y_RESOLUTION:
 		browser->priv->current = gtk_exif_entry_resolution_new (
-								entry->parent);
+							entry->parent, FALSE);
+		break;
+	case EXIF_TAG_FOCAL_PLANE_X_RESOLUTION:
+	case EXIF_TAG_FOCAL_PLANE_Y_RESOLUTION:
+	case EXIF_TAG_FOCAL_PLANE_RESOLUTION_UNIT:
+		browser->priv->current = gtk_exif_entry_resolution_new (
+							entry->parent, TRUE);
+		break;
+	case EXIF_TAG_MAKE:
+	case EXIF_TAG_MODEL:
+	case EXIF_TAG_IMAGE_DESCRIPTION:
+		browser->priv->current = gtk_exif_entry_ascii_new (entry);
 		break;
 	default:
 		browser->priv->current = gtk_exif_entry_generic_new (entry);

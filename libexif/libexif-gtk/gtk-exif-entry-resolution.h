@@ -45,6 +45,7 @@ struct _GtkExifEntryResolutionClass
 };
 
 GtkType    gtk_exif_entry_resolution_get_type (void);
-GtkWidget *gtk_exif_entry_resolution_new      (ExifContent *content);
+GtkWidget *gtk_exif_entry_resolution_new      (ExifContent *content,
+					       gboolean focal_plane);
 
 #endif /* __GTK_EXIF_ENTRY_RESOLUTION_H__ */

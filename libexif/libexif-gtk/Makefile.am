@@ -10,6 +10,7 @@ libexif_gtkinclude_HEADERS =		\
 	gtk-exif-browser.h		\
 	gtk-exif-content-list.h		\
 	gtk-exif-entry.h		\
+	gtk-exif-entry-ascii.h		\
 	gtk-exif-entry-generic.h	\
 	gtk-exif-entry-flash.h		\
 	gtk-exif-entry-resolution.h	\
@@ -20,6 +21,7 @@ libexif_gtk_la_SOURCES =		\
 	gtk-exif-browser.c		\
 	gtk-exif-content-list.c		\
 	gtk-exif-entry.c		\
+	gtk-exif-entry-ascii.c		\
 	gtk-exif-entry-generic.c	\
 	gtk-exif-entry-flash.c		\
 	gtk-exif-entry-resolution.c	\

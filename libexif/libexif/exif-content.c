@@ -60,8 +60,6 @@ exif_content_add_notify (ExifContent *content, ExifContentEvent events,
 			realloc (content->priv->notifications,
 				 sizeof (ExifContentNotifyData) *
 				 	(content->priv->count + 1));
-	if (!content->priv->notifications)
-		return (0);
 	content->priv->notifications[content->priv->count].events = events;
 	content->priv->notifications[content->priv->count].func = func;
 	content->priv->notifications[content->priv->count].data = data;
@@ -138,6 +136,7 @@ exif_content_parse (ExifContent *content, const unsigned char *data,
 {
 	unsigned int i;
 	ExifShort n;
+	ExifEntry *entry;
 
 	if (!content)
 		return;
@@ -152,17 +151,12 @@ exif_content_parse (ExifContent *content, const unsigned char *data,
 	printf ("Parsing directory with %i entries...\n", n);
 #endif
 
-	content->entries = malloc (sizeof (ExifEntry *) * n);
-	if (!content->entries)
-		return;
-	memset (content->entries, 0, sizeof (ExifEntry *) * n);
-	content->count = n;
-
 	for (i = 0; i < n; i++) {
-		content->entries[i] = exif_entry_new ();
-		content->entries[i]->parent = content;
+		entry = exif_entry_new ();
+		exif_content_add_entry (content, entry);
 		exif_entry_parse (content->entries[i], data, size,
 				  offset + 2 + 12 * i, order);
+		exif_entry_unref (entry);
 	}
 }
 
@@ -185,11 +179,21 @@ exif_content_dump (ExifContent *content, unsigned int indent)
 		exif_entry_dump (content->entries[i], indent + 1);
 }
 
-void
-exif_content_add_entry (ExifContent *content, ExifEntry *entry)
+static void
+exif_content_notify (ExifContent *content, ExifEntry *entry,
+		     ExifContentEvent event)
 {
 	unsigned int i;
 
+	for (i = 0; i < content->priv->count; i++)
+		if (content->priv->notifications[i].events & event)
+			content->priv->notifications[i].func (content, entry,
+					content->priv->notifications[i].data);
+}
+
+void
+exif_content_add_entry (ExifContent *content, ExifEntry *entry)
+{
 	if (entry->parent)
 		return;
 
@@ -200,12 +204,7 @@ exif_content_add_entry (ExifContent *content, ExifEntry *entry)
 	exif_entry_ref (entry);
 	content->count++;
 
-	/* Notification */
-	for (i = 0; i < content->priv->count; i++)
-		if (content->priv->notifications[i].events & 
-						EXIF_CONTENT_EVENT_ADD)
-			content->priv->notifications[i].func (content, entry, 
-				content->priv->notifications[i].data);
+	exif_content_notify (content, entry, EXIF_CONTENT_EVENT_ADD);
 }
 
 void
@@ -224,13 +223,9 @@ exif_content_remove_entry (ExifContent *content, ExifEntry *entry)
 
 	memmove (&content->entries[i], &content->entries[i + 1],
 		 sizeof (ExifEntry) * (content->count - i - 1));
+	content->count--;
 
-	/* Notification */
-	for (i = 0; i < content->priv->count; i++) 
-		if (content->priv->notifications[i].events &
-						EXIF_CONTENT_EVENT_REMOVE)
-			content->priv->notifications[i].func (content, entry,
-				content->priv->notifications[i].data);
+	exif_content_notify (content, entry, EXIF_CONTENT_EVENT_REMOVE);
 
 	entry->parent = NULL;
 	exif_entry_unref (entry);

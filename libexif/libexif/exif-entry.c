@@ -47,8 +47,18 @@ static struct {
         {0, 0}
 };
 
+typedef struct _ExifEntryNotifyData ExifEntryNotifyData;
+struct _ExifEntryNotifyData {
+	ExifEntryEvent events;
+	ExifEntryNotifyFunc func;
+	void *data;
+};
+
 struct _ExifEntryPrivate
 {
+	ExifEntryNotifyData *notifications;
+	unsigned int count;
+
 	unsigned int ref_count;
 };
 
@@ -101,6 +111,55 @@ exif_entry_free (ExifEntry *entry)
 	exif_content_unref (entry->content);
 	free (entry->priv);
 	free (entry);
+}
+
+void
+exif_entry_notify (ExifEntry *entry, ExifEntryEvent event)
+{
+	unsigned int i;
+
+	for (i = 0; i < entry->priv->count; i++)
+		if (entry->priv->notifications[i].events & event)
+			entry->priv->notifications[i].func (entry,
+				entry->priv->notifications[i].data);
+}
+
+void
+exif_entry_remove_notify (ExifEntry *entry, unsigned int id)
+{
+	if (!entry)
+		return;
+	if (id > entry->priv->count)
+		return;
+
+	memmove (entry->priv->notifications + id - 1,
+		 entry->priv->notifications + id,
+		 sizeof (ExifEntryNotifyData) *
+			(entry->priv->count - id));
+	entry->priv->count--;
+}
+
+unsigned int
+exif_entry_add_notify (ExifEntry *entry, ExifEntryEvent events,
+		       ExifEntryNotifyFunc func, void *data)
+{
+	if (!entry)
+		return (0);
+
+	if (!entry->priv->notifications)
+		entry->priv->notifications =
+				malloc (sizeof (ExifEntryNotifyData));
+	else
+		entry->priv->notifications = 
+			realloc (entry->priv->notifications, 
+				 sizeof (ExifEntryNotifyData) *
+				 	(entry->priv->count + 1));
+	entry->priv->notifications[entry->priv->count].events = events;
+	entry->priv->notifications[entry->priv->count].func = func;
+	entry->priv->notifications[entry->priv->count].data = data;
+	entry->priv->count++;
+
+	return (entry->priv->count);
 }
 
 void
@@ -246,7 +305,7 @@ exif_entry_initialize (ExifEntry *entry, ExifTag tag)
 		entry->format = EXIF_FORMAT_SHORT;
 		entry->data = malloc (sizeof (ExifShort));
 		entry->size = sizeof (ExifShort);
-		exif_set_rational (entry->data, entry->order, 72, 1);
+		exif_set_short (entry->data, entry->order, 2);
 		break;
 	default:
 		break;

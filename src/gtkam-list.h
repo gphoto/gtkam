@@ -93,4 +93,8 @@ void       gtkam_list_delete_all      (GtkamList *list);
 guint      gtkam_list_count_all      (GtkamList *list);
 guint      gtkam_list_count_selected (GtkamList *list);
 
+void       gtkam_list_zoom_in  (GtkamList *);
+void       gtkam_list_zoom_out (GtkamList *);
+void       gtkam_list_zoom_100 (GtkamList *);
+
 #endif /* __GTKAM_LIST_H__ */

@@ -1,5 +1,10 @@
 2002-07-26  Lutz Müller <lutz@users.sourceforge.net>
 
+	* src/gtkam-list.c: Give users the possibility to zoom into the
+	  previews.
+
+2002-07-26  Lutz Müller <lutz@users.sourceforge.net>
+
 	* src/support.[c,h]: Removed.
 
 2002-07-23  Lutz Müller <lutz@users.sourceforge.net>

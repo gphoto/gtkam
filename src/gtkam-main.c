@@ -64,6 +64,7 @@
 #include <gtk/gtkfilesel.h>
 #include <gtk/gtktreeselection.h>
 #include <gtk/gtkstock.h>
+#include <gtk/gtkimage.h>
 
 #include <gphoto2/gphoto2-camera.h>
 
@@ -318,6 +319,33 @@ action_add_camera (gpointer callback_data, guint callback_action,
 }
 
 static void
+action_zoom_in (gpointer callback_data, guint callback_action,
+		GtkWidget *widget)
+{
+	GtkamMain *m = GTKAM_MAIN (callback_data);
+
+	gtkam_list_zoom_in (GTKAM_LIST (m->priv->list));
+}
+
+static void
+action_zoom_out (gpointer callback_data, guint callback_action,
+		 GtkWidget *widget)
+{
+	GtkamMain *m = GTKAM_MAIN (callback_data);
+	
+	gtkam_list_zoom_out (GTKAM_LIST (m->priv->list));
+}
+
+static void
+action_zoom_100 (gpointer callback_data, guint callback_action,
+		 GtkWidget *widget)
+{
+	GtkamMain *m = GTKAM_MAIN (callback_data);
+
+	gtkam_list_zoom_100 (GTKAM_LIST (m->priv->list));
+}
+
+static void
 on_folder_selected (GtkamTree *tree, GtkamTreeFolderSelectedData *data,
 		    GtkamMain *m)
 {
@@ -444,6 +472,24 @@ gtkam_main_load (GtkamMain *m)
 	gtkam_tree_load (GTKAM_TREE (m->priv->tree));
 }
 
+static void
+on_zoom_out_clicked (GtkButton *button, GtkamMain *m)
+{
+	gtkam_list_zoom_out (GTKAM_LIST (m->priv->list));
+}
+
+static void
+on_zoom_100_clicked (GtkButton *button, GtkamMain *m)
+{
+	gtkam_list_zoom_100 (GTKAM_LIST (m->priv->list));
+}
+
+static void
+on_zoom_in_clicked (GtkButton *button, GtkamMain *m)
+{
+	gtkam_list_zoom_in (GTKAM_LIST (m->priv->list));
+}
+
 static GtkItemFactoryEntry mi[] =
 {
 	{"/_File", NULL, 0, 0, "<Branch>"},
@@ -455,6 +501,13 @@ static GtkItemFactoryEntry mi[] =
 	{"/File/Delete Photos/_All", NULL, action_delete_all, 0, NULL},
 	{"/File/sep1", NULL, 0, 0, "<Separator>"},
 	{"/File/_Quit", NULL, action_quit, 0, "<StockItem>", GTK_STOCK_QUIT},
+	{"/_View", NULL, 0, 0, "<Branch>"},
+	{"/View/Zoom _In", NULL, action_zoom_in, 0, "<StockItem>",
+							GTK_STOCK_ZOOM_IN},
+	{"/View/Zoom _100", NULL, action_zoom_100, 0, "<StockItem>",
+							GTK_STOCK_ZOOM_100},
+	{"/View/Zoom _Out", NULL, action_zoom_out, 0, "<StockItem>",
+							GTK_STOCK_ZOOM_OUT},
 	{"/_Select", NULL, 0, 0, "<Branch>"},
 	{"/Select/_All", NULL, action_select_all, 0, NULL},
 	{"/Select/_Inverse", NULL, action_select_inverse, 0, NULL},
@@ -471,6 +524,7 @@ gtkam_main_new (void)
 	GtkAccelGroup *ag;
 	GtkItemFactory *item_factory;
 	GtkWidget *widget, *vbox, *frame, *scrolled, *hpaned, *check;
+	GtkWidget *hbox, *i, *b;
 
 	m = g_object_new (GTKAM_TYPE_MAIN, NULL);
 	gtk_window_set_title (GTK_WINDOW (m), PACKAGE);
@@ -557,12 +611,43 @@ gtkam_main_new (void)
 	gtk_widget_show (frame);
 	gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, FALSE, 0);
 
+	hbox = gtk_hbox_new (FALSE, 5);
+	gtk_widget_show (hbox);
+	gtk_container_add (GTK_CONTAINER (frame), hbox);
+	gtk_container_set_border_width (GTK_CONTAINER (hbox), 2);
+
 	check = gtk_check_button_new_with_label (_("View Thumbnails"));
 	gtk_widget_show (check);
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (check), TRUE);
-	gtk_container_add (GTK_CONTAINER (frame), check);
+	gtk_box_pack_start (GTK_BOX (hbox), check, FALSE, FALSE, 0);
 	g_signal_connect (G_OBJECT (check), "toggled",
 			  G_CALLBACK (on_thumbnails_toggled), m);
+
+	/* Zoom buttons */
+	b = gtk_button_new ();
+	gtk_widget_show (b);
+	gtk_box_pack_end (GTK_BOX (hbox), b, FALSE, FALSE, 0);
+	i = gtk_image_new_from_stock (GTK_STOCK_ZOOM_OUT, GTK_ICON_SIZE_BUTTON);
+	gtk_widget_show (i);
+	gtk_container_add (GTK_CONTAINER (b), i);
+	g_signal_connect (G_OBJECT (b), "clicked",
+			  G_CALLBACK (on_zoom_out_clicked), m);
+	b = gtk_button_new ();
+	gtk_widget_show (b);
+	gtk_box_pack_end (GTK_BOX (hbox), b, FALSE, FALSE, 0);
+	i = gtk_image_new_from_stock (GTK_STOCK_ZOOM_100, GTK_ICON_SIZE_BUTTON);
+	gtk_widget_show (i);
+	gtk_container_add (GTK_CONTAINER (b), i);
+	g_signal_connect (G_OBJECT (b), "clicked",
+			  G_CALLBACK (on_zoom_100_clicked), m);
+	b = gtk_button_new ();
+	gtk_widget_show (b);
+	gtk_box_pack_end (GTK_BOX (hbox), b, FALSE, FALSE, 0);
+	i = gtk_image_new_from_stock (GTK_STOCK_ZOOM_IN, GTK_ICON_SIZE_BUTTON);
+	gtk_widget_show (i);
+	gtk_container_add (GTK_CONTAINER (b), i);
+	g_signal_connect (G_OBJECT (b), "clicked",
+			  G_CALLBACK (on_zoom_in_clicked), m);
 
 	scrolled = gtk_scrolled_window_new (NULL, NULL);
 	gtk_widget_show (scrolled);

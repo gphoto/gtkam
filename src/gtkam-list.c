@@ -94,6 +94,7 @@ static guint signals[LAST_SIGNAL] = {0};
 
 enum {
 	PREVIEW_COLUMN = 0,
+	PREVIEW_ORIG_COLUMN,
 	NAME_COLUMN,
 	FOLDER_COLUMN,
 	CAMERA_COLUMN,
@@ -270,6 +271,34 @@ gtkam_list_get_iter (GtkamList *list, GtkTreeIter *iter, GtkamCamera *camera,
 	return (i != n);
 }
 
+static gfloat
+gtkam_list_get_zoom_factor (GtkamList *list)
+{
+	GValue v = {0};
+	GdkPixbuf *p;
+	GtkTreeIter iter;
+	gfloat w, w_orig;
+
+	g_return_val_if_fail (GTKAM_IS_LIST (list), 1.);
+
+	if (!gtk_tree_model_get_iter_first (
+				GTK_TREE_MODEL (list->priv->store), &iter))
+		return (1.);
+
+	gtk_tree_model_get_value (GTK_TREE_MODEL (list->priv->store), &iter,
+				  PREVIEW_ORIG_COLUMN, &v);
+	p = g_value_peek_pointer (&v);
+	w_orig = (p ? gdk_pixbuf_get_width (p) : 80);
+	g_value_unset (&v);
+	gtk_tree_model_get_value (GTK_TREE_MODEL (list->priv->store), &iter,
+				  PREVIEW_COLUMN, &v);
+	p = g_value_peek_pointer (&v);
+	w = (p ? gdk_pixbuf_get_width (p) : 80);
+	g_value_unset (&v);
+
+	return (w / w_orig);
+}
+
 typedef struct _GetThumbnailData GetThumbnailData;
 struct _GetThumbnailData {
 	GtkamCamera *camera;
@@ -286,7 +315,11 @@ get_thumbnail_idle (gpointer data)
 	CameraFile *file;
 	GtkWidget *s;
 	GdkPixbuf *pixbuf;
+	GdkPixbufLoader *loader;
 	int result;
+	const char *fd;
+	unsigned long fs;
+	gfloat factor;
 
 	s = gtkam_status_new (_("Downloading thumbnail of '%s' from "
 		"folder '%s'..."), d->name, d->folder);
@@ -298,7 +331,19 @@ get_thumbnail_idle (gpointer data)
 	if (d->camera->multi)
 		gp_camera_exit (d->camera->camera, NULL);
 	if (result >= 0) {
-		pixbuf = gdk_pixbuf_new_from_camera_file (file, 50, NULL);
+		gp_file_get_data_and_size (file, &fd, &fs);
+		loader = gdk_pixbuf_loader_new ();
+		gdk_pixbuf_loader_write (loader, fd, fs, NULL);
+		gdk_pixbuf_loader_close (loader, NULL);
+		pixbuf = gdk_pixbuf_loader_get_pixbuf (loader);
+		gtk_list_store_set (d->list->priv->store, d->iter,
+				    PREVIEW_ORIG_COLUMN, pixbuf, -1);
+		factor = gtkam_list_get_zoom_factor (d->list);
+		pixbuf = gdk_pixbuf_scale_simple (pixbuf,
+			gdk_pixbuf_get_width (pixbuf) * factor,
+			gdk_pixbuf_get_height (pixbuf) * factor,
+			GDK_INTERP_BILINEAR);
+		g_object_unref (G_OBJECT (loader));
 		gtk_list_store_set (d->list->priv->store, d->iter,
 				    PREVIEW_COLUMN, pixbuf, -1);
 		gdk_pixbuf_unref (pixbuf);
@@ -719,8 +764,8 @@ gtkam_list_new (void)
 						list, NULL);
 
 	list->priv->store = gtk_list_store_new (NUM_COLUMNS,
-				GDK_TYPE_PIXBUF, G_TYPE_STRING, G_TYPE_STRING,
-				GTKAM_TYPE_CAMERA, G_TYPE_BOOLEAN);
+		GDK_TYPE_PIXBUF, GDK_TYPE_PIXBUF, G_TYPE_STRING, G_TYPE_STRING,
+		GTKAM_TYPE_CAMERA, G_TYPE_BOOLEAN);
 	gtk_tree_view_set_model (GTK_TREE_VIEW (list),
 				 GTK_TREE_MODEL (list->priv->store));
 
@@ -732,12 +777,10 @@ gtkam_list_new (void)
 				     list->priv->col_previews);
 
 	/* Column for file names */
-	col = gtk_tree_view_column_new ();
-	gtk_tree_view_append_column (GTK_TREE_VIEW (list), col);
 	renderer = gtk_cell_renderer_text_new ();
-	gtk_tree_view_column_pack_start (col, renderer, TRUE);
-	gtk_tree_view_column_set_attributes (col, renderer, "text",
-			NAME_COLUMN, "editable", IS_EDITABLE_COLUMN, NULL);
+	col = gtk_tree_view_column_new_with_attributes (_("Name"), renderer,
+		"text", NAME_COLUMN, "editable", IS_EDITABLE_COLUMN, NULL);
+	gtk_tree_view_append_column (GTK_TREE_VIEW (list), col);
 	g_signal_connect (G_OBJECT (renderer), "edited",
 			  G_CALLBACK (on_edited), list);
 
@@ -1093,4 +1136,114 @@ gtkam_list_add_file (GtkamList *list, GtkamCamera *camera,
 	gtk_list_store_set (list->priv->store, &iter,
 		NAME_COLUMN, name, FOLDER_COLUMN, folder,
 		CAMERA_COLUMN, camera, IS_EDITABLE_COLUMN, TRUE, -1); 
+}
+
+typedef enum {
+	ZOOM_IN,
+	ZOOM_OUT,
+	ZOOM_100
+} Zoom;
+
+static void
+zoom_factor (GtkamList *list, GtkTreeIter *iter, Zoom zoom)
+{
+	GValue v = {0};
+	GdkPixbuf *pixbuf_orig, *pixbuf, *new;
+	guint w, h;
+
+	gtk_tree_model_get_value (GTK_TREE_MODEL (list->priv->store), iter,
+				  PREVIEW_ORIG_COLUMN, &v);
+	pixbuf_orig = g_value_peek_pointer (&v);
+	g_object_ref (G_OBJECT (pixbuf_orig));
+	g_value_unset (&v);
+	gtk_tree_model_get_value (GTK_TREE_MODEL (list->priv->store), iter, 
+				  PREVIEW_COLUMN, &v);
+	pixbuf = g_value_peek_pointer (&v);
+	g_object_ref (G_OBJECT (pixbuf));
+	g_value_unset (&v);
+
+	switch (zoom) {
+	case ZOOM_100:
+		gtk_list_store_set (list->priv->store, iter, PREVIEW_COLUMN,
+				    pixbuf_orig, -1);
+		break;
+	case ZOOM_IN:
+		new = gdk_pixbuf_scale_simple (pixbuf_orig,
+			gdk_pixbuf_get_width (pixbuf) * 1.2,
+			gdk_pixbuf_get_height (pixbuf) * 1.2,
+			GDK_INTERP_BILINEAR);
+		gtk_list_store_set (list->priv->store, iter, PREVIEW_COLUMN,
+				    new, -1);
+		g_object_unref (G_OBJECT (new));
+		break;
+	case ZOOM_OUT:
+		w = gdk_pixbuf_get_width (pixbuf) * 0.8;
+		h = gdk_pixbuf_get_height (pixbuf) * 0.8;
+		if (w && h) {
+			new = gdk_pixbuf_scale_simple (pixbuf_orig, w, h,
+						       GDK_INTERP_BILINEAR);
+			gtk_list_store_set (list->priv->store, iter,
+					    PREVIEW_COLUMN, new, -1);
+			g_object_unref (G_OBJECT (new));
+		}
+		break;
+	}
+	gdk_pixbuf_unref (pixbuf);
+	gdk_pixbuf_unref (pixbuf_orig);
+
+	gtk_tree_view_columns_autosize (GTK_TREE_VIEW (list));
+}
+
+static gboolean
+zoom_out_func (GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter,
+	       gpointer data)
+{
+	zoom_factor (GTKAM_LIST (data), iter, ZOOM_OUT);
+
+	return (FALSE);
+}
+
+static gboolean
+zoom_100_func (GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter,
+	       gpointer data)
+{
+	zoom_factor (GTKAM_LIST (data), iter, ZOOM_100);
+
+	return (FALSE);
+}
+
+static gboolean
+zoom_in_func (GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter,
+	      gpointer data)
+{
+	zoom_factor (GTKAM_LIST (data), iter, ZOOM_IN);
+
+	return (FALSE);
+}
+
+void
+gtkam_list_zoom_out (GtkamList *list)
+{
+	g_return_if_fail (GTKAM_IS_LIST (list));
+
+	gtk_tree_model_foreach (GTK_TREE_MODEL (list->priv->store),
+				zoom_out_func, list);
+}
+
+void
+gtkam_list_zoom_100 (GtkamList *list)
+{
+	g_return_if_fail (GTKAM_IS_LIST (list));
+
+	gtk_tree_model_foreach (GTK_TREE_MODEL (list->priv->store),
+				zoom_100_func, list);
+}
+
+void
+gtkam_list_zoom_in (GtkamList *list)
+{
+	g_return_if_fail (GTKAM_IS_LIST (list));
+
+	gtk_tree_model_foreach (GTK_TREE_MODEL (list->priv->store),
+				zoom_in_func, list);
 }

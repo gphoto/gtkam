@@ -140,6 +140,7 @@ on_inch_activate (GtkMenuItem *item, GtkExifEntryResolution *entry)
 				    entry->priv->tag_u);
 	g_return_if_fail (e != NULL);
 	exif_set_short (e->data, e->order, 2);
+	exif_entry_notify (e, EXIF_ENTRY_EVENT_CHANGED);
 }
 
 static void
@@ -151,6 +152,7 @@ on_centimeter_activate (GtkMenuItem *item, GtkExifEntryResolution *entry)
 				    entry->priv->tag_u);
 	g_return_if_fail (e != NULL);
 	exif_set_short (e->data, e->order, 3);
+	exif_entry_notify (e, EXIF_ENTRY_EVENT_CHANGED);
 }
 
 static void
@@ -163,6 +165,7 @@ on_wp_value_changed (GtkAdjustment *a, GtkExifEntryResolution *entry)
 	g_return_if_fail (e != NULL);
 	exif_set_rational (e->data, e->order, entry->priv->ox.ap->value, 
 					      entry->priv->ox.aq->value);
+	exif_entry_notify (e, EXIF_ENTRY_EVENT_CHANGED);
 }
 
 static void
@@ -175,6 +178,7 @@ on_wq_value_changed (GtkAdjustment *a, GtkExifEntryResolution *entry)
 	g_return_if_fail (e != NULL);
 	exif_set_rational (e->data, e->order, entry->priv->ox.ap->value,
 					      entry->priv->ox.aq->value);
+	exif_entry_notify (e, EXIF_ENTRY_EVENT_CHANGED);
 }
 
 static void
@@ -187,6 +191,7 @@ on_hp_value_changed (GtkAdjustment *a, GtkExifEntryResolution *entry)
 	g_return_if_fail (e != NULL);
 	exif_set_rational (e->data, e->order, entry->priv->oy.ap->value,
 					      entry->priv->oy.aq->value);
+	exif_entry_notify (e, EXIF_ENTRY_EVENT_CHANGED);
 }
 
 static void
@@ -199,6 +204,7 @@ on_hq_value_changed (GtkAdjustment *a, GtkExifEntryResolution *entry)
 	g_return_if_fail (e != NULL);
 	exif_set_rational (e->data, e->order, entry->priv->oy.ap->value,
 					      entry->priv->oy.aq->value);
+	exif_entry_notify (e, EXIF_ENTRY_EVENT_CHANGED);
 }
 
 static void

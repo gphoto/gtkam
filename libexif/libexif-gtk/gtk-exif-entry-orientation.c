@@ -1,4 +1,4 @@
-/* gtk-exif-entry-light.c
+/* gtk-exif-entry-orientation.c
  *
  * Copyright (C) 2001 Lutz Müller <lutz@users.sourceforge.net>
  *
@@ -19,7 +19,7 @@
  */
 
 #include <config.h>
-#include "gtk-exif-entry-light.h"
+#include "gtk-exif-entry-orientation.h"
 
 #include <gtk/gtkcheckbutton.h>
 #include <gtk/gtkradiobutton.h>
@@ -28,16 +28,13 @@
 #include <gtk/gtkframe.h>
 #include <gtk/gtklabel.h>
 #include <gtk/gtkentry.h>
-#include <gtk/gtkoptionmenu.h>
-#include <gtk/gtkmenuitem.h>
-#include <gtk/gtkmenu.h>
 #include <gtk/gtkhbox.h>
 
 #include <libexif/exif-i18n.h>
 
-#include "gtk-extensions/gtk-options.h"
+#include <gtk-extensions/gtk-options.h>
 
-struct _GtkExifEntryLightPrivate {
+struct _GtkExifEntryOrientationPrivate {
 	ExifEntry *entry;
 
 	GtkOptions *options;
@@ -53,9 +50,9 @@ enum {
 static guint signals[LAST_SIGNAL] = {0};
 
 static void
-gtk_exif_entry_light_destroy (GtkObject *object)
+gtk_exif_entry_orientation_destroy (GtkObject *object)
 {
-	GtkExifEntryLight *entry = GTK_EXIF_ENTRY_LIGHT (object);
+	GtkExifEntryOrientation *entry = GTK_EXIF_ENTRY_ORIENTATION (object);
 
 	if (entry->priv->entry) {
 		exif_entry_unref (entry->priv->entry);
@@ -66,9 +63,9 @@ gtk_exif_entry_light_destroy (GtkObject *object)
 }
 
 static void
-gtk_exif_entry_light_finalize (GtkObject *object)
+gtk_exif_entry_orientation_finalize (GtkObject *object)
 {
-	GtkExifEntryLight *entry = GTK_EXIF_ENTRY_LIGHT (object);
+	GtkExifEntryOrientation *entry = GTK_EXIF_ENTRY_ORIENTATION (object);
 
 	g_free (entry->priv);
 
@@ -76,13 +73,13 @@ gtk_exif_entry_light_finalize (GtkObject *object)
 }
 
 static void
-gtk_exif_entry_light_class_init (GtkExifEntryLightClass *klass)
+gtk_exif_entry_orientation_class_init (GtkExifEntryOrientationClass *klass)
 {
 	GtkObjectClass *object_class;
 
 	object_class = GTK_OBJECT_CLASS (klass);
-	object_class->destroy  = gtk_exif_entry_light_destroy;
-	object_class->finalize = gtk_exif_entry_light_finalize;
+	object_class->destroy  = gtk_exif_entry_orientation_destroy;
+	object_class->finalize = gtk_exif_entry_orientation_finalize;
 
 	gtk_object_class_add_signals (object_class, signals, LAST_SIGNAL);
 
@@ -90,23 +87,23 @@ gtk_exif_entry_light_class_init (GtkExifEntryLightClass *klass)
 }
 
 static void
-gtk_exif_entry_light_init (GtkExifEntryLight *entry)
+gtk_exif_entry_orientation_init (GtkExifEntryOrientation *entry)
 {
-	entry->priv = g_new0 (GtkExifEntryLightPrivate, 1);
+	entry->priv = g_new0 (GtkExifEntryOrientationPrivate, 1);
 }
 
 GtkType
-gtk_exif_entry_light_get_type (void)
+gtk_exif_entry_orientation_get_type (void)
 {
 	static GtkType entry_type = 0;
 
 	if (!entry_type) {
 		static const GtkTypeInfo entry_info = {
-			"GtkExifEntryLight",
-			sizeof (GtkExifEntryLight),
-			sizeof (GtkExifEntryLightClass),
-			(GtkClassInitFunc)  gtk_exif_entry_light_class_init,
-			(GtkObjectInitFunc) gtk_exif_entry_light_init,
+			"GtkExifEntryOrientation",
+			sizeof (GtkExifEntryOrientation),
+			sizeof (GtkExifEntryOrientationClass),
+			(GtkClassInitFunc)  gtk_exif_entry_orientation_class_init,
+			(GtkObjectInitFunc) gtk_exif_entry_orientation_init,
 			NULL, NULL, NULL};
 		entry_type = gtk_type_unique (PARENT_TYPE, &entry_info);
 	}
@@ -114,12 +111,35 @@ gtk_exif_entry_light_get_type (void)
 	return (entry_type);
 }
 
+static GtkOptionsList orientations[] = {
+	{1, N_("top - left")},
+	{2, N_("top - right")},
+	{3, N_("bottom - right")},
+	{4, N_("bottom - left")},
+	{5, N_("left - top")},
+	{6, N_("right - top")},
+	{7, N_("right - bottom")},
+	{8, N_("left - bottom")},
+	{0, NULL}
+};
+
 static void
-gtk_exif_entry_light_load (GtkExifEntryLight *entry)
+gtk_exif_entry_orientation_save (GtkExifEntryOrientation *entry)
 {
 	ExifShort value;
 
-	g_return_if_fail (GTK_EXIF_IS_ENTRY_LIGHT (entry));
+	value = gtk_options_get (entry->priv->options);
+	exif_set_short (entry->priv->entry->data, entry->priv->entry->order,
+			value);
+	exif_entry_notify (entry->priv->entry, EXIF_ENTRY_EVENT_CHANGED);
+}
+
+static void
+gtk_exif_entry_orientation_load (GtkExifEntryOrientation *entry)
+{
+	ExifShort value;
+
+	g_return_if_fail (GTK_EXIF_IS_ENTRY_ORIENTATION (entry));
 
 	value = exif_get_short (entry->priv->entry->data,
 				entry->priv->entry->order);
@@ -132,68 +152,43 @@ gtk_exif_entry_light_load (GtkExifEntryLight *entry)
 }
 
 static void
-gtk_exif_entry_light_save (GtkExifEntryLight *entry)
+on_option_selected (GtkOptions *options, guint option,
+		    GtkExifEntryOrientation *entry)
 {
-	ExifShort value;
-
-	value = gtk_options_get (entry->priv->options);
-	exif_set_short (entry->priv->entry->data, entry->priv->entry->order,
-			value);
-	exif_entry_notify (entry->priv->entry, EXIF_ENTRY_EVENT_CHANGED);
+	gtk_exif_entry_orientation_save (entry);
 }
-
-static void
-on_option_selected (GtkOptions *options, guint option, GtkExifEntryLight *entry)
-{
-	gtk_exif_entry_light_save (entry);
-}
-
-static GtkOptionsList sources[] = {
-	{  0, N_("Unknown")},
-	{  1, N_("Daylight")},
-	{  2, N_("Fluorescent")},
-	{  3, N_("Tungsten")},
-	{ 17, N_("Standard light A")},
-	{ 18, N_("Standard light B")},
-	{ 19, N_("Standard light C")},
-	{ 20, N_("D55")},
-	{ 21, N_("D65")},
-	{ 22, N_("D75")},
-	{255, N_("Other")},
-	{  0, NULL}
-};
 
 GtkWidget *
-gtk_exif_entry_light_new (ExifEntry *e)
+gtk_exif_entry_orientation_new (ExifEntry *e)
 {
-	GtkExifEntryLight *entry;
-	GtkWidget *hbox, *label, *options;
+	GtkExifEntryOrientation *entry;
+	GtkWidget *options, *label, *hbox;
 
 	g_return_val_if_fail (e != NULL, NULL);
-	g_return_val_if_fail (e->tag == EXIF_TAG_LIGHT_SOURCE, NULL);
 	g_return_val_if_fail (e->format == EXIF_FORMAT_SHORT, NULL);
+	g_return_val_if_fail (e->tag == EXIF_TAG_ORIENTATION, NULL);
 
-	entry = gtk_type_new (GTK_EXIF_TYPE_ENTRY_LIGHT);
+	entry = gtk_type_new (GTK_EXIF_TYPE_ENTRY_ORIENTATION);
 	entry->priv->entry = e;
 	exif_entry_ref (e);
 	gtk_exif_entry_construct (GTK_EXIF_ENTRY (entry),
-			exif_tag_get_title (e->tag),
-			exif_tag_get_description (e->tag));
+		exif_tag_get_title (e->tag),
+		exif_tag_get_description (e->tag));
 
 	hbox = gtk_hbox_new (FALSE, 5);
 	gtk_widget_show (hbox);
 	gtk_box_pack_start (GTK_BOX (entry), hbox, TRUE, FALSE, 0);
-	label = gtk_label_new (_("Light Source:"));
+	label = gtk_label_new (_("0-th row - 0-th column:"));
 	gtk_widget_show (label);
 	gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
-	options = gtk_options_new (sources);
+	options = gtk_options_new (orientations);
 	gtk_widget_show (options);
 	gtk_box_pack_start (GTK_BOX (hbox), options, FALSE, FALSE, 0);
 	entry->priv->options = GTK_OPTIONS (options);
-	gtk_signal_connect (GTK_OBJECT (options), "option_selected",
+	gtk_signal_connect (GTK_OBJECT (options), "option_selected", 
 			    GTK_SIGNAL_FUNC (on_option_selected), entry);
 
-	gtk_exif_entry_light_load (entry);
+	gtk_exif_entry_orientation_load (entry);
 
 	return (GTK_WIDGET (entry));
 }

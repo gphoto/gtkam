@@ -295,10 +295,7 @@ static struct {
 	    "the camera optical input and the image values.")},
 	{EXIF_TAG_EXIF_VERSION, "ExifVersion", N_("Exif Version"),
 	 N_("The version of this standard supported. Nonexistence of this "
-	    "field is taken to mean nonconformance to the standard "
-	    "(see section 2.2). Conformance to this standard is indicated by "
-	    "recording \"0210\" as a 4-byte ASCII. Since the type is "
-	    "UNDEFINED, there is no NULL for termination.")},
+	    "field is taken to mean nonconformance to the standard.")},
 	{EXIF_TAG_DATE_TIME_ORIGINAL, "DateTimeOriginal",
 	 N_("Date and Time (original)"),
 	 N_("The date and time when the original image data was generated. "
@@ -390,11 +387,7 @@ static struct {
 	 N_("A tag used to record fractions of seconds for the "
 	    "<DateTimeDigitized> tag.")},
 	{EXIF_TAG_FLASH_PIX_VERSION, "FlashPixVersion", "FlashPixVersion",
-	 N_("The FlashPix format version supported by a FPXR file. If the "
-	    "FPXR function supports FlashPix format Ver. 1.0, this is "
-	    "indicated similarly to <ExifVersion> by recording \"0100\" "
-	    "as 4-byte ASCII. Since the type is UNDEFINED, there is "
-	    "no NULL for termination.")},
+	 N_("The FlashPix format version supported by a FPXR file.")},
 	{EXIF_TAG_COLOR_SPACE, "ColorSpace", N_("Color Space"),
 	 N_("The color space information tag (<ColorSpace>) is always "
 	    "recorede as the color space specifier. Normally sRGB (=1) "

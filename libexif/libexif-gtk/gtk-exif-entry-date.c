@@ -136,6 +136,7 @@ gtk_exif_entry_date_load (GtkExifEntryDate *entry)
 	gtk_adjustment_set_value (entry->priv->a_hour, atoi (data + 11));
 	gtk_adjustment_set_value (entry->priv->a_min,  atoi (data + 14));
 	gtk_adjustment_set_value (entry->priv->a_sec,  atoi (data + 17));
+	g_free (data);
 
 	gtk_signal_handler_unblock_by_data (GTK_OBJECT (p->cal), entry);
 	gtk_signal_handler_unblock_by_data (GTK_OBJECT (p->a_hour), entry);

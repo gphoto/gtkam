@@ -29,17 +29,22 @@
 #include "gtk-exif-content-list.h"
 #include "gtk-exif-entry-ascii.h"
 #include "gtk-exif-entry-date.h"
+#include "gtk-exif-entry-exposure.h"
 #include "gtk-exif-entry-flash.h"
 #include "gtk-exif-entry-generic.h"
 #include "gtk-exif-entry-light.h"
 #include "gtk-exif-entry-meter.h"
+#include "gtk-exif-entry-orientation.h"
 #include "gtk-exif-entry-resolution.h"
+#include "gtk-exif-entry-sensing.h"
+#include "gtk-exif-entry-version.h"
+#include "gtk-exif-entry-ycbcrpos.h"
 
 struct _GtkExifBrowserPrivate {
 	ExifData *data;
 
 	GtkExifContentList *list;
-	GtkWidget *empty, *current;
+	GtkWidget *empty, *current, *info;
 };
 
 #define PARENT_TYPE gtk_hpaned_get_type()
@@ -119,13 +124,21 @@ gtk_exif_browser_get_type (void)
 }
 
 static void
+gtk_exif_browser_set_widget (GtkExifBrowser *browser, GtkWidget *w)
+{
+	if (browser->priv->current)
+		gtk_container_remove (GTK_CONTAINER (browser->priv->info),
+				      browser->priv->current);
+	gtk_box_pack_start (GTK_BOX (browser->priv->info), w, TRUE, FALSE, 0);
+	browser->priv->current = w;
+}
+
+static void
 on_entry_selected (GtkExifContentList *list, ExifEntry *entry,
 		   GtkExifBrowser *browser)
 {
 	GtkWidget *w;
 
-	gtk_container_remove (GTK_CONTAINER (browser),
-			      browser->priv->current);
 	switch (entry->tag) {
 	case EXIF_TAG_EXIF_OFFSET:
 	case EXIF_TAG_INTEROPERABILITY_OFFSET:
@@ -133,11 +146,27 @@ on_entry_selected (GtkExifContentList *list, ExifEntry *entry,
 		gtk_exif_content_list_set_content (GTK_EXIF_CONTENT_LIST (w),
 						   entry->content);
 		break;
+	case EXIF_TAG_EXIF_VERSION:
+	case EXIF_TAG_FLASH_PIX_VERSION:
+		w = gtk_exif_entry_version_new (entry);
+		break;
 	case EXIF_TAG_FLASH:
 		w = gtk_exif_entry_flash_new (entry);
 		break;
+	case EXIF_TAG_EXPOSURE_PROGRAM:
+		w = gtk_exif_entry_exposure_new (entry);
+		break;
+	case EXIF_TAG_SENSING_METHOD:
+		w = gtk_exif_entry_sensing_new (entry);
+		break;
+	case EXIF_TAG_ORIENTATION:
+		w = gtk_exif_entry_orientation_new (entry);
+		break;
 	case EXIF_TAG_METERING_MODE:
 		w = gtk_exif_entry_meter_new (entry);
+		break;
+	case EXIF_TAG_YCBCR_POSITIONING:
+		w = gtk_exif_entry_ycbcrpos_new (entry);
 		break;
 	case EXIF_TAG_RESOLUTION_UNIT:
 	case EXIF_TAG_X_RESOLUTION:
@@ -155,6 +184,8 @@ on_entry_selected (GtkExifContentList *list, ExifEntry *entry,
 	case EXIF_TAG_MAKE:
 	case EXIF_TAG_MODEL:
 	case EXIF_TAG_IMAGE_DESCRIPTION:
+	case EXIF_TAG_SOFTWARE:
+	case EXIF_TAG_ARTIST:
 		w = gtk_exif_entry_ascii_new (entry);
 		break;
 	case EXIF_TAG_DATE_TIME:
@@ -167,8 +198,7 @@ on_entry_selected (GtkExifContentList *list, ExifEntry *entry,
 		break;
 	}
 	gtk_widget_show (w);
-	gtk_paned_pack2 (GTK_PANED (browser), w, TRUE, TRUE);
-	browser->priv->current = w;
+	gtk_exif_browser_set_widget (browser, w);
 }
 
 GtkWidget *
@@ -192,12 +222,16 @@ gtk_exif_browser_new (void)
 	gtk_signal_connect (GTK_OBJECT (et), "entry_selected",
 			    GTK_SIGNAL_FUNC (on_entry_selected), browser);
 
+	/* Info */
+	browser->priv->info = gtk_vbox_new (FALSE, 0);
+	gtk_widget_show (browser->priv->info);
+	gtk_paned_pack2 (GTK_PANED (browser), browser->priv->info, TRUE, FALSE);
+
 	/* Placeholder */
 	browser->priv->empty = gtk_label_new ("Nothing selected.");
 	gtk_widget_show (browser->priv->empty);
 	gtk_object_ref (GTK_OBJECT (browser->priv->empty));
-	gtk_paned_pack2 (GTK_PANED (browser), browser->priv->empty, TRUE, TRUE);
-	browser->priv->current = browser->priv->empty;
+	gtk_exif_browser_set_widget (browser, browser->priv->empty);
 
 	return (GTK_WIDGET (browser));
 }
@@ -214,7 +248,5 @@ gtk_exif_browser_set_data (GtkExifBrowser *browser, ExifData *data)
 	exif_data_ref (data);
 
 	gtk_exif_content_list_set_content (browser->priv->list, data->content);
-	gtk_container_remove (GTK_CONTAINER (browser), browser->priv->current);
-	gtk_paned_add2 (GTK_PANED (browser), browser->priv->empty);
-	browser->priv->current = browser->priv->empty;
+	gtk_exif_browser_set_widget (browser, browser->priv->empty);
 }

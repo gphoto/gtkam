@@ -1,4 +1,4 @@
-/* gtk-exif-entry-light.c
+/* gtk-exif-entry-exposure.c
  *
  * Copyright (C) 2001 Lutz Müller <lutz@users.sourceforge.net>
  *
@@ -19,7 +19,7 @@
  */
 
 #include <config.h>
-#include "gtk-exif-entry-light.h"
+#include "gtk-exif-entry-exposure.h"
 
 #include <gtk/gtkcheckbutton.h>
 #include <gtk/gtkradiobutton.h>
@@ -37,7 +37,7 @@
 
 #include "gtk-extensions/gtk-options.h"
 
-struct _GtkExifEntryLightPrivate {
+struct _GtkExifEntryExposurePrivate {
 	ExifEntry *entry;
 
 	GtkOptions *options;
@@ -53,9 +53,9 @@ enum {
 static guint signals[LAST_SIGNAL] = {0};
 
 static void
-gtk_exif_entry_light_destroy (GtkObject *object)
+gtk_exif_entry_exposure_destroy (GtkObject *object)
 {
-	GtkExifEntryLight *entry = GTK_EXIF_ENTRY_LIGHT (object);
+	GtkExifEntryExposure *entry = GTK_EXIF_ENTRY_EXPOSURE (object);
 
 	if (entry->priv->entry) {
 		exif_entry_unref (entry->priv->entry);
@@ -66,9 +66,9 @@ gtk_exif_entry_light_destroy (GtkObject *object)
 }
 
 static void
-gtk_exif_entry_light_finalize (GtkObject *object)
+gtk_exif_entry_exposure_finalize (GtkObject *object)
 {
-	GtkExifEntryLight *entry = GTK_EXIF_ENTRY_LIGHT (object);
+	GtkExifEntryExposure *entry = GTK_EXIF_ENTRY_EXPOSURE (object);
 
 	g_free (entry->priv);
 
@@ -76,13 +76,13 @@ gtk_exif_entry_light_finalize (GtkObject *object)
 }
 
 static void
-gtk_exif_entry_light_class_init (GtkExifEntryLightClass *klass)
+gtk_exif_entry_exposure_class_init (GtkExifEntryExposureClass *klass)
 {
 	GtkObjectClass *object_class;
 
 	object_class = GTK_OBJECT_CLASS (klass);
-	object_class->destroy  = gtk_exif_entry_light_destroy;
-	object_class->finalize = gtk_exif_entry_light_finalize;
+	object_class->destroy  = gtk_exif_entry_exposure_destroy;
+	object_class->finalize = gtk_exif_entry_exposure_finalize;
 
 	gtk_object_class_add_signals (object_class, signals, LAST_SIGNAL);
 
@@ -90,23 +90,23 @@ gtk_exif_entry_light_class_init (GtkExifEntryLightClass *klass)
 }
 
 static void
-gtk_exif_entry_light_init (GtkExifEntryLight *entry)
+gtk_exif_entry_exposure_init (GtkExifEntryExposure *entry)
 {
-	entry->priv = g_new0 (GtkExifEntryLightPrivate, 1);
+	entry->priv = g_new0 (GtkExifEntryExposurePrivate, 1);
 }
 
 GtkType
-gtk_exif_entry_light_get_type (void)
+gtk_exif_entry_exposure_get_type (void)
 {
 	static GtkType entry_type = 0;
 
 	if (!entry_type) {
 		static const GtkTypeInfo entry_info = {
-			"GtkExifEntryLight",
-			sizeof (GtkExifEntryLight),
-			sizeof (GtkExifEntryLightClass),
-			(GtkClassInitFunc)  gtk_exif_entry_light_class_init,
-			(GtkObjectInitFunc) gtk_exif_entry_light_init,
+			"GtkExifEntryExposure",
+			sizeof (GtkExifEntryExposure),
+			sizeof (GtkExifEntryExposureClass),
+			(GtkClassInitFunc)  gtk_exif_entry_exposure_class_init,
+			(GtkObjectInitFunc) gtk_exif_entry_exposure_init,
 			NULL, NULL, NULL};
 		entry_type = gtk_type_unique (PARENT_TYPE, &entry_info);
 	}
@@ -115,11 +115,11 @@ gtk_exif_entry_light_get_type (void)
 }
 
 static void
-gtk_exif_entry_light_load (GtkExifEntryLight *entry)
+gtk_exif_entry_exposure_load (GtkExifEntryExposure *entry)
 {
 	ExifShort value;
 
-	g_return_if_fail (GTK_EXIF_IS_ENTRY_LIGHT (entry));
+	g_return_if_fail (GTK_EXIF_IS_ENTRY_EXPOSURE (entry));
 
 	value = exif_get_short (entry->priv->entry->data,
 				entry->priv->entry->order);
@@ -132,7 +132,7 @@ gtk_exif_entry_light_load (GtkExifEntryLight *entry)
 }
 
 static void
-gtk_exif_entry_light_save (GtkExifEntryLight *entry)
+gtk_exif_entry_exposure_save (GtkExifEntryExposure *entry)
 {
 	ExifShort value;
 
@@ -143,37 +143,37 @@ gtk_exif_entry_light_save (GtkExifEntryLight *entry)
 }
 
 static void
-on_option_selected (GtkOptions *options, guint option, GtkExifEntryLight *entry)
+on_option_selected (GtkOptions *options, guint option, GtkExifEntryExposure *entry)
 {
-	gtk_exif_entry_light_save (entry);
+	gtk_exif_entry_exposure_save (entry);
 }
 
-static GtkOptionsList sources[] = {
-	{  0, N_("Unknown")},
-	{  1, N_("Daylight")},
-	{  2, N_("Fluorescent")},
-	{  3, N_("Tungsten")},
-	{ 17, N_("Standard light A")},
-	{ 18, N_("Standard light B")},
-	{ 19, N_("Standard light C")},
-	{ 20, N_("D55")},
-	{ 21, N_("D65")},
-	{ 22, N_("D75")},
-	{255, N_("Other")},
-	{  0, NULL}
+static GtkOptionsList programs[] = {
+	{0, N_("Not defined")},
+	{1, N_("Manual")},
+	{2, N_("Normal program")},
+	{3, N_("Aperture priority")},
+	{4, N_("Shutter priority")},
+	{5, N_("Creative program (biased toward depth of field)")},
+	{6, N_("Action program (biased toward fast shutter speed)")},
+	{7, N_("Portrait mode (for closeup photos with the "
+	       "background out of focus")},
+	{8, N_("Landscape mode (for landscape photos with the "
+	       "background in focus")},
+	{0, NULL}
 };
 
 GtkWidget *
-gtk_exif_entry_light_new (ExifEntry *e)
+gtk_exif_entry_exposure_new (ExifEntry *e)
 {
-	GtkExifEntryLight *entry;
+	GtkExifEntryExposure *entry;
 	GtkWidget *hbox, *label, *options;
 
 	g_return_val_if_fail (e != NULL, NULL);
-	g_return_val_if_fail (e->tag == EXIF_TAG_LIGHT_SOURCE, NULL);
+	g_return_val_if_fail (e->tag == EXIF_TAG_EXPOSURE_PROGRAM, NULL);
 	g_return_val_if_fail (e->format == EXIF_FORMAT_SHORT, NULL);
 
-	entry = gtk_type_new (GTK_EXIF_TYPE_ENTRY_LIGHT);
+	entry = gtk_type_new (GTK_EXIF_TYPE_ENTRY_EXPOSURE);
 	entry->priv->entry = e;
 	exif_entry_ref (e);
 	gtk_exif_entry_construct (GTK_EXIF_ENTRY (entry),
@@ -183,17 +183,17 @@ gtk_exif_entry_light_new (ExifEntry *e)
 	hbox = gtk_hbox_new (FALSE, 5);
 	gtk_widget_show (hbox);
 	gtk_box_pack_start (GTK_BOX (entry), hbox, TRUE, FALSE, 0);
-	label = gtk_label_new (_("Light Source:"));
+	label = gtk_label_new (_("Exposure Program:"));
 	gtk_widget_show (label);
 	gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
-	options = gtk_options_new (sources);
+	options = gtk_options_new (programs);
 	gtk_widget_show (options);
 	gtk_box_pack_start (GTK_BOX (hbox), options, FALSE, FALSE, 0);
 	entry->priv->options = GTK_OPTIONS (options);
 	gtk_signal_connect (GTK_OBJECT (options), "option_selected",
 			    GTK_SIGNAL_FUNC (on_option_selected), entry);
 
-	gtk_exif_entry_light_load (entry);
+	gtk_exif_entry_exposure_load (entry);
 
 	return (GTK_WIDGET (entry));
 }

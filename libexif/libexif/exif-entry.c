@@ -44,6 +44,7 @@ static struct {
         {EXIF_FORMAT_RATIONAL, 8},
         {EXIF_FORMAT_SLONG,     4},
         {EXIF_FORMAT_SRATIONAL, 8},
+	{EXIF_FORMAT_UNDEFINED, 1},
         {0, 0}
 };
 
@@ -235,47 +236,85 @@ exif_entry_dump (ExifEntry *entry, unsigned int indent)
 const char *
 exif_entry_get_value (ExifEntry *entry)
 {
+	unsigned int i;
 	ExifByte v_byte;
 	ExifShort v_short;
 	ExifLong v_long;
 	ExifSLong v_slong;
 	ExifRational v_rat;
 	ExifSRational v_srat;
-	static char v[1024];
+	static char v[1024], b[1024];
 
 	memset (v, 0, sizeof (v));
-	switch (entry->format) {
-	case EXIF_FORMAT_UNDEFINED:
+	switch (entry->tag) {
+	case EXIF_TAG_EXIF_VERSION:
+		if (!memcmp (entry->data, "0200", 4))
+			strncpy (v, "Exif Version 2.0", sizeof (v));
+		else if (!memcmp (entry->data, "0210", 4))
+			strncpy (v, "Exif Version 2.1", sizeof (v));
+		else
+			strncpy (v, "Unknown Exif Version", sizeof (v));
 		break;
-	case EXIF_FORMAT_BYTE:
-		v_byte = entry->data[0];
-		snprintf (v, sizeof (v), "%i", v_byte);
+	case EXIF_TAG_FLASH_PIX_VERSION:
+		if (!memcmp (entry->data, "0100", 4))
+			strncpy (v, "FlashPix Version 1.0", sizeof (v));
+		else
+			strncpy (v, "Unknown FlashPix Version", sizeof (v));
 		break;
-	case EXIF_FORMAT_SHORT:
-		v_short = exif_get_short (entry->data, entry->order);
-		snprintf (v, sizeof (v), "%i", v_short);
-		break;
-	case EXIF_FORMAT_LONG:
-		v_long = exif_get_long (entry->data, entry->order);
-		snprintf (v, sizeof (v), "%i", (int) v_long);
-		break;
-	case EXIF_FORMAT_SLONG:
-		v_slong = exif_get_slong (entry->data, entry->order);
-		snprintf (v, sizeof (v), "%i", (int) v_slong);
-		break;
-	case EXIF_FORMAT_ASCII:
-		strncpy (v, entry->data, MIN (sizeof (v), entry->size));
-		break;
-	case EXIF_FORMAT_RATIONAL:
-		v_rat = exif_get_rational (entry->data, entry->order);
-		snprintf (v, sizeof (v), "%f",
-			  (double) v_rat.numerator / v_rat.denominator);
-		break;
-	case EXIF_FORMAT_SRATIONAL:
-		v_srat = exif_get_srational (entry->data, entry->order);
-		snprintf (v, sizeof (v), "%f",
-			  (double) v_srat.numerator / v_srat.denominator);
-		break;
+	default:
+		switch (entry->format) {
+		case EXIF_FORMAT_UNDEFINED:
+			break;
+		case EXIF_FORMAT_BYTE:
+			v_byte = entry->data[0];
+			snprintf (v, sizeof (v), "%i", v_byte);
+			break;
+		case EXIF_FORMAT_SHORT:
+			v_short = exif_get_short (entry->data, entry->order);
+			snprintf (v, sizeof (v), "%i", v_short);
+			break;
+		case EXIF_FORMAT_LONG:
+			v_long = exif_get_long (entry->data, entry->order);
+			snprintf (v, sizeof (v), "%i", (int) v_long);
+			break;
+		case EXIF_FORMAT_SLONG:
+			v_slong = exif_get_slong (entry->data, entry->order);
+			snprintf (v, sizeof (v), "%i", (int) v_slong);
+			break;
+		case EXIF_FORMAT_ASCII:
+			strncpy (v, entry->data, MIN (sizeof (v), entry->size));
+			break;
+		case EXIF_FORMAT_RATIONAL:
+			v_rat = exif_get_rational (entry->data, entry->order);
+			snprintf (v, sizeof (v), "%i/%i",
+				  (int) v_rat.numerator,
+				  (int) v_rat.denominator);
+			for (i = 1; i < entry->components; i++) {
+				v_rat = exif_get_rational (
+					entry->data + 8 * i, entry->order);
+				snprintf (b, sizeof (b), "%i/%i",
+					  (int) v_rat.numerator,
+					  (int) v_rat.denominator);
+				strncat (v, ", ", sizeof (v));
+				strncat (v, b, sizeof (v));
+			}
+			break;
+		case EXIF_FORMAT_SRATIONAL:
+			v_srat = exif_get_srational (entry->data, entry->order);
+			snprintf (v, sizeof (v), "%i/%i",
+				  (int) v_srat.numerator,
+				  (int) v_srat.denominator);
+			for (i = 1; i < entry->components; i++) {
+				v_srat = exif_get_srational (
+					entry->data + 8 * i, entry->order);
+				snprintf (b, sizeof (b), "%i/%i",
+					  (int) v_srat.numerator,
+					  (int) v_srat.denominator);
+				strncat (v, ", ", sizeof (v));
+				strncat (v, b, sizeof (v));
+			}
+			break;
+		}
 	}
 
 	return (v);

@@ -21,7 +21,7 @@
 #ifndef __GTK_EXIF_ENTRY_METER_H__
 #define __GTK_EXIF_ENTRY_METER_H__
 
-#include <libexif-gtk/gtk-exif-entry-menu.h>
+#include <libexif-gtk/gtk-exif-entry.h>
 
 #define GTK_EXIF_TYPE_ENTRY_METER     (gtk_exif_entry_meter_get_type())
 #define GTK_EXIF_ENTRY_METER(o)       (GTK_CHECK_CAST((o),GTK_EXIF_TYPE_ENTRY_METER,GtkExifEntryMeter))
@@ -34,14 +34,14 @@ typedef struct _GtkExifEntryMeterClass   GtkExifEntryMeterClass;
 
 struct _GtkExifEntryMeter
 {
-	GtkExifEntryMenu parent;
+	GtkExifEntry parent;
 
 	GtkExifEntryMeterPrivate *priv;
 };
 
 struct _GtkExifEntryMeterClass
 {
-	GtkExifEntryMenuClass parent_class;
+	GtkExifEntryClass parent_class;
 };
 
 GtkType    gtk_exif_entry_meter_get_type (void);

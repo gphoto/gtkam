@@ -21,7 +21,7 @@
 #ifndef __GTK_EXIF_ENTRY_LIGHT_H__
 #define __GTK_EXIF_ENTRY_LIGHT_H__
 
-#include <libexif-gtk/gtk-exif-entry-menu.h>
+#include <libexif-gtk/gtk-exif-entry.h>
 
 #define GTK_EXIF_TYPE_ENTRY_LIGHT     (gtk_exif_entry_light_get_type())
 #define GTK_EXIF_ENTRY_LIGHT(o)       (GTK_CHECK_CAST((o),GTK_EXIF_TYPE_ENTRY_LIGHT,GtkExifEntryLight))
@@ -34,14 +34,14 @@ typedef struct _GtkExifEntryLightClass   GtkExifEntryLightClass;
 
 struct _GtkExifEntryLight
 {
-	GtkExifEntryMenu parent;
+	GtkExifEntry parent;
 
 	GtkExifEntryLightPrivate *priv;
 };
 
 struct _GtkExifEntryLightClass
 {
-	GtkExifEntryMenuClass parent_class;
+	GtkExifEntryClass parent_class;
 };
 
 GtkType    gtk_exif_entry_light_get_type (void);

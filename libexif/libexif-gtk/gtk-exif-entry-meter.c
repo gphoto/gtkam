@@ -35,12 +35,16 @@
 
 #include <libexif/exif-i18n.h>
 
+#include <gtk-extensions/gtk-options.h>
+
 struct _GtkExifEntryMeterPrivate {
 	ExifEntry *entry;
+
+	GtkOptions *options;
 };
 
-#define PARENT_TYPE GTK_EXIF_TYPE_ENTRY_MENU
-static GtkExifEntryMenuClass *parent_class;
+#define PARENT_TYPE GTK_EXIF_TYPE_ENTRY
+static GtkExifEntryClass *parent_class;
 
 enum {
 	LAST_SIGNAL
@@ -110,7 +114,41 @@ gtk_exif_entry_meter_get_type (void)
 	return (entry_type);
 }
 
-static GtkExifEntryMenuList meter_list[] = {
+static void
+gtk_exif_entry_meter_load (GtkExifEntryMeter *entry)
+{
+	ExifShort value;
+
+	g_return_if_fail (GTK_EXIF_IS_ENTRY_METER (entry));
+
+	value = exif_get_short (entry->priv->entry->data,
+				entry->priv->entry->order);
+
+	gtk_signal_handler_block_by_data (GTK_OBJECT (entry->priv->options),
+					  entry);
+	gtk_options_set (entry->priv->options, value);
+	gtk_signal_handler_unblock_by_data (GTK_OBJECT (entry->priv->options),
+					    entry);
+}
+
+static void
+gtk_exif_entry_meter_save (GtkExifEntryMeter *entry)
+{
+        ExifShort value;
+
+        value = gtk_options_get (entry->priv->options);
+        exif_set_short (entry->priv->entry->data, entry->priv->entry->order,
+                        value);
+        exif_entry_notify (entry->priv->entry, EXIF_ENTRY_EVENT_CHANGED);
+}
+
+static void
+on_option_selected (GtkOptions *options, guint option, GtkExifEntryMeter *entry)
+{
+	gtk_exif_entry_meter_save (entry);
+}
+
+static GtkOptionsList meter_list[] = {
 	{  0, N_("Unknown")},
 	{  1, N_("Average")},
 	{  2, N_("Center-Weighted Average")},
@@ -126,6 +164,7 @@ GtkWidget *
 gtk_exif_entry_meter_new (ExifEntry *e)
 {
 	GtkExifEntryMeter *entry;
+	GtkWidget *hbox, *options, *label;
 
 	g_return_val_if_fail (e != NULL, NULL);
 	g_return_val_if_fail (e->tag == EXIF_TAG_METERING_MODE, NULL);
@@ -134,8 +173,24 @@ gtk_exif_entry_meter_new (ExifEntry *e)
 	entry = gtk_type_new (GTK_EXIF_TYPE_ENTRY_METER);
 	entry->priv->entry = e;
 	exif_entry_ref (e);
-	gtk_exif_entry_menu_construct (GTK_EXIF_ENTRY_MENU (entry), e,
-					_("Metering Mode:"), meter_list);
+	gtk_exif_entry_construct (GTK_EXIF_ENTRY (entry),
+			exif_tag_get_title (e->tag),
+			exif_tag_get_description (e->tag));
+
+	hbox = gtk_hbox_new (FALSE, 5);
+	gtk_widget_show (hbox);
+	gtk_box_pack_start (GTK_BOX (entry), hbox, TRUE, FALSE, 0);
+	label = gtk_label_new (_("Metering Mode:"));
+	gtk_widget_show (label);
+	gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
+	options = gtk_options_new (meter_list);
+	gtk_widget_show (options);
+	gtk_box_pack_start (GTK_BOX (hbox), options, FALSE, FALSE, 0);
+	entry->priv->options = GTK_OPTIONS (options);
+	gtk_signal_connect (GTK_OBJECT (options), "option_selected",
+			    GTK_SIGNAL_FUNC (on_option_selected), entry);
+
+	gtk_exif_entry_meter_load (entry);
 
 	return (GTK_WIDGET (entry));
 }

@@ -50,6 +50,7 @@ AC_OUTPUT([
 Makefile
 libexif/Makefile
 libexif-gtk/Makefile
+libexif-gtk/gtk-extensions/Makefile
 libjpeg/Makefile
 test/Makefile
 libexif.pc

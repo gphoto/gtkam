@@ -170,6 +170,12 @@ gtkam_main_update_sensitivity (GtkamMain *m)
 		gtk_item_factory_get_widget (m->priv->factory,
 			"/File/Save Photos/Selected"), (s != 0));
 	gtk_widget_set_sensitive (
+		gtk_item_factory_get_widget (m->priv->factory,
+			"/File/Delete Photos/All"), (i != 0));
+	gtk_widget_set_sensitive (
+		gtk_item_factory_get_widget (m->priv->factory,
+			"/File/Save Photos/All"), (i != 0));
+	gtk_widget_set_sensitive (
 		gtk_item_factory_get_widget (m->priv->factory, "/Select/All"),
 		(s != i));
 	gtk_widget_set_sensitive (

@@ -152,6 +152,7 @@ on_apply_clicked (GtkButton *button, GtkamChooser *chooser)
 	Camera *camera;
 	CameraAbilities abilities;
 	const gchar *model, *port, *speed;
+	gchar *speed_number;
 	int result;
 	GtkWidget *dialog;
 	gchar *port_name, *msg;
@@ -193,7 +194,13 @@ on_apply_clicked (GtkButton *button, GtkamChooser *chooser)
 	} else {
 		gp_setting_set ("gtkam", "model", (char*) model);
 		gp_setting_set ("gtkam", "port", port_name);
-		gp_setting_set ("gtkam", "speed", (char*) speed);
+
+		if (!strcmp (speed, _("Best")))
+			speed_number = g_strdup ("0");
+		else
+			speed_number = g_strdup (speed);
+		gp_setting_set ("gtkam", "speed", (char*) speed_number);
+		g_free (speed_number);
 
 		gtk_signal_emit (GTK_OBJECT (chooser),
 				 signals[CAMERA_SELECTED], camera);

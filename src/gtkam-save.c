@@ -291,8 +291,10 @@ save_file (GtkamSave *save, CameraFile *file, guint n)
 		gtk_widget_show (dialog);
 	} else {
 		progname = gtk_entry_get_text (save->priv->program);
-		if (progname)
-			exec_command ((gchar*) progname, full_path);
+		if (progname && fork ()) {
+			execlp (progname, progname, full_path, NULL);
+			_exit (0);
+		} 
 	}
 
 	g_free (full_path);

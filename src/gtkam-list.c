@@ -208,7 +208,7 @@ gdk_pixbuf_new_from_camera_file (CameraFile *file, GtkWidget *opt_window)
 	w = gdk_pixbuf_get_width (pixbuf);
 	h = gdk_pixbuf_get_height (pixbuf);
 	if ((w > ICON_WIDTH) || (h > ICON_WIDTH)) {
-		scale = MAX ((gfloat) ICON_WIDTH / w, (gfloat) ICON_WIDTH / h);
+		scale = MIN ((gfloat) ICON_WIDTH / w, (gfloat) ICON_WIDTH / h);
 		pixbuf = gdk_pixbuf_scale_simple (pixbuf, scale * w, scale * h,
 						  GDK_INTERP_NEAREST);
 	} else

@@ -51,6 +51,8 @@
 #include <gtk/gtkfilesel.h>
 #include <gtk/gtkbutton.h>
 #include <gtk/gtktreeitem.h>
+#include <gtk/gtkpixmap.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
 
 #include "support.h"
 #include "gtkam-error.h"
@@ -62,6 +64,9 @@ struct _GtkamTreePrivate
 	GtkWidget *root;
 
 	const gchar *folder;
+
+	GdkPixmap *pixmap_camera, *pixmap_folder;
+	GdkBitmap *bitmap_camera, *bitmap_folder;
 
 	gboolean multi;
 };
@@ -87,6 +92,23 @@ gtkam_tree_destroy (GtkObject *object)
 	if (tree->priv->camera) {
 		gp_camera_unref (tree->priv->camera);
 		tree->priv->camera = NULL;
+	}
+
+	if (tree->priv->pixmap_camera) {
+		gdk_pixmap_unref (tree->priv->pixmap_camera);
+		tree->priv->pixmap_camera = NULL;
+	}
+	if (tree->priv->pixmap_folder) {
+		gdk_pixmap_unref (tree->priv->pixmap_folder);
+		tree->priv->pixmap_folder = NULL;
+	}
+	if (tree->priv->bitmap_camera) {
+		gdk_bitmap_unref (tree->priv->bitmap_camera);
+		tree->priv->bitmap_camera = NULL;
+	}
+	if (tree->priv->bitmap_folder) {
+		gdk_bitmap_unref (tree->priv->bitmap_folder);
+		tree->priv->bitmap_folder = NULL;
 	}
 
 	GTK_OBJECT_CLASS (parent_class)->destroy (object);
@@ -127,7 +149,38 @@ gtkam_tree_class_init (GtkamTreeClass *klass)
 static void
 gtkam_tree_init (GtkamTree *tree)
 {
+	GdkPixbuf *scaled, *pixbuf;
+	guint w, h;
+
 	tree->priv = g_new0 (GtkamTreePrivate, 1);
+
+	/* Camera image for root folder */
+	pixbuf = gdk_pixbuf_new_from_file (IMAGE_DIR "/gtkam-camera.png");
+	if (pixbuf) {
+		w = gdk_pixbuf_get_width (pixbuf) / 2;
+		h = gdk_pixbuf_get_height (pixbuf) / 2;
+		scaled = gdk_pixbuf_scale_simple (pixbuf, w, h,
+						  GDK_INTERP_NEAREST);
+		gdk_pixbuf_unref (pixbuf); 
+		gdk_pixbuf_render_pixmap_and_mask (scaled,
+					&tree->priv->pixmap_camera,
+					&tree->priv->bitmap_camera, 127); 
+		gdk_pixbuf_unref (scaled);
+	}
+
+	/* Folder image for non-root folders */
+	pixbuf = gdk_pixbuf_new_from_file (IMAGE_DIR "/gtkam-folder.png");
+	if (pixbuf) {
+		w = gdk_pixbuf_get_width (pixbuf) / 2;
+		h = gdk_pixbuf_get_height (pixbuf) / 2;
+		scaled = gdk_pixbuf_scale_simple (pixbuf, w, h,
+						  GDK_INTERP_NEAREST);
+		gdk_pixbuf_unref (pixbuf);
+		gdk_pixbuf_render_pixmap_and_mask (scaled,
+					&tree->priv->pixmap_folder,
+					&tree->priv->bitmap_folder, 127);
+		gdk_pixbuf_unref (scaled); 
+	}
 }
 
 GtkType
@@ -174,7 +227,7 @@ create_item (GtkamTree *tree, GtkTree *tree_to_add_to, const gchar *path)
 {
 	CameraList *list;
 	CameraAbilities a;
-	GtkWidget *item, *pixmap, *label, *subtree, *hbox, *dialog, *window;
+	GtkWidget *item, *image, *label, *subtree, *hbox, *dialog, *window;
 	int result;
 	gchar *msg, *l;
 
@@ -192,13 +245,15 @@ create_item (GtkamTree *tree, GtkTree *tree_to_add_to, const gchar *path)
 	gtk_widget_show (hbox);
 	gtk_container_add (GTK_CONTAINER (item), hbox);
 
-	/* Show a nice pixmap */
+	/* Show a nice icon */
 	if (!strcmp (path, "/"))
-		pixmap = create_pixmap (GTK_WIDGET (tree), "camera.xpm");
+		image = gtk_pixmap_new (tree->priv->pixmap_camera,
+					tree->priv->bitmap_camera);
 	else
-		pixmap = create_pixmap (GTK_WIDGET (tree), "folder.xpm");
-	gtk_widget_show (pixmap);
-	gtk_box_pack_start (GTK_BOX (hbox), pixmap, FALSE, FALSE, 0);
+		image = gtk_pixmap_new (tree->priv->pixmap_folder,
+					tree->priv->bitmap_folder);
+	gtk_widget_show (image);
+	gtk_box_pack_start (GTK_BOX (hbox), image, FALSE, FALSE, 0);
 
 	/* Show the label (camera name or folder name) */
 	if (!tree->priv->camera)

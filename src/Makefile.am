@@ -5,7 +5,8 @@ INCLUDES =						\
 	-DIMAGE_DIR=\"$(datadir)/images/gtkam\" 	\
 	-DGTKAM_LOCALEDIR=\""$(datadir)/locale"\"	\
 	$(EXIF_CFLAGS)					\
-	$(GTK_CFLAGS)
+	$(GTK_CFLAGS)					\
+	$(GIMP_CFLAGS)
 
 noinst_LIBRARIES = libgtkam.a
 libgtkam_a_SOURCES =				\

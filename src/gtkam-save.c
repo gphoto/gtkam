@@ -351,7 +351,8 @@ save_file (GtkamSave *save, CameraFile *file, guint n)
 			g_free (msg);
 			g_free (full_path);
 			save->priv->err_shown = TRUE;
-		return;
+		}
+		return 0;
 	}
 
 	/* FIXME Check for sufficient disk space for this file, or
@@ -364,7 +365,7 @@ save_file (GtkamSave *save, CameraFile *file, guint n)
 			dialog = gtkam_error_new (result, NULL, GTK_WIDGET (save),
 					_("Could not save file to '%s'."), full_path);
 			gtk_widget_show (dialog);
-			save->priv-err_shown = TRUE;
+			save->priv->err_shown = TRUE;
 		}
 	} else {
 		progname = gtk_entry_get_text (save->priv->program);
@@ -500,7 +501,7 @@ static void
 on_ok_clicked (GtkButton *button, GtkamSave *save)
 {
 	guint i, count, j = 1;
-	int result;
+	int result = 0;
 	GtkWidget *s, *dialog;
 	unsigned int id = 0;
 	GtkamSaveData *data;
@@ -564,8 +565,7 @@ on_ok_clicked (GtkButton *button, GtkamSave *save)
 				  data->folder, data->name, GP_FILE_TYPE_EXIF,
 				  i + j, GTKAM_CANCEL (s)->context);
 
-		if (result < 0)
-		{
+		if (result < 0) {
 			if (count > 1)
 				gp_context_progress_stop (GTKAM_CANCEL (s)->context->context, id);
 			if (!save->priv->err_shown) {
@@ -594,7 +594,6 @@ on_ok_clicked (GtkButton *button, GtkamSave *save)
 		gp_context_progress_stop (
 				GTKAM_CANCEL (s)->context->context, id);
 	gtk_object_destroy (GTK_OBJECT (s));
-
 	gtk_object_destroy (GTK_OBJECT (save));
 }
 
@@ -605,7 +604,6 @@ gtkam_save_new (GtkWindow *main_window)
 	GtkWidget *hbox, *frame, *check, *label, *entry;
 	GtkObject *a;
 	GtkTooltips *tooltips;
-	gchar *t;
 
 	save = g_object_new (GTKAM_TYPE_SAVE, NULL);
 

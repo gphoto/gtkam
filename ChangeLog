@@ -1,5 +1,9 @@
 2004-02-15  Andrew Burton <adburton@users.sourceforge.net>
 
+	* src/gtkam-save.c: Fix compile errors.
+
+2004-02-15  Andrew Burton <adburton@users.sourceforge.net>
+
 	* src/gtkam-save.c: If an error occurs during saving,
 	abort.
 	* src/gtkam-tree.c: Make popup menu-entries less terse.

@@ -139,11 +139,12 @@ gtkam_debug_get_type (void)
 }
 
 static void
-gp_log_func (GPLogLevels levels, const char *domain, const char *msg,
-	     void *data)
+gp_log_func (GPLogLevels levels, const char *domain, const char *format,
+	     va_list args, void *data)
 {
 	GtkamDebug *debug;
 	const gchar *err = "*** ERROR *** ";
+	gchar *message;
 
         g_return_if_fail (GTKAM_IS_DEBUG (data));
 
@@ -158,8 +159,10 @@ gp_log_func (GPLogLevels levels, const char *domain, const char *msg,
 		if (levels & GP_LOG_ERROR)
 			gtk_text_insert (debug->priv->text, NULL, NULL, NULL,
 					 err, strlen (err));
+		message = g_strdup_vprintf (format, args);
         	gtk_text_insert (debug->priv->text, NULL, NULL, NULL,
-        	                 msg, strlen (msg));
+        	                 message, strlen (message));
+		g_free (message);
 		gtk_text_insert (debug->priv->text, NULL, NULL, NULL, "\n", 1);
 	}
 }

@@ -1,10 +1,15 @@
+2001-10-22 Lutz Müller <urc8@rz.uni-karlsruhe.de>
+
+	* src/gtkam-debug.c: Adjust for changes in gphoto2-port-log.h
+
 2001-10-21 Hans Ulrich Niedermann <gp@n-dimensional.de>
 
 	* Makefile.am: added several files to EXTRA_DIST
 	* Makefile.am: added intl/ to SUBDIRS
 	* configure.in: add .spec file
 	* gtkam.spec.in: added first version of spec file
-	* src/gtkam-debug.c: save complete debug message buffer, not only up until current pos
+	* src/gtkam-debug.c: save complete debug message buffer, not only up
+	  until current pos
 
 2001-10-15  Lutz Müller <urc8@rz.uni-karlsruhe.de>
 

@@ -1,13 +1,13 @@
+2002-01-26  Colin Marquardt  <colin@marquardt-home.de>
+
+	* fr.po: Update from Jerome Fenal <jfenal@free.fr>.
+
 2002-01-20  Colin Marquardt  <colin@marquardt-home.de>
 
 	* gtkam.pot: Added note for translators.
 	* pt_BR.po: 
 	* pt_PT.po: New translations from Marcelo Toledo <mtole@ig.com.br>.
 	            Thanks dude.
-
-2002-01-20  gettextize  <bug-gnu-utils@gnu.org>
-
-	* Makefile.in.in: Upgrade to gettext-0.10.40.
 
 2002-01-19  Colin Marquardt  <colin@marquardt-home.de>
 

@@ -39,7 +39,7 @@ main (int argc, char *argv[])
 	textdomain (PACKAGE);
 #endif
 
-	g_log_set_always_fatal (G_LOG_LEVEL_CRITICAL);
+//	g_log_set_always_fatal (G_LOG_LEVEL_CRITICAL);
 
 	gtk_set_locale ();
 	gtk_init (&argc, &argv);

@@ -128,7 +128,7 @@ void log_version(GPLogLevel level, const char *domain)
 		GPVersionFunc func = module_versions[n].version_func;
 		CHECK_NULL (name);
 		CHECK_NULL (func);
-		v = func(GP_VERSION_VERBOSE);
+		v = func(GP_VERSION_SHORT);
 		CHECK_NULL (v);
 		CHECK_NULL (v[0]);
 		gp_log (level, domain, "%s %s", name, v[0]);

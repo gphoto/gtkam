@@ -5,15 +5,17 @@
 	* Makefile.am: removed special pixmap rules, added pixmaps dir
 	* Makefile.am: added package building rules
 	* configure.in: added pixmaps/ and packaging/*
+	* configure.in: removed gtkam.spec
 	* gtkam.spec.in: removed, new spec file in packaging/rpm/
 	* packages/: added
 	* packages/Makefile.am: added
 	* packages/.cvsignore: added
 	* packages/rpm/Makefile.am: added (RPM build rules)
 	* packages/rpm/.cvsignore: added
+	* packages/rpm/README.rpm: added (from gphoto2)
 	* packages/rpm/package.spec.in: the new RPM spec file
 	* pixmaps/.cvsignore: added
-	* pixmaps/Makefile.am: added
+	* pixmaps/Makefile.am: added, install only required pixmaps
 
 2001-10-29 Lutz Müller <urc8@rz.uni-karlsruhe.de>
 

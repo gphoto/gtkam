@@ -249,10 +249,10 @@ concat_dir_and_file (const gchar *dirname, const gchar *filename)
 static void
 save_file (GtkamSave *save, CameraFile *file, guint n)
 {
-	gchar *full_path, *full_filename, *dirname, *msg, *number_filename;
+	gchar *full_path, *full_filename, *fsel_filename, *dirname, *msg, *number_filename;
 	const char *filename, *mime_type;
 	CameraFileType type;
-	const gchar *fsel_filename, *fsel_path, *prefix, *suffix, *progname;
+	const gchar *fsel_path, *prefix, *suffix, *progname;
 	GtkWidget *dialog;
 	int result;
 
@@ -282,6 +282,7 @@ save_file (GtkamSave *save, CameraFile *file, guint n)
 							 full_filename);
 			g_free (dirname);
 			g_free (full_filename);
+			g_free (fsel_filename);
 		
 		} else {
 

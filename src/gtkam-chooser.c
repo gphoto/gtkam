@@ -338,6 +338,7 @@ gtkam_chooser_new (Camera *opt_camera)
 	GList *list;
 	int count;
 	gchar *speed, *port;
+	CameraAbilities a;
 
 	chooser = gtk_type_new (GTKAM_TYPE_CHOOSER);
 
@@ -441,8 +442,8 @@ gtkam_chooser_new (Camera *opt_camera)
 			    GTK_SIGNAL_FUNC (on_speed_changed), chooser);
 
 	if (opt_camera) {
-		gtk_entry_set_text (chooser->priv->entry_model,
-				    opt_camera->model);
+		gp_camera_get_abilities (opt_camera, &a);
+		gtk_entry_set_text (chooser->priv->entry_model, a.model);
 
 		if (*opt_camera->port_info->name) {
 			port = g_strdup_printf ("%s (%s)",

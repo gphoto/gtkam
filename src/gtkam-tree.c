@@ -152,6 +152,7 @@ static void
 create_item (GtkamTree *tree, GtkTree *tree_to_add_to, const gchar *path)
 {
 	CameraList *list;
+	CameraAbilities a;
 	GtkWidget *item, *pixmap, *label, *subtree, *hbox, *dialog, *window;
 	int result;
 	gchar *msg, *l;
@@ -195,11 +196,11 @@ create_item (GtkamTree *tree, GtkTree *tree_to_add_to, const gchar *path)
 			gtk_widget_show (dialog);
 		}
 
-		if (!strcmp (path, "/"))
-			l = g_strdup_printf ("%s (%i)",
-					     tree->priv->camera->model,
+		if (!strcmp (path, "/")) {
+			gp_camera_get_abilities (tree->priv->camera, &a);
+			l = g_strdup_printf ("%s (%i)", a.model,
 					     gp_list_count (list));
-		else
+		} else
 			l = g_strdup_printf ("%s (%i)", g_basename (path),
 					     gp_list_count (list));
 		label = gtk_label_new (l);

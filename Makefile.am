@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in
 
-EXTRA_DIST = autogen.sh acconfig.h MANUAL
+EXTRA_DIST = MANUAL
 
 SUBDIRS = po src test intl art pixmaps packaging
 

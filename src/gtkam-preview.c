@@ -56,9 +56,8 @@
 #include <gtk/gtkhscale.h>
 #include <gdk-pixbuf/gdk-pixbuf-loader.h>
 
-#include <gphoto2/gphoto2-camera.h>
-
-#include <gtkam-error.h>
+#include "gtkam-error.h"
+#include "gtkam-config.h"
 
 struct _GtkamPreviewPrivate
 {
@@ -490,6 +489,15 @@ on_radio_250_toggled (GtkToggleButton *toggle, GtkamPreview *preview)
 		preview->priv->zoom = 2.5;
 }
 
+static void
+on_configure_clicked (GtkButton *button, GtkamPreview *preview)
+{
+	GtkWidget *dialog;
+
+	dialog = gtkam_config_new (preview->priv->camera);
+	gtk_widget_show (dialog);
+}
+
 GtkWidget *
 gtkam_preview_new (Camera *camera)
 {
@@ -616,6 +624,13 @@ gtkam_preview_new (Camera *camera)
 	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (preview)->action_area),
 			   button);
 	gtk_widget_grab_focus (button);
+
+	button = gtk_button_new_with_label (_("Configure"));
+	gtk_widget_show (button);
+	gtk_signal_connect (GTK_OBJECT (button), "clicked",
+			    GTK_SIGNAL_FUNC (on_configure_clicked), preview);
+	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (preview)->action_area),
+			   button);
 
 	button = gtk_button_new_with_label (_("Close"));
 	gtk_widget_show (button);

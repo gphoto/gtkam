@@ -29,6 +29,7 @@ if HAVE_GIMP
 libexecdir = $(GIMP_PLUGIN_DIR)/plug-ins
 libexec_PROGRAMS = gtkam-gimp
 gtkam_gimp_SOURCES =			\
+	gtkam-config.c gtkam-config.h	\
 	gtkam-error.c gtkam-error.h	\
 	gtkam-gimp.c			\
 	gtkam-preview.c gtkam-preview.h

@@ -1,6 +1,6 @@
-2001-11-13  gettextize  <bug-gnu-utils@gnu.org>
+2001-11-15  Colin Marquardt  <colin@marquardt-home.de>
 
-	* Makefile.in.in: Upgrade to gettext-0.10.40.
+	* de.po: Update.
 
 2001-11-11  Colin Marquardt  <colin@marquardt-home.de>
 
@@ -10,10 +10,6 @@
 
 	* de.po: Update. Convert quote signs to the ones recommended by
                  the folks at de@li.org.
-
-2001-10-28  gettextize  <bug-gnu-utils@gnu.org>
-
-	* Makefile.in.in: Upgrade to gettext-0.10.40.
 
 2001-10-23  Colin Marquardt  <colin@marquardt-home.de>
 
@@ -30,8 +26,4 @@
 	Colin Marquardt <colin@marquardt-home.de> contributed a new
 
 	* de.po: Updated.
-
-2001-10-09  gettextize  <bug-gnu-utils@gnu.org>
-
-	* Makefile.in.in: Upgrade to gettext-0.10.40.
 

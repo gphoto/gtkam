@@ -1,3 +1,7 @@
+2004-02-10  Andrew Burton <adburton@users.sourceforge.net>
+
+	* help/C/gtkam.xml: Minor changes prior to release.
+
 2004-02-04  Andrew Burton <adburton@users.sourceforge.net>
 
 	* Makefile.am: Add files NEWS, README and TODO to

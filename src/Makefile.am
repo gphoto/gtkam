@@ -32,5 +32,5 @@ gtkam_gimp_SOURCES =			\
 	gtkam-error.c gtkam-error.h	\
 	gtkam-gimp.c			\
 	gtkam-preview.c gtkam-preview.h
-gtkam_gimp_LDADD = $(GIMP_LIBS) $(JPEG_LIBS)
+gtkam_gimp_LDADD = $(GIMP_LIBS)
 endif

@@ -1,3 +1,7 @@
+2001-11-13  gettextize  <bug-gnu-utils@gnu.org>
+
+	* Makefile.in.in: Upgrade to gettext-0.10.40.
+
 2001-11-11  Colin Marquardt  <colin@marquardt-home.de>
 
 	* de.po: Update.

@@ -10,4 +10,3 @@
 #undef DOCDIR
 
 #undef HAVE_GIMP
-#undef HAVE_JPEG

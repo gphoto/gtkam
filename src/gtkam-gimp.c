@@ -26,12 +26,9 @@
 #include <gphoto2/gphoto2-abilities-list.h>
 #include <gphoto2/gphoto2-camera.h>
 #include <gphoto2/gphoto2-setting.h>
+#include <gdk-pixbuf/gdk-pixbuf-loader.h>
 #include <libgimp/gimp.h>
 #include <libgimp/gimpui.h>
-
-#if HAVE_JPEG
-#include <jpeglib.h>
-#endif
 
 #include "gtkam-preview.h"
 
@@ -76,103 +73,66 @@ query (void)
 
 	gimp_install_procedure (PLUG_IN_NAME, PLUG_IN_DESCRIPTION,
 		PLUG_IN_HELP, PLUG_IN_AUTHOR, PLUG_IN_COPYRIGHT,
-		PLUG_IN_VERSION, N_("<Toolbox>/File/Acquire/From camera..."),
+		PLUG_IN_VERSION, N_("<Toolbox>/File/Acquire/From Camera..."),
 		NULL, GIMP_EXTENSION, NUMBER_IN_ARGS, NUMBER_OUT_ARGS,
 		in_args, out_args);
 }
-
-static GimpParam values[2];
 
 static void
 on_captured (GtkamPreview *preview, const gchar *path, gchar **rpath)
 {
 	*rpath = g_strdup (path);
+	gtk_main_quit ();
 }
 
-static void
+static gboolean
 send_file_to_gimp (CameraFile *file)
 {
 	GimpDrawable *drawable;
 	GimpPixelRgn pixel_rgn;
 	gint32 image_id = 0;
 	gint32 layer_id = 0;
-	const char *type;
+	GdkPixbufLoader *loader;
+	GdkPixbuf *pixbuf;
+	long int size;
+	const char *data;
+	guchar *pixels;
+	int r;
+	guint w, h;
 
-	gp_file_get_mime_type (file, &type);
+	gp_file_get_data_and_size (file, &data, &size);
 
-#if HAVE_JPEG
-	if (!strcmp (type, GP_MIME_JPEG)) {
-		struct jpeg_decompress_struct cinfo;
-		struct jpeg_error_mgr pub;
-		int i;
-		unsigned char *dptr, **lptr, *lines[4];
-		FILE *f;
-		guint w, h;
-		guchar *bitmap;
+	loader = gdk_pixbuf_loader_new ();
+	gdk_pixbuf_loader_write (loader, data, size);
+	gdk_pixbuf_loader_close (loader);
 
-		gp_file_save (file, "/tmp/gphoto.jpg");
-		f = fopen ("/tmp/gphoto.jpg", "r");
-		if (!f) {
-			g_warning ("Error!");
-			return;
-		}
+	pixbuf = gdk_pixbuf_loader_get_pixbuf (loader);
+	w = gdk_pixbuf_get_width (pixbuf);
+	h = gdk_pixbuf_get_height (pixbuf);
+	r = gdk_pixbuf_get_rowstride (pixbuf);
+	pixels = gdk_pixbuf_get_pixels (pixbuf);
 
-		cinfo.err = jpeg_std_error (&pub);
-		jpeg_create_decompress (&cinfo);
-		jpeg_stdio_src (&cinfo, f);
-		jpeg_read_header (&cinfo, TRUE);
-		jpeg_start_decompress (&cinfo);
-		cinfo.do_fancy_upsampling = FALSE;
-		cinfo.do_block_smoothing = FALSE;
-		cinfo.out_color_space = JCS_RGB;
-		w = cinfo.output_width;
-		h = cinfo.output_height;
+	image_id = gimp_image_new (w, h, GIMP_RGB);
+	layer_id = gimp_layer_new (image_id, _("Background"), w, h,
+				   GIMP_RGB_IMAGE, 100, GIMP_NORMAL_MODE);
+	gimp_image_add_layer (image_id, layer_id, 0);
+	drawable = gimp_drawable_get (layer_id);
 
-		bitmap = g_new0 (guchar, w * h);
-		dptr = bitmap;
-		while (cinfo.output_scanline < cinfo.output_height) {
-			lptr = lines;
-			for (i = 0; i < cinfo.rec_outbuf_height; i++) {
-				*lptr++ = dptr;
-				dptr += w;
-			}
-			jpeg_read_scanlines (&cinfo, lines,
-					     cinfo.rec_outbuf_height);
-			if (cinfo.output_components == 1)
-				printf ("HUH?!?\n");
-		}
+	gimp_pixel_rgn_init (&pixel_rgn, drawable, 0, 0, r, h, TRUE, FALSE);
+	gimp_pixel_rgn_set_rect (&pixel_rgn, pixels, 0, 0, w, h);
+	gtk_object_unref (GTK_OBJECT (loader));
 
-		jpeg_finish_decompress (&cinfo);
-		jpeg_destroy_decompress (&cinfo);
+	gimp_drawable_flush (drawable);
+	gimp_drawable_detach (drawable);
+	gimp_display_new (image_id);
 
-		fclose (f);
-
-		image_id = gimp_image_new (w / 3, h, GIMP_RGB);
-		layer_id = gimp_layer_new (image_id, _("Background"),
-					   w / 3, h,
-					   GIMP_RGB_IMAGE, 100,
-					   GIMP_NORMAL_MODE);
-		gimp_image_add_layer (image_id, layer_id, 0);
-		drawable = gimp_drawable_get (layer_id);
-
-		gimp_pixel_rgn_init (&pixel_rgn, drawable, 0, 0, w / 3,
-				     h, TRUE, FALSE);
-		gimp_pixel_rgn_set_rect (&pixel_rgn, bitmap,
-					 0, 0, w / 3, h);
-
-		gimp_drawable_flush (drawable);
-
-		gimp_drawable_detach (drawable);
-		gimp_display_new (image_id);
-
-		return;
-	} else
-#endif
-	{
-		/* Mime type not supported. */
-		g_warning ("Mime type '%s' not supported.", type);
-	}
+	return image_id;
 }
+
+typedef struct {
+	guint angle;
+	gfloat zoom;
+} PreviewParams;
 
 static void
 run (gchar *name, gint nparams, GimpParam *param, gint *nreturn_vals,
@@ -185,31 +145,29 @@ run (gchar *name, gint nparams, GimpParam *param, gint *nreturn_vals,
 	CameraFile *file;
 	GPPortInfo info;
 	GPPortInfoList *il;
-	GimpRunModeType run_mode;
 	int n, p, result;
 	GtkWidget *preview;
 	gchar *rpath = NULL, *dir;
 	char port[1024], speed[1024], model[1024];
+	guint image_id;
+	static GimpParam values[2];
+	static PreviewParams preview_params = {0, 1.};
 
-	g_message ("Setting return values...");
 	values[0].type = GIMP_PDB_STATUS;
 	values[0].data.d_status = GIMP_PDB_SUCCESS;
 	*nreturn_vals = 1;
 	*return_vals = values;
 
-	g_message ("Yet another value...");
 	values[1].type = GIMP_PDB_INT32;
 	values[1].data.d_int32 = 0;
 
 	/* Create the camera */
-	g_message ("Create camera...");
 	if (((gp_setting_get ("gtkam", "camera", model) == GP_OK) ||
             (gp_setting_get ("gtkam", "model", model) == GP_OK) ||
             (gp_setting_get ("gphoto2", "model", model) == GP_OK)) &&
             ((gp_setting_get ("gtkam", "port", port) == GP_OK) ||
              (gp_setting_get ("gtkam", "port name", port) == GP_OK)) &&
             (gp_setting_get ("gtkam", "speed", speed) == GP_OK)) {
-		g_message ("New camera...");
 		gp_camera_new (&camera);
 
 		gp_abilities_list_new (&al);
@@ -238,29 +196,47 @@ run (gchar *name, gint nparams, GimpParam *param, gint *nreturn_vals,
 
 	g_assert (camera);
 
-	g_message ("We'll return 2 values...");
-	*nreturn_vals = 2;
-
-	run_mode = param[0].data.d_int32;
-	switch (run_mode) {
+	switch (param[0].data.d_int32) {
 	case GIMP_RUN_INTERACTIVE:
-#if 0
-		g_message ("Interactive!");
+
+		/* Initialize gtk through gimp */
+		gimp_ui_init ("gtkam-gimp", TRUE);
+
+		/* Get settings from a previous run (if any) */
+		gimp_get_data (PLUG_IN_NAME, &preview_params);
+
+		/* Create the preview window */
 		preview = gtkam_preview_new (camera);
-		g_assert (preview);
-		gp_camera_unref (camera);
+		gtkam_preview_set_angle (GTKAM_PREVIEW (preview),
+					 preview_params.angle);
+		gtkam_preview_set_zoom (GTKAM_PREVIEW (preview),
+					preview_params.zoom);
 		gtk_widget_show (preview);
 		gtk_signal_connect (GTK_OBJECT (preview), "captured",
-				    GTK_SIGNAL_FUNC (on_captured), &path);
+				    GTK_SIGNAL_FUNC (on_captured), &rpath);
 		gtk_signal_connect (GTK_OBJECT (preview), "delete_event",
 				    GTK_SIGNAL_FUNC (gtk_main_quit), NULL);
 		gtk_main ();
-		if (rpath) {
+
+		/* Check if the user cancelled */
+		if (!rpath) {
 			gp_camera_unref (camera);
 			g_warning ("Some more error messages would be fine...");
-			values[0].data.d_status = GIMP_PDB_EXECUTION_ERROR;
+			values[0].data.d_status = GIMP_PDB_CANCEL;
 			return;
 		}
+
+		/* Store the settings for later runs */
+		gtk_widget_hide (preview);
+		preview_params.zoom =
+			gtkam_preview_get_zoom (GTKAM_PREVIEW (preview));
+		preview_params.angle = 
+			gtkam_preview_get_angle (GTKAM_PREVIEW (preview));
+		gtk_object_destroy (GTK_OBJECT (preview));
+		gimp_set_data (PLUG_IN_NAME, &preview_params,
+			       sizeof (PreviewParams));
+
+		/* Get the file */
 		dir = g_dirname (rpath);
 		gp_file_new (&file);
 		result = gp_camera_file_get (camera, dir, g_basename (rpath),
@@ -274,13 +250,23 @@ run (gchar *name, gint nparams, GimpParam *param, gint *nreturn_vals,
 			values[0].data.d_status = GIMP_PDB_EXECUTION_ERROR;
 			return;
 		}
-		send_file_to_gimp (file);
+
+		/* Display the file */
+		image_id = send_file_to_gimp (file);
 		gp_file_unref (file);
+		if (!image_id) {
+			values[0].data.d_status = GIMP_PDB_EXECUTION_ERROR;
+			return;
+		}
+
+		/* Tell gimp about the new image */
+		*nreturn_vals = 2;
+		values[1].type = GIMP_PDB_IMAGE;
+		values[1].data.d_image = image_id;
+
 		break;
-#endif
 	case GIMP_RUN_NONINTERACTIVE:
 	case GIMP_RUN_WITH_LAST_VALS:
-		g_message ("Non-interactive!");
 		result = gp_camera_capture (camera, GP_CAPTURE_IMAGE, &path);
 		if (result < 0) {
 			g_warning ("Could not capture: %s",
@@ -289,7 +275,6 @@ run (gchar *name, gint nparams, GimpParam *param, gint *nreturn_vals,
 			return;
 		}
 		gp_file_new (&file);
-		g_message ("Getting file...");
 		result = gp_camera_file_get (camera, path.folder, path.name,
 					     GP_FILE_TYPE_NORMAL, file);
 		gp_camera_unref (camera);
@@ -299,16 +284,25 @@ run (gchar *name, gint nparams, GimpParam *param, gint *nreturn_vals,
 			values[0].data.d_status = GIMP_PDB_EXECUTION_ERROR;
 			return;
 		}
-		g_message ("Sending file to gimp...");
-		send_file_to_gimp (file);
+
+		/* Display the file */
+		image_id = send_file_to_gimp (file);
 		gp_file_unref (file);
+		if (!image_id) {
+			values[0].data.d_status = GIMP_PDB_EXECUTION_ERROR;
+			return;
+		}
+
+		/* Tell gimp about the new image */
+		*nreturn_vals = 2;
+		values[1].type = GIMP_PDB_IMAGE;
+		values[1].data.d_image = image_id;
+
 		break;
 	default:
 		gp_camera_unref (camera);
 		break;
 	}
-
-	g_message ("Done!");
 }
 
 GimpPlugInInfo PLUG_IN_INFO = {

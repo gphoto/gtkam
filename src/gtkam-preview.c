@@ -70,6 +70,9 @@ struct _GtkamPreviewPrivate
 	guint rotate;
 	gfloat zoom;
 
+	GtkToggleButton *zoom_100, *zoom_150, *zoom_200, *zoom_250;
+	GtkToggleButton *angle_0, *angle_90, *angle_180, *angle_270;
+
 	guint32 idle_id;
 };
 
@@ -548,24 +551,28 @@ gtkam_preview_new (Camera *camera)
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (radio), TRUE);
 	gtk_signal_connect (GTK_OBJECT (radio), "toggled",
 			    GTK_SIGNAL_FUNC (on_radio_0_toggled), preview);
+	preview->priv->angle_0 = GTK_TOGGLE_BUTTON (radio);
 	group = gtk_radio_button_group (GTK_RADIO_BUTTON (radio));
 	radio = gtk_radio_button_new_with_label (group, _("-90°"));
 	gtk_widget_show (radio);
 	gtk_box_pack_start (GTK_BOX (vbox), radio, FALSE, FALSE, 0);
 	gtk_signal_connect (GTK_OBJECT (radio), "toggled",
 			    GTK_SIGNAL_FUNC (on_radio_270_toggled), preview);
+	preview->priv->angle_90 = GTK_TOGGLE_BUTTON (radio);
 	group = gtk_radio_button_group (GTK_RADIO_BUTTON (radio));
 	radio = gtk_radio_button_new_with_label (group, _("+90°"));
 	gtk_widget_show (radio);
 	gtk_box_pack_start (GTK_BOX (vbox), radio, FALSE, FALSE, 0);
 	gtk_signal_connect (GTK_OBJECT (radio), "toggled",
 			    GTK_SIGNAL_FUNC (on_radio_90_toggled), preview);
+	preview->priv->angle_180 = GTK_TOGGLE_BUTTON (radio);
 	group = gtk_radio_button_group (GTK_RADIO_BUTTON (radio));
 	radio = gtk_radio_button_new_with_label (group, _("180°"));
 	gtk_widget_show (radio);
 	gtk_box_pack_start (GTK_BOX (vbox), radio, FALSE, FALSE, 0);
 	gtk_signal_connect (GTK_OBJECT (radio), "toggled",
 			    GTK_SIGNAL_FUNC (on_radio_180_toggled), preview);
+	preview->priv->angle_270 = GTK_TOGGLE_BUTTON (radio);
 
 	/* Zoom */
 	hbox = gtk_hbox_new (FALSE, 0);
@@ -578,24 +585,28 @@ gtkam_preview_new (Camera *camera)
 	gtk_box_pack_start (GTK_BOX (hbox), radio, FALSE, FALSE, 0);
 	gtk_signal_connect (GTK_OBJECT (radio), "toggled",
 			    GTK_SIGNAL_FUNC (on_radio_100_toggled), preview);
+	preview->priv->zoom_100 = GTK_TOGGLE_BUTTON (radio);
 	group = gtk_radio_button_group (GTK_RADIO_BUTTON (radio));
 	radio = gtk_radio_button_new_with_label (group, _("150%"));
 	gtk_widget_show (radio);
 	gtk_box_pack_start (GTK_BOX (hbox), radio, FALSE, FALSE, 0);
 	gtk_signal_connect (GTK_OBJECT (radio), "toggled",
 			    GTK_SIGNAL_FUNC (on_radio_150_toggled), preview);
+	preview->priv->zoom_150 = GTK_TOGGLE_BUTTON (radio);
 	group = gtk_radio_button_group (GTK_RADIO_BUTTON (radio));
 	radio = gtk_radio_button_new_with_label (group, _("200%"));
 	gtk_widget_show (radio);
 	gtk_box_pack_start (GTK_BOX (hbox), radio, FALSE, FALSE, 0);
 	gtk_signal_connect (GTK_OBJECT (radio), "toggled",
 			    GTK_SIGNAL_FUNC (on_radio_200_toggled), preview);
+	preview->priv->zoom_200 = GTK_TOGGLE_BUTTON (radio);
 	group = gtk_radio_button_group (GTK_RADIO_BUTTON (radio));
 	radio = gtk_radio_button_new_with_label (group, _("250%"));
 	gtk_widget_show (radio);
 	gtk_box_pack_start (GTK_BOX (hbox), radio, FALSE, FALSE, 0);
 	gtk_signal_connect (GTK_OBJECT (radio), "toggled",
 			    GTK_SIGNAL_FUNC (on_radio_250_toggled), preview);
+	preview->priv->zoom_250 = GTK_TOGGLE_BUTTON (radio);
 
 	button = gtk_button_new_with_label (_("Capture"));
 	gtk_widget_show (button);
@@ -617,4 +628,67 @@ gtkam_preview_new (Camera *camera)
 	preview->priv->idle_id = gtk_idle_add (idle_func, preview);
 
 	return (GTK_WIDGET (preview));
+}
+
+void
+gtkam_preview_set_zoom (GtkamPreview *preview, gfloat zoom)
+{
+	g_return_if_fail (GTKAM_IS_PREVIEW (preview));
+
+	switch ((guint) (zoom * 100.)) {
+	case 100:
+		gtk_toggle_button_set_active (preview->priv->zoom_100, TRUE);
+		break;
+	case 150:
+		gtk_toggle_button_set_active (preview->priv->zoom_150, TRUE);
+		break;
+	case 200:
+		gtk_toggle_button_set_active (preview->priv->zoom_200, TRUE);
+		break;
+	case 250:
+		gtk_toggle_button_set_active (preview->priv->zoom_250, TRUE);
+		break;
+	default:
+		g_warning ("Zoom of %f not implemented!", zoom);
+		break;
+	}
+}
+
+gfloat
+gtkam_preview_get_zoom (GtkamPreview *preview)
+{
+	g_return_val_if_fail (GTKAM_IS_PREVIEW (preview), 0.);
+
+	return (preview->priv->zoom);
+}
+
+void
+gtkam_preview_set_angle (GtkamPreview *preview, guint angle)
+{
+	g_return_if_fail (GTKAM_IS_PREVIEW (preview));
+
+	switch (angle) {
+	case 0:
+		gtk_toggle_button_set_active (preview->priv->angle_0, TRUE);
+		break;
+	case 90:
+		gtk_toggle_button_set_active (preview->priv->angle_90, TRUE);
+		break;
+	case 180:
+		gtk_toggle_button_set_active (preview->priv->angle_180, TRUE);
+		break;
+	case 270:
+		gtk_toggle_button_set_active (preview->priv->angle_270, TRUE);
+		break;
+	default:
+		g_warning ("Rotation by %i not implemented!", angle);
+	}
+}
+
+guint
+gtkam_preview_get_angle (GtkamPreview *preview)
+{
+	g_return_val_if_fail (GTKAM_IS_PREVIEW (preview), 0);
+
+	return (preview->priv->rotate);
 }

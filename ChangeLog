@@ -1,3 +1,7 @@
+2001-11-13  Lutz Müller <urc8@rz.uni-karlsruhe.de>
+
+	* src: Gimp plugin should work now.
+
 2001-11-12  Lutz Müller <urc8@rz.uni-karlsruhe.de>
 
 	* configure.in

@@ -96,38 +96,6 @@ AC_SUBST(GIMP_CFLAGS)
 AC_SUBST(GIMP_LIBS)
 AC_SUBST(GIMP_PLUGIN_DIR)
 
-dnl ----
-dnl jpeg
-dnl ---
-jpeg_msg=no
-try_jpeg=true 
-have_jpeg=false 
-AC_ARG_WITH(jpeg, [  --without-jpeg    Don't use jpeg],
-        if test x$withval = xno; then
-                try_jpeg=false
-        fi
-)
-if $try_jpeg; then
-        AC_MSG_CHECKING([for jpeglib.h])
-        AC_TRY_CPP([
-#include <stdio.h>
-#undef PACKAGE
-#undef VERSION
-#undef HAVE_STDDEF_H
-#undef HAVE_STDLIB_H
-#include <jpeglib.h>],
-                jpeg_msg=yes,
-                jpeg_msg=no)
-        AC_MSG_RESULT($jpeg_msg)
-        if test "$jpeg_msg" = yes; then
-                have_jpeg=true
-                AC_DEFINE(HAVE_JPEG)
-                JPEG_LIBS="-ljpeg"
-        fi
-fi
-AM_CONDITIONAL(HAVE_JPEG, $have_jpeg)
-AC_SUBST(JPEG_LIBS)
-
 dnl Set PACKAGE_SOURCE_DIR in config.h.
 packagesrcdir=`cd $srcdir && pwd`
 AC_DEFINE_UNQUOTED(PACKAGE_SOURCE_DIR, "${packagesrcdir}")
@@ -168,5 +136,4 @@ Configuration
 	Compiler:             ${CC}
 
 	GIMP plugin:          $gimp_msg
-	JPEG support:         $jpeg_msg
 "

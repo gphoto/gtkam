@@ -1,6 +1,6 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR Free Software Foundation, Inc.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# gtKam
+# Copyright (C) 2000 Scott Fritzinger
+# Scott Fritzinger <scottf@unr.edu>, 2000.
 #
 #, fuzzy
 msgid ""

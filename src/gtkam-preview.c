@@ -53,6 +53,7 @@
 #include <gtk/gtkmain.h>
 #include <gtk/gtksignal.h>
 #include <gtk/gtkpixmap.h>
+#include <gtk/gtkhscale.h>
 #include <gdk-pixbuf/gdk-pixbuf-loader.h>
 
 #include <gphoto2/gphoto2-camera.h>
@@ -67,6 +68,7 @@ struct _GtkamPreviewPrivate
 	Camera *camera;
 
 	guint rotate;
+	gfloat zoom;
 
 	guint32 timeout;
 	guint32 timeout_id;
@@ -134,6 +136,7 @@ gtkam_preview_init (GtkamPreview *preview)
 {
 	preview->priv = g_new0 (GtkamPreviewPrivate, 1);
 	preview->priv->timeout = 5000;
+	preview->priv->zoom = 1.;
 }
 
 GtkType
@@ -354,9 +357,10 @@ timeout_func (gpointer user_data)
 	const char *data;
 	long int size;
 	GdkPixbufLoader *loader;
-	GdkPixbuf *pixbuf, *rotated;
+	GdkPixbuf *pixbuf, *rotated, *scaled;
 	GdkPixmap *pixmap;
 	GdkBitmap *bitmap;
+	guint w, h;
 
 	GtkamPreview *preview = GTKAM_PREVIEW (user_data);
 
@@ -378,8 +382,14 @@ timeout_func (gpointer user_data)
 	pixbuf = gdk_pixbuf_loader_get_pixbuf (loader);
 	rotated = gdk_pixbuf_rotate (pixbuf, preview->priv->rotate);
 	gtk_object_unref (GTK_OBJECT (loader));
-	gdk_pixbuf_render_pixmap_and_mask (rotated, &pixmap, &bitmap, 127);
+	w = gdk_pixbuf_get_width (rotated);
+	h = gdk_pixbuf_get_height (rotated);
+	scaled = gdk_pixbuf_scale_simple (rotated, w * preview->priv->zoom,
+					  h * preview->priv->zoom,
+					  GDK_INTERP_HYPER);
 	gdk_pixbuf_unref (rotated);
+	gdk_pixbuf_render_pixmap_and_mask (scaled, &pixmap, &bitmap, 127);
+	gdk_pixbuf_unref (scaled);
 
 	/* Show the new preview */
 	gtk_pixmap_set (preview->priv->image, pixmap, bitmap);
@@ -456,11 +466,17 @@ on_radio_270_toggled (GtkToggleButton *toggle, GtkamPreview *preview)
 		preview->priv->rotate = 270;
 }
 
+static void
+on_zoom_value_changed (GtkAdjustment *adj, GtkamPreview *preview)
+{
+	preview->priv->zoom = adj->value;
+}
+
 GtkWidget *
 gtkam_preview_new (Camera *camera)
 {
 	GtkamPreview *preview;
-	GtkWidget *button, *check, *label, *hbox, *image, *vbox, *radio;
+	GtkWidget *button, *check, *label, *hbox, *image, *vbox, *radio, *scale;
 	GtkObject *adj;
 	GdkPixbuf *pixbuf;
 	GdkPixmap *pixmap;
@@ -536,6 +552,23 @@ gtkam_preview_new (Camera *camera)
 	gtk_box_pack_start (GTK_BOX (vbox), radio, FALSE, FALSE, 0);
 	gtk_signal_connect (GTK_OBJECT (radio), "toggled",
 			    GTK_SIGNAL_FUNC (on_radio_180_toggled), preview);
+
+	/* Zoom */
+	hbox = gtk_hbox_new (FALSE, 0);
+	gtk_container_set_border_width (GTK_CONTAINER (hbox), 5);
+	gtk_widget_show (hbox);
+	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (preview)->vbox), hbox,
+			    FALSE, FALSE, 0);
+	label = gtk_label_new (_("Zoom: "));
+	gtk_widget_show (label);
+	gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
+	adj = gtk_adjustment_new (preview->priv->zoom, 1., 2., 0.01, 0.1, 4.);
+	scale = gtk_hscale_new (GTK_ADJUSTMENT (adj));
+	gtk_scale_set_digits (GTK_SCALE (scale), 2);
+	gtk_widget_show (scale);
+	gtk_box_pack_start (GTK_BOX (hbox), scale, TRUE, TRUE, 0);
+	gtk_signal_connect (GTK_OBJECT (adj), "value_changed",
+			    GTK_SIGNAL_FUNC (on_zoom_value_changed), preview);
 
 	hbox = gtk_hbox_new (FALSE, 0);
 	gtk_container_set_border_width (GTK_CONTAINER (hbox), 5);

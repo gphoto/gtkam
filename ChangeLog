@@ -1,5 +1,7 @@
 2004-04-16  Andrew Burton <adburton@users.sourceforge.net>
 
+	* src/configure.in: Changed so --without-bonobo flag
+	works.
 	* src/gtkam-save.c: Abort save if an error occurs while
 	saving. Spawn single instance of external program, not
 	one for each file.

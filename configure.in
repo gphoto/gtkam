@@ -40,7 +40,7 @@ dnl ---------------------------------------------------------------------------
 try_bonobo=true
 bonobo_msg=no
 have_bonobo=false
-AC_ARG_WITH(bonobo-activation, [  --without-bonobo        Don't compile with bonobo], [
+AC_ARG_WITH(bonobo, [  --without-bonobo        Don't compile with bonobo], [
 	if test x$withval = xno; then
 		try_bonobo=false
 	fi])

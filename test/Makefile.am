@@ -5,5 +5,5 @@ INCLUDES =			\
 
 noinst_PROGRAMS = test-fsel test-cancel
 
-test_fsel_LDADD   = $(GTKAM_LIBS) $(EXIF_LIBS) $(BONOBO_LIBS) ../src/libgtkam.a $(INTLLIBS)
-test_cancel_LDADD = $(GTKAM_LIBS) $(EXIF_LIBS) $(BONOBO_LIBS) ../src/libgtkam.a $(INTLLIBS)
+test_fsel_LDADD   = $(GTKAM_LIBS) $(EXIF_LIBS) $(BONOBO_LIBS) $(top_builddir)/src/libgtkam.a $(INTLLIBS)
+test_cancel_LDADD = $(GTKAM_LIBS) $(EXIF_LIBS) $(BONOBO_LIBS) $(top_builddir)/src/libgtkam.a $(INTLLIBS)

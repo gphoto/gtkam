@@ -127,7 +127,7 @@
      the application is and what it does. -->
   <sect1 id="myapp-introduction"> 
     <title>Introduction</title> 
-    <para>&app; is a convenient and easy-to-use program that lets you view photos on your digital camera.
+    <para>&app; is a convenient and easy-to-use program that lets you view and download photos and movies taken on your digital camera.
     &app; supports almost 400 cameras.</para>
     <para>&app; has the following features:</para>
     <itemizedlist> 
@@ -138,7 +138,7 @@
 	  <para>Easy access to photos and movies on the camera.</para> 
       </listitem> 
       <listitem> 
-	  <para>Support for downloading photos from, and uploading files to, the camera. </para> 
+	  <para>Support for downloading photos and movies from, and uploading files to, the camera. </para> 
       </listitem>
       <listitem> 
 	  <para>Support for interrogating, and modifying, camera settings. </para> 
@@ -183,6 +183,7 @@
     		then press <keycap>Return</keycap>:</para>
     		<para> 
 			<command>gtkam</command> 
+			<!--FIXME comand line --switches -->
     		</para> 
     		</listitem>
     	</varlistentry>
@@ -202,8 +203,7 @@
 		fileref="figures/gtkam_start_window.png" format="PNG"/> 
 	    </imageobject>
 	    <textobject> 
-	      <phrase>Shows &app; main window. Contains titlebar, menubar, toolbar, display area, and
-	      scrollbars. Menubar contains File, View, Select, Camera, and Help menus. </phrase> 
+	      <phrase>The &app; main window. On the left is the camera tree. The file list is on the right.
 	    </textobject> 
 	  </mediaobject> 
 	</screenshot> 
@@ -227,18 +227,19 @@
 	<term>Toolbar. </term>
 	<listitem>
 	<para> The toolbar contains buttons allowing you to control the zoom of the thumbnails. You can also choose whether or not to show the thumbnails using the thumbnail toggle.</para>
+	<!--FIXME Add refresh button -->
 	</listitem>
 	</varlistentry>
 	<varlistentry>
 	<term>Camera tree pane. </term>
 	<listitem>
-	<para>The camera tree contains a list of all cameras that have been added (TODO - Refer to sec xxx). If a camera is available, an arrow appears to the left of it's name in the camera tree, and you can click on the arrow to list the folders.</para>
+	<para>The camera tree contains a list of all cameras that have been added <!--FIXME - Refer to sec xxx-->. If a camera is available, an arrow appears to the left of it's name in the camera tree, and you can click on the arrow to list the folders.</para>
 	</listitem>
 	</varlistentry>
 	<varlistentry>
 	<term>Folder contents pane. </term>
 	<listitem>
-	<para>The right pane lists the contents of the currently-selected folder from the camera tree. You can choose whether thumbnails are shown for each photo by toggling the View Thumbnails checkbox..</para>
+	<para>The right pane lists the contents of the currently-selected folder in the camera tree. You can choose whether thumbnails are shown for each photo by toggling the View Thumbnails checkbox.</para>
 	</listitem>
 	</varlistentry>
 	</variablelist>
@@ -279,8 +280,8 @@
 	<menuchoice> 
 	  <guimenu>Camera</guimenu> 
 	  <guimenuitem>Add Camera</guimenuitem> 
-	</menuchoice> or right-click anywhere on the camera tree pane.
-        The <guilabel>Add Camera</guilabel> dialog is displayed.</para>
+	</menuchoice> or right-click anywhere on the camera tree pane and choose <!--FIXME markup-->Add Camera from the pop-up menu that appears.
+        The <guilabel>Add Camera</guilabel> window is displayed.</para>
 
     <!-- ==== Figure ==== -->
       <figure id="addcamera-fig"> 
@@ -291,20 +292,20 @@
 		fileref="figures/gtkam_add_camera_window.png" format="PNG"/> 
 	    </imageobject>
 	    <textobject> 
-	      <phrase>Shows &app; Add Camera window. Allows user to add a new camera. </phrase> 
+	      <phrase>The &app; Add Camera window allows you to add a new camera. </phrase> 
 	    </textobject> 
 	  </mediaobject> 
 	</screenshot> 
       </figure>
     <!-- ==== End of Figure ==== -->
 
-<para>To add a camera, make sure the camera is plugged in and turned on, and click the Detect button. This should automatically detect your camera.</para>
+<para>To add a camera, make sure the camera is plugged in and turned on, and click the <!--FIXME Markup -->Detect button. This should automatically detect your camera.</para>
 
 <note>
   <para>Some cameras can only be detected by &app; in their Playback mode.</para>
 </note>
 
-<para>Alternatively, you can choose the camera yourself. Click the <guilabel>Model:</guilabel> drop-down list and scroll down to find your camera. The <guilabel>Port:</guilabel> drop-down list will change to only list ports applicable to the camera that you have access to.</para>
+<para>Alternatively, you can choose the camera yourself. Click the <guilabel>Model:</guilabel> drop-down list and scroll down to find your camera. The <guilabel>Port:</guilabel> drop-down list will change to only list available ports for the camera that you have access to.</para>
 
 <note>
   <para>If you do not have read access to the port your camera is plugged in to, you will not be able to use &app; with that camera. Also, some features require write access to the port.</para>
@@ -325,18 +326,13 @@
   </listitem>
  <listitem>
     <para>
-      <guilabel>Speed</guilabel> &mdash; You can specify the transfer speed used to retrieve photos from your camera.
+      <guilabel>Speed</guilabel> &mdash; You can specify the transfer speed used to retrieve photos from your camera. This option is only available for serial cameras.
     </para>
   </listitem>
 </itemizedlist>
 
-        <para>When you are happy with your choices, click OK to close the window and return to the main window. Alternatively, click Apply to add the camera and stay in this window to make further changes.</para>
-	<para>Your camera will be remembered, so the next time you use &app;, the camera you chose will be available in the main window.
-<!--	    <keycap>Esc</keycap> key or 
-	    <keycombo>
-              <keycap>Ctrl</keycap>
-	      <keycap>W</keycap>
-	    </keycombo>.-->
+        <para>When you are happy with your choices, click <!--FIXME Markup-->OK to close the window and return to the main window. Alternatively, click <!--FIXME Markup-->Apply to add the camera and stay in this window to make further changes.</para>
+	<para>Once you have added a camera, it will be available the next time you use &app;.
 </para>
 </sect2>
 
@@ -345,7 +341,7 @@
     <!-- ================ Usage Subsection ================================ -->
     <sect2 id="gtkam-zoom-view-image"> 
       <title>Viewing Your Photos</title>
-<para>When you select a folder on the left side of the main window by clicking on it with the left mouse button, a list of the files in that folder is displayed on the right. If the file is a photo, gtkam displays a thumbnail. You can zoom in and out on these thumbnails by clicking on the Zoom buttons.</para>
+<para>When you select a folder in the camera tree pane by clicking on it with the left mouse button, a list of the files in that folder is displayed on the right. If the file is a photo or a movie, gtkam displays a thumbnail. You can zoom in and out on these thumbnails by clicking on the Zoom buttons.</para>
 
 <itemizedlist>
   <listitem>
@@ -371,12 +367,13 @@
 </itemizedlist>
 <para>If you have installed other image viewing applications, you can use these to view photos from within &app;.</para>
 <!-- TODO Right-click on RHS, gtkam_fileinfo.png -->
+<!-- FIXME Recommendations for other viewers - eog, gthumb, totem-->
     </sect2>
 
     <!-- ================ Usage Subsection ================================ -->
     <sect2 id="gtkam-save-images"> 
       <title>Saving Your Photos</title> 
-<para>You can save files from your camera to your computer using the gtkam's Save feature. To save, choose
+<para>You can save files from your camera to your computer. To save, choose
 	<menuchoice> 
 	  <guimenu>File</guimenu> 
 	  <guimenuitem>Save Selected</guimenuitem> 
@@ -385,6 +382,7 @@
 	  <guimenu>File</guimenu> 
 	  <guimenuitem>Save All</guimenuitem> 
 	</menuchoice> to save all the photos in the selected folder.
+	<!--FIXME Also, right-click -->
 </para>
     <!-- ==== Figure ==== -->
       <figure id="save-fig"> 
@@ -395,7 +393,7 @@
 		fileref="figures/gtkam_save.png" format="PNG"/> 
 	    </imageobject>
 	    <textobject> 
-	      <phrase>Shows &app; Save window. Allows user to save their photos to their computer. </phrase> 
+	      <phrase>The &app; Save window allows you to save your photos to your computer.</phrase> 
 	    </textobject> 
 	  </mediaobject> 
 	</screenshot> 
@@ -403,9 +401,10 @@
     <!-- ==== End of Figure ==== -->
 
 <para>
-By default, only the photo is saved. You can specify additional data to save by checking the appropriate checkbox.
+You can use the checkboxes to decide what is saved. By default, only the photo is saved. You can specify additional data to save by checking the appropriate checkbox.
 </para>
 <para>If you want to use your own filenames, rather than those used by the camera, you need to toggle the <guilabel>Use filename(s) provided by the camera</guilabel> off. This allows you to enter your own <guilabel>filename prefix</guilabel>. For example, if you enter 'photo' as the prefix, the photos will be saved as 'photo0001.jpg', 'photo0002.jpg' and so on. If you want to start the numbering scheme higher, change the <guilabel>Start numbering with</guilabel> number to a different value.</para>
+<para>If there are files already in the target directory with the same prefix, this number will be automatically set as the next available number.</para>
 <para>
 If you save all the photos, you can change some additional options in the file selection window:
 </para>
@@ -419,22 +418,22 @@ If you save all the photos, you can change some additional options in the file s
 		fileref="figures/gtkam_save_all.png" format="PNG"/> 
 	    </imageobject>
 	    <textobject> 
-	      <phrase>Shows &app; Save All window. Allows user to save their photos to their computer. </phrase> 
+	      <phrase>The &app; Save All window allows you to save your photos to your computer. </phrase> 
 	    </textobject> 
 	  </mediaobject> 
 	</screenshot> 
       </figure>
     <!-- ==== End of Figure ==== -->
-<para>The Save All window allows you to specify the Start Number.</para>
     </sect2>
 
     <sect2 id="gtkam-delete-images"> 
       <title>Deleting Photos</title> 
-<para>To delete photos, select the file or files to delete and choose
+<para>To delete photos, select the file(s) to delete and choose
 <menuchoice>
 <guimenu>File</guimenu>
 <guimenuitem>Delete Selected</guimenuitem>
-</menuchoice>. To delete all the files in the directory, choose <menuchoice><guimenu>File</guimenu><guimenuitem>Delete All</guimenuitem></menuchoice>. A confirmation window will appear, asking you to confirm the files to be deleted. TODO - SHOW WINDOW. If you don't want to delete a file, click the checkbox next to the filename so that no tick is present.</para>
+</menuchoice>. To delete all the files in the directory, choose <menuchoice><guimenu>File</guimenu><guimenuitem>Delete All</guimenuitem></menuchoice>. A confirmation window will appear, asking you to confirm the files to be deleted. <!--TODO - SHOW WINDOW-->. If you don't want to delete a file, click the checkbox next to the filename so that no tick is present.</para>
+<!--FIXME Right-click -->
 
       <warning>
         <para>If you delete a file from the camera, it is not possible to undelete it. Please be sure you want to delete the file before you click <guibutton>OK</guibutton>.</para>
@@ -447,7 +446,7 @@ If you save all the photos, you can change some additional options in the file s
 <itemizedlist>
   <listitem>
     <para>
-      <guilabel>Make directory</guilabel> &mdash; This option prompts you to enter a filename for a new directory to be created in the current directory on the camera.
+      <guilabel>Make Directory...</guilabel> &mdash; This option prompts you to enter a filename for a new directory to be created in the current directory on the camera.
 <!-- ==== Figure ==== -->
       <figure id="makedir-fig"> 
 	<title>&app; Make Directory Window</title> 
@@ -457,7 +456,7 @@ If you save all the photos, you can change some additional options in the file s
 		fileref="figures/gtkam_makedir.png" format="PNG"/> 
 	    </imageobject>
 	    <textobject> 
-	      <phrase>Shows &app; Make Directory window. Allows user to create a new directory on the camera. </phrase> 
+	      <phrase>The &app; Make Directory window allows you to create a new directory on the camera. </phrase> 
 	    </textobject> 
 	  </mediaobject> 
 	</screenshot> 
@@ -467,12 +466,12 @@ If you save all the photos, you can change some additional options in the file s
   </listitem>
   <listitem>
     <para>
-      <guilabel>Remove directory</guilabel> &mdash; This option removes the folder selected in the camera tree pane.
+      <guilabel>Remove directory</guilabel> &mdash; This option removes the folder selected in the camera tree pane from the camera.
     </para>
   </listitem>
   <listitem>
     <para>
-      <guilabel>Capture</guilabel> &mdash; This option opens a window to allow the user to trigger the camera to acquire an image.
+      <guilabel>Capture Image...</guilabel> &mdash; This option opens a window which allows you to take a photo. <!--FIXME If previewing is supported by camera, photo taken, else window -->
     </para>
   </listitem>
   <listitem>
@@ -482,7 +481,7 @@ If you save all the photos, you can change some additional options in the file s
   </listitem>
   <listitem>
     <para>
-      <guilabel>Summary</guilabel> &mdash; This option opens a window containing information about the camera's available memory.
+      <guilabel>View camera summary...</guilabel> &mdash; This option opens a window containing information about the camera.
     </para>
   </listitem>
   <listitem>
@@ -497,12 +496,12 @@ If you save all the photos, you can change some additional options in the file s
   </listitem>
   <listitem>
     <para>
-      <guilabel>Select Camera (REMOVE)</guilabel>
+      <guilabel>Select Camera</guilabel> &mdash; This option opens the <!--FIXME--> window, allowing you to change the settings of the camera.
     </para>
   </listitem>
   <listitem>
     <para>
-      <guilabel>Remove Camera</guilabel> &mdash; If you don't want this camera to appear in the camera tree pane when &app; starts, choose <guilabel>Remove Camera</guilabel>
+      <guilabel>Remove Camera</guilabel> &mdash; Removes the camera from the list of known cameras. The next time you start &app;, this camera won't be displayed.
     </para>
   </listitem>
 </itemizedlist>

@@ -416,6 +416,14 @@ create_widgets (GtkamConfig *config, CameraWidget *widget)
 
 	case GP_WIDGET_DATE:
 
+		/*
+		 * This stuff is broken (the clock thing is kind of
+		 * ridiculous). If you have time, port either
+		 * libgnomeui/gnome-dateedit.h or libgnomeui/gtk-clock.h to
+		 * gtk so that it can be used here. If not, don't 
+		 * complain.
+		 */
+
 		gp_widget_get_value (widget, &value_int);
 		tm = localtime ((time_t*) &value_int);
 		gtk_widget = gtk_vbox_new (FALSE, 5);

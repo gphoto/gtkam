@@ -402,6 +402,8 @@ gtkam_chooser_update_for_model (GtkamChooser *chooser)
 
 	/* Get abilities of selected model */
 	model = gtk_entry_get_text (chooser->priv->entry_model);
+	if (!model || !*model)
+		return;
 	m = gp_abilities_list_lookup_model (chooser->priv->al, model);
 	result = gp_abilities_list_get_abilities (chooser->priv->al, m, &a);
 	if (result < 0) {
@@ -727,12 +729,12 @@ gtkam_chooser_new (void)
 	/* Fill the model combo with all models */
 	gtkam_chooser_set_camera_mask (chooser, GP_OPERATION_NONE);
 
-	g_signal_connect (GTK_OBJECT (chooser->priv->entry_model), "changed",
-			    GTK_SIGNAL_FUNC (on_model_changed), chooser);
-	g_signal_connect (GTK_OBJECT (chooser->priv->entry_port), "changed",
-			    GTK_SIGNAL_FUNC (on_port_changed), chooser);
-	g_signal_connect (GTK_OBJECT (chooser->priv->entry_speed), "changed",
-			    GTK_SIGNAL_FUNC (on_speed_changed), chooser);
+	g_signal_connect (G_OBJECT (chooser->priv->entry_model), "changed",
+			  G_CALLBACK (on_model_changed), chooser);
+	g_signal_connect (G_OBJECT (chooser->priv->entry_port), "changed",
+			  G_CALLBACK (on_port_changed), chooser);
+	g_signal_connect (G_OBJECT (chooser->priv->entry_speed), "changed",
+			  G_CALLBACK (on_speed_changed), chooser);
 
 	gtkam_chooser_update_for_model (chooser);
 

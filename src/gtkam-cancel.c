@@ -140,15 +140,22 @@ gtkam_cancel_init (GTypeInstance *instance, gpointer g_class)
 GType
 gtkam_cancel_get_type (void)
 {
-	GTypeInfo ti;
+	static GType type = 0;
 
-	memset (&ti, 0, sizeof (GTypeInfo));
-	ti.class_size     = sizeof (GtkamCancelClass);
-	ti.class_init     = gtkam_cancel_class_init;
-	ti.instance_size  = sizeof (GtkamCancel);
-	ti.instance_init  = gtkam_cancel_init;
+	if (!type) {
+		GTypeInfo ti;
 
-	return (g_type_register_static (PARENT_TYPE, "GtkamCancel", &ti, 0));
+		memset (&ti, 0, sizeof (GTypeInfo));
+		ti.class_size     = sizeof (GtkamCancelClass);
+		ti.class_init     = gtkam_cancel_class_init;
+		ti.instance_size  = sizeof (GtkamCancel);
+		ti.instance_init  = gtkam_cancel_init;
+
+		type = g_type_register_static (PARENT_TYPE, "GtkamCancel",
+					        &ti, 0);
+	}
+
+	return (type);
 }
 
 static void

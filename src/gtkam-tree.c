@@ -51,27 +51,34 @@
 #include <gtk/gtkmain.h>
 #include <gtk/gtkfilesel.h>
 #include <gtk/gtkbutton.h>
-#include <gtk/gtktreeitem.h>
+#include <gtk/gtktreestore.h>
 #include <gtk/gtkpixmap.h>
 #include <gtk/gtkmenuitem.h>
 #include <gtk/gtkmenu.h>
+#include <gtk/gtkcellrenderertext.h>
+#include <gtk/gtktreeselection.h>
 
 #include <gdk-pixbuf/gdk-pixbuf.h>
 
 #include <gphoto2/gphoto2-setting.h>
+#include <gphoto2/gphoto2-camera.h>
 
 #include "support.h"
 #include "gtkam-error.h"
 #include "gtkam-status.h"
 
-struct _GtkamTreePrivate
-{
+typedef struct _GtkamTreeCameraData GtkamTreeCameraData;
+struct _GtkamTreeCameraData {
 	Camera *camera;
 	gboolean multi;
+	GtkTreePath *path;
+};
 
-	GList *selection;
+struct _GtkamTreePrivate
+{
+	GtkTreeStore *store;
 
-	const gchar *folder;
+	GPtrArray *cameras;
 };
 
 #define PARENT_TYPE GTK_TYPE_TREE_VIEW
@@ -87,14 +94,32 @@ enum {
 
 static guint signals[LAST_SIGNAL] = {0};
 
+enum {
+	FOLDER_COLUMN = 0,
+	NUM_COLUMNS
+};
+
 static void
 gtkam_tree_destroy (GtkObject *object)
 {
 	GtkamTree *tree = GTKAM_TREE (object);
+	GtkamTreeCameraData *data;
+	guint i;
 
-	if (tree->priv->camera) {
-		gp_camera_unref (tree->priv->camera);
-		tree->priv->camera = NULL;
+	if (tree->priv->store) {
+		g_object_unref (G_OBJECT (tree->priv->store));
+		tree->priv->store = NULL;
+	}
+
+	if (tree->priv->cameras) {
+		for (i = 0; i < tree->priv->cameras->len; i++) {
+			data = tree->priv->cameras->pdata[i];
+			gp_camera_unref (data->camera);
+			gtk_tree_path_free (data->path);
+			g_free (data);
+		}
+		g_ptr_array_free (tree->priv->cameras, TRUE);
+		tree->priv->cameras = NULL;
 	}
 
 	GTK_OBJECT_CLASS (parent_class)->destroy (object);
@@ -109,43 +134,6 @@ gtkam_tree_finalize (GObject *object)
 
 	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
-
-#if 0
-static void
-on_selection_changed (GtkTree *t, GtkamTree *tree)
-{
-	GtkamTreeItem *item;
-	guint i;
-
-	/* Any folder selected? */
-	for (i = 0; i < g_list_length (t->selection); i++) {
-		item = g_list_nth_data (t->selection, i);
-		if (!g_list_find (tree->priv->selection, item)) {
-			gtk_signal_emit (GTK_OBJECT (tree),
-				signals[FOLDER_SELECTED],
-				gtkam_tree_item_get_camera (item),
-				gtkam_tree_item_get_multi (item),
-				gtkam_tree_item_get_folder (item));
-			tree->priv->selection =
-				g_list_append (tree->priv->selection, item);
-		}
-	}
-
-	/* Any folder unselected? */
-	for (i = 0; i < g_list_length (tree->priv->selection); i++) {
-		item = g_list_nth_data (tree->priv->selection, i);
-		if (!g_list_find (t->selection, item)) {
-			gtk_signal_emit (GTK_OBJECT (tree), 
-				signals[FOLDER_UNSELECTED],
-				gtkam_tree_item_get_camera (item),
-				gtkam_tree_item_get_multi (item),
-				gtkam_tree_item_get_folder (item));
-			tree->priv->selection = 
-				g_list_remove (tree->priv->selection, item);
-		}
-	}
-}
-#endif
 
 static void
 gtkam_tree_class_init (gpointer g_class, gpointer class_data)
@@ -189,40 +177,77 @@ gtkam_tree_init (GTypeInstance *instance, gpointer g_class)
 	GtkamTree *tree = GTKAM_TREE (instance);
 
 	tree->priv = g_new0 (GtkamTreePrivate, 1);
+
+	tree->priv->cameras = g_ptr_array_new ();
 }
 
 GType
 gtkam_tree_get_type (void)
 {
-	GTypeInfo tinfo;
+	static GType type = 0;
 
-	memset (&tinfo, 0, sizeof (GTypeInfo));
-	tinfo.class_size    = sizeof (GtkamTreeClass);
-	tinfo.class_init    = gtkam_tree_class_init;
-	tinfo.instance_size = sizeof (GtkamTree);
-	tinfo.instance_init = gtkam_tree_init;
+	if (!type) {
+		GTypeInfo ti;
 
-	return (g_type_register_static (PARENT_TYPE, "GtkamTree", &tinfo, 0));
+		memset (&ti, 0, sizeof (GTypeInfo));
+		ti.class_size    = sizeof (GtkamTreeClass);
+		ti.class_init    = gtkam_tree_class_init;
+		ti.instance_size = sizeof (GtkamTree);
+		ti.instance_init = gtkam_tree_init;
+
+		type = g_type_register_static (PARENT_TYPE, "GtkamTree",
+					       &ti, 0);
+	}
+
+	return (type);
 }
 
-GtkWidget *
-gtkam_tree_new (void)
+static GtkamTreeCameraData *
+gtkam_tree_get_camera_data (GtkamTree *tree, GtkTreeIter *iter)
 {
-	GtkamTree *tree;
+	GtkTreeIter *child, parent;
+	GtkTreePath *path;
+	GtkamTreeCameraData *data = NULL;
+	guint i;
 
-	tree = g_object_new (GTKAM_TYPE_TREE, NULL);
+	child = gtk_tree_iter_copy (iter);
+	while (gtk_tree_model_iter_parent (GTK_TREE_MODEL (tree->priv->store),
+					   &parent, child)) {
+		gtk_tree_iter_free (child);
+		child = gtk_tree_iter_copy (&parent);
+	}
+	path = gtk_tree_model_get_path (GTK_TREE_MODEL (tree->priv->store),
+					child);
+	gtk_tree_iter_free (child);
+	for (i = 0; i < tree->priv->cameras->len; i++) {
+		data = tree->priv->cameras->pdata[i];
+		if (!gtk_tree_path_compare (path, data->path))
+			break;
+	}
+	g_assert (i != tree->priv->cameras->len);
+	gtk_tree_path_free (path);
 
-#if 0
-	/*
-	 * Watch out for changes in the selection. Allow selection of
-	 * more than one folder.
-	 */
-	gtk_tree_set_selection_mode (GTK_TREE (tree), GTK_SELECTION_MULTIPLE);
-	gtk_signal_connect (GTK_OBJECT (tree), "selection_changed",
-			    GTK_SIGNAL_FUNC (on_selection_changed), tree);
-#endif
+	return (data);
+}
 
-	return (GTK_WIDGET (tree));
+static Camera *
+gtkam_tree_get_camera_from_iter (GtkamTree *tree, GtkTreeIter *iter)
+{
+	GtkamTreeCameraData *data;
+
+	data = gtkam_tree_get_camera_data (tree, iter);
+
+	return (data->camera);
+}
+
+static gboolean 
+gtkam_tree_get_multi_from_iter (GtkamTree *tree, GtkTreeIter *iter)
+{
+	GtkamTreeCameraData *data;
+
+	data = gtkam_tree_get_camera_data (tree, iter);
+
+	return (data->multi);
 }
 
 #if 0
@@ -232,28 +257,6 @@ on_new_status (GtkamTreeItem *item, GtkWidget *status, GtkamTree *tree)
 	gtk_signal_emit (GTK_OBJECT (tree), signals[NEW_STATUS], status);
 }
 #endif
-
-void
-gtkam_tree_add_camera (GtkamTree *tree, Camera *camera, gboolean multi)
-{
-#if 0
-	GtkWidget *item;
-
-	g_return_if_fail (GTKAM_IS_TREE (tree));
-	g_return_if_fail (camera != NULL);
-
-	item = gtkam_tree_item_cam_new ();
-	gtk_widget_show (item);
-	gtk_tree_append (GTK_TREE (tree), item);
-	gtk_signal_connect (GTK_OBJECT (item), "new_status",
-			    GTK_SIGNAL_FUNC (on_new_status), tree);
-
-	gtkam_tree_item_set_camera (GTKAM_TREE_ITEM (item), camera);
-	gtkam_tree_item_set_multi (GTKAM_TREE_ITEM (item), multi);
-
-	gtkam_tree_save (tree);
-#endif
-}
 
 #if 0
 static void
@@ -291,7 +294,215 @@ gtkam_tree_update (GtkamTree *tree, Camera *camera, gboolean multi,
 #endif
 }
 
-#if 0
+static gchar *
+gtkam_tree_get_path_rec (GtkamTree *tree, GtkTreeIter *iter, const gchar *path)
+{
+	GtkTreeIter parent, p;
+	gchar *new_path = NULL, *new_path_ret = NULL;
+	GValue value = {0};
+
+	if (gtk_tree_model_iter_parent (GTK_TREE_MODEL (tree->priv->store),
+					&parent, iter)) {
+		if (gtk_tree_model_iter_parent (
+			GTK_TREE_MODEL (tree->priv->store), &p, &parent)) {
+			gtk_tree_model_get_value (
+				GTK_TREE_MODEL (tree->priv->store),
+				&parent, FOLDER_COLUMN, &value);
+			new_path = g_strdup_printf ("%s/%s",
+					g_value_get_string (&value), path);
+			g_value_unset (&value);
+			new_path_ret = gtkam_tree_get_path_rec (tree, &parent,
+								new_path);
+			g_free (new_path);
+			return (new_path_ret);
+		} else
+			return (g_strdup_printf ("/%s", path));
+	} else
+		return (g_strdup ("/"));
+}
+
+static gchar *
+gtkam_tree_get_path (GtkamTree *tree, GtkTreeIter *iter)
+{
+	GtkTreeIter parent;
+	GValue value = {0};
+	gchar *path = NULL;
+
+	if (gtk_tree_model_iter_parent (GTK_TREE_MODEL (tree->priv->store),
+					&parent, iter)) {
+		gtk_tree_model_get_value (GTK_TREE_MODEL (tree->priv->store),
+					  iter, FOLDER_COLUMN, &value);
+		path = gtkam_tree_get_path_rec (tree, iter,
+						g_value_get_string (&value));
+		g_value_unset (&value);
+	} else
+		path = g_strdup ("/");
+
+	return (path);
+}
+
+static void
+gtkam_tree_update_iter (GtkamTree *tree, GtkTreeIter *iter)
+{
+	gint i, n;
+	GtkTreeIter child;
+	CameraList *list;
+	const char *name;
+	int result;
+	Camera *camera = NULL;
+	gboolean multi = FALSE;
+	GtkWidget *s;
+	gchar *folder = NULL;
+
+	g_return_if_fail (GTKAM_IS_TREE (tree));
+
+	/* Look up the corresponding camera */
+	camera = gtkam_tree_get_camera_from_iter (tree, iter);
+	multi = gtkam_tree_get_multi_from_iter (tree, iter);
+
+	n = gtk_tree_model_iter_n_children (
+			GTK_TREE_MODEL (tree->priv->store), iter);
+	for (i = 0; i < n; i++) {
+		gtk_tree_model_iter_nth_child (
+				GTK_TREE_MODEL (tree->priv->store), &child,
+				iter, i);
+		gtk_tree_store_remove (tree->priv->store, &child);
+	}
+
+	/* Which folder? */
+	folder = gtkam_tree_get_path (tree, iter);
+
+	s = gtkam_status_new (_("Listing folders in '%s'..."), folder);
+	g_signal_emit (G_OBJECT (tree), signals[NEW_STATUS], 0, s);
+	gp_list_new (&list);
+	result = gp_camera_folder_list_folders (camera, folder, list,
+					GTKAM_STATUS (s)->context->context);
+	if (result >= 0) {
+		n = gp_list_count (list);
+		for (i = 0; i < n; i++) {
+			gp_list_get_name (list, i, &name);
+			gtk_tree_store_append (tree->priv->store, &child,
+					       iter);
+			gtk_tree_store_set (tree->priv->store, &child,
+					    FOLDER_COLUMN, name, -1);
+		}
+	} else if (result == GP_ERROR_NOT_SUPPORTED) {
+		/* Do nothing */
+	} else {
+		g_warning ("Listing folders in '%s' failed (%i: '%s').",
+			folder, result, gp_result_as_string (result));
+	}
+	g_free (folder);
+	gp_list_unref (list);
+	if (multi)
+		gp_camera_exit (camera, NULL);
+
+	gtk_object_destroy (GTK_OBJECT (s));
+}
+
+static void
+on_row_expanded (GtkTreeView *tree_view, GtkTreeIter *iter,
+                 GtkTreePath *path, GtkamTree *tree)
+{
+        gint i, n;
+        GtkTreeIter child;
+
+        n = gtk_tree_model_iter_n_children (
+			GTK_TREE_MODEL (tree->priv->store), iter);
+        for (i = 0; i < n; i++) {
+                gtk_tree_model_iter_nth_child (
+                        GTK_TREE_MODEL (tree->priv->store), &child, iter, i);
+		if (!gtk_tree_model_iter_has_child (
+				GTK_TREE_MODEL (tree->priv->store), &child))
+			gtkam_tree_update_iter (tree, &child); 
+        }
+}
+
+static gboolean
+selection_func (GtkTreeSelection *selection, GtkTreeModel *model,
+		GtkTreePath *path, gboolean path_currently_selected,
+		gpointer data)
+{
+	GtkTreeIter iter;
+	gchar *folder;
+	GtkamTree *tree = GTKAM_TREE (data);
+	GtkamTreeFolderSelectedData sd;
+	GtkamTreeFolderUnselectedData ud;
+
+	gtk_tree_model_get_iter (model, &iter, path);
+	folder = gtkam_tree_get_path (tree, &iter);
+	if (path_currently_selected) {
+		ud.camera = gtkam_tree_get_camera_from_iter (tree, &iter);
+		ud.multi = gtkam_tree_get_multi_from_iter (tree, &iter);
+		ud.folder = folder;
+		g_signal_emit (G_OBJECT (tree), signals[FOLDER_UNSELECTED],
+			       0, &ud);
+	} else {
+		sd.camera = gtkam_tree_get_camera_from_iter (tree, &iter);
+		sd.multi = gtkam_tree_get_multi_from_iter (tree, &iter);
+		sd.folder = folder;
+		g_signal_emit (G_OBJECT (tree), signals[FOLDER_SELECTED],
+			       0, &sd);
+	}
+	g_free (folder);
+
+	return (TRUE);
+}
+
+GtkWidget *
+gtkam_tree_new (void)
+{
+        GtkamTree *tree;
+        GtkCellRenderer *renderer;
+	GtkTreeSelection *selection;
+
+        tree = g_object_new (GTKAM_TYPE_TREE, NULL);
+	gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (tree), FALSE);
+
+	selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (tree));
+	gtk_tree_selection_set_mode (selection, GTK_SELECTION_MULTIPLE);
+	gtk_tree_selection_set_select_function (selection, selection_func,
+						tree, NULL);
+
+        tree->priv->store = gtk_tree_store_new (NUM_COLUMNS, G_TYPE_STRING);
+        gtk_tree_view_set_model (GTK_TREE_VIEW (tree),
+                                 GTK_TREE_MODEL (tree->priv->store));
+
+        /* Column for folder names. */
+        renderer = gtk_cell_renderer_text_new ();
+        g_object_set (G_OBJECT (renderer), "xalign", 0.0, NULL);
+        gtk_tree_view_insert_column_with_attributes (GTK_TREE_VIEW (tree),
+                        -1, _("Folder"), renderer, "text",
+                        FOLDER_COLUMN, NULL);
+        g_signal_connect (G_OBJECT (tree), "row_expanded",
+                          G_CALLBACK (on_row_expanded), tree);
+
+        return (GTK_WIDGET (tree));
+}
+
+void
+gtkam_tree_add_camera (GtkamTree *tree, Camera *camera, gboolean multi)
+{
+        CameraAbilities a;
+        GtkTreeIter iter;
+        GtkamTreeCameraData *data;
+
+        g_return_if_fail (GTKAM_IS_TREE (tree));
+
+        gp_camera_get_abilities (camera, &a);
+        gtk_tree_store_append (tree->priv->store, &iter, NULL);
+        gtk_tree_store_set (tree->priv->store, &iter,
+                            FOLDER_COLUMN, a.model, -1);
+        data = g_new0 (GtkamTreeCameraData, 1);
+        data->camera = camera;
+        data->multi = multi;
+        data->path = gtk_tree_model_get_path (
+                GTK_TREE_MODEL (tree->priv->store), &iter);
+        g_ptr_array_add (tree->priv->cameras, data);
+        gtkam_tree_update_iter (tree, &iter);
+        gtkam_tree_save (tree);
+}
+
 #ifdef HAVE_GP_CAMERA_SET_TIMEOUT_FUNCS
 
 typedef struct _TimeoutData TimeoutData;
@@ -340,13 +551,11 @@ stop_timeout_func (Camera *camera, unsigned int id, void *data)
 }
 
 #endif
-#endif
 
 void
 gtkam_tree_load (GtkamTree *tree)
 {
-#if 0
-	GtkWidget *s, *item;
+	GtkWidget *s;
 	char port[1024], speed[1024], model[1024], multi[1024];
 	Camera *camera;
 	CameraAbilitiesList *al;
@@ -356,63 +565,20 @@ gtkam_tree_load (GtkamTree *tree)
 	int n, p, result;
 	gchar *ms;
 	guint i;
+	GtkTreeIter iter;
+	GtkamTreeCameraData *data;
+
+	g_return_if_fail (GTKAM_IS_TREE (tree));
 
 	s = gtkam_status_new (_("Loading cameras..."));
-	gtk_signal_emit (GTK_OBJECT (tree), signals[NEW_STATUS], s);
+	g_signal_emit (G_OBJECT (tree), signals[NEW_STATUS], 0, s);
 
 	gp_abilities_list_new (&al);
 	gp_abilities_list_load (al, GTKAM_STATUS (s)->context->context);
 	gp_port_info_list_new (&il);
 	gp_port_info_list_load (il);
 
-	/* Old style settings */
-	if ((gp_setting_get ("gtkam", "model-1", model) != GP_OK) &&
-	    ((gp_setting_get ("gtkam", "model", model) == GP_OK) ||
-             (gp_setting_get ("gphoto2", "model", model) == GP_OK)) &&
-            ((gp_setting_get ("gtkam", "path", port) == GP_OK) ||
-             (gp_setting_get ("gphoto2", "port", port) == GP_OK)) &&
-            (gp_setting_get ("gtkam", "speed", speed) == GP_OK)) {
-                gp_camera_new (&camera);
-#ifdef HAVE_GP_CAMERA_SET_TIMEOUT_FUNCS
-		gp_camera_set_timeout_funcs (camera, start_timeout_func,
-					     stop_timeout_func, NULL);
-#endif
-
-                n = gp_abilities_list_lookup_model (al, model);
-                gp_abilities_list_get_abilities (al, n, &a);
-
-                p = gp_port_info_list_lookup_path (il, port);
-                if (p < 0) {
-                        g_warning ("Could not find '%s' in port info list "
-                                "(%s)!", port, gp_result_as_string (p));
-			gtk_object_destroy (GTK_OBJECT (s));
-			gp_port_info_list_free (il);
-			gp_abilities_list_free (al);
-			gp_camera_unref (camera);
-			return;
-		}
-
-                gp_port_info_list_get_info (il, p, &info);
-
-                gp_camera_set_abilities (camera, a);
-                if (strcmp (port, "None") && strcmp (model, "Directory Browse"))                        gp_camera_set_port_info (camera, info);
-                if (atoi (speed))
-                        gp_camera_set_port_speed (camera, atoi (speed));
-
-		/* Create the new item */
-		item = gtkam_tree_item_cam_new ();
-		gtk_widget_show (item);
-		gtk_tree_append (GTK_TREE (tree), item);
-		gtk_signal_connect (GTK_OBJECT (item), "new_status",
-				    GTK_SIGNAL_FUNC (on_new_status), tree);
-		gtkam_tree_item_set_camera (GTKAM_TREE_ITEM (item), camera);
-                if (gp_setting_get ("gtkam", "multi", multi) == GP_OK)
-			gtkam_tree_item_set_multi (GTKAM_TREE_ITEM (item),
-						   atoi (multi));
-		gp_camera_unref (camera);
-        }
-
-	/* New style settings */
+	/* Load settings */
 	for (i = 1; ; i++) {
 		ms = g_strdup_printf ("model-%i", i);
 		result = gp_setting_get ("gtkam", ms, model);
@@ -467,29 +633,31 @@ gtkam_tree_load (GtkamTree *tree)
                 if (atoi (speed))
                         gp_camera_set_port_speed (camera, atoi (speed));
 
-                /* Create the new item */
-                item = gtkam_tree_item_cam_new ();
-                gtk_widget_show (item);
-                gtk_tree_append (GTK_TREE (tree), item);
-		gtk_signal_connect (GTK_OBJECT (item), "new_status",
-				    GTK_SIGNAL_FUNC (on_new_status), tree);
-		gtkam_tree_item_set_camera (GTKAM_TREE_ITEM (item), camera);
-		gtkam_tree_item_set_multi (GTKAM_TREE_ITEM (item),
-					   atoi (multi));
-		gp_camera_unref (camera);
+                /* Add this camera to our tree. */
+		gtk_tree_store_append (tree->priv->store, &iter, NULL);
+		gtk_tree_store_set (tree->priv->store, &iter,
+				    FOLDER_COLUMN, model, -1);
+
+		/* Remember the camera */
+		data = g_new0 (GtkamTreeCameraData, 1);
+		data->camera = camera;
+		data->multi = atoi (multi);
+		data->path = gtk_tree_model_get_path (
+				GTK_TREE_MODEL (tree->priv->store), &iter);
+		g_ptr_array_add (tree->priv->cameras, data);
+		gtkam_tree_update_iter (tree, &iter);
 	}
 
 	gp_abilities_list_free (al);
 	gp_port_info_list_free (il);
 	gtk_object_destroy (GTK_OBJECT (s));
-#endif
 }
 
 void
 gtkam_tree_save (GtkamTree *tree)
 {
-#if 0
-	guint i;
+	GtkTreeIter child;
+	guint i, n;
 	Camera *camera;
 	gboolean multi;
 	GPPortInfo info;
@@ -497,12 +665,6 @@ gtkam_tree_save (GtkamTree *tree)
 	int speed, result;
 	gchar *ms, *mm;
 	char model[1024];
-
-	/* Clear old settings */
-	if (gp_setting_get ("gtkam", "model", model)) {
-		memset (model, 0, sizeof (model));
-		gp_setting_set ("gtkam", "model", model);
-	}
 
 	/* Clear the configuration file */
 	for (i = 1; ; i++) {
@@ -518,12 +680,15 @@ gtkam_tree_save (GtkamTree *tree)
 		g_free (ms);
 	}
 
-	for (i = 0; i < g_list_length (GTK_TREE (tree)->children); i++) {
-		item = g_list_nth_data (GTK_TREE (tree)->children, i);
-		camera = gtkam_tree_item_get_camera (item);
-		if (!camera)
-			continue;
-		multi = gtkam_tree_item_get_multi (item);
+	/* Iterate over all cameras. */
+	n = gtk_tree_model_iter_n_children (GTK_TREE_MODEL (tree->priv->store),
+					    NULL);
+	for (i = 0; i < n; i++) {
+		gtk_tree_model_iter_nth_child (
+					GTK_TREE_MODEL (tree->priv->store),
+					&child, NULL, i);
+		camera = gtkam_tree_get_camera_from_iter (tree, &child);
+		multi = gtkam_tree_get_multi_from_iter (tree, &child);
 
 		gp_camera_get_abilities (camera, &a);
 		gp_camera_get_port_info (camera, &info);
@@ -549,5 +714,4 @@ gtkam_tree_save (GtkamTree *tree)
 		g_free (mm);
 		g_free (ms);
 	}
-#endif
 }

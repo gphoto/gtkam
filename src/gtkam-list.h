@@ -39,16 +39,35 @@ struct _GtkamList
 	GtkamListPrivate *priv;
 };
 
+typedef struct _GtkamListFileSelectedData GtkamListFileSelectedData;
+struct _GtkamListFileSelectedData {
+	Camera *camera;
+	gboolean multi;
+	const char *path;
+	const char *name;
+};
+
+typedef struct _GtkamListFileUnselectedData GtkamListFileUnselectedData;
+struct _GtkamListFileUnselectedData {
+	Camera *camera;
+	gboolean multi;
+	const char *path;
+	const char *name;
+};
+
 struct _GtkamListClass
 {
 	GtkTreeViewClass parent_class;
 
 	/* Signals */
-	void (* changed)        (GtkamList *list);
+	void (* file_selected)   (GtkamList *, GtkamListFileSelectedData *);
+	void (* file_unselected) (GtkamList *, GtkamListFileUnselectedData *);
+
+	void (* new_status)      (GtkamList *, GtkWidget *status);
 };
 
 GtkType    gtkam_list_get_type (void);
-GtkWidget *gtkam_list_new      (GtkWidget *vbox);
+GtkWidget *gtkam_list_new      (void);
 
 void       gtkam_list_add_folder     (GtkamList *list, Camera *camera,
 				      gboolean multi, const gchar *folder);
@@ -59,6 +78,10 @@ void       gtkam_list_update_folder  (GtkamList *list, Camera *camera,
 
 void       gtkam_list_set_thumbnails (GtkamList *list, gboolean thumbnails);
 
-void       gtkam_list_save_selected   (GtkamList *list);
+void       gtkam_list_save_selected  (GtkamList *list);
+void       gtkam_list_save_all       (GtkamList *list);
+
+guint      gtkam_list_count_all      (GtkamList *list);
+guint      gtkam_list_count_selected (GtkamList *list);
 
 #endif /* __GTKAM_LIST_H__ */

@@ -49,6 +49,9 @@
 #include <gtk/gtkentry.h>
 #include <gtk/gtkmenuitem.h>
 #include <gtk/gtkmenu.h>
+#include <gtk/gtkliststore.h>
+#include <gtk/gtktreeselection.h>
+
 #include <gdk-pixbuf/gdk-pixbuf-loader.h>
 
 #include <gphoto2/gphoto2-list.h>
@@ -57,7 +60,7 @@
 #include "gtkam-close.h"
 #include "gtkam-error.h"
 #include "gtkam-exif.h"
-#include "../pixmaps/no_thumbnail.xpm"
+//#include "../pixmaps/no_thumbnail.xpm"
 #include "gtkam-save.h"
 #include "gdk-pixbuf-hacks.h"
 #include "gtkam-info.h"
@@ -70,30 +73,35 @@
 
 struct _GtkamListPrivate
 {
-	gboolean thumbnails;
+	GtkListStore *store;
 
-	GtkWidget *status;
+	gboolean thumbnails;
 };
 
 #define PARENT_TYPE GTK_TYPE_TREE_VIEW
 static GtkTreeViewClass *parent_class;
 
 enum {
-	CHANGED,
+	FILE_SELECTED,
+	FILE_UNSELECTED,
+	NEW_STATUS,
 	LAST_SIGNAL
 };
 
 static guint signals[LAST_SIGNAL] = {0};
+
+enum {
+	PREVIEW_COLUMN = 0,
+	NAME_COLUMN,
+	NUM_COLUMNS
+};
 
 static void
 gtkam_list_destroy (GtkObject *object)
 {
 	GtkamList *list = GTKAM_LIST (object);
 
-	if (list->priv->status) {
-		g_object_unref (G_OBJECT (list->priv->status));
-		list->priv->status = NULL;
-	}
+	list = NULL;
 
 	GTK_OBJECT_CLASS (parent_class)->destroy (object);
 }
@@ -120,10 +128,21 @@ gtkam_list_class_init (gpointer g_class, gpointer class_data)
 	gobject_class = G_OBJECT_CLASS (g_class);
 	gobject_class->finalize = gtkam_list_finalize;
 
-	signals[CHANGED] = g_signal_new ("changed",
+	signals[FILE_SELECTED] = g_signal_new ("file_selected",
 		G_TYPE_FROM_CLASS (g_class), G_SIGNAL_RUN_LAST,
-		G_STRUCT_OFFSET (GtkamListClass, changed), NULL, NULL,
-		g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
+		G_STRUCT_OFFSET (GtkamListClass, file_selected), NULL, NULL,
+		g_cclosure_marshal_VOID__POINTER, G_TYPE_NONE, 1,
+		G_TYPE_POINTER);
+	signals[FILE_UNSELECTED] = g_signal_new ("file_unselected",
+		G_TYPE_FROM_CLASS (g_class), G_SIGNAL_RUN_LAST,
+		G_STRUCT_OFFSET (GtkamListClass, file_unselected), NULL, NULL,
+		g_cclosure_marshal_VOID__POINTER, G_TYPE_NONE, 1,
+		G_TYPE_POINTER);
+	signals[NEW_STATUS] = g_signal_new ("new_status",
+		G_TYPE_FROM_CLASS (g_class), G_SIGNAL_RUN_LAST,
+		G_STRUCT_OFFSET (GtkamListClass, new_status), NULL, NULL,
+		g_cclosure_marshal_VOID__POINTER, G_TYPE_NONE, 1,
+		G_TYPE_POINTER);
 
 	parent_class = g_type_class_peek_parent (g_class);
 }
@@ -140,15 +159,22 @@ gtkam_list_init (GTypeInstance *instance, gpointer g_class)
 GType
 gtkam_list_get_type (void)
 {
-	GTypeInfo ti;
+	static GType type = 0;
 
-	memset (&ti, 0, sizeof (GTypeInfo));
-	ti.class_size     = sizeof (GtkamListClass);
-	ti.class_init     = gtkam_list_class_init;
-	ti.instance_size  = sizeof (GtkamList);
-	ti.instance_init  = gtkam_list_init;
+	if (!type) {
+		GTypeInfo ti;
 
-	return (g_type_register_static (PARENT_TYPE, "GtkamList", &ti, 0));
+		memset (&ti, 0, sizeof (GTypeInfo));
+		ti.class_size     = sizeof (GtkamListClass);
+		ti.class_init     = gtkam_list_class_init;
+		ti.instance_size  = sizeof (GtkamList);
+		ti.instance_init  = gtkam_list_init;
+
+		type = g_type_register_static (PARENT_TYPE, "GtkamList",
+					       &ti, 0);
+	}
+
+	return (type);
 }
 
 void
@@ -463,11 +489,21 @@ on_select_icon (GtkIconList *ilist, GtkIconListItem *item,
 #endif
 
 GtkWidget *
-gtkam_list_new (GtkWidget *vbox)
+gtkam_list_new (void)
 {
         GtkamList *list;
+	GtkTreeSelection *selection;
 
         list = g_object_new (GTKAM_TYPE_LIST, NULL);
+	gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (list), FALSE);
+
+	selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (list));
+	gtk_tree_selection_set_mode (selection, GTK_SELECTION_MULTIPLE);
+
+	list->priv->store = gtk_list_store_new (NUM_COLUMNS,
+					GDK_TYPE_PIXBUF, G_TYPE_STRING);
+	gtk_tree_view_set_model (GTK_TREE_VIEW (list),
+				 GTK_TREE_MODEL (list->priv->store));
 
 #if 0
         gtk_icon_list_construct (GTK_ICON_LIST (list), ICON_WIDTH,
@@ -479,9 +515,6 @@ gtkam_list_new (GtkWidget *vbox)
 	gtk_signal_connect (GTK_OBJECT (list), "select_icon",
                             GTK_SIGNAL_FUNC (on_select_icon), list);
 #endif
-
-	list->priv->status = vbox;
-	g_object_ref (G_OBJECT (vbox));
 
         return (GTK_WIDGET (list));
 }
@@ -742,4 +775,22 @@ gtkam_list_save_selected (GtkamList *list)
 	}
 	gtk_widget_show (save);
 #endif
+}
+
+void
+gtkam_list_save_all (GtkamList *list)
+{
+	g_return_if_fail (GTKAM_IS_LIST (list));
+}
+
+guint
+gtkam_list_count_all (GtkamList *list)
+{
+	return (0);
+}
+
+guint
+gtkam_list_count_selected (GtkamList *list)
+{
+	return (0);
 }

@@ -82,16 +82,14 @@
 
 struct _GtkamMainPrivate
 {
-	GtkamTree *tree;
-	GtkamList *list;
+	GtkWidget *tree, *list;
+	GtkItemFactory *factory;
 
 	GtkToggleButton *toggle_preview;
 
 	GtkWidget *item_summary, *item_about, *item_manual, *item_config;
 
 	GtkWidget *item_delete, *item_delete_all;
-	GtkWidget *item_save, *menu_delete;
-	GtkWidget *select_all, *select_none, *select_inverse;
 
 	GtkWidget *status;
 
@@ -168,20 +166,28 @@ gtkam_main_get_type (void)
 	return (type);
 }
 
-#if 0
 static void
 on_thumbnails_toggled (GtkToggleButton *toggle, GtkamMain *m)
 {
-	gtkam_list_set_thumbnails (m->priv->list, toggle->active);
+	gtkam_list_set_thumbnails (GTKAM_LIST (m->priv->list), toggle->active);
 }
-#endif
 
 static void
-action_save (gpointer callback_data, guint callback_action, GtkWidget *widget)
+action_save_sel (gpointer callback_data, guint callback_action,
+		 GtkWidget *widget)
 {
 	GtkamMain *m = GTKAM_MAIN (callback_data);
 	
-	gtkam_list_save_selected (m->priv->list);
+	gtkam_list_save_selected (GTKAM_LIST (m->priv->list));
+}
+
+static void
+action_save_all (gpointer callback_data, guint callback_action,
+		 GtkWidget *widget)
+{
+	GtkamMain *m = GTKAM_MAIN (callback_data);
+
+	gtkam_list_save_all (GTKAM_LIST (m->priv->list));
 }
 
 static void
@@ -318,9 +324,14 @@ action_select_inverse (gpointer callback_data, guint callback_action,
 
 static void
 on_camera_selected (GtkamChooser *chooser,
-		    GtkamChooserCameraSelectedData *data)
+		    GtkamChooserCameraSelectedData *data,
+		    GtkamMain *m)
 {
-	g_warning ("Fixme!");
+	g_return_if_fail (GTKAM_IS_CHOOSER (chooser));
+	g_return_if_fail (GTKAM_IS_MAIN (m));
+
+	gtkam_tree_add_camera (GTKAM_TREE (m->priv->tree), data->camera,
+			       data->multi);
 }
 
 static void
@@ -337,35 +348,37 @@ action_add_camera (gpointer callback_data, guint callback_action,
 			  G_CALLBACK (on_camera_selected), m);
 }
 
-#if 0
-static void
-on_size_allocate (GtkWidget *widget, GtkAllocation *allocation, GtkamMain *m)
-{
-	gtk_icon_list_update (GTK_ICON_LIST (m->priv->list));
-}
-
 static void
 gtkam_main_update_sensitivity (GtkamMain *m)
 {
+#if 0
 	CameraAbilities a;
+#endif
 	guint i, s;
 
-	/* Make sure we are not shutting down */
-	while (gtk_events_pending ())
-		gtk_main_iteration ();
-	if (!GTKAM_IS_MAIN (m))
-		return;
-	if (!GTK_IS_WIDGET (m->priv->item_save))
-		return;
+	i = gtkam_list_count_all (GTKAM_LIST (m->priv->list));
+	s = gtkam_list_count_selected (GTKAM_LIST (m->priv->list));
 
-	i = g_list_length (GTK_ICON_LIST (m->priv->list)->icons);
-	s = g_list_length (GTK_ICON_LIST (m->priv->list)->selection);
-	gtk_widget_set_sensitive (m->priv->select_none, (s != 0));
-	gtk_widget_set_sensitive (m->priv->item_delete, (s != 0));
-	gtk_widget_set_sensitive (m->priv->item_save, (s != 0));
-	gtk_widget_set_sensitive (m->priv->select_all, (s != i));
-	gtk_widget_set_sensitive (m->priv->select_inverse, (i != 0));
+	gtk_widget_set_sensitive (
+		gtk_item_factory_get_widget (m->priv->factory, "/Select/None"),
+		(s != 0));
+	gtk_widget_set_sensitive (
+		gtk_item_factory_get_widget (m->priv->factory, 
+					     "/File/Delete Photos/Selected"),
+		(s != 0));
+	gtk_widget_set_sensitive (
+		gtk_item_factory_get_widget (m->priv->factory,
+					     "/File/Save Photos/Selected"),
+		(s != 0));
+	gtk_widget_set_sensitive (
+		gtk_item_factory_get_widget (m->priv->factory, "/Select/All"),
+		(s != i));
+	gtk_widget_set_sensitive (
+		gtk_item_factory_get_widget (m->priv->factory,
+					     "/Select/Inverse"),
+		(i != 0));
 
+#if 0
 	/* Camera menu */
 	gtk_widget_set_sensitive (m->priv->item_summary, FALSE);
 	gtk_widget_set_sensitive (m->priv->item_manual, FALSE);
@@ -380,49 +393,28 @@ gtkam_main_update_sensitivity (GtkamMain *m)
 		if (a.operations & GP_OPERATION_CONFIG)
 			gtk_widget_set_sensitive (m->priv->item_config, TRUE);
 	}
+#endif
 }
 
 static void
-on_folder_selected (GtkamTree *tree, Camera *camera, gboolean multi,
-		    const gchar *folder, GtkamMain *m)
+on_folder_selected (GtkamTree *tree, GtkamTreeFolderSelectedData *data,
+		    GtkamMain *m)
 {
-	/*
-	 * Don't let the user switch folders while the list is downloading
-	 * the file listing or thumbnails. If you want to give the user this
-	 * possibility, you need to fix a reentrancy issue first.
-	 */
-	gtk_widget_set_sensitive (m->priv->vbox, FALSE);
-	gtkam_list_add_folder (m->priv->list, camera, multi, folder);
-
-	/* Make sure we aren't shutting down */
-	if (!GTKAM_IS_MAIN (m))
-		return;
-	gtk_widget_set_sensitive (m->priv->vbox, TRUE);
-
-	m->priv->camera = camera;
-	m->priv->multi = multi;
+	gtkam_list_add_folder (GTKAM_LIST (m->priv->list), 
+			       data->camera, data->multi, data->folder);
 	gtkam_main_update_sensitivity (m);
 }
 
 static void
-on_folder_unselected (GtkTree *tree, Camera *camera, gboolean multi,
-		      const gchar *folder, GtkamMain *m)
+on_folder_unselected (GtkamTree *tree, GtkamTreeFolderUnselectedData *data,
+		      GtkamMain *m)
 {
-	GtkamTreeItem *item;
-
-	g_return_if_fail (GTKAM_IS_MAIN (m));
-
-	gtkam_list_remove_folder (m->priv->list, camera, multi, folder);
-
-	m->priv->camera = NULL;
-	if (g_list_length (tree->selection) == 1) {
-		item = tree->selection->data;
-		m->priv->camera = gtkam_tree_item_get_camera (item);
-		m->priv->multi = gtkam_tree_item_get_multi (item);
-	}
+	gtkam_list_remove_folder (GTKAM_LIST (m->priv->list),
+				  data->camera, data->multi, data->folder);
 	gtkam_main_update_sensitivity (m);
 }
 
+#if 0
 static void
 on_debug_activate (GtkMenuItem *item, GtkamMain *m)
 {
@@ -456,41 +448,20 @@ on_about_activate (GtkMenuItem *item, GtkamMain *m)
 	dialog = gtkam_close_new (buf, GTK_WIDGET (m));
 	gtk_widget_show (dialog);
 }
-
-static gboolean
-on_select_icon (GtkIconList *list, GtkIconListItem *item, GdkEvent *event,
-		GtkamMain *m)
-{
-	guint i, s;
-
-	gtkam_main_update_sensitivity (m);
-
-	/*
-	 * The problem is that the icon has not yet been selected. Therefore,
-	 * we have to update the sensitivity manually.
-	 */
-	i = g_list_length (GTK_ICON_LIST (m->priv->list)->icons);
-	s = g_list_length (GTK_ICON_LIST (m->priv->list)->selection) + 1;
-	gtk_widget_set_sensitive (m->priv->item_delete, (s != 0));
-	gtk_widget_set_sensitive (m->priv->item_save, (s != 0));
-	gtk_widget_set_sensitive (m->priv->select_none, (s != 0));
-	gtk_widget_set_sensitive (m->priv->select_all, (s != i));
-	gtk_widget_set_sensitive (m->priv->select_inverse, (i != 0)); 
-
-	return (TRUE);
-}
+#endif
 
 static void
-on_unselect_icon (GtkIconList *list, GtkIconListItem *item, GdkEvent *event,
+on_file_selected (GtkamList *list, GtkamListFileSelectedData *data,
 		  GtkamMain *m)
 {
-	gtkam_main_update_sensitivity (m);
+	g_warning ("Fixme: Update sensitivity!");
 }
 
 static void
-on_changed (GtkamList *list, GtkamMain *m)
+on_file_unselected (GtkamList *list, GtkamListFileUnselectedData *data,
+		    GtkamMain *m)
 {
-	gtkam_main_update_sensitivity (m);
+	g_warning ("Fixme: Update sensitivity!");
 }
 
 static void
@@ -510,13 +481,15 @@ on_new_status (GtkamTree *tree, GtkWidget *status, GtkamMain *m)
 	gtkam_main_add_status (m, status);
 }
 
-static gboolean
-load_tree (gpointer data)
+void
+gtkam_main_load (GtkamMain *m)
 {
-	gtkam_tree_load (GTKAM_TREE (data));
-	return (FALSE);
+	g_return_if_fail (GTKAM_IS_MAIN (m));
+	
+	gtkam_tree_load (GTKAM_TREE (m->priv->tree));
 }
 
+#if 0
 typedef enum _CameraTextType CameraTextType;
 enum _CameraTextType {
         CAMERA_TEXT_SUMMARY,
@@ -604,7 +577,9 @@ on_preferences_activate (GtkMenuItem *i, GtkamMain *m)
 static GtkItemFactoryEntry mi[] =
 {
 	{"/_File", NULL, 0, 0, "<Branch>"},
-	{"/File/_Save Selected Photos...", NULL, action_save, 0, NULL},
+	{"/File/_Save Photos", NULL, 0, 0, "<Branch>"},
+	{"/File/Save Photos/_Selected", NULL, action_save_sel, 0, NULL},
+	{"/File/Save Photos/_All", NULL, action_save_all, 0, NULL},
 	{"/File/_Delete Photos", NULL, 0, 0, "<Branch>"},
 	{"/File/Delete Photos/_Selected", NULL, action_delete_sel, 0, NULL},
 	{"/File/Delete Photos/_All", NULL, action_delete_all, 0, NULL},
@@ -626,7 +601,7 @@ gtkam_main_new (void)
 	GdkPixbuf *pixbuf;
 	GtkAccelGroup *ag;
 	GtkItemFactory *item_factory;
-	GtkWidget *widget, *vbox;
+	GtkWidget *widget, *vbox, *frame, *scrolled, *hpaned, *check;
 #if 0
 	GtkWidget *menubar, *menu, *item, *separator, *submenu;
 	GtkWidget *frame, *scrolled, *check, *tree, *list, *label;
@@ -655,170 +630,9 @@ gtkam_main_new (void)
 	widget = gtk_item_factory_get_widget (item_factory, "<main>");
 	gtk_widget_show (widget);
 	gtk_box_pack_start (GTK_BOX (vbox), widget, FALSE, FALSE, 0);
+	m->priv->factory = GTK_ITEM_FACTORY (item_factory);
 
 #if 0
-	gtk_window_set_default_size (GTK_WINDOW (m), 640, 480);
-	gtk_window_set_policy (GTK_WINDOW (m), TRUE, TRUE, TRUE);
-
-	vbox = gtk_vbox_new (FALSE, 1);
-	gtk_widget_show (vbox);
-	gtk_container_add (GTK_CONTAINER (m), vbox);
-
-	menubar = gtk_menu_bar_new ();
-	gtk_widget_show (menubar);
-	gtk_box_pack_start (GTK_BOX (vbox), menubar, FALSE, FALSE, 0);
-
-	accel_group = gtk_accel_group_new ();
-	tooltips = gtk_tooltips_new ();
-
-	/*
-	 * File menu
-	 */
-	item = gtk_menu_item_new_with_label ("");
-	gtk_widget_show (item);
-	key = gtk_label_parse_uline (GTK_LABEL (GTK_BIN (item)->child),
-				     _("_File"));
-	gtk_widget_add_accelerator (item, "activate_item", accel_group, key,
-				    GDK_MOD1_MASK, 0);
-	gtk_container_add (GTK_CONTAINER (menubar), item);
-
-	menu = gtk_menu_new ();
-	gtk_menu_item_set_submenu (GTK_MENU_ITEM (item), menu);
-	accels = gtk_menu_ensure_uline_accel_group (GTK_MENU (menu));
-
-	item = gtk_menu_item_new_with_label ("");
-	gtk_widget_show (item);
-	gtk_widget_set_sensitive (item, FALSE);
-	key = gtk_label_parse_uline (GTK_LABEL (GTK_BIN (item)->child),
-				     _("_Save Selected Photos..."));
-	gtk_widget_add_accelerator (item, "activate_item", accels, key, 0, 0);
-	gtk_container_add (GTK_CONTAINER (menu), item);
-	gtk_widget_add_accelerator (item, "activate", accels, GDK_s,
-				    GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE);
-	gtk_signal_connect (GTK_OBJECT (item), "activate",
-		GTK_SIGNAL_FUNC (on_save_selected_photos_activate), m);
-	m->priv->item_save = item;
-
-	item = gtk_menu_item_new_with_label ("");
-	gtk_widget_show (item);
-	key = gtk_label_parse_uline (GTK_LABEL (GTK_BIN (item)->child),
-				     _("_Delete Photos"));
-	gtk_widget_add_accelerator (item, "activate_item", accels, key, 0, 0);
-	gtk_container_add (GTK_CONTAINER (menu), item);
-	m->priv->menu_delete = item;
-
-	submenu = gtk_menu_new ();
-	gtk_menu_item_set_submenu (GTK_MENU_ITEM (item), submenu);
-	subaccels = gtk_menu_ensure_uline_accel_group (GTK_MENU (submenu));
-
-	item = gtk_menu_item_new_with_label ("");
-	gtk_widget_show (item);
-	gtk_widget_set_sensitive (item, FALSE);
-	key = gtk_label_parse_uline (GTK_LABEL (GTK_BIN (item)->child),
-				     _("_Selected"));
-	gtk_widget_add_accelerator (item, "activate_item", subaccels,
-				    key, 0, 0);
-	gtk_container_add (GTK_CONTAINER (submenu), item);
-	gtk_signal_connect (GTK_OBJECT (item), "activate",
-		GTK_SIGNAL_FUNC (on_delete_selected_photos_activate), m);
-	m->priv->item_delete = item;
-
-	item = gtk_menu_item_new_with_label ("");
-	gtk_widget_show (item);
-	key = gtk_label_parse_uline (GTK_LABEL (GTK_BIN (item)->child),
-				     _("_All"));
-	gtk_widget_add_accelerator (item, "activate_item", subaccels,
-				    key, 0, 0);
-	gtk_container_add (GTK_CONTAINER (submenu), item);
-	gtk_signal_connect (GTK_OBJECT (item), "activate",
-		GTK_SIGNAL_FUNC (on_delete_all_photos_activate), m);
-	m->priv->item_delete_all = item;
-
-	separator = gtk_menu_item_new ();
-	gtk_widget_show (separator);
-	gtk_container_add (GTK_CONTAINER (menu), separator);
-	gtk_widget_set_sensitive (separator, FALSE);
-
-	item = gtk_menu_item_new_with_label ("");
-	gtk_widget_show (item);
-	key = gtk_label_parse_uline (GTK_LABEL (GTK_BIN (item)->child),
-				     _("_Exit"));
-	gtk_widget_add_accelerator (item, "activate_item", accels, key, 0, 0);
-	gtk_signal_connect (GTK_OBJECT (item), "activate",
-			    GTK_SIGNAL_FUNC (on_exit_activate), m);
-	gtk_container_add (GTK_CONTAINER (menu), item);
-
-	/*
-	 * Select menu
-	 */
-	item = gtk_menu_item_new_with_label ("");
-	gtk_widget_show (item);
-	key = gtk_label_parse_uline (GTK_LABEL (GTK_BIN (item)->child),
-				     _("_Select"));
-	gtk_widget_add_accelerator (item, "activate_item", accel_group, key,
-				    GDK_MOD1_MASK, 0);
-	gtk_container_add (GTK_CONTAINER (menubar), item);
-
-	menu = gtk_menu_new ();
-	gtk_menu_item_set_submenu (GTK_MENU_ITEM (item), menu);
-	accels = gtk_menu_ensure_uline_accel_group (GTK_MENU (menu));
-
-	item = gtk_menu_item_new_with_label ("");
-	gtk_widget_show (item);
-	gtk_widget_set_sensitive (item, FALSE);
-	key = gtk_label_parse_uline (GTK_LABEL (GTK_BIN (item)->child),
-				     _("_All"));
-	gtk_widget_add_accelerator (item, "activate_item", accels, key, 0, 0);
-	gtk_container_add (GTK_CONTAINER (menu), item);
-	gtk_signal_connect (GTK_OBJECT (item), "activate",
-			    GTK_SIGNAL_FUNC (on_select_all_activate), m);
-	m->priv->select_all = item;
-
-	item = gtk_menu_item_new_with_label ("");
-	gtk_widget_show (item);
-	gtk_widget_set_sensitive (item, FALSE);
-	key = gtk_label_parse_uline (GTK_LABEL (GTK_BIN (item)->child),
-				     _("_Inverse"));
-	gtk_widget_add_accelerator (item, "activate_item", accels, key, 0, 0);
-	gtk_container_add (GTK_CONTAINER (menu), item);
-	gtk_signal_connect (GTK_OBJECT (item), "activate",
-			    GTK_SIGNAL_FUNC (on_select_inverse_activate), m);
-	m->priv->select_inverse = item;
-
-	item = gtk_menu_item_new_with_label ("");
-	gtk_widget_show (item);
-	gtk_widget_set_sensitive (item, FALSE);
-	key = gtk_label_parse_uline (GTK_LABEL (GTK_BIN (item)->child),
-				     _("_None"));
-	gtk_widget_add_accelerator (item, "activate_item", accels, key, 0, 0);
-	gtk_container_add (GTK_CONTAINER (menu), item);
-	gtk_signal_connect (GTK_OBJECT (item), "activate",
-			    GTK_SIGNAL_FUNC (on_select_none_activate), m);
-	m->priv->select_none = item;
-
-	/*
-	 * Camera menu
-	 */
-	item = gtk_menu_item_new_with_label ("");
-	gtk_widget_show (item);
-	key = gtk_label_parse_uline (GTK_LABEL (GTK_BIN (item)->child),
-				     _("_Camera"));
-	gtk_widget_add_accelerator (item, "activate_item", accel_group, key,
-				    GDK_MOD1_MASK, 0);
-	gtk_container_add (GTK_CONTAINER (menubar), item);
-
-	menu = gtk_menu_new ();
-	gtk_menu_item_set_submenu (GTK_MENU_ITEM (item), menu);
-	accels = gtk_menu_ensure_uline_accel_group (GTK_MENU (menu));
-
-	item = gtk_menu_item_new_with_label ("");
-	gtk_widget_show (item);
-	key = gtk_label_parse_uline (GTK_LABEL (GTK_BIN (item)->child),
-				     _("_Add Camera..."));
-	gtk_widget_add_accelerator (item, "activate_item", accels, key, 0, 0);
-	gtk_container_add (GTK_CONTAINER (menu), item);
-	gtk_signal_connect (GTK_OBJECT (item), "activate",
-			    GTK_SIGNAL_FUNC (on_add_camera_activate), m);
 
 	/* Separator */
 	item = gtk_menu_item_new ();
@@ -897,50 +711,7 @@ gtkam_main_new (void)
 	gtk_signal_connect (GTK_OBJECT (item), "activate",
 			    GTK_SIGNAL_FUNC (on_about_activate), m);
 
-	/*
-	 * Toolbar
-	 */
-	toolbar = gtk_toolbar_new (GTK_ORIENTATION_HORIZONTAL,
-				   GTK_TOOLBAR_ICONS);
-	gtk_widget_show (toolbar);
-	gtk_box_pack_start (GTK_BOX (vbox), toolbar, FALSE, FALSE, 0);
-
-	icon = create_pixmap (GTK_WIDGET (m), "save_current_image.xpm");
-	button = gtk_toolbar_append_element (GTK_TOOLBAR (toolbar),
-			GTK_TOOLBAR_CHILD_BUTTON, NULL, NULL, NULL, NULL,
-			icon, NULL, NULL);
-	gtk_widget_show (button);
-	gtk_tooltips_set_tip (tooltips, button, _("Save selected photos..."),
-			      NULL);
-	gtk_signal_connect (GTK_OBJECT (button), "clicked",
-		GTK_SIGNAL_FUNC (on_save_selected_photos_clicked), m);
-
-	icon = create_pixmap (GTK_WIDGET (m), "delete_images.xpm");
-	button = gtk_toolbar_append_element (GTK_TOOLBAR (toolbar),
-			GTK_TOOLBAR_CHILD_BUTTON, NULL, NULL, NULL, NULL,
-			icon, NULL, NULL);
-	gtk_widget_show (button);
-	gtk_tooltips_set_tip (tooltips, button, _("Delete selected photos"),
-			      NULL);
-	gtk_signal_connect (GTK_OBJECT (button), "clicked",
-		GTK_SIGNAL_FUNC (on_delete_selected_photos_clicked), m);
-
-	label = gtk_label_new ("      ");
-	gtk_widget_show (label);
-	gtk_toolbar_append_widget (GTK_TOOLBAR (toolbar), label, NULL, NULL);
-
-	label = gtk_label_new ("      ");
-	gtk_widget_show (label);
-	gtk_toolbar_append_widget (GTK_TOOLBAR (toolbar), label, NULL, NULL);
-
-	icon = create_pixmap (GTK_WIDGET (m), "exit.xpm");
-	button = gtk_toolbar_append_element (GTK_TOOLBAR (toolbar),
-			GTK_TOOLBAR_CHILD_BUTTON, NULL, NULL, NULL, NULL,
-			icon, NULL, NULL);
-	gtk_widget_show (button);
-	gtk_tooltips_set_tip (tooltips, button, _("Exit"), NULL);
-	gtk_signal_connect (GTK_OBJECT (button), "clicked",
-		GTK_SIGNAL_FUNC (on_exit_activate), m);
+#endif
 
 	/*
 	 * Context information
@@ -975,8 +746,8 @@ gtkam_main_new (void)
 	gtk_widget_set_sensitive (check, FALSE);
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (check), TRUE);
 	gtk_container_add (GTK_CONTAINER (frame), check);
-	gtk_signal_connect (GTK_OBJECT (check), "toggled",
-			    GTK_SIGNAL_FUNC (on_thumbnails_toggled), m);
+	g_signal_connect (G_OBJECT (check), "toggled",
+			  G_CALLBACK (on_thumbnails_toggled), m);
 	m->priv->toggle_preview = GTK_TOGGLE_BUTTON (check);
 
 	scrolled = gtk_scrolled_window_new (NULL, NULL);
@@ -985,18 +756,16 @@ gtkam_main_new (void)
 	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled),
 				GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 
-	tree = gtkam_tree_new ();
-	gtk_widget_show (tree);
+	m->priv->tree = gtkam_tree_new ();
+	gtk_widget_show (m->priv->tree);
 	gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (scrolled),
-					       tree);
-	gtk_signal_connect (GTK_OBJECT (tree), "folder_selected",
-			    GTK_SIGNAL_FUNC (on_folder_selected), m);
-	gtk_signal_connect (GTK_OBJECT (tree), "folder_unselected",
-			    GTK_SIGNAL_FUNC (on_folder_unselected), m);
-	gtk_signal_connect (GTK_OBJECT (tree), "new_status",
-			    GTK_SIGNAL_FUNC (on_new_status), m);
-	m->priv->tree = GTKAM_TREE (tree);
-	gtk_idle_add (load_tree, tree);
+					       m->priv->tree);
+	g_signal_connect (G_OBJECT (m->priv->tree), "folder_selected",
+			    G_CALLBACK (on_folder_selected), m);
+	g_signal_connect (G_OBJECT (m->priv->tree), "folder_unselected",
+			    G_CALLBACK (on_folder_unselected), m);
+	g_signal_connect (G_OBJECT (m->priv->tree), "new_status",
+			  G_CALLBACK (on_new_status), m);
 
 	/*
 	 * Right
@@ -1007,20 +776,14 @@ gtkam_main_new (void)
 	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled),
 			GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 
-	list = gtkam_list_new (m->priv->status);
-	gtk_widget_show (list);
+	m->priv->list = gtkam_list_new ();
+	gtk_widget_show (m->priv->list);
 	gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (scrolled),
-					       list);
-	m->priv->list = GTKAM_LIST (list);
-	gtk_signal_connect (GTK_OBJECT (list), "changed",
-			    GTK_SIGNAL_FUNC (on_changed), m);
-	gtk_signal_connect (GTK_OBJECT (list), "select_icon",
-			    GTK_SIGNAL_FUNC (on_select_icon), m);
-	gtk_signal_connect (GTK_OBJECT (list), "unselect_icon",
-			    GTK_SIGNAL_FUNC (on_unselect_icon), m);
-	gtk_signal_connect (GTK_OBJECT (scrolled), "size_allocate",
-			    GTK_SIGNAL_FUNC (on_size_allocate), m);
-#endif
+					       m->priv->list);
+	g_signal_connect (G_OBJECT (m->priv->list), "file_selected",
+			  G_CALLBACK (on_file_selected), m);
+	g_signal_connect (G_OBJECT (m->priv->list), "file_unselected",
+			  G_CALLBACK (on_file_unselected), m);
 
 	return (GTK_WIDGET (m));
 }

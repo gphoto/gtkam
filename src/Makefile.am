@@ -1,16 +1,16 @@
 ## Process this file with automake to produce Makefile.in
 
-INCLUDES =						\
-	-I$(top_srcdir)/intl				\
-	-DIMAGE_DIR=\"$(datadir)/images/gtkam\" 	\
-	-DGTKAM_LOCALEDIR=\"$(datadir)/locale\"		\
-	-DPACKAGE_DATA_DIR=\"$(datadir)/gtkam\"		\
-	-DPACKAGE_SOURCE_DIR=\"$(top_srcdir)\"		\
-	-DGTK_DISABLE_DEPRECATED			\
-	$(EXIF_CFLAGS)					\
-	$(GTK_CFLAGS)					\
-	$(GIMP_CFLAGS)					\
-	$(GP_CFLAGS)
+INCLUDES =					\
+ -I$(top_srcdir)/intl				\
+ -DIMAGE_DIR=\"$(datadir)/images/gtkam\" 	\
+ -DGTKAM_LOCALEDIR=\"$(datadir)/locale\"	\
+ -DPACKAGE_DATA_DIR=\"$(datadir)/gtkam\"	\
+ -DPACKAGE_SOURCE_DIR=\"$(top_srcdir)\"		\
+ -DGTK_DISABLE_DEPRECATED			\
+ $(EXIF_CFLAGS)					\
+ $(GTK_CFLAGS)					\
+ $(GIMP_CFLAGS)					\
+ $(GP_CFLAGS)
 
 noinst_LIBRARIES = libgtkam.a
 libgtkam_a_SOURCES =				\

@@ -102,6 +102,7 @@ main (int argc, char *argv[])
 	/* Create the main window */
 	m = gtkam_main_new ();
 	gtk_widget_show (m);
+	gtkam_main_load (GTKAM_MAIN (m));
 	g_signal_connect (GTK_OBJECT (m), "destroy",
 			    GTK_SIGNAL_FUNC (gtk_main_quit), NULL);
 

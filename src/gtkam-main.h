@@ -47,4 +47,6 @@ struct _GtkamMainClass
 GtkType    gtkam_main_get_type (void);
 GtkWidget *gtkam_main_new      (void);
 
+void       gtkam_main_load     (GtkamMain *);
+
 #endif /* __GTKAM_MAIN_H__ */

@@ -52,7 +52,7 @@ gtkam_LDADD=						\
 	$(GNOME_LIBS) $(INTLLIBS)
 
 if HAVE_GIMP
-gtkam_gimp_libexecdir = $(libdir)/gimp/1.3/plug-ins
+gtkam_gimp_libexecdir = $(libdir)/gimp/$(GIMP_VERSION)/plug-ins
 gtkam_gimp_libexec_PROGRAMS = gtkam-gimp
 gtkam_gimp_SOURCES = gtkam-gimp.c
 gtkam_gimp_LDADD =					\

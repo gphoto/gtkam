@@ -1,3 +1,7 @@
+2001-11-14  Lutz Müller <urc8@rz.uni-karlsruhe.de>
+
+	* src/gtkam-config.c: _Basic_ support for GP_WIDGET_DATE.
+
 2001-11-13  Lutz Müller <urc8@rz.uni-karlsruhe.de>
 
 	* src/gtkam-main.c: Don't pop up a preview window for cameras that

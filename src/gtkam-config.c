@@ -42,6 +42,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <time.h>
 
 #include <gtk/gtktooltips.h>
 #include <gtk/gtkframe.h>
@@ -57,7 +58,8 @@
 #include <gtk/gtkradiobutton.h>
 #include <gtk/gtkhbox.h>
 #include <gtk/gtksignal.h>
-#include <gtk/gtkbutton.h>
+#include <gtk/gtkcalendar.h>
+#include <gtk/gtkmain.h>
 
 #include <gtkam-error.h>
 
@@ -291,6 +293,71 @@ on_adjustment_value_changed (GtkAdjustment *adj, CameraWidget *widget)
 }
 
 static void
+on_day_selected (GtkCalendar *calendar, CameraWidget *widget)
+{
+	GtkLabel *label;
+	struct tm tm;
+	time_t time;
+
+	label = GTK_LABEL (gtk_object_get_data (GTK_OBJECT (calendar),
+						"clock"));
+	sscanf (label->label, "%d:%d:%d", &tm.tm_hour, &tm.tm_min, &tm.tm_sec);
+	gtk_calendar_get_date (calendar, &tm.tm_year, &tm.tm_mon, &tm.tm_mday);
+	time = mktime (&tm);
+	gp_widget_set_value (widget, (int*) &time);
+}
+
+static void
+on_clock_changed (GtkEntry *entry, CameraWidget *widget)
+{
+	GtkCalendar *calendar;
+	const gchar *text;
+	struct tm tm;
+	time_t time;
+
+	calendar = GTK_CALENDAR (gtk_object_get_data (GTK_OBJECT (entry),
+						      "calendar"));
+	text = gtk_entry_get_text (entry);
+	sscanf (text, "%d:%d:%d", &tm.tm_hour, &tm.tm_min, &tm.tm_sec);
+	gtk_calendar_get_date (calendar, &tm.tm_year, &tm.tm_mon, &tm.tm_mday);
+	time = mktime (&tm);
+	gp_widget_set_value (widget, (int*) &time);
+}
+
+static gboolean
+clock_func (gpointer data)
+{
+	GtkLabel *label;
+	GtkCalendar *calendar;
+	struct tm tm, *tmp;
+	time_t time;
+	gchar *string;
+
+	if (!GTK_IS_LABEL (data))
+		return (FALSE);
+	
+	label = GTK_LABEL (data);
+	calendar = GTK_CALENDAR (gtk_object_get_data (GTK_OBJECT (label),
+						      "calendar"));
+
+	sscanf (label->label, "%d:%d:%d", &tm.tm_hour, &tm.tm_min, &tm.tm_sec);
+	tm.tm_year = calendar->year - 1900;
+	tm.tm_mon = calendar->month;
+	tm.tm_mday = calendar->selected_day;
+	time = mktime (&tm);
+
+	time++;
+
+	tmp = localtime (&time);
+	string = g_strdup_printf ("%i:%02i:%02i", tmp->tm_hour, tmp->tm_min,
+				  tmp->tm_sec);
+	gtk_label_set_text (label, string);
+	g_free (string);
+
+	return (TRUE);
+}
+
+static void
 create_widgets (GtkamConfig *config, CameraWidget *widget)
 {
 	CameraWidget *parent, *child;
@@ -300,11 +367,15 @@ create_widgets (GtkamConfig *config, CameraWidget *widget)
 	int value_int;
 	float value_float, min, max, increment;
 	const char *choice;
-	GtkWidget *vbox, *button, *gtk_widget = NULL, *frame;
+	GtkWidget *vbox, *button, *gtk_widget = NULL, *frame, *calendar;
+	GtkWidget *entry, *clock, *hbox;
 	GtkObject *adjustment;
 	GSList *group = NULL;
 	GList *options = NULL;
 	gint i, id;
+	struct tm *tm;
+	guint timeout;
+	gchar *string;
 
 	gp_widget_get_label (widget, &label);
 	gp_widget_get_info  (widget, &info);
@@ -345,7 +416,47 @@ create_widgets (GtkamConfig *config, CameraWidget *widget)
 
 	case GP_WIDGET_DATE:
 
-		gtk_widget = gtk_label_new (_("Date & Time not implemented!"));
+		gp_widget_get_value (widget, &value_int);
+		tm = localtime ((time_t*) &value_int);
+		gtk_widget = gtk_vbox_new (FALSE, 5);
+		gtk_container_set_border_width (GTK_CONTAINER (gtk_widget), 5);
+
+		/* Create the calendar */
+		calendar = gtk_calendar_new ();
+		gtk_widget_show (calendar);
+		gtk_box_pack_start (GTK_BOX (gtk_widget), calendar, FALSE,
+				    FALSE, 0);
+		gtk_calendar_select_month (GTK_CALENDAR (calendar),
+					   tm->tm_mon, tm->tm_year + 1900);
+		gtk_calendar_select_day (GTK_CALENDAR (calendar), tm->tm_mday);
+		gtk_signal_connect (GTK_OBJECT (calendar), "day_selected",
+				    GTK_SIGNAL_FUNC (on_day_selected), widget);
+
+		/* Create the timer */
+		hbox = gtk_hbox_new (FALSE, 5);
+		gtk_widget_show (hbox);
+		gtk_box_pack_start (GTK_BOX (gtk_widget), hbox, TRUE, TRUE, 0);
+		string = g_strdup_printf ("%i:%02i:%02i", tm->tm_hour,
+					  tm->tm_min, tm->tm_sec);
+		clock = gtk_label_new (string);
+		gtk_object_set_data (GTK_OBJECT (clock), "calendar",
+				     calendar);
+		timeout = gtk_timeout_add (1000, clock_func, clock);
+		gtk_object_set_data (GTK_OBJECT (clock), "timeout",
+				     GINT_TO_POINTER (timeout));
+		gtk_widget_show (clock);
+		gtk_box_pack_start (GTK_BOX (hbox), clock, FALSE, FALSE, 0);
+		entry = gtk_entry_new ();
+		gtk_object_set_data (GTK_OBJECT (entry), "calendar", calendar);
+		gtk_widget_show (entry);
+		gtk_box_pack_start (GTK_BOX (hbox), entry, FALSE, FALSE, 0);
+		gtk_entry_set_max_length (GTK_ENTRY (entry), 8);
+		gtk_entry_set_text (GTK_ENTRY (entry), string);
+		g_free (string);
+		gtk_signal_connect (GTK_OBJECT (entry), "changed",
+				GTK_SIGNAL_FUNC (on_clock_changed), widget);
+		gtk_object_set_data (GTK_OBJECT (calendar), "clock", clock);
+		
 		break;
 
 	case GP_WIDGET_TEXT:

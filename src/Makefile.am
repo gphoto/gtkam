@@ -6,6 +6,7 @@ INCLUDES =					\
  -DGTKAM_LOCALEDIR=\"$(datadir)/locale\"	\
  -DPACKAGE_DATA_DIR=\"$(datadir)/gtkam\"	\
  -DPACKAGE_SOURCE_DIR=\"$(top_srcdir)\"		\
+ -DMANUAL_DIR=\"@MANUAL_DIR@\"			\
  -DGTK_DISABLE_DEPRECATED			\
  $(EXIF_CFLAGS)					\
  $(GTKAM_CFLAGS)				\

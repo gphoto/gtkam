@@ -1,3 +1,11 @@
+2002-01-18  Colin Marquardt  <colin@marquardt-home.de>
+
+	* src/gtkam-config.c
+	* src/gtkam-debug.c 
+        * src/gtkam-main.c
+	* src/gtkam-save.c: Wording changes to improve user interaction.
+        * de/de.po: Update.
+
 2002-01-16  Colin Marquardt  <colin@marquardt-home.de>
 
 	* src/gtkam-main.c: Make "About" box translatable.

@@ -229,7 +229,7 @@ create_page (GtkamConfig *config, CameraWidget *widget)
 		gp_widget_get_info  (widget, &info);
 		if (!strlen (info))
 			gtk_tooltips_set_tip (config->priv->tooltips, label,
-				_("No additional information available"), NULL);
+				_("No additional information available. (1)"), NULL);
 		else
 			gtk_tooltips_set_tip (config->priv->tooltips, label,
 					      info, NULL);
@@ -293,7 +293,7 @@ on_button_clicked (GtkButton *button, CameraWidget *widget)
 	result = callback (config->priv->camera, widget, NULL);
 	if (result != GP_OK) {
 		dialog = gtkam_error_new (result, NULL, GTK_WIDGET (config),
-			_("Could not execute command"));
+			_("Could not execute command."));
 		gtk_widget_show (dialog);
 	}
 }
@@ -448,7 +448,7 @@ create_widgets (GtkamConfig *config, CameraWidget *widget)
 		else
 			gtk_tooltips_set_tip (config->priv->tooltips,
 				button,
-				_("No additional information available"), NULL);
+				_("No additional information available. (2)"), NULL);
 		break;
 
 	case GP_WIDGET_DATE:
@@ -508,7 +508,7 @@ create_widgets (GtkamConfig *config, CameraWidget *widget)
 		else
 			gtk_tooltips_set_tip (config->priv->tooltips,
 				gtk_widget,
-				_("No additional information available"), NULL);
+				_("No additional information available. (3)"), NULL);
 		break;
 	
 	case GP_WIDGET_RANGE:
@@ -529,7 +529,7 @@ create_widgets (GtkamConfig *config, CameraWidget *widget)
 		else
 			gtk_tooltips_set_tip (config->priv->tooltips,
 				gtk_widget,
-				_("No additional information available"), NULL);
+				_("No additional information available. (4)"), NULL);
 		break;
 
 	case GP_WIDGET_MENU:
@@ -577,7 +577,7 @@ create_widgets (GtkamConfig *config, CameraWidget *widget)
 			else
 				gtk_tooltips_set_tip (config->priv->tooltips,
 					button, _("No additional information "
-					"available"), NULL);
+					"available. (5)"), NULL);
 						
 		}
 		break;
@@ -597,7 +597,7 @@ create_widgets (GtkamConfig *config, CameraWidget *widget)
 		else
 			gtk_tooltips_set_tip (config->priv->tooltips,
 				gtk_widget,
-				_("No additional information available"), NULL);
+				_("No additional information available. (6)"), NULL);
 		break;
 
 	default:

@@ -1,9 +1,13 @@
+2002-01-18  Colin Marquardt  <colin@marquardt-home.de>
+
+	* de.po: Update.
+
 2002-01-16  Colin Marquardt  <colin@marquardt-home.de>
 
-	* fr.po: New translation from J,bi(Br,bt(Bme Fenal <jfenal@free.fr>:
-	         - Traduction de GTKam termin,bi(Be ;
+	* fr.po: New translation from Jerome Fenal <jfenal@free.fr>:
+	         - Traduction de GTKam terminee ;
                  - Changement d'imagette en vignette, plus joli ; 
-                 - Nettoyage d,b{(B au d,bi(Bveloppement.
+                 - Nettoyage de au developpement.
 
 2002-01-04  Colin Marquardt  <colin@marquardt-home.de>
 

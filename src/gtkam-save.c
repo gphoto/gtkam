@@ -498,7 +498,7 @@ gtkam_save_new (Camera *camera, gboolean multi, const gchar *path,
 	gtk_box_pack_start (GTK_BOX (GTK_FILE_SELECTION (save)->main_vbox),
 			    hbox, TRUE, TRUE, 0);
 
-	label = gtk_label_new (_("Open image(s) with:"));
+	label = gtk_label_new (_("Open image(s) with: "));
 	gtk_widget_show (label);
 	gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
 

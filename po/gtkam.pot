@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2002-01-16 23:09+0100\n"
+"POT-Creation-Date: 2002-01-18 01:13+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -149,9 +149,8 @@ msgstr ""
 msgid "Could not apply configuration."
 msgstr ""
 
-#: src/gtkam-config.c:232 src/gtkam-config.c:451 src/gtkam-config.c:511
-#: src/gtkam-config.c:532 src/gtkam-config.c:579 src/gtkam-config.c:600
-msgid "No additional information available"
+#: src/gtkam-config.c:232
+msgid "No additional information available. (1)"
 msgstr ""
 
 #: src/gtkam-config.c:237
@@ -159,7 +158,27 @@ msgid "General Settings"
 msgstr ""
 
 #: src/gtkam-config.c:296
-msgid "Could not execute command"
+msgid "Could not execute command."
+msgstr ""
+
+#: src/gtkam-config.c:451
+msgid "No additional information available. (2)"
+msgstr ""
+
+#: src/gtkam-config.c:511
+msgid "No additional information available. (3)"
+msgstr ""
+
+#: src/gtkam-config.c:532
+msgid "No additional information available. (4)"
+msgstr ""
+
+#: src/gtkam-config.c:579
+msgid "No additional information available. (5)"
+msgstr ""
+
+#: src/gtkam-config.c:600
+msgid "No additional information available. (6)"
 msgstr ""
 
 #: src/gtkam-config.c:641
@@ -170,7 +189,7 @@ msgstr ""
 msgid "Could not get configuration."
 msgstr ""
 
-#: src/gtkam-debug.c:215
+#: src/gtkam-debug.c:215 src/gtkam-debug.c:323
 msgid "Save As..."
 msgstr ""
 
@@ -197,10 +216,6 @@ msgstr ""
 
 #: src/gtkam-debug.c:301
 msgid "Data"
-msgstr ""
-
-#: src/gtkam-debug.c:323
-msgid "Save As"
 msgstr ""
 
 #: src/gtkam-delete.c:179
@@ -251,7 +266,7 @@ msgstr ""
 msgid "Removing '%s' from '%s'..."
 msgstr ""
 
-#: src/gtkam-fsel.c:236 src/gtkam-main.c:660
+#: src/gtkam-fsel.c:236
 #, c-format
 msgid "Could not remove '%s' from '%s'"
 msgstr ""
@@ -432,7 +447,7 @@ msgid "Getting information about the driver..."
 msgstr ""
 
 #: src/gtkam-main.c:573
-msgid "Could not get information about the driver"
+msgid "Could not get information about the driver."
 msgstr ""
 
 #: src/gtkam-main.c:596
@@ -458,13 +473,18 @@ msgstr ""
 msgid "Removing folder '%s' from folder '%s'..."
 msgstr ""
 
+#: src/gtkam-main.c:660
+#, c-format
+msgid "Could not remove '%s' from '%s'."
+msgstr ""
+
 #: src/gtkam-main.c:688
-msgid "Upload"
+msgid "Upload..."
 msgstr ""
 
 #: src/gtkam-main.c:705
 #, c-format
-msgid "Could not open '%s'"
+msgid "Could not open '%s'."
 msgstr ""
 
 #: src/gtkam-main.c:709
@@ -474,7 +494,7 @@ msgstr ""
 
 #: src/gtkam-main.c:729
 #, c-format
-msgid "Coult not upload '%s' into folder '%s'"
+msgid "Coult not upload '%s' into folder '%s'."
 msgstr ""
 
 #: src/gtkam-main.c:811
@@ -486,15 +506,15 @@ msgid "_Save Selected Photos..."
 msgstr ""
 
 #: src/gtkam-main.c:836
-msgid "_Delete"
+msgid "_Delete Photos"
 msgstr ""
 
 #: src/gtkam-main.c:849
-msgid "_Selected Photos"
+msgid "_Selected"
 msgstr ""
 
-#: src/gtkam-main.c:860
-msgid "_All Photos"
+#: src/gtkam-main.c:860 src/gtkam-main.c:955
+msgid "_All"
 msgstr ""
 
 #: src/gtkam-main.c:877
@@ -506,23 +526,19 @@ msgid "F_older"
 msgstr ""
 
 #: src/gtkam-main.c:902
-msgid "_Create"
+msgid "_Create..."
 msgstr ""
 
 #: src/gtkam-main.c:913
-msgid "_Remove"
+msgid "_Remove..."
 msgstr ""
 
 #: src/gtkam-main.c:929
-msgid "_Upload file"
+msgid "_Upload file..."
 msgstr ""
 
 #: src/gtkam-main.c:942
 msgid "_Select"
-msgstr ""
-
-#: src/gtkam-main.c:955
-msgid "_All"
 msgstr ""
 
 #: src/gtkam-main.c:966
@@ -542,11 +558,11 @@ msgid "_Select Camera..."
 msgstr ""
 
 #: src/gtkam-main.c:1017
-msgid "Ca_pture"
+msgid "Ca_pture..."
 msgstr ""
 
 #: src/gtkam-main.c:1028
-msgid "_Configure"
+msgid "_Configure..."
 msgstr ""
 
 #: src/gtkam-main.c:1039
@@ -558,7 +574,7 @@ msgid "_Manual"
 msgstr ""
 
 #: src/gtkam-main.c:1061
-msgid "_About the Driver"
+msgid "_About the Driver..."
 msgstr ""
 
 #: src/gtkam-main.c:1074
@@ -566,15 +582,15 @@ msgid "_Help"
 msgstr ""
 
 #: src/gtkam-main.c:1086
-msgid "_Debug"
+msgid "_Debug..."
 msgstr ""
 
 #: src/gtkam-main.c:1095
-msgid "_About"
+msgid "_About..."
 msgstr ""
 
 #: src/gtkam-main.c:1114
-msgid "Save selected photos"
+msgid "Save selected photos..."
 msgstr ""
 
 #: src/gtkam-main.c:1124
@@ -582,7 +598,7 @@ msgid "Delete selected photos"
 msgstr ""
 
 #: src/gtkam-main.c:1138
-msgid "Configure camera"
+msgid "Configure camera..."
 msgstr ""
 
 #: src/gtkam-main.c:1151
@@ -773,7 +789,7 @@ msgid "EXIF data will be saved if this is checked"
 msgstr ""
 
 #: src/gtkam-save.c:501
-msgid "Open image(s) with:"
+msgid "Open image(s) with: "
 msgstr ""
 
 #: src/gtkam-save.c:508

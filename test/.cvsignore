@@ -1,3 +1,7 @@
-*~ .*~
+*~
+.*~
+.deps
 Makefile
 Makefile.in
+test-cancel
+test-fsel

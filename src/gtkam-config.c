@@ -177,10 +177,18 @@ gtkam_config_apply (GtkamConfig *config)
 }
 
 static void
+gtkam_config_close (GtkamConfig *config)
+{
+	while (gtk_events_pending ())
+		gtk_main_iteration ();
+	gtk_object_destroy (GTK_OBJECT (config));
+}
+
+static void
 on_config_ok_clicked (GtkButton *button, GtkamConfig *config)
 {
 	gtkam_config_apply (config);
-	gtk_object_destroy (GTK_OBJECT (config));
+	gtkam_config_close (config);
 }
 
 static void
@@ -192,7 +200,7 @@ on_config_apply_clicked (GtkButton *button, GtkamConfig *config)
 static void
 on_config_close_clicked (GtkButton *button, GtkamConfig *config)
 {
-	gtk_object_destroy (GTK_OBJECT (config));
+	gtkam_config_close (config);
 }
 
 static GtkWidget *
@@ -200,7 +208,7 @@ create_page (GtkamConfig *config, CameraWidget *widget)
 {
 	GtkWidget *label, *vbox;
 	int id;
-	const char *l, *info;
+	const char *l = NULL, *info = NULL;
 
 	/* Label */
 	if (widget) {

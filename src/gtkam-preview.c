@@ -74,7 +74,7 @@ struct _GtkamPreviewPrivate
 	GtkToggleButton *zoom_100, *zoom_150, *zoom_200, *zoom_250;
 	GtkToggleButton *angle_0, *angle_90, *angle_180, *angle_270;
 
-	guint32 idle_id;
+	guint32 timeout_id;
 
 	GtkTooltips *tooltips;
 
@@ -101,9 +101,9 @@ gtkam_preview_destroy (GtkObject *object)
 		preview->priv->tooltips = NULL;
 	}
 
-	if (preview->priv->idle_id) {
-		gtk_idle_remove (preview->priv->idle_id);
-		preview->priv->idle_id = 0;
+	if (preview->priv->timeout_id) {
+		gtk_timeout_remove (preview->priv->timeout_id);
+		preview->priv->timeout_id = 0;
 	}
 
 	if (preview->priv->camera) {
@@ -204,12 +204,12 @@ on_preview_capture_clicked (GtkButton *button, GtkamPreview *preview)
 }
 
 static gboolean
-idle_func (gpointer user_data)
+timeout_func (gpointer user_data)
 {
 	int result;
 	CameraFile *file;
-	const char *data;
-	long int size;
+	const char *data = NULL;
+	long int size = 0;
 	GdkPixbufLoader *loader;
 	GdkPixbuf *pixbuf, *rotated, *scaled;
 	GdkPixmap *pixmap;
@@ -238,14 +238,18 @@ idle_func (gpointer user_data)
 
 	while (gtk_events_pending ())
 		gtk_main_iteration ();
-	if (!GTKAM_IS_PREVIEW (preview))
-		return (FALSE);
 
-	gp_file_get_data_and_size (file, &data, &size);
+	/* Make sure we are not shutting down */
+	if (!GTKAM_IS_PREVIEW (preview)) {
+		gp_file_unref (file);
+		return (FALSE);
+	}
+
 	loader = gdk_pixbuf_loader_new ();
+	gp_file_get_data_and_size (file, &data, &size);
 	gdk_pixbuf_loader_write (loader, data, size);
-	gp_file_unref (file);
 	gdk_pixbuf_loader_close (loader);
+	gp_file_unref (file);
 
 	while (gtk_events_pending ())
 		gtk_main_iteration ();
@@ -526,7 +530,8 @@ gtkam_preview_new (Camera *camera, gboolean multi)
 			   button);
 
 	/* Start capturing previews */
-	preview->priv->idle_id = gtk_idle_add (idle_func, preview);
+	preview->priv->timeout_id = gtk_timeout_add (200, timeout_func,
+						     preview);
 
 	return (GTK_WIDGET (preview));
 }

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gphoto 0.4.3\n"
-"POT-Creation-Date: 2002-09-17 08:38+0200\n"
+"POT-Creation-Date: 2002-11-20 19:32+0100\n"
 "PO-Revision-Date: 2000-04-21 23:23+0200\n"
 "Last-Translator: Andreas Hyden <a.hyden@cyberpoint.se>\n"
 "Language-Team: Swedish <sv@li.org>\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8-bit\n"
 
-#: src/main.c:126
+#: src/main.c:127
 msgid "Image Download Program"
 msgstr ""
 
@@ -22,7 +22,7 @@ msgstr ""
 msgid "None"
 msgstr "Nej"
 
-#: src/gtkam-chooser.c:279 src/gtkam-chooser.c:412 src/gtkam-chooser.c:666
+#: src/gtkam-chooser.c:279 src/gtkam-chooser.c:412 src/gtkam-chooser.c:671
 #, fuzzy
 msgid "Best"
 msgstr "Nollställ"
@@ -56,47 +56,47 @@ msgstr ""
 msgid "Could not detect any cameras."
 msgstr "Kunde inte ta bild."
 
-#: src/gtkam-chooser.c:601
+#: src/gtkam-chooser.c:602
 #, fuzzy
 msgid "Select Camera"
 msgstr "Direktsänd kamera!"
 
-#: src/gtkam-chooser.c:616
+#: src/gtkam-chooser.c:619
 #, fuzzy
 msgid "Model:"
 msgstr "Kameramodell:"
 
-#: src/gtkam-chooser.c:629
+#: src/gtkam-chooser.c:632
 msgid "Detect"
 msgstr ""
 
-#: src/gtkam-chooser.c:635
+#: src/gtkam-chooser.c:640
 #, fuzzy
 msgid "Detect USB camera"
 msgstr "Välj modell/port..."
 
-#: src/gtkam-chooser.c:637
+#: src/gtkam-chooser.c:642
 msgid "Port:"
 msgstr "Port:"
 
-#: src/gtkam-chooser.c:658
+#: src/gtkam-chooser.c:663
 msgid "Speed:"
 msgstr ""
 
-#: src/gtkam-chooser.c:672
+#: src/gtkam-chooser.c:677
 msgid "Allow multiple frontends"
 msgstr ""
 
-#: src/gtkam-chooser.c:679
+#: src/gtkam-chooser.c:687
 msgid "Enhanced"
 msgstr ""
 
-#: src/gtkam-chooser.c:743
+#: src/gtkam-chooser.c:753
 #, fuzzy
 msgid "Could not get number of supported camera models"
 msgstr "Kunde inte få antalet bilder"
 
-#: src/gtkam-chooser.c:773
+#: src/gtkam-chooser.c:783
 #, fuzzy
 msgid "Could not get number of ports."
 msgstr "Kunde inte få antalet bilder"
@@ -301,7 +301,7 @@ msgstr "Kunde inte få tag på förhandsgranskning"
 
 #: src/gtkam-info.c:368
 #, fuzzy, c-format
-msgid "Could not get information about file '%s' in '%s' in folder '%s'."
+msgid "Could not get information about file '%s' in folder '%s'."
 msgstr "Kunde inte få tag på förhandsgranskning"
 
 #: src/gtkam-info.c:396
@@ -625,7 +625,7 @@ msgstr ""
 msgid "Save photos"
 msgstr ""
 
-#: src/gtkam-save.c:504
+#: src/gtkam-save.c:506
 msgid "Photos will be saved if this is checked"
 msgstr ""
 
@@ -633,7 +633,7 @@ msgstr ""
 msgid "Save raw data"
 msgstr ""
 
-#: src/gtkam-save.c:513
+#: src/gtkam-save.c:515
 msgid "Raw data will be saved if this is checked"
 msgstr ""
 
@@ -641,7 +641,7 @@ msgstr ""
 msgid "Save audio data"
 msgstr ""
 
-#: src/gtkam-save.c:522
+#: src/gtkam-save.c:524
 msgid "Audio data will be saved if this is checked"
 msgstr ""
 
@@ -650,7 +650,7 @@ msgstr ""
 msgid "Save thumbnails"
 msgstr "minibild-%03i.%s"
 
-#: src/gtkam-save.c:531
+#: src/gtkam-save.c:533
 msgid "Thumbnails will be saved if this is checked"
 msgstr ""
 
@@ -658,42 +658,42 @@ msgstr ""
 msgid "Save EXIF data"
 msgstr ""
 
-#: src/gtkam-save.c:540
+#: src/gtkam-save.c:542
 msgid "EXIF data will be saved if this is checked"
 msgstr ""
 
-#: src/gtkam-save.c:550
+#: src/gtkam-save.c:551
 #, fuzzy
 msgid "Open image(s) with: "
 msgstr "Öppna bild"
 
-#: src/gtkam-save.c:557
+#: src/gtkam-save.c:560
 msgid "Type in the name of the program you want to run, leave blank for none"
 msgstr ""
 
-#: src/gtkam-save.c:563
+#: src/gtkam-save.c:566
 msgid "Use filename(s) provided by the camera"
 msgstr ""
 
-#: src/gtkam-save.c:568
+#: src/gtkam-save.c:573
 msgid "Choose whether to use the filename provided by the camera"
 msgstr ""
 
-#: src/gtkam-save.c:583
+#: src/gtkam-save.c:588
 #, fuzzy
 msgid "Filename prefix: "
 msgstr "Filnamn prefix:"
 
-#: src/gtkam-save.c:592
+#: src/gtkam-save.c:599
 msgid "Start numbering with: "
 msgstr ""
 
-#: src/gtkam-save.c:631
+#: src/gtkam-save.c:641
 #, fuzzy, c-format
 msgid "Save '%s'..."
 msgstr "Spara bild(er)..."
 
-#: src/gtkam-save.c:653
+#: src/gtkam-save.c:663
 #, fuzzy
 msgid "Save photos..."
 msgstr "Spara bild(er)..."
@@ -790,649 +790,12 @@ msgid ""
 "or the file itself is corrupt."
 msgstr ""
 
-#, fuzzy
-#~ msgid "Index Settings"
-#~ msgstr "Färginställningar"
-
-#, fuzzy
-#~ msgid "Couldn't find pixmap file: %s"
-#~ msgstr "Kunde inte få tag på förhandsgranskning"
-
-#, fuzzy
-#~ msgid "Error loading pixmap file: %s"
-#~ msgstr "Nerladdningen klar."
-
-#~ msgid "Cancel"
-#~ msgstr "Avbryt"
-
-#~ msgid "Apply"
-#~ msgstr "Verktställ"
-
-#, fuzzy
-#~ msgid "Filename"
-#~ msgstr "Filnamn prefix:"
-
-#, fuzzy
-#~ msgid "Getting file '%s' from folder '%s'..."
-#~ msgstr "Hämtar minibild  %i..."
-
-#, fuzzy
-#~ msgid "Could not get file '%s'."
-#~ msgstr "Kunde inte få tag på förhandsgranskning"
-
-#, fuzzy
-#~ msgid "Getting list of files in folder '%s'..."
-#~ msgstr "Kunde inte få tag på förhandsgranskning"
-
-#, fuzzy
-#~ msgid "Could not get file list for folder '%s'."
-#~ msgstr "Kunde inte hämta #%i"
-
-#~ msgid "Close"
-#~ msgstr "Stäng"
-
-#~ msgid "Reset"
-#~ msgstr "Nollställ"
-
-#, fuzzy
-#~ msgid "Could not get preview of file '%s' in folder '%s'"
-#~ msgstr "Kunde inte få tag på förhandsgranskning"
-
-#~ msgid "Save"
-#~ msgstr "Spara"
-
-#, fuzzy
-#~ msgid "Getting preview of file '%s' in folder '%s'..."
-#~ msgstr "Kunde inte få tag på förhandsgranskning"
-
-#, fuzzy
-#~ msgid "Could not get preview of file '%s' in folder '%s'."
-#~ msgstr "Kunde inte få tag på förhandsgranskning"
-
-#, fuzzy
-#~ msgid "_None"
-#~ msgstr "Klar."
-
-#, fuzzy
-#~ msgid "Manual"
-#~ msgstr "Användarmanual"
-
-#, fuzzy
-#~ msgid "Save selected photos..."
-#~ msgstr "Spara bild(er)..."
-
-#, fuzzy
-#~ msgid "Delete selected photos"
-#~ msgstr "Ta bort markerade bilder"
-
-#, fuzzy
-#~ msgid "Configure"
-#~ msgstr "Bekräfta"
-
-#, fuzzy
-#~ msgid "Could not remove '%s' from '%s'"
-#~ msgstr "Kunde inte hämta #%i"
-
-#, fuzzy
-#~ msgid "Could not retrieve manual."
-#~ msgstr "Kunde inte hämta #%i"
-
-#, fuzzy
-#~ msgid "_Create..."
-#~ msgstr "Skapa"
-
-#, fuzzy
-#~ msgid "Ca_pture..."
-#~ msgstr "Skapa"
-
-#, fuzzy
-#~ msgid "_Configure..."
-#~ msgstr "Bekräfta"
-
-#, fuzzy
-#~ msgid "Configure camera..."
-#~ msgstr "Bekräfta"
-
-#, fuzzy
-#~ msgid "Could not retrieve file list for folder '%s'."
-#~ msgstr "Kunde inte hämta #%i"
-
-#, fuzzy
-#~ msgid "Save As"
-#~ msgstr "Spara"
-
-#, fuzzy
-#~ msgid "Could not download file"
-#~ msgstr "Kunde inte spara #%i"
-
-#, fuzzy
-#~ msgid "Creation time:"
-#~ msgstr "Skapa"
-
-#~ msgid "No configuration options."
-#~ msgstr "Inga konfigurationsalternativ."
-
-#~ msgid "Mail image needs to be implemented!"
-#~ msgstr "Posta bild måste implementeras!"
-
-#~ msgid "Taking picture..."
-#~ msgstr "Tar bild..."
-
-#~ msgid "New picture is #%03i"
-#~ msgstr "Ny bild är #%03i"
-
-#~ msgid "Deleting ALL pictures."
-#~ msgstr "Tar bort ALLA bilder"
-
-#~ msgid "Deleting %i...\n"
-#~ msgstr "Tar bort %i...\n"
-
-#~ msgid "Deleted all images."
-#~ msgstr "Alla bilder har tagits bort."
-
-#~ msgid "Deleting selected pictures..."
-#~ msgstr "Tar bort markerade bilder..."
-
-#~ msgid "Nothing selected to be deleted."
-#~ msgstr "Inget markerat för att tas bort."
-
-#~ msgid "Are you sure you want to DELETE the selected images?"
-#~ msgstr "Är du säker att du vill TA BORT de markerade bilderna?"
-
-#~ msgid "Are you sure you want to DELETE all the images from memory?"
-#~ msgstr "Är du säker att du vill TA BORT alla bilderna från minnet?"
-
-#~ msgid "Yes"
-#~ msgstr "Ja"
-
-#~ msgid "Saving Image #%03i..."
-#~ msgstr "Sparar bild #%03i..."
-
-#~ msgid "Saving Thumbnail #%03i..."
-#~ msgstr "Sparar minibild #%03i..."
-
-#~ msgid "%s-thumbnail-%03i"
-#~ msgstr "%s-minibild-%03i"
-
-#~ msgid "Done. Images saved in %s"
-#~ msgstr "Klar. Bilderna sparades i %s"
-
-#~ msgid "%s/gphoto-image-%03i.jpg"
-#~ msgstr "%s/gphoto-bild-%03i.jpg"
-
-#~ msgid ""
-#~ "\n"
-#~ "gPhoto user(s) that reported this model:\n"
-#~ msgstr ""
-#~ "\n"
-#~ "gPhoto-användare som har rapporterat denna modellen:\n"
-
-#~ msgid "Error: failed to open %s"
-#~ msgstr "Fel: misslyckades att öppna %s"
-
-#~ msgid "Missing Serial Device Permissions"
-#~ msgstr "Saknar seriellportsrättigheter"
-
-#~ msgid "Please check the permissions (see the manual)."
-#~ msgstr "Var vänlig kolla rättigheterna (se manualen)."
-
-#~ msgid "Opened %s."
-#~ msgstr "Öppnade %s."
-
-#~ msgid "Could not open $HOME/.gphoto/gphotorc for writing."
-#~ msgstr "Kunde inte öppna $HOME/.gphoto/gphotorc för skrivning."
-
-#~ msgid "Could not open $HOME/.gphoto/gphotorc for writing.\n"
-#~ msgstr "Kunde inte öppna $HOME/.gphoto/gphotorc för skrivning.\n"
-
-#~ msgid ""
-#~ "Version Information-------------------Current Version: %sNew features all "
-#~ "over the place. Please seethe ChangeLog for more information.As always, "
-#~ "report bugs gphoto-devel@gphoto.orgThanx much."
-#~ msgstr ""
-#~ "Versjonsinformasjon-------------------Denne versjon: %sNye funksjoner "
-#~ "over det hele. Vennligst se ChangeLog for mer informasjon. Som alltid, "
-#~ "rapporter feil til gphoto-devel@gphoto.org. Takk så mye."
-
-#~ msgid "OK"
-#~ msgstr "OK"
-
-#~ msgid ""
-#~ "This program is free software; you can redistribute it and/or modifyit "
-#~ "under the terms of the GNU General Public License as published bythe Free "
-#~ "Software Foundation; either version 2 of the License, or(at your option) "
-#~ "any later version.This program is distributed in the hope that it will be "
-#~ "useful,but WITHOUT ANY WARRANTY; without even the implied warranty "
-#~ "ofMERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See theGNU "
-#~ "General Public License for more details.You should have received a copy "
-#~ "of the GNU General Public Licensealong with this program; if not, write "
-#~ "to the Free SoftwareFoundation, Inc., 675 Mass Ave, Cambridge, MA 02139, "
-#~ "USA.See http://www.gnu.org for more details on the GNU project."
-#~ msgstr ""
-#~ "Detta program är fri mjukvara; du kan distribuera det och/eller modifiera "
-#~ "det under vilkoren i GNU General Public License som publicerats av Free "
-#~ "Software Foundation; antingen version 2 av licensen, eller(om du så vill) "
-#~ "någon senare version. Detta program distribueras i hopp om att det ska "
-#~ "vara användbart, men UTAN NÅGON SOM HELST GARANTI, även utan "
-#~ "underförstådd garanti om SÄLJBARHET eller LÄMPLIGHET FÖR NÅGOT SPECIELLT "
-#~ "ÄNDAMÅL. Se GNU General Public License för ytterligare information. Du "
-#~ "bör ha fått en kopia av GNU General Public License tillsammans med detta "
-#~ "program. Om inte, skriv till Free Software Foundation, Inc., 675 Mass "
-#~ "Ave, Cambridge, MA 02139, USA.See http://www.gnu.org för mer detaljer om "
-#~ "GNU-projektet."
-
-#~ msgid "%s is not yet implemented"
-#~ msgstr "%s är inte implementerad ännu"
-
-#~ msgid "Picture #%i\n"
-#~ msgstr "Bild #%i\n"
-
-#~ msgid "Getting Index..."
-#~ msgstr "Hämtar index..."
-
-#~ msgid "num_pictures_taken is %d\n"
-#~ msgstr "num_pictures_take är %d\n"
-
-#~ msgid "Download cancelled."
-#~ msgstr "Nerladdning avbryten."
-
-#~ msgid "Done getting index."
-#~ msgstr "Hämtning av index klart."
-
-#~ msgid "Nothing selected for download."
-#~ msgstr "Inget markerat för nerladdning."
-
-#~ msgid "Getting Image #%03i..."
-#~ msgstr "Hämtar bild #%03i..."
-
-#~ msgid "Getting Thumbnail #%03i..."
-#~ msgstr "Hämtar minibild #%03i..."
-
-#~ msgid "Download halted."
-#~ msgstr "Nerladdning stoppad."
-
-#~ msgid "Save all opened images"
-#~ msgstr "Spara alla öppna bilder"
-
-#~ msgid "Saving the index is not yet supported"
-#~ msgstr "Sparning av index stöds inte än"
-
-#~ msgid "Open Image..."
-#~ msgstr "Öppna bild..."
-
-#~ msgid "Can't print the index yet."
-#~ msgstr "Kan inte skriva ut indexet än."
-
-#~ msgid "Print Command:"
-#~ msgstr "Utskriftskommando:"
-
-#~ msgid "Print"
-#~ msgstr "Skriv ut"
-
-#~ msgid "Now spooling..."
-#~ msgstr "Mellanlagrar (spooling)..."
-
-#~ msgid "Spooling done. Printing may take a minute."
-#~ msgstr "Mellanlagring (spooling) klar. Utskrivningen kan ta någon minut."
-
-#~ msgid "Can't modify the index colors."
-#~ msgstr "Kan inte ändra indexfärgerna."
-
-#~ msgid "Can't scale the index."
-#~ msgstr "Kan inte skala indexet."
-
-#~ msgid "Resize Image..."
-#~ msgstr "Ändra bildens storlek..."
-
-#~ msgid "Width:"
-#~ msgstr "Bredd:"
-
-#~ msgid "Height:"
-#~ msgstr "Höjd:"
-
-#~ msgid "Resize"
-#~ msgstr "Ändra storlek"
-
-#~ msgid "Can't manipulate the index."
-#~ msgstr "Kan inte manipulera indexet."
-
-#~ msgid "Can't scale the index!"
-#~ msgstr "Kan inte skala indexet!"
-
-#~ msgid "Scaling image by 50%..."
-#~ msgstr "Skalar bild med 50%..."
-
-#~ msgid "Scaling image by 200%..."
-#~ msgstr "Skalar bild med 200%..."
-
-#~ msgid "Post-Processing Options"
-#~ msgstr "Inställningar för efterbearbetning"
-
-#~ msgid "Enable post-processing"
-#~ msgstr "Aktivera efterbearbetning"
-
-#~ msgid "Post-processing command-line:"
-#~ msgstr "Bearbetningskommando-rad:"
-
-#~ msgid "http://www.gphoto.org/help.php3"
-#~ msgstr "http://www.gphoto.org/help.php3"
-
-#~ msgid "http://www.gphoto.org/"
-#~ msgstr "http://www.gphoto.org/"
-
-#~ msgid "http://www.gphoto.org/feedback.php3"
-#~ msgstr "http://www.gphoto.org/feedback.php3"
-
-#~ msgid "http://www.gphoto.org/news.php3"
-#~ msgstr "http://www.gphoto.org/news.php3"
-
-#~ msgid "http://www.gphoto.org/download.php3"
-#~ msgstr "http://www.gphoto.org/download.php3"
-
-#~ msgid "http://www.gphoto.org/cameras.php3"
-#~ msgstr "http://www.gphoto.org/cameras.php3"
-
-#~ msgid "http://www.gphoto.org/supporting.php3"
-#~ msgstr "http://www.gphoto.org/supporting.php3"
-
-#~ msgid "http://www.gphoto.org/lists.php3"
-#~ msgstr "http://www.gphoto.org/lists.php3"
-
-#~ msgid "http://www.gphoto.org/team.php3"
-#~ msgstr "http://www.gphoto.org/team.php3"
-
-#~ msgid "http://www.gphoto.org/themes.php3"
-#~ msgstr "http://www.gphoto.org/themes.php3"
-
-#~ msgid "http://www.gphoto.org/links.php3"
-#~ msgstr "http://www.gphoto.org/links.php3"
-
-#~ msgid "http://www.gphoto.org/todo.php3"
-#~ msgstr "http://www.gphoto.org/todo.php3"
-
-#~ msgid ""
-#~ "%s summary:\n"
-#~ "%s"
-#~ msgstr ""
-#~ "%s sammanfattning:\n"
-#~ "%s"
-
-#~ msgid "gPhoto %s (%s) - the GNU digital camera application\n"
-#~ msgstr "gPhoto %s (%s) - GNU's digitalkamera applikation\n"
-
-#~ msgid ""
-#~ "Copyright (C) 1998-2000 Scott Fritzinger <scottf@unr.edu>\n"
-#~ "\n"
-#~ msgstr ""
-#~ "Copyright (C) 1998-2000 Scott Fritzinger <scottf@unr.edu>\n"
-#~ "\n"
-
-#~ msgid "Usage: gphoto [-h] [-c] [-n] [-s # filename] [-t # filename]\n"
-#~ msgstr "Anvädning: gphoto [-h] [-c] [-n] [-s # filnamn] [-t # filnamn]\n"
-
-#~ msgid "              [-d #] [-p filename] [-l filename]\n"
-#~ msgstr "                 [-d #] [-p filnamn] [-l filnamn]\n"
-
-#~ msgid "\t-h                    display this help screen\n"
-#~ msgstr "-h                      visa den här hjälptexten\n"
-
-#~ msgid "\t-c                    display camera summary\n"
-#~ msgstr "\t-c                    visa kamerasummering\n"
-
-#~ msgid "\t-n                    display the # of pictures\n"
-#~ msgstr "\t-n                    visa antalet bilder\n"
-
-#~ msgid "\t-s # filename         save image # as filename\n"
-#~ msgstr "\t-s # filnamn          spara bild # som filnamn\n"
-
-#~ msgid "\t-t # filename         save thumbnail # as filename\n"
-#~ msgstr "\t-t # filnamn          spara minibild # som filnamn\n"
-
-#~ msgid "\t-d #                  delete image # from camera\n"
-#~ msgstr "\t-d #                  ta bort bild # från kameran\n"
-
-#~ msgid "\t-p filename           take picture and save as filename\n"
-#~ msgstr "\t-p filnamn            ta bild och spara som filnamn\n"
-
-#~ msgid ""
-#~ "\t-l filename           save live preview as filename\n"
-#~ "\n"
-#~ msgstr ""
-#~ "\t-l filnamn           spara nuvarande förhandsgranskning som filnamn\n"
-#~ "\n"
-
-#~ msgid "gPhoto is free GNU software; you can redistribute it and/or\n"
-#~ msgstr "gPhoto är fri GNU-mjukvara; du kan omdistribuera det och/eller\n"
-
-#~ msgid "modify it under the terms of the GNU General Public License \n"
-#~ msgstr "modifiera det under termerna i GNU General Public License \n"
-
-#~ msgid "as published by the Free Software Foundation; either version \n"
-#~ msgstr "som publicerats av Free Software Foundation; antingen version \n"
-
-#~ msgid "2 of the License, or any later version.  Visit gphoto/COPYING\n"
-#~ msgstr "2 av licensen, eller någon senare version.  Besök gphoto/COPYING\n"
-
-#~ msgid ""
-#~ "in the source distribution to read the GNU GPL license terms.\n"
-#~ "\n"
-#~ msgstr ""
-#~ "i källkods-distributionen för att läsa GNU GPL licenstermerna.\n"
-#~ "\n"
-
-#~ msgid "Report bugs and camera success to gphoto-devel@gphoto.org.\n"
-#~ msgstr ""
-#~ "Rapportera fel och framgång med kameran till gphoto-devel@gphoto.org.\n"
-
-#~ msgid "See http://www.gphoto.org for the latest news and updates.\n"
-#~ msgstr ""
-#~ "Se http://www.gphoto.org för de senaste nyheterna och uppdateringarna.\n"
-
-#~ msgid "%i\n"
-#~ msgstr "%i\n"
-
-#~ msgid "ERROR: could not get image.\n"
-#~ msgstr "FEL: kunde inte hämta bild.\n"
-
-#~ msgid "ERROR: could not save image.\n"
-#~ msgstr "FEL: kunde inte spara bild.\n"
-
-#~ msgid "ERROR: 'filename' not specified.\n"
-#~ msgstr "FEL: \"filnamn\" inte angivet.\n"
-
-#~ msgid "ERROR: '#' and 'filename' not specified.\n"
-#~ msgstr "FEL: \"#\" och \"filnamn\" inte angivet.\n"
-
-#~ msgid "ERROR: '#' not specified.\n"
-#~ msgstr "FEL: \"#\" inte angivet.\n"
-
-#~ msgid "ERROR: filename not specified.\n"
-#~ msgstr "FEL: filnamn inte angivet.\n"
-
-#~ msgid "Taking picture...\n"
-#~ msgstr "Tar bild...\n"
-
-#~ msgid "ERROR: could not take the picture.\n"
-#~ msgstr "FEL: kunde inte ta bilden.\n"
-
-#~ msgid "Saving the new image (# %i) as %s: "
-#~ msgstr "Sparar den nya bilden (# %i) som %s: "
-
-#~ msgid ""
-#~ "\n"
-#~ "ERROR: could not get image.\n"
-#~ msgstr ""
-#~ "\n"
-#~ "FEL: kunde inte hämta bild.\n"
-
-#~ msgid "gPhoto release %s was brought to you by"
-#~ msgstr "gPhoto versionen %s presenterat av"
-
-#~ msgid "Web Page"
-#~ msgstr "Webbsida"
-
-#~ msgid "Next"
-#~ msgstr "Nästa"
-
-#~ msgid ""
-#~ "The gPhoto AUTHORS file appears to be missing!\n"
-#~ "\t      There should be a file called "
-#~ msgstr ""
-#~ "gPhoto's AUTHORS-fil verkar saknas!\n"
-#~ "\t      Där borde finnas en fil kallad "
-
-#~ msgid "Select an Output Directory..."
-#~ msgstr "Välj en utdata-katalog..."
-
-#~ msgid "Gallery Name:"
-#~ msgstr "Gallerinamn:"
-
-#~ msgid "Theme:"
-#~ msgstr "Tema:"
-
-#~ msgid "Change..."
-#~ msgstr "Ändra..."
-
-#~ msgid "Export file as *.shtml?"
-#~ msgstr "Exportera fil som *.shtml?"
-
-#~ msgid "Set table border width to zero for thumbnails?"
-#~ msgstr "Sätt bredden på tabellkanten till 0 för minibilder?"
-
-#~ msgid ""
-#~ "Set image border width to zero? (so you don't see the link colors...)"
-#~ msgstr ""
-#~ "Sätt bredden på bildkanten till 0? (så att du inte ser länkfägerna...)"
-
-#~ msgid "You must select a theme!"
-#~ msgstr "Du måste välja ett tema!"
-
-#~ msgid "Not Available"
-#~ msgstr "Ej tillgänglig"
-
-#~ msgid "<a href=\"picture-%03i.html\">Click Me<\\/a>"
-#~ msgstr "<a href=\"picture-%03i.html\">Klicka mig<\\/a>"
-
-#~ msgid "Getting Image #%i..."
-#~ msgstr "Hämtar bild #%i..."
-
-#~ msgid "<img alt=\"%03i\" src=\"picture-%03i.%s\">"
-#~ msgstr "<img alt=\"%03i\" src=\"picture-%03i.%s\">"
-
-#~ msgid "picture-%03i.%s"
-#~ msgstr "bild-%03i.%s"
-
-#~ msgid "picture-%03i.html"
-#~ msgstr "bild-%03i.html"
-
-#~ msgid "%spicture-%03i.html"
-#~ msgstr "%sbild-%o3i.html"
-
-#~ msgid "Loaded file:%s%s in %s"
-#~ msgstr "Laddade filen:%s%s i %s"
-
-#~ msgid "Gallery saved in: %s"
-#~ msgstr "Galleri sparat i: %s"
-
-#~ msgid "Color Adjustment"
-#~ msgstr "Färgjustering"
-
-#~ msgid "gPhoto - Color Adjustment"
-#~ msgstr "gPhoto - Färgjustering"
-
-#~ msgid "Gray Controls"
-#~ msgstr "Gråa kontroller"
-
-#~ msgid "Red Controls"
-#~ msgstr "Röda kontroller"
-
-#~ msgid "Green Controls"
-#~ msgstr "Gröna kontroller"
-
-#~ msgid "Blue Controls"
-#~ msgstr "Blåa kontroller"
-
-#~ msgid "Colour Modifications:"
-#~ msgstr "Färgmodifieringar:"
-
-#~ msgid "Keep"
-#~ msgstr "Behåll"
-
-#~ msgid "Reset all the color changes to normal values"
-#~ msgstr "Nollställ alla färgändringar till normala värden"
-
-#~ msgid "Always Apply"
-#~ msgstr "Alltid verkställ"
-
-#~ msgid "Getting live image..."
-#~ msgstr "Hämtar nuvarande bild..."
-
-#~ msgid "Update Picture"
-#~ msgstr "Uppdatera bild"
-
-#~ msgid "Take Picture"
-#~ msgstr "Ta bild"
-
-#~ msgid ""
-#~ "\n"
-#~ "Launching Gnome Bugbuddy...\n"
-#~ msgstr ""
-#~ "\n"
-#~ "Kör Gnome Bugbuddy...\n"
-
-#~ msgid "gPhoto %s - the GNU digital camera application"
-#~ msgstr "gPhoto %s - GNU's digitala kamera-applikation"
-
-#~ msgid "Save Opened Image(s)"
-#~ msgstr "Spara öppnade bild(s)"
-
-#~ msgid "Print Image"
-#~ msgstr "Skriv ut bild"
-
-#~ msgid "Close Image"
-#~ msgstr "Stäng bild"
-
-#~ msgid "Previous page"
-#~ msgstr "Föregående sida"
-
-#~ msgid "Next page"
-#~ msgstr "Nästa sida"
-
-#~ msgid "Download Empty Index"
-#~ msgstr "Ladda ner tomt index"
-
-#~ msgid "Download Selected Images"
-#~ msgstr "Ladda ner markerade bilder"
-
-#~ msgid "Halt Download"
-#~ msgstr "Stoppa nerladdning"
-
-#~ msgid "Rotate Clockwise"
-#~ msgstr "Rotera medurs"
-
-#~ msgid "Rotate Counter-Clockwise"
-#~ msgstr "Rotera moturs"
-
-#~ msgid "Flip Horizontal"
-#~ msgstr "Vänd horisontellt"
-
-#~ msgid "Flip Vertical"
-#~ msgstr "Vänd vertikalt"
-
-#~ msgid "Colors"
-#~ msgstr "Färger"
-
-#~ msgid "Exit gPhoto"
-#~ msgstr "Avsluta gPhoto"
-
-#~ msgid "gPhoto Message"
-#~ msgstr "gPhoto Meddelande"
-
-#~ msgid "File %s exists. Overwrite?"
-#~ msgstr "Filen %s existerar. Skriva över?"
-
-#~ msgid "load_image_mem: could not load image\n"
-#~ msgstr "load_image_mem: kunde inte ladda bild\n"
-
-#~ msgid "Fork failed. Exiting. \n"
-#~ msgstr "Fork misslyckades. Avslutar. \n"
+#: src/gtkam-viewer.c:256
+#, fuzzy, c-format
+msgid "Downloading '%s' from folder '%s'..."
+msgstr "Kunde inte få tag på förhandsgranskning"
+
+#: src/gtkam-viewer.c:307
+#, fuzzy, c-format
+msgid "Could not download '%s' from folder '%s'."
+msgstr "Kunde inte få tag på förhandsgranskning"

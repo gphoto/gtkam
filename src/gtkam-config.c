@@ -1,6 +1,6 @@
 /* gtkam-config.c
  *
- * Copyright © 2001 Lutz Müller <lutz@users.sf.net>
+ * Copyright Â© 2001 Lutz MÃ¼ller <lutz@users.sf.net>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -24,11 +24,8 @@
 #include "i18n.h"
 
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 #include <time.h>
-
-#include <gphoto2/gphoto2-setting.h>
 
 #include <gtk/gtkstock.h>
 #include <gtk/gtktooltips.h>
@@ -193,19 +190,6 @@ gtkam_config_close (GtkamConfig *config)
 }
 
 static void
-on_size_allocate (GtkWidget *w, GtkAllocation *a)
-{
-	char *buf;
-
-	buf = g_strdup_printf ("%i", a->width);
-	gp_setting_set ("gtkam-config", "width", buf);
-	g_free (buf);
-	buf = g_strdup_printf ("%i", a->height);
-	gp_setting_set ("gtkam-config", "height", buf);
-	g_free (buf);
-}
-
-static void
 on_config_ok_clicked (GtkButton *button, GtkamConfig *config)
 {
 	gtkam_config_apply (config);
@@ -213,13 +197,13 @@ on_config_ok_clicked (GtkButton *button, GtkamConfig *config)
 }
 
 static void
-on_config_apply_clicked (GtkButton *button, GtkamConfig *config)
+on_config_close_clicked (GtkButton *button, GtkamConfig *config)
 {
-	gtkam_config_apply (config);
+	gtkam_config_close (config);
 }
 
 static void
-on_config_close_clicked (GtkButton *button, GtkamConfig *config)
+on_config_cancel_clicked (GtkButton *button, GtkamConfig *config)
 {
 	gtkam_config_close (config);
 }
@@ -722,7 +706,6 @@ gtkam_config_new (GtkamCamera *camera)
 	GtkWidget *button, *dialog, *cancel;
 	CameraWidget *config_widget;
 	int result;
-	char width[1024], height[1024];
 
 	g_return_val_if_fail (camera != NULL, NULL);
 
@@ -757,40 +740,24 @@ gtkam_config_new (GtkamCamera *camera)
 	config->priv->notebook = gtk_notebook_new ();
 	gtk_container_set_border_width (GTK_CONTAINER (config->priv->notebook),
 					5);
-
-	if ((gp_setting_get ("gtkam-config", "width", width) == GP_OK) &&
-		(gp_setting_get ("gtkam-config", "height", height) == GP_OK))
-		gtk_window_set_default_size (GTK_WINDOW(config), atoi (width),
-					     atoi (height));
-	g_signal_connect (GTK_OBJECT (config), "size_allocate", G_CALLBACK
-			  (on_size_allocate), NULL);
-
 	gtk_widget_show (config->priv->notebook);
 	gtk_box_pack_start (GTK_BOX (GTKAM_DIALOG (config)->vbox),
 			    config->priv->notebook, TRUE, TRUE, 0);
 	create_widgets (config, config_widget);
 
+	button = gtk_button_new_from_stock (GTK_STOCK_CANCEL);
+	gtk_widget_show (button);
+	g_signal_connect (GTK_OBJECT (button), "clicked",
+			    GTK_SIGNAL_FUNC (on_config_cancel_clicked), config);
+	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (config)->action_area),
+			   button);	
+	
 	button = gtk_button_new_from_stock (GTK_STOCK_OK);
 	gtk_widget_show (button);
 	g_signal_connect (GTK_OBJECT (button), "clicked",
 			    GTK_SIGNAL_FUNC (on_config_ok_clicked), config);
 	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (config)->action_area),
 			   button);
-
-	button = gtk_button_new_from_stock (GTK_STOCK_APPLY);
-	gtk_widget_show (button);
-	g_signal_connect (GTK_OBJECT (button), "clicked",
-			    GTK_SIGNAL_FUNC (on_config_apply_clicked), config);
-	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (config)->action_area),
-			   button);
-
-	button = gtk_button_new_from_stock (GTK_STOCK_CLOSE);
-	gtk_widget_show (button);
-	g_signal_connect (GTK_OBJECT (button), "clicked",
-			    GTK_SIGNAL_FUNC (on_config_close_clicked), config);
-	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (config)->action_area),
-			   button);
-	gtk_widget_grab_focus (button);
 
 	return (GTK_WIDGET (config));
 }

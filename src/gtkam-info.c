@@ -1,6 +1,6 @@
 /* gtkam-info.c
  *
- * Copyright © 2001 Lutz Müller <lutz@users.sf.net>
+ * Copyright Â© 2001 Lutz MÃ¼ller <lutz@users.sf.net>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -17,7 +17,6 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
-
 #include "config.h"
 #include "gtkam-info.h"
 #include "i18n.h"
@@ -51,7 +50,6 @@ struct _GtkamInfoPrivate
 	gchar *folder;
 	gchar *name, *new_name;
 
-	GtkWidget *button_apply, *button_reset;
 	gboolean needs_update;
 
 	GtkWidget *check_read, *check_delete;
@@ -156,20 +154,6 @@ gtkam_info_get_type (void)
 	return (type);
 }
 
-static void
-gtkam_info_update_sensitivity (GtkamInfo *info)
-{
-	g_return_if_fail (GTKAM_IS_INFO (info));
-
-	if (info->priv->needs_update) {
-		gtk_widget_set_sensitive (info->priv->button_apply, TRUE);
-		gtk_widget_set_sensitive (info->priv->button_reset, TRUE);
-	} else {
-		gtk_widget_set_sensitive (info->priv->button_apply, FALSE);
-		gtk_widget_set_sensitive (info->priv->button_reset, FALSE);
-	}
-}
-
 static gboolean
 gtkam_info_update (GtkamInfo *info)
 {
@@ -217,7 +201,7 @@ gtkam_info_update (GtkamInfo *info)
 	g_signal_emit (GTK_OBJECT (info), signals[INFO_UPDATED], 0, &data);
 	
 	info->priv->needs_update = FALSE;
-	gtkam_info_update_sensitivity (info);
+
 	memset (&info->priv->info_new, 0, sizeof (CameraFileInfo));
 
 	/* Check for name change */
@@ -232,46 +216,6 @@ gtkam_info_update (GtkamInfo *info)
 }
 
 static void
-on_apply_clicked (GtkButton *button, GtkamInfo *info)
-{
-	gchar *n;
-	
-	n = g_strdup (info->priv->info.file.name);
-	if (!gtkam_info_update (info)) {
-		gtk_entry_set_text (GTK_ENTRY (info->priv->entry_name), n);
-		info->priv->needs_update = FALSE;
-		gtkam_info_update_sensitivity (info);
-	}
-	g_free (n);
-}
-
-static void
-on_reset_clicked (GtkButton *button, GtkamInfo *info)
-{
-	if ((info->priv->info.file.fields & GP_FILE_INFO_NAME) &&
-	    info->priv->entry_name)
-		gtk_entry_set_text (GTK_ENTRY (info->priv->entry_name),
-				    info->priv->info.file.name);
-	if ((info->priv->info.file.fields & GP_FILE_INFO_PERMISSIONS) &&
-	    info->priv->check_read && info->priv->check_delete) {
-		gtk_toggle_button_set_active (
-			GTK_TOGGLE_BUTTON (info->priv->check_read),
-			info->priv->info.file.permissions & GP_FILE_PERM_READ);
-		gtk_toggle_button_set_active (
-			GTK_TOGGLE_BUTTON (info->priv->check_delete),
-			info->priv->info.file.permissions & GP_FILE_PERM_DELETE);
-	}
-
-	memset (&info->priv->info_new, 0, sizeof (CameraFileInfo));
-	if (info->priv->new_name) {
-		g_free (info->priv->new_name);
-		info->priv->new_name = NULL;
-	}
-	info->priv->needs_update = FALSE;
-	gtkam_info_update_sensitivity (info);
-}
-
-static void
 on_ok_clicked (GtkButton *button, GtkamInfo *info)
 {
 	gchar *n;
@@ -282,8 +226,6 @@ on_ok_clicked (GtkButton *button, GtkamInfo *info)
 		    gtk_object_destroy (GTK_OBJECT (info));
 		else {
 		    gtk_entry_set_text (GTK_ENTRY (info->priv->entry_name), n);
-		    info->priv->needs_update = FALSE;
-		    gtkam_info_update_sensitivity (info);
 		}
 	} else
 		gtk_object_destroy (GTK_OBJECT (info));
@@ -306,7 +248,6 @@ on_read_toggled (GtkToggleButton *toggle, GtkamInfo *info)
 		info->priv->info_new.file.permissions &= ~GP_FILE_PERM_READ;
 
 	info->priv->needs_update = TRUE;
-	gtkam_info_update_sensitivity (info);
 }
 
 static void
@@ -319,7 +260,6 @@ on_delete_toggled (GtkToggleButton *toggle, GtkamInfo *info)
 		info->priv->info_new.file.permissions &= ~GP_FILE_PERM_DELETE;
 
 	info->priv->needs_update = TRUE;
-	gtkam_info_update_sensitivity (info);
 }
 
 static void
@@ -332,7 +272,7 @@ on_name_changed (GtkEditable *editable, GtkamInfo *info)
 	strncpy (info->priv->info_new.file.name, name,
 		 sizeof (info->priv->info_new.file.name) - 1);
 	info->priv->needs_update = TRUE;
-	gtkam_info_update_sensitivity (info);
+
 	if (info->priv->new_name)
 		g_free (info->priv->new_name);
 	info->priv->new_name = g_strdup (name);
@@ -468,7 +408,8 @@ gtkam_info_new (GtkamCamera *camera, const gchar *folder, const gchar *name)
 			gtk_table_attach (GTK_TABLE (page), label,
 					  0, 1, 3, 4, GTK_FILL, 0, 0, 0);
 			gtk_misc_set_alignment (GTK_MISC (label), 0, 0);
-			msg = g_strdup_printf (_("%li bytes"),
+			msg = g_strdup_printf (_("%iK (%li bytes)"),
+						info->priv->info.file.size/1000,
 						info->priv->info.file.size);
 			label = gtk_label_new (msg);
 			g_free (msg);
@@ -530,7 +471,7 @@ gtkam_info_new (GtkamCamera *camera, const gchar *folder, const gchar *name)
 
 		/* Mime type */
 		if (info->priv->info.preview.fields & GP_FILE_INFO_TYPE) {
-			label = gtk_label_new (_("Mime type:"));
+			label = gtk_label_new (_("MIME type:"));
 			gtk_widget_show (label);
 			gtk_label_set_justify (GTK_LABEL (label),
 					       GTK_JUSTIFY_LEFT);
@@ -554,7 +495,8 @@ gtkam_info_new (GtkamCamera *camera, const gchar *folder, const gchar *name)
                         gtk_table_attach (GTK_TABLE (page), label,
                                           0, 1, 1, 2, GTK_FILL, 0, 0, 0);
 			gtk_misc_set_alignment (GTK_MISC (label), 0, 0);
-                        msg = g_strdup_printf ("%li bytes",
+                        msg = g_strdup_printf ("%iK (%li bytes)",
+												(info->priv->info.preview.size/1000),
                                                 info->priv->info.preview.size);
                         label = gtk_label_new (msg);
                         g_free (msg);
@@ -578,7 +520,7 @@ gtkam_info_new (GtkamCamera *camera, const gchar *folder, const gchar *name)
 
 		/* Mime type */
 		if (info->priv->info.audio.fields & GP_FILE_INFO_TYPE) {
-			label = gtk_label_new (_("Mime type: "));
+			label = gtk_label_new (_("MIME type: "));
 			gtk_widget_show (label);
 			gtk_label_set_justify (GTK_LABEL (label),
 					       GTK_JUSTIFY_LEFT);
@@ -602,7 +544,7 @@ gtkam_info_new (GtkamCamera *camera, const gchar *folder, const gchar *name)
                         gtk_table_attach (GTK_TABLE (page), label,
                                           0, 1, 1, 2, GTK_FILL, 0, 0, 0);
 			gtk_misc_set_alignment (GTK_MISC (label), 0, 0);
-                        msg = g_strdup_printf ("%li bytes",
+                        msg = g_strdup_printf (_("%iK (%li bytes)"),
                                                 info->priv->info.audio.size);
                         label = gtk_label_new (msg);
                         g_free (msg);
@@ -620,24 +562,6 @@ gtkam_info_new (GtkamCamera *camera, const gchar *folder, const gchar *name)
 			    GTK_SIGNAL_FUNC (on_cancel_clicked), info);
 	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (info)->action_area),
 			   button);
-
-	button = gtk_button_new_from_stock (GTK_STOCK_REVERT_TO_SAVED);
-	gtk_widget_show (button);
-	gtk_widget_set_sensitive (button, FALSE);
-	g_signal_connect (GTK_OBJECT (button), "clicked",
-			    GTK_SIGNAL_FUNC (on_reset_clicked), info);
-	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (info)->action_area),
-			   button);
-	info->priv->button_reset = button;
-
-	button = gtk_button_new_from_stock (GTK_STOCK_APPLY);
-	gtk_widget_show (button);
-	gtk_widget_set_sensitive (button, FALSE);
-	g_signal_connect (GTK_OBJECT (button), "clicked",
-			    GTK_SIGNAL_FUNC (on_apply_clicked), info);
-	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (info)->action_area),
-			   button);
-	info->priv->button_apply = button;
 
 	button = gtk_button_new_from_stock (GTK_STOCK_OK);
 	gtk_widget_show (button);

@@ -150,7 +150,7 @@ gtkam_exif_new (GtkamCamera *camera, const gchar *folder, const gchar *file)
 	default:
 		gp_file_unref (cfile);
 		dialog = gtkam_error_new (result, GTKAM_CANCEL (c)->context,
-			NULL, _("Could not get exif information for "
+			NULL, _("Could not get EXIF information for "
 			"'%s' in folder '%s'."), file, folder);
 		gtk_widget_show (dialog);
 		gtk_object_destroy (GTK_OBJECT (c));

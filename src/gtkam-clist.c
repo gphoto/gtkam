@@ -189,10 +189,13 @@ gtkam_clist_new (void)
 
 	list = gtk_type_new (GTKAM_TYPE_CLIST);
 	gtk_clist_construct (GTK_CLIST (list), 2, titles);
+
 	gtk_clist_set_column_visibility (GTK_CLIST (list), 0, TRUE);
 	gtk_clist_set_column_auto_resize (GTK_CLIST (list), 0, TRUE);
 	gtk_clist_set_selection_mode (GTK_CLIST (list), GTK_SELECTION_MULTIPLE);
 	gtk_clist_set_shadow_type (GTK_CLIST (list), GTK_SHADOW_NONE);
+	gtk_clist_set_use_drag_icons (GTK_CLIST (list), TRUE);
+
 	gtk_signal_connect (GTK_OBJECT (list), "select_row",
 			    GTK_SIGNAL_FUNC (on_select_row), list);
 	gtk_signal_connect (GTK_OBJECT (list), "unselect_row",
@@ -319,6 +322,10 @@ gtkam_clist_add_folder (GtkamCList *list, Camera *camera, gboolean multi,
 		break;
 	}
 	gtk_object_destroy (GTK_OBJECT (status));
+
+	/* Make sure we are not shutting down. */
+	if (!GTKAM_IS_CLIST (list))
+		return;
 
 	gp_camera_get_abilities (camera, &a);
 	for (i = 0; i < gp_list_count (&flist); i++) {

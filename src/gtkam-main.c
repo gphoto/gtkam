@@ -87,6 +87,8 @@ struct _GtkamMainPrivate
 
 	GtkToggleButton *toggle_preview;
 
+	GtkWidget *item_summary, *item_about, *item_manual, *item_config;
+
 	GtkWidget *item_delete, *item_delete_all;
 	GtkWidget *item_save, *menu_delete;
 	GtkWidget *select_all, *select_none, *select_inverse;
@@ -94,6 +96,9 @@ struct _GtkamMainPrivate
 	GtkWidget *status;
 
 	GtkWidget *vbox;
+
+	Camera *camera;
+	gboolean multi;
 };
 
 #define PARENT_TYPE GTK_TYPE_WINDOW
@@ -335,6 +340,7 @@ on_size_allocate (GtkWidget *widget, GtkAllocation *allocation, GtkamMain *m)
 static void
 gtkam_main_update_sensitivity (GtkamMain *m)
 {
+	CameraAbilities a;
 	guint i, s;
 
 	/* Make sure we are not shutting down */
@@ -352,6 +358,21 @@ gtkam_main_update_sensitivity (GtkamMain *m)
 	gtk_widget_set_sensitive (m->priv->item_save, (s != 0));
 	gtk_widget_set_sensitive (m->priv->select_all, (s != i));
 	gtk_widget_set_sensitive (m->priv->select_inverse, (i != 0));
+
+	/* Camera menu */
+	gtk_widget_set_sensitive (m->priv->item_summary, FALSE);
+	gtk_widget_set_sensitive (m->priv->item_manual, FALSE);
+	gtk_widget_set_sensitive (m->priv->item_about, FALSE);
+	gtk_widget_set_sensitive (m->priv->item_config, FALSE);
+	if (m->priv->camera) {
+		gtk_widget_set_sensitive (m->priv->item_summary, TRUE);
+		gtk_widget_set_sensitive (m->priv->item_manual, TRUE);
+		gtk_widget_set_sensitive (m->priv->item_about, TRUE);
+
+		gp_camera_get_abilities (m->priv->camera, &a);
+		if (a.operations & GP_OPERATION_CONFIG)
+			gtk_widget_set_sensitive (m->priv->item_config, TRUE);
+	}
 }
 
 static void
@@ -366,11 +387,13 @@ on_folder_selected (GtkamTree *tree, Camera *camera, gboolean multi,
 	gtk_widget_set_sensitive (m->priv->vbox, FALSE);
 	gtkam_list_add_folder (m->priv->list, camera, multi, folder);
 
-	/* Again, make sure we aren't shutting down */
+	/* Make sure we aren't shutting down */
 	if (!GTKAM_IS_MAIN (m))
 		return;
 	gtk_widget_set_sensitive (m->priv->vbox, TRUE);
 
+	m->priv->camera = camera;
+	m->priv->multi = multi;
 	gtkam_main_update_sensitivity (m);
 }
 
@@ -378,7 +401,18 @@ static void
 on_folder_unselected (GtkTree *tree, Camera *camera, gboolean multi,
 		      const gchar *folder, GtkamMain *m)
 {
+	GtkamTreeItem *item;
+
+	g_return_if_fail (GTKAM_IS_MAIN (m));
+
 	gtkam_list_remove_folder (m->priv->list, camera, multi, folder);
+
+	m->priv->camera = NULL;
+	if (g_list_length (tree->selection) == 1) {
+		item = tree->selection->data;
+		m->priv->camera = gtkam_tree_item_get_camera (item);
+		m->priv->multi = gtkam_tree_item_get_multi (item);
+	}
 	gtkam_main_update_sensitivity (m);
 }
 
@@ -453,12 +487,20 @@ on_changed (GtkamList *list, GtkamMain *m)
 }
 
 static void
-on_new_status (GtkamTree *tree, GtkWidget *status, GtkamMain *m)
+gtkam_main_add_status (GtkamMain *m, GtkWidget *status)
 {
+	g_return_if_fail (GTKAM_IS_MAIN (m));
+
 	gtk_widget_show (status);
 	gtk_box_pack_start (GTK_BOX (m->priv->status), status, FALSE, FALSE, 0);
 	while (gtk_events_pending ())
 		gtk_main_iteration ();
+}
+
+static void
+on_new_status (GtkamTree *tree, GtkWidget *status, GtkamMain *m)
+{
+	gtkam_main_add_status (m, status);
 }
 
 static gboolean
@@ -466,6 +508,89 @@ load_tree (gpointer data)
 {
 	gtkam_tree_load (GTKAM_TREE (data));
 	return (FALSE);
+}
+
+typedef enum _CameraTextType CameraTextType;
+enum _CameraTextType {
+        CAMERA_TEXT_SUMMARY,
+        CAMERA_TEXT_MANUAL,
+        CAMERA_TEXT_ABOUT
+};
+
+static void
+on_text_activate (GtkMenuItem *i, GtkamMain *m)
+{
+        GtkWidget *s, *dialog;
+        CameraText text;
+        int result;
+        CameraTextType text_type;
+
+	if (!m->priv->camera)
+		return;
+
+        text_type = GPOINTER_TO_INT (
+                gtk_object_get_data (GTK_OBJECT (i), "text_type"));
+
+        switch (text_type) {
+        case CAMERA_TEXT_SUMMARY:
+                s = gtkam_status_new (
+                                _("Getting information about the camera..."));
+                break;
+        case CAMERA_TEXT_ABOUT:
+                s = gtkam_status_new (
+                                _("Getting information about the driver..."));
+                break;
+        case CAMERA_TEXT_MANUAL:
+        default:
+                s = gtkam_status_new (_("Getting manual..."));
+                break;
+        }
+	gtkam_main_add_status (m, s);
+
+        switch (text_type) {
+        case CAMERA_TEXT_SUMMARY:
+                result = gp_camera_get_summary (m->priv->camera, &text,
+                                GTKAM_STATUS (s)->context->context);
+                break;
+        case CAMERA_TEXT_ABOUT:
+                result = gp_camera_get_about (m->priv->camera, &text,
+                                GTKAM_STATUS (s)->context->context);
+                break;
+        default:
+        case CAMERA_TEXT_MANUAL:
+                result = gp_camera_get_manual (m->priv->camera, &text,
+                                GTKAM_STATUS (s)->context->context);
+                break;
+        }
+        if (m->priv->multi)
+                gp_camera_exit (m->priv->camera, NULL);
+        switch (result) {
+        case GP_OK:
+                dialog = gtkam_close_new (text.text, NULL);
+                gtk_widget_show (dialog);
+                break;
+        case GP_ERROR_CANCEL:
+                break;
+        default:
+                dialog = gtkam_error_new (result, GTKAM_STATUS (s)->context,
+                        NULL, _("Could not retrieve information."));
+                gtk_widget_show (dialog);
+        }
+        gtk_object_destroy (GTK_OBJECT (s));
+}
+
+static void
+on_preferences_activate (GtkMenuItem *i, GtkamMain *m)
+{
+        GtkWidget *dialog;
+
+	if (!m->priv->camera)
+		return;
+
+        dialog = gtkam_config_new (m->priv->camera, m->priv->multi, NULL);
+        if (!dialog)
+                return;
+        gtk_widget_show (dialog);
 }
 
 GtkWidget *
@@ -646,6 +771,50 @@ gtkam_main_new (void)
 	gtk_container_add (GTK_CONTAINER (menu), item);
 	gtk_signal_connect (GTK_OBJECT (item), "activate",
 			    GTK_SIGNAL_FUNC (on_add_camera_activate), m);
+
+	/* Separator */
+	item = gtk_menu_item_new ();
+	gtk_widget_show (item);
+	gtk_menu_append (GTK_MENU (menu), item);
+
+	/* Summary */
+	m->priv->item_summary = gtk_menu_item_new_with_label (_("Summary"));
+	gtk_widget_show (m->priv->item_summary);
+	gtk_menu_append (GTK_MENU (menu), m->priv->item_summary);
+	gtk_object_set_data (GTK_OBJECT (m->priv->item_summary), "text_type",
+			     GINT_TO_POINTER (CAMERA_TEXT_SUMMARY));
+	gtk_signal_connect (GTK_OBJECT (m->priv->item_summary), "activate",
+			    GTK_SIGNAL_FUNC (on_text_activate), m);
+	gtk_widget_set_sensitive (m->priv->item_summary, FALSE);
+
+	/* Manual */
+	m->priv->item_manual = gtk_menu_item_new_with_label (_("Manual"));
+	gtk_widget_show (m->priv->item_manual);
+	gtk_menu_append (GTK_MENU (menu), m->priv->item_manual);
+	gtk_object_set_data (GTK_OBJECT (m->priv->item_manual), "text_type",
+			     GINT_TO_POINTER (CAMERA_TEXT_MANUAL));
+	gtk_signal_connect (GTK_OBJECT (m->priv->item_manual), "activate",
+			    GTK_SIGNAL_FUNC (on_text_activate), m);
+	gtk_widget_set_sensitive (m->priv->item_manual, FALSE);
+
+	/* About */
+	m->priv->item_about = gtk_menu_item_new_with_label (_("About "
+						"the driver"));
+	gtk_widget_show (m->priv->item_about);
+	gtk_menu_append (GTK_MENU (menu), m->priv->item_about);
+	gtk_object_set_data (GTK_OBJECT (m->priv->item_about), "text_type",
+			     GINT_TO_POINTER (CAMERA_TEXT_ABOUT));
+	gtk_signal_connect (GTK_OBJECT (m->priv->item_about), "activate",
+			    GTK_SIGNAL_FUNC (on_text_activate), m);
+	gtk_widget_set_sensitive (m->priv->item_about, FALSE);
+
+	/* Preferences */
+	m->priv->item_config = gtk_menu_item_new_with_label (_("Preferences"));
+	gtk_widget_show (m->priv->item_config);
+	gtk_menu_append (GTK_MENU (menu), m->priv->item_config);
+	gtk_signal_connect (GTK_OBJECT (m->priv->item_config), "activate",
+			    GTK_SIGNAL_FUNC (on_preferences_activate), m);
+	gtk_widget_set_sensitive (m->priv->item_config, FALSE);
 
 	/*
 	 * Help menu

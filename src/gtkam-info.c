@@ -393,9 +393,9 @@ gtkam_info_new (Camera *camera, const gchar *path, GtkWidget *opt_window)
 			gtk_widget_show (label);
 			gtk_label_set_justify (GTK_LABEL (label),
 					       GTK_JUSTIFY_LEFT);
+			gtk_table_attach (GTK_TABLE (page), label,
+					  0, 1, 0, 1, GTK_FILL, 0, 0, 0);
 			gtk_misc_set_alignment (GTK_MISC (label), 0, 0);
-			gtk_table_attach_defaults (GTK_TABLE (page), label,
-						   0, 1, 0, 1);
 
 			entry = gtk_entry_new_with_max_length (
 				sizeof (info->priv->info.file.name));
@@ -415,14 +415,13 @@ gtkam_info_new (Camera *camera, const gchar *path, GtkWidget *opt_window)
 			gtk_widget_show (label);
 			gtk_label_set_justify (GTK_LABEL (label),
 					       GTK_JUSTIFY_LEFT);
+			gtk_table_attach (GTK_TABLE (page), label,
+					  0, 1, 1, 2, GTK_FILL, 0, 0, 0);
 			gtk_misc_set_alignment (GTK_MISC (label), 0, 0);
-			gtk_table_attach_defaults (GTK_TABLE (page), label,
-						   0, 1, 1, 2);
 			label = gtk_label_new (info->priv->info.file.type);
 			gtk_widget_show (label);
 			gtk_label_set_justify (GTK_LABEL (label),
 					       GTK_JUSTIFY_LEFT);
-			gtk_misc_set_alignment (GTK_MISC (label), 0, 0);
 			gtk_table_attach_defaults (GTK_TABLE (page), label,
 						   1, 2, 1, 2);
 		}
@@ -433,9 +432,9 @@ gtkam_info_new (Camera *camera, const gchar *path, GtkWidget *opt_window)
 			gtk_widget_show (label);
 			gtk_label_set_justify (GTK_LABEL (label),
 					       GTK_JUSTIFY_LEFT);
+			gtk_table_attach (GTK_TABLE (page), label,
+					  0, 1, 2, 3, GTK_FILL, 0, 0, 0);
 			gtk_misc_set_alignment (GTK_MISC (label), 0, 0);
-			gtk_table_attach_defaults (GTK_TABLE (page), label,
-						   0, 1, 2, 3);
 			msg = g_strdup_printf (_("%i bytes"),
 						info->priv->info.file.size);
 			label = gtk_label_new (msg);
@@ -443,7 +442,6 @@ gtkam_info_new (Camera *camera, const gchar *path, GtkWidget *opt_window)
 			gtk_widget_show (label);
 			gtk_label_set_justify (GTK_LABEL (label),
 					       GTK_JUSTIFY_LEFT);
-			gtk_misc_set_alignment (GTK_MISC (label), 0, 0);
 			gtk_table_attach_defaults (GTK_TABLE (page), label,
 						   1, 2, 2, 3);
 		}
@@ -454,9 +452,9 @@ gtkam_info_new (Camera *camera, const gchar *path, GtkWidget *opt_window)
 			gtk_widget_show (label);
 			gtk_label_set_justify (GTK_LABEL (label),
 					       GTK_JUSTIFY_LEFT);
-			gtk_misc_set_alignment (GTK_MISC (label), 0, -1.0);
-			gtk_table_attach_defaults (GTK_TABLE (page), label,
-						   0, 1, 3, 4);
+			gtk_table_attach (GTK_TABLE (page), label,
+					  0, 1, 3, 4, GTK_FILL, 0, 0, 0);
+			gtk_misc_set_alignment (GTK_MISC (label), 0, 0);
 
 			hbox = gtk_hbox_new (FALSE, 5);
 			gtk_widget_show (hbox);
@@ -502,14 +500,13 @@ gtkam_info_new (Camera *camera, const gchar *path, GtkWidget *opt_window)
 			gtk_widget_show (label);
 			gtk_label_set_justify (GTK_LABEL (label),
 					       GTK_JUSTIFY_LEFT);
+			gtk_table_attach (GTK_TABLE (page), label,
+					  0, 1, 0, 1, GTK_FILL, 0, 0, 0);
 			gtk_misc_set_alignment (GTK_MISC (label), 0, 0);
-			gtk_table_attach_defaults (GTK_TABLE (page), label,
-						   0, 1, 0, 1);
 			label = gtk_label_new (info->priv->info.preview.type);
 			gtk_widget_show (label);
 			gtk_label_set_justify (GTK_LABEL (label),
 					       GTK_JUSTIFY_LEFT);
-			gtk_misc_set_alignment (GTK_MISC (label), 0, 0);
 			gtk_table_attach_defaults (GTK_TABLE (page), label,
 						   1, 2, 0, 1);
 		}
@@ -520,9 +517,9 @@ gtkam_info_new (Camera *camera, const gchar *path, GtkWidget *opt_window)
                         gtk_widget_show (label);
                         gtk_label_set_justify (GTK_LABEL (label),
                                                GTK_JUSTIFY_LEFT);
-                        gtk_misc_set_alignment (GTK_MISC (label), 0, 0);
-                        gtk_table_attach_defaults (GTK_TABLE (page), label,
-                                                   0, 1, 1, 2);
+                        gtk_table_attach (GTK_TABLE (page), label,
+                                          0, 1, 1, 2, GTK_FILL, 0, 0, 0);
+			gtk_misc_set_alignment (GTK_MISC (label), 0, 0);
                         msg = g_strdup_printf ("%i bytes",
                                                 info->priv->info.preview.size);
                         label = gtk_label_new (msg);
@@ -530,7 +527,6 @@ gtkam_info_new (Camera *camera, const gchar *path, GtkWidget *opt_window)
                         gtk_widget_show (label);
                         gtk_label_set_justify (GTK_LABEL (label),
                                                GTK_JUSTIFY_LEFT);
-                        gtk_misc_set_alignment (GTK_MISC (label), 0, 0);
                         gtk_table_attach_defaults (GTK_TABLE (page), label,
                                                    1, 2, 1, 2);
                 }
@@ -551,14 +547,13 @@ gtkam_info_new (Camera *camera, const gchar *path, GtkWidget *opt_window)
 		if (info->priv->info.audio.fields & GP_FILE_INFO_TYPE) {
 			label = gtk_label_new (_("Mime type: "));
 			gtk_widget_show (label);
-			gtk_misc_set_alignment (GTK_MISC (label), 0, 0);
 			gtk_label_set_justify (GTK_LABEL (label),
 					       GTK_JUSTIFY_LEFT);
-			gtk_table_attach_defaults (GTK_TABLE (page), label,
-						   0, 1, 0, 1);
+			gtk_table_attach (GTK_TABLE (page), label,
+					  0, 1, 0, 1, GTK_FILL, 0, 0, 0);
+			gtk_misc_set_alignment (GTK_MISC (label), 0, 0);
 			label = gtk_label_new (info->priv->info.audio.type);
 			gtk_widget_show (label);
-			gtk_misc_set_alignment (GTK_MISC (label), 0, 0);
 			gtk_label_set_justify (GTK_LABEL (label),
 					       GTK_JUSTIFY_LEFT);
 			gtk_table_attach_defaults (GTK_TABLE (page), label,
@@ -571,9 +566,9 @@ gtkam_info_new (Camera *camera, const gchar *path, GtkWidget *opt_window)
                         gtk_widget_show (label);
                         gtk_label_set_justify (GTK_LABEL (label),
                                                GTK_JUSTIFY_LEFT);
-                        gtk_misc_set_alignment (GTK_MISC (label), 0, 0);
-                        gtk_table_attach_defaults (GTK_TABLE (page), label,
-                                                   0, 1, 1, 2);
+                        gtk_table_attach (GTK_TABLE (page), label,
+                                          0, 1, 1, 2, GTK_FILL, 0, 0, 0);
+			gtk_misc_set_alignment (GTK_MISC (label), 0, 0);
                         msg = g_strdup_printf ("%i bytes",
                                                 info->priv->info.audio.size);
                         label = gtk_label_new (msg);
@@ -581,7 +576,6 @@ gtkam_info_new (Camera *camera, const gchar *path, GtkWidget *opt_window)
                         gtk_widget_show (label);
                         gtk_label_set_justify (GTK_LABEL (label),
                                                GTK_JUSTIFY_LEFT);
-                        gtk_misc_set_alignment (GTK_MISC (label), 0, 0);
                         gtk_table_attach_defaults (GTK_TABLE (page), label,
                                                    1, 2, 1, 2);
                 }

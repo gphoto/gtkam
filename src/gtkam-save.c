@@ -69,6 +69,7 @@ struct _GtkamSavePrivate
 			*toggle_audio, *toggle_exif;
 	GtkToggleButton *toggle_filename_camera;
 	GtkEntry *program, *prefix_entry;
+	GtkSpinButton *spin_entry;
 
 	gboolean quiet, err_shown;
 
@@ -165,10 +166,12 @@ on_cancel_clicked (GtkButton *button, GtkamSave *save)
 static void
 on_filename_camera_toggled (GtkToggleButton *toggle, GtkamSave *save)
 {
-	if (save->priv->prefix_entry)
+	if (save->priv->prefix_entry) {
 		gtk_widget_set_sensitive (GTK_WIDGET (save->priv->prefix_entry),
 					  !toggle->active);
-	else {
+		gtk_widget_set_sensitive (GTK_WIDGET (save->priv->spin_entry),
+					  !toggle->active);
+	} else {
 		gtk_widget_set_sensitive (save->priv->file_list,
 					  !toggle->active);
 		gtk_widget_set_sensitive (
@@ -344,7 +347,7 @@ get_file (GtkamSave *save, const gchar *filename, CameraFileType type, guint n,
 static void
 on_ok_clicked (GtkButton *button, GtkamSave *save)
 {
-	guint i, count;
+	guint i, count, j = 1;
 	const gchar *filename;
 	GtkWidget *s;
 	unsigned int id;
@@ -358,6 +361,10 @@ on_ok_clicked (GtkButton *button, GtkamSave *save)
 
 	id = gp_context_progress_start (GTKAM_STATUS (s)->context->context,
 		count, _("Downloading %i files..."), count);
+
+	if (!save->priv->toggle_filename_camera->active)
+		j = gtk_spin_button_get_value_as_int (save->priv->spin_entry);
+	
 	for (i = 0; i < count; i++) {
 		filename = g_slist_nth_data (save->priv->filenames, i);
 
@@ -368,23 +375,23 @@ on_ok_clicked (GtkButton *button, GtkamSave *save)
 		if (save->priv->toggle_normal &&
 		    save->priv->toggle_normal->active)
 			get_file (save, filename, GP_FILE_TYPE_NORMAL,
-				  i + 1, GTKAM_STATUS (s));
+				  i + j, GTKAM_STATUS (s));
 		if (save->priv->toggle_preview &&
 		    save->priv->toggle_preview->active)
 			get_file (save, filename, GP_FILE_TYPE_PREVIEW,
-				  i + 1, GTKAM_STATUS (s));
+				  i + j, GTKAM_STATUS (s));
 		if (save->priv->toggle_raw &&
 		    save->priv->toggle_raw->active)
 			get_file (save, filename, GP_FILE_TYPE_RAW,
-				  i + 1, GTKAM_STATUS (s));
+				  i + j, GTKAM_STATUS (s));
 		if (save->priv->toggle_audio &&
 		    save->priv->toggle_audio->active)
 			get_file (save, filename, GP_FILE_TYPE_AUDIO,
-				  i + 1, GTKAM_STATUS (s));
+				  i + j, GTKAM_STATUS (s));
 		if (save->priv->toggle_exif &&
 		    save->priv->toggle_exif->active)
 			get_file (save, filename, GP_FILE_TYPE_EXIF,
-				  i + 1, GTKAM_STATUS (s));
+				  i + j, GTKAM_STATUS (s));
 
 		gp_context_progress_update (GTKAM_STATUS (s)->context->context,
 					   id, i + 1);
@@ -400,7 +407,8 @@ gtkam_save_new (Camera *camera, gboolean multi, const gchar *path,
 		GSList *filenames, GtkWidget *vbox)
 {
 	GtkamSave *save;
-	GtkWidget *hbox, *frame, *check, *label, *entry, *w;
+	GtkWidget *hbox, *frame, *check, *label, *entry, *spin_entry, *w;
+	GtkAdjustment *spin_entry_adj;
 	GtkTooltips *tooltips;
 	GList *child;
 	guint i;
@@ -556,6 +564,24 @@ gtkam_save_new (Camera *camera, gboolean multi, const gchar *path,
 	gtk_box_pack_start (GTK_BOX (hbox), entry, TRUE, TRUE, 0);
 	save->priv->prefix_entry = GTK_ENTRY (entry);
 	gtk_widget_set_sensitive (entry, FALSE);
+
+	hbox = gtk_hbox_new (FALSE, 5);
+	gtk_widget_show (hbox);
+	gtk_box_pack_start (GTK_BOX (GTK_FILE_SELECTION (save)->main_vbox),
+			    hbox, TRUE, TRUE, 0);
+	gtk_box_reorder_child (GTK_BOX (GTK_FILE_SELECTION (save)->main_vbox),
+			       hbox, 256);
+	
+	label = gtk_label_new (_("Start numbering with: "));
+	gtk_widget_show (label);
+	gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
+
+	spin_entry_adj = GTK_ADJUSTMENT (gtk_adjustment_new(1.0, 1.0, 10000.0, 1.0, 10.0, 10.0));
+	spin_entry = gtk_spin_button_new (spin_entry_adj, 1.0, 0);
+	gtk_widget_show (spin_entry);
+	gtk_box_pack_start (GTK_BOX (hbox), spin_entry, TRUE, TRUE, 0);
+	save->priv->spin_entry = GTK_SPIN_BUTTON (spin_entry);
+	gtk_widget_set_sensitive (spin_entry, FALSE);
 
 	gtk_widget_set_sensitive (save->priv->file_list, FALSE);
 

@@ -1,3 +1,10 @@
+2002-04-04  Lutz Müller <lutz@users.sourceforge.net>
+
+	Patch by Alvaro <psst@euskalnet.net>:
+
+	* src/gtkam-save.c: Added possibility to select number in which files
+	  named by gtkam will start
+
 2002-03-28  Lutz Müller <lutz@users.sourceforge.net>
 
 	* src/main.c: Fix memory leak.

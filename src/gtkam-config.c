@@ -339,6 +339,7 @@ adjust_time (GtkCalendar *calendar, GtkamClock *clock, CameraWidget *widget)
 	struct tm tm;
 	time_t time;
 
+	memset (&tm, 0, sizeof (struct tm));
 	gtkam_clock_get (clock, (guchar*) &tm.tm_hour,
 			 (guchar*) &tm.tm_min, (guchar*) &tm.tm_sec);
 	gtk_calendar_get_date (calendar, &tm.tm_year, &tm.tm_mon, &tm.tm_mday);

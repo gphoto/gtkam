@@ -1,5 +1,11 @@
 2002-04-09  Lutz Müller <lutz@users.sourceforge.net>
 
+	Bug noticed by Patrick Mansfield <patman@aracnet.com>:
+
+	* src/gtkam-config.c: zero out the struct tm before usage.
+
+2002-04-09  Lutz Müller <lutz@users.sourceforge.net>
+
 	Patch by Patrick Mansfield <patman@aracnet.com>:
 
 	* src/gtkam-config.c: tm_year starts at 1900, gtk_calendar at 0.

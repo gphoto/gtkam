@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in
 
-EXTRA_DIST = autogen.sh acconfig.h gphoto2-gtk.glade MANUAL
+EXTRA_DIST = autogen.sh acconfig.h MANUAL
 
 SUBDIRS = po src intl art pixmaps packaging
 

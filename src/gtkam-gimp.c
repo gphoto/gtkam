@@ -85,50 +85,6 @@ on_captured (GtkamPreview *preview, const gchar *path, gchar **rpath)
 	gtk_main_quit ();
 }
 
-static gboolean
-send_file_to_gimp (CameraFile *file)
-{
-	GimpDrawable *drawable;
-	GimpPixelRgn pixel_rgn;
-	gint32 image_id = 0;
-	gint32 layer_id = 0;
-	GdkPixbufLoader *loader;
-	GdkPixbuf *pixbuf;
-	long int size;
-	const char *data;
-	guchar *pixels;
-	int r;
-	guint w, h;
-
-	gp_file_get_data_and_size (file, &data, &size);
-
-	loader = gdk_pixbuf_loader_new ();
-	gdk_pixbuf_loader_write (loader, data, size);
-	gdk_pixbuf_loader_close (loader);
-
-	pixbuf = gdk_pixbuf_loader_get_pixbuf (loader);
-	w = gdk_pixbuf_get_width (pixbuf);
-	h = gdk_pixbuf_get_height (pixbuf);
-	r = gdk_pixbuf_get_rowstride (pixbuf);
-	pixels = gdk_pixbuf_get_pixels (pixbuf);
-
-	image_id = gimp_image_new (w, h, GIMP_RGB);
-	layer_id = gimp_layer_new (image_id, _("Background"), w, h,
-				   GIMP_RGB_IMAGE, 100, GIMP_NORMAL_MODE);
-	gimp_image_add_layer (image_id, layer_id, 0);
-	drawable = gimp_drawable_get (layer_id);
-
-	gimp_pixel_rgn_init (&pixel_rgn, drawable, 0, 0, r, h, TRUE, FALSE);
-	gimp_pixel_rgn_set_rect (&pixel_rgn, pixels, 0, 0, w, h);
-	gtk_object_unref (GTK_OBJECT (loader));
-
-	gimp_drawable_flush (drawable);
-	gimp_drawable_detach (drawable);
-	gimp_display_new (image_id);
-
-	return image_id;
-}
-
 typedef struct {
 	guint angle;
 	gfloat zoom;
@@ -155,9 +111,18 @@ run (gchar *name, gint nparams, GimpParam *param, gint *nreturn_vals,
 	GtkWidget *preview;
 	gchar *rpath = NULL, *dir;
 	char port[1024], speed[1024], model[1024];
-	guint image_id;
 	static GimpParam values[2];
 	static PreviewParams preview_params = {0, 1.};
+	GimpDrawable *drawable;
+	GimpPixelRgn pixel_rgn;
+	gint32 image_id, layer_id;
+	GdkPixbufLoader *loader;
+	GdkPixbuf *pixbuf;
+	long int size;
+	const char *data;
+	guchar *pixels;
+	int r;
+	guint w, h;
 
 	values[0].type = GIMP_PDB_STATUS;
 	values[0].data.d_status = GIMP_PDB_SUCCESS;
@@ -306,13 +271,30 @@ run (gchar *name, gint nparams, GimpParam *param, gint *nreturn_vals,
 		return;
 	}
 
-	/* At this point, we've got a file. Display it */
-	image_id = send_file_to_gimp (file);
+	/* At this point, we've got a file. Make a pixbuf out of it. */
+	gp_file_get_data_and_size (file, &data, &size);
+	loader = gdk_pixbuf_loader_new ();
+	gdk_pixbuf_loader_write (loader, data, size);
 	gp_file_unref (file);
-	if (!image_id) {
-		values[0].data.d_status = GIMP_PDB_EXECUTION_ERROR;
-		return;
-	}
+	gdk_pixbuf_loader_close (loader);
+	pixbuf = gdk_pixbuf_loader_get_pixbuf (loader);
+	w = gdk_pixbuf_get_width (pixbuf);
+	h = gdk_pixbuf_get_height (pixbuf);
+	r = gdk_pixbuf_get_rowstride (pixbuf);
+	pixels = gdk_pixbuf_get_pixels (pixbuf);
+
+	/* Take the pixbuf and make a gimp window out of it. */
+	image_id = gimp_image_new (w, h, GIMP_RGB);
+	layer_id = gimp_layer_new (image_id, _("Background"), w, h,
+				   GIMP_RGB_IMAGE, 100, GIMP_NORMAL_MODE);
+	gimp_image_add_layer (image_id, layer_id, 0);
+	drawable = gimp_drawable_get (layer_id);
+	gimp_pixel_rgn_init (&pixel_rgn, drawable, 0, 0, r, h, TRUE, FALSE);
+	gimp_pixel_rgn_set_rect (&pixel_rgn, pixels, 0, 0, w, h);
+	gtk_object_unref (GTK_OBJECT (loader));
+	gimp_drawable_flush (drawable);
+	gimp_drawable_detach (drawable);
+	gimp_display_new (image_id);
 
 	/* Tell gimp about the new image */
 	*nreturn_vals = 2;

@@ -1,3 +1,11 @@
+2004-01-22  Andrew Burton <adburton@users.sourceforge.net>
+
+	* Makefile.am: Add EXTRA_DIST clause so gtkam.desktop and
+	gtkam.png are included with tarballs.
+	* src/gtkam-list.c: Applied patch from Nils Rennebarth
+	(nilsr@users.sourceforge.net) to make save progress transient
+	to the main window.
+
 2004-01-21  Andrew Burton <adburton@users.sourceforge.net>
 
 	* configure.in: Fix missing Makefile clauses for omf-install

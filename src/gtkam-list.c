@@ -741,7 +741,8 @@ action_save (gpointer callback_data, guint callback_action, GtkWidget *widget)
         folder = gtkam_list_get_folder_from_iter (list, &list->priv->iter);
         name   = gtkam_list_get_name_from_iter   (list, &list->priv->iter);
 
-        s = gtkam_save_new (GTK_WINDOW (GTK_WIDGET_TOPLEVEL (list)));
+        s = gtkam_save_new (GTK_WINDOW (gtk_widget_get_toplevel(
+						GTK_WIDGET(list) )));
         gtkam_save_add (GTKAM_SAVE (s), camera, folder, name);
         g_free (folder);
         g_free (name);
@@ -1175,7 +1176,8 @@ gtkam_list_save_common (GtkamList *list, gboolean all)
                 return;
 
         sad.list = list;
-        sad.save = gtkam_save_new (GTK_WINDOW (GTK_WIDGET_TOPLEVEL (list)));
+        sad.save = gtkam_save_new (GTK_WINDOW (gtk_widget_get_toplevel(
+						       GTK_WIDGET(list) )));
         sad.all = all;
         gtk_tree_model_foreach (GTK_TREE_MODEL (list->priv->store),
                                 save_foreach_func, &sad);

@@ -160,7 +160,7 @@ on_ok_clicked (GtkButton *button, GtkamPort *port)
 	index = gp_port_info_list_lookup_path (list, path);
 	gp_port_info_list_free (list);
 	if (index < 0) {
-		msg = g_strdup_printf (_("Could not find and io-driver for "
+		msg = g_strdup_printf (_("Could not find an io-driver for "
 			"port '%s' ('%s')."), path,
 			gp_result_as_string (index));
 		d = gtkam_close_new (msg);

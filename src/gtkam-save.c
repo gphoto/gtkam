@@ -45,9 +45,11 @@
 
 #include <gtk/gtktogglebutton.h>
 #include <gtk/gtkhbox.h>
+#include <gtk/gtkvbox.h>
 #include <gtk/gtkframe.h>
 #include <gtk/gtkentry.h>
 #include <gtk/gtkwindow.h>
+#include <gtk/gtkspinbutton.h>
 
 #include <gphoto2/gphoto2-setting.h>
 
@@ -92,7 +94,7 @@ gtkam_save_destroy (GtkObject *object)
 	GtkamSaveData *data;
 
 	if (save->priv->status) {
-		gtk_object_unref (GTK_OBJECT (save->priv->status));
+		g_object_unref (G_OBJECT (save->priv->status));
 		save->priv->status = NULL;
 	}
 
@@ -112,52 +114,53 @@ gtkam_save_destroy (GtkObject *object)
 }
 
 static void
-gtkam_save_finalize (GtkObject *object)
+gtkam_save_finalize (GObject *object)
 {
 	GtkamSave *save = GTKAM_SAVE (object);
 
 	g_free (save->priv);
 
-	GTK_OBJECT_CLASS (parent_class)->finalize (object);
+	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 static void
-gtkam_save_class_init (GtkamSaveClass *klass)
+gtkam_save_class_init (gpointer g_class, gpointer class_data)
 {
 	GtkObjectClass *object_class;
+	GObjectClass *gobject_class;
 
-	object_class = GTK_OBJECT_CLASS (klass);
+	object_class = GTK_OBJECT_CLASS (g_class);
 	object_class->destroy  = gtkam_save_destroy;
-	object_class->finalize = gtkam_save_finalize;
 
-	parent_class = gtk_type_class (PARENT_TYPE);
+	gobject_class = G_OBJECT_CLASS (g_class);
+	gobject_class->finalize = gtkam_save_finalize;
+
+	parent_class = g_type_class_peek_parent (g_class);
 }
 
 static void
-gtkam_save_init (GtkamSave *save)
+gtkam_save_init (GTypeInstance *instance, gpointer g_class)
 {
+	GtkamSave *save = GTKAM_SAVE (instance);
+
 	save->priv = g_new0 (GtkamSavePrivate, 1);
 }
 
-GtkType
+GType
 gtkam_save_get_type (void)
 {
-	static GtkType save_type = 0;
+	GTypeInfo tinfo;
 
-	if (!save_type) {
-		static const GtkTypeInfo save_info = {
-			"GtkamSave",
-			sizeof (GtkamSave),
-			sizeof (GtkamSaveClass),
-			(GtkClassInitFunc)  gtkam_save_class_init,
-			(GtkObjectInitFunc) gtkam_save_init,
-			NULL, NULL, NULL};
-			save_type = gtk_type_unique (PARENT_TYPE, &save_info);
-	}
+        memset (&tinfo, 0, sizeof (GTypeInfo));
+        tinfo.class_size     = sizeof (GtkamSaveClass);
+        tinfo.class_init     = gtkam_save_class_init;
+        tinfo.instance_size  = sizeof (GtkamSave);
+        tinfo.instance_init  = gtkam_save_init;
 
-	return (save_type);
+        return (g_type_register_static (PARENT_TYPE, "GtkamSave", &tinfo, 0));
 }
 
+#if 0
 static void
 on_cancel_clicked (GtkButton *button, GtkamSave *save)
 {
@@ -380,7 +383,9 @@ get_file (GtkamSave *save, Camera *camera, gboolean multi,
 	}
 	gp_file_unref (file);
 }
+#endif
 
+#if 0
 static void
 on_ok_clicked (GtkButton *button, GtkamSave *save)
 {
@@ -446,21 +451,25 @@ on_ok_clicked (GtkButton *button, GtkamSave *save)
 
 	gtk_object_destroy (GTK_OBJECT (save));
 }
+#endif
 
 GtkWidget *
 gtkam_save_new (GtkWidget *vbox)
 {
 	GtkamSave *save;
+#if 0
 	GtkWidget *hbox, *frame, *check, *label, *entry, *w;
 	GtkObject *a;
 	GtkTooltips *tooltips;
 	GList *child;
 //	CameraAbilities a;
+#endif
 
 	g_return_val_if_fail (GTK_IS_VBOX (vbox), NULL);
 
-	save = gtk_type_new (GTKAM_TYPE_SAVE);
+	save = g_object_new (GTKAM_TYPE_SAVE, NULL);
 
+#if 0
 	child = gtk_container_children (
 			GTK_CONTAINER (GTK_FILE_SELECTION (save)->main_vbox));
 	child = gtk_container_children (
@@ -591,6 +600,7 @@ gtkam_save_new (GtkWidget *vbox)
         gtk_widget_show (save->priv->spin_entry);
         gtk_box_pack_start (GTK_BOX (hbox), save->priv->spin_entry,
 			    FALSE, FALSE, 0);
+#endif
 
 	return (GTK_WIDGET (save));
 }

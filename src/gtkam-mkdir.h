@@ -39,11 +39,18 @@ struct _GtkamMkdir
 	GtkamMkdirPrivate *priv;
 };
 
+typedef struct _GtkamMkdirDirCreatedData GtkamMkdirDirCreatedData;
+struct _GtkamMkdirDirCreatedData {
+	Camera *camera;
+	gboolean multi;
+	const gchar *path;
+};
+
 struct _GtkamMkdirClass
 {
 	GtkDialogClass parent_class;
 
-	void (* dir_created) (GtkamMkdir *mkdir, const gchar *path);
+	void (* dir_created) (GtkamMkdir *mkdir, GtkamMkdirDirCreatedData *);
 };
 
 GtkType    gtkam_mkdir_get_type (void);

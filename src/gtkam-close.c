@@ -47,8 +47,7 @@
 #include <gtk/gtksignal.h>
 #include <gtk/gtkhbox.h>
 #include <gtk/gtkscrolledwindow.h>
-#include <gtk/gtkpixmap.h>
-#include <gdk-pixbuf/gdk-pixbuf.h>
+#include <gtk/gtkimage.h>
 
 struct _GtkamClosePrivate
 {
@@ -78,41 +77,40 @@ gtkam_close_finalize (GObject *object)
 }
 
 static void
-gtkam_close_class_init (GObjectClass *klass)
+gtkam_close_class_init (gpointer g_class, gpointer class_data)
 {
 	GtkObjectClass *object_class;
+	GObjectClass *gobject_class;
 
-	object_class = GTK_OBJECT_CLASS (klass);
+	object_class = GTK_OBJECT_CLASS (g_class);
 	object_class->destroy  = gtkam_close_destroy;
-	
-	klass->finalize = gtkam_close_finalize;
 
-	parent_class = g_type_class_peek_parent (klass);
+	gobject_class = G_OBJECT_CLASS (g_class);
+	gobject_class->finalize = gtkam_close_finalize;
+
+	parent_class = g_type_class_peek_parent (g_class);
 }
 
 static void
-gtkam_close_init (GtkamClose *close)
+gtkam_close_init (GTypeInstance *instance, gpointer g_class)
 {
+	GtkamClose *close = GTKAM_CLOSE (instance);
+
 	close->priv = g_new0 (GtkamClosePrivate, 1);
 }
 
-GtkType
+GType
 gtkam_close_get_type (void)
 {
-	static GtkType close_type = 0;
+	GTypeInfo ti;
 
-	if (!close_type) {
-		static const GtkTypeInfo close_info = {
-			"GtkamClose",
-			sizeof (GtkamClose),
-			sizeof (GtkamCloseClass),
-			(GtkClassInitFunc)  gtkam_close_class_init,
-			(GtkObjectInitFunc) gtkam_close_init,
-			NULL, NULL, NULL};
-		close_type = gtk_type_unique (PARENT_TYPE, &close_info);
-	}
+	memset (&ti, 0, sizeof (GTypeInfo));
+	ti.class_size     = sizeof (GtkamCloseClass);
+	ti.class_init     = gtkam_close_class_init;
+	ti.instance_size  = sizeof (GtkamClose);
+	ti.instance_init  = gtkam_close_init;
 
-	return (close_type);
+	return (g_type_register_static (PARENT_TYPE, "GtkamClose", &ti, 0));
 }
 
 static void
@@ -126,15 +124,11 @@ gtkam_close_new (const gchar *msg, GtkWidget *opt_window)
 {
 	GtkamClose *close;
 	GtkWidget *label, *button, *scrolled, *image, *hbox;
-	GdkPixmap *pixmap;
-	GdkBitmap *bitmap;
-	GdkPixbuf *pixbuf;
-	GError *e;
 
 	g_return_val_if_fail (msg != NULL, NULL);
 
-	close = gtk_type_new (GTKAM_TYPE_CLOSE);
-	gtk_signal_connect (GTK_OBJECT (close), "delete_event",
+	close = g_object_new (GTKAM_TYPE_CLOSE, NULL);
+	g_signal_connect (GTK_OBJECT (close), "delete_event",
 			    GTK_SIGNAL_FUNC (gtk_object_destroy), NULL);
 
 	hbox = gtk_hbox_new (FALSE, 10);
@@ -143,23 +137,9 @@ gtkam_close_new (const gchar *msg, GtkWidget *opt_window)
 			    TRUE, TRUE, 0);
 	gtk_container_set_border_width (GTK_CONTAINER (hbox), 10);
 
-	pixbuf = gdk_pixbuf_new_from_file (IMAGE_DIR "/gtkam-camera.png", &e);
-	if (!pixbuf) {
-		g_assert (e);
-		g_warning ("Could not load " IMAGE_DIR "/gtkam-camera.png: "
-			   "'%s'.", e->message);
-		g_error_free (e);
-	} else {
-		gdk_pixbuf_render_pixmap_and_mask (pixbuf, &pixmap, &bitmap, 127);
-		gdk_pixbuf_unref (pixbuf);
-		image = gtk_pixmap_new (pixmap, bitmap);
-		if (pixmap)
-			gdk_pixmap_unref (pixmap);
-		if (bitmap)
-			gdk_bitmap_unref (bitmap);
-		gtk_widget_show (image);
-		gtk_box_pack_start (GTK_BOX (hbox), image, FALSE, FALSE, 0);
-	}
+	image = gtk_image_new_from_file (IMAGE_DIR "/gtkam-camera.png");
+	gtk_widget_show (image);
+	gtk_box_pack_start (GTK_BOX (hbox), image, FALSE, FALSE, 0);
 
 	label = gtk_label_new (msg);
 	gtk_widget_show (label);
@@ -180,7 +160,7 @@ gtkam_close_new (const gchar *msg, GtkWidget *opt_window)
 
 	button = gtk_button_new_with_label (_("Close"));
 	gtk_widget_show (button);
-	gtk_signal_connect (GTK_OBJECT (button), "clicked",
+	g_signal_connect (GTK_OBJECT (button), "clicked",
 			    GTK_SIGNAL_FUNC (on_close_close_clicked), close);
 	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (close)->action_area),
 			   button);

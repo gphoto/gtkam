@@ -52,7 +52,7 @@
 #include <gtk/gtknotebook.h>
 #include <gtk/gtkscrolledwindow.h>
 #include <gtk/gtkpixmap.h>
-#include <gdk-pixbuf/gdk-pixbuf.h>
+#include <gtk/gtkimage.h>
 
 #include "gtkam-cancel.h"
 #include "gtkam-error.h"
@@ -110,77 +110,63 @@ gtkam_info_destroy (GtkObject *object)
 }
 
 static void
-gtkam_info_class_finalize (gpointer g_class, gpointer class_data)
+gtkam_info_finalize (GObject *object)
 {
-	GtkamInfo *info = GTKAM_INFO (g_class);
+	GtkamInfo *info = GTKAM_INFO (object);
 
 	g_free (info->priv);
 
-	G_OBJECT_CLASS (parent_class)->finalize (g_class);
-}
-
-typedef void (* GtkamSignal_NONE__POINTER_BOOL_POINTER_POINTER)
-        (GtkObject *object, gpointer arg1, gboolean arg2, gpointer arg3,
-         gpointer arg4, gpointer user_data);
-
-static void
-gtkam_marshal_NONE__POINTER_BOOL_POINTER_POINTER (GtkObject *object,
-                                                  GtkSignalFunc func,
-                                                  gpointer func_data,
-                                                  GtkArg *args)
-{
-        GtkamSignal_NONE__POINTER_BOOL_POINTER_POINTER rfunc;
-
-        rfunc = (GtkamSignal_NONE__POINTER_BOOL_POINTER_POINTER) func;
-        (*rfunc) (object, GTK_VALUE_POINTER (args[0]),
-                          GTK_VALUE_BOOL (args[1]),
-                          GTK_VALUE_POINTER (args[2]),
-                          GTK_VALUE_POINTER (args[3]), func_data);
+	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 static void
-gtkam_info_class_init (GtkamInfoClass *klass)
+gtkam_info_class_init (gpointer g_class, gpointer class_data)
 {
 	GtkObjectClass *object_class;
+	GObjectClass *gobject_class;
 
-	object_class = GTK_OBJECT_CLASS (klass);
+	object_class = GTK_OBJECT_CLASS (g_class);
 	object_class->destroy  = gtkam_info_destroy;
-	object_class->finalize = gtkam_info_finalize;
 
-	signals[INFO_UPDATED] = gtk_signal_new ("info_updated",
-		GTK_RUN_LAST, object_class->type,
-		GTK_SIGNAL_OFFSET (GtkamInfoClass, info_updated),
-		gtkam_marshal_NONE__POINTER_BOOL_POINTER_POINTER,
-		GTK_TYPE_NONE, 1, GTK_TYPE_POINTER, GTK_TYPE_BOOL,
-		GTK_TYPE_POINTER, GTK_TYPE_POINTER);
-	gtk_object_class_add_signals (object_class, signals, LAST_SIGNAL);
+	gobject_class = G_OBJECT_CLASS (g_class);
+	gobject_class->finalize = gtkam_info_finalize;
 
-	parent_class = gtk_type_class (PARENT_TYPE);
+	signals[INFO_UPDATED] = g_signal_new ("info_updated",
+		G_TYPE_FROM_CLASS (g_class), G_SIGNAL_RUN_LAST,
+		G_STRUCT_OFFSET (GtkamInfoClass, info_updated), NULL, NULL,
+		g_cclosure_marshal_VOID__POINTER, G_TYPE_NONE, 1,
+		G_TYPE_POINTER);
+
+	parent_class = g_type_class_peek_parent (g_class);
 }
 
 static void
-gtkam_info_init (GtkamInfo *info)
+gtkam_info_init (GTypeInstance *instance, gpointer g_class)
 {
+	GtkamInfo *info = GTKAM_INFO (instance);
+
 	info->priv = g_new0 (GtkamInfoPrivate, 1);
 }
 
-GtkType
+GType
 gtkam_info_get_type (void)
 {
-	static GtkType info_type = 0;
+	static GType type = 0;
 
-	if (!info_type) {
-		static const GtkTypeInfo info_info = {
-			"GtkamInfo",
-			sizeof (GtkamInfo),
-			sizeof (GtkamInfoClass),
-			(GtkClassInitFunc)  gtkam_info_class_init,
-			(GtkObjectInitFunc) gtkam_info_init,
-			NULL, NULL, NULL};
-		info_type = gtk_type_unique (PARENT_TYPE, &info_info);
+	if (!type) {
+		GTypeInfo ti;
+
+		memset (&ti, 0, sizeof (GTypeInfo));
+		ti.class_size     = sizeof (GtkamInfoClass);
+		ti.class_init     = gtkam_info_class_init;
+		ti.instance_size  = sizeof (GtkamInfo);
+		ti.instance_init  = gtkam_info_init;
+
+		type = g_type_register_static (PARENT_TYPE, "GtkamInfo",
+					       &ti, 0);
 	}
 
-	return (info_type);
+	return (type);
 }
 
 static void
@@ -203,6 +189,7 @@ gtkam_info_update (GtkamInfo *info)
 	int result;
 	gchar *dir;
 	GtkWidget *dialog, *s;
+	GtkamInfoInfoUpdatedData data;
 
 	g_return_val_if_fail (GTKAM_IS_INFO (info), FALSE);
 
@@ -217,10 +204,17 @@ gtkam_info_update (GtkamInfo *info)
 	gp_camera_file_get_info (info->priv->camera, dir,
 			g_basename (info->priv->path), &info->priv->info,
 			NULL);
+
+	/* Emit the signal */
+	memset (&data, 0, sizeof (GtkamInfoInfoUpdatedData));
+	data.camera = info->priv->camera;
+	data.multi  = info->priv->multi;
+	data.folder = dir;
+	data.name = g_basename (info->priv->path);
+	g_signal_emit (GTK_OBJECT (info), signals[INFO_UPDATED], 0, &data);
+
 	g_free (dir);
-	gtk_signal_emit (GTK_OBJECT (info), signals[INFO_UPDATED],
-			 info->priv->camera, info->priv->multi,
-			 dir, g_basename (info->priv->path));
+
 	switch (result) {
 	case GP_OK:
 		break;
@@ -357,9 +351,6 @@ gtkam_info_new (Camera *camera, const gchar *path, GtkWidget *opt_window)
 	GtkamInfo *info;
 	GtkWidget *button, *image, *hbox, *dialog, *notebook, *page, *label;
 	GtkWidget *check, *entry, *c;
-	GdkPixmap *pixmap;
-	GdkBitmap *bitmap;
-	GdkPixbuf *pixbuf;
 	gchar *dir, *msg;
 	int result;
 	CameraFileInfo i;
@@ -391,8 +382,8 @@ gtkam_info_new (Camera *camera, const gchar *path, GtkWidget *opt_window)
 	}
 	gtk_object_destroy (GTK_OBJECT (c));
 
-	info = gtk_type_new (GTKAM_TYPE_INFO);
-	gtk_signal_connect (GTK_OBJECT (info), "delete_event",
+	info = g_object_new (GTKAM_TYPE_INFO, NULL);
+	g_signal_connect (GTK_OBJECT (info), "delete_event",
 			    GTK_SIGNAL_FUNC (gtk_object_destroy), NULL);
 	gtk_window_set_title (GTK_WINDOW (info), g_basename (path));
 
@@ -407,20 +398,9 @@ gtkam_info_new (Camera *camera, const gchar *path, GtkWidget *opt_window)
 			    TRUE, TRUE, 0);
 	gtk_container_set_border_width (GTK_CONTAINER (hbox), 10);
 
-	pixbuf = gdk_pixbuf_new_from_file (IMAGE_DIR "/gtkam-camera.png");
-	if (!pixbuf)
-		g_warning ("Could not load " IMAGE_DIR "/gtkam-camera.png");
-	else {
-		gdk_pixbuf_render_pixmap_and_mask (pixbuf, &pixmap, &bitmap, 127);
-		gdk_pixbuf_unref (pixbuf);
-		image = gtk_pixmap_new (pixmap, bitmap);
-		if (pixmap)
-			gdk_pixmap_unref (pixmap);
-		if (bitmap)
-			gdk_bitmap_unref (bitmap);
-		gtk_widget_show (image);
-		gtk_box_pack_start (GTK_BOX (hbox), image, FALSE, FALSE, 0);
-	}
+	image = gtk_image_new_from_file (IMAGE_DIR "/gtkam-camera.png");
+	gtk_widget_show (image);
+	gtk_box_pack_start (GTK_BOX (hbox), image, FALSE, FALSE, 0);
 
 	notebook = gtk_notebook_new ();
 	gtk_widget_show (notebook);
@@ -446,7 +426,8 @@ gtkam_info_new (Camera *camera, const gchar *path, GtkWidget *opt_window)
 					  0, 1, 0, 1, GTK_FILL, 0, 0, 0);
 			gtk_misc_set_alignment (GTK_MISC (label), 0, 0);
 
-			entry = gtk_entry_new_with_max_length (
+			entry = gtk_entry_new ();
+			gtk_entry_set_max_length (GTK_ENTRY (entry),
 				sizeof (info->priv->info.file.name));
 			gtk_widget_show (entry);
 			gtk_table_attach_defaults (GTK_TABLE (page), entry,
@@ -454,7 +435,7 @@ gtkam_info_new (Camera *camera, const gchar *path, GtkWidget *opt_window)
 			gtk_entry_set_text (GTK_ENTRY (entry),
 					    info->priv->info.file.name);
 			info->priv->entry_name = entry;
-			gtk_signal_connect (GTK_OBJECT (entry), "changed",
+			g_signal_connect (GTK_OBJECT (entry), "changed",
 				GTK_SIGNAL_FUNC (on_name_changed), info);
 		}
 
@@ -540,7 +521,7 @@ gtkam_info_new (Camera *camera, const gchar *path, GtkWidget *opt_window)
 				gtk_toggle_button_set_active (
 					GTK_TOGGLE_BUTTON (check), TRUE);
 			info->priv->check_read = check;
-			gtk_signal_connect (GTK_OBJECT (check), "toggled",
+			g_signal_connect (GTK_OBJECT (check), "toggled",
 				GTK_SIGNAL_FUNC (on_read_toggled), info);
 
 			check = gtk_check_button_new_with_label (_("Delete"));
@@ -551,7 +532,7 @@ gtkam_info_new (Camera *camera, const gchar *path, GtkWidget *opt_window)
 				gtk_toggle_button_set_active (
 					GTK_TOGGLE_BUTTON (check), TRUE);
 			info->priv->check_delete = check;
-			gtk_signal_connect (GTK_OBJECT (check), "toggled",
+			g_signal_connect (GTK_OBJECT (check), "toggled",
 				GTK_SIGNAL_FUNC (on_delete_toggled), info);
 		}
 	}
@@ -654,7 +635,7 @@ gtkam_info_new (Camera *camera, const gchar *path, GtkWidget *opt_window)
 
 	button = gtk_button_new_with_label (_("Ok"));
 	gtk_widget_show (button);
-	gtk_signal_connect (GTK_OBJECT (button), "clicked",
+	g_signal_connect (GTK_OBJECT (button), "clicked",
 			    GTK_SIGNAL_FUNC (on_ok_clicked), info);
 	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (info)->action_area),
 			   button);
@@ -663,7 +644,7 @@ gtkam_info_new (Camera *camera, const gchar *path, GtkWidget *opt_window)
 	button = gtk_button_new_with_label (_("Apply"));
 	gtk_widget_show (button);
 	gtk_widget_set_sensitive (button, FALSE);
-	gtk_signal_connect (GTK_OBJECT (button), "clicked",
+	g_signal_connect (GTK_OBJECT (button), "clicked",
 			    GTK_SIGNAL_FUNC (on_apply_clicked), info);
 	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (info)->action_area),
 			   button);
@@ -672,7 +653,7 @@ gtkam_info_new (Camera *camera, const gchar *path, GtkWidget *opt_window)
 	button = gtk_button_new_with_label (_("Reset"));
 	gtk_widget_show (button);
 	gtk_widget_set_sensitive (button, FALSE);
-	gtk_signal_connect (GTK_OBJECT (button), "clicked",
+	g_signal_connect (GTK_OBJECT (button), "clicked",
 			    GTK_SIGNAL_FUNC (on_reset_clicked), info);
 	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (info)->action_area),
 			   button);
@@ -680,7 +661,7 @@ gtkam_info_new (Camera *camera, const gchar *path, GtkWidget *opt_window)
 
 	button = gtk_button_new_with_label (_("Cancel"));
 	gtk_widget_show (button);
-	gtk_signal_connect (GTK_OBJECT (button), "clicked",
+	g_signal_connect (GTK_OBJECT (button), "clicked",
 			    GTK_SIGNAL_FUNC (on_cancel_clicked), info);
 	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (info)->action_area),
 			   button);

@@ -75,8 +75,6 @@
 #include "gtkam-preview.h"
 #include "gtkam-status.h"
 #include "gtkam-tree.h"
-#include "gtkam-tree-item.h"
-#include "gtkam-tree-item-cam.h"
 
 #include "support.h"
 
@@ -115,52 +113,60 @@ gtkam_main_destroy (GtkObject *object)
 }
 
 static void
-gtkam_main_finalize (GtkObject *object)
+gtkam_main_finalize (GObject *object)
 {
 	GtkamMain *m = GTKAM_MAIN (object);
 
 	g_free (m->priv);
 
-	GTK_OBJECT_CLASS (parent_class)->finalize (object);
+	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 static void
-gtkam_main_class_init (GtkamMainClass *klass)
+gtkam_main_class_init (gpointer g_class, gpointer class_data)
 {
 	GtkObjectClass *object_class;
+	GObjectClass *gobject_class;
 
-	object_class = GTK_OBJECT_CLASS (klass);
+	object_class = GTK_OBJECT_CLASS (g_class);
 	object_class->destroy  = gtkam_main_destroy;
-	object_class->finalize = gtkam_main_finalize;
 
-	parent_class = gtk_type_class (PARENT_TYPE);
+	gobject_class = G_OBJECT_CLASS (g_class);
+	gobject_class->finalize = gtkam_main_finalize;
+
+	parent_class = g_type_class_peek_parent (g_class);
 }
 
 static void
-gtkam_main_init (GtkamMain *main)
+gtkam_main_init (GTypeInstance *instance, gpointer g_class)
 {
-	main->priv = g_new0 (GtkamMainPrivate, 1);
+	GtkamMain *m = GTKAM_MAIN (instance);
+
+	m->priv = g_new0 (GtkamMainPrivate, 1);
 }
 
-GtkType
+GType
 gtkam_main_get_type (void)
 {
-	static GtkType main_type = 0;
+	static GType type = 0;
 
-	if (!main_type) {
-		static const GtkTypeInfo main_info = {
-			"GtkamMain",
-			sizeof (GtkamMain),
-			sizeof (GtkamMainClass),
-			(GtkClassInitFunc)  gtkam_main_class_init,
-			(GtkObjectInitFunc) gtkam_main_init,
-			NULL, NULL, NULL};
-		main_type = gtk_type_unique (PARENT_TYPE, &main_info);
+	if (!type) {
+		GTypeInfo ti;
+
+		memset (&ti, 0, sizeof (GTypeInfo));
+		ti.class_size     = sizeof (GtkamMainClass);
+		ti.class_init     = gtkam_main_class_init;
+		ti.instance_size  = sizeof (GtkamMain);
+		ti.instance_init  = gtkam_main_init;
+
+		type = g_type_register_static (PARENT_TYPE, "GtkamMain",
+					       &ti, 0);
 	}
 
-	return (main_type);
+	return (type);
 }
 
+#if 0
 static void
 on_thumbnails_toggled (GtkToggleButton *toggle, GtkamMain *m)
 {
@@ -246,6 +252,7 @@ on_delete_selected_photos_clicked (GtkButton *button, GtkamMain *m)
 static void
 on_delete_all_photos_activate (GtkMenuItem *menu_item, GtkamMain *m)
 {
+#if 0
 	GtkWidget *delete;
 	GtkamTreeItem *item;
 	GList *selection;
@@ -270,17 +277,20 @@ on_delete_all_photos_activate (GtkMenuItem *menu_item, GtkamMain *m)
 
 	gtk_window_set_transient_for (GTK_WINDOW (delete), GTK_WINDOW (m));
 	gtk_widget_show (delete);
+#endif
 }
 
 static void
 on_select_all_activate (GtkMenuItem *item, GtkamMain *m)
 {
+#if 0
 	GtkIconList *ilist = GTK_ICON_LIST (m->priv->list);
 	guint i;
 
 	for (i = 0; i < g_list_length (ilist->icons); i++)
 		gtk_icon_list_select_icon (ilist,
 				g_list_nth_data (ilist->icons, i));
+#endif
 }
 
 static void
@@ -592,20 +602,24 @@ on_preferences_activate (GtkMenuItem *i, GtkamMain *m)
                 return;
         gtk_widget_show (dialog);
 }
+#endif
 
 GtkWidget *
 gtkam_main_new (void)
 {
 	GtkamMain *m;
+#if 0
 	GtkWidget *vbox, *menubar, *menu, *item, *separator, *submenu;
 	GtkWidget *frame, *scrolled, *check, *tree, *list, *label;
 	GtkWidget *button, *hpaned, *toolbar, *icon;
 	GtkAccelGroup *accel_group, *accels, *subaccels;
 	GtkTooltips *tooltips;
 	guint key;
+#endif
 
-	m = gtk_type_new (GTKAM_TYPE_MAIN);
+	m = g_object_new (GTKAM_TYPE_MAIN, NULL);
 
+#if 0
 	gtk_window_set_title (GTK_WINDOW (m), PACKAGE);
 	gtk_window_set_default_size (GTK_WINDOW (m), 640, 480);
 	gtk_window_set_policy (GTK_WINDOW (m), TRUE, TRUE, TRUE);
@@ -972,6 +986,7 @@ gtkam_main_new (void)
 			    GTK_SIGNAL_FUNC (on_unselect_icon), m);
 	gtk_signal_connect (GTK_OBJECT (scrolled), "size_allocate",
 			    GTK_SIGNAL_FUNC (on_size_allocate), m);
+#endif
 
 	return (GTK_WIDGET (m));
 }

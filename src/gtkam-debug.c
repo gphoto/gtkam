@@ -43,7 +43,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#include <gtk/gtktext.h>
+#include <gtk/gtktextview.h>
 #include <gtk/gtklabel.h>
 #include <gtk/gtkvbox.h>
 #include <gtk/gtkvscrollbar.h>
@@ -58,7 +58,7 @@
 
 struct _GtkamDebugPrivate
 {
-	GtkText *text;
+	GtkTextBuffer *buffer;
 
 	gboolean log_error, log_verbose, log_debug, log_data;
 
@@ -82,50 +82,57 @@ gtkam_debug_destroy (GtkObject *object)
 }
 
 static void
-gtkam_debug_finalize (GtkObject *object)
+gtkam_debug_finalize (GObject *object)
 {
 	GtkamDebug *debug = GTKAM_DEBUG (object);
 
 	g_free (debug->priv);
 
-	GTK_OBJECT_CLASS (parent_class)->finalize (object);
+	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 static void
-gtkam_debug_class_init (GtkamDebugClass *klass)
+gtkam_debug_class_init (gpointer g_class, gpointer class_data)
 {
 	GtkObjectClass *object_class;
+	GObjectClass *gobject_class;
 
-	object_class = GTK_OBJECT_CLASS (klass);
+	object_class = GTK_OBJECT_CLASS (g_class);
 	object_class->destroy  = gtkam_debug_destroy;
-	object_class->finalize = gtkam_debug_finalize;
 
-	parent_class = gtk_type_class (PARENT_TYPE);
+	gobject_class = G_OBJECT_CLASS (g_class);
+	gobject_class->finalize = gtkam_debug_finalize;
+
+	parent_class = g_type_class_peek_parent (g_class);
 }
 
 static void
-gtkam_debug_init (GtkamDebug *debug)
+gtkam_debug_init (GTypeInstance *instance, gpointer g_class)
 {
+	GtkamDebug *debug = GTKAM_DEBUG (instance);
+
 	debug->priv = g_new0 (GtkamDebugPrivate, 1);
 }
 
-GtkType
+GType
 gtkam_debug_get_type (void)
 {
-	static GtkType debug_type = 0;
+	static GType type = 0;
 
-	if (!debug_type) {
-		static const GtkTypeInfo debug_info = {
-			"GtkamDebug",
-			sizeof (GtkamDebug),
-			sizeof (GtkamDebugClass),
-			(GtkClassInitFunc)  gtkam_debug_class_init,
-			(GtkObjectInitFunc) gtkam_debug_init,
-			NULL, NULL, NULL};
-		debug_type = gtk_type_unique (PARENT_TYPE, &debug_info);
+	if (!type) {
+		GTypeInfo ti;
+
+		memset (&ti, 0, sizeof (GTypeInfo));
+		ti.class_size    = sizeof (GtkamDebugClass);
+		ti.class_init    = gtkam_debug_class_init;
+		ti.instance_size = sizeof (GtkamDebug);
+		ti.instance_init = gtkam_debug_init;
+
+		type = g_type_register_static (PARENT_TYPE, "GtkamDebug",
+					       &ti, 0);
 	}
 
-	return (debug_type);
+	return (type);
 }
 
 static void
@@ -135,6 +142,7 @@ log_func (GPLogLevel level, const char *domain, const char *format,
 	GtkamDebug *debug;
 	const gchar *err = "*** ERROR *** ";
 	gchar *message;
+	GtkTextIter iter;
 
         g_return_if_fail (GTKAM_IS_DEBUG (data));
 
@@ -147,8 +155,8 @@ log_func (GPLogLevel level, const char *domain, const char *format,
 	case GP_LOG_ERROR:
 		if (!debug->priv->log_error)
 			return;
-		gtk_text_insert (debug->priv->text, NULL, NULL, NULL,
-				 err, strlen (err));
+		gtk_text_buffer_insert (debug->priv->buffer, &iter, err,
+					strlen (err));
 		break;
 	case GP_LOG_VERBOSE:
 		if (!debug->priv->log_verbose)
@@ -168,10 +176,10 @@ log_func (GPLogLevel level, const char *domain, const char *format,
 
 	/* Show the message */
 	message = g_strdup_vprintf (format, args);
-       	gtk_text_insert (debug->priv->text, NULL, NULL, NULL,
-       	                 message, strlen (message));
+       	gtk_text_buffer_insert (debug->priv->buffer, &iter,
+				message, strlen (message));
 	g_free (message);
-	gtk_text_insert (debug->priv->text, NULL, NULL, NULL, "\n", 1);
+	gtk_text_buffer_insert (debug->priv->buffer, &iter, "\n", 1);
 }
 
 static void
@@ -218,12 +226,12 @@ on_debug_save_as_clicked (GtkButton *button, GtkamDebug *debug)
 
 	gtk_file_selection_set_filename (GTK_FILE_SELECTION (fsel),
 					 "gtkam.debug");
-	gtk_signal_connect (GTK_OBJECT (GTK_FILE_SELECTION (fsel)->ok_button),
+	g_signal_connect (GTK_OBJECT (GTK_FILE_SELECTION (fsel)->ok_button),
 			    "clicked", GTK_SIGNAL_FUNC (on_ok_clicked), &ok);
-	gtk_signal_connect (GTK_OBJECT (
+	g_signal_connect (GTK_OBJECT (
 				GTK_FILE_SELECTION (fsel)->cancel_button),
 			    "clicked", GTK_SIGNAL_FUNC (gtk_main_quit), NULL);
-	gtk_signal_connect (GTK_OBJECT (fsel), "delete_event",
+	g_signal_connect (GTK_OBJECT (fsel), "delete_event",
 			    GTK_SIGNAL_FUNC (gtk_main_quit), NULL);
 
 	gtk_main ();
@@ -238,8 +246,9 @@ on_debug_save_as_clicked (GtkButton *button, GtkamDebug *debug)
 		if (!file)
 			g_warning (_("Could not open '%s'!"), fname);
 		else {
-			buffer = gtk_editable_get_chars (
-				GTK_EDITABLE (debug->priv->text), 0, -1);
+			buffer = gtk_text_buffer_get_text (
+					debug->priv->buffer, NULL, NULL,
+					TRUE);
 			fputs (buffer, file);
 			g_free (buffer);
 			fclose (file);
@@ -261,8 +270,8 @@ gtkam_debug_new (void)
 	GtkamDebug *debug;
 	GtkWidget *button, *text, *vscrollbar, *hbox, *check, *label;
 
-	debug = gtk_type_new (GTKAM_TYPE_DEBUG);
-	gtk_signal_connect (GTK_OBJECT (debug), "delete_event",
+	debug = g_object_new (GTKAM_TYPE_DEBUG, NULL);
+	g_signal_connect (GTK_OBJECT (debug), "delete_event",
 			    GTK_SIGNAL_FUNC (gtk_object_destroy), NULL);
 
 	debug->priv->log_func_id = gp_log_add_func (GP_LOG_ALL,
@@ -280,28 +289,28 @@ gtkam_debug_new (void)
 	check = gtk_check_button_new_with_label (_("Error"));
 	gtk_widget_show (check);
 	gtk_box_pack_start (GTK_BOX (hbox), check, FALSE, FALSE, 0);
-	gtk_signal_connect (GTK_OBJECT (check), "toggled",
+	g_signal_connect (GTK_OBJECT (check), "toggled",
 			    GTK_SIGNAL_FUNC (on_error_toggled), debug);
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (check), TRUE);
 
 	check = gtk_check_button_new_with_label (_("Verbose"));
 	gtk_widget_show (check);
 	gtk_box_pack_start (GTK_BOX (hbox), check, FALSE, FALSE, 0);
-	gtk_signal_connect (GTK_OBJECT (check), "toggled",
+	g_signal_connect (GTK_OBJECT (check), "toggled",
 			    GTK_SIGNAL_FUNC (on_verbose_toggled), debug);
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (check), TRUE);
 
 	check = gtk_check_button_new_with_label (_("Debug"));
 	gtk_widget_show (check);
 	gtk_box_pack_start (GTK_BOX (hbox), check, FALSE, FALSE, 0);
-	gtk_signal_connect (GTK_OBJECT (check), "toggled",
+	g_signal_connect (GTK_OBJECT (check), "toggled",
 			    GTK_SIGNAL_FUNC (on_debug_toggled), debug);
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (check), TRUE);
 
 	check = gtk_check_button_new_with_label (_("Data"));
 	gtk_widget_show (check);
 	gtk_box_pack_start (GTK_BOX (hbox), check, FALSE, FALSE, 0);
-	gtk_signal_connect (GTK_OBJECT (check), "toggled",
+	g_signal_connect (GTK_OBJECT (check), "toggled",
 			    GTK_SIGNAL_FUNC (on_data_toggled), debug);
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (check), FALSE); 
 
@@ -310,26 +319,27 @@ gtkam_debug_new (void)
 	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (debug)->vbox), hbox,
 			    TRUE, TRUE, 0);
 
-	text = gtk_text_new (NULL, NULL);
-	gtk_widget_show (text);
-	gtk_text_set_editable (GTK_TEXT (text), FALSE);
-	gtk_box_pack_start (GTK_BOX (hbox), text, TRUE, TRUE, 0);
-	debug->priv->text = GTK_TEXT (text);
+	debug->priv->buffer = gtk_text_buffer_new (NULL);
 
-	vscrollbar = gtk_vscrollbar_new (GTK_TEXT (text)->vadj);
+	text = gtk_text_view_new_with_buffer (debug->priv->buffer);
+	gtk_widget_show (text);
+	gtk_text_view_set_editable (GTK_TEXT_VIEW (text), FALSE);
+	gtk_box_pack_start (GTK_BOX (hbox), text, TRUE, TRUE, 0);
+
+	vscrollbar = gtk_vscrollbar_new (GTK_TEXT_VIEW (text)->vadjustment);
 	gtk_widget_show (vscrollbar);
 	gtk_box_pack_end (GTK_BOX (hbox), vscrollbar, FALSE, FALSE, 0);
 
 	button = gtk_button_new_with_label (_("Save As..."));
 	gtk_widget_show (button);
-	gtk_signal_connect (GTK_OBJECT (button), "clicked",
+	g_signal_connect (GTK_OBJECT (button), "clicked",
 			    GTK_SIGNAL_FUNC (on_debug_save_as_clicked), debug);
 	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (debug)->action_area),
 			   button);
 
 	button = gtk_button_new_with_label (_("Close"));
 	gtk_widget_show (button);
-	gtk_signal_connect (GTK_OBJECT (button), "clicked",
+	g_signal_connect (GTK_OBJECT (button), "clicked",
 			    GTK_SIGNAL_FUNC (on_debug_close_clicked), debug);
 	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (debug)->action_area),
 			   button);

@@ -63,8 +63,6 @@
 #include "support.h"
 #include "gtkam-error.h"
 #include "gtkam-status.h"
-#include "gtkam-tree-item-cam.h"
-#include "gtkam-tree-item-dir.h"
 
 struct _GtkamTreePrivate
 {
@@ -112,6 +110,7 @@ gtkam_tree_finalize (GObject *object)
 	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
+#if 0
 static void
 on_selection_changed (GtkTree *t, GtkamTree *tree)
 {
@@ -146,101 +145,64 @@ on_selection_changed (GtkTree *t, GtkamTree *tree)
 		}
 	}
 }
-
-typedef void (* GtkamSignal_NONE__POINTER_BOOL_POINTER) (GtkObject *object,
-	 gpointer arg1, gboolean arg2, gpointer arg3, gpointer user_data);
+#endif
 
 static void
-gtkam_marshal_NONE__POINTER_BOOL_POINTER (GtkObject *object,
-					  GtkSignalFunc func,
-					  gpointer func_data,
-					  GtkArg *args)
-{
-	GtkamSignal_NONE__POINTER_BOOL_POINTER rfunc;
-
-	rfunc = (GtkamSignal_NONE__POINTER_BOOL_POINTER) func;
-	(*rfunc) (object, GTK_VALUE_POINTER (args[0]),
-		  	  GTK_VALUE_BOOL (args[1]),
-			  GTK_VALUE_POINTER (args[2]), func_data);
-}
-
-typedef void (* GtkamSignal_NONE__POINTER_BOOL_POINTER_POINTER)
-	(GtkObject *object, gpointer arg1, gboolean arg2, gpointer arg3, 
-	 gpointer arg4, gpointer user_data);
-
-static void
-gtkam_marshal_NONE__POINTER_BOOL_POINTER_POINTER (GtkObject *object,
-						  GtkSignalFunc func,
-						  gpointer func_data,
-						  GtkArg *args)
-{
-	GtkamSignal_NONE__POINTER_BOOL_POINTER_POINTER rfunc;
-
-	rfunc = (GtkamSignal_NONE__POINTER_BOOL_POINTER_POINTER) func;
-	(*rfunc) (object, GTK_VALUE_POINTER (args[0]),
-		  	  GTK_VALUE_BOOL (args[1]),
-			  GTK_VALUE_POINTER (args[2]),
-			  GTK_VALUE_POINTER (args[3]), func_data);
-}
-
-static void
-gtkam_tree_class_init (GObjectClass *klass)
+gtkam_tree_class_init (gpointer g_class, gpointer class_data)
 {
 	GtkObjectClass *object_class;
+	GObjectClass *gobject_class;
 
-	object_class = GTK_OBJECT_CLASS (klass);
+	object_class = GTK_OBJECT_CLASS (g_class);
 	object_class->destroy  = gtkam_tree_destroy;
 	
-	klass->finalize = gtkam_tree_finalize;
+	gobject_class = G_OBJECT_CLASS (g_class);
+	gobject_class->finalize = gtkam_tree_finalize;
 
-	signals[FOLDER_SELECTED] = gtk_signal_new ("folder_selected",
-		GTK_RUN_FIRST, object_class->type,
-		GTK_SIGNAL_OFFSET (GtkamTreeClass, folder_selected),
-		gtkam_marshal_NONE__POINTER_BOOL_POINTER, GTK_TYPE_NONE, 3,
-		GTK_TYPE_POINTER, GTK_TYPE_BOOL, GTK_TYPE_POINTER);
-	signals[FOLDER_UNSELECTED] = gtk_signal_new ("folder_unselected",
-		GTK_RUN_FIRST, object_class->type,
-		GTK_SIGNAL_OFFSET (GtkamTreeClass, folder_unselected),
-		gtkam_marshal_NONE__POINTER_BOOL_POINTER, GTK_TYPE_NONE, 3,
-		GTK_TYPE_POINTER, GTK_TYPE_BOOL, GTK_TYPE_POINTER);
-	signals[FILE_UPLOADED] = gtk_signal_new ("file_uploaded",
-		GTK_RUN_FIRST, object_class->type,
-		GTK_SIGNAL_OFFSET (GtkamTreeClass, file_uploaded),
-		gtkam_marshal_NONE__POINTER_BOOL_POINTER_POINTER,
-		GTK_TYPE_NONE, 4, GTK_TYPE_POINTER, GTK_TYPE_BOOL,
-		GTK_TYPE_POINTER, GTK_TYPE_POINTER);
-	signals[NEW_STATUS] = gtk_signal_new ("new_status",
-		GTK_RUN_FIRST, object_class->type,
-		GTK_SIGNAL_OFFSET (GtkamTreeClass, new_status),
-		gtk_marshal_NONE__POINTER, GTK_TYPE_NONE, 1, GTK_TYPE_POINTER);
-	gtk_object_class_add_signals (object_class, signals, LAST_SIGNAL);
+	signals[FOLDER_SELECTED] = g_signal_new ("folder_selected",
+		G_TYPE_FROM_CLASS (g_class), G_SIGNAL_RUN_LAST,
+		G_STRUCT_OFFSET (GtkamTreeClass, folder_selected), NULL, NULL,
+		g_cclosure_marshal_VOID__POINTER, G_TYPE_NONE, 1,
+		G_TYPE_POINTER);
+	signals[FOLDER_UNSELECTED] = g_signal_new ("folder_unselected",
+		G_TYPE_FROM_CLASS (g_class), G_SIGNAL_RUN_LAST,
+		G_STRUCT_OFFSET (GtkamTreeClass, folder_unselected), NULL, NULL,
+		g_cclosure_marshal_VOID__POINTER, G_TYPE_NONE, 1,
+		G_TYPE_POINTER);
+	signals[FILE_UPLOADED] = g_signal_new ("file_uploaded",
+		G_TYPE_FROM_CLASS (g_class), G_SIGNAL_RUN_LAST,
+		G_STRUCT_OFFSET (GtkamTreeClass, file_uploaded), NULL, NULL,
+		g_cclosure_marshal_VOID__POINTER, G_TYPE_NONE, 1,
+		G_TYPE_POINTER);
+	signals[NEW_STATUS] = g_signal_new ("new_status",
+		G_TYPE_FROM_CLASS (g_class), G_SIGNAL_RUN_LAST,
+		G_STRUCT_OFFSET (GtkamTreeClass, new_status), NULL, NULL,
+		g_cclosure_marshal_VOID__POINTER, G_TYPE_NONE, 1,
+		G_TYPE_POINTER);
 
-	parent_class = gtk_type_class_peek_parent (klass);
+	parent_class = g_type_class_peek_parent (g_class);
 }
 
 static void
-gtkam_tree_init (GtkamTree *tree)
+gtkam_tree_init (GTypeInstance *instance, gpointer g_class)
 {
+	GtkamTree *tree = GTKAM_TREE (instance);
+
 	tree->priv = g_new0 (GtkamTreePrivate, 1);
 }
 
-GtkType
+GType
 gtkam_tree_get_type (void)
 {
-	static GtkType tree_type = 0;
+	GTypeInfo tinfo;
 
-	if (!tree_type) {
-		static const GtkTypeInfo tree_info = {
-			"GtkamTree",
-			sizeof (GtkamTree),
-			sizeof (GtkamTreeClass),
-			(GtkClassInitFunc)  gtkam_tree_class_init,
-			(GtkObjectInitFunc) gtkam_tree_init,
-			NULL, NULL, NULL};
-		tree_type = gtk_type_unique (PARENT_TYPE, &tree_info);
-	}
+	memset (&tinfo, 0, sizeof (GTypeInfo));
+	tinfo.class_size    = sizeof (GtkamTreeClass);
+	tinfo.class_init    = gtkam_tree_class_init;
+	tinfo.instance_size = sizeof (GtkamTree);
+	tinfo.instance_init = gtkam_tree_init;
 
-	return (tree_type);
+	return (g_type_register_static (PARENT_TYPE, "GtkamTree", &tinfo, 0));
 }
 
 GtkWidget *
@@ -248,8 +210,9 @@ gtkam_tree_new (void)
 {
 	GtkamTree *tree;
 
-	tree = gtk_type_new (GTKAM_TYPE_TREE);
+	tree = g_object_new (GTKAM_TYPE_TREE, NULL);
 
+#if 0
 	/*
 	 * Watch out for changes in the selection. Allow selection of
 	 * more than one folder.
@@ -257,19 +220,23 @@ gtkam_tree_new (void)
 	gtk_tree_set_selection_mode (GTK_TREE (tree), GTK_SELECTION_MULTIPLE);
 	gtk_signal_connect (GTK_OBJECT (tree), "selection_changed",
 			    GTK_SIGNAL_FUNC (on_selection_changed), tree);
+#endif
 
 	return (GTK_WIDGET (tree));
 }
 
+#if 0
 static void
 on_new_status (GtkamTreeItem *item, GtkWidget *status, GtkamTree *tree)
 {
 	gtk_signal_emit (GTK_OBJECT (tree), signals[NEW_STATUS], status);
 }
+#endif
 
 void
 gtkam_tree_add_camera (GtkamTree *tree, Camera *camera, gboolean multi)
 {
+#if 0
 	GtkWidget *item;
 
 	g_return_if_fail (GTKAM_IS_TREE (tree));
@@ -285,8 +252,10 @@ gtkam_tree_add_camera (GtkamTree *tree, Camera *camera, gboolean multi)
 	gtkam_tree_item_set_multi (GTKAM_TREE_ITEM (item), multi);
 
 	gtkam_tree_save (tree);
+#endif
 }
 
+#if 0
 static void
 update_tree (GtkTree *tree, Camera *camera, gboolean multi,
 	     const gchar *folder)
@@ -311,14 +280,18 @@ update_tree (GtkTree *tree, Camera *camera, gboolean multi,
 				     camera, multi, folder);
 	}
 }
+#endif
 
 void
 gtkam_tree_update (GtkamTree *tree, Camera *camera, gboolean multi,
 		   const gchar *folder)
 {
+#if 0
 	update_tree (GTK_TREE (tree), camera, multi, folder);
+#endif
 }
 
+#if 0
 #ifdef HAVE_GP_CAMERA_SET_TIMEOUT_FUNCS
 
 typedef struct _TimeoutData TimeoutData;
@@ -367,10 +340,12 @@ stop_timeout_func (Camera *camera, unsigned int id, void *data)
 }
 
 #endif
+#endif
 
 void
 gtkam_tree_load (GtkamTree *tree)
 {
+#if 0
 	GtkWidget *s, *item;
 	char port[1024], speed[1024], model[1024], multi[1024];
 	Camera *camera;
@@ -507,13 +482,14 @@ gtkam_tree_load (GtkamTree *tree)
 	gp_abilities_list_free (al);
 	gp_port_info_list_free (il);
 	gtk_object_destroy (GTK_OBJECT (s));
+#endif
 }
 
 void
 gtkam_tree_save (GtkamTree *tree)
 {
+#if 0
 	guint i;
-	GtkamTreeItem *item;
 	Camera *camera;
 	gboolean multi;
 	GPPortInfo info;
@@ -573,4 +549,5 @@ gtkam_tree_save (GtkamTree *tree)
 		g_free (mm);
 		g_free (ms);
 	}
+#endif
 }

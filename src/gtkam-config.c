@@ -106,7 +106,7 @@ gtkam_config_destroy (GtkObject *object)
 	}
 
 	if (config->priv->tooltips) {
-		gtk_object_unref (GTK_OBJECT (config->priv->tooltips));
+		g_object_unref (G_OBJECT (config->priv->tooltips));
 		config->priv->tooltips = NULL;
 	}
 
@@ -124,43 +124,42 @@ gtkam_config_finalize (GObject *object)
 }
 
 static void
-gtkam_config_class_init (GObjectClass *klass)
+gtkam_config_class_init (gpointer g_class, gpointer class_data)
 {
 	GtkObjectClass *object_class;
+	GObjectClass *gobject_class;
 
-	object_class = GTK_OBJECT_CLASS (klass);
+	object_class = GTK_OBJECT_CLASS (g_class);
 	object_class->destroy  = gtkam_config_destroy;
 	
-	klass->finalize = gtkam_config_finalize;
+	gobject_class = G_OBJECT_CLASS (g_class);
+	gobject_class->finalize = gtkam_config_finalize;
 
-	parent_class = g_type_class_peek_parent (klass);
+	parent_class = g_type_class_peek_parent (g_class);
 }
 
 static void
-gtkam_config_init (GtkamConfig *config)
+gtkam_config_init (GTypeInstance *instance, gpointer g_class)
 {
+	GtkamConfig *config = GTKAM_CONFIG (instance);
+
 	config->priv = g_new0 (GtkamConfigPrivate, 1);
 	config->priv->hash = g_hash_table_new (g_direct_hash, g_direct_equal);
 	config->priv->tooltips = gtk_tooltips_new ();
 }
 
-GtkType
+GType
 gtkam_config_get_type (void)
 {
-	static GtkType config_type = 0;
+	GTypeInfo ti;
 
-	if (!config_type) {
-		static const GtkTypeInfo config_info = {
-			"GtkamConfig",
-			sizeof (GtkamConfig),
-			sizeof (GtkamConfigClass),
-			(GtkClassInitFunc)  gtkam_config_class_init,
-			(GtkObjectInitFunc) gtkam_config_init,
-			NULL, NULL, NULL};
-		config_type = gtk_type_unique (PARENT_TYPE, &config_info);
-	}
+	memset (&ti, 0, sizeof (GTypeInfo)); 
+	ti.class_size     = sizeof (GtkamConfigClass);
+	ti.class_init     = gtkam_config_class_init;
+	ti.instance_size  = sizeof (GtkamConfig);
+	ti.instance_init  = gtkam_config_init;
 
-	return (config_type);
+	return (g_type_register_static (PARENT_TYPE, "GtkamConfig", &ti, 0));
 }
 
 static void
@@ -288,7 +287,7 @@ on_radio_button_toggled (GtkToggleButton *toggle, CameraWidget *widget)
 		return;
 
 	gp_widget_get_value (widget, &value);
-	value_new = gtk_object_get_data (GTK_OBJECT (toggle), "value");
+	value_new = g_object_get_data (G_OBJECT (toggle), "value");
 	if (!value || strcmp (value, value_new))
 		gp_widget_set_value (widget, value_new);
 }
@@ -361,7 +360,7 @@ on_day_selected (GtkCalendar *calendar, CameraWidget *widget)
 {
 	GtkamClock *clock;
 
-	clock = GTKAM_CLOCK (gtk_object_get_data (GTK_OBJECT (calendar),
+	clock = GTKAM_CLOCK (g_object_get_data (G_OBJECT (calendar),
 						  "clock"));
 	adjust_time (calendar, clock, widget);
 }
@@ -389,7 +388,7 @@ on_clock_next_day (GtkamClock *clock)
 {
 	GtkCalendar *calendar;
 
-	calendar = GTK_CALENDAR (gtk_object_get_data (GTK_OBJECT (clock),
+	calendar = GTK_CALENDAR (g_object_get_data (G_OBJECT (clock),
 						      "calendar"));
 	adjust_day (calendar, 1);
 }
@@ -399,7 +398,7 @@ on_clock_previous_day (GtkamClock *clock)
 {
 	GtkCalendar *calendar;
 
-	calendar = GTK_CALENDAR (gtk_object_get_data (GTK_OBJECT (clock),
+	calendar = GTK_CALENDAR (g_object_get_data (G_OBJECT (clock),
 						      "calendar"));
 	adjust_day (calendar, -1);
 }
@@ -409,7 +408,7 @@ on_clock_set (GtkamClock *clock, CameraWidget *widget)
 {
 	GtkCalendar *calendar;
 
-	calendar = GTK_CALENDAR (gtk_object_get_data (GTK_OBJECT (clock),
+	calendar = GTK_CALENDAR (g_object_get_data (G_OBJECT (clock),
 						      "calendar"));
 	adjust_time (calendar, clock, widget);
 }
@@ -488,7 +487,7 @@ create_widgets (GtkamConfig *config, CameraWidget *widget)
 		gtk_container_set_border_width (GTK_CONTAINER (gtk_widget), 10);
 		button = gtk_button_new_with_label (_(label));
 		gtk_widget_show (button);
-		gtk_signal_connect (GTK_OBJECT (button), "clicked",
+		g_signal_connect (GTK_OBJECT (button), "clicked",
 				GTK_SIGNAL_FUNC (on_button_clicked), widget);
 		gtk_container_add (GTK_CONTAINER (gtk_widget), button);
 		if (strlen (info))
@@ -527,17 +526,17 @@ create_widgets (GtkamConfig *config, CameraWidget *widget)
 				 tm->tm_sec);
 
 		/* We need clock and calendar together */
-		gtk_object_set_data (GTK_OBJECT (clock), "calendar", calendar);
-		gtk_object_set_data (GTK_OBJECT (calendar), "clock", clock);
+		g_object_set_data (G_OBJECT (clock), "calendar", calendar);
+		g_object_set_data (G_OBJECT (calendar), "clock", clock);
 
 		/* Connect the signals */
-		gtk_signal_connect (GTK_OBJECT (clock), "next_day",
+		g_signal_connect (GTK_OBJECT (clock), "next_day",
 			GTK_SIGNAL_FUNC (on_clock_next_day), NULL);
-		gtk_signal_connect (GTK_OBJECT (clock), "previous_day",
+		g_signal_connect (GTK_OBJECT (clock), "previous_day",
 			GTK_SIGNAL_FUNC (on_clock_previous_day), NULL);
-		gtk_signal_connect (GTK_OBJECT (clock), "set",
+		g_signal_connect (GTK_OBJECT (clock), "set",
 			GTK_SIGNAL_FUNC (on_clock_set), widget);
-		gtk_signal_connect (GTK_OBJECT (calendar), "day_selected",
+		g_signal_connect (GTK_OBJECT (calendar), "day_selected",
 			GTK_SIGNAL_FUNC (on_day_selected), widget);
 
 		break;
@@ -549,7 +548,7 @@ create_widgets (GtkamConfig *config, CameraWidget *widget)
 		if (value_char)
 			gtk_entry_set_text (GTK_ENTRY (gtk_widget),
 					    _(value_char));
-		gtk_signal_connect (GTK_OBJECT (gtk_widget), "changed",
+		g_signal_connect (GTK_OBJECT (gtk_widget), "changed",
 				GTK_SIGNAL_FUNC (on_entry_changed), widget);
 		if (strlen (info))
 			gtk_tooltips_set_tip (config->priv->tooltips,
@@ -569,7 +568,7 @@ create_widgets (GtkamConfig *config, CameraWidget *widget)
 						 MAX((max - min) / 20.0, 
 						     increment),
 						 0);
-		gtk_signal_connect (adjustment, "value_changed",
+		g_signal_connect (adjustment, "value_changed",
 			GTK_SIGNAL_FUNC (on_adjustment_value_changed), widget);
 		gtk_widget = gtk_hscale_new (GTK_ADJUSTMENT (adjustment));
 		gtk_scale_set_digits (GTK_SCALE (gtk_widget), 
@@ -596,7 +595,7 @@ create_widgets (GtkamConfig *config, CameraWidget *widget)
 		gtk_combo_set_popdown_strings (GTK_COMBO (gtk_widget), options);
 		gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (gtk_widget)->entry),
 				    _(value_char));
-		gtk_signal_connect (GTK_OBJECT (GTK_COMBO (gtk_widget)->entry),
+		g_signal_connect (GTK_OBJECT (GTK_COMBO (gtk_widget)->entry),
 			"changed", GTK_SIGNAL_FUNC (on_entry_changed), widget);
 		break;
 
@@ -612,16 +611,16 @@ create_widgets (GtkamConfig *config, CameraWidget *widget)
 			button = gtk_radio_button_new_with_label (group,
 								  _(choice));
 			gtk_widget_show (button);
-			group = gtk_radio_button_group (
+			group = gtk_radio_button_get_group (
 					GTK_RADIO_BUTTON (button));
-			gtk_object_set_data (GTK_OBJECT (button), "value",
+			g_object_set_data (G_OBJECT (button), "value",
 					     (char*) choice);
 			gtk_box_pack_start (GTK_BOX (gtk_widget), button,
 					    FALSE, FALSE, 0);
 			if (value_char && !strcmp (value_char, choice))
 				gtk_toggle_button_set_active (
 					GTK_TOGGLE_BUTTON (button), TRUE);
-			gtk_signal_connect (GTK_OBJECT (button), "toggled",
+			g_signal_connect (GTK_OBJECT (button), "toggled",
 				GTK_SIGNAL_FUNC (on_radio_button_toggled),
 				widget);
 			if (strlen (info))
@@ -641,7 +640,7 @@ create_widgets (GtkamConfig *config, CameraWidget *widget)
 		gp_widget_get_value (widget, &value_int);
 		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gtk_widget),
 					      (value_int != 0));
-		gtk_signal_connect (GTK_OBJECT (gtk_widget), "toggled",
+		g_signal_connect (GTK_OBJECT (gtk_widget), "toggled",
 				    GTK_SIGNAL_FUNC (on_toggle_button_toggled),
 				    widget);
 		if (strlen (info))
@@ -712,8 +711,8 @@ gtkam_config_new (Camera *camera, gboolean multi, GtkWidget *opt_window)
 	}
 	gtk_object_destroy (GTK_OBJECT (cancel));
 
-	config = gtk_type_new (GTKAM_TYPE_CONFIG);
-	gtk_signal_connect (GTK_OBJECT (config), "delete_event",
+	config = g_object_new (GTKAM_TYPE_CONFIG, NULL);
+	g_signal_connect (GTK_OBJECT (config), "delete_event",
 			    GTK_SIGNAL_FUNC (gtk_object_destroy), NULL);
 	if (opt_window)
 		gtk_window_set_transient_for (GTK_WINDOW (config), 
@@ -734,21 +733,21 @@ gtkam_config_new (Camera *camera, gboolean multi, GtkWidget *opt_window)
 
 	button = gtk_button_new_with_label (_("Ok"));
 	gtk_widget_show (button);
-	gtk_signal_connect (GTK_OBJECT (button), "clicked",
+	g_signal_connect (GTK_OBJECT (button), "clicked",
 			    GTK_SIGNAL_FUNC (on_config_ok_clicked), config);
 	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (config)->action_area),
 			   button);
 
 	button = gtk_button_new_with_label (_("Apply"));
 	gtk_widget_show (button);
-	gtk_signal_connect (GTK_OBJECT (button), "clicked",
+	g_signal_connect (GTK_OBJECT (button), "clicked",
 			    GTK_SIGNAL_FUNC (on_config_apply_clicked), config);
 	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (config)->action_area),
 			   button);
 
 	button = gtk_button_new_with_label (_("Close"));
 	gtk_widget_show (button);
-	gtk_signal_connect (GTK_OBJECT (button), "clicked",
+	g_signal_connect (GTK_OBJECT (button), "clicked",
 			    GTK_SIGNAL_FUNC (on_config_close_clicked), config);
 	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (config)->action_area),
 			   button);

@@ -39,13 +39,20 @@ struct _GtkamPreview
 	GtkamPreviewPrivate *priv;
 };
 
+typedef struct _GtkamPreviewCapturedData GtkamPreviewCapturedData;
+struct _GtkamPreviewCapturedData {
+	Camera *camera;
+	gboolean multi;
+	const gchar *folder;
+	const gchar *name;
+};
+
 struct _GtkamPreviewClass
 {
 	GtkDialogClass parent_class;
 
 	/* Signals */
-	void (* captured) (GtkamPreview *preview, const gchar *folder,
-			   const gchar *name);
+	void (* captured) (GtkamPreview *preview, GtkamPreviewCapturedData *);
 };
 
 GtkType    gtkam_preview_get_type (void);

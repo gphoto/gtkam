@@ -39,23 +39,43 @@ struct _GtkamTree
 	GtkamTreePrivate *priv;
 };
 
+typedef struct _GtkamTreeFolderSelectedData GtkamTreeFolderSelectedData;
+struct _GtkamTreeFolderSelectedData {
+	Camera *camera;
+	gboolean multi;
+	const gchar *folder;
+};
+typedef struct _GtkamTreeFolderUnselectedData GtkamTreeFolderUnselectedData;
+struct _GtkamTreeFolderUnselectedData {
+	Camera *camera;
+	gboolean multi;
+	const gchar *folder;
+};
+
+typedef struct _GtkamTreeFileUploadedData GtkamTreeFileUploadedData;
+struct _GtkamTreeFileUploadedData {
+	Camera *camera;
+	gboolean multi;
+	const gchar *folder;
+	const gchar *name;
+};
+
 struct _GtkamTreeClass
 {
 	GtkTreeViewClass parent_class;
 
 	/* Signals */
-	void (* folder_selected)   (GtkamTree *tree, Camera *camera,
-				    gboolean multi, const gchar *folder);
-	void (* folder_unselected) (GtkamTree *tree, Camera *camera,
-				    gboolean multi, const gchar *folder);
-	void (* file_uploaded)     (GtkamTree *tree, Camera *camera,
-				    gboolean multi, const gchar *folder,
-				    const gchar *name);
+	void (* folder_selected)   (GtkamTree *,
+				    GtkamTreeFolderSelectedData *);
+	void (* folder_unselected) (GtkamTree *,
+				    GtkamTreeFolderUnselectedData *);
+	void (* file_uploaded)     (GtkamTree *,
+				    GtkamTreeFileUploadedData *);
 	void (* new_status)        (GtkamTree *tree, GtkWidget *status);
 };
 
-GtkType      gtkam_tree_get_type (void);
-GtkWidget   *gtkam_tree_new      (void);
+GType      gtkam_tree_get_type (void);
+GtkWidget *gtkam_tree_new      (void);
 
 void         gtkam_tree_add_camera (GtkamTree *tree, Camera *camera,
 				    gboolean multi);

@@ -20,6 +20,9 @@
 #include <config.h>
 #include "gtkam-status.h"
 
+#include <stdlib.h>
+#include <string.h>
+
 #include <gtk/gtklabel.h>
 #include <gtk/gtkstatusbar.h>
 #include <gtk/gtkprogressbar.h>
@@ -69,7 +72,7 @@ gtkam_status_destroy (GtkObject *object)
 	GtkamStatus *status = GTKAM_STATUS (object);
 
 	if (status->context) {
-		gtk_object_unref (GTK_OBJECT (status->context));
+		g_object_unref (G_OBJECT (status->context));
 		status->context = NULL;
 	}
 
@@ -80,31 +83,36 @@ gtkam_status_destroy (GtkObject *object)
 }
 
 static void
-gtkam_status_finalize (GtkObject *object)
+gtkam_status_finalize (GObject *object)
 {
 	GtkamStatus *status = GTKAM_STATUS (object);
 
 	g_ptr_array_free (status->priv->progress, TRUE);
 	g_array_free (status->priv->target, TRUE);
 
-	GTK_OBJECT_CLASS (parent_class)->finalize (object);
+	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 static void
-gtkam_status_class_init (GtkamStatusClass *klass)
+gtkam_status_class_init (gpointer g_class, gpointer class_data)
 {
 	GtkObjectClass *object_class;
+	GObjectClass *gobject_class;
 
-	object_class = GTK_OBJECT_CLASS (klass);
+	object_class = GTK_OBJECT_CLASS (g_class);
 	object_class->destroy  = gtkam_status_destroy;
-	object_class->finalize = gtkam_status_finalize;
 
-	parent_class = gtk_type_class (PARENT_TYPE);
+	gobject_class = G_OBJECT_CLASS (g_class);
+	gobject_class->finalize = gtkam_status_finalize;
+
+	parent_class = g_type_class_peek_parent (g_class);
 }
 
 static void
-gtkam_status_init (GtkamStatus *status)
+gtkam_status_init (GTypeInstance *instance, gpointer g_class)
 {
+	GtkamStatus *status = GTKAM_STATUS (instance);
+
 	status->context = gtkam_context_new ();
 
 	status->priv = g_new0 (GtkamStatusPrivate, 1);
@@ -112,23 +120,25 @@ gtkam_status_init (GtkamStatus *status)
 	status->priv->target = g_array_new (FALSE, TRUE, sizeof (gfloat));
 }
 
-GtkType
+GType
 gtkam_status_get_type (void)
 {
-        static GtkType status_type = 0;
+	static GType type = 0;
 
-        if (!status_type) {
-                static const GtkTypeInfo status_info = {
-                        "GtkamStatus",
-                        sizeof (GtkamStatus),
-                        sizeof (GtkamStatusClass),
-                        (GtkClassInitFunc)  gtkam_status_class_init,
-                        (GtkObjectInitFunc) gtkam_status_init,
-                        NULL, NULL, NULL};
-		status_type = gtk_type_unique (PARENT_TYPE, &status_info);
-        }
+	if (!type) {
+		GTypeInfo ti;
 
-        return (status_type);
+		memset (&ti, 0, sizeof (GTypeInfo));
+		ti.class_size    = sizeof (GtkamStatusClass);
+		ti.class_init    = gtkam_status_class_init;
+		ti.instance_size = sizeof (GtkamStatus);
+		ti.instance_init = gtkam_status_init;
+
+		type = g_type_register_static (PARENT_TYPE, "GtkamStatus",
+					       &ti, 0);
+	}
+
+	return (type);
 }
 
 static void 
@@ -193,9 +203,8 @@ start_func (GPContext *c, float target, const char *format,
 	}
 
         msg = g_strdup_vprintf (format, args);
-        gtk_progress_set_format_string (GTK_PROGRESS (progress), msg);
+        gtk_progress_bar_set_text (GTK_PROGRESS_BAR (progress), msg);
         g_free (msg);
-        gtk_progress_set_show_text (GTK_PROGRESS (progress), TRUE);
 
 	while (gtk_events_pending ())
 		gtk_main_iteration ();
@@ -207,7 +216,7 @@ static void
 update_func (GPContext *c, unsigned int id, float current, void *data)
 {
         GtkamStatus *status = GTKAM_STATUS (data);
-        GtkProgress *progress;
+        GtkProgressBar *progress;
 	gfloat target;
 
         g_return_if_fail (id < status->priv->progress->len);
@@ -220,7 +229,7 @@ update_func (GPContext *c, unsigned int id, float current, void *data)
 	}
 
         progress = status->priv->progress->pdata[id];
-        gtk_progress_set_percentage (progress, current / target);
+//        gtk_progress_bar_set_percentage (progress, current / target);
 
         while (gtk_events_pending ())
                 gtk_main_iteration ();
@@ -265,7 +274,7 @@ gtkam_status_new (const gchar *format, ...)
 	GtkWidget *label, *button;
 	
 
-	status = gtk_type_new (GTKAM_TYPE_STATUS);
+	status = g_object_new (GTKAM_TYPE_STATUS, NULL);
 
 	va_start (args, format);
 	msg = g_strdup_vprintf (format, args);
@@ -279,7 +288,7 @@ gtkam_status_new (const gchar *format, ...)
 	button = gtk_button_new_with_label (_("Cancel"));
 	gtk_widget_show (button);
 	gtk_box_pack_end (GTK_BOX (status), button, FALSE, FALSE, 0);
-	gtk_signal_connect (GTK_OBJECT (button), "clicked",
+	g_signal_connect (GTK_OBJECT (button), "clicked",
 			    GTK_SIGNAL_FUNC (on_cancel_clicked), status);
 	gp_context_set_cancel_func (status->context->context,
 				    cancel_func, status);

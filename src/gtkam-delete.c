@@ -49,7 +49,7 @@
 #include <gtk/gtkvbox.h>
 #include <gtk/gtkpixmap.h>
 #include <gtk/gtkscrolledwindow.h>
-#include <gdk-pixbuf/gdk-pixbuf.h>
+#include <gtk/gtkimage.h>
 
 #include "gtkam-error.h"
 #include "gtkam-status.h"
@@ -177,54 +177,53 @@ gtkam_marshal_VOID__POINTER_BOOL_POINTER (GClosure *closure,
 
 
 static void
-gtkam_delete_class_init (GObjectClass *klass)
+gtkam_delete_class_init (gpointer g_class, gpointer class_data)
 {
 	GtkObjectClass *object_class;
+	GObjectClass *gobject_class;
 
-	object_class = GTK_OBJECT_CLASS (klass);
+	object_class = GTK_OBJECT_CLASS (g_class);
 	object_class->destroy  = gtkam_delete_destroy;
 
-	klass->finalize = gtkam_delete_finalize;
+	gobject_class = G_OBJECT_CLASS (g_class);
+	gobject_class->finalize = gtkam_delete_finalize;
 
 	signals[FILE_DELETED] = g_signal_new ("file_deleted",
-		G_TYPE_FROM_CLASS (klass), G_SIGNAL_RUN_LAST,
+		G_TYPE_FROM_CLASS (g_class), G_SIGNAL_RUN_LAST,
 		G_STRUCT_OFFSET (GtkamDeleteClass, file_deleted), NULL, NULL,
 		gtkam_marshal_VOID__POINTER_BOOL_POINTER_POINTER,
 		G_TYPE_NONE, 4, G_TYPE_POINTER, G_TYPE_BOOLEAN,
 		G_TYPE_POINTER, G_TYPE_POINTER);
 	signals[ALL_DELETED] = g_signal_new ("all_deleted",
-		G_TYPE_FROM_CLASS (klass), G_SIGNAL_RUN_LAST,
+		G_TYPE_FROM_CLASS (g_class), G_SIGNAL_RUN_LAST,
 		G_STRUCT_OFFSET (GtkamDeleteClass, all_deleted), NULL, NULL,
 		gtkam_marshal_VOID__POINTER_BOOL_POINTER,
 		G_TYPE_NONE, 3, G_TYPE_POINTER, G_TYPE_BOOLEAN,
 		G_TYPE_POINTER);
 
-	parent_class = g_type_class_peek_parent (klass);
+	parent_class = g_type_class_peek_parent (g_class);
 }
 
 static void
-gtkam_delete_init (GtkamDelete *delete)
+gtkam_delete_init (GTypeInstance *instance, gpointer g_class)
 {
+	GtkamDelete *delete = GTKAM_DELETE (instance);
+
 	delete->priv = g_new0 (GtkamDeletePrivate, 1);
 }
 
-GtkType
+GType
 gtkam_delete_get_type (void)
 {
-	static GtkType delete_type = 0;
+	GTypeInfo ti;
 
-	if (!delete_type) {
-		static const GtkTypeInfo delete_info = {
-			"GtkamDelete",
-			sizeof (GtkamDelete),
-			sizeof (GtkamDeleteClass),
-			(GtkClassInitFunc)  gtkam_delete_class_init,
-			(GtkObjectInitFunc) gtkam_delete_init,
-			NULL, NULL, NULL};
-		delete_type = gtk_type_unique (PARENT_TYPE, &delete_info);
-	}
+	memset (&ti, 0, sizeof (GTypeInfo)); 
+	ti.class_size     = sizeof (GtkamDeleteClass);
+	ti.class_init     = gtkam_delete_class_init;
+	ti.instance_size  = sizeof (GtkamDelete);
+	ti.instance_init  = gtkam_delete_init;
 
-	return (delete_type);
+	return (g_type_register_static (PARENT_TYPE, "GtkamDelete", &ti, 0));
 }
 
 static int
@@ -260,8 +259,8 @@ delete_all (GtkamDelete *delete, Camera *camera, gboolean multi,
 					GTKAM_STATUS (s)->context->context);
 	switch (result) {
 	case GP_OK:
-		gtk_signal_emit (GTK_OBJECT (delete),
-			signals[ALL_DELETED], camera, multi, folder);
+		g_signal_emit (GTK_OBJECT (delete),
+			signals[ALL_DELETED], 0, camera, multi, folder);
 		gtk_object_destroy (GTK_OBJECT (s));
 		return (TRUE);
 	case GP_ERROR_CANCEL:
@@ -280,8 +279,9 @@ delete_all (GtkamDelete *delete, Camera *camera, gboolean multi,
 			for (r1 = 0; r1 < gp_list_count (&l1); r1++) {
 				gp_list_get_name (&l1, r1, &name);
 				if (gp_list_lookup_name (&l2, name) >= 0)
-					gtk_signal_emit (GTK_OBJECT (delete),
-						signals[FILE_DELETED], camera,
+					g_signal_emit (GTK_OBJECT (delete),
+						signals[FILE_DELETED], 0,
+						camera,
 						multi, folder, name);
 			}
 		}
@@ -306,7 +306,7 @@ delete_one (GtkamDelete *delete, Camera *camera, gboolean multi,
 	switch (result) {
 	case GP_OK:
 		gtk_object_destroy (GTK_OBJECT (s));
-		gtk_signal_emit (GTK_OBJECT (delete), signals[FILE_DELETED],
+		g_signal_emit (GTK_OBJECT (delete), signals[FILE_DELETED], 0,
 				 camera, multi, folder, name);
 		return (TRUE);
 	case GP_ERROR_CANCEL:
@@ -367,15 +367,11 @@ gtkam_delete_new (GtkWidget *status)
 {
 	GtkamDelete *delete;
 	GtkWidget *button, *image, *hbox, *vbox, *scrolled;
-	GdkPixmap *pixmap;
-	GdkBitmap *bitmap;
-	GdkPixbuf *pixbuf;
-	GError *e;
 
 	g_return_val_if_fail (status != NULL, NULL);
 
-	delete = gtk_type_new (GTKAM_TYPE_DELETE);
-	gtk_signal_connect (GTK_OBJECT (delete), "delete_event",
+	delete = g_object_new (GTKAM_TYPE_DELETE, NULL);
+	g_signal_connect (GTK_OBJECT (delete), "delete_event",
 			    GTK_SIGNAL_FUNC (gtk_object_destroy), NULL);
 	delete->priv->status = status;
 
@@ -385,23 +381,9 @@ gtkam_delete_new (GtkWidget *status)
 			    TRUE, TRUE, 0);
 	gtk_container_set_border_width (GTK_CONTAINER (hbox), 10);
 
-	pixbuf = gdk_pixbuf_new_from_file (IMAGE_DIR "/gtkam-camera.png", &e);
-	if (!pixbuf) {
-		g_assert (e != NULL);
-		g_warning ("Could not load " IMAGE_DIR "/gtkam-camera.png: "
-			   "'%s'.", e->message);
-		g_error_free (e);
-	} else {
-		gdk_pixbuf_render_pixmap_and_mask (pixbuf, &pixmap, &bitmap, 127);
-		gdk_pixbuf_unref (pixbuf);
-		image = gtk_pixmap_new (pixmap, bitmap);
-		if (pixmap)
-			gdk_pixmap_unref (pixmap);
-		if (bitmap)
-			gdk_bitmap_unref (bitmap);
-		gtk_widget_show (image);
-		gtk_box_pack_start (GTK_BOX (hbox), image, FALSE, FALSE, 0);
-	}
+	image = gtk_image_new_from_file (IMAGE_DIR "/gtkam-camera.png");
+	gtk_widget_show (image);
+	gtk_box_pack_start (GTK_BOX (hbox), image, FALSE, FALSE, 0);
 
 	/* VBox for message and scrolled window */
 	vbox = gtk_vbox_new (FALSE, 5);
@@ -429,14 +411,14 @@ gtkam_delete_new (GtkWidget *status)
 
 	button = gtk_button_new_with_label (_("Delete"));
 	gtk_widget_show (button);
-	gtk_signal_connect (GTK_OBJECT (button), "clicked",
+	g_signal_connect (GTK_OBJECT (button), "clicked",
 			    GTK_SIGNAL_FUNC (on_delete_clicked), delete);
 	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (delete)->action_area),
 			   button);
 
 	button = gtk_button_new_with_label (_("Cancel"));
 	gtk_widget_show (button);
-	gtk_signal_connect (GTK_OBJECT (button), "clicked",
+	g_signal_connect (GTK_OBJECT (button), "clicked",
 			    GTK_SIGNAL_FUNC (on_cancel_clicked), delete);
 	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (delete)->action_area),
 			   button);

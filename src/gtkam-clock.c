@@ -123,23 +123,18 @@ gtkam_clock_init (GtkamClock *clock)
 	clock->priv->time = time (NULL);
 }
 
-GtkType
+GType
 gtkam_clock_get_type (void)
 {
-        static GtkType clock_type = 0;
+	GTypeInfo ti;
 
-        if (!clock_type) {
-                static const GtkTypeInfo clock_info = {
-                        "GtkamClock",
-                        sizeof (GtkamClock),
-                        sizeof (GtkamClockClass),
-                        (GtkClassInitFunc)  gtkam_clock_class_init,
-                        (GtkObjectInitFunc) gtkam_clock_init,
-                        NULL, NULL, NULL};
-                clock_type = gtk_type_unique (PARENT_TYPE, &clock_info);
-        }
+	memset (&ti, 0, sizeof (GTypeInfo));
+	ti.class_size     = sizeof (GtkamClockClass);
+	ti.class_init     = gtkam_clock_class_init;
+	ti.instance_size  = sizeof (GtkamClock);
+	ti.instance_init  = gtkam_clock_init;
 
-        return (clock_type);
+	return (g_type_register_static (PARENT_TYPE, "GtkamClock", &ti, 0));
 }
 
 static void

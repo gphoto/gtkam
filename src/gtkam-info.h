@@ -39,14 +39,20 @@ struct _GtkamInfo
 	GtkamInfoPrivate *priv;
 };
 
+typedef struct _GtkamInfoInfoUpdatedData GtkamInfoInfoUpdatedData;
+struct _GtkamInfoInfoUpdatedData {
+	Camera *camera;
+	gboolean multi;
+	const gchar *folder;
+	const gchar *name;
+};
+
 struct _GtkamInfoClass
 {
 	GtkDialogClass parent_class;
 
 	/* Signals */
-	void (* info_updated) (GtkamInfo *info, Camera *camera,
-			       gboolean multi, const gchar *folder,
-			       const gchar *name);
+	void (* info_updated) (GtkamInfo *info, GtkamInfoInfoUpdatedData *);
 };
 
 GtkType    gtkam_info_get_type (void);

@@ -50,8 +50,7 @@
 #include <gtk/gtkprogressbar.h>
 #include <gtk/gtkpixmap.h>
 #include <gtk/gtkmarshal.h>
-
-#include <gdk-pixbuf/gdk-pixbuf.h>
+#include <gtk/gtkimage.h>
 
 #include <gphoto2/gphoto2-result.h>
 
@@ -81,7 +80,7 @@ gtkam_cancel_destroy (GtkObject *object)
 	GtkamCancel *cancel = GTKAM_CANCEL (object);
 
 	if (cancel->context) {
-		gtk_object_unref (GTK_OBJECT (cancel->context));
+		g_object_unref (G_OBJECT (cancel->context));
 		cancel->context = NULL;
 	}
 
@@ -106,26 +105,30 @@ gtkam_cancel_finalize (GObject *object)
 }
 
 static void
-gtkam_cancel_class_init (GObjectClass *klass)
+gtkam_cancel_class_init (gpointer g_class, gpointer class_data)
 {
 	GtkObjectClass *object_class;
+	GObjectClass *gobject_class;
 
-	object_class = GTK_OBJECT_CLASS (klass);
+	object_class = GTK_OBJECT_CLASS (g_class);
 	object_class->destroy  = gtkam_cancel_destroy;
 
-	klass->finalize = gtkam_cancel_finalize;
+	gobject_class = G_OBJECT_CLASS (g_class);
+	gobject_class->finalize = gtkam_cancel_finalize;
 
 	signals[CANCEL] = g_signal_new ("cancel",
-		G_TYPE_FROM_CLASS (klass), G_SIGNAL_RUN_LAST,
+		G_TYPE_FROM_CLASS (g_class), G_SIGNAL_RUN_LAST,
 		G_STRUCT_OFFSET (GtkamCancelClass, cancel), NULL, NULL,
 		g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
 
-	parent_class = g_type_class_peek_parent (klass);
+	parent_class = g_type_class_peek_parent (g_class);
 }
 
 static void
-gtkam_cancel_init (GtkamCancel *cancel)
+gtkam_cancel_init (GTypeInstance *instance, gpointer g_class)
 {
+	GtkamCancel *cancel = GTKAM_CANCEL (instance);
+
 	cancel->context = gtkam_context_new ();
 
 	cancel->priv = g_new0 (GtkamCancelPrivate, 1);
@@ -134,30 +137,25 @@ gtkam_cancel_init (GtkamCancel *cancel)
 	cancel->priv->array_target = g_array_new (FALSE, TRUE, sizeof (gfloat));
 }
 
-GtkType
+GType
 gtkam_cancel_get_type (void)
 {
-	static GtkType cancel_type = 0;
+	GTypeInfo ti;
 
-	if (!cancel_type) {
-		static const GtkTypeInfo cancel_info = {
-			"GtkamCancel",
-			sizeof (GtkamCancel),
-			sizeof (GtkamCancelClass),
-			(GtkClassInitFunc)  gtkam_cancel_class_init,
-			(GtkObjectInitFunc) gtkam_cancel_init,
-			NULL, NULL, NULL};
-		cancel_type = gtk_type_unique (PARENT_TYPE, &cancel_info);
-	}
+	memset (&ti, 0, sizeof (GTypeInfo));
+	ti.class_size     = sizeof (GtkamCancelClass);
+	ti.class_init     = gtkam_cancel_class_init;
+	ti.instance_size  = sizeof (GtkamCancel);
+	ti.instance_init  = gtkam_cancel_init;
 
-	return (cancel_type);
+	return (g_type_register_static (PARENT_TYPE, "GtkamCancel", &ti, 0));
 }
 
 static void
 on_cancel_clicked (GtkButton *button, GtkamCancel *cancel)
 {
 	cancel->priv->cancelled = TRUE;
-	gtk_signal_emit (GTK_OBJECT (cancel), signals[CANCEL]);
+	g_signal_emit (GTK_OBJECT (cancel), signals[CANCEL], 0);
 }
 
 static GPContextFeedback
@@ -238,9 +236,11 @@ update_func (GPContext *c, unsigned int id, float current, void *data)
 	g_return_if_fail (id < cancel->priv->array_progress->len);
 
 	progress = cancel->priv->array_progress->pdata[id];
+#if 0
 	gtk_progress_set_percentage (progress,
 		current / g_array_index (cancel->priv->array_target,
 					 gfloat, id));
+#endif
 
 	while (gtk_events_pending ())
 		gtk_main_iteration ();
@@ -265,14 +265,10 @@ gtkam_cancel_new (GtkWidget *opt_window, const gchar *format, ...)
 {
 	GtkamCancel *cancel;
 	GtkWidget *label, *button, *image, *hbox;
-	GdkPixmap *pixmap;
-	GdkBitmap *bitmap;
-	GdkPixbuf *pixbuf;
 	va_list args;
 	gchar *msg;
-	GError *e = NULL;
 
-	cancel = gtk_type_new (GTKAM_TYPE_CANCEL);
+	cancel = g_object_new (GTKAM_TYPE_CANCEL, NULL);
 
 	gtk_container_set_border_width (
 			GTK_CONTAINER (GTK_DIALOG (cancel)->vbox), 5);
@@ -284,23 +280,9 @@ gtkam_cancel_new (GtkWidget *opt_window, const gchar *format, ...)
 			    TRUE, TRUE, 0);
 	gtk_container_set_border_width (GTK_CONTAINER (hbox), 5);
 
-	pixbuf = gdk_pixbuf_new_from_file (IMAGE_DIR "/gtkam-camera.png", &e);
-	if (!pixbuf) {
-		g_assert (e != NULL);
-		g_warning ("Could not load " IMAGE_DIR "/gtkam-camera.png: "
-			   "'%s'.", e->message);
-		g_error_free (e);
-	} else {
-		gdk_pixbuf_render_pixmap_and_mask (pixbuf, &pixmap, &bitmap, 127);
-		gdk_pixbuf_unref (pixbuf);
-		image = gtk_pixmap_new (pixmap, bitmap);
-		if (pixmap)
-			gdk_pixmap_unref (pixmap);
-		if (bitmap)
-			gdk_bitmap_unref (bitmap);
-		gtk_widget_show (image);
-		gtk_box_pack_start (GTK_BOX (hbox), image, FALSE, FALSE, 0);
-	}
+	image = gtk_image_new_from_file (IMAGE_DIR "/gtkam-camera.png");
+	gtk_widget_show (image);
+	gtk_box_pack_start (GTK_BOX (hbox), image, FALSE, FALSE, 0);
 
 	va_start (args, format);
 	msg = g_strdup_vprintf (format, args);
@@ -312,7 +294,7 @@ gtkam_cancel_new (GtkWidget *opt_window, const gchar *format, ...)
 
 	button = gtk_button_new_with_label (_("Cancel"));
 	gtk_widget_show (button);
-	gtk_signal_connect (GTK_OBJECT (button), "clicked",
+	g_signal_connect (GTK_OBJECT (button), "clicked",
 			    GTK_SIGNAL_FUNC (on_cancel_clicked), cancel);
 	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (cancel)->action_area),
 			   button);

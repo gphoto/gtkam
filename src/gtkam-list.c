@@ -75,8 +75,8 @@ struct _GtkamListPrivate
 	GtkWidget *status;
 };
 
-#define PARENT_TYPE GTK_TYPE_ICON_LIST
-static GtkIconListClass *parent_class;
+#define PARENT_TYPE GTK_TYPE_TREE_VIEW
+static GtkTreeViewClass *parent_class;
 
 enum {
 	CHANGED,
@@ -91,7 +91,7 @@ gtkam_list_destroy (GtkObject *object)
 	GtkamList *list = GTKAM_LIST (object);
 
 	if (list->priv->status) {
-		gtk_object_unref (GTK_OBJECT (list->priv->status));
+		g_object_unref (G_OBJECT (list->priv->status));
 		list->priv->status = NULL;
 	}
 
@@ -99,63 +99,63 @@ gtkam_list_destroy (GtkObject *object)
 }
 
 static void
-gtkam_list_finalize (GtkObject *object)
+gtkam_list_finalize (GObject *object)
 {
 	GtkamList *list = GTKAM_LIST (object);
 
 	g_free (list->priv);
 
-	GTK_OBJECT_CLASS (parent_class)->finalize (object);
+	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 static void
-gtkam_list_class_init (GtkamListClass *klass)
+gtkam_list_class_init (gpointer g_class, gpointer class_data)
 {
 	GtkObjectClass *object_class;
+	GObjectClass *gobject_class;
 
-	object_class = GTK_OBJECT_CLASS (klass);
+	object_class = GTK_OBJECT_CLASS (g_class);
 	object_class->destroy  = gtkam_list_destroy;
-	object_class->finalize = gtkam_list_finalize;
 
-	signals[CHANGED] = gtk_signal_new ("changed",
-		GTK_RUN_LAST, object_class->type,
-		GTK_SIGNAL_OFFSET (GtkamListClass, changed),
-		gtk_marshal_NONE__NONE, GTK_TYPE_NONE, 0);
-	gtk_object_class_add_signals (object_class, signals, LAST_SIGNAL);
+	gobject_class = G_OBJECT_CLASS (g_class);
+	gobject_class->finalize = gtkam_list_finalize;
 
-	parent_class = gtk_type_class (PARENT_TYPE);
+	signals[CHANGED] = g_signal_new ("changed",
+		G_TYPE_FROM_CLASS (g_class), G_SIGNAL_RUN_LAST,
+		G_STRUCT_OFFSET (GtkamListClass, changed), NULL, NULL,
+		g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
+
+	parent_class = g_type_class_peek_parent (g_class);
 }
 
 static void
-gtkam_list_init (GtkamList *list)
+gtkam_list_init (GTypeInstance *instance, gpointer g_class)
 {
+	GtkamList *list = GTKAM_LIST (instance);
+
 	list->priv = g_new0 (GtkamListPrivate, 1);
 	list->priv->thumbnails = TRUE;
 }
 
-GtkType
+GType
 gtkam_list_get_type (void)
 {
-	static GtkType list_type = 0;
+	GTypeInfo ti;
 
-	if (!list_type) {
-		static const GtkTypeInfo list_info = {
-			"GtkamList",
-			sizeof (GtkamList),
-			sizeof (GtkamListClass),
-			(GtkClassInitFunc)  gtkam_list_class_init,
-			(GtkObjectInitFunc) gtkam_list_init,
-			NULL, NULL, NULL};
-		list_type = gtk_type_unique (PARENT_TYPE, &list_info);
-	}
+	memset (&ti, 0, sizeof (GTypeInfo));
+	ti.class_size     = sizeof (GtkamListClass);
+	ti.class_init     = gtkam_list_class_init;
+	ti.instance_size  = sizeof (GtkamList);
+	ti.instance_init  = gtkam_list_init;
 
-	return (list_type);
+	return (g_type_register_static (PARENT_TYPE, "GtkamList", &ti, 0));
 }
 
 void
 gtkam_list_update_folder (GtkamList *list, Camera *camera, gboolean multi,
 			  const gchar *folder)
 {
+#if 0
 	GtkIconListItem *item;
 	gint i;
 	Camera *c;
@@ -177,7 +177,10 @@ gtkam_list_update_folder (GtkamList *list, Camera *camera, gboolean multi,
 		gtkam_list_add_folder (list, camera, multi, folder);
 		gtk_icon_list_update (GTK_ICON_LIST (list));
 	}
+#endif
 }
+
+#if 0
 
 static void
 on_info_updated (GtkamInfo *info, Camera *camera, gboolean multi,
@@ -457,24 +460,28 @@ on_select_icon (GtkIconList *ilist, GtkIconListItem *item,
 
 	return (TRUE);
 }
+#endif
 
 GtkWidget *
 gtkam_list_new (GtkWidget *vbox)
 {
         GtkamList *list;
 
-        list = gtk_type_new (GTKAM_TYPE_LIST);
+        list = g_object_new (GTKAM_TYPE_LIST, NULL);
+
+#if 0
         gtk_icon_list_construct (GTK_ICON_LIST (list), ICON_WIDTH,
                                  GTK_ICON_LIST_TEXT_BELOW);
 	gtk_icon_list_set_text_space (GTK_ICON_LIST (list), ICON_WIDTH);
         gtk_icon_list_set_selection_mode (GTK_ICON_LIST (list),
                                           GTK_SELECTION_MULTIPLE);
         gtk_icon_list_set_editable (GTK_ICON_LIST (list), FALSE);
-        gtk_signal_connect (GTK_OBJECT (list), "select_icon",
+	gtk_signal_connect (GTK_OBJECT (list), "select_icon",
                             GTK_SIGNAL_FUNC (on_select_icon), list);
+#endif
 
 	list->priv->status = vbox;
-	gtk_object_ref (GTK_OBJECT (vbox));
+	g_object_ref (G_OBJECT (vbox));
 
         return (GTK_WIDGET (list));
 }
@@ -483,6 +490,7 @@ void
 gtkam_list_add_folder (GtkamList *list, Camera *camera, gboolean multi,
 		       const gchar *folder)
 {
+#if 0
 	GtkWidget *dialog, *win, *s;
 	GtkIconListItem *item;
 	CameraList flist;
@@ -662,11 +670,13 @@ gtkam_list_add_folder (GtkamList *list, Camera *camera, gboolean multi,
 	if (multi)
 		gp_camera_exit (camera, NULL);
 	gtk_signal_emit (GTK_OBJECT (list), signals[CHANGED]);
+#endif
 }
 
 void
 gtkam_list_set_thumbnails (GtkamList *list, gboolean thumbnails)
 {
+#if 0
 	g_return_if_fail (GTKAM_IS_LIST (list));
 
 	if (list->priv->thumbnails == thumbnails)
@@ -674,12 +684,14 @@ gtkam_list_set_thumbnails (GtkamList *list, gboolean thumbnails)
 
 	list->priv->thumbnails = thumbnails;
 	g_warning ("FIXME!");
+#endif
 }
 
 void
 gtkam_list_remove_folder (GtkamList *list, Camera *camera,
 			  gboolean multi, const gchar *folder)
 {
+#if 0
 	GtkIconListItem *item;
 	gint i;
 	Camera *c;
@@ -699,11 +711,13 @@ gtkam_list_remove_folder (GtkamList *list, Camera *camera,
 	}
 
 	gtk_icon_list_update (GTK_ICON_LIST (list));
+#endif
 }
 
 void
 gtkam_list_save_selected (GtkamList *list)
 {
+#if 0
 	GtkIconListItem *item;
 	GtkWidget *save;
 	guint i;
@@ -727,4 +741,5 @@ gtkam_list_save_selected (GtkamList *list)
 			gtk_entry_get_text (GTK_ENTRY (item->entry)));
 	}
 	gtk_widget_show (save);
+#endif
 }

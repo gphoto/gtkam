@@ -43,6 +43,7 @@
 #include <stdio.h>
 #include <string.h>
 
+#include <gtk/gtkimage.h>
 #include <gtk/gtktextview.h>
 #include <gtk/gtkmenuitem.h>
 #include <gtk/gtkoptionmenu.h>
@@ -54,8 +55,6 @@
 #include <gtk/gtksignal.h>
 #include <gtk/gtkbutton.h>
 #include <gtk/gtktogglebutton.h>
-#include <gtk/gtkpixmap.h>
-#include <gdk-pixbuf/gdk-pixbuf.h>
 
 #include <gphoto2/gphoto2-result.h>
 #include <gphoto2/gphoto2-port-log.h>
@@ -89,41 +88,47 @@ gtkam_error_finalize (GObject *object)
 }
 
 static void
-gtkam_error_class_init (GObjectClass *klass)
+gtkam_error_class_init (gpointer g_class, gpointer class_data)
 {
 	GtkObjectClass *object_class;
+	GObjectClass *gobject_class;
 
-	object_class = GTK_OBJECT_CLASS (klass);
+	object_class = GTK_OBJECT_CLASS (g_class);
 	object_class->destroy  = gtkam_error_destroy;
 
-	klass->finalize = gtkam_error_finalize;
+	gobject_class = G_OBJECT_CLASS (g_class);
+	gobject_class->finalize = gtkam_error_finalize;
 
-	parent_class = g_type_class_peek_parent (klass);
+	parent_class = g_type_class_peek_parent (g_class);
 }
 
 static void
-gtkam_error_init (GtkamError *error)
+gtkam_error_init (GTypeInstance *instance, gpointer g_class)
 {
+	GtkamError *error = GTKAM_ERROR (instance);
+
 	error->priv = g_new0 (GtkamErrorPrivate, 1);
 }
 
-GtkType
+GType
 gtkam_error_get_type (void)
 {
-	static GtkType error_type = 0;
+	static GType type = 0;
 
-	if (!error_type) {
-		static const GtkTypeInfo error_info = {
-			"GtkamError",
-			sizeof (GtkamError),
-			sizeof (GtkamErrorClass),
-			(GtkClassInitFunc)  gtkam_error_class_init,
-			(GtkObjectInitFunc) gtkam_error_init,
-			NULL, NULL, NULL};
-		error_type = gtk_type_unique (PARENT_TYPE, &error_info);
+	if (!type) {
+		GTypeInfo ti;
+
+		memset (&ti, 0, sizeof (GTypeInfo)); 
+		ti.class_size     = sizeof (GtkamErrorClass);
+		ti.class_init     = gtkam_error_class_init;
+		ti.instance_size  = sizeof (GtkamError);
+		ti.instance_init  = gtkam_error_init;
+
+		type = g_type_register_static (PARENT_TYPE, "GtkamError",
+					       &ti, 0);
 	}
 
-	return (error_type);
+	return (type);
 }
 
 static void
@@ -148,21 +153,16 @@ gtkam_error_new (int result, GtkamContext *context, GtkWidget *opt_window,
 {
 	GtkamError *error;
 	GtkWidget *text, *vscrollbar, *button, *label, *hbox, *vbox, *image;
-	GdkPixbuf *pixbuf;
-	GdkBitmap *bitmap;
-	GdkPixmap *pixmap;
 	gchar *msg;
 	va_list args;
 	unsigned int i;
-	GError *e = NULL;
 	GtkTextBuffer *buf;
 	GtkTextIter iter;
 
 	g_return_val_if_fail (result < 0, NULL);
 
-	error = gtk_type_new (GTKAM_TYPE_ERROR);
-	gtk_window_set_policy (GTK_WINDOW (error), TRUE, TRUE, TRUE);
-	gtk_signal_connect (GTK_OBJECT (error), "delete_event",
+	error = g_object_new (GTKAM_TYPE_ERROR, NULL);
+	g_signal_connect (GTK_OBJECT (error), "delete_event",
 			    GTK_SIGNAL_FUNC (gtk_object_destroy), NULL);
 	gtk_window_set_title (GTK_WINDOW (error),
 			      gp_result_as_string (result));
@@ -173,23 +173,9 @@ gtkam_error_new (int result, GtkamContext *context, GtkWidget *opt_window,
 			    TRUE, TRUE, 0);
 	gtk_container_set_border_width (GTK_CONTAINER (hbox), 10);
 
-	pixbuf = gdk_pixbuf_new_from_file (IMAGE_DIR "/gtkam-camera.png", &e);
-	if (!pixbuf) {
-		g_assert (e != NULL);
-		g_warning ("Could not load " IMAGE_DIR "/gtkam-camera.png: "
-			   "'%s'.", e->message);
-		g_error_free (e);
-	} else {
-		gdk_pixbuf_render_pixmap_and_mask (pixbuf, &pixmap, &bitmap, 127);
-		gdk_pixbuf_unref (pixbuf);
-		image = gtk_pixmap_new (pixmap, bitmap);
-		if (pixmap)
-			gdk_pixmap_unref (pixmap);
-		if (bitmap)
-			gdk_bitmap_unref (bitmap);
-		gtk_widget_show (image);
-		gtk_box_pack_start (GTK_BOX (hbox), image, FALSE, FALSE, 0);
-	}
+	image = gtk_image_new_from_file (IMAGE_DIR "/gtkam-camera.png");
+	gtk_widget_show (image);
+	gtk_box_pack_start (GTK_BOX (hbox), image, FALSE, FALSE, 0);
 
 	vbox = gtk_vbox_new (FALSE, 0);
 	gtk_widget_show (vbox);
@@ -231,12 +217,12 @@ gtkam_error_new (int result, GtkamContext *context, GtkWidget *opt_window,
 		gtk_widget_show (button);
 	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (error)->action_area),
 			   button);
-	gtk_signal_connect (GTK_OBJECT (button), "toggled",
+	g_signal_connect (GTK_OBJECT (button), "toggled",
 			    GTK_SIGNAL_FUNC (on_debug_toggled), error); 
 
 	button = gtk_button_new_with_label (_("Close"));
 	gtk_widget_show (button);
-	gtk_signal_connect (GTK_OBJECT (button), "clicked",
+	g_signal_connect (GTK_OBJECT (button), "clicked",
 			    GTK_SIGNAL_FUNC (on_error_close_clicked), error);
 	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (error)->action_area),
 			   button);

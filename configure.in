@@ -50,7 +50,7 @@ AC_SUBST(GP_LIBS)
 dnl ---------------------------------------------------------------------------
 dnl GIMP plugin
 dnl ---------------------------------------------------------------------------
-try_gimp=true
+try_gimp=false
 gimp_msg=no
 have_gimp=false
 AC_ARG_WITH(gimp, [  --without-gimp          Don't compile GIMP plugin],

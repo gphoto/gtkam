@@ -29,11 +29,7 @@ libgtkam_a_SOURCES =				\
 	gtkam-port.c    	gtkam-port.h		\
 	gtkam-preview.c 	gtkam-preview.h		\
 	gtkam-status.c  	gtkam-status.h		\
-	gtkam-store-file.c	gtkam-store-file.h	\
 	gtkam-tree.c    	gtkam-tree.h		\
-	gtkam-tree-item.c	gtkam-tree-item.h	\
-	gtkam-tree-item-cam.c	gtkam-tree-item-cam.h	\
-	gtkam-tree-item-dir.c	gtkam-tree-item-dir.h	\
 	gtkam-util.c    	gtkam-util.h		\
 	util.c util.h				\
 	support.c support.h
@@ -45,9 +41,7 @@ gtkam_SOURCES = 				\
 	gtkam-list.c gtkam-list.h 		\
 	gtkam-main.c gtkam-main.h 		\
 	gtkam-save.c gtkam-save.h 		\
-	main.c 					\
-	gtkiconlist.c gtkiconlist.h 		\
-	gtkitementry.c gtkitementry.h
+	main.c
 gtkam_LDADD = libgtkam.a $(EXIF_LIBS) $(GTK_LIBS) $(GP_LIBS)
 
 if HAVE_GIMP

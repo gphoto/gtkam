@@ -55,6 +55,8 @@
 #include <gtk/gtksignal.h>
 #include <gtk/gtkpixmap.h>
 #include <gtk/gtkhscale.h>
+#include <gtk/gtkimage.h>
+
 #include <gdk-pixbuf/gdk-pixbuf-loader.h>
 
 #include "gdk-pixbuf-hacks.h"
@@ -66,7 +68,7 @@
 struct _GtkamPreviewPrivate
 {
 	GtkWidget *spin;
-	GtkPixmap *image;
+	GtkWidget *image;
 
 	Camera *camera;
 	gboolean multi;
@@ -98,7 +100,7 @@ gtkam_preview_destroy (GtkObject *object)
 	GtkamPreview *preview = GTKAM_PREVIEW (object);
 
 	if (preview->priv->tooltips) {
-		gtk_object_unref (GTK_OBJECT (preview->priv->tooltips));
+		g_object_unref (G_OBJECT (preview->priv->tooltips));
 		preview->priv->tooltips = NULL;
 	}
 
@@ -116,58 +118,58 @@ gtkam_preview_destroy (GtkObject *object)
 }
 
 static void
-gtkam_preview_finalize (GtkObject *object)
+gtkam_preview_finalize (GObject *object)
 {
 	GtkamPreview *preview = GTKAM_PREVIEW (object);
 
 	g_free (preview->priv);
 
-	GTK_OBJECT_CLASS (parent_class)->finalize (object);
+	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 static void
-gtkam_preview_class_init (GtkamPreviewClass *klass)
+gtkam_preview_class_init (gpointer g_class, gpointer class_data)
 {
 	GtkObjectClass *object_class;
+	GObjectClass *gobject_class;
 
-	object_class = GTK_OBJECT_CLASS (klass);
+	object_class = GTK_OBJECT_CLASS (g_class);
 	object_class->destroy  = gtkam_preview_destroy;
-	object_class->finalize = gtkam_preview_finalize;
 
-	signals[CAPTURED] = gtk_signal_new ("captured", GTK_RUN_FIRST,
-		object_class->type,
-		GTK_SIGNAL_OFFSET (GtkamPreviewClass, captured),
-		gtk_marshal_NONE__POINTER_POINTER, GTK_TYPE_NONE, 2,
-		GTK_TYPE_POINTER, GTK_TYPE_POINTER);
-	gtk_object_class_add_signals (object_class, signals, LAST_SIGNAL);
+	gobject_class = G_OBJECT_CLASS (g_class);
+	gobject_class->finalize = gtkam_preview_finalize;
 
-	parent_class = gtk_type_class (PARENT_TYPE);
+	signals[CAPTURED] = g_signal_new ("captured",
+		G_TYPE_FROM_CLASS (g_class), G_SIGNAL_RUN_LAST,
+		G_STRUCT_OFFSET (GtkamPreviewClass, captured), NULL, NULL,
+		g_cclosure_marshal_VOID__POINTER, G_TYPE_NONE, 1, 
+		G_TYPE_POINTER);
+
+	parent_class = g_type_class_peek_parent (g_class);
 }
 
 static void
-gtkam_preview_init (GtkamPreview *preview)
+gtkam_preview_init (GTypeInstance *instance, gpointer g_class)
 {
+	GtkamPreview *preview = GTKAM_PREVIEW (instance);
+
 	preview->priv = g_new0 (GtkamPreviewPrivate, 1);
 	preview->priv->zoom = 1.;
 }
 
-GtkType
+GType
 gtkam_preview_get_type (void)
 {
-	static GtkType preview_type = 0;
+	GTypeInfo tinfo;
 
-	if (!preview_type) {
-		static const GtkTypeInfo preview_info = {
-			"GtkamPreview",
-			sizeof (GtkamPreview),
-			sizeof (GtkamPreviewClass),
-			(GtkClassInitFunc)  gtkam_preview_class_init,
-			(GtkObjectInitFunc) gtkam_preview_init,
-			NULL, NULL, NULL};
-		preview_type = gtk_type_unique (PARENT_TYPE, &preview_info);
-	}
+	memset (&tinfo, 0, sizeof (GTypeInfo));
+	tinfo.class_size    = sizeof (GtkamPreviewClass);
+	tinfo.class_init    = gtkam_preview_class_init;
+	tinfo.instance_size = sizeof (GtkamPreview);
+	tinfo.instance_init = gtkam_preview_init;
 
-	return (preview_type);
+	return (g_type_register_static (PARENT_TYPE, "GtkamPreview",
+					&tinfo, 0));
 }
 
 static gboolean
@@ -195,6 +197,7 @@ on_preview_capture_clicked (GtkButton *button, GtkamPreview *preview)
 	int result;
 	CameraFilePath path;
 	GtkWidget *dialog, *s;
+	GtkamPreviewCapturedData data;
 
 	s = gtkam_status_new (_("Capturing image..."));
 	gtk_widget_show (s);
@@ -206,8 +209,13 @@ on_preview_capture_clicked (GtkButton *button, GtkamPreview *preview)
 		gp_camera_exit (preview->priv->camera, NULL);
 	switch (result) {
 	case GP_OK:
-		gtk_signal_emit (GTK_OBJECT (preview), signals[CAPTURED],
-				 path.folder, path.name);
+		memset (&data, 0, sizeof (GtkamPreviewCapturedData));
+		data.camera = preview->priv->camera;
+		data.multi = preview->priv->multi;
+		data.folder = path.folder;
+		data.name = path.name;
+		g_signal_emit (GTK_OBJECT (preview), signals[CAPTURED], 0,
+			       &data);
 		break;
 	case GP_ERROR_CANCEL:
 		break;
@@ -228,8 +236,6 @@ timeout_func (gpointer user_data)
 	long int size = 0;
 	GdkPixbufLoader *loader;
 	GdkPixbuf *pixbuf, *rotated, *scaled;
-	GdkPixmap *pixmap;
-	GdkBitmap *bitmap;
 	guint w, h;
 
 	GtkamPreview *preview = GTKAM_PREVIEW (user_data);
@@ -263,8 +269,8 @@ timeout_func (gpointer user_data)
 
 	loader = gdk_pixbuf_loader_new ();
 	gp_file_get_data_and_size (file, &data, &size);
-	gdk_pixbuf_loader_write (loader, data, size);
-	gdk_pixbuf_loader_close (loader);
+	gdk_pixbuf_loader_write (loader, data, size, NULL);
+	gdk_pixbuf_loader_close (loader, NULL);
 	gp_file_unref (file);
 
 	while (gtk_events_pending ())
@@ -274,27 +280,15 @@ timeout_func (gpointer user_data)
 
 	pixbuf = gdk_pixbuf_loader_get_pixbuf (loader);
 	rotated = gdk_pixbuf_rotate (pixbuf, preview->priv->rotate);
-	gtk_object_unref (GTK_OBJECT (loader));
+	g_object_unref (G_OBJECT (loader));
 	w = gdk_pixbuf_get_width (rotated);
 	h = gdk_pixbuf_get_height (rotated);
 	scaled = gdk_pixbuf_scale_simple (rotated, w * preview->priv->zoom,
 					  h * preview->priv->zoom,
 					  GDK_INTERP_HYPER);
 	gdk_pixbuf_unref (rotated);
-	gdk_pixbuf_render_pixmap_and_mask (scaled, &pixmap, &bitmap, 127);
+	gtk_image_set_from_pixbuf (GTK_IMAGE (preview->priv->image), scaled);
 	gdk_pixbuf_unref (scaled);
-
-	while (gtk_events_pending ()) 
-		gtk_main_iteration ();
-	if (!GTKAM_IS_PREVIEW (preview))
-		return (FALSE);
-
-	/* Show the new preview */
-	gtk_pixmap_set (preview->priv->image, pixmap, bitmap);
-	if (pixmap)
-		gdk_pixmap_unref (pixmap);
-	if (bitmap)
-		gdk_bitmap_unref (bitmap);
 
 	return (TRUE);
 }
@@ -383,18 +377,14 @@ gtkam_preview_new (Camera *camera, gboolean multi)
 	CameraAbilities abilities;
 	GtkamPreview *preview;
 	GtkWidget *button, *hbox, *image, *vbox, *radio;
-	GdkPixbuf *pixbuf;
-	GdkPixmap *pixmap;
-	GdkBitmap *bitmap;
 	GSList *group;
 
 	g_return_val_if_fail (camera != NULL, NULL);
 
-	preview = gtk_type_new (GTKAM_TYPE_PREVIEW);
+	preview = g_object_new (GTKAM_TYPE_PREVIEW, NULL);
 	gtk_window_set_title (GTK_WINDOW (preview), _("Capture"));
 	gtk_container_set_border_width (GTK_CONTAINER (preview), 5);
-	gtk_window_set_policy (GTK_WINDOW (preview), TRUE, TRUE, TRUE);
-	gtk_signal_connect (GTK_OBJECT (preview), "delete_event",
+	g_signal_connect (GTK_OBJECT (preview), "delete_event",
 			    GTK_SIGNAL_FUNC (gtk_object_destroy), NULL);
 
 	preview->priv->camera = camera;
@@ -408,33 +398,15 @@ gtkam_preview_new (Camera *camera, gboolean multi)
 	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (preview)->vbox),
 			    hbox, TRUE, TRUE, 0);
 
-	pixbuf = gdk_pixbuf_new_from_file (IMAGE_DIR "/gtkam-camera.png");
-	if (!pixbuf)
-		g_warning ("Could not load " IMAGE_DIR "/gtkam-camera.png");
-	else {
-		gdk_pixbuf_render_pixmap_and_mask (pixbuf, &pixmap, &bitmap, 127);
-		gdk_pixbuf_unref (pixbuf);
-		image = gtk_pixmap_new (pixmap, bitmap);
-		if (pixmap)
-			gdk_pixmap_unref (pixmap);
-		if (bitmap)
-			gdk_bitmap_unref (bitmap);
-		gtk_widget_show (image);
-		gtk_box_pack_start (GTK_BOX (hbox), image, FALSE, FALSE, 0);
-	}
+	image = gtk_image_new_from_file (IMAGE_DIR "/gtkam-camera.png");
+	gtk_widget_show (image);
+	gtk_box_pack_start (GTK_BOX (hbox), image, FALSE, FALSE, 0);
 
-	/* Empty pixbuf (for preview) */
-	pixbuf = gdk_pixbuf_new (GDK_COLORSPACE_RGB, FALSE, 8, 80, 60);
-	gdk_pixbuf_render_pixmap_and_mask (pixbuf, &pixmap, &bitmap, 127);
-	gdk_pixbuf_unref (pixbuf); 
-	image = gtk_pixmap_new (pixmap, bitmap);
-	if (pixmap) 
-		gdk_pixmap_unref (pixmap); 
-	if (bitmap) 
-		gdk_bitmap_unref (bitmap);
-	gtk_widget_show (image); 
-	gtk_box_pack_start (GTK_BOX (hbox), image, TRUE, TRUE, 0);
-	preview->priv->image = GTK_PIXMAP (image);
+	/* Empty image (for preview) */
+	preview->priv->image = gtk_image_new ();
+	gtk_widget_show (preview->priv->image); 
+	gtk_box_pack_start (GTK_BOX (hbox), preview->priv->image,
+			    TRUE, TRUE, 0);
 
 	/* Rotate */
 	vbox = gtk_vbox_new (FALSE, 0);
@@ -444,34 +416,34 @@ gtkam_preview_new (Camera *camera, gboolean multi)
 	gtk_widget_show (radio);
 	gtk_box_pack_start (GTK_BOX (vbox), radio, FALSE, FALSE, 0);
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (radio), TRUE);
-	gtk_signal_connect (GTK_OBJECT (radio), "toggled",
+	g_signal_connect (GTK_OBJECT (radio), "toggled",
 			    GTK_SIGNAL_FUNC (on_radio_0_toggled), preview);
 	preview->priv->angle_0 = GTK_TOGGLE_BUTTON (radio);
 	gtk_tooltips_set_tip (preview->priv->tooltips, radio,
 			      _("Don't rotate thumbnail"), NULL);
-	group = gtk_radio_button_group (GTK_RADIO_BUTTON (radio));
+	group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (radio));
 	radio = gtk_radio_button_new_with_label (group, _("-90 degrees"));
 	gtk_widget_show (radio);
 	gtk_box_pack_start (GTK_BOX (vbox), radio, FALSE, FALSE, 0);
-	gtk_signal_connect (GTK_OBJECT (radio), "toggled",
+	g_signal_connect (GTK_OBJECT (radio), "toggled",
 			    GTK_SIGNAL_FUNC (on_radio_270_toggled), preview);
 	preview->priv->angle_90 = GTK_TOGGLE_BUTTON (radio);
 	gtk_tooltips_set_tip (preview->priv->tooltips, radio,
 			      _("Rotate thumbnail by -90 degrees"), NULL);
-	group = gtk_radio_button_group (GTK_RADIO_BUTTON (radio));
+	group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (radio));
 	radio = gtk_radio_button_new_with_label (group, _("+90 degrees"));
 	gtk_widget_show (radio);
 	gtk_box_pack_start (GTK_BOX (vbox), radio, FALSE, FALSE, 0);
-	gtk_signal_connect (GTK_OBJECT (radio), "toggled",
+	g_signal_connect (GTK_OBJECT (radio), "toggled",
 			    GTK_SIGNAL_FUNC (on_radio_90_toggled), preview);
 	preview->priv->angle_180 = GTK_TOGGLE_BUTTON (radio);
 	gtk_tooltips_set_tip (preview->priv->tooltips, radio, 
 			      _("Rotate thumbnail by 90 degrees"), NULL);
-	group = gtk_radio_button_group (GTK_RADIO_BUTTON (radio));
+	group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (radio));
 	radio = gtk_radio_button_new_with_label (group, _("180 degrees"));
 	gtk_widget_show (radio);
 	gtk_box_pack_start (GTK_BOX (vbox), radio, FALSE, FALSE, 0);
-	gtk_signal_connect (GTK_OBJECT (radio), "toggled",
+	g_signal_connect (GTK_OBJECT (radio), "toggled",
 			    GTK_SIGNAL_FUNC (on_radio_180_toggled), preview);
 	preview->priv->angle_270 = GTK_TOGGLE_BUTTON (radio);
 	gtk_tooltips_set_tip (preview->priv->tooltips, radio, 
@@ -486,34 +458,34 @@ gtkam_preview_new (Camera *camera, gboolean multi)
 	radio = gtk_radio_button_new_with_label (NULL, _("100%"));
 	gtk_widget_show (radio);
 	gtk_box_pack_start (GTK_BOX (hbox), radio, FALSE, FALSE, 0);
-	gtk_signal_connect (GTK_OBJECT (radio), "toggled",
+	g_signal_connect (GTK_OBJECT (radio), "toggled",
 			    GTK_SIGNAL_FUNC (on_radio_100_toggled), preview);
 	preview->priv->zoom_100 = GTK_TOGGLE_BUTTON (radio);
 	gtk_tooltips_set_tip (preview->priv->tooltips, radio,
 			      _("Don't enlarge thumbnail"), NULL);
-	group = gtk_radio_button_group (GTK_RADIO_BUTTON (radio));
+	group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (radio));
 	radio = gtk_radio_button_new_with_label (group, _("150%"));
 	gtk_widget_show (radio);
 	gtk_box_pack_start (GTK_BOX (hbox), radio, FALSE, FALSE, 0);
-	gtk_signal_connect (GTK_OBJECT (radio), "toggled",
+	g_signal_connect (GTK_OBJECT (radio), "toggled",
 			    GTK_SIGNAL_FUNC (on_radio_150_toggled), preview);
 	preview->priv->zoom_150 = GTK_TOGGLE_BUTTON (radio);
 	gtk_tooltips_set_tip (preview->priv->tooltips, radio,
 			      _("Enlarge thumbnail by 50%"), NULL);
-	group = gtk_radio_button_group (GTK_RADIO_BUTTON (radio));
+	group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (radio));
 	radio = gtk_radio_button_new_with_label (group, _("200%"));
 	gtk_widget_show (radio);
 	gtk_box_pack_start (GTK_BOX (hbox), radio, FALSE, FALSE, 0);
-	gtk_signal_connect (GTK_OBJECT (radio), "toggled",
+	g_signal_connect (GTK_OBJECT (radio), "toggled",
 			    GTK_SIGNAL_FUNC (on_radio_200_toggled), preview);
 	preview->priv->zoom_200 = GTK_TOGGLE_BUTTON (radio);
 	gtk_tooltips_set_tip (preview->priv->tooltips, radio,
 			      _("Enlarge thumbnail by 100%"), NULL);
-	group = gtk_radio_button_group (GTK_RADIO_BUTTON (radio));
+	group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (radio));
 	radio = gtk_radio_button_new_with_label (group, _("250%"));
 	gtk_widget_show (radio);
 	gtk_box_pack_start (GTK_BOX (hbox), radio, FALSE, FALSE, 0);
-	gtk_signal_connect (GTK_OBJECT (radio), "toggled",
+	g_signal_connect (GTK_OBJECT (radio), "toggled",
 			    GTK_SIGNAL_FUNC (on_radio_250_toggled), preview);
 	preview->priv->zoom_250 = GTK_TOGGLE_BUTTON (radio);
 	gtk_tooltips_set_tip (preview->priv->tooltips, radio,
@@ -521,7 +493,7 @@ gtkam_preview_new (Camera *camera, gboolean multi)
 
 	button = gtk_button_new_with_label (_("Capture"));
 	gtk_widget_show (button);
-	gtk_signal_connect (GTK_OBJECT (button), "clicked",
+	g_signal_connect (GTK_OBJECT (button), "clicked",
 			    GTK_SIGNAL_FUNC (on_preview_capture_clicked),
 			    preview);
 	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (preview)->action_area),
@@ -532,7 +504,7 @@ gtkam_preview_new (Camera *camera, gboolean multi)
 	if (abilities.operations & GP_OPERATION_CONFIG) {
 		button = gtk_button_new_with_label (_("Configure"));
 		gtk_widget_show (button);
-		gtk_signal_connect (GTK_OBJECT (button), "clicked",
+		g_signal_connect (GTK_OBJECT (button), "clicked",
 			GTK_SIGNAL_FUNC (on_configure_clicked), preview);
 		gtk_container_add (
 			GTK_CONTAINER (GTK_DIALOG (preview)->action_area),
@@ -541,7 +513,7 @@ gtkam_preview_new (Camera *camera, gboolean multi)
 
 	button = gtk_button_new_with_label (_("Close"));
 	gtk_widget_show (button);
-	gtk_signal_connect (GTK_OBJECT (button), "clicked",
+	g_signal_connect (GTK_OBJECT (button), "clicked",
 		GTK_SIGNAL_FUNC (on_preview_close_clicked), preview);
 	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (preview)->action_area),
 			   button);

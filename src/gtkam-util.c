@@ -58,7 +58,7 @@ gdk_pixbuf_new_from_camera_file (CameraFile *file, guint max_dim,
 
         gp_file_get_data_and_size (file, &data, &size);
         loader = gdk_pixbuf_loader_new ();
-        if (!gdk_pixbuf_loader_write (loader, data, size)) {
+        if (!gdk_pixbuf_loader_write (loader, data, size, NULL)) {
                 gp_file_get_name (file, &name);
                 gp_file_get_mime_type (file, &type);
                 msg = g_strdup_printf (_("Could not display '%s'. Either "
@@ -70,7 +70,7 @@ gdk_pixbuf_new_from_camera_file (CameraFile *file, guint max_dim,
                 gtk_object_destroy (GTK_OBJECT (loader));
                 return (NULL);
         }
-        gdk_pixbuf_loader_close (loader);
+        gdk_pixbuf_loader_close (loader, NULL);
         pixbuf = gdk_pixbuf_loader_get_pixbuf (loader);
         w = gdk_pixbuf_get_width (pixbuf);
         h = gdk_pixbuf_get_height (pixbuf);

@@ -21,6 +21,9 @@
 #include <config.h>
 #include "gtkam-context.h"
 
+#include <string.h>
+#include <stdlib.h>
+
 #include <gtk/gtklabel.h>
 #include <gtk/gtkstatusbar.h>
 #include <gtk/gtkprogressbar.h>
@@ -88,21 +91,25 @@ gtkam_context_finalize (GObject *object)
 }
 
 static void
-gtkam_context_class_init (GObjectClass *klass)
+gtkam_context_class_init (gpointer g_class, gpointer class_data)
 {
 	GtkObjectClass *object_class;
+	GObjectClass *gobject_class;
 
-	object_class = GTK_OBJECT_CLASS (klass);
+	object_class = GTK_OBJECT_CLASS (g_class);
 	object_class->destroy  = gtkam_context_destroy;
 
-	klass->finalize = gtkam_context_finalize;
+	gobject_class = G_OBJECT_CLASS (g_class);
+	gobject_class->finalize = gtkam_context_finalize;
 
-	parent_class = g_type_class_peek_parent (klass);
+	parent_class = g_type_class_peek_parent (g_class);
 }
 
 static void
-gtkam_context_init (GtkamContext *context)
+gtkam_context_init (GTypeInstance *instance, gpointer g_class)
 {
+	GtkamContext *context = GTKAM_CONTEXT (instance);
+
 	context->context = gp_context_new ();
 	context->errors  = g_ptr_array_new ();
 
@@ -112,20 +119,15 @@ gtkam_context_init (GtkamContext *context)
 GType
 gtkam_context_get_type (void)
 {
-	static GtkType context_type = 0;
+	GTypeInfo ti;
 
-	if (!context_type) {
-		static const GtkTypeInfo context_info = {
-			"GtkamContext",
-			sizeof (GtkamContext),
-			sizeof (GtkamContextClass),
-			(GtkClassInitFunc)  gtkam_context_class_init,
-			(GtkObjectInitFunc) gtkam_context_init,
-			NULL, NULL, NULL};
-		context_type = gtk_type_unique (PARENT_TYPE, &context_info);
-	}
+	memset (&ti, 0, sizeof (GTypeInfo)); 
+	ti.class_size     = sizeof (GtkamContextClass);
+	ti.class_init     = gtkam_context_class_init;
+	ti.instance_size  = sizeof (GtkamContext);
+	ti.instance_init  = gtkam_context_init;
 
-	return (context_type);
+	return (g_type_register_static (PARENT_TYPE, "GtkamContext", &ti, 0));
 }
 
 static void
@@ -141,7 +143,7 @@ gtkam_context_new (void)
 {
 	GtkamContext *context;
 
-	context = gtk_type_new (GTKAM_TYPE_CONTEXT);
+	context = g_object_new (GTKAM_TYPE_CONTEXT, NULL);
 
 	gp_context_set_error_func (context->context, error_func, context);
 

@@ -22,7 +22,7 @@
 #define __GTKAM_LIST_H__
 
 #include <gphoto2/gphoto2-camera.h>
-#include <gtkiconlist.h>
+#include <gtk/gtktreeview.h>
 
 #define GTKAM_TYPE_LIST  (gtkam_list_get_type ())
 #define GTKAM_LIST(o)    (GTK_CHECK_CAST((o),GTKAM_TYPE_LIST,GtkamList))
@@ -34,14 +34,14 @@ typedef struct _GtkamListClass   GtkamListClass;
 
 struct _GtkamList
 {
-	GtkIconList parent;
+	GtkTreeView parent;
 
 	GtkamListPrivate *priv;
 };
 
 struct _GtkamListClass
 {
-	GtkIconListClass parent_class;
+	GtkTreeViewClass parent_class;
 
 	/* Signals */
 	void (* changed)        (GtkamList *list);

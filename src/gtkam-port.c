@@ -45,6 +45,7 @@
 
 #include <string.h>
 
+#include <gtk/gtkimage.h>
 #include <gtk/gtkbutton.h>
 #include <gtk/gtkentry.h>
 #include <gtk/gtklabel.h>
@@ -53,7 +54,6 @@
 #include <gtk/gtkscrolledwindow.h>
 #include <gtk/gtkpixmap.h>
 #include <gtk/gtktable.h>
-#include <gdk-pixbuf/gdk-pixbuf.h>
 
 #include <gphoto2/gphoto2-result.h>
 
@@ -85,56 +85,56 @@ gtkam_port_destroy (GtkObject *object)
 }
 
 static void
-gtkam_port_finalize (GtkObject *object)
+gtkam_port_finalize (GObject *object)
 {
 	GtkamPort *port = GTKAM_PORT (object);
 
 	g_free (port->priv);
 
-	GTK_OBJECT_CLASS (parent_class)->finalize (object);
+	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 static void
-gtkam_port_class_init (GtkamPortClass *klass)
+gtkam_port_class_init (gpointer g_class, gpointer class_data)
 {
 	GtkObjectClass *object_class;
+	GObjectClass *gobject_class;
 
-	object_class = GTK_OBJECT_CLASS (klass);
+	object_class = GTK_OBJECT_CLASS (g_class);
 	object_class->destroy  = gtkam_port_destroy;
-	object_class->finalize = gtkam_port_finalize;
 
-	signals[PORT_ADDED] = gtk_signal_new ("port_added", GTK_RUN_FIRST,
-		object_class->type,
-		GTK_SIGNAL_OFFSET (GtkamPortClass, port_added),
-		gtk_marshal_NONE__POINTER, GTK_TYPE_NONE, 1, GTK_TYPE_POINTER);
-	gtk_object_class_add_signals (object_class, signals, LAST_SIGNAL);
+	gobject_class = G_OBJECT_CLASS (g_class);
+	gobject_class->finalize = gtkam_port_finalize;
 
-	parent_class = gtk_type_class (PARENT_TYPE);
+	signals[PORT_ADDED] = g_signal_new ("port_added",
+		G_TYPE_FROM_CLASS (g_class), G_SIGNAL_RUN_LAST,
+		G_STRUCT_OFFSET (GtkamPortClass, port_added), NULL, NULL,
+		g_cclosure_marshal_VOID__POINTER, G_TYPE_NONE, 1, 
+		G_TYPE_POINTER);
+
+	parent_class = g_type_class_peek_parent (g_class);
 }
 
 static void
-gtkam_port_init (GtkamPort *port)
+gtkam_port_init (GTypeInstance *instance, gpointer g_class)
 {
+	GtkamPort *port = GTKAM_PORT (instance);
+
 	port->priv = g_new0 (GtkamPortPrivate, 1);
 }
 
-GtkType
+GType
 gtkam_port_get_type (void)
 {
-	static GtkType port_type = 0;
+	GTypeInfo tinfo;
 
-	if (!port_type) {
-		static const GtkTypeInfo port_info = {
-			"GtkamPort",
-			sizeof (GtkamPort),
-			sizeof (GtkamPortClass),
-			(GtkClassInitFunc)  gtkam_port_class_init,
-			(GtkObjectInitFunc) gtkam_port_init,
-			NULL, NULL, NULL};
-		port_type = gtk_type_unique (PARENT_TYPE, &port_info);
-	}
+	memset (&tinfo, 0, sizeof (GTypeInfo));
+	tinfo.class_size    = sizeof (GtkamPortClass);
+	tinfo.class_init    = gtkam_port_class_init;
+	tinfo.instance_size = sizeof (GtkamPort);
+	tinfo.instance_init = gtkam_port_init;
 
-	return (port_type);
+	return (g_type_register_static (PARENT_TYPE, "GtkamPort", &tinfo, 0));
 }
 
 static void
@@ -159,8 +159,7 @@ on_ok_clicked (GtkButton *button, GtkamPort *port)
 		g_free (msg);
 		gtk_widget_show (dialog);
 	} else {
-		gtk_signal_emit (GTK_OBJECT (port), signals[PORT_ADDED],
-				 path);
+		g_signal_emit (GTK_OBJECT (port), signals[PORT_ADDED], 0, path);
 		gtk_object_destroy (GTK_OBJECT (port));
 	}
 }
@@ -176,12 +175,9 @@ gtkam_port_new (GtkWidget *opt_window)
 {
 	GtkamPort *port;
 	GtkWidget *label, *button, *entry, *image, *table;
-	GdkPixmap *pixmap;
-	GdkBitmap *bitmap;
-	GdkPixbuf *pixbuf;
 
-	port = gtk_type_new (GTKAM_TYPE_PORT);
-	gtk_signal_connect (GTK_OBJECT (port), "delete_event",
+	port = g_object_new (GTKAM_TYPE_PORT, NULL);
+	g_signal_connect (GTK_OBJECT (port), "delete_event",
 			    GTK_SIGNAL_FUNC (gtk_object_destroy), NULL);
 
 	table = gtk_table_new (2, 2, FALSE);
@@ -191,21 +187,9 @@ gtkam_port_new (GtkWidget *opt_window)
 	gtk_container_set_border_width (GTK_CONTAINER (table), 10);
 	gtk_table_set_col_spacings (GTK_TABLE (table), 5);
 
-	pixbuf = gdk_pixbuf_new_from_file (IMAGE_DIR "/gtkam-camera.png");
-	if (!pixbuf)
-		g_warning ("Could not load " IMAGE_DIR "/gtkam-camera.png");
-	else {
-		gdk_pixbuf_render_pixmap_and_mask (pixbuf, &pixmap, &bitmap, 127);
-		gdk_pixbuf_unref (pixbuf);
-		image = gtk_pixmap_new (pixmap, bitmap);
-		if (pixmap)
-			gdk_pixmap_unref (pixmap);
-		if (bitmap)
-			gdk_bitmap_unref (bitmap);
-		gtk_widget_show (image);
-		gtk_table_attach_defaults (GTK_TABLE (table), image,
-					   0, 1, 1, 2);
-	}
+	image = gtk_image_new_from_file (IMAGE_DIR "/gtkam-camera.png");
+	gtk_widget_show (image);
+	gtk_table_attach_defaults (GTK_TABLE (table), image, 0, 1, 1, 2);
 
 	label = gtk_label_new (_("Please specify the (extended) path to "
 		"the port you would like to use:"));
@@ -221,14 +205,14 @@ gtkam_port_new (GtkWidget *opt_window)
 
 	button = gtk_button_new_with_label (_("Ok"));
 	gtk_widget_show (button);
-	gtk_signal_connect (GTK_OBJECT (button), "clicked",
+	g_signal_connect (GTK_OBJECT (button), "clicked",
 			    GTK_SIGNAL_FUNC (on_ok_clicked), port);
 	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (port)->action_area),
 			   button);
 
 	button = gtk_button_new_with_label (_("Cancel"));
 	gtk_widget_show (button);
-	gtk_signal_connect (GTK_OBJECT (button), "clicked",
+	g_signal_connect (GTK_OBJECT (button), "clicked",
 			    GTK_SIGNAL_FUNC (on_cancel_clicked), port);
 	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (port)->action_area),
 			   button);

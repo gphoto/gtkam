@@ -11,45 +11,13 @@
 #include <unistd.h>
 #include <string.h>
 
-#include <gtk/gtk.h>
+#include <gtk/gtkimage.h>
 
 #include "support.h"
 
 /* This is an internally used function to check if a pixmap file exists. */
 static gchar* check_file_exists        (const gchar     *directory,
                                         const gchar     *filename);
-
-/* This is an internally used function to create pixmaps. */
-static GtkWidget* create_dummy_pixmap  (GtkWidget       *widget);
-
-/* This is a dummy pixmap we use when a pixmap can't be found. */
-static char *dummy_pixmap_xpm[] = {
-/* columns rows colors chars-per-pixel */
-"1 1 1 1",
-"  c None",
-/* pixels */
-" "
-};
-
-/* This is an internally used function to create pixmaps. */
-static GtkWidget*
-create_dummy_pixmap                    (GtkWidget       *widget)
-{
-  GdkColormap *colormap;
-  GdkPixmap *gdkpixmap;
-  GdkBitmap *mask;
-  GtkWidget *pixmap;
-
-  colormap = gtk_widget_get_colormap (widget);
-  gdkpixmap = gdk_pixmap_colormap_create_from_xpm_d (NULL, colormap, &mask,
-                                                     NULL, dummy_pixmap_xpm);
-  if (gdkpixmap == NULL)
-    g_error ("Couldn't create replacement pixmap.");
-  pixmap = gtk_pixmap_new (gdkpixmap, mask);
-  gdk_pixmap_unref (gdkpixmap);
-  gdk_bitmap_unref (mask);
-  return pixmap;
-}
 
 static GList *pixmaps_directories = NULL;
 
@@ -77,7 +45,7 @@ create_pixmap                          (GtkWidget       *widget,
   add_pixmap_directory (PACKAGE_SOURCE_DIR "/pixmaps");
 
   if (!filename || !filename[0])
-      return create_dummy_pixmap (widget);
+      return gtk_image_new ();
 
   /* We first try any pixmaps directories set by the application. */
   elem = pixmaps_directories;
@@ -98,7 +66,7 @@ create_pixmap                          (GtkWidget       *widget,
   if (!found_filename)
     {
       g_warning (_("Couldn't find pixmap file: %s"), filename);
-      return create_dummy_pixmap (widget);
+      return gtk_image_new ();
     }
 
   colormap = gtk_widget_get_colormap (widget);
@@ -108,10 +76,10 @@ create_pixmap                          (GtkWidget       *widget,
     {
       g_warning (_("Error loading pixmap file: %s"), found_filename);
       g_free (found_filename);
-      return create_dummy_pixmap (widget);
+      return gtk_image_new ();
     }
   g_free (found_filename);
-  pixmap = gtk_pixmap_new (gdkpixmap, mask);
+  pixmap = gtk_image_new_from_pixmap (gdkpixmap, mask);
   gdk_pixmap_unref (gdkpixmap);
   gdk_bitmap_unref (mask);
   return pixmap;

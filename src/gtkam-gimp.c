@@ -26,14 +26,16 @@
 #include <gphoto2/gphoto2-abilities-list.h>
 #include <gphoto2/gphoto2-camera.h>
 #include <gphoto2/gphoto2-setting.h>
+
+#include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gdk-pixbuf/gdk-pixbuf-loader.h>
+
 #include <libgimp/gimp.h>
 #include <libgimp/gimpui.h>
 
 #include "gtkam-preview.h"
 #include "gtkam-cancel.h"
 #include "gtkam-chooser.h"
-#include "gtkam-clist.h"
 #include "gtkam-error.h"
 #include "gtkam-fsel.h"
 
@@ -253,16 +255,16 @@ get_file (Camera *camera, CameraFilePath path, gint nparams, GimpParam *param,
 
 	gp_file_get_data_and_size (file, &data, &size);
         loader = gdk_pixbuf_loader_new ();
-        gdk_pixbuf_loader_write (loader, data, size);
+        gdk_pixbuf_loader_write (loader, data, size, NULL);
         gp_file_unref (file);
-        gdk_pixbuf_loader_close (loader);
+        gdk_pixbuf_loader_close (loader, NULL);
         pixbuf = gdk_pixbuf_loader_get_pixbuf (loader);
         w = gdk_pixbuf_get_width (pixbuf);
         h = gdk_pixbuf_get_height (pixbuf);
         r = gdk_pixbuf_get_rowstride (pixbuf);
         pixels = gdk_pixbuf_get_pixels (pixbuf);
         gdk_pixbuf_ref (pixbuf);
-        gtk_object_unref (GTK_OBJECT (loader));
+        g_object_unref (G_OBJECT (loader));
 
 	image_id = gimp_image_new (w, h, GIMP_RGB);
         gimp_image_set_filename (image_id, path.name);
@@ -394,14 +396,22 @@ static void
 run_load (gchar *name, gint nparams, GimpParam *param, gint *nreturn_vals,
 	  GimpParam **return_vals)
 {
+#if 0
 	CameraFilePath path;
+#endif
 	GtkWidget *fsel;
+#if 0
 	gint32 image_id;
+#endif
 	static GimpParam values[2];
+#if 0
 	guint i;
+#endif
 	gboolean selected = FALSE;
+#if 0
 	GtkamCListEntry *entry;
 	GList *list;
+#endif
 	GimpRunModeType run_mode = param[0].data.d_int32;
 
 	switch (run_mode) {
@@ -434,6 +444,7 @@ run_load (gchar *name, gint nparams, GimpParam *param, gint *nreturn_vals,
 			gtk_main_iteration ();
 
 		/* Get the file(s) and display it */
+#if 0
 		list = GTKAM_CLIST (GTKAM_FSEL (fsel)->clist)->selection;
 		for (i = 0; i < g_list_length (list); i++) {
 			entry = g_list_nth_data (list, i);
@@ -442,6 +453,7 @@ run_load (gchar *name, gint nparams, GimpParam *param, gint *nreturn_vals,
 			image_id = get_file (entry->camera, path,
 				nparams, param, nreturn_vals, return_vals);
 		}
+#endif
 		gtk_object_destroy (GTK_OBJECT (fsel));
 
 		*nreturn_vals = 1;

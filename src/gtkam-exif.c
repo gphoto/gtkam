@@ -72,50 +72,50 @@ gtkam_exif_destroy (GtkObject *object)
 }
 
 static void
-gtkam_exif_finalize (GtkObject *object)
+gtkam_exif_finalize (GObject *object)
 {
 	GtkamExif *exif = GTKAM_EXIF (object);
 
 	g_free (exif->priv);
 
-	GTK_OBJECT_CLASS (parent_class)->finalize (object);
+	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 static void
-gtkam_exif_class_init (GtkamExifClass *klass)
+gtkam_exif_class_init (gpointer g_class, gpointer class_data)
 {
 	GtkObjectClass *object_class;
+	GObjectClass *gobject_class;
 
-	object_class = GTK_OBJECT_CLASS (klass);
+	object_class = GTK_OBJECT_CLASS (g_class);
 	object_class->destroy  = gtkam_exif_destroy;
-	object_class->finalize = gtkam_exif_finalize;
 
-	parent_class = gtk_type_class (PARENT_TYPE);
+	gobject_class = G_OBJECT_CLASS (g_class);
+	gobject_class->finalize = gtkam_exif_finalize;
+
+	parent_class = g_type_class_peek_parent (g_class);
 }
 
 static void
-gtkam_exif_init (GtkamExif *exif)
+gtkam_exif_init (GTypeInstance *instance, gpointer g_class)
 {
+	GtkamExif *exif = GTKAM_EXIF (instance);
+
 	exif->priv = g_new0 (GtkamExifPrivate, 1);
 }
 
-GtkType
+GType
 gtkam_exif_get_type (void)
 {
-	static GtkType exif_type = 0;
+	GTypeInfo ti;
 
-	if (!exif_type) {
-		static const GtkTypeInfo exif_info = {
-			"GtkamExif",
-			sizeof (GtkamExif),
-			sizeof (GtkamExifClass),
-			(GtkClassInitFunc)  gtkam_exif_class_init,
-			(GtkObjectInitFunc) gtkam_exif_init,
-			NULL, NULL, NULL};
-		exif_type = gtk_type_unique (PARENT_TYPE, &exif_info);
-	}
+	memset (&ti, 0, sizeof (GTypeInfo));
+	ti.class_size     = sizeof (GtkamExifClass);
+	ti.class_init     = gtkam_exif_class_init;
+	ti.instance_size  = sizeof (GtkamExif);
+	ti.instance_init  = gtkam_exif_init; 
 
-	return (exif_type);
+	return (g_type_register_static (PARENT_TYPE, "GtkamExif", &ti, 0));
 }
 
 static void
@@ -182,8 +182,8 @@ gtkam_exif_new (Camera *camera, gboolean multi,
 	}
 #endif
 
-	exif = gtk_type_new (GTKAM_TYPE_EXIF);
-	gtk_signal_connect (GTK_OBJECT (exif), "delete_event",
+	exif = g_object_new (GTKAM_TYPE_EXIF, NULL);
+	g_signal_connect (GTK_OBJECT (exif), "delete_event",
 			    GTK_SIGNAL_FUNC (gtk_object_destroy), NULL);
 
 #ifdef HAVE_EXIF
@@ -205,7 +205,7 @@ gtkam_exif_new (Camera *camera, gboolean multi,
 
 	button = gtk_button_new_with_label (_("Close"));
 	gtk_widget_show (button);
-	gtk_signal_connect (GTK_OBJECT (button), "clicked",
+	g_signal_connect (GTK_OBJECT (button), "clicked",
 			    GTK_SIGNAL_FUNC (on_exif_close_clicked), exif);
 	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (exif)->action_area),
 			   button);

@@ -91,22 +91,26 @@ gtkam_fsel_destroy (GtkObject *object)
 }
 
 static void
-gtkam_fsel_class_finalize (gpointer g_class, gpointer class_data)
+gtkam_fsel_finalize (GObject *object)
 {
-	GtkamFSel *fsel = GTKAM_FSEL (g_class);
+	GtkamFSel *fsel = GTKAM_FSEL (object);
 
 	g_free (fsel->priv);
 
-	G_OBJECT_CLASS (parent_class)->finalize (g_class);
+	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 static void
 gtkam_fsel_class_init (gpointer g_class, gpointer class_data)
 {
 	GtkObjectClass *object_class;
+	GObjectClass *gobject_class;
 
 	object_class = GTK_OBJECT_CLASS (g_class);
 	object_class->destroy  = gtkam_fsel_destroy;
+
+	gobject_class = G_OBJECT_CLASS (g_class);
+	gobject_class->finalize = gtkam_fsel_finalize;
 
 	parent_class = g_type_class_peek_parent (g_class);
 }
@@ -127,7 +131,6 @@ gtkam_fsel_get_type (void)
 	memset (&tinfo, 0, sizeof (GTypeInfo));
 	tinfo.class_size     = sizeof (GtkamFSelClass);
 	tinfo.class_init     = gtkam_fsel_class_init;
-	tinfo.class_finalize = gtkam_fsel_class_finalize;
 	tinfo.instance_size  = sizeof (GtkamFSel);
 	tinfo.instance_init  = gtkam_fsel_init;
 

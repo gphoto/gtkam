@@ -317,16 +317,6 @@ on_day_selected (GtkCalendar *calendar, CameraWidget *widget)
 }
 
 static void
-on_clock_changed (GtkamClock *clock, CameraWidget *widget)
-{
-	GtkCalendar *calendar;
-
-	calendar = GTK_CALENDAR (gtk_object_get_data (GTK_OBJECT (clock),
-						      "calendar"));
-	adjust_time (calendar, clock, widget);
-}
-
-static void
 adjust_day (GtkCalendar *calendar, gint days)
 {
 	GDate *date;
@@ -362,6 +352,16 @@ on_clock_previous_day (GtkamClock *clock)
 	calendar = GTK_CALENDAR (gtk_object_get_data (GTK_OBJECT (clock),
 						      "calendar"));
 	adjust_day (calendar, -1);
+}
+
+static void
+on_clock_set (GtkamClock *clock, CameraWidget *widget)
+{
+	GtkCalendar *calendar;
+
+	calendar = GTK_CALENDAR (gtk_object_get_data (GTK_OBJECT (clock),
+						      "calendar"));
+	adjust_time (calendar, clock, widget);
 }
 
 static void
@@ -450,12 +450,12 @@ create_widgets (GtkamConfig *config, CameraWidget *widget)
 		gtk_object_set_data (GTK_OBJECT (calendar), "clock", clock);
 
 		/* Connect the signals */
-		gtk_signal_connect (GTK_OBJECT (clock), "changed",
-			GTK_SIGNAL_FUNC (on_clock_changed), widget);
 		gtk_signal_connect (GTK_OBJECT (clock), "next_day",
-			GTK_SIGNAL_FUNC (on_clock_next_day), widget);
+			GTK_SIGNAL_FUNC (on_clock_next_day), NULL);
 		gtk_signal_connect (GTK_OBJECT (clock), "previous_day",
-			GTK_SIGNAL_FUNC (on_clock_previous_day), widget);
+			GTK_SIGNAL_FUNC (on_clock_previous_day), NULL);
+		gtk_signal_connect (GTK_OBJECT (calendar), "set",
+			GTK_SIGNAL_FUNC (on_clock_set), widget);
 		gtk_signal_connect (GTK_OBJECT (calendar), "day_selected",
 			GTK_SIGNAL_FUNC (on_day_selected), widget);
 

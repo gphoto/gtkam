@@ -47,6 +47,7 @@ struct _GtkamClockClass
 	void (* changed)      (GtkamClock *clock);
 	void (* next_day)     (GtkamClock *clock);
 	void (* previous_day) (GtkamClock *clock);
+	void (* set)          (GtkamClock *clock);
 };
 
 GtkType    gtkam_clock_get_type (void);

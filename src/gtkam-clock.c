@@ -51,6 +51,7 @@ enum {
 	CHANGED,
 	NEXT_DAY,
 	PREVIOUS_DAY,
+	SET,
 	LAST_SIGNAL
 };
 
@@ -104,6 +105,10 @@ gtkam_clock_class_init (GtkamClockClass *klass)
 	signals[PREVIOUS_DAY] = gtk_signal_new ("previous_day", GTK_RUN_LAST,
 		object_class->type,
 		GTK_SIGNAL_OFFSET (GtkamClockClass, previous_day),
+		gtk_marshal_NONE__NONE, GTK_TYPE_NONE, 0);
+	signals[SET] = gtk_signal_new ("set", GTK_RUN_LAST,
+		object_class->type,
+		GTK_SIGNAL_OFFSET (GtkamClockClass, set),
 		gtk_marshal_NONE__NONE, GTK_TYPE_NONE, 0);
 	gtk_object_class_add_signals (object_class, signals, LAST_SIGNAL);
 
@@ -220,6 +225,7 @@ adjust_func (gpointer data)
 		diff *= -1;
 	ad->clock->priv->time += diff;
 	gtkam_clock_update (ad->clock);
+	gtk_signal_emit (GTK_OBJECT (ad->clock), signals[SET]);
 
 	return (TRUE);
 }

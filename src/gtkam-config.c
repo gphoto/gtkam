@@ -454,7 +454,7 @@ create_widgets (GtkamConfig *config, CameraWidget *widget)
 			GTK_SIGNAL_FUNC (on_clock_next_day), NULL);
 		gtk_signal_connect (GTK_OBJECT (clock), "previous_day",
 			GTK_SIGNAL_FUNC (on_clock_previous_day), NULL);
-		gtk_signal_connect (GTK_OBJECT (calendar), "set",
+		gtk_signal_connect (GTK_OBJECT (clock), "set",
 			GTK_SIGNAL_FUNC (on_clock_set), widget);
 		gtk_signal_connect (GTK_OBJECT (calendar), "day_selected",
 			GTK_SIGNAL_FUNC (on_day_selected), widget);

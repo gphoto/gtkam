@@ -4,6 +4,7 @@ images_DATA =			\
 	gtkam-camera.png        \
 	gtkam-folder.png	\
 	gtkam-folder-camera.png	\
+	gtkam-lock.png		\
 	gtkam-new.png
 
 EXTRA_DIST = $(images_DATA)

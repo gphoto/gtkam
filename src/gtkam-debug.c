@@ -41,6 +41,7 @@
 #endif
 
 #include <stdio.h>
+#include <string.h>
 
 #include <gtk/gtktext.h>
 #include <gtk/gtklabel.h>
@@ -246,8 +247,7 @@ on_debug_save_as_clicked (GtkButton *button, GtkamDebug *debug)
 			g_warning (_("Could not open '%s'!"), fname);
 		else {
 			buffer = gtk_editable_get_chars (
-				GTK_EDITABLE (debug->priv->text), 0,
-				GTK_EDITABLE (debug->priv->text)->current_pos);
+				GTK_EDITABLE (debug->priv->text), 0, -1);
 			fputs (buffer, file);
 			g_free (buffer);
 			fclose (file);

@@ -80,24 +80,24 @@ static const char **gtkam_frontend_version(GPVersionVerbosity verbose)
 		HAVE_CC,
 #endif
 #ifdef HAVE_BONOBO
-		"bonobo (for FIXME)",
+		"bonobo",
 #else
-		"no bonobo (for FIXME)",
+		"no bonobo",
 #endif
 #ifdef HAVE_GNOME
-		"gnome (for FIXME)",
+		"gnome",
 #else
-		"no gnome (for FIXME)",
+		"no gnome",
 #endif
 #ifdef HAVE_GIMP
-		"gimp (plugin for The Gimp)",
+		"gimp",
 #else
-		"no gimp (plugin for The Gimp)",
+		"no gimp",
 #endif
 #ifdef HAVE_EXIF
-		"exif (for displaying exif information)",
+		"exif",
 #else
-		"no exif (for displaying exif information)",
+		"no exif",
 #endif
 		NULL
 	};

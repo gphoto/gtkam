@@ -22,7 +22,7 @@
 #define __GTKAM_TREE_H__
 
 #include <gphoto2/gphoto2-camera.h>
-#include <gtk/gtktree.h>
+#include <gtk/gtktreeview.h>
 
 #define GTKAM_TYPE_TREE  (gtkam_tree_get_type ())
 #define GTKAM_TREE(o)    (GTK_CHECK_CAST((o),GTKAM_TYPE_TREE,GtkamTree))
@@ -34,14 +34,14 @@ typedef struct _GtkamTreeClass   GtkamTreeClass;
 
 struct _GtkamTree
 {
-	GtkTree parent;
+	GtkTreeView parent;
 
 	GtkamTreePrivate *priv;
 };
 
 struct _GtkamTreeClass
 {
-	GtkTreeClass parent_class;
+	GtkTreeViewClass parent_class;
 
 	/* Signals */
 	void (* folder_selected)   (GtkamTree *tree, Camera *camera,

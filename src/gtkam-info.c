@@ -110,13 +110,13 @@ gtkam_info_destroy (GtkObject *object)
 }
 
 static void
-gtkam_info_finalize (GtkObject *object)
+gtkam_info_class_finalize (gpointer g_class, gpointer class_data)
 {
-	GtkamInfo *info = GTKAM_INFO (object);
+	GtkamInfo *info = GTKAM_INFO (g_class);
 
 	g_free (info->priv);
 
-	GTK_OBJECT_CLASS (parent_class)->finalize (object);
+	G_OBJECT_CLASS (parent_class)->finalize (g_class);
 }
 
 typedef void (* GtkamSignal_NONE__POINTER_BOOL_POINTER_POINTER)

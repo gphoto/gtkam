@@ -76,8 +76,8 @@ struct _GtkamTreePrivate
 	const gchar *folder;
 };
 
-#define PARENT_TYPE GTK_TYPE_TREE
-static GtkTreeClass *parent_class;
+#define PARENT_TYPE GTK_TYPE_TREE_VIEW
+static GtkTreeViewClass *parent_class;
 
 enum {
 	FOLDER_SELECTED,
@@ -103,13 +103,13 @@ gtkam_tree_destroy (GtkObject *object)
 }
 
 static void
-gtkam_tree_finalize (GtkObject *object)
+gtkam_tree_finalize (GObject *object)
 {
 	GtkamTree *tree = GTKAM_TREE (object);
 
 	g_free (tree->priv);
 
-	GTK_OBJECT_CLASS (parent_class)->finalize (object);
+	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 static void
@@ -184,13 +184,14 @@ gtkam_marshal_NONE__POINTER_BOOL_POINTER_POINTER (GtkObject *object,
 }
 
 static void
-gtkam_tree_class_init (GtkamTreeClass *klass)
+gtkam_tree_class_init (GObjectClass *klass)
 {
 	GtkObjectClass *object_class;
 
 	object_class = GTK_OBJECT_CLASS (klass);
 	object_class->destroy  = gtkam_tree_destroy;
-	object_class->finalize = gtkam_tree_finalize;
+	
+	klass->finalize = gtkam_tree_finalize;
 
 	signals[FOLDER_SELECTED] = gtk_signal_new ("folder_selected",
 		GTK_RUN_FIRST, object_class->type,
@@ -214,7 +215,7 @@ gtkam_tree_class_init (GtkamTreeClass *klass)
 		gtk_marshal_NONE__POINTER, GTK_TYPE_NONE, 1, GTK_TYPE_POINTER);
 	gtk_object_class_add_signals (object_class, signals, LAST_SIGNAL);
 
-	parent_class = gtk_type_class (PARENT_TYPE);
+	parent_class = gtk_type_class_peek_parent (klass);
 }
 
 static void

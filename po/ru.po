@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gphoto\n"
-"POT-Creation-Date: 2002-11-20 19:32+0100\n"
+"POT-Creation-Date: 2002-11-21 09:25+0100\n"
 "PO-Revision-Date: 2000-05-23 22:02+00:00\n"
 "Last-Translator: Valek Filippov <frob@df.ru>\n"
 "Language-Team: Russian <ru@li.org>\n"
@@ -581,7 +581,7 @@ msgstr "Каталог вывода:"
 
 #: src/gtkam-port.c:163
 #, fuzzy, c-format
-msgid "Could not find and io-driver for port '%s' ('%s')."
+msgid "Could not find an io-driver for port '%s' ('%s')."
 msgstr ""
 "Не удалось открыть:\n"
 "%s"

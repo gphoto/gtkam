@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gtKam\n"
-"POT-Creation-Date: 2002-11-20 19:32+0100\n"
+"POT-Creation-Date: 2002-11-21 09:25+0100\n"
 "PO-Revision-Date: 2002-03-01 13:40+0100\n"
 "Last-Translator: Fabian Mandelbaum <fabman@mandrakesoft.com>\n"
 "Language-Team: gphoto-devel <gphoto-devel@gphoto.net>\n"
@@ -546,7 +546,7 @@ msgstr ""
 
 #: src/gtkam-port.c:163
 #, fuzzy, c-format
-msgid "Could not find and io-driver for port '%s' ('%s')."
+msgid "Could not find an io-driver for port '%s' ('%s')."
 msgstr "No se pueden recuperar las funcionalidades de %s"
 
 #: src/gtkam-port.c:198

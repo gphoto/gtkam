@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gtKam\n"
-"POT-Creation-Date: 2002-11-20 19:32+0100\n"
+"POT-Creation-Date: 2002-11-21 09:25+0100\n"
 "PO-Revision-Date: 2002-01-26 21:30MET\n"
 "Last-Translator: Jérôme Fenal <jerome@fenal.org>\n"
 "Language-Team: Français <traduc@traduc.org>\n"
@@ -218,7 +218,8 @@ msgstr "Plus"
 #: src/gtkam-exif.c:155
 #, c-format
 msgid "Getting EXIF information for file '%s' in folder '%s'..."
-msgstr "Récupération des informations EXIF pour le fichier '%s' du dossier '%s'..."
+msgstr ""
+"Récupération des informations EXIF pour le fichier '%s' du dossier '%s'..."
 
 #: src/gtkam-exif.c:171
 #, c-format
@@ -378,7 +379,6 @@ msgstr ""
 "numériques. Il utilise libgphoto2. Plus d'infos sont\n"
 "disponibles sur http://www.gphoto.net.\n"
 "\n"
-""
 "Bienvenue dans le monde merveilleux de gphoto !"
 
 #: src/gtkam-main.c:476
@@ -515,12 +515,13 @@ msgstr "Nouveau dossier"
 
 #: src/gtkam-port.c:163
 #, c-format
-msgid "Could not find and io-driver for port '%s' ('%s')."
+msgid "Could not find an io-driver for port '%s' ('%s')."
 msgstr "Impossible de trouver un pilote d'E/S pour le port '%s' ('%s')."
 
 #: src/gtkam-port.c:198
 msgid "Please specify the (extended) path to the port you would like to use:"
-msgstr "Veuillez spécifier le chemin (étendu) du port que vous voulez utiliser :"
+msgstr ""
+"Veuillez spécifier le chemin (étendu) du port que vous voulez utiliser :"
 
 #: src/gtkam-preview.c:205 src/gtkam-tree.c:791
 msgid "Capturing image..."
@@ -733,7 +734,8 @@ msgstr "_Ajouter un appareil photo..."
 
 #: src/gtkam-tree.c:980
 msgid "Please right-click to access additional menus"
-msgstr "Veuillez cliquer avec le bouton droit pour atteindre les menus additionnels"
+msgstr ""
+"Veuillez cliquer avec le bouton droit pour atteindre les menus additionnels"
 
 #: src/gtkam-tree.c:1005
 msgid "Folder"

@@ -1,6 +1,12 @@
 #!/bin/sh
 # Run this to generate all the initial makefiles, etc.
 
+# Call this file with AUTOCONF_SUFFIX and AUTOMAKE_SUFFIX set
+# if you want us to call a specific version of autoconf or automake. 
+# E.g. if you want us to call automake-1.6 instead of automake (which
+# seems to be quite advisable if your automake is not already version 
+# 1.6) then call this file with AUTOMAKE_SUFFIX set to "-1.6".
+
 DIE=0
 srcdir=`dirname $0`
 test -z "$srcdir" && srcdir=.
@@ -8,7 +14,7 @@ test "$srcdir" = "." && srcdir=`pwd`
 
 PROJECT=gtkam
 
-(autoconf --version) < /dev/null > /dev/null 2>&1 || {
+(autoconf${AUTOCONF_SUFFIX} --version) < /dev/null > /dev/null 2>&1 || {
 	echo
 	echo "**Error**: You must have \`autoconf' installed."
 	echo "Download the appropriate package for your distribution,"
@@ -16,7 +22,7 @@ PROJECT=gtkam
 	DIE=1
 }
 
-(automake --version) < /dev/null > /dev/null 2>&1 || {
+(automake${AUTOMAKE_SUFFIX} --version) < /dev/null > /dev/null 2>&1 || {
 	echo
 	echo "**Error**: You must have \`automake' installed."
 	echo "Download the appropriate package for your distribution,"
@@ -65,13 +71,13 @@ gettextize --force --copy $gettext_opt
 test -f po/Makevars.template &&
 cp po/Makevars.template po/Makevars
 echo "Running aclocal $ACLOCAL_FLAGS..."
-aclocal $ACLOCAL_FLAGS
+aclocal${AUTOMAKE_SUFFIX} $ACLOCAL_FLAGS
 echo "Running autoheader..."
-autoheader
+autoheader${AUTOCONF_SUFFIX}
 echo "Running automake --gnu $am_opt ..."
-automake --add-missing --gnu $am_opt
+automake${AUTOMAKE_SUFFIX} --add-missing --gnu $am_opt
 echo "Running autoconf ..."
-autoconf
+autoconf${AUTOCONF_SUFFIX}
 
 echo
 echo "$PROJECT is now ready for configuration."

@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2001-03-10 01:12+0000\n"
+"POT-Creation-Date: 2001-03-10 09:59-0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -314,23 +314,23 @@ msgstr ""
 msgid "Could not delete photo #%04i. Stopping."
 msgstr ""
 
-#: src/callbacks.c:1059
+#: src/callbacks.c:1069
 msgid "Retrieving camera information..."
 msgstr ""
 
-#: src/callbacks.c:1065
+#: src/callbacks.c:1075
 msgid "Could not retrieve camera information"
 msgstr ""
 
-#: src/callbacks.c:1083
+#: src/callbacks.c:1093
 msgid "Could not retrieve the camera manual"
 msgstr ""
 
-#: src/callbacks.c:1101
+#: src/callbacks.c:1111
 msgid "Could not retrieve library information"
 msgstr ""
 
-#: src/callbacks.c:1117
+#: src/callbacks.c:1127
 msgid ""
 "gtKam was written by:\n"
 "Scott Fritzinger <scottf@unr.edu>\n"
@@ -340,43 +340,43 @@ msgid ""
 "http://www.gphoto.net"
 msgstr ""
 
-#: src/callbacks.c:1134
+#: src/callbacks.c:1144
 msgid "Can't find gtKam AUTHORS file"
 msgstr ""
 
-#: src/callbacks.c:1137
+#: src/callbacks.c:1147
 msgid "gtKam Authors"
 msgstr ""
 
-#: src/callbacks.c:1142
+#: src/callbacks.c:1152
 msgid "Can't find gPhoto2 AUTHORS file"
 msgstr ""
 
-#: src/callbacks.c:1145
+#: src/callbacks.c:1155
 msgid "gPhoto2 Authors"
 msgstr ""
 
-#: src/callbacks.c:1169
+#: src/callbacks.c:1179
 msgid "Can't find gtKam COPYING file"
 msgstr ""
 
-#: src/callbacks.c:1172
+#: src/callbacks.c:1182
 msgid "gtKam License"
 msgstr ""
 
-#: src/callbacks.c:1177
+#: src/callbacks.c:1187
 msgid "Can't find gPhoto2 COPYING file"
 msgstr ""
 
-#: src/callbacks.c:1180
+#: src/callbacks.c:1190
 msgid "gPhoto2 License"
 msgstr ""
 
-#: src/callbacks.c:1201
+#: src/callbacks.c:1211
 msgid "Can't find gtKam MANUAL file"
 msgstr ""
 
-#: src/callbacks.c:1206
+#: src/callbacks.c:1216
 msgid "gtKam Manual"
 msgstr ""
 

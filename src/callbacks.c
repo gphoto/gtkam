@@ -1032,16 +1032,26 @@ void camera_delete_all() {
 
 void camera_configure() {
 
-	debug_print("camera configure");
+        CameraWidget *window;
+
+        debug_print("camera configure");
 
 	if (!gp_gtk_camera_init)
 		if (camera_set()!=GP_OK) {return;}
 
-
-	if (gp_camera_config(gp_gtk_camera)!=GP_OK) {
+        if (gp_camera_get_config(gp_gtk_camera, &window)!=GP_OK) {
 		frontend_message(NULL, "Could not configure the camera");
 		return;
-	}
+        }
+
+        if (frontend_prompt (gp_gtk_camera, window) == GP_PROMPT_OK) {
+            if (gp_camera_set_config(gp_gtk_camera, window)!=GP_OK)
+                frontend_message(NULL, "Could not configure the camera");
+        }
+
+        if (window)
+            gp_widget_free(window);
+
 }
 
 void camera_show_information() {

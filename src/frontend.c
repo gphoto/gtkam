@@ -342,8 +342,10 @@ int frontend_prompt (Camera *camera, CameraWidget *window) {
 
 	gtk_widget_destroy(win);
 
+/*
 	if (cb)
 		(*cb)(camera, window);
+*/
 
 	return (GP_PROMPT_OK);
 }

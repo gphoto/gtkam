@@ -27,32 +27,6 @@ frontend_message (Camera *camera, char *message)
 	return (GP_OK);
 }
 
-int frontend_status(Camera *camera, char *message) {
-
-	GtkWidget *label;
-
-	if (GTK_WIDGET_VISIBLE(gp_gtk_progress_window)) {
-		label  = (GtkWidget*) lookup_widget(gp_gtk_progress_window, "message");
-		gtk_label_set_text(GTK_LABEL(label), message);
-		while (gtk_events_pending ())
-			gtk_main_iteration ();
-		return (GP_OK);
-	}
-
-	return (GP_OK);
-}
-
-int frontend_progress(Camera *camera, CameraFile *file, float percentage) {
-
-	GtkWidget *progress = (GtkWidget*)lookup_widget(gp_gtk_progress_window, "progress_bar");
-
-	gtk_progress_set_percentage(GTK_PROGRESS(progress), percentage/100.0);
-	while (gtk_events_pending ())
-		gtk_main_iteration ();
-
-	return (GP_OK);
-}
-
 int frontend_confirm(Camera *camera, char *message) {
 
 	GtkWidget *confirm = create_confirm_window();

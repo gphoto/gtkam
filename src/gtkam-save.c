@@ -31,7 +31,6 @@
 
 #include <gphoto2/gphoto2-setting.h>
 
-#include "frontend.h"
 #include "util.h"
 #include "gtkam-error.h"
 #include "gtkam-close.h"

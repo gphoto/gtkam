@@ -8,6 +8,7 @@ INCLUDES =						\
 
 noinst_LIBRARIES = libgtkam.a
 libgtkam_a_SOURCES =				\
+	exif.c exif.h				\
 	gdk-pixbuf-hacks.c gdk-pixbuf-hacks.h	\
 	gtkam-chooser.c gtkam-chooser.h 	\
 	gtkam-clist.c gtkam-clist.h		\

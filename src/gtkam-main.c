@@ -65,6 +65,10 @@
 #include <gtk/gtkstock.h>
 #include <gtk/gtkimage.h>
 
+#ifdef HAVE_GNOME
+#  include <libgnome/gnome-help.h>
+#endif
+
 #include <gphoto2/gphoto2-camera.h>
 
 #include "gtkam-cancel.h"

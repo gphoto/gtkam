@@ -266,16 +266,36 @@ on_captured (GtkamPreview *preview, const gchar *path, GtkamMain *m)
 static void
 on_capture_activate (GtkMenuItem *item, GtkamMain *m)
 {
+	CameraAbilities a;
 	GtkWidget *dialog;
+	int result;
+	CameraFilePath path;
 
 	if (!m->priv->camera)
 		return;
 
-	dialog = gtkam_preview_new (m->priv->camera);
-	gtk_window_set_transient_for (GTK_WINDOW (dialog), GTK_WINDOW (m));
-	gtk_widget_show (dialog);
-	gtk_signal_connect (GTK_OBJECT (dialog), "captured",
-			    GTK_SIGNAL_FUNC (on_captured), m);
+	/* Let's first check if the camera supports previews */
+	gp_camera_get_abilities (m->priv->camera, &a);
+	if (a.operations & GP_OPERATION_CAPTURE_PREVIEW) {
+		dialog = gtkam_preview_new (m->priv->camera);
+		gtk_window_set_transient_for (GTK_WINDOW (dialog),
+					      GTK_WINDOW (m));
+		gtk_widget_show (dialog);
+		gtk_signal_connect (GTK_OBJECT (dialog), "captured",
+				    GTK_SIGNAL_FUNC (on_captured), m);
+		return;
+	}
+
+	/* The camera doesn't support previews. Capture an image */
+	result = gp_camera_capture (m->priv->camera, GP_CAPTURE_IMAGE, &path);
+	if (result < 0) {
+		dialog = gtkam_error_new (_("Could not capture"), result,
+					  m->priv->camera, GTK_WIDGET (m));
+		gtk_widget_show (dialog);
+	} else
+		if (m->priv->list->path && !strcmp (path.folder,
+						    m->priv->list->path))
+			gtkam_list_refresh (m->priv->list);
 }
 
 static void

@@ -15,7 +15,7 @@ icon_DATA = gtkam.png
 INCLUDES = \
        -DDATADIR=\""$(datadir)"\"
 
-
+EXTRA_DIST = gtkam.desktop gtkam.png
 
 if ENABLE_RPM
 

@@ -1,3 +1,7 @@
+2001-10-25 Lutz Müller <urc8@rz.uni-karlsruhe.de>
+
+	* src: Adapt to changes in gphoto2-port
+
 2001-10-24 Hans Ulrich Niedermann <gp@n-dimensional.de>
 	
 	* src/gtkam-debug.c: adapted to new gp_log*() interface - compiles

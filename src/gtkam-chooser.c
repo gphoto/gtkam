@@ -56,7 +56,6 @@
 #include <gtk/gtkentry.h>
 #include <gtk/gtkcombo.h>
 
-#include <gphoto2/gphoto2-port-core.h>
 #include <gphoto2/gphoto2-abilities-list.h>
 #include <gphoto2/gphoto2-setting.h>
 
@@ -67,6 +66,7 @@
 struct _GtkamChooserPrivate
 {
 	CameraAbilitiesList *al;
+	GPPortInfoList *il;
 
 	GtkWidget *label_speed;
 	GtkEntry *entry_model, *entry_port, *entry_speed;
@@ -93,6 +93,11 @@ gtkam_chooser_destroy (GtkObject *object)
 	if (chooser->priv->al) {
 		gp_abilities_list_free (chooser->priv->al);
 		chooser->priv->al = NULL;
+	}
+
+	if (chooser->priv->il) {
+		gp_port_info_list_free (chooser->priv->il);
+		chooser->priv->il = NULL;
 	}
 
 	GTK_OBJECT_CLASS (parent_class)->destroy (object);
@@ -154,11 +159,12 @@ gtkam_chooser_get_type (void)
 static void
 on_apply_clicked (GtkButton *button, GtkamChooser *chooser)
 {
+	GPPortInfo info;
 	Camera *camera;
 	CameraAbilities abilities;
 	const gchar *model, *port, *speed;
 	gchar *speed_number;
-	int result, m;
+	int result, m, p;
 	GtkWidget *dialog;
 	gchar *port_name, *msg;
 	guint i;
@@ -181,11 +187,21 @@ on_apply_clicked (GtkButton *button, GtkamChooser *chooser)
 	}
 
 	gp_camera_new (&camera);
+
+	/* Model? */
 	m = gp_abilities_list_lookup_model (chooser->priv->al, model);
 	gp_abilities_list_get_abilities (chooser->priv->al, m, &abilities);
 	gp_camera_set_abilities (camera, abilities);
-	if (strcmp (port_name, _("None")))
-		gp_camera_set_port_name  (camera, port_name);
+
+	/* Port? */
+	if (strcmp (port_name, _("None"))) {
+		p = gp_port_info_list_lookup_name (chooser->priv->il,
+						   port_name);
+		gp_port_info_list_get_info (chooser->priv->il, p, &info);
+		gp_camera_set_port_info (camera, info);
+	}
+
+	/* Speed? */
 	if (strcmp (speed, _("Best")))
 		gp_camera_set_port_speed (camera, atoi (speed));
 
@@ -270,7 +286,7 @@ on_model_changed (GtkEntry *entry, GtkamChooser *chooser)
 		return;
 	}
 
-	count = gp_port_core_count ();
+	count = gp_port_info_list_count (chooser->priv->il);
 	if (count < 0) {
 		dialog = gtkam_error_new (_("Could not get number of ports"),
 					  count, NULL, GTK_WIDGET (chooser));
@@ -280,7 +296,7 @@ on_model_changed (GtkEntry *entry, GtkamChooser *chooser)
 
 	list = NULL;
 	for (i = 0; i < count; i++) {
-		gp_port_core_get_info (i, &info);
+		gp_port_info_list_get_info (chooser->priv->il, i, &info);
 		if (info.type & a.port)
 			list = g_list_append (list,
 					      g_strdup_printf ("%s (%s)",
@@ -325,7 +341,8 @@ on_detect_clicked (GtkButton *button, GtkamChooser *chooser)
 	int result;
 	const char *name;
 
-	result = gp_abilities_list_detect (chooser->priv->al, &list);
+	result = gp_abilities_list_detect (chooser->priv->al,
+					   chooser->priv->il, &list);
 	if (result < 0) {
 		dialog = gtkam_error_new (_("Could not detect any cameras"),
 					  result, NULL, GTK_WIDGET (chooser));
@@ -348,17 +365,20 @@ gtkam_chooser_new (Camera *opt_camera)
 {
 	GtkamChooser *chooser;
 	GtkWidget *table, *label, *button, *combo, *dialog;
-	const char *port_name, *port_path;
 	gint i, s;
 	GList *list;
 	int count;
 	gchar *speed, *port;
 	CameraAbilities a;
+	GPPortInfo info;
 
 	chooser = gtk_type_new (GTKAM_TYPE_CHOOSER);
 
 	gp_abilities_list_new (&(chooser->priv->al));
 	gp_abilities_list_load (chooser->priv->al);
+
+	gp_port_info_list_new (&(chooser->priv->il));
+	gp_port_info_list_load (chooser->priv->il);
 
 	gtk_window_set_title (GTK_WINDOW (chooser), _("Select Camera"));
 	gtk_container_set_border_width (GTK_CONTAINER (chooser), 5);
@@ -462,12 +482,11 @@ gtkam_chooser_new (Camera *opt_camera)
 
 	if (opt_camera) {
 		gp_camera_get_abilities (opt_camera, &a);
-		gp_camera_get_port_name (opt_camera, &port_name);
-		gp_camera_get_port_path (opt_camera, &port_path);
+		gp_camera_get_port_info (opt_camera, &info);
 
 		gtk_entry_set_text (chooser->priv->entry_model, a.model);
 
-		port = g_strdup_printf ("%s (%s)", port_name, port_path);
+		port = g_strdup_printf ("%s (%s)", info.name, info.path);
 		gtk_entry_set_text (chooser->priv->entry_port, port);
 		g_free (port);
 

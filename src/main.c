@@ -57,9 +57,11 @@ main (int argc, char *argv[])
 {
 	GtkWidget *m, *dialog;
 	char buf[1024], port[1024], speed[1024], model[1024];
-	int x, y, result, n;
+	int x, y, result, n, p;
 	Camera *camera;
 	CameraAbilitiesList *al;
+	GPPortInfoList *il;
+	GPPortInfo info;
 	CameraAbilities a;
 	gchar *msg;
 
@@ -94,14 +96,23 @@ main (int argc, char *argv[])
 	     (gp_setting_get ("gtkam", "port name", port) == GP_OK)) && 
 	    (gp_setting_get ("gtkam", "speed", speed) == GP_OK)) {
 		gp_camera_new (&camera);
+
 		gp_abilities_list_new (&al);
 		gp_abilities_list_load (al);
+		gp_port_info_list_new (&il);
+		gp_port_info_list_load (il);
+
 		n = gp_abilities_list_lookup_model (al, model);
 		gp_abilities_list_get_abilities (al, n, &a);
 		gp_abilities_list_free (al);
+
+		p = gp_port_info_list_lookup_name (il, port);
+		gp_port_info_list_get_info (il, p, &info);
+		gp_port_info_list_free (il);
+
 		gp_camera_set_abilities (camera, a);
 		if (strcmp (port, "None") && strcmp (model, "Directory Browse"))
-			gp_camera_set_port_name (camera, port);
+			gp_camera_set_port_info (camera, info);
 		if (atoi (speed))
 			gp_camera_set_port_speed (camera, atoi (speed));
 

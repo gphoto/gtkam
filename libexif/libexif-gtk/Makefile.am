@@ -3,7 +3,7 @@ INCLUDES =				\
 	$(GTK_CFLAGS)			\
 	-DG_LOG_DOMAIN=\"libexif\"
 
-lib_LTLIBRARIES = libexif-gtk.la
+noinst_LTLIBRARIES = libexif-gtk.la
 
 libexif_gtkincludedir = $(includedir)/libexif-gtk
 libexif_gtkinclude_HEADERS =		\

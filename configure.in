@@ -109,6 +109,8 @@ if test "x$GCC" = "xyes"; then
 fi
 changequote([,])dnl
 
+AC_CONFIG_SUBDIRS(libexif)
+
 AC_OUTPUT([
 Makefile
 intl/Makefile

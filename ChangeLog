@@ -1,3 +1,7 @@
+2001-12-19  Lutz Müller <urc8@rz.uni-karlsruhe.de>
+
+	* libexif: Hook it up.
+
 2001-12-14  Lutz Müller <urc8@rz.uni-karlsruhe.de>
 
 	* src/gtkam-delete.c: Put the list into a scrolled window if it 

@@ -1,7 +1,7 @@
 INCLUDES =		\
 	-I$(top_srcdir)
 
-lib_LTLIBRARIES = libjpeg.la
+noinst_LTLIBRARIES = libjpeg.la
 libjpeg_la_SOURCES =	\
 	jpeg-data.c	\
 	jpeg-marker.c

@@ -1,4 +1,4 @@
-AC_INIT(libexif/exif.h)
+AC_INIT(libexif/exif-data.h)
 AM_CONFIG_HEADER(config.h)
 AM_INIT_AUTOMAKE(libexif, 0.1)
 AM_MAINTAINER_MODE
@@ -49,7 +49,7 @@ libexif.pc
 
 echo "
 
-Configuration:
+Configuration (libexif):
 
 	Source code location:  ${srcdir}
 	Compiler:              ${CC}

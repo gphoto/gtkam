@@ -38,7 +38,7 @@ if test "$DIE" -eq 1; then
     exit 1
 fi
 
-test -f libexif/exif.h || {
+test -f libexif/exif-data.h || {
         echo "You must run this script in the top-level gphoto2 directory"
         exit 1
 }

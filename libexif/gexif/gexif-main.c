@@ -163,6 +163,12 @@ gexif_main_load_file (GExifMain *m, const gchar *path)
 }
 
 static void
+gexif_main_save_file (GExifMain *m, const gchar *path)
+{
+	jpeg_data_save_file (m->priv->data, path);
+}
+
+static void
 on_exit_activate (GtkMenuItem *item, GExifMain *m)
 {
 	gtk_object_destroy (GTK_OBJECT (m));
@@ -171,13 +177,45 @@ on_exit_activate (GtkMenuItem *item, GExifMain *m)
 static void
 on_save_activate (GtkMenuItem *item, GExifMain *m)
 {
-	g_warning ("Implement!");
+	gexif_main_save_file (m, m->priv->path);
+}
+
+static void
+on_cancel_clicked (GtkButton *button, GExifMain *m)
+{
+	GtkWidget *fsel;
+
+	fsel = gtk_widget_get_ancestor (GTK_WIDGET (button), GTK_TYPE_WINDOW);
+	gtk_object_destroy (GTK_OBJECT (fsel));
+}
+
+static void
+on_save_as_ok_clicked (GtkButton *button, GExifMain *m)
+{
+	GtkWidget *fsel;
+
+	fsel = gtk_widget_get_ancestor (GTK_WIDGET (button),
+					GTK_TYPE_FILE_SELECTION);
+	gexif_main_save_file (m,
+		gtk_file_selection_get_filename (GTK_FILE_SELECTION (fsel)));
+	gtk_object_destroy (GTK_OBJECT (fsel));
 }
 
 static void
 on_save_as_activate (GtkMenuItem *item, GExifMain *m)
 {
-	g_warning ("Implement!");
+	GtkWidget *fsel;
+
+	fsel = gtk_file_selection_new (_("Save As..."));
+	gtk_widget_show (fsel);
+	gtk_window_set_transient_for (GTK_WINDOW (fsel), GTK_WINDOW (m));
+	gtk_signal_connect (GTK_OBJECT (GTK_FILE_SELECTION (fsel)->ok_button),
+			"clicked", GTK_SIGNAL_FUNC (on_save_as_ok_clicked), m);
+	gtk_signal_connect (
+			GTK_OBJECT (GTK_FILE_SELECTION (fsel)->cancel_button),
+			"clicked", GTK_SIGNAL_FUNC (on_cancel_clicked), m);
+	gtk_file_selection_set_filename (GTK_FILE_SELECTION (fsel),
+					 m->priv->path);
 }
 
 static void
@@ -193,15 +231,6 @@ on_open_ok_clicked (GtkButton *button, GExifMain *m)
 }
 
 static void
-on_open_cancel_clicked (GtkButton *button, GExifMain *m)
-{
-	GtkWidget *fsel;
-
-	fsel = gtk_widget_get_ancestor (GTK_WIDGET (button), GTK_TYPE_WINDOW);
-	gtk_object_destroy (GTK_OBJECT (fsel));
-}
-
-static void
 on_open_activate (GtkMenuItem *item, GExifMain *m)
 {
 	GtkWidget *fsel;
@@ -213,7 +242,7 @@ on_open_activate (GtkMenuItem *item, GExifMain *m)
 		"clicked", GTK_SIGNAL_FUNC (on_open_ok_clicked), m);
 	gtk_signal_connect (
 		GTK_OBJECT (GTK_FILE_SELECTION (fsel)->cancel_button),
-		"clicked", GTK_SIGNAL_FUNC (on_open_cancel_clicked), m);
+		"clicked", GTK_SIGNAL_FUNC (on_cancel_clicked), m);
 }
 
 static void

@@ -72,6 +72,14 @@ void      jpeg_data_ref   (JPEGData *data);
 void      jpeg_data_unref (JPEGData *data);
 void      jpeg_data_free  (JPEGData *data);
 
+void      jpeg_data_load_data     (JPEGData *data, const unsigned char *d,
+				   unsigned int size);
+void      jpeg_data_save_data     (JPEGData *data, unsigned char **d,
+				   unsigned int *size);
+
+void      jpeg_data_load_file     (JPEGData *data, const char *path);
+void      jpeg_data_save_file     (JPEGData *data, const char *path);
+
 ExifData *jpeg_data_get_exif_data (JPEGData *data);
 
 void      jpeg_data_dump (JPEGData *data);

@@ -68,18 +68,39 @@ jpeg_data_append_section (JPEGData *data)
 	data->count++;
 }
 
+void
+jpeg_data_save_file (JPEGData *data, const char *path)
+{
+}
+
+void
+jpeg_data_save_data (JPEGData *data, unsigned char **d, unsigned int *size)
+{
+}
+
 JPEGData *
-jpeg_data_new_from_data (const unsigned char *data,
+jpeg_data_new_from_data (const unsigned char *d,
 			 unsigned int size)
 {
-	JPEGData *jdata;
+	JPEGData *data;
+
+	data = jpeg_data_new ();
+	jpeg_data_load_data (data, d, size);
+	return (data);
+}
+
+void
+jpeg_data_load_data (JPEGData *data, const unsigned char *d,
+		     unsigned int size)
+{
 	unsigned int i, o, len;
 	JPEGSection *s;
 	JPEGMarker marker;
 
-	jdata = jpeg_data_new ();
-	if (!jdata)
-		return (NULL);
+	if (!data)
+		return;
+	if (!d)
+		return;
 
 #ifdef DEBUG
 	printf ("Parsing %i bytes...\n", size);
@@ -92,13 +113,11 @@ jpeg_data_new_from_data (const unsigned char *data,
 		 * not 0xff is a marker (hopefully).
 		 */
 		for (i = 0; i < 7; i++)
-			if (data[o + i] != 0xff)
+			if (d[o + i] != 0xff)
 				break;
-		if (!JPEG_IS_MARKER (data[o + i])) {
-			jpeg_data_free (jdata);
-			return (NULL);
-		}
-		marker = data[o + i];
+		if (!JPEG_IS_MARKER (d[o + i]))
+			return;
+		marker = d[o + i];
 
 #ifdef DEBUG
 		printf ("Found marker 0x%x ('%s') at %i.\n", marker,
@@ -106,8 +125,8 @@ jpeg_data_new_from_data (const unsigned char *data,
 #endif
 
 		/* Append this section */
-		jpeg_data_append_section (jdata);
-		s = &jdata->sections[jdata->count - 1];
+		jpeg_data_append_section (data);
+		s = &data->sections[data->count - 1];
 		s->marker = marker;
 
 		switch (marker) {
@@ -173,12 +192,12 @@ jpeg_data_new_from_data (const unsigned char *data,
 		case JPEG_MARKER_COM:
 			
 			/* Read the length of the section */
-			len = (data[o + i + 1] << 8) | data[o + i + 2];
+			len = (d[o + i + 1] << 8) | d[o + i + 2];
 
 			switch (marker) {
 			case JPEG_MARKER_APP1:
 				s->content.exif = exif_data_new_from_data (
-					&data[o + i], size - o - i);
+					&d[o + i], size - o - i);
 				break;
 			case JPEG_MARKER_SOF0:
 			case JPEG_MARKER_SOF1:
@@ -193,12 +212,12 @@ jpeg_data_new_from_data (const unsigned char *data,
 			case JPEG_MARKER_SOF13:
 			case JPEG_MARKER_SOF14:
 			case JPEG_MARKER_SOF15:
-				s->content.sof.precision = data[o + i + 3];
-				s->content.sof.height = (data[o + i + 4] << 8) |
-							 data[o + i + 5];
-				s->content.sof.width = (data[o + i + 6] << 8) |
-							data[o + i + 7];
-				s->content.sof.components = data[o + i + 8];
+				s->content.sof.precision =  d[o + i + 3];
+				s->content.sof.height =    (d[o + i + 4] << 8) |
+							    d[o + i + 5];
+				s->content.sof.width =     (d[o + i + 6] << 8) |
+							    d[o + i + 7];
+				s->content.sof.components = d[o + i + 8];
 				break;
 			default:
 				break;
@@ -214,11 +233,9 @@ jpeg_data_new_from_data (const unsigned char *data,
 			len = size - 2 - o - i - 1;
 
 			s->content.sos.data = malloc (sizeof (char) * len);
-			if (!s->content.sos.data) {
-				jpeg_data_free (jdata);
-				return (NULL);
-			}
-			memcpy (s->content.sos.data, data + o + i + 1,
+			if (!s->content.sos.data)
+				return;
+			memcpy (s->content.sos.data, d + o + i + 1,
 				len);
 			s->content.sos.size = len;
 			break;
@@ -228,47 +245,58 @@ jpeg_data_new_from_data (const unsigned char *data,
 			len = 0;
 			break;
 		default:
-			jpeg_data_free (jdata);
-			return (NULL);
+			return;
 		}
 
 		/* Jump to next section */
 		o += i + 1 + len;
 	}
-
-	return (jdata);
 }
 
 JPEGData *
 jpeg_data_new_from_file (const char *path)
 {
+	JPEGData *data;
+
+	data = jpeg_data_new ();
+	jpeg_data_load_file (data, path);
+	return (data);
+}
+
+void
+jpeg_data_load_file (JPEGData *data, const char *path)
+{
 	FILE *f;
-	JPEGData *jdata;
-	unsigned char *data;
+	unsigned char *d;
 	unsigned int size;
+
+	if (!data)
+		return;
+	if (!path)
+		return;
 
 	f = fopen (path, "r");
 	if (!f)
-		return (NULL);
+		return;
 
 	/* For now, we read the data into memory. Patches welcome... */
 	fseek (f, 0, SEEK_END);
 	size = ftell (f);
 	fseek (f, 0, SEEK_SET);
-	data = malloc (sizeof (char) * size);
-	if (!data)
-		return (NULL);
-	if (fread (data, 1, size, f) != size) {
-		free (data);
-		return (NULL);
+	d = malloc (sizeof (char) * size);
+	if (!d) {
+		fclose (f);
+		return;
 	}
-
-	jdata = jpeg_data_new_from_data (data, size);
-	free (data);
-
+	if (fread (d, 1, size, f) != size) {
+		free (d);
+		fclose (f);
+		return;
+	}
 	fclose (f);
 
-	return (jdata);
+	jpeg_data_load_data (data, d, size);
+	free (d);
 }
 
 void
@@ -304,31 +332,30 @@ jpeg_data_free (JPEGData *data)
 		for (i = 0; i < data->count; i++) {
 			s = data->sections[i];
 			switch (s.marker) {
-				case JPEG_MARKER_SOF0:
-				case JPEG_MARKER_SOF1:
-				case JPEG_MARKER_SOF2:
-				case JPEG_MARKER_SOF3:
-				case JPEG_MARKER_SOF5:
-				case JPEG_MARKER_SOF6:
-				case JPEG_MARKER_SOF7:
-				case JPEG_MARKER_SOF9:
-				case JPEG_MARKER_SOF10:
-				case JPEG_MARKER_SOF11:
-				case JPEG_MARKER_SOF13:
-				case JPEG_MARKER_SOF14:
-				case JPEG_MARKER_SOF15:
-					break;
-				case JPEG_MARKER_SOS:
-					if (s.content.sos.size)
-						free (s.content.sos.data);
-					break;
-				case JPEG_MARKER_APP1:
-					if (s.content.exif)
-						exif_data_unref (
-							s.content.exif);
-					break;
-				default:
-					break;
+			case JPEG_MARKER_SOF0:
+			case JPEG_MARKER_SOF1:
+			case JPEG_MARKER_SOF2:
+			case JPEG_MARKER_SOF3:
+			case JPEG_MARKER_SOF5:
+			case JPEG_MARKER_SOF6:
+			case JPEG_MARKER_SOF7:
+			case JPEG_MARKER_SOF9:
+			case JPEG_MARKER_SOF10:
+			case JPEG_MARKER_SOF11:
+			case JPEG_MARKER_SOF13:
+			case JPEG_MARKER_SOF14:
+			case JPEG_MARKER_SOF15:
+				break;
+			case JPEG_MARKER_SOS:
+				if (s.content.sos.size)
+					free (s.content.sos.data);
+				break;
+			case JPEG_MARKER_APP1:
+				if (s.content.exif)
+					exif_data_unref (s.content.exif);
+				break;
+			default:
+				break;
 			}
 		}
 		free (data->sections);

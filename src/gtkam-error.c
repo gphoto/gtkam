@@ -145,8 +145,7 @@ gtkam_error_new (const gchar *msg, int result, Camera *opt_camera,
 {
 	GtkamError *error;
 	GtkWidget *text, *vscrollbar, *button, *label;
-	const char *history;
-	const char *gmsg;
+	const char *error_info;
 	gchar *full_msg;
 
 	g_return_val_if_fail (result < 0, NULL);
@@ -154,12 +153,8 @@ gtkam_error_new (const gchar *msg, int result, Camera *opt_camera,
 	error = gtk_type_new (GTKAM_TYPE_ERROR);
 	gtk_window_set_policy (GTK_WINDOW (error), TRUE, TRUE, TRUE);
 
-	if (opt_camera)
-		gmsg = gp_camera_get_result_as_string (opt_camera, result);
-	else
-		gmsg = gp_result_as_string (result);
-
-	full_msg = g_strdup_printf ("%s:\n\n'%s'", msg, gmsg);
+	full_msg = g_strdup_printf ("%s:\n\n'%s'", msg,
+				    gp_result_as_string (result));
 	label = gtk_label_new (full_msg);
 	g_free (full_msg);
 	gtk_widget_show (label);
@@ -175,9 +170,9 @@ gtkam_error_new (const gchar *msg, int result, Camera *opt_camera,
 	gtk_text_set_editable (GTK_TEXT (text), FALSE);
 	gtk_box_pack_start (GTK_BOX (error->priv->hbox), text, TRUE, TRUE, 0);
 
-	history = gp_log_history_get ();
+	error_info = gp_camera_get_error (opt_camera);
 	gtk_text_insert (GTK_TEXT (text), NULL, NULL, NULL,
-			 history, strlen (history));
+			 error_info, strlen (error_info));
 
 	vscrollbar = gtk_vscrollbar_new (GTK_TEXT (text)->vadj);
 	gtk_widget_show (vscrollbar);
@@ -185,7 +180,7 @@ gtkam_error_new (const gchar *msg, int result, Camera *opt_camera,
 			  vscrollbar, FALSE, FALSE, 0);
 
 	button = gtk_toggle_button_new_with_label (
-					_("Show debugging messages"));
+					_("More"));
 	gtk_widget_show (button);
 	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (error)->action_area),
 			   button);

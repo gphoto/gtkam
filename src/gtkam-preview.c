@@ -202,8 +202,7 @@ timeout_func (gpointer user_data)
 	result = gp_camera_capture_preview (preview->priv->camera, file);
 	if (result != GP_OK) {
 		g_warning ("Could not capture: %s",
-			   gp_camera_get_result_as_string (
-				   preview->priv->camera, result));
+			   gp_result_as_string (result));
 		gp_file_unref (file);
 		return (TRUE);
 	}

@@ -1,4 +1,5 @@
 ## Process this file with automake to produce Makefile.in
+# Or rather, run autogen.sh to set up everything else.
 
 SUBDIRS = art doc help omf-install packaging pixmaps po src test
 

@@ -588,13 +588,13 @@ gtkam_chooser_new (void)
 	vbox = gtk_vbox_new (FALSE, 0);
 	gtk_widget_show (vbox);
 	gtk_box_pack_start (GTK_BOX (GTKAM_DIALOG (chooser)->vbox),
-			    vbox, TRUE, TRUE, 0);
+			    vbox, FALSE, FALSE, 0);
 
 	table = gtk_table_new (3, 3, FALSE);
 	gtk_table_set_row_spacings (GTK_TABLE (table), 5);
 	gtk_table_set_col_spacings (GTK_TABLE (table), 5);
 	gtk_widget_show (table);
-	gtk_box_pack_start (GTK_BOX (vbox), table, TRUE, TRUE, 0);
+	gtk_box_pack_start (GTK_BOX (vbox), table, FALSE, FALSE, 0);
 	chooser->priv->table = table;
 
 	label = gtk_label_new (_("Model:"));
@@ -665,14 +665,12 @@ gtkam_chooser_new (void)
 	g_signal_connect (GTK_OBJECT (button), "toggled",
 			    GTK_SIGNAL_FUNC (on_more_options_toggled), chooser);
 
-	button = gtk_button_new_from_stock (GTK_STOCK_OK);
+	button = gtk_button_new_from_stock (GTK_STOCK_CANCEL);
 	gtk_widget_show (button);
 	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (chooser)->action_area),
 			   button);
 	g_signal_connect (GTK_OBJECT (button), "clicked",
-			    GTK_SIGNAL_FUNC (on_ok_clicked), chooser);
-	gtk_widget_grab_focus (button);
-	chooser->priv->ok = button;
+			    GTK_SIGNAL_FUNC (on_cancel_clicked), chooser);
 
 	chooser->apply_button = gtk_button_new_from_stock (GTK_STOCK_APPLY);
 	gtk_widget_show (chooser->apply_button);
@@ -682,12 +680,14 @@ gtkam_chooser_new (void)
 	g_signal_connect (GTK_OBJECT (chooser->apply_button), "clicked",
 			    GTK_SIGNAL_FUNC (on_apply_clicked), chooser);
 
-	button = gtk_button_new_from_stock (GTK_STOCK_CANCEL);
+	button = gtk_button_new_from_stock (GTK_STOCK_OK);
 	gtk_widget_show (button);
 	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (chooser)->action_area),
 			   button);
 	g_signal_connect (GTK_OBJECT (button), "clicked",
-			    GTK_SIGNAL_FUNC (on_cancel_clicked), chooser);
+			    GTK_SIGNAL_FUNC (on_ok_clicked), chooser);
+	gtk_widget_grab_focus (button);
+	chooser->priv->ok = button;
 
 	/* Fill the model combo with all models */
 	gtkam_chooser_set_camera_mask (chooser, GP_OPERATION_NONE);

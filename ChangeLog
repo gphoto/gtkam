@@ -1,3 +1,10 @@
+2003-12-03  Lutz Mueller <lutz@users.sourceforge.net>
+
+	More suggestions b Andrew Burton <adb@iinet.net.au> without 
+	ChangeLog
+
+	* src/gtkam-chooser.c: GUI improvements.
+
 2003-12-02  Lutz Mueller <lutz@users.sourceforge.net>
 
 	Patch originally by Andrew Burton <adb@iinet.net.au>, modified:

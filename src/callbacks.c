@@ -91,16 +91,16 @@ int camera_set() {
 	gtk_label_set_text(GTK_LABEL(message_label), _("Initializing camera..."));
 
 	/* Retrieve which camera to use */
-	if (gp_setting_get("gtk-old", "camera", camera)==GP_ERROR) {
+	if (gp_setting_get("gtkam", "camera", camera)==GP_ERROR) {
 		gp_camera_message(NULL, _("You must choose a camera"));
 		camera_select();
 	}
 
 	/* Retrieve the port to use */
-	gp_setting_get("gtk-old", "port", port);
+	gp_setting_get("gtkam", "port", port);
 
 	/* Retrieve the speed to use */
-	gp_setting_get("gtk-old", "speed", speed);
+	gp_setting_get("gtkam", "speed", speed);
 
 	/* Set up the camera initialization */
 	strcpy(ps.path, port);
@@ -167,9 +167,9 @@ int main_quit(GtkWidget *widget, gpointer data) {
 	/* Save the window size */
 	gdk_window_get_size(gp_gtk_main_window->window, &x, &y);
 	sprintf(buf, "%i", x);
-	gp_setting_set("gtk-old", "width", buf);
+	gp_setting_set("gtkam", "width", buf);
 	sprintf(buf, "%i", y);
-	gp_setting_set("gtk-old", "height", buf);
+	gp_setting_set("gtkam", "height", buf);
 
 	if (gp_gtk_camera_init)
 		gp_exit();
@@ -189,7 +189,7 @@ void open_photo() {
 	debug_print("open photo");
 
 	filesel = gtk_file_selection_new("Open a photo");
-	gp_setting_get("gtk-old", "cwd", buf);
+	gp_setting_get("gtkam", "cwd", buf);
 	gtk_file_selection_set_filename(GTK_FILE_SELECTION(filesel), buf);
 
 	if (wait_for_hide(filesel, GTK_FILE_SELECTION(filesel)->ok_button,
@@ -268,7 +268,8 @@ void save_selected_photos() {
 		if (item->state == GTK_STATE_SELECTED) {
 		   /* Save the photo */
 		   if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(save_photos))) {
-			sprintf(msg, "Saving photo #%04i of %04i\n%s", x+1, num,
+			sprintf(msg, "Saving photo #%04i of %04i\n%s", x+1,
+				GTK_ICON_LIST(icon_list)->num_icons,
 				(char*)gtk_object_get_data(GTK_OBJECT(item->pixmap), "name"));
 			gp_camera_message(gp_gtk_camera, msg);
 			f = gp_file_new();
@@ -372,6 +373,8 @@ void save_selected_photos() {
 					gp_file_save(f, fname);
 					if (strlen(progname)>0)
 						exec_command(progname, fname);
+				} else {
+					/* Ask for another filename! */
 				}
 			} else {
 				gp_file_save(f, fname);
@@ -762,11 +765,11 @@ void camera_select() {
 		GTK_SIGNAL_FUNC (camera_select_update_port), (gpointer)window);
 
 	/* Retrieve the saved values */
-	if (gp_setting_get("gtk-old", "camera", buf)==GP_OK)
+	if (gp_setting_get("gtkam", "camera", buf)==GP_OK)
 		gtk_entry_set_text(GTK_ENTRY(GTK_COMBO(camera)->entry), buf);
-	if (gp_setting_get("gtk-old", "port name", buf)==GP_OK)
+	if (gp_setting_get("gtkam", "port name", buf)==GP_OK)
 		gtk_entry_set_text(GTK_ENTRY(GTK_COMBO(port)->entry), buf);
-	if (gp_setting_get("gtk-old", "speed", buf)==GP_OK)
+	if (gp_setting_get("gtkam", "speed", buf)==GP_OK)
 		gtk_entry_set_text(GTK_ENTRY(GTK_COMBO(speed)->entry), buf);
 
 camera_select_again:
@@ -794,22 +797,22 @@ camera_select_again:
 		goto camera_select_again;
 	}
 
-	gp_setting_set("gtk-old", "camera", camera_name);
+	gp_setting_set("gtkam", "camera", camera_name);
 
 	if (GTK_WIDGET_SENSITIVE(port)) {
 		sprintf(buf, "%s path", port_name);
 		port_path = (char*)gtk_object_get_data(GTK_OBJECT(window), buf);
-		gp_setting_set("gtk-old", "port name", port_name);
-		gp_setting_set("gtk-old", "port", port_path);
+		gp_setting_set("gtkam", "port name", port_name);
+		gp_setting_set("gtkam", "port", port_path);
 	}  else {
-		gp_setting_set("gtk-old", "port name", "");
-		gp_setting_set("gtk-old", "port", "");
+		gp_setting_set("gtkam", "port name", "");
+		gp_setting_set("gtkam", "port", "");
 	}
 
 	if (GTK_WIDGET_SENSITIVE(speed))
-		gp_setting_set("gtk-old", "speed", speed_name);
+		gp_setting_set("gtkam", "speed", speed_name);
 	   else
-		gp_setting_set("gtk-old", "speed", "");
+		gp_setting_set("gtkam", "speed", "");
 
 
 	if (camera_set()==GP_ERROR)
@@ -841,7 +844,7 @@ void camera_index () {
 	icon_list   = (GtkWidget*) lookup_widget(gp_gtk_main_window, "icons");
 	GTK_ICON_LIST(icon_list)->is_editable = FALSE;
 
-	if (gp_setting_get("gtk-old", "camera", buf)==GP_ERROR) {
+	if (gp_setting_get("gtkam", "camera", buf)==GP_ERROR) {
 		gp_camera_message(NULL, _("ERROR: please choose your camera model again"));
 		camera_select();
 		return;
@@ -917,7 +920,7 @@ void camera_delete_common(int all) {
 	if (!gp_gtk_camera_init)
 		if (camera_set()==GP_ERROR) {return;}
 
-	if (gp_setting_get("gtk-old", "camera", buf)==GP_ERROR) {
+	if (gp_setting_get("gtkam", "camera", buf)==GP_ERROR) {
 		gp_camera_message(NULL, _("ERROR: please choose your camera model again"));
 		camera_select();
 		return;
@@ -1017,6 +1020,7 @@ void camera_configure_build_rec (CameraWidget *w, GtkWidget *box, GtkWidget *win
 				gtk_box_pack_start(GTK_BOX(box), notebook, TRUE, TRUE, 0);
 				gtk_object_set_data(GTK_OBJECT(window), "notebook", notebook);
 			}
+
 			/* Create the new label for the page */
 			label = gtk_label_new(gp_widget_label(w));
 			gtk_widget_show(label);
@@ -1231,7 +1235,6 @@ void camera_configure() {
 	window = gtk_dialog_new();
 	gtk_window_set_title(GTK_WINDOW(window), gp_widget_label(w));
 	gtk_window_set_modal(GTK_WINDOW(window), TRUE);
-	gtk_window_set_default_size(GTK_WINDOW(window), 300, 400);
 	gtk_window_set_position (GTK_WINDOW (window), GTK_WIN_POS_CENTER);
 
 	ok = gtk_button_new_with_label("OK");

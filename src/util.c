@@ -1,3 +1,7 @@
+#ifdef HAVE_CONFIG_H
+# include <config.h>
+#endif
+
 #include <dirent.h>
 #include <stdio.h>    
 #include <stdlib.h>
@@ -8,17 +12,14 @@
 #include <gdk-pixbuf/gdk-pixbuf.h> 
 #include <gphoto2.h>
 #include "callbacks.h"
+#include "support.h"
 #include "util.h"
 
 int exec_command (char *command, char *args) {
 
-	char buf[1024];
-
 	if (fork() == 0) {
 		execlp(command, command, args, NULL);
-		sprintf(buf, "Could not run the program \"%s\"", command);
-		gp_camera_message(NULL, buf);
-		exit(EXIT_FAILURE);
+		_exit (0);
 	}
 
 	return (GP_OK);
@@ -54,9 +55,6 @@ int gdk_image_new_from_data (char *image_data, int image_size, int scale,
 	gdk_pixbuf_loader_close (loader);
 	pixbuf = gdk_pixbuf_loader_get_pixbuf (loader);
 
-/*
-	pixbuf = gdk_pixbuf_new_from_file ("/home/scottf/graphics/THEHAND.JPG");
-*/	
 	if (!pixbuf) {
 		debug_print("Loader choked on image data");
 		return (GP_ERROR);
@@ -192,7 +190,7 @@ GtkWidget *gtk_directory_selection_new(char *title) {
 
 	entry = gtk_entry_new();
 	gtk_widget_show(entry);
-//	gtk_entry_set_text(GTK_ENTRY(entry), filesel_cwd);
+/*	gtk_entry_set_text(GTK_ENTRY(entry), filesel_cwd); */
 	gtk_signal_connect(GTK_OBJECT(entry), "changed",
 		GTK_SIGNAL_FUNC(gtk_directory_selection_update),
 		dirsel);

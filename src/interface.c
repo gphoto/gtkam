@@ -130,7 +130,7 @@ create_save_window (int directory_only)
   gtk_window_set_position (GTK_WINDOW (save_window), GTK_WIN_POS_CENTER);
   gtk_window_set_modal (GTK_WINDOW (save_window), TRUE);
   gtk_window_set_default_size (GTK_WINDOW (save_window), 450, 400);
-  if (gp_setting_get("gtk-old", "cwd", buf)==GP_OK)
+  if (gp_setting_get("gtkam", "cwd", buf)==GP_OK)
 	  gtk_file_selection_set_filename(GTK_FILE_SELECTION(save_window),buf);
 
   frame = gtk_frame_new("What to save:");

@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2000-08-29 13:37-0500\n"
+"POT-Creation-Date: 2000-08-29 14:54-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -234,101 +234,101 @@ msgid "You must choose a camera"
 msgstr ""
 
 #. If not, error, and return
-#: src/callbacks.c:288 src/callbacks.c:351
+#: src/callbacks.c:289 src/callbacks.c:352
 msgid ""
 "Camera did not suggest a filename.\n"
 "Please select \"Save\" again and specify a filename yourself."
 msgstr ""
 
-#: src/callbacks.c:554
+#: src/callbacks.c:557
 #, c-format
 msgid ""
 "Could not open folder\n"
 "%s"
 msgstr ""
 
-#: src/callbacks.c:651
+#: src/callbacks.c:654
 #, c-format
 msgid "Could not get abilities for %s"
 msgstr ""
 
-#: src/callbacks.c:658
+#: src/callbacks.c:661
 msgid "Could not retrieve number of ports"
 msgstr ""
 
-#: src/callbacks.c:699
+#: src/callbacks.c:702
 msgid "Error retrieving the port list"
 msgstr ""
 
-#: src/callbacks.c:732
+#: src/callbacks.c:735
 msgid "Could not retrieve number of cameras"
 msgstr ""
 
-#: src/callbacks.c:783
+#: src/callbacks.c:786
 msgid "You must choose a camera model"
 msgstr ""
 
-#: src/callbacks.c:788
+#: src/callbacks.c:791
 msgid "You must choose a port"
 msgstr ""
 
-#: src/callbacks.c:793
+#: src/callbacks.c:796
 msgid "You must choose a port speed"
 msgstr ""
 
-#: src/callbacks.c:845 src/callbacks.c:921
+#: src/callbacks.c:848 src/callbacks.c:924
 msgid "ERROR: please choose your camera model again"
 msgstr ""
 
-#: src/callbacks.c:850 src/callbacks.c:927
+#: src/callbacks.c:853 src/callbacks.c:930
 msgid "Could not retrieve the camera's abilities"
 msgstr ""
 
-#: src/callbacks.c:855
+#: src/callbacks.c:858
 msgid "Could not retrieve the picture list."
 msgstr ""
 
-#: src/callbacks.c:872
+#: src/callbacks.c:875
 #, c-format
 msgid ""
 "Getting Thumbnail #%04i of %04i\n"
 "%s"
 msgstr ""
 
-#: src/callbacks.c:932
+#: src/callbacks.c:935
 msgid "This camera does not support deleting photos."
 msgstr ""
 
-#: src/callbacks.c:937
+#: src/callbacks.c:940
 msgid "Are you sure you want to DELETE ALL the photos?"
 msgstr ""
 
-#: src/callbacks.c:939
+#: src/callbacks.c:942
 msgid "Are you sure you want to DELETE the selected photos?"
 msgstr ""
 
-#: src/callbacks.c:952 src/callbacks.c:968
+#: src/callbacks.c:955 src/callbacks.c:971
 #, c-format
 msgid "Could not delete photo #%04i. Stopping."
 msgstr ""
 
-#: src/callbacks.c:1275
+#: src/callbacks.c:1278
 msgid "Retrieving camera information..."
 msgstr ""
 
-#: src/callbacks.c:1281
+#: src/callbacks.c:1284
 msgid "Could not retrieve camera information"
 msgstr ""
 
-#: src/callbacks.c:1299
+#: src/callbacks.c:1302
 msgid "Could not retrieve the camera manual"
 msgstr ""
 
-#: src/callbacks.c:1317
+#: src/callbacks.c:1320
 msgid "Could not retrieve library information"
 msgstr ""
 
-#: src/callbacks.c:1333
+#: src/callbacks.c:1336
 msgid ""
 "gtKam was written by:\n"
 "Scott Fritzinger <scottf@unr.edu>\n"
@@ -338,43 +338,43 @@ msgid ""
 "http://www.gphoto.net"
 msgstr ""
 
-#: src/callbacks.c:1350
+#: src/callbacks.c:1353
 msgid "Can't find gtKam AUTHORS file"
 msgstr ""
 
-#: src/callbacks.c:1353
+#: src/callbacks.c:1356
 msgid "gtKam Authors"
 msgstr ""
 
-#: src/callbacks.c:1358
+#: src/callbacks.c:1361
 msgid "Can't find gPhoto2 AUTHORS file"
 msgstr ""
 
-#: src/callbacks.c:1361
+#: src/callbacks.c:1364
 msgid "gPhoto2 Authors"
 msgstr ""
 
-#: src/callbacks.c:1385
+#: src/callbacks.c:1388
 msgid "Can't find gtKam COPYING file"
 msgstr ""
 
-#: src/callbacks.c:1388
+#: src/callbacks.c:1391
 msgid "gtKam License"
 msgstr ""
 
-#: src/callbacks.c:1393
+#: src/callbacks.c:1396
 msgid "Can't find gPhoto2 COPYING file"
 msgstr ""
 
-#: src/callbacks.c:1396
+#: src/callbacks.c:1399
 msgid "gPhoto2 License"
 msgstr ""
 
-#: src/callbacks.c:1417
+#: src/callbacks.c:1420
 msgid "Can't find gPhoto2 GTK MANUAL file"
 msgstr ""
 
-#: src/callbacks.c:1422
+#: src/callbacks.c:1425
 msgid "gtKam Manual"
 msgstr ""
 

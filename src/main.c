@@ -114,6 +114,7 @@ main (int argc, char *argv[])
 		} else
 			g_warning ("Unknown option '%s'!", argv[x]);
 	}
+
 #ifdef HAVE_BONOBO
 	bonobo_ui_init (PACKAGE, VERSION, &argc, argv);
 #else

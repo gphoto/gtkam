@@ -110,18 +110,19 @@ AC_ARG_WITH(exif, [  --without-exif          Don't use libexif],[
                 try_exif=false
         fi])
 if $try_exif; then
-        AC_PATH_PROG(PKG_CONFIG,pkg-config)
-        if test -n "${PKG_CONFIG}"; then
-                AC_MSG_CHECKING([for libexif-gtk])
-                if ${PKG_CONFIG} --exists libexif-gtk > /dev/null 2>&1; then
+        AC_MSG_CHECKING([for libexif-gtk])
+        if ${PKG_CONFIG} --exists libexif-gtk > /dev/null 2>&1; then
+		if ${PKG_CONFIG} --atleast-version=0.3.2 libexif-gtk; then
                         EXIF_CFLAGS=`$PKG_CONFIG --cflags libexif-gtk`
                         EXIF_LIBS=`$PKG_CONFIG --libs libexif-gtk`
                         have_exif=true
                         exif_msg=yes
                         AC_DEFINE(HAVE_EXIF,1,[Whether to use libexif])
+		else
+			exif_msg="no (installed version too old)"
                 fi
-                AC_MSG_RESULT($exif_msg)
         fi
+	AC_MSG_RESULT($exif_msg)
 fi
 AM_CONDITIONAL(HAVE_EXIF, $have_exif)
 AC_SUBST(EXIF_CFLAGS)

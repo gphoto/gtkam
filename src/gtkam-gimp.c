@@ -135,6 +135,12 @@ typedef struct {
 } PreviewParams;
 
 static void
+progress_func (Camera *camera, float progress, void *data)
+{
+	gimp_progress_update (progress);
+}
+
+static void
 run (gchar *name, gint nparams, GimpParam *param, gint *nreturn_vals,
      GimpParam **return_vals)
 {
@@ -249,8 +255,12 @@ run (gchar *name, gint nparams, GimpParam *param, gint *nreturn_vals,
 			/* Get the file */
 			dir = g_dirname (rpath);
 			gp_file_new (&file);
+			gimp_progress_init (_("Downloading file"));
+			gp_camera_set_progress_func (camera, progress_func,
+						     NULL);
 			result = gp_camera_file_get (camera, dir,
 				g_basename (rpath), GP_FILE_TYPE_NORMAL, file);
+			gp_camera_set_progress_func (camera, NULL, NULL);
 			gp_camera_unref (camera);
 			g_free (dir);
 			g_free (rpath);
@@ -276,8 +286,11 @@ run (gchar *name, gint nparams, GimpParam *param, gint *nreturn_vals,
 			return;
 		}
 		gp_file_new (&file);
+		gimp_progress_init (_("Downloading file"));
+		gp_camera_set_progress_func (camera, progress_func, NULL);
 		result = gp_camera_file_get (camera, path.folder, path.name,
 					     GP_FILE_TYPE_NORMAL, file);
+		gp_camera_set_progress_func (camera, NULL, NULL);
 		gp_camera_unref (camera);
 		if (result < 0) {
 			gp_file_unref (file);

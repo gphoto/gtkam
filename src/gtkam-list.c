@@ -369,8 +369,8 @@ gtkam_list_delete_selected (GtkamList *list)
 	if (!g_list_length (GTK_ICON_LIST (list)->selection)) 
 		return;
 
-	for (i = 0; i < g_list_length (GTK_ICON_LIST (list)->selection); i++) {
-		item = g_list_nth_data (GTK_ICON_LIST (list)->selection, i);
+	for (i = g_list_length (GTK_ICON_LIST (list)->selection); i > 0; i--) {
+		item = g_list_nth_data (GTK_ICON_LIST (list)->selection, i - 1);
 		filename = gtk_entry_get_text (GTK_ENTRY (item->entry));
 		result = gp_camera_file_delete (list->priv->camera,
 						list->path, filename);

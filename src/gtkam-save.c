@@ -397,18 +397,23 @@ on_ok_clicked (GtkButton *button, GtkamSave *save)
 {
 	guint i, count, j = 1;
 	GtkWidget *s;
-	unsigned int id;
+	unsigned int id = 0;
 	GtkamSaveData *data;
 
 	gtk_widget_hide (GTK_WIDGET (save));
 
 	count = g_slist_length (save->priv->data);
-	s = gtkam_cancel_new (_("Downloading %i files..."), count);
+	if (count == 1)
+		s = gtkam_cancel_new (_("Downloading file..."));
+	else
+		s = gtkam_cancel_new (_("Downloading %i files..."), count);
 	gtk_window_set_transient_for (GTK_WINDOW (s), GTK_WINDOW (save));
 	gtk_widget_show (s);
 
-	id = gp_context_progress_start (GTKAM_CANCEL (s)->context->context,
-		count, _("Downloading %i files..."), count);
+	if (count > 1)
+		id = gp_context_progress_start (
+			GTKAM_CANCEL (s)->context->context, count,
+			_("Downloading %i files..."), count);
 
 	if (!save->priv->toggle_filename_camera->active)
 		j = gtk_spin_button_get_value_as_int (
@@ -449,10 +454,17 @@ on_ok_clicked (GtkButton *button, GtkamSave *save)
 				  data->folder, data->name, GP_FILE_TYPE_EXIF,
 				  i + j, GTKAM_CANCEL (s)->context);
 
-		gp_context_progress_update (GTKAM_CANCEL (s)->context->context,
-					   id, i + 1);
+		if (count > 1)
+			gp_context_progress_update (
+				GTKAM_CANCEL (s)->context->context, id, i + 1);
+		gp_context_idle (GTKAM_CANCEL (s)->context->context);
+		if (gp_context_cancel (GTKAM_CANCEL (s)->context->context) ==
+				GP_CONTEXT_FEEDBACK_CANCEL)
+			break;
 	}
-	gp_context_progress_stop (GTKAM_CANCEL (s)->context->context, id);
+	if (count > 1)
+		gp_context_progress_stop (
+				GTKAM_CANCEL (s)->context->context, id);
 	gtk_object_destroy (GTK_OBJECT (s));
 
 	gtk_object_destroy (GTK_OBJECT (save));

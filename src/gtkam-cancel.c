@@ -239,10 +239,11 @@ update_func (GPContext *c, unsigned int id, float current, void *data)
 	g_return_if_fail (id < cancel->priv->array_progress->len);
 
 	p = cancel->priv->array_progress->pdata[id];
-	gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR (p), 
+	gtk_progress_bar_set_fraction (p, 
 		current / g_array_index (cancel->priv->target, float, id));
-	gtk_widget_queue_draw (GTK_WIDGET (cancel));
-	gdk_window_process_updates (GTK_WIDGET (cancel)->window, TRUE);
+
+	while (gtk_events_pending ())
+		gtk_main_iteration ();
 }
 
 static void
@@ -257,6 +258,13 @@ stop_func (GPContext *c, unsigned int id, void *data)
 	cancel->priv->array_hbox->pdata[id] = NULL;
 	cancel->priv->array_progress->pdata[id] = NULL;
 	g_array_index (cancel->priv->target, gfloat, id) = 0.;
+}
+
+static void
+idle_func (GPContext *context, void *data)
+{
+	while (gtk_events_pending ())
+		gtk_main_iteration ();
 }
 
 GtkWidget *
@@ -290,6 +298,7 @@ gtkam_cancel_new (const gchar *format, ...)
 
 	gp_context_set_progress_funcs (cancel->context->context, start_func,
 				       update_func, stop_func, cancel);
+	gp_context_set_idle_func (cancel->context->context, idle_func, cancel);
 	gp_context_set_cancel_func (cancel->context->context,
 				    cancel_func, cancel);
 	gp_context_set_message_func (cancel->context->context,

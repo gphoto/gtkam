@@ -64,11 +64,25 @@ log_func (GPLogLevel level, const char *domain, const char *format,
 	fprintf (stderr, "\n");
 }
 
+static void
+on_size_allocate (GtkWidget *w, GtkAllocation *a)
+{
+	char *buf;
+
+	buf = g_strdup_printf ("%i", a->width);
+	gp_setting_set ("gtkam", "width", buf);
+	g_free (buf);
+	buf = g_strdup_printf ("%i", a->height);
+	gp_setting_set ("gtkam", "height", buf);
+	g_free (buf);
+}
+
 int
 main (int argc, char *argv[])
 {
 	GtkWidget *m;
 	int x, log = -1;
+	char width[1024], height[1024];
 
 	gtk_set_locale ();
 	bindtextdomain (PACKAGE, GTKAM_LOCALEDIR);
@@ -101,10 +115,16 @@ main (int argc, char *argv[])
 
 	/* Create the main window */
 	m = gtkam_main_new ();
+	if ((gp_setting_get ("gtkam", "width", width) == GP_OK) &&
+	    (gp_setting_get ("gtkam", "height", height) == GP_OK))
+		gtk_widget_set_size_request (m, atoi (width), atoi (height));
+	GTK_WINDOW (m)->allow_shrink = TRUE;
 	gtk_widget_show (m);
 	gtkam_main_load (GTKAM_MAIN (m));
 	g_signal_connect (GTK_OBJECT (m), "destroy",
-			    GTK_SIGNAL_FUNC (gtk_main_quit), NULL);
+			  G_CALLBACK (gtk_main_quit), NULL);
+	g_signal_connect (GTK_OBJECT (m), "size_allocate",
+			  G_CALLBACK (on_size_allocate), NULL);
 
 	gtk_main ();
 

@@ -197,7 +197,8 @@ on_mkdir_clicked (GtkButton *button, GtkamFSel *fsel)
 	const gchar *path;
 
 	path = gtkam_tree_get_path (fsel->priv->tree);
-	mkdir = gtkam_mkdir_new (fsel->priv->camera, path, NULL);
+	mkdir = gtkam_mkdir_new (fsel->priv->camera, fsel->priv->multi, path,
+				 NULL);
 	gtk_widget_show (mkdir);
 	gtk_signal_connect (GTK_OBJECT (mkdir), "dir_created",
 			    GTK_SIGNAL_FUNC (on_dir_created), fsel);

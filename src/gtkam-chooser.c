@@ -215,7 +215,8 @@ gtkam_chooser_get_camera (GtkamChooser *chooser)
 	 * afterwards because other applications could need the camera, too.
 	 */
 	r = gp_camera_init (camera);
-	gp_camera_exit (camera);
+	if (multi)
+		gp_camera_exit (camera);
 	if (r < 0) {
 //		g_free (port_path);
 		dialog = gtkam_error_new (_("Could not initialize camera"),

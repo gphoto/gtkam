@@ -59,6 +59,7 @@ struct _GtkamSavePrivate
 	GtkWidget *file_list;
 
 	Camera *camera;
+	gboolean multi;
 	gchar *path;
 	GSList *filenames;
 
@@ -301,15 +302,18 @@ save_file (GtkamSave *save, CameraFile *file, guint n)
 }
 
 static void
-get_file (GtkamSave *save, const gchar *filename, CameraFileType type,
-	  CameraFile *file, guint n)
+get_file (GtkamSave *save, const gchar *filename, CameraFileType type, guint n)
 {
 	int result;
 	GtkWidget *dialog;
 	gchar *msg;
+	CameraFile *file;
 
+	gp_file_new (&file);
 	result = gp_camera_file_get (save->priv->camera,
 				     save->priv->path, filename, type, file);
+	if (save->priv->multi)
+		gp_camera_exit (save->priv->camera);
 	if (result < 0) {
 		msg = g_strdup_printf (_("Could not get '%s' from folder '%s'"),
 				       filename, save->priv->path);
@@ -320,18 +324,16 @@ get_file (GtkamSave *save, const gchar *filename, CameraFileType type,
 	} else {
 		save_file (save, file, n);
 	}
+	gp_file_unref (file);
 }
 
 static void
 on_ok_clicked (GtkButton *button, GtkamSave *save)
 {
-	CameraFile *file;
 	guint i, count;
 	const gchar *filename;
 
 	gtk_widget_hide (GTK_WIDGET (save));
-
-	gp_file_new (&file);
 
 	count = g_slist_length (save->priv->filenames);
 	for (i = 0; i < count; i++) {
@@ -340,32 +342,26 @@ on_ok_clicked (GtkButton *button, GtkamSave *save)
 		/* Normal */
 		if (save->priv->toggle_normal &&
 		    save->priv->toggle_normal->active)
-			get_file (save, filename, GP_FILE_TYPE_NORMAL, file,
-				  i + 1);
+			get_file (save, filename, GP_FILE_TYPE_NORMAL, i + 1);
 
 		if (save->priv->toggle_preview &&
 		    save->priv->toggle_preview->active)
-			get_file (save, filename, GP_FILE_TYPE_PREVIEW, file,
-				  i + 1);
+			get_file (save, filename, GP_FILE_TYPE_PREVIEW, i + 1);
 
 		if (save->priv->toggle_raw &&
 		    save->priv->toggle_raw->active)
-			get_file (save, filename, GP_FILE_TYPE_RAW, file,
-				  i + 1);
+			get_file (save, filename, GP_FILE_TYPE_RAW, i + 1);
 		if (save->priv->toggle_audio &&
 		    save->priv->toggle_audio->active)
-			get_file (save, filename, GP_FILE_TYPE_AUDIO, file,
-				  i + 1);
+			get_file (save, filename, GP_FILE_TYPE_AUDIO, i + 1);
 	}
-	gp_file_unref (file);
-	gp_camera_exit (save->priv->camera);
 
 	gtk_widget_destroy (GTK_WIDGET (save));
 }
 
 GtkWidget *
-gtkam_save_new (Camera *camera, const gchar *path, GSList *filenames,
-		GtkWidget *opt_window)
+gtkam_save_new (Camera *camera, gboolean multi, const gchar *path,
+		GSList *filenames, GtkWidget *opt_window)
 {
 	GtkamSave *save;
 	GtkWidget *hbox, *frame, *check, *label, *entry;
@@ -383,6 +379,7 @@ gtkam_save_new (Camera *camera, const gchar *path, GSList *filenames,
 
 	save->priv->camera = camera;
 	gp_camera_ref (camera);
+	save->priv->multi = multi;
 	save->priv->path = g_strdup (path);
 	for (i = 0; i < g_slist_length (filenames); i++)
 		save->priv->filenames = g_slist_append (

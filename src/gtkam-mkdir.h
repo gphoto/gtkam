@@ -47,7 +47,7 @@ struct _GtkamMkdirClass
 };
 
 GtkType    gtkam_mkdir_get_type (void);
-GtkWidget *gtkam_mkdir_new      (Camera *camera, const gchar *path,
-				 GtkWidget *opt_window);
+GtkWidget *gtkam_mkdir_new      (Camera *camera, gboolean multi,
+				 const gchar *path, GtkWidget *opt_window);
 
 #endif /* __GTKAM_MKDIR_H__ */

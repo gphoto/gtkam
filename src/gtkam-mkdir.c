@@ -56,6 +56,8 @@ struct _GtkamMkdirPrivate
 	Camera *camera;
 	gchar *path;
 
+	gboolean multi;
+
 	GtkEntry *entry;
 };
 
@@ -157,7 +159,8 @@ on_ok_clicked (GtkButton *button, GtkamMkdir *mkdir)
 	path = gtk_entry_get_text (mkdir->priv->entry);
 	r = gp_camera_folder_make_dir (mkdir->priv->camera, mkdir->priv->path,
 				       g_basename (path));
-	gp_camera_exit (mkdir->priv->camera);
+	if (mkdir->priv->multi)
+		gp_camera_exit (mkdir->priv->camera);
 	if (r < 0) {
 		msg = g_strdup_printf (_("Could not create new directory "
 				"'%s' in '%s'"), path, mkdir->priv->path);
@@ -179,7 +182,8 @@ on_ok_clicked (GtkButton *button, GtkamMkdir *mkdir)
 }
 
 GtkWidget *
-gtkam_mkdir_new (Camera *camera, const gchar *path, GtkWidget *opt_window)
+gtkam_mkdir_new (Camera *camera, gboolean multi,
+		 const gchar *path, GtkWidget *opt_window)
 {
 	GtkamMkdir *mkdir;
 	GtkWidget *label, *entry, *button, *hbox, *vbox, *image;
@@ -198,6 +202,7 @@ gtkam_mkdir_new (Camera *camera, const gchar *path, GtkWidget *opt_window)
 	mkdir->priv->path = g_strdup (path);
 	mkdir->priv->camera = camera;
 	gp_camera_ref (camera);
+	mkdir->priv->multi = multi;
 	if (opt_window)
 		gtk_window_set_transient_for (GTK_WINDOW (mkdir),
 					      GTK_WINDOW (opt_window));

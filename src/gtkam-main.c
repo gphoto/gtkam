@@ -578,7 +578,8 @@ on_make_dir_activate (GtkMenuItem *item, GtkamMain *m)
 	const gchar *path;
 
 	path = gtkam_tree_get_path (m->priv->tree);
-	mkdir = gtkam_mkdir_new (m->priv->camera, path, GTK_WIDGET (m));
+	mkdir = gtkam_mkdir_new (m->priv->camera, m->priv->multi, path,
+				 GTK_WIDGET (m));
 	gtk_widget_show (mkdir);
 	gtk_signal_connect (GTK_OBJECT (mkdir), "dir_created",
 			    GTK_SIGNAL_FUNC (on_dir_created), m);

@@ -2,10 +2,10 @@
 
 INCLUDES =						\
 	-I$(top_srcdir)/intl				\
-	-I$(top_srcdir)/libexif				\
 	-DIMAGE_DIR=\"$(datadir)/images/gtkam\" 	\
 	-DGTKAM_LOCALEDIR=\""$(datadir)/locale"\"	\
-	@GTK_CFLAGS@
+	$(EXIF_CFLAGS)					\
+	$(GTK_CFLAGS)
 
 noinst_LIBRARIES = libgtkam.a
 libgtkam_a_SOURCES =				\
@@ -31,24 +31,20 @@ libgtkam_a_SOURCES =				\
 	support.c support.h
 
 bin_PROGRAMS = gtkam
-gtkam_SOURCES = \
-	gtkam-debug.c gtkam-debug.h \
-	gtkam-exif.c gtkam-exif.h \
-	gtkam-list.c gtkam-list.h \
-	gtkam-main.c gtkam-main.h \
-	gtkam-save.c gtkam-save.h \
-	main.c \
-	gtkiconlist.c gtkiconlist.h \
+gtkam_SOURCES = 				\
+	gtkam-debug.c gtkam-debug.h 		\
+	gtkam-exif.c gtkam-exif.h 		\
+	gtkam-list.c gtkam-list.h 		\
+	gtkam-main.c gtkam-main.h 		\
+	gtkam-save.c gtkam-save.h 		\
+	main.c 					\
+	gtkiconlist.c gtkiconlist.h 		\
 	gtkitementry.c gtkitementry.h
-gtkam_LDADD = 								\
-	$(top_builddir)/libexif/libexif/.libs/libexif.al		\
-	$(top_builddir)/libexif/libexif-gtk/.libs/libexif-gtk.al	\
-	libgtkam.a							\
-	 @GTK_LIBS@
+gtkam_LDADD = libgtkam.a $(EXIF_LIBS) $(GTK_LIBS)
 
 if HAVE_GIMP
 libexecdir = $(GIMP_PLUGIN_DIR)/plug-ins
 libexec_PROGRAMS = gtkam-gimp
 gtkam_gimp_SOURCES = gtkam-gimp.c
-gtkam_gimp_LDADD = $(GIMP_LIBS) libgtkam.a
+gtkam_gimp_LDADD = $(GIMP_LIBS) $(EXIF_LIBS) libgtkam.a
 endif

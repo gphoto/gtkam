@@ -132,6 +132,7 @@ gtkam_list_new (void)
 				 GTK_ICON_LIST_TEXT_BELOW);
 	gtk_icon_list_set_selection_mode (GTK_ICON_LIST (list),
 					  GTK_SELECTION_MULTIPLE);
+	gtk_icon_list_set_editable (GTK_ICON_LIST (list), FALSE);
 
 	return (GTK_WIDGET (list));
 }

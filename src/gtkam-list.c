@@ -70,13 +70,13 @@
 #include "gtkam-close.h"
 #include "gtkam-error.h"
 #include "gtkam-exif.h"
-//#include "../pixmaps/no_thumbnail.xpm"
 #include "gtkam-save.h"
 #include "gdk-pixbuf-hacks.h"
 #include "gtkam-info.h"
 #include "gtkam-delete.h"
 #include "gtkam-status.h"
 #include "gtkam-util.h"
+#include "gtkam-viewer.h"
 
 struct _GtkamListPrivate
 {
@@ -574,16 +574,22 @@ on_button_press_event (GtkWidget *widget, GdkEventButton *event,
 {
     Bonobo_ServerInfoList *l;
     guint i;
-    GtkWidget *item;
+    GtkWidget *item, *c;
     CORBA_Environment ev;
     CameraFileInfo finfo;
     gchar *fo, *fi, *query;
     ViewAsData *d;
+    GList *cl;
 
-    w = gtk_item_factory_get_widget (list->priv->factory, "/View as");
-    while (GTK_CONTAINER (w)->focus_child)
-	    gtk_container_remove (GTK_CONTAINER (w),
-			          GTK_CONTAINER (w)->focus_child);
+    w = gtk_item_factory_get_widget (list->priv->factory, "/View with...");
+    c = gtk_item_factory_get_widget (list->priv->factory,
+		    		     "/View with.../Built-in viewer");
+    cl = gtk_container_get_children (GTK_CONTAINER (w));
+    for (i = 0; i < g_list_length (cl); i++) {
+	    if (g_list_nth_data (cl, i) != c)
+		    gtk_container_remove (GTK_CONTAINER (w),
+				    GTK_WIDGET (g_list_nth_data (cl, i)));
+    }
 
     fo = gtkam_list_get_folder_from_iter (list, &list->priv->iter);
     fi = gtkam_list_get_name_from_iter (list, &list->priv->iter);
@@ -601,9 +607,6 @@ on_button_press_event (GtkWidget *widget, GdkEventButton *event,
 	CORBA_exception_free (&ev);
 
 	if (l && l->_length) {
-		gtk_widget_set_sensitive (
-			gtk_item_factory_get_item (list->priv->factory,
-						   "/View as"), TRUE);
 		for (i = 0; i < l->_length; i++) {
 			Bonobo_ServerInfo *si = &l->_buffer[i];
 			const gchar *n;
@@ -632,10 +635,6 @@ on_button_press_event (GtkWidget *widget, GdkEventButton *event,
 			g_signal_connect (G_OBJECT (item), "destroy",
 				G_CALLBACK (on_menu_item_destroy), d);
 		}
-	} else {
-		gtk_widget_set_sensitive (
-			gtk_item_factory_get_item (list->priv->factory, 
-						   "/View as"), FALSE);
 	}
 	if (l)
 		CORBA_free (l);
@@ -798,6 +797,27 @@ on_all_deleted (GtkamDelete *delete, GtkamDeleteAllDeletedData *data,
 }
 
 static void
+action_view (gpointer callback_data, guint callback_action,
+	     GtkWidget *widget)
+{
+	GtkamList *list = GTKAM_LIST (callback_data);
+	GtkWidget *d;
+	GtkamCamera *camera;
+	gchar *folder, *file;
+
+	d = gtkam_viewer_new ();
+	gtk_widget_show (d);
+	g_signal_emit (G_OBJECT (list), signals[NEW_DIALOG], 0, d);
+
+	camera = gtkam_list_get_camera_from_iter (list, &list->priv->iter);
+	folder = gtkam_list_get_folder_from_iter (list, &list->priv->iter);
+	file   = gtkam_list_get_name_from_iter   (list, &list->priv->iter);
+	gtkam_viewer_load_file (GTKAM_VIEWER (d), camera, folder, file);
+	g_free (folder);
+	g_free (file);
+}
+
+static void
 action_delete (gpointer callback_data, guint callback_action,
 	       GtkWidget *widget)
 {
@@ -873,10 +893,9 @@ on_edited (GtkCellRendererText *cell, const gchar *path,
 
 static GtkItemFactoryEntry mi[] =
 {
-#ifdef HAVE_BONOBO
-	{"/_View as", NULL, NULL, 0, "<Branch>"},
+	{"/_View with...", NULL, NULL, 0, "<Branch>"},
+	{"/View with.../Built-in viewer", NULL, action_view, 0, NULL},
 	{"/sep0", NULL, NULL, 0, "<Separator>"},
-#endif
 	{"/_Info", NULL, action_info, 0, NULL},
 #ifdef HAVE_EXIF
 	{"/_Exif", NULL, action_exif, 0, NULL},

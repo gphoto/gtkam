@@ -387,6 +387,8 @@ create_widgets (GtkamConfig *config, CameraWidget *widget)
 		gtk_combo_set_popdown_strings (GTK_COMBO (gtk_widget), options);
 		gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (gtk_widget)->entry),
 				    value_char);
+		gtk_signal_connect (GTK_OBJECT (GTK_COMBO (gtk_widget)->entry),
+			"changed", GTK_SIGNAL_FUNC (on_entry_changed), widget);
 		break;
 
 	case GP_WIDGET_RADIO:

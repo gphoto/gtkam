@@ -72,6 +72,7 @@
 #endif
 
 #include <gphoto2/gphoto2-camera.h>
+#include <gphoto2/gphoto2-port-log.h>
 
 #include "gtkam-cancel.h"
 #include "gtkam-chooser.h"
@@ -85,6 +86,7 @@
 #include "gtkam-preview.h"
 #include "gtkam-status.h"
 #include "gtkam-tree.h"
+#include "gtkam-version.h"
 
 struct _GtkamMainPrivate
 {
@@ -489,6 +491,7 @@ action_about (gpointer callback_data, guint callback_action,
 
 	gchar *translated_comments = _(comments);
 	gchar *gcomments = NULL;
+	int n;
 
 	for (n = 0; module_versions[n].name != NULL; n++) {
 	  int i;

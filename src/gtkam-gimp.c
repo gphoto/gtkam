@@ -189,9 +189,9 @@ get_file (GtkamCamera *camera, const gchar *folder, const gchar *name,
 
 	gp_file_new (&file);
 	c = gtkam_cancel_new (_("Downloading '%s' from '%s'..."), name, folder);
-	gtk_widget_show ©;
+	gtk_widget_show(c);
         result = gp_camera_file_get (camera->camera, folder, name,
-		GP_FILE_TYPE_NORMAL, file, GTKAM_CANCEL ©->context->context);
+		GP_FILE_TYPE_NORMAL, file, GTKAM_CANCEL(c)->context->context);
 	gp_camera_exit (camera->camera, NULL);
 	switch (result) {
 	case GP_OK:
@@ -201,11 +201,11 @@ get_file (GtkamCamera *camera, const gchar *folder, const gchar *name,
 		*return_vals = values;
 		values[0].type = GIMP_PDB_STATUS;
 		values[0].data.d_status = GIMP_PDB_CANCEL;
-		gtk_object_destroy (GTK_OBJECT ©);
+		gtk_object_destroy (GTK_OBJECT (c));
 		return -1;
 	default:
                 gp_file_unref (file);
-		dialog = gtkam_error_new (result, GTKAM_CANCEL ©->context,
+		dialog = gtkam_error_new (result, GTKAM_CANCEL(c)->context,
 			NULL, _("Could not "
                         "download file '%s' from folder '%s'."), name, folder);
                 gtk_widget_show (dialog);
@@ -219,10 +219,10 @@ get_file (GtkamCamera *camera, const gchar *folder, const gchar *name,
 		*return_vals = values;
 		values[0].type = GIMP_PDB_STATUS;
 		values[0].data.d_status = GIMP_PDB_EXECUTION_ERROR;
-		gtk_object_destroy (GTK_OBJECT ©);
+		gtk_object_destroy (GTK_OBJECT(c));
                 return -1;
         }
-	gtk_object_destroy (GTK_OBJECT ©);
+	gtk_object_destroy (GTK_OBJECT(c));
 
 	gp_file_get_data_and_size (file, &data, &size);
         loader = gdk_pixbuf_loader_new ();

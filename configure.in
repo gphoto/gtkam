@@ -16,7 +16,7 @@ LDFLAGS="$LDFLAGS -g -Wall"
 AC_DEFINE_UNQUOTED(HAVE_CC,"$CC",[The C compiler we're using])
 
 dnl Add the languages which your application supports here.
-ALL_LINGUAS="cs da de es fr hu it ja no pt_BR pt_PT ru sl sv uk"
+ALL_LINGUAS="cs da de es fr hu it ja nb pt_BR pt_PT ru sl sv uk"
 AM_GNU_GETTEXT
 
 dnl ---------------------------------------------------------------------------

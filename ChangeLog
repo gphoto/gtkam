@@ -1,3 +1,7 @@
+2004-10-25  Marcus Meissner  <marcus@jet.franken.de>
+	
+	* po/no.po,nb.po,configure.in: Renamed no -> nb.po
+
 2004-04-30  Marcus Meissner  <marcus@jet.franken.de>
 
 	* src/gtkam-config.c: Fixed strict aliasing issues in code.

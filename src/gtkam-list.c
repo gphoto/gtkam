@@ -57,6 +57,11 @@
 
 #ifdef HAVE_BONOBO
 #  include <bonobo-activation/bonobo-activation.h>
+#  include <bonobo/bonobo-window.h>
+#  include <bonobo/bonobo-exception.h>
+#  include <bonobo/bonobo-moniker-util.h>
+#  include <bonobo/bonobo-widget.h>
+#  include <bonobo/bonobo-stream-memory.h>
 #endif
 
 #include <gphoto2/gphoto2-list.h>
@@ -456,11 +461,87 @@ selection_func (GtkTreeSelection *selection, GtkTreeModel *model,
 	return (TRUE);
 }
 
+#ifdef HAVE_BONOBO
+
+typedef struct _ViewAsData ViewAsData;
+struct _ViewAsData {
+	GtkamList *list;
+	GtkamCamera *camera;
+	gchar *folder;
+	gchar *file;
+	gchar *iid;
+};
+
 static void
-on_view_as_activate (void)
+on_view_as_activate (GtkMenuItem *item, ViewAsData *d)
 {
-	g_message ("Not yet implemented!");
+	GtkWidget *w, *c, *s;
+	Bonobo_Control control;
+	CORBA_Environment ev;
+	CameraFile *f;
+	int result;
+	Bonobo_PersistStream pstream;
+	BonoboObject *stream;
+	const char *data = NULL;
+	unsigned long int size;
+	const char *type;
+
+	g_return_if_fail (d->iid != NULL);
+
+	CORBA_exception_init (&ev);
+	control = bonobo_get_object (d->iid, "IDL:Bonobo/Control:1.0", &ev);
+	if (BONOBO_EX (&ev) || (control == CORBA_OBJECT_NIL)) {
+		CORBA_exception_free (&ev);
+		g_warning ("Could not get control from '%s'.", d->iid);
+		return;
+	}
+
+	w = bonobo_window_new (d->file, d->file);
+	c = bonobo_widget_new_control_from_objref (control, CORBA_OBJECT_NIL);
+	gtk_widget_show (c);
+	bonobo_window_set_contents (BONOBO_WINDOW (w), c);
+
+	gtk_widget_show (w);
+
+	s = gtkam_status_new (_("Downloading '%s' from '%s'..."), d->file,
+			      d->folder);
+	g_signal_emit (G_OBJECT (d->list), signals[NEW_STATUS], 0, s);
+	gp_file_new (&f);
+	result = gp_camera_file_get (d->camera->camera, d->folder, d->file,
+				     GP_FILE_TYPE_NORMAL, f,
+				     GTKAM_STATUS (s)->context->context);
+	if (d->camera->multi)
+		gp_camera_exit (d->camera->camera, NULL);
+	if (result >= 0) {
+		CORBA_exception_init (&ev);
+		pstream = Bonobo_Unknown_queryInterface (control,
+					"IDL:Bonobo/PersistStream:1.0", &ev);
+		if (!BONOBO_EX (&ev) && (pstream != CORBA_OBJECT_NIL)) {
+			gp_file_get_data_and_size (f, &data, &size);
+			gp_file_get_mime_type (f, &type);
+			stream = bonobo_stream_mem_create (data, size,
+							   TRUE, FALSE);
+			Bonobo_PersistStream_load (pstream,
+				bonobo_object_corba_objref (stream), type, &ev);
+			g_object_unref (G_OBJECT (stream));
+			bonobo_object_release_unref (pstream, NULL);
+		}
+		CORBA_exception_free (&ev);
+	}
+	gp_file_unref (f);
+	gtk_object_destroy (GTK_OBJECT (s));
 }
+
+static void
+on_menu_item_destroy (GObject *object, ViewAsData *data)
+{
+	g_object_unref (G_OBJECT (data->camera));
+	g_free (data->folder);
+	g_free (data->file);
+	g_free (data->iid);
+}
+
+#endif
 
 static gint
 on_button_press_event (GtkWidget *widget, GdkEventButton *event,
@@ -497,6 +578,7 @@ on_button_press_event (GtkWidget *widget, GdkEventButton *event,
     CORBA_Environment ev;
     CameraFileInfo finfo;
     gchar *fo, *fi, *query;
+    ViewAsData *d;
 
     w = gtk_item_factory_get_widget (list->priv->factory, "/View as");
     while (GTK_CONTAINER (w)->focus_child)
@@ -511,7 +593,8 @@ on_button_press_event (GtkWidget *widget, GdkEventButton *event,
 
     if (finfo.file.fields & GP_FILE_INFO_TYPE) {
 	CORBA_exception_init (&ev);
-	query = g_strconcat ("bonobo:supported_mime_types.has ('", 
+	query = g_strconcat ("repo_ids.has ('IDL:Bonobo/Control:1.0') AND "
+			     "bonobo:supported_mime_types.has ('", 
 			     finfo.file.type, "')", NULL);
 	l = bonobo_activation_query (query, NULL, &ev);
 	g_free (query);
@@ -525,14 +608,29 @@ on_button_press_event (GtkWidget *widget, GdkEventButton *event,
 			Bonobo_ServerInfo *si = &l->_buffer[i];
 			const gchar *n;
 
+			if (!si->iid)
+				continue;
+
 			n = bonobo_server_info_prop_lookup (si, "name", NULL);
 			if (!n)
 				n = si->iid;
 			item = gtk_menu_item_new_with_label (n);
 			gtk_widget_show (item);
 			gtk_menu_shell_append (GTK_MENU_SHELL (w), item);
-			g_signal_connect (G_OBJECT (item), "activate", 
-				G_CALLBACK (on_view_as_activate), list);
+
+			d = g_new0 (ViewAsData, 1);
+			d->list = list;
+			d->camera = camera;
+			g_object_ref (G_OBJECT (d->camera));
+			d->folder = gtkam_list_get_folder_from_iter (list,
+							&list->priv->iter);
+			d->file = gtkam_list_get_name_from_iter (list, 
+							&list->priv->iter);
+			d->iid = g_strdup (si->iid);
+			g_signal_connect (G_OBJECT (item), "activate",
+				G_CALLBACK (on_view_as_activate), d);
+			g_signal_connect (G_OBJECT (item), "destroy",
+				G_CALLBACK (on_menu_item_destroy), d);
 		}
 	} else {
 		gtk_widget_set_sensitive (

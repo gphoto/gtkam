@@ -51,6 +51,7 @@
 
 #ifdef HAVE_BONOBO
 #  include <bonobo-activation/bonobo-activation-init.h>
+#  include <bonobo/bonobo-ui-main.h>
 #endif
 
 #include "gtkam-main.h"
@@ -113,10 +114,10 @@ main (int argc, char *argv[])
 		} else
 			g_warning ("Unknown option '%s'!", argv[x]);
 	}
-
-	gtk_init (&argc, &argv);
 #ifdef HAVE_BONOBO
-	bonobo_activation_init (argc, argv);
+	bonobo_ui_init (PACKAGE, VERSION, &argc, argv);
+#else
+	gtk_init (&argc, &argv);
 #endif
 
 	/* Create the main window */
@@ -132,7 +133,11 @@ main (int argc, char *argv[])
 	g_signal_connect (GTK_OBJECT (m), "size_allocate",
 			  G_CALLBACK (on_size_allocate), NULL);
 
+#ifdef HAVE_BONOBO
+	bonobo_ui_main ();
+#else
 	gtk_main ();
+#endif
 
 	if (log < 0)
 		gp_log_remove_func (log);

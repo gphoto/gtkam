@@ -43,8 +43,8 @@ AC_ARG_WITH(bonobo-activation, [  --without-bonobo        Don't compile with bon
 		try_bonobo=false
 	fi])
 if $try_bonobo; then
-	if ${PKG_CONFIG} --exists bonobo-activation-2.0 libbonobo-2.0; then
-		PKG_CHECK_MODULES(BONOBO, bonobo-activation-2.0 libbonobo-2.0)
+	if ${PKG_CONFIG} --exists bonobo-activation-2.0 libbonoboui-2.0; then
+		PKG_CHECK_MODULES(BONOBO, bonobo-activation-2.0 libbonoboui-2.0)
 		AC_SUBST(BONOBO_CFLAGS)
 		AC_SUBST(BONOBO_LIBS)
 		AC_DEFINE(HAVE_BONOBO,,[whether we use bonobo])

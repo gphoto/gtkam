@@ -55,60 +55,6 @@
 #include "util.h"
 #include "support.h"
 
-static gboolean
-idle_func (gpointer data)
-{
-	GtkamMain *m = GTKAM_MAIN (data);
-	char port[1024], speed[1024], model[1024], multi[1024];
-	Camera *camera;
-	CameraAbilitiesList *al;
-	GPPortInfoList *il;
-	GPPortInfo info;
-	CameraAbilities a;
-	int n, p;
-
-	/* Retrieve the last camera used by gtkam */
-	if (((gp_setting_get ("gtkam", "model", model) == GP_OK) ||
-	     (gp_setting_get ("gphoto2", "model", model) == GP_OK)) &&
-	    ((gp_setting_get ("gtkam", "path", port) == GP_OK) ||
-	     (gp_setting_get ("gphoto2", "port", port) == GP_OK)) &&
-	    (gp_setting_get ("gtkam", "speed", speed) == GP_OK)) {
-		gp_camera_new (&camera);
-
-		gp_abilities_list_new (&al);
-		gp_abilities_list_load (al, NULL);
-		gp_port_info_list_new (&il);
-		gp_port_info_list_load (il);
-
-		n = gp_abilities_list_lookup_model (al, model);
-		gp_abilities_list_get_abilities (al, n, &a);
-		gp_abilities_list_free (al);
-
-		p = gp_port_info_list_lookup_path (il, port);
-		if (p < 0) {
-			g_warning ("Could not find '%s' in port info list "
-				"(%s)!", port, gp_result_as_string (p));
-			return (FALSE);
-		}
-		gp_port_info_list_get_info (il, p, &info);
-		gp_port_info_list_free (il);
-		
-		gp_camera_set_abilities (camera, a);
-		if (strcmp (port, "None") && strcmp (model, "Directory Browse"))
-			gp_camera_set_port_info (camera, info);
-		if (atoi (speed))
-			gp_camera_set_port_speed (camera, atoi (speed));
-
-		if (gp_setting_get ("gtkam", "multi", multi) == GP_OK)
-			gtkam_main_set_camera (m, camera, atoi (multi));
-		else
-			gtkam_main_set_camera (m, camera, FALSE);
-		gp_camera_unref (camera);
-	}
-
-	return (FALSE);
-}
-
 static void
 log_func (GPLogLevel level, const char *domain, const char *format,
 	  va_list args, void *data)
@@ -123,7 +69,7 @@ int
 main (int argc, char *argv[])
 {
 	GtkWidget *m;
-	int x, log = -1, load = 1;
+	int x, log = -1;
 	GdkPixbuf *pixbuf;
 
 	gtk_set_locale ();
@@ -141,9 +87,6 @@ main (int argc, char *argv[])
 			   !strcmp (argv[x], "-v")) {
 			printf ("%s\n", VERSION);
 			return (0);
-		} else if (!strcmp (argv[x], "--no-settings") ||
-			   !strcmp (argv[x], "-n")) {
-			load = 0;
 		} else if (!strcmp (argv[x], "--help") ||
 			   !strcmp (argv[x], "-h")) {
 			printf ("%s-%s\n", PACKAGE, VERSION);
@@ -151,7 +94,6 @@ main (int argc, char *argv[])
 			printf (" -d --debug       Print debugging output\n");
 			printf (" -f --fatal       Make warnings fatal\n");
 			printf (" -v --version     Print version\n");
-			printf (" -n --no-settings Don't read settings\n");
 			return (0);
 		} else
 			g_warning ("Unknown option '%s'!", argv[x]);
@@ -175,10 +117,6 @@ main (int argc, char *argv[])
 		gdk_window_set_icon (GTK_WIDGET (m)->window, NULL, map, mask);
 	} else
 		g_warning ("Could not load '" IMAGE_DIR "/gtkam-camera.png'.");
-
-	/* Shall we load settings? */
-	if (load)
-		gtk_idle_add (idle_func, m);
 
 	gtk_main ();
 

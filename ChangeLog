@@ -1,5 +1,9 @@
 2002-05-03  Lutz Müller <lutz@users.sourceforge.net>
 
+	* src/*: Small fixes and cleanup.
+
+2002-05-03  Lutz Müller <lutz@users.sourceforge.net>
+
 	* src/*: Support multiple cameras. 
 
 2002-05-03  Lutz Müller <lutz@users.sourceforge.net>

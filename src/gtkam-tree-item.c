@@ -119,6 +119,12 @@ gtkam_tree_item_finalize (GtkObject *object)
 }
 
 static void
+on_new_status (GtkamTreeItem *item, GtkWidget *status, GtkamTreeItem *i)
+{
+	gtk_signal_emit (GTK_OBJECT (i), signals[NEW_STATUS], status);
+}
+
+static void
 gtkam_tree_item_expand (GtkTreeItem *tree_item)
 {
 	GtkamTreeItem *item = GTKAM_TREE_ITEM (tree_item);
@@ -135,6 +141,9 @@ gtkam_tree_item_expand (GtkTreeItem *tree_item)
 			gtk_widget_show (new_item);
 			gtk_tree_append (GTK_TREE (tree_item->subtree),
 					 new_item);
+			gtk_signal_connect (GTK_OBJECT (new_item),
+				"new_status", GTK_SIGNAL_FUNC (on_new_status),
+				item);
 
 			/* Configure the new item */
 			if (!strcmp (item->priv->folder, "/"))
@@ -345,7 +354,7 @@ on_upload_activate (GtkMenuItem *menu_item, PopupData *data)
                                         "'%s'."), path, item->priv->folder);
                                 gtk_widget_show (dialog);
                         }
-                        gtk_object_unref (GTK_OBJECT (s));
+                        gtk_object_destroy (GTK_OBJECT (s));
                 }
                 gp_file_unref (file);
         }
@@ -627,6 +636,10 @@ gtkam_tree_item_set_online (GtkamTreeItem *item, gboolean online)
 					"for folder '%s'."),
 				item->priv->folder);
 			gtk_widget_show (dialog);
+			if (item->priv->multi)
+				gp_camera_exit (item->priv->camera, NULL);
+			gtk_object_destroy (GTK_OBJECT (s));
+			return;
 		}
 
 		/* Get a list of folders */

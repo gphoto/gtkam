@@ -47,7 +47,4 @@ struct _GtkamMainClass
 GtkType    gtkam_main_get_type (void);
 GtkWidget *gtkam_main_new      (void);
 
-void       gtkam_main_set_camera           (GtkamMain *m, Camera *camera,
-					    gboolean multi);
-
 #endif /* __GTKAM_MAIN_H__ */

@@ -262,7 +262,7 @@ gtkam_tree_new (void)
 }
 
 static void
-on_new_status (GtkTreeItem *item, GtkWidget *status, GtkamTree *tree)
+on_new_status (GtkamTreeItem *item, GtkWidget *status, GtkamTree *tree)
 {
 	gtk_signal_emit (GTK_OBJECT (tree), signals[NEW_STATUS], status);
 }
@@ -378,6 +378,8 @@ gtkam_tree_load (GtkamTree *tree)
 		gtk_tree_append (GTK_TREE (tree), item);
 		gtkam_tree_item_set_camera (GTKAM_TREE_ITEM (item), camera);
 		gp_camera_unref (camera);
+		gtk_signal_connect (GTK_OBJECT (item), "new_status",
+				    GTK_SIGNAL_FUNC (on_new_status), tree);
 
                 if (gp_setting_get ("gtkam", "multi", multi) == GP_OK)
 			gtkam_tree_item_set_multi (GTKAM_TREE_ITEM (item),
@@ -443,6 +445,8 @@ gtkam_tree_load (GtkamTree *tree)
 		gtkam_tree_item_set_multi (GTKAM_TREE_ITEM (item),
 					   atoi (multi));
                 gp_camera_unref (camera);
+		gtk_signal_connect (GTK_OBJECT (item), "new_status",
+				    GTK_SIGNAL_FUNC (on_new_status), tree);
 	}
 
 	gp_abilities_list_free (al);

@@ -230,6 +230,8 @@ gtkam_chooser_get_camera (GtkamChooser *chooser)
 	gtk_widget_show (status);
 	gtk_box_pack_end (GTK_BOX (GTK_DIALOG (chooser)->vbox), status,
 			  FALSE, FALSE, 0);
+	while (gtk_events_pending ())
+		gtk_main_iteration ();
 	r = gp_camera_init (camera, GTKAM_STATUS (status)->context->context);
 	if (multi)
 		gp_camera_exit (camera, NULL);
@@ -242,8 +244,9 @@ gtkam_chooser_get_camera (GtkamChooser *chooser)
 	default:
 		g_free (port_path);
 		dialog = gtkam_error_new (r, GTKAM_STATUS (status)->context,
-			GTK_WIDGET (chooser),
-			_("Could not initialize camera."));
+			NULL, _("Could not initialize camera."));
+		gtk_window_set_transient_for (GTK_WINDOW (dialog),
+					      GTK_WINDOW (chooser));
 		gtk_widget_show (dialog);
 		gp_camera_unref (camera);
 		gtk_object_destroy (GTK_OBJECT (status));
@@ -287,7 +290,6 @@ on_ok_clicked (GtkButton *button, GtkamChooser *chooser)
 	Camera *camera;
 
 	if (chooser->priv->needs_update) {
-		gtk_widget_hide (GTK_WIDGET (chooser));
 		while (gtk_events_pending ())
 			gtk_main_iteration ();
 		camera = gtkam_chooser_get_camera (chooser);
@@ -297,8 +299,7 @@ on_ok_clicked (GtkButton *button, GtkamChooser *chooser)
 				GTK_TOGGLE_BUTTON (chooser->priv->check_multi)->active);
 			gp_camera_unref (camera);
 			gtk_object_destroy (GTK_OBJECT (chooser));
-		} else
-			gtk_widget_show (GTK_WIDGET (chooser));
+		}
 	} else
 		gtk_object_destroy (GTK_OBJECT (chooser));
 }
@@ -684,8 +685,8 @@ gtkam_chooser_new (void)
 
 	gtkam_chooser_update_for_model (chooser);
 
-	chooser->priv->needs_update = FALSE;
-	gtk_widget_set_sensitive (chooser->apply_button, FALSE);
+	chooser->priv->needs_update = TRUE;
+	gtk_widget_set_sensitive (chooser->apply_button, TRUE);
 
 	return (GTK_WIDGET (chooser));
 }
@@ -769,6 +770,9 @@ gtkam_chooser_set_camera (GtkamChooser *chooser, Camera *camera)
 	g_free (full_info);
 
 	gtk_entry_set_text (chooser->priv->entry_model, a.model);
+
+	chooser->priv->needs_update = FALSE;
+	gtk_widget_set_sensitive (chooser->apply_button, FALSE);
 }
 
 void

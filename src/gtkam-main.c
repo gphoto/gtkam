@@ -82,8 +82,6 @@
 
 struct _GtkamMainPrivate
 {
-	Camera *camera;
-
 	GtkamTree *tree;
 	GtkamList *list;
 
@@ -96,8 +94,6 @@ struct _GtkamMainPrivate
 	GtkWidget *status;
 
 	GtkWidget *vbox;
-
-	gboolean multi;
 };
 
 #define PARENT_TYPE GTK_TYPE_WINDOW
@@ -108,10 +104,7 @@ gtkam_main_destroy (GtkObject *object)
 {
 	GtkamMain *m = GTKAM_MAIN (object);
 
-	if (m->priv->camera) {
-		gp_camera_unref (m->priv->camera);
-		m->priv->camera = NULL;
-	}
+	m = NULL;
 
 	GTK_OBJECT_CLASS (parent_class)->destroy (object);
 }
@@ -319,8 +312,6 @@ on_camera_selected (GtkamChooser *chooser, Camera *camera,
 	gtkam_tree_item_set_camera (GTKAM_TREE_ITEM (item), camera);
 	gtkam_tree_item_set_multi (GTKAM_TREE_ITEM (item), multi);
 	gtkam_tree_save (GTKAM_TREE (m->priv->tree));
-
-	gtkam_main_set_camera (m, camera, multi);
 }
 
 static void
@@ -336,32 +327,6 @@ on_add_camera_activate (GtkMenuItem *item, GtkamMain *m)
 }
 
 static void
-on_configure_activate (GtkMenuItem *item, GtkamMain *m)
-{
-	GtkWidget *dialog;
-
-	if (!m->priv->camera)
-		return;
-
-	dialog = gtkam_config_new (m->priv->camera, m->priv->multi,
-				   GTK_WIDGET (m));
-	if (!dialog) {
-
-		/* The error has already been reported */
-		return;
-	}
-
-	gtk_window_set_transient_for (GTK_WINDOW (dialog), GTK_WINDOW (m));
-	gtk_widget_show (dialog);
-}
-
-static void
-on_configure_camera_clicked (GtkButton *button, GtkamMain *m)
-{
-	on_configure_activate (NULL, m);
-}
-
-static void
 on_size_allocate (GtkWidget *widget, GtkAllocation *allocation, GtkamMain *m)
 {
 	gtk_icon_list_update (GTK_ICON_LIST (m->priv->list));
@@ -370,7 +335,6 @@ on_size_allocate (GtkWidget *widget, GtkAllocation *allocation, GtkamMain *m)
 static void
 gtkam_main_update_sensitivity (GtkamMain *m)
 {
-	CameraAbilities a;
 	guint i, s;
 
 	/* Make sure we are not shutting down */
@@ -378,16 +342,14 @@ gtkam_main_update_sensitivity (GtkamMain *m)
 		gtk_main_iteration ();
 	if (!GTKAM_IS_MAIN (m))
 		return;
-
-	if (!m->priv->camera)
+	if (!GTK_IS_WIDGET (m->priv->item_save))
 		return;
 
-	gp_camera_get_abilities (m->priv->camera, &a);
-
-	/* Select */
 	i = g_list_length (GTK_ICON_LIST (m->priv->list)->icons);
 	s = g_list_length (GTK_ICON_LIST (m->priv->list)->selection);
 	gtk_widget_set_sensitive (m->priv->select_none, (s != 0));
+	gtk_widget_set_sensitive (m->priv->item_delete, (s != 0));
+	gtk_widget_set_sensitive (m->priv->item_save, (s != 0));
 	gtk_widget_set_sensitive (m->priv->select_all, (s != i));
 	gtk_widget_set_sensitive (m->priv->select_inverse, (i != 0));
 }
@@ -468,6 +430,8 @@ on_select_icon (GtkIconList *list, GtkIconListItem *item, GdkEvent *event,
 	 */
 	i = g_list_length (GTK_ICON_LIST (m->priv->list)->icons);
 	s = g_list_length (GTK_ICON_LIST (m->priv->list)->selection) + 1;
+	gtk_widget_set_sensitive (m->priv->item_delete, (s != 0));
+	gtk_widget_set_sensitive (m->priv->item_save, (s != 0));
 	gtk_widget_set_sensitive (m->priv->select_none, (s != 0));
 	gtk_widget_set_sensitive (m->priv->select_all, (s != i));
 	gtk_widget_set_sensitive (m->priv->select_inverse, (i != 0)); 
@@ -593,7 +557,6 @@ gtkam_main_new (void)
 	gtk_signal_connect (GTK_OBJECT (item), "activate",
 		GTK_SIGNAL_FUNC (on_delete_all_photos_activate), m);
 	m->priv->item_delete_all = item;
-	gtk_widget_set_sensitive (item, FALSE);
 
 	separator = gtk_menu_item_new ();
 	gtk_widget_show (separator);
@@ -746,15 +709,6 @@ gtkam_main_new (void)
 	gtk_widget_show (label);
 	gtk_toolbar_append_widget (GTK_TOOLBAR (toolbar), label, NULL, NULL);
 
-	icon = create_pixmap (GTK_WIDGET (m), "configure.xpm");
-	button = gtk_toolbar_append_element (GTK_TOOLBAR (toolbar),
-			GTK_TOOLBAR_CHILD_BUTTON, NULL, NULL, NULL, NULL,
-			icon, NULL, NULL);
-	gtk_widget_show (button);
-	gtk_tooltips_set_tip (tooltips, button, _("Configure camera..."), NULL);
-	gtk_signal_connect (GTK_OBJECT (button), "clicked",
-		GTK_SIGNAL_FUNC (on_configure_camera_clicked), m);
-
 	label = gtk_label_new ("      ");
 	gtk_widget_show (label);
 	gtk_toolbar_append_widget (GTK_TOOLBAR (toolbar), label, NULL, NULL);
@@ -848,65 +802,4 @@ gtkam_main_new (void)
 			    GTK_SIGNAL_FUNC (on_size_allocate), m);
 
 	return (GTK_WIDGET (m));
-}
-
-void
-gtkam_main_set_camera (GtkamMain *m, Camera *camera, gboolean multi)
-{
-	CameraAbilities a;
-
-	g_return_if_fail (GTKAM_IS_MAIN (m));
-	g_return_if_fail (camera != NULL);
-
-	if (m->priv->camera) {
-		gp_camera_unref (m->priv->camera);
-		m->priv->camera = NULL;
-	}
-
-	if (camera) {
-		m->priv->camera = camera;
-		gp_camera_ref (camera);
-		m->priv->multi = multi;
-	}
-
-	gp_camera_get_abilities (camera, &a);
-
-	/* Previews */
-	if (camera && a.file_operations & GP_FILE_OPERATION_PREVIEW)
-		gtk_widget_set_sensitive (GTK_WIDGET (m->priv->toggle_preview),
-					  TRUE);
-	else {
-		gtk_widget_set_sensitive (GTK_WIDGET (m->priv->toggle_preview),
-					  FALSE);
-		gtk_toggle_button_set_active (m->priv->toggle_preview, FALSE);
-	}
-
-	/* Delete */
-	if (camera && a.file_operations & GP_FILE_OPERATION_DELETE)
-		gtk_widget_set_sensitive (m->priv->item_delete, TRUE);
-	else
-		gtk_widget_set_sensitive (m->priv->item_delete, FALSE);
-
-	/* Delete all */
-	if (camera && a.folder_operations & GP_FOLDER_OPERATION_DELETE_ALL)
-		gtk_widget_set_sensitive (m->priv->item_delete_all, TRUE);
-	else
-		gtk_widget_set_sensitive (m->priv->item_delete_all, FALSE);
-
-	/* Overall deletion */
-	if (camera && ((a.file_operations & GP_FILE_OPERATION_DELETE) ||
-		       (a.folder_operations & GP_FOLDER_OPERATION_DELETE_ALL)))
-		gtk_widget_set_sensitive (m->priv->menu_delete, TRUE);
-	else
-		gtk_widget_set_sensitive (m->priv->menu_delete, FALSE);
-
-	gtkam_main_update_sensitivity (m);
-
-	/* The remaining */
-	if (camera)
-		gtk_widget_set_sensitive (m->priv->item_save, TRUE);
-	else
-		gtk_widget_set_sensitive (m->priv->item_save, FALSE);
-
-	gtk_icon_list_clear (GTK_ICON_LIST (m->priv->list));
 }

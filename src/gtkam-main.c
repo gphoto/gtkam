@@ -592,7 +592,7 @@ on_upload_activate (GtkMenuItem *item, GtkamMain *m)
 			} else
 				gtkam_list_refresh (m->priv->list);
 		}
-		gp_file_free (file);
+		gp_file_unref (file);
 	}
 
 	gtk_object_destroy (GTK_OBJECT (fsel));

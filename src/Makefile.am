@@ -16,6 +16,7 @@ libgtkam_a_SOURCES =				\
 	gtkam-config.c gtkam-config.h   	\
 	gtkam-error.c gtkam-error.h     	\
 	gtkam-fsel.c gtkam-fsel.h		\
+	gtkam-info.c gtkam-info.h		\
 	gtkam-mkdir.c gtkam-mkdir.h		\
 	gtkam-preview.c gtkam-preview.h		\
 	gtkam-tree.c gtkam-tree.h		\

@@ -46,6 +46,8 @@
 #include <gtk/gtksignal.h>
 #include <gtk/gtkpixmap.h>
 #include <gtk/gtkentry.h>
+#include <gtk/gtkmenuitem.h>
+#include <gtk/gtkmenu.h>
 #include <gdk-pixbuf/gdk-pixbuf-loader.h>
 
 #include <gphoto2/gphoto2-list.h>
@@ -55,6 +57,7 @@
 #include "gtkam-save.h"
 #include "gtkam-main.h"
 #include "gdk-pixbuf-hacks.h"
+#include "gtkam-info.h"
 
 struct _GtkamListPrivate
 {
@@ -189,15 +192,84 @@ gdk_pixbuf_new_from_camera_file (CameraFile *file)
 	return (pixbuf);
 }
 
+static void
+on_info_updated (GtkamInfo *info, const gchar *path, GtkamList *list)
+{
+	gtkam_list_refresh (list);
+}
+
+typedef struct {
+	GtkWidget *menu;
+	GtkamList *list;
+	GtkIconListItem *item;
+} PopupData;
+
+static void
+on_info_activate (GtkMenuItem *item, PopupData *data)
+{
+	GtkamList *list = data->list;
+	GtkWidget *w, *info;
+	gchar *path;
+
+	w = gtk_widget_get_ancestor (GTK_WIDGET (list), GTK_TYPE_WINDOW);
+	if (strlen (list->path) == 1)
+		path = g_strdup_printf ("/%s", data->item->label);
+	else
+		path = g_strdup_printf ("%s/%s", list->path,
+					data->item->label);
+	info = gtkam_info_new (list->priv->camera, path, w);
+	g_free (path);
+	if (info) {
+		gtk_widget_show (info);
+		gtk_signal_connect_while_alive (GTK_OBJECT (info),
+			"info_updated", GTK_SIGNAL_FUNC (on_info_updated),
+			list, GTK_OBJECT (list));
+	}
+}
+
+static void
+on_delete_activate (GtkMenuItem *menu_item, PopupData *data)
+{
+	GtkamList *list = data->list;
+	GtkIconListItem *item = data->item;
+	GtkWidget *w, *d;
+	gchar *msg;
+	int result;
+
+	w = gtk_widget_get_ancestor (GTK_WIDGET (list), GTK_TYPE_WINDOW);
+	result = gp_camera_file_delete (list->priv->camera,
+					list->path, item->label);
+	if (result < 0) {
+		msg = g_strdup_printf (_("Could not delete '%s' from '%s'"),
+				       item->label, list->path);
+		d = gtkam_error_new (msg, result, list->priv->camera, w);
+		gtk_widget_show (d);
+	} else
+		gtk_icon_list_remove (GTK_ICON_LIST (list), item);
+}
+
+static gboolean
+kill_idle (gpointer user_data)
+{
+	PopupData *data = user_data;
+
+	gtk_object_unref (GTK_OBJECT (data->menu));
+	g_free (data);
+
+	return (FALSE);
+}
+
+static void
+kill_popup_menu (GtkWidget *widget, PopupData *data)
+{
+	gtk_idle_add (kill_idle, data);
+}
+
 static gboolean
 on_select_icon (GtkIconList *ilist, GtkIconListItem *item,
 		GdkEventButton *event, GtkamList *list)
 {
 	GtkWidget *dialog, *window;
-	CameraFile *file;
-	GdkPixbuf *pixbuf;
-	GdkPixmap *pixmap;
-	GdkBitmap *bitmap;
 	int result;
 	gchar *msg;
 
@@ -205,6 +277,7 @@ on_select_icon (GtkIconList *ilist, GtkIconListItem *item,
 		return (TRUE);
 
 	if (event->type == GDK_2BUTTON_PRESS) {
+		CameraFile *file;
 
 		/* Double-click: Get thumbnail */
 		gp_file_new (&file);
@@ -223,6 +296,10 @@ on_select_icon (GtkIconList *ilist, GtkIconListItem *item,
 			g_free (msg);
 			gtk_widget_show (dialog);
 		} else {
+			GdkPixbuf *pixbuf;
+			GdkPixmap *pixmap;
+			GdkBitmap *bitmap;
+
 			pixbuf = gdk_pixbuf_new_from_camera_file (file);
 			gdk_pixbuf_render_pixmap_and_mask (pixbuf, &pixmap,
 							   &bitmap, 127);
@@ -239,9 +316,36 @@ on_select_icon (GtkIconList *ilist, GtkIconListItem *item,
 		return (FALSE);
 	} else if (event->type == GDK_BUTTON_PRESS) {
 		if (event->button == 3) {
+			PopupData *data;
+			GtkWidget *i;
 
-			/* Right-click: Show file info */
-			g_warning ("Not implemented!");
+			data = g_new0 (PopupData, 1);
+			data->list = list;
+			data->item = item;
+
+			/* Right-click: Show popup menu */
+			data->menu = gtk_menu_new ();
+			gtk_widget_show (data->menu);
+			i = gtk_menu_item_new_with_label (_("Info"));
+			gtk_widget_show (i);
+			gtk_container_add (GTK_CONTAINER (data->menu), i);
+			gtk_signal_connect (GTK_OBJECT (i), "activate",
+				GTK_SIGNAL_FUNC (on_info_activate), data);
+			i = gtk_menu_item_new ();
+			gtk_widget_show (i);
+			gtk_container_add (GTK_CONTAINER (data->menu), i);
+			gtk_widget_set_sensitive (i, FALSE);
+			i = gtk_menu_item_new_with_label (_("Delete"));
+			gtk_widget_show (i);
+			gtk_container_add (GTK_CONTAINER (data->menu), i);
+			gtk_signal_connect (GTK_OBJECT (i), "activate",
+				GTK_SIGNAL_FUNC (on_delete_activate), data);
+			gtk_signal_connect (GTK_OBJECT (data->menu), "hide",
+					    GTK_SIGNAL_FUNC (kill_popup_menu),
+					    data);
+			gtk_menu_popup (GTK_MENU (data->menu), NULL, NULL,
+					NULL, NULL, event->button, event->time);
+
 			return (FALSE);
 		}
 	}
@@ -324,7 +428,6 @@ gtkam_list_set_path (GtkamList *list, const gchar *path)
 		return;
 	}
 
-	gp_file_new (&file);
 	gp_camera_get_abilities (list->priv->camera, &a);
 	for (i = 0; i < gp_list_count (&flist); i++) {
 		gp_list_get_name (&flist, i, &name);
@@ -346,12 +449,15 @@ gtkam_list_set_path (GtkamList *list, const gchar *path)
 		 */
 		if (list->priv->thumbnails &&
 		    (a.file_operations & GP_FILE_OPERATION_PREVIEW)) {
+			gp_file_new (&file);
 			result = gp_camera_file_get (list->priv->camera, path,
 					name, GP_FILE_TYPE_PREVIEW, file);
 
 			/* Make sure we are not shutting down */
-			if (!GTKAM_IS_LIST (list))
+			if (!GTKAM_IS_LIST (list)) {
+				gp_file_unref (file);
 				break;
+			}
 
 			if (result < 0) {
 				msg = g_strdup_printf (_("Could not get file "
@@ -368,6 +474,7 @@ gtkam_list_set_path (GtkamList *list, const gchar *path)
 				gtk_pixmap_set (GTK_PIXMAP (item->pixmap),
 						pixmap, bitmap);
 			}
+			gp_file_unref (file);
 		}
 
 		/*
@@ -427,7 +534,6 @@ gtkam_list_set_path (GtkamList *list, const gchar *path)
 
 		gtkam_main_select_set_sensitive (GTKAM_MAIN (m), TRUE);
 	}
-	gp_file_unref (file);
 
 	if (GTKAM_IS_LIST (list) && list->priv->multi)
 		gp_camera_exit (list->priv->camera);

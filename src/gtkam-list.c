@@ -302,6 +302,11 @@ gtkam_list_set_path (GtkamList *list, const gchar *path)
 		    (a.file_operations & GP_FILE_OPERATION_PREVIEW)) {
 			result = gp_camera_file_get (list->priv->camera, path,
 					name, GP_FILE_TYPE_PREVIEW, file);
+
+			/* Make sure we are not shutting down */
+			if (!GTKAM_IS_LIST (list))
+				break;
+
 			if (result < 0) {
 				msg = g_strdup_printf (_("Could not get file "
 						       "'%s'"), name);
@@ -321,7 +326,7 @@ gtkam_list_set_path (GtkamList *list, const gchar *path)
 	}
 	gp_file_unref (file);
 
-	if (list->priv->multi)
+	if (GTKAM_IS_LIST (list) && list->priv->multi)
 		gp_camera_exit (list->priv->camera);
 }
 

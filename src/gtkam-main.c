@@ -339,6 +339,10 @@ update_sensitivity_folder (GtkamMain *m)
 {
 	CameraAbilities a;
 
+	/* Make sure we are not shutting down */
+	if (!GTKAM_IS_MAIN (m))
+		return;
+
 	if (!m->priv->camera ||
 	    !g_list_length (GTK_TREE (m->priv->tree)->selection)) {
 		gtk_widget_set_sensitive (m->priv->make_dir, FALSE);
@@ -1086,7 +1090,11 @@ message_func (Camera *camera, const char *message, void *data)
 static void
 progress_func (Camera *camera, float progress, void *data)
 {
-	GtkamMain *m = GTKAM_MAIN (data);
+	GtkamMain *m = data;
+
+	/* Make sure we are not shutting down */
+	if (!GTKAM_IS_MAIN (data))
+		return;
 
 	gtk_progress_bar_update (m->priv->progress, progress);
 	while (gtk_events_pending ())

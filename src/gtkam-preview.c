@@ -170,7 +170,7 @@ on_preview_capture_clicked (GtkButton *button, GtkamPreview *preview)
 	gchar *full_path;
 
 	result = gp_camera_capture (preview->priv->camera,
-				    GP_OPERATION_CAPTURE_IMAGE, &path);
+				    GP_CAPTURE_IMAGE, &path);
 	if (result != GP_OK) {
 		dialog = gtkam_error_new (_("Could not capture"),
 			result, preview->priv->camera, GTK_WIDGET (preview));
@@ -184,7 +184,6 @@ on_preview_capture_clicked (GtkButton *button, GtkamPreview *preview)
 		gtk_signal_emit (GTK_OBJECT (preview), signals[CAPTURED],
 				 full_path);
 		g_free (full_path);
-		gtk_object_destroy (GTK_OBJECT (preview));
 	}
 }
 
@@ -208,18 +207,41 @@ struct _GdkPixbuf {
 static void
 gdk_pixbuf_rotate (GdkPixbuf *pixbuf, guint angle)
 {
-	guint row, col, row_len;
+	guint row, col, row_len, w, h;
 	guint channels;
 
 	g_return_if_fail (pixbuf != NULL);
 
 	channels = pixbuf->has_alpha ? 4 : 3;
 	row_len = pixbuf->width * channels;
+	w = pixbuf->width;
+	h = pixbuf->height;
 
 	switch (angle) {
 	case 0:
 		break;
 	case 90:
+#if 0
+		for (row = 0; row < MAX (w, h) / 2; row++) {
+			for (col = row; col < MAX (w, h) - row - 1; col++) {
+if (col < w) {
+	c = pixbuf->pixels[row * row_len + col * channels + 0];
+	pixbuf->pixels[row * row_len + col * channels + 0] = 
+	pixbuf->pixels[col * row_len - (w - row) * channels + 0];
+}
+
+if (col < w) {
+	pixbuf->pixels[col * row_len - (w - row) * channels + 0] =
+	pixbuf->pixels[(h - row) * row_len - (w - col) * channels + 0];
+}
+
+	pixbuf->pixels[(h - row) * row_len - (w - col) * channels + 0] =
+	pixbuf->pixels[(h - col) * row_len - (w - row) * channels + 0];
+
+	pixbuf->pixels[(h - col) * row_len - (w - row) * channels + 0] = c;
+			}
+		}
+#endif
 		break;
 	case 180:
 		for (row = 0; row < pixbuf->height / 2; row++) {

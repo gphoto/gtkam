@@ -1,3 +1,7 @@
+2005-01-17  Colin Marquardt  <colin@marquardt-home.de>
+
+	* po/hu.po: Translation thanks to Marton Nemeth.
+
 2004-10-25  Marcus Meissner  <marcus@jet.franken.de>
 	
 	* po/no.po,nb.po,configure.in: Renamed no -> nb.po

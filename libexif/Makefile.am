@@ -1,1 +1,1 @@
-SUBDIRS = libexif test
+SUBDIRS = libexif libexif-gtk libjpeg test

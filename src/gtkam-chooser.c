@@ -258,7 +258,7 @@ on_model_changed (GtkEntry *entry, GtkamChooser *chooser)
 	CameraAbilities a;
 	GPPortInfo info;
 	const gchar *model;
-	gchar *msg;
+	gchar *msg, *port;
 	int count, result, m;
 	guint i;
 	GList *list;
@@ -295,9 +295,18 @@ on_model_changed (GtkEntry *entry, GtkamChooser *chooser)
 	}
 
 	if (list) {
+		/* Remember the old entry */
+		port = g_strdup (gtk_entry_get_text (GTK_ENTRY (GTK_COMBO (
+					chooser->priv->combo_port)->entry)));
 		gtk_combo_set_popdown_strings (chooser->priv->combo_port, list);
 		gtk_widget_set_sensitive (
 				GTK_WIDGET (chooser->priv->combo_port), TRUE);
+		for (i = 0; i < g_list_length (list); i++)
+			if (!strcmp (g_list_nth_data (list, i), port))
+				gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (
+					chooser->priv->combo_port)->entry),
+					port);
+		g_free (port);
 	} else
 		gtk_widget_set_sensitive (
 				GTK_WIDGET (chooser->priv->combo_port), FALSE);

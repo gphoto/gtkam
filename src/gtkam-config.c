@@ -62,6 +62,7 @@
 #include <gtk/gtkmain.h>
 
 #include <gtkam-error.h>
+#include <gtkam-clock.h>
 
 struct _GtkamConfigPrivate
 {
@@ -293,68 +294,74 @@ on_adjustment_value_changed (GtkAdjustment *adj, CameraWidget *widget)
 }
 
 static void
-on_day_selected (GtkCalendar *calendar, CameraWidget *widget)
+adjust_time (GtkCalendar *calendar, GtkamClock *clock, CameraWidget *widget)
 {
-	GtkLabel *label;
 	struct tm tm;
 	time_t time;
 
-	label = GTK_LABEL (gtk_object_get_data (GTK_OBJECT (calendar),
-						"clock"));
-	sscanf (label->label, "%d:%d:%d", &tm.tm_hour, &tm.tm_min, &tm.tm_sec);
+	gtkam_clock_get (clock, (guchar*) &tm.tm_hour,
+			 (guchar*) &tm.tm_min, (guchar*) &tm.tm_sec);
 	gtk_calendar_get_date (calendar, &tm.tm_year, &tm.tm_mon, &tm.tm_mday);
 	time = mktime (&tm);
 	gp_widget_set_value (widget, (int*) &time);
 }
 
 static void
-on_clock_changed (GtkEntry *entry, CameraWidget *widget)
+on_day_selected (GtkCalendar *calendar, CameraWidget *widget)
 {
-	GtkCalendar *calendar;
-	const gchar *text;
-	struct tm tm;
-	time_t time;
+	GtkamClock *clock;
 
-	calendar = GTK_CALENDAR (gtk_object_get_data (GTK_OBJECT (entry),
-						      "calendar"));
-	text = gtk_entry_get_text (entry);
-	sscanf (text, "%d:%d:%d", &tm.tm_hour, &tm.tm_min, &tm.tm_sec);
-	gtk_calendar_get_date (calendar, &tm.tm_year, &tm.tm_mon, &tm.tm_mday);
-	time = mktime (&tm);
-	gp_widget_set_value (widget, (int*) &time);
+	clock = GTKAM_CLOCK (gtk_object_get_data (GTK_OBJECT (calendar),
+						  "clock"));
+	adjust_time (calendar, clock, widget);
 }
 
-static gboolean
-clock_func (gpointer data)
+static void
+on_clock_changed (GtkamClock *clock, CameraWidget *widget)
 {
-	GtkLabel *label;
 	GtkCalendar *calendar;
-	struct tm tm, *tmp;
-	time_t time;
-	gchar *string;
 
-	if (!GTK_IS_LABEL (data))
-		return (FALSE);
-	
-	label = GTK_LABEL (data);
-	calendar = GTK_CALENDAR (gtk_object_get_data (GTK_OBJECT (label),
+	calendar = GTK_CALENDAR (gtk_object_get_data (GTK_OBJECT (clock),
 						      "calendar"));
+	adjust_time (calendar, clock, widget);
+}
 
-	sscanf (label->label, "%d:%d:%d", &tm.tm_hour, &tm.tm_min, &tm.tm_sec);
-	tm.tm_year = calendar->year - 1900;
-	tm.tm_mon = calendar->month;
-	tm.tm_mday = calendar->selected_day;
-	time = mktime (&tm);
+static void
+adjust_day (GtkCalendar *calendar, gint days)
+{
+	GDate *date;
+	guint year, month, day;
+	
+	gtk_calendar_get_date (calendar, &year, &month, &day);
+	date = g_date_new_dmy (day, month + 1, year);
+	if (days > 0)
+		g_date_add_days (date, (guint) days);
+	else
+		g_date_subtract_days (date, (guint) ABS (days));
+	gtk_calendar_select_month (calendar, g_date_month (date) - 1,
+				   g_date_year (date));
+	gtk_calendar_select_day (calendar, g_date_day (date));
+	g_date_free (date);
+}
 
-	time++;
+static void
+on_clock_next_day (GtkamClock *clock)
+{
+	GtkCalendar *calendar;
 
-	tmp = localtime (&time);
-	string = g_strdup_printf ("%i:%02i:%02i", tmp->tm_hour, tmp->tm_min,
-				  tmp->tm_sec);
-	gtk_label_set_text (label, string);
-	g_free (string);
+	calendar = GTK_CALENDAR (gtk_object_get_data (GTK_OBJECT (clock),
+						      "calendar"));
+	adjust_day (calendar, 1);
+}
 
-	return (TRUE);
+static void
+on_clock_previous_day (GtkamClock *clock)
+{
+	GtkCalendar *calendar;
+
+	calendar = GTK_CALENDAR (gtk_object_get_data (GTK_OBJECT (clock),
+						      "calendar"));
+	adjust_day (calendar, -1);
 }
 
 static void
@@ -368,14 +375,12 @@ create_widgets (GtkamConfig *config, CameraWidget *widget)
 	float value_float, min, max, increment;
 	const char *choice;
 	GtkWidget *vbox, *button, *gtk_widget = NULL, *frame, *calendar;
-	GtkWidget *entry, *clock, *hbox;
+	GtkWidget *clock;
 	GtkObject *adjustment;
 	GSList *group = NULL;
 	GList *options = NULL;
 	gint i, id;
 	struct tm *tm;
-	guint timeout;
-	gchar *string;
 
 	gp_widget_get_label (widget, &label);
 	gp_widget_get_info  (widget, &info);
@@ -440,31 +445,22 @@ create_widgets (GtkamConfig *config, CameraWidget *widget)
 		gtk_signal_connect (GTK_OBJECT (calendar), "day_selected",
 				    GTK_SIGNAL_FUNC (on_day_selected), widget);
 
-		/* Create the timer */
-		hbox = gtk_hbox_new (FALSE, 5);
-		gtk_widget_show (hbox);
-		gtk_box_pack_start (GTK_BOX (gtk_widget), hbox, TRUE, TRUE, 0);
-		string = g_strdup_printf ("%i:%02i:%02i", tm->tm_hour,
-					  tm->tm_min, tm->tm_sec);
-		clock = gtk_label_new (string);
-		gtk_object_set_data (GTK_OBJECT (clock), "calendar",
-				     calendar);
-		timeout = gtk_timeout_add (1000, clock_func, clock);
-		gtk_object_set_data (GTK_OBJECT (clock), "timeout",
-				     GINT_TO_POINTER (timeout));
+		/* Create the clock */
+		clock = gtkam_clock_new ();
 		gtk_widget_show (clock);
-		gtk_box_pack_start (GTK_BOX (hbox), clock, FALSE, FALSE, 0);
-		entry = gtk_entry_new ();
-		gtk_object_set_data (GTK_OBJECT (entry), "calendar", calendar);
-		gtk_widget_show (entry);
-		gtk_box_pack_start (GTK_BOX (hbox), entry, FALSE, FALSE, 0);
-		gtk_entry_set_max_length (GTK_ENTRY (entry), 8);
-		gtk_entry_set_text (GTK_ENTRY (entry), string);
-		g_free (string);
-		gtk_signal_connect (GTK_OBJECT (entry), "changed",
-				GTK_SIGNAL_FUNC (on_clock_changed), widget);
+		gtk_box_pack_start (GTK_BOX (gtk_widget), clock,
+				    FALSE, FALSE, 0);
+		gtk_signal_connect (GTK_OBJECT (clock), "changed",
+				    GTK_SIGNAL_FUNC (on_clock_changed), widget);
+		gtk_signal_connect (GTK_OBJECT (clock), "next_day",
+			GTK_SIGNAL_FUNC (on_clock_next_day), widget);
+		gtk_signal_connect (GTK_OBJECT (clock), "previous_day",
+			GTK_SIGNAL_FUNC (on_clock_previous_day), widget);
+
+		/* We need clock and calendar together */
+		gtk_object_set_data (GTK_OBJECT (clock), "calendar", calendar);
 		gtk_object_set_data (GTK_OBJECT (calendar), "clock", clock);
-		
+
 		break;
 
 	case GP_WIDGET_TEXT:

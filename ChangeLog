@@ -1,3 +1,7 @@
+2001-11-15  Lutz Müller <urc8@rz.uni-karlsruhe.de>
+
+	* src: Improved GP_WIDGET_DATE.
+
 2001-11-14  Lutz Müller <urc8@rz.uni-karlsruhe.de>
 
 	* src/gtkam-config.c: _Basic_ support for GP_WIDGET_DATE.

@@ -4,3 +4,4 @@ Makefile
 Makefile.in
 gtkam
 gtkam-gimp
+libgtkam.a

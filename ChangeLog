@@ -1,3 +1,8 @@
+2001-11-05  Colin Marquardt  <colin@marquardt-home.de>
+
+	* po/de.po: Update. Convert quote signs to the ones recommended by
+                    the folks at de@li.org.
+
 2001-11-01 Lutz Müller <urc8@rz.uni-karlsruhe.de>
 
 	* src: Bug fixes with regard to directory creation and removal

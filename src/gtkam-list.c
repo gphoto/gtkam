@@ -43,14 +43,18 @@
 #include <stdio.h>
 
 #include <gtk/gtkmain.h>
+#include <gtk/gtksignal.h>
+#include <gtk/gtkpixmap.h>
+#include <gtk/gtkentry.h>
+#include <gdk-pixbuf/gdk-pixbuf-loader.h>
 
 #include <gphoto2/gphoto2-list.h>
 
 #include "gtkam-error.h"
-#include "util.h"
 #include "../pixmaps/no_thumbnail.xpm"
 #include "gtkam-save.h"
 #include "gtkam-main.h"
+#include "gdk-pixbuf-hacks.h"
 
 struct _GtkamListPrivate
 {
@@ -166,16 +170,34 @@ gtkam_list_set_camera (GtkamList *list, Camera *camera, gboolean multi)
 	gtkam_list_refresh (list);
 }
 
+static GdkPixbuf *
+gdk_pixbuf_new_from_camera_file (CameraFile *file)
+{
+	GdkPixbufLoader *loader;
+	GdkPixbuf *pixbuf;
+	const char *data;
+	unsigned long size;
+
+	gp_file_get_data_and_size (file, &data, &size);
+	loader = gdk_pixbuf_loader_new ();
+	gdk_pixbuf_loader_write (loader, data, size);
+	gdk_pixbuf_loader_close (loader);
+	pixbuf = gdk_pixbuf_loader_get_pixbuf (loader);
+	gdk_pixbuf_ref (pixbuf);
+	gtk_object_destroy (GTK_OBJECT (loader));
+
+	return (pixbuf);
+}
+
 static gboolean
 on_select_icon (GtkIconList *ilist, GtkIconListItem *item,
 		GdkEventButton *event, GtkamList *list)
 {
 	GtkWidget *dialog, *window;
 	CameraFile *file;
+	GdkPixbuf *pixbuf;
 	GdkPixmap *pixmap;
 	GdkBitmap *bitmap;
-	const char *data;
-	long int size;
 	int result;
 	gchar *msg;
 
@@ -200,10 +222,15 @@ on_select_icon (GtkIconList *ilist, GtkIconListItem *item,
 		g_free (msg);
 		gtk_widget_show (dialog);
 	} else {
-		gp_file_get_data_and_size (file, &data, &size);
-		gdk_image_new_from_data ((char*) data, size, 1,
-					 &pixmap, &bitmap);
+		pixbuf = gdk_pixbuf_new_from_camera_file (file);
+		gdk_pixbuf_render_pixmap_and_mask (pixbuf, &pixmap, &bitmap,
+						   127);
+		gdk_pixbuf_unref (pixbuf);
 		gtk_pixmap_set (GTK_PIXMAP (item->pixmap), pixmap, bitmap);
+		if (pixmap)
+			gdk_pixmap_unref (pixmap);
+		if (bitmap)
+			gdk_bitmap_unref (bitmap);
 		item->state = GTK_STATE_SELECTED;
 	}
 	gp_file_unref (file);
@@ -240,10 +267,11 @@ gtkam_list_set_path (GtkamList *list, const gchar *path)
 	gchar *msg;
 	CameraList flist;
 	CameraFile *file;
+	CameraFileInfo info;
 	CameraAbilities a;
 	int result;
-	const char *name, *data;
-	long int size;
+	const char *name;
+	GdkPixbuf *pixbuf, *tmp;
 	GdkPixmap *pixmap;
 	GdkBitmap *bitmap;
 	gint i;
@@ -288,16 +316,25 @@ gtkam_list_set_path (GtkamList *list, const gchar *path)
 	}
 
 	gp_file_new (&file);
+	gp_camera_get_abilities (list->priv->camera, &a);
 	for (i = 0; i < gp_list_count (&flist); i++) {
 		gp_list_get_name (&flist, i, &name);
 
+		/*
+		 * First step: Show the plain icon
+		 */
+		pixbuf = gdk_pixbuf_new_from_xpm_data (
+					(const char**) no_thumbnail_xpm);
+		gdk_pixbuf_render_pixmap_and_mask (pixbuf, &pixmap, &bitmap,
+						   127);
 		gtk_icon_list_freeze (GTK_ICON_LIST (list));
-		item = gtk_icon_list_add_from_data (
-				GTK_ICON_LIST (list), no_thumbnail_xpm,
-				name, NULL);
+		item = gtk_icon_list_add_from_pixmap (GTK_ICON_LIST (list),
+						pixmap, bitmap, name, NULL);
 		gtk_icon_list_thaw (GTK_ICON_LIST (list));
 
-		gp_camera_get_abilities (list->priv->camera, &a);
+		/*
+		 * Second step: Show the preview
+		 */
 		if (list->priv->thumbnails &&
 		    (a.file_operations & GP_FILE_OPERATION_PREVIEW)) {
 			result = gp_camera_file_get (list->priv->camera, path,
@@ -315,13 +352,53 @@ gtkam_list_set_path (GtkamList *list, const gchar *path)
 							  window);
 				gtk_widget_show (dialog);
 			} else {
-				gp_file_get_data_and_size (file, &data, &size);
-				gdk_image_new_from_data ((char*) data, size, 1,
-							 &pixmap, &bitmap);
+				gdk_pixbuf_unref (pixbuf);
+				pixbuf = gdk_pixbuf_new_from_camera_file (file);
+				gdk_pixbuf_render_pixmap_and_mask (pixbuf,
+							&pixmap, &bitmap, 127);
 				gtk_pixmap_set (GTK_PIXMAP (item->pixmap),
 						pixmap, bitmap);
 			}
 		}
+
+		/*
+		 * Third step: Show additional information
+		 */
+		result = gp_camera_file_get_info (list->priv->camera, path,
+						  name, &info);
+		if (result == GP_OK) {
+
+			/* Make sure the pixbuf has alpha */
+			if (!gdk_pixbuf_get_has_alpha (pixbuf)) {
+				tmp = gdk_pixbuf_add_alpha (pixbuf, FALSE,
+							    0, 0, 0);
+				gdk_pixbuf_unref (pixbuf);
+				pixbuf = tmp;
+			}
+
+			/* Check for audio data */
+			if (info.audio.fields) {
+				tmp = gdk_pixbuf_new_from_file (
+					IMAGE_DIR "/gtkam-audio.png");
+				gdk_pixbuf_add (pixbuf, 0, 0, tmp);
+				gdk_pixbuf_unref (tmp);
+			}
+
+			/* Check for downloaded flag */
+			if ((info.file.fields & GP_FILE_INFO_STATUS) &&
+			    (info.file.status & GP_FILE_STATUS_NOT_DOWNLOADED)){
+				tmp = gdk_pixbuf_new_from_file (
+					IMAGE_DIR "/gtkam-new.png");
+				gdk_pixbuf_add (pixbuf, 20, 0, tmp);
+				gdk_pixbuf_unref (tmp);
+			}
+
+			gdk_pixbuf_render_pixmap_and_mask (pixbuf,
+						&pixmap, &bitmap, 127);
+			gtk_pixmap_set (GTK_PIXMAP (item->pixmap),
+					pixmap, bitmap);
+		}
+
 		gtkam_main_select_set_sensitive (GTKAM_MAIN (m), TRUE);
 	}
 	gp_file_unref (file);

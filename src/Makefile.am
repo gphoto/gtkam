@@ -7,18 +7,19 @@ INCLUDES =						\
 	@GTK_CFLAGS@
 
 noinst_LIBRARIES = libgtkam.a
-libgtkam_a_SOURCES =			\
-	gtkam-chooser.c gtkam-chooser.h \
-	gtkam-clist.c gtkam-clist.h	\
-	gtkam-clock.c gtkam-clock.h     \
-	gtkam-close.c gtkam-close.h     \
-	gtkam-config.c gtkam-config.h   \
-	gtkam-error.c gtkam-error.h     \
-	gtkam-fsel.c gtkam-fsel.h	\
-	gtkam-mkdir.c gtkam-mkdir.h	\
-	gtkam-preview.c gtkam-preview.h	\
-	gtkam-tree.c gtkam-tree.h	\
-	util.c util.h			\
+libgtkam_a_SOURCES =				\
+	gdk-pixbuf-hacks.c gdk-pixbuf-hacks.h	\
+	gtkam-chooser.c gtkam-chooser.h 	\
+	gtkam-clist.c gtkam-clist.h		\
+	gtkam-clock.c gtkam-clock.h     	\
+	gtkam-close.c gtkam-close.h     	\
+	gtkam-config.c gtkam-config.h   	\
+	gtkam-error.c gtkam-error.h     	\
+	gtkam-fsel.c gtkam-fsel.h		\
+	gtkam-mkdir.c gtkam-mkdir.h		\
+	gtkam-preview.c gtkam-preview.h		\
+	gtkam-tree.c gtkam-tree.h		\
+	util.c util.h				\
 	support.c support.h
 
 bin_PROGRAMS = gtkam

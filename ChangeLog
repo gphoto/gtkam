@@ -1,3 +1,7 @@
+2001-11-25  Lutz Müller <urc8@rz.uni-karlsruhe.de>
+
+	* src: Display some icons depending on CameraFileInfo
+
 2001-11-22  Lutz Müller <urc8@rz.uni-karlsruhe.de>
 
 	* src: Call gp_camera_exit after each camera operation in order to

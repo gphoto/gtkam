@@ -1,3 +1,9 @@
+2004-04-16  Andrew Burton <adburton@users.sourceforge.net>
+
+	* src/gtkam-save.c: Abort save if an error occurs while
+	saving. Spawn single instance of external program, not
+	one for each file.
+
 2004-04-13  Andrew Burton <adburton@users.sourceforge.net>
 
 	* src/gtkam-delete.c, src/gtkam-delete.h: Change to use

@@ -57,6 +57,7 @@ struct _GtkamSaveData {
 struct _GtkamSavePrivate
 {
 	GSList *data;
+	GString *filelist;
 
 	GtkToggleButton *toggle_preview, *toggle_normal, *toggle_raw,
 			*toggle_audio, *toggle_exif;
@@ -288,7 +289,7 @@ save_file (GtkamSave *save, CameraFile *file, guint n)
 	gchar *full_path, *full_filename, *dirname, *msg, *number_filename;
 	const char *filename, *mime_type;
 	CameraFileType type;
-	const gchar *fsel_filename, *fsel_path, *prefix, *suffix, *progname;
+	const gchar *fsel_filename, *fsel_path, *prefix, *suffix;
 	GtkWidget *dialog;
 	int result;
 
@@ -339,7 +340,7 @@ save_file (GtkamSave *save, CameraFile *file, guint n)
 		}
 	}
 
-	/* Check for existing file */
+	/* FIXME Check which is user, and prompt the user */
 	if (!save->priv->quiet && file_exists (full_path)) {
 		msg = g_strdup_printf (_("The file '%s' already exists."),
 				       full_path);
@@ -352,13 +353,12 @@ save_file (GtkamSave *save, CameraFile *file, guint n)
 			g_free (full_path);
 			save->priv->err_shown = TRUE;
 		}
-		return 0;
+		return -1;
 	}
 
 	/* FIXME Check for sufficient disk space for this file, or
 	   calculate total disk space required for all files before
 	   save process starts */
-	
 	result = gp_file_save (file, full_path);
 	if (result < 0) {
 		if (!save->priv->err_shown) {
@@ -368,25 +368,15 @@ save_file (GtkamSave *save, CameraFile *file, guint n)
 			save->priv->err_shown = TRUE;
 		}
 	} else {
-		progname = gtk_entry_get_text (save->priv->program);
-		if (progname && progname[0] != '\0' && fork ()) {
-			/*
-			 * The parent process execs. This means the child
-			 * becomes the gtkam, and the parent exits after
-			 * the viewer runs. 
-			 *
-			 * If you specify a viewer, the originating gtkam
-			 * appears to complete. This should really leave
-			 * the parent, and have the child exec, but then
-			 * we need a child reaper based on signal
-			 * handling.
-			 */
-			execlp (progname, progname, full_path, NULL);
-			_exit (0);
-		} 
+		/* Add the file to the list of files to be opened with
+		   the specified external program */
+		if (!save->priv->filelist)
+				save->priv->filelist = g_string_new ("");
+		g_string_append_printf (save->priv->filelist, " %s", full_path);
 	}
 
 	g_free (full_path);
+	
 	return result;
 }
 
@@ -421,6 +411,7 @@ get_file (GtkamSave *save, GtkamCamera *camera,
 		}
 	}
 	gp_file_unref (file);
+
 	return result;
 }
 
@@ -501,10 +492,12 @@ static void
 on_ok_clicked (GtkButton *button, GtkamSave *save)
 {
 	guint i, count, j = 1;
-	int result = 0;
+	int result;
 	GtkWidget *s, *dialog;
 	unsigned int id = 0;
 	GtkamSaveData *data;
+	gchar *progname, *command;
+	GError *error;
 
 	store_save_settings(save);
 	gtk_widget_hide (GTK_WIDGET (save));
@@ -565,7 +558,8 @@ on_ok_clicked (GtkButton *button, GtkamSave *save)
 				  data->folder, data->name, GP_FILE_TYPE_EXIF,
 				  i + j, GTKAM_CANCEL (s)->context);
 
-		if (result < 0) {
+		if (result < 0)
+		{
 			if (count > 1)
 				gp_context_progress_stop (GTKAM_CANCEL (s)->context->context, id);
 			if (!save->priv->err_shown) {
@@ -593,7 +587,28 @@ on_ok_clicked (GtkButton *button, GtkamSave *save)
 	if (count > 1)
 		gp_context_progress_stop (
 				GTKAM_CANCEL (s)->context->context, id);
+	
 	gtk_object_destroy (GTK_OBJECT (s));
+
+	/* If file(s) were saved and a program specified, load the program
+   passing the filenames */
+	if (result >= 0)
+	{
+		progname = gtk_entry_get_text (save->priv->program);
+
+		if (progname && progname[0] != '\0') {
+			command = g_strdup_printf ("%s%s", progname, save->priv->filelist->str);
+
+			/* FIXME Report any arising errors */
+			if (!g_spawn_command_line_async (command, &error))
+				g_warning ("Error running command\n");
+			
+			g_free (command);
+			g_free (error);	
+			g_free (save->priv->filelist);
+		} 
+	}
+	
 	gtk_object_destroy (GTK_OBJECT (save));
 }
 
@@ -604,6 +619,7 @@ gtkam_save_new (GtkWindow *main_window)
 	GtkWidget *hbox, *frame, *check, *label, *entry;
 	GtkObject *a;
 	GtkTooltips *tooltips;
+	/*gchar *t;*/
 
 	save = g_object_new (GTKAM_TYPE_SAVE, NULL);
 

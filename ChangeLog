@@ -5,7 +5,7 @@
 	* src/gtkam-chooser.c: Don't add the camera to the tree if something
 	  goes wrong.
 
-2002-11-16  Patrick Mansfield <patmans@users.sourceforge.net>
+2003-11-16  Patrick Mansfield <patmans@users.sourceforge.net>
 
 	* gtkam-list.c, gtkam-preview.c: Add checks for GP_ERROR_CAMERA_BUSY.
 	  And change gtkam-list.c so that only one thumbnail request is
@@ -13,14 +13,14 @@
 	  of thumbnails, rather than a g_idle_add call for each
 	  thumbnail).
 
-2002-11-05  Patrick Mansfield <patmans@users.sourceforge.net>
+2003-11-05  Patrick Mansfield <patmans@users.sourceforge.net>
 
 	* gtkam-save.c: don't try to exec a callout viewer if the program
 	  name is empty. If you specify a viewer, their is still the odd
 	  behaviour of the parent exec-ing the viewer and finishing,
 	  making it look like gtkam completed.
 
-2002-02-02  Patrick Mansfield <patmans@users.sourceforge.net>
+2003-02-02  Patrick Mansfield <patmans@users.sourceforge.net>
 
 	* gtkam-info.c: use variable info->priv->name vs info->priv->info
 	  to fix a core dump when trying to use a "%s" format in

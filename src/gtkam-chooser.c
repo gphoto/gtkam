@@ -398,7 +398,7 @@ gtkam_chooser_update_for_model (GtkamChooser *chooser)
 		list = g_list_append (list, g_strdup_printf ("%i", a.speed[i]));
 	gtk_combo_set_popdown_strings (chooser->priv->combo_speed, list);
 	gtk_widget_set_sensitive (GTK_WIDGET (chooser->priv->combo_speed),
-				  TRUE);
+				  !(a.port == GP_PORT_USB));
 }
 
 static void

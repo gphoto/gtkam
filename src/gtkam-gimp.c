@@ -64,18 +64,21 @@ query (void)
 	static int ncapture_return_vals = sizeof (capture_return_vals) /
 					  sizeof (capture_return_vals[0]);
 
+	bind_textdomain_codeset (PACKAGE, "UTF-8");
+
 	gimp_install_procedure ("gtkam-capture", _("Captures images from "
-		"digital camera"), "Nothing here yet. Patches welcome.",
+		"digital camera"), _("Captures images from digital camera"),
 		"Lutz Mueller <lutz@users.sf.net>", "GPL", VERSION,
-		N_("<Toolbox>/File/Acquire/Capture from Camera..."),
+		_("<Toolbox>/File/Acquire/Capture from Camera..."),
 		NULL, GIMP_EXTENSION, ncapture_args, ncapture_return_vals,
 		capture_args, capture_return_vals);
 
 	gimp_install_procedure ("gtkam-load", _("Loads files from digital "
-		"cameras"), "Nothing here yet. Patches welcome.", 
+		"cameras"), _("Loads files from digital "
+		"cameras"),
 		"Lutz Mueller <lutz@users.sf.net>",
 		"GPL", VERSION,
-		N_("<Toolbox>/File/Acquire/Load from Camera..."),
+		_("<Toolbox>/File/Acquire/Load from Camera..."),
 		NULL, GIMP_EXTENSION, nload_args, nload_return_vals,
 		load_args, load_return_vals);
 }
@@ -460,6 +463,8 @@ run (gchar *name, gint nparams, GimpParam *params, gint *nreturn_vals,
 	static GimpParam values[1];
 
 	g_return_if_fail (name != NULL);
+
+	bind_textdomain_codeset (PACKAGE, "UTF-8");
 
 	if (!strcmp (name, "gtkam-capture"))
 		run_capture (name, nparams, params, nreturn_vals, return_vals);

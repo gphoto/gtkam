@@ -830,10 +830,3 @@ gtkam_main_new (void)
 
 	return (GTK_WIDGET (m));
 }
-
-/*
- * Local Variables:
- * c-file-style:"linux"
- * indent-tabs-mode:t
- * End:
- */

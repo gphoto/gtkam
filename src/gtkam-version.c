@@ -138,10 +138,3 @@ void log_version(GPLogLevel level, const char *domain)
 		}
 	}
 }
-
-/*
- * Local Variables:
- * c-file-style:"linux"
- * indent-tabs-mode:t
- * End:
- */

@@ -37,10 +37,3 @@ extern const module_version module_versions[];
 extern void log_version (GPLogLevel level, const char *domain);
 
 #endif __GTKAM_VERSION_H__
-
-/*
- * Local Variables:
- * c-file-style:"linux"
- * indent-tabs-mode:t
- * End:
- */

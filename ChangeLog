@@ -1,3 +1,7 @@
+2002-01-16  Colin Marquardt  <colin@marquardt-home.de>
+
+	* src/gtkam-main.c: Make "About" box translatable.
+
 2002-01-13  Lutz Müller <urc8@rz.uni-karlsruhe.de>
 
 	* src: Add progress and error reporting.

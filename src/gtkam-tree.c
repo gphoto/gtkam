@@ -190,7 +190,7 @@ create_item (GtkamTree *tree, GtkTree *tree_to_add_to, const gchar *path)
 		if (result < 0) {
 			window = gtk_widget_get_ancestor (GTK_WIDGET (tree),
 							  GTK_TYPE_WINDOW);
-			msg = g_strdup_printf (_("Could not retreive file "
+			msg = g_strdup_printf (_("Could not retrieve file "
 				"list for folder '%s'"), path);
 			dialog = gtkam_error_new (msg, result,
 					tree->priv->camera, window);

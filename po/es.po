@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gtKam\n"
-"POT-Creation-Date: 2002-09-17 08:38+0200\n"
+"POT-Creation-Date: 2002-11-20 19:32+0100\n"
 "PO-Revision-Date: 2002-03-01 13:40+0100\n"
 "Last-Translator: Fabian Mandelbaum <fabman@mandrakesoft.com>\n"
 "Language-Team: gphoto-devel <gphoto-devel@gphoto.net>\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/main.c:126
+#: src/main.c:127
 msgid "Image Download Program"
 msgstr ""
 
@@ -23,7 +23,7 @@ msgstr ""
 msgid "None"
 msgstr "_Nada"
 
-#: src/gtkam-chooser.c:279 src/gtkam-chooser.c:412 src/gtkam-chooser.c:666
+#: src/gtkam-chooser.c:279 src/gtkam-chooser.c:412 src/gtkam-chooser.c:671
 msgid "Best"
 msgstr ""
 
@@ -55,48 +55,48 @@ msgstr ""
 msgid "Could not detect any cameras."
 msgstr "No se puede obtener la cantidad de cámaras"
 
-#: src/gtkam-chooser.c:601
+#: src/gtkam-chooser.c:602
 msgid "Select Camera"
 msgstr "Seleccionar cámara"
 
-#: src/gtkam-chooser.c:616
+#: src/gtkam-chooser.c:619
 #, fuzzy
 msgid "Model:"
 msgstr "Seleccione el modelo:"
 
-#: src/gtkam-chooser.c:629
+#: src/gtkam-chooser.c:632
 #, fuzzy
 msgid "Detect"
 msgstr "_Seleccionar"
 
-#: src/gtkam-chooser.c:635
+#: src/gtkam-chooser.c:640
 #, fuzzy
 msgid "Detect USB camera"
 msgstr "Seleccionar cámara"
 
-#: src/gtkam-chooser.c:637
+#: src/gtkam-chooser.c:642
 msgid "Port:"
 msgstr ""
 
-#: src/gtkam-chooser.c:658
+#: src/gtkam-chooser.c:663
 #, fuzzy
 msgid "Speed:"
 msgstr "Seleccione la velocidad:"
 
-#: src/gtkam-chooser.c:672
+#: src/gtkam-chooser.c:677
 msgid "Allow multiple frontends"
 msgstr ""
 
-#: src/gtkam-chooser.c:679
+#: src/gtkam-chooser.c:687
 msgid "Enhanced"
 msgstr ""
 
-#: src/gtkam-chooser.c:743
+#: src/gtkam-chooser.c:753
 #, fuzzy
 msgid "Could not get number of supported camera models"
 msgstr "No se puede obtener la cantidad de cámaras"
 
-#: src/gtkam-chooser.c:773
+#: src/gtkam-chooser.c:783
 #, fuzzy
 msgid "Could not get number of ports."
 msgstr "No se puede obtener la cantidad de puertos"
@@ -302,7 +302,7 @@ msgstr ""
 
 #: src/gtkam-info.c:368
 #, fuzzy, c-format
-msgid "Could not get information about file '%s' in '%s' in folder '%s'."
+msgid "Could not get information about file '%s' in folder '%s'."
 msgstr "No se pueden recuperar las funcionalidades de %s"
 
 #: src/gtkam-info.c:396
@@ -632,7 +632,7 @@ msgstr ""
 msgid "Save photos"
 msgstr "Guardar las fotos seleccionadas"
 
-#: src/gtkam-save.c:504
+#: src/gtkam-save.c:506
 #, fuzzy
 msgid "Photos will be saved if this is checked"
 msgstr "Marcar para guardar las fotos."
@@ -641,7 +641,7 @@ msgstr "Marcar para guardar las fotos."
 msgid "Save raw data"
 msgstr ""
 
-#: src/gtkam-save.c:513
+#: src/gtkam-save.c:515
 #, fuzzy
 msgid "Raw data will be saved if this is checked"
 msgstr "Marcar para guardar las fotos."
@@ -650,7 +650,7 @@ msgstr "Marcar para guardar las fotos."
 msgid "Save audio data"
 msgstr ""
 
-#: src/gtkam-save.c:522
+#: src/gtkam-save.c:524
 #, fuzzy
 msgid "Audio data will be saved if this is checked"
 msgstr "Marcar para guardar las fotos."
@@ -659,7 +659,7 @@ msgstr "Marcar para guardar las fotos."
 msgid "Save thumbnails"
 msgstr ""
 
-#: src/gtkam-save.c:531
+#: src/gtkam-save.c:533
 #, fuzzy
 msgid "Thumbnails will be saved if this is checked"
 msgstr "Marcar para guardar las diapositivas"
@@ -668,44 +668,44 @@ msgstr "Marcar para guardar las diapositivas"
 msgid "Save EXIF data"
 msgstr ""
 
-#: src/gtkam-save.c:540
+#: src/gtkam-save.c:542
 #, fuzzy
 msgid "EXIF data will be saved if this is checked"
 msgstr "Marcar para guardar las fotos."
 
-#: src/gtkam-save.c:550
+#: src/gtkam-save.c:551
 msgid "Open image(s) with: "
 msgstr ""
 
-#: src/gtkam-save.c:557
+#: src/gtkam-save.c:560
 #, fuzzy
 msgid "Type in the name of the program you want to run, leave blank for none"
 msgstr ""
 "Ingrese el nombre del programa a ejecutar. Ninguno si lo deja en blanco"
 
-#: src/gtkam-save.c:563
+#: src/gtkam-save.c:566
 #, fuzzy
 msgid "Use filename(s) provided by the camera"
 msgstr "¿Desea utilizar el nombre de archivo provisto por la cámara?"
 
-#: src/gtkam-save.c:568
+#: src/gtkam-save.c:573
 msgid "Choose whether to use the filename provided by the camera"
 msgstr "¿Desea utilizar el nombre de archivo provisto por la cámara?"
 
-#: src/gtkam-save.c:583
+#: src/gtkam-save.c:588
 msgid "Filename prefix: "
 msgstr ""
 
-#: src/gtkam-save.c:592
+#: src/gtkam-save.c:599
 msgid "Start numbering with: "
 msgstr ""
 
-#: src/gtkam-save.c:631
+#: src/gtkam-save.c:641
 #, c-format
 msgid "Save '%s'..."
 msgstr ""
 
-#: src/gtkam-save.c:653
+#: src/gtkam-save.c:663
 #, fuzzy
 msgid "Save photos..."
 msgstr "Guardar las fotos seleccionadas..."
@@ -809,264 +809,16 @@ msgid ""
 "or the file itself is corrupt."
 msgstr ""
 
-#, fuzzy
-#~ msgid ""
-#~ "%s %s\n"
-#~ "\n"
-#~ "gtKam was written by:\n"
-#~ " - Scott Fritzinger <scottf@unr.edu>,\n"
-#~ " - Lutz Mueller <urc8@rz.uni-karlsruhe.de>,\n"
-#~ " - and many others.\n"
-#~ "\n"
-#~ "gtKam uses libgphoto2, a library to access a\n"
-#~ "multitude of digital cameras. More \n"
-#~ "information is available at\n"
-#~ "http://www.gphoto.net.\n"
-#~ "\n"
-#~ "Enjoy the wonderful world of gphoto!"
-#~ msgstr ""
-#~ "gtKam fue escrito por:\n"
-#~ "Scott Fritzinger <scottf@unr.edu>\n"
-#~ "\n"
-#~ "gtKam utiliza las bibliotecas gPhoto2.\n"
-#~ "Para mayor información consulte\n"
-#~ "http://www.gphoto.net"
-
-#~ msgid "Couldn't find pixmap file: %s"
-#~ msgstr "No se puede encontrar el archivo pixmap %s"
-
-#, fuzzy
-#~ msgid "Error loading pixmap file: %s"
-#~ msgstr "No se puede encontrar el archivo pixmap %s"
-
-#~ msgid "Cancel"
-#~ msgstr "Cancelar"
-
-#, fuzzy
-#~ msgid "Filename"
-#~ msgstr "_Archivo"
-
-#, fuzzy
-#~ msgid "Could not get file '%s'."
-#~ msgstr "No se pueden recuperar las funcionalidades de %s"
-
-#, fuzzy
-#~ msgid "Could not get file list for folder '%s'."
-#~ msgstr "No se pueden recuperar las funcionalidades de %s"
-
-#, fuzzy
-#~ msgid "Could not set file information for '%s'"
-#~ msgstr "No se pueden recuperar las funcionalidades de %s"
-
-#, fuzzy
-#~ msgid "Could not get preview of file '%s' in folder '%s'"
-#~ msgstr "No se pueden recuperar las funcionalidades de %s"
-
-#, fuzzy
-#~ msgid "Exif"
-#~ msgstr "Salir"
-
-#, fuzzy
-#~ msgid "Could not get preview of file '%s' in folder '%s'."
-#~ msgstr "No se pueden recuperar las funcionalidades de %s"
-
-#~ msgid "_Save Selected Photos..."
-#~ msgstr "_Guardar las fotos seleccionadas..."
-
-#~ msgid "_All"
-#~ msgstr "_Todo"
-
-#~ msgid "_Exit"
-#~ msgstr "_Salir"
-
-#~ msgid "_None"
-#~ msgstr "_Nada"
-
-#, fuzzy
-#~ msgid "Manual"
-#~ msgstr "_Manual..."
-
-#, fuzzy
-#~ msgid "About the driver"
-#~ msgstr "_Acerca del controlador..."
-
-#~ msgid "Save selected photos..."
-#~ msgstr "Guardar las fotos seleccionadas..."
-
-#~ msgid "Delete selected photos"
-#~ msgstr "Eliminar las fotos seleccionadas"
-
-#~ msgid "Exit"
-#~ msgstr "Salir"
-
-#~ msgid "Configure"
-#~ msgstr "Configurar"
-
-#, fuzzy
-#~ msgid "Could not remove '%s' from '%s'"
-#~ msgstr "No se pueden recuperar las funcionalidades de %s"
-
-#, fuzzy
-#~ msgid "Could not retrieve manual."
-#~ msgstr "No se puede obtener el manual de la cámara"
-
-#, fuzzy
-#~ msgid "Could not get information about the driver."
-#~ msgstr "No se puede obtener información de la cámara"
-
-#, fuzzy
-#~ msgid "_Create..."
-#~ msgstr "_Configurar..."
-
-#~ msgid "_Configure..."
-#~ msgstr "_Configurar..."
-
-#, fuzzy
-#~ msgid "_Information"
-#~ msgstr "_Información..."
-
-#, fuzzy
-#~ msgid "Configure camera..."
-#~ msgstr "Configurar la cámara"
-
-#, fuzzy
-#~ msgid "Could not retrieve file list for folder '%s'."
-#~ msgstr "No se puede obtener la lista de fotos."
-
-#~ msgid "gtKam"
-#~ msgstr "gtKam"
-
-#~ msgid "_Edit"
-#~ msgstr "_Editar"
-
-#~ msgid "_User's Manual..."
-#~ msgstr "_Manual del usuario..."
-
-#~ msgid "_License..."
-#~ msgstr "_Licencia..."
-
-#~ msgid "About _gtKam..."
-#~ msgstr "Acerca de _gtKam..."
-
-#~ msgid "button2"
-#~ msgstr "botón2"
-
-#~ msgid "     "
-#~ msgstr "     "
-
-#~ msgid "Refresh"
-#~ msgstr "Actualizar"
-
-#~ msgid "Reload photo index"
-#~ msgstr "Actualizar el índice de fotos"
-
-#~ msgid "Exit gtKam"
-#~ msgstr "Salir de gtKam"
-
-#~ msgid "    Close    "
-#~ msgstr "    Cerrar    "
-
-#~ msgid "gtKam Confirmation"
-#~ msgstr "Confirmación de gtKam"
-
-#~ msgid "Are you sure?"
-#~ msgstr "¿Está seguro?"
-
-#~ msgid "Yes"
-#~ msgstr "Sí"
-
-#~ msgid "No"
-#~ msgstr "No"
-
-#~ msgid "No message."
-#~ msgstr "Ningún mensaje."
-
-#~ msgid "gtKam Progress"
-#~ msgstr "Progreso de gtKam"
-
-#~ msgid "    Cancel    "
-#~ msgstr "   Cancelar    "
-
-#~ msgid "Select Port:"
-#~ msgstr "Seleccione el puerto:"
-
-#~ msgid "OK"
-#~ msgstr "Aceptar"
-
-#~ msgid "You must choose a camera"
-#~ msgstr "Debe elegir una cámara"
-
-#~ msgid ""
-#~ "Camera did not suggest a filename.\n"
-#~ "Please select \"Save\" again and specify a filename yourself."
-#~ msgstr ""
-#~ "La cámara no sugirió un nombre de archivo.\n"
-#~ "Por favor, seleccione \"Guardar\" otra vez y especifique un nombre de "
-#~ "archivo."
-
-#~ msgid "Error retrieving the port list"
-#~ msgstr "Error durante la creación de la lista de puertos"
-
-#~ msgid "You must choose a camera model"
-#~ msgstr "Debe elegir un model de cámara"
-
-#~ msgid "You must choose a port"
-#~ msgstr "Debe elegir un puerto"
-
-#~ msgid "You must choose a port speed"
-#~ msgstr "Debe elegir una velocidad del puerto"
-
-#~ msgid "ERROR: please choose your camera model again"
-#~ msgstr "ERROR: por favor, vuelva a seleccionar un modelo de cámara"
-
-#~ msgid "Could not retrieve the camera's abilities"
-#~ msgstr "No se pueden recuperar las funcionalidades de la cámara"
-
-#~ msgid ""
-#~ "Getting Thumbnail #%04i of %04i\n"
-#~ "%s"
-#~ msgstr ""
-#~ "Obteniendo diapositiva #%04i de %04i\n"
-#~ "%s"
-
-#~ msgid "This camera does not support deleting photos."
-#~ msgstr "Esta cámara no soporta eliminar las fotos."
-
-#~ msgid "Are you sure you want to DELETE ALL the photos?"
-#~ msgstr "¿Está seguro que desea elminiar TODAS las fotos?"
-
-#~ msgid "Are you sure you want to DELETE the selected photos?"
-#~ msgstr "¿Está seguro que desea ELIMINAR las fotos seleccionadas?"
-
-#~ msgid "Could not delete photo #%04i. Stopping."
-#~ msgstr "No se puede eliminar la foto #%04i. Deteniendo."
-
-#~ msgid "Can't find gtKam AUTHORS file"
-#~ msgstr "No se puede encontrar el archivo AUTHORS de gtKam"
-
-#~ msgid "gtKam Authors"
-#~ msgstr "Autores de gtKam"
-
-#~ msgid "Can't find gPhoto2 AUTHORS file"
-#~ msgstr "No se puede encontrar el archivo AUTHORS de gPhoto2"
-
-#~ msgid "gPhoto2 Authors"
-#~ msgstr "Autores de gPhoto2"
-
-#~ msgid "Can't find gtKam COPYING file"
-#~ msgstr "No se puede encontrar el archivo COPYING de gtKam"
-
-#~ msgid "gtKam License"
-#~ msgstr "Licencia de gtKam"
-
-#~ msgid "Can't find gPhoto2 COPYING file"
-#~ msgstr "No se puede encontrar el archivo COPYING de gPhoto2"
-
-#~ msgid "gPhoto2 License"
-#~ msgstr "Licencia de gPhoto2"
-
-#~ msgid "Can't find gtKam MANUAL file"
-#~ msgstr "No se puede encontrar el archivo MANUAL de gtKam"
-
-#~ msgid "gtKam Manual"
-#~ msgstr "Manual de gtKam"
+#: src/gtkam-viewer.c:256
+#, fuzzy, c-format
+msgid "Downloading '%s' from folder '%s'..."
+msgstr ""
+"No se pudo abrir la carpeta\n"
+"%s"
+
+#: src/gtkam-viewer.c:307
+#, fuzzy, c-format
+msgid "Could not download '%s' from folder '%s'."
+msgstr ""
+"No se pudo abrir la carpeta\n"
+"%s"

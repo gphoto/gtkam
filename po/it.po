@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gphoto\n"
-"POT-Creation-Date: 2002-09-17 08:38+0200\n"
+"POT-Creation-Date: 2002-11-20 19:32+0100\n"
 "PO-Revision-Date: sab lug 22 11:35:36 CEST 2000\n"
 "Last-Translator: Daniele Medri <madrid@linux.it>\n"
 "Language-Team: Italian <it@li.org>\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8-bit\n"
 
-#: src/main.c:126
+#: src/main.c:127
 msgid "Image Download Program"
 msgstr ""
 
@@ -22,7 +22,7 @@ msgstr ""
 msgid "None"
 msgstr "No"
 
-#: src/gtkam-chooser.c:279 src/gtkam-chooser.c:412 src/gtkam-chooser.c:666
+#: src/gtkam-chooser.c:279 src/gtkam-chooser.c:412 src/gtkam-chooser.c:671
 #, fuzzy
 msgid "Best"
 msgstr "Cancella"
@@ -56,47 +56,47 @@ msgstr ""
 msgid "Could not detect any cameras."
 msgstr "Non Х possibile ricevere un'immagine."
 
-#: src/gtkam-chooser.c:601
+#: src/gtkam-chooser.c:602
 #, fuzzy
 msgid "Select Camera"
 msgstr "Live Camera!"
 
-#: src/gtkam-chooser.c:616
+#: src/gtkam-chooser.c:619
 #, fuzzy
 msgid "Model:"
 msgstr "Modello fotocamera:"
 
-#: src/gtkam-chooser.c:629
+#: src/gtkam-chooser.c:632
 msgid "Detect"
 msgstr ""
 
-#: src/gtkam-chooser.c:635
+#: src/gtkam-chooser.c:640
 #, fuzzy
 msgid "Detect USB camera"
 msgstr "Selezionate modello/porta..."
 
-#: src/gtkam-chooser.c:637
+#: src/gtkam-chooser.c:642
 msgid "Port:"
 msgstr "Porta:"
 
-#: src/gtkam-chooser.c:658
+#: src/gtkam-chooser.c:663
 msgid "Speed:"
 msgstr ""
 
-#: src/gtkam-chooser.c:672
+#: src/gtkam-chooser.c:677
 msgid "Allow multiple frontends"
 msgstr ""
 
-#: src/gtkam-chooser.c:679
+#: src/gtkam-chooser.c:687
 msgid "Enhanced"
 msgstr ""
 
-#: src/gtkam-chooser.c:743
+#: src/gtkam-chooser.c:753
 #, fuzzy
 msgid "Could not get number of supported camera models"
 msgstr "Non Х possibile delineare il numero di immagini"
 
-#: src/gtkam-chooser.c:773
+#: src/gtkam-chooser.c:783
 #, fuzzy
 msgid "Could not get number of ports."
 msgstr "Non Х possibile delineare il numero di immagini"
@@ -301,7 +301,7 @@ msgstr "Non Х possibile ricevere l'anteprima"
 
 #: src/gtkam-info.c:368
 #, fuzzy, c-format
-msgid "Could not get information about file '%s' in '%s' in folder '%s'."
+msgid "Could not get information about file '%s' in folder '%s'."
 msgstr "Non Х possibile ricevere l'anteprima"
 
 #: src/gtkam-info.c:396
@@ -625,7 +625,7 @@ msgstr ""
 msgid "Save photos"
 msgstr ""
 
-#: src/gtkam-save.c:504
+#: src/gtkam-save.c:506
 msgid "Photos will be saved if this is checked"
 msgstr ""
 
@@ -633,7 +633,7 @@ msgstr ""
 msgid "Save raw data"
 msgstr ""
 
-#: src/gtkam-save.c:513
+#: src/gtkam-save.c:515
 msgid "Raw data will be saved if this is checked"
 msgstr ""
 
@@ -641,7 +641,7 @@ msgstr ""
 msgid "Save audio data"
 msgstr ""
 
-#: src/gtkam-save.c:522
+#: src/gtkam-save.c:524
 msgid "Audio data will be saved if this is checked"
 msgstr ""
 
@@ -650,7 +650,7 @@ msgstr ""
 msgid "Save thumbnails"
 msgstr "anteprima-%03i.%s"
 
-#: src/gtkam-save.c:531
+#: src/gtkam-save.c:533
 msgid "Thumbnails will be saved if this is checked"
 msgstr ""
 
@@ -658,42 +658,42 @@ msgstr ""
 msgid "Save EXIF data"
 msgstr ""
 
-#: src/gtkam-save.c:540
+#: src/gtkam-save.c:542
 msgid "EXIF data will be saved if this is checked"
 msgstr ""
 
-#: src/gtkam-save.c:550
+#: src/gtkam-save.c:551
 #, fuzzy
 msgid "Open image(s) with: "
 msgstr "Apri immagine"
 
-#: src/gtkam-save.c:557
+#: src/gtkam-save.c:560
 msgid "Type in the name of the program you want to run, leave blank for none"
 msgstr ""
 
-#: src/gtkam-save.c:563
+#: src/gtkam-save.c:566
 msgid "Use filename(s) provided by the camera"
 msgstr ""
 
-#: src/gtkam-save.c:568
+#: src/gtkam-save.c:573
 msgid "Choose whether to use the filename provided by the camera"
 msgstr ""
 
-#: src/gtkam-save.c:583
+#: src/gtkam-save.c:588
 #, fuzzy
 msgid "Filename prefix: "
 msgstr "Prefisso nome file:"
 
-#: src/gtkam-save.c:592
+#: src/gtkam-save.c:599
 msgid "Start numbering with: "
 msgstr ""
 
-#: src/gtkam-save.c:631
+#: src/gtkam-save.c:641
 #, fuzzy, c-format
 msgid "Save '%s'..."
 msgstr "Salvataggio immagini..."
 
-#: src/gtkam-save.c:653
+#: src/gtkam-save.c:663
 #, fuzzy
 msgid "Save photos..."
 msgstr "Salvataggio immagini..."
@@ -790,610 +790,12 @@ msgid ""
 "or the file itself is corrupt."
 msgstr ""
 
-#, fuzzy
-#~ msgid "Index Settings"
-#~ msgstr "Configurazioni colore"
-
-#, fuzzy
-#~ msgid "Couldn't find pixmap file: %s"
-#~ msgstr "Non Х possibile ricevere l'anteprima"
-
-#, fuzzy
-#~ msgid "Error loading pixmap file: %s"
-#~ msgstr "Download eseguito."
-
-#~ msgid "Cancel"
-#~ msgstr "Cancella"
-
-#~ msgid "Apply"
-#~ msgstr "Applica"
-
-#, fuzzy
-#~ msgid "Filename"
-#~ msgstr "Prefisso nome file:"
-
-#, fuzzy
-#~ msgid "Getting file '%s' from folder '%s'..."
-#~ msgstr "Ricezione anteprima %i..."
-
-#, fuzzy
-#~ msgid "Could not get file '%s'."
-#~ msgstr "Non Х possibile ricevere l'anteprima"
-
-#, fuzzy
-#~ msgid "Getting list of files in folder '%s'..."
-#~ msgstr "Non Х possibile ricevere l'anteprima"
-
-#, fuzzy
-#~ msgid "Could not get file list for folder '%s'."
-#~ msgstr "Non Х possibile ritrarre #%i"
-
-#~ msgid "Close"
-#~ msgstr "Chiudi"
-
-#~ msgid "Reset"
-#~ msgstr "Cancella"
-
-#, fuzzy
-#~ msgid "Could not get preview of file '%s' in folder '%s'"
-#~ msgstr "Non Х possibile ricevere l'anteprima"
-
-#~ msgid "Save"
-#~ msgstr "Salva"
-
-#, fuzzy
-#~ msgid "Getting preview of file '%s' in folder '%s'..."
-#~ msgstr "Non Х possibile ricevere l'anteprima"
-
-#, fuzzy
-#~ msgid "Could not get preview of file '%s' in folder '%s'."
-#~ msgstr "Non Х possibile ricevere l'anteprima"
-
-#, fuzzy
-#~ msgid "_None"
-#~ msgstr "Eseguito."
-
-#, fuzzy
-#~ msgid "Manual"
-#~ msgstr "Manuale utente"
-
-#, fuzzy
-#~ msgid "Save selected photos..."
-#~ msgstr "Salvataggio immagini..."
-
-#, fuzzy
-#~ msgid "Delete selected photos"
-#~ msgstr "Elimina le immagini selezionate"
-
-#, fuzzy
-#~ msgid "Configure"
-#~ msgstr "Conferma"
-
-#, fuzzy
-#~ msgid "Could not remove '%s' from '%s'"
-#~ msgstr "Non Х possibile ritrarre #%i"
-
-#, fuzzy
-#~ msgid "Could not retrieve manual."
-#~ msgstr "Non Х possibile ritrarre #%i"
-
-#, fuzzy
-#~ msgid "_Create..."
-#~ msgstr "Crea"
-
-#, fuzzy
-#~ msgid "Ca_pture..."
-#~ msgstr "Crea"
-
-#, fuzzy
-#~ msgid "_Configure..."
-#~ msgstr "Conferma"
-
-#, fuzzy
-#~ msgid "Configure camera..."
-#~ msgstr "Conferma"
-
-#, fuzzy
-#~ msgid "Could not retrieve file list for folder '%s'."
-#~ msgstr "Non Х possibile ritrarre #%i"
-
-#, fuzzy
-#~ msgid "Save As"
-#~ msgstr "Salva"
-
-#, fuzzy
-#~ msgid "Could not download file"
-#~ msgstr "Non Х possibile salvare #%i"
-
-#, fuzzy
-#~ msgid "Creation time:"
-#~ msgstr "Crea"
-
-#~ msgid "No configuration options."
-#~ msgstr "Nessuna opzione di configurazione."
-
-#~ msgid "Mail image needs to be implemented!"
-#~ msgstr "L'invio di immagini via email dev'essere implementato!"
-
-#~ msgid "Taking picture..."
-#~ msgstr "Ricezione immagini..."
-
-#~ msgid "New picture is #%03i"
-#~ msgstr "La nuova immagine Х #%03i"
-
-#~ msgid "Deleting ALL pictures."
-#~ msgstr "Eliminazione di TUTTE le immagini."
-
-#~ msgid "Deleting %i...\n"
-#~ msgstr "Eliminazione di %i...\n"
-
-#~ msgid "Deleted all images."
-#~ msgstr "Eliminazione di tutte le immagini."
-
-#~ msgid "Deleting selected pictures..."
-#~ msgstr "Eliminazione delle immagini selezionate..."
-
-#~ msgid "Nothing selected to be deleted."
-#~ msgstr "Nessuna voce selezionata per la cancellazione."
-
-#~ msgid "Are you sure you want to DELETE the selected images?"
-#~ msgstr "Siete sicuri di voler ELIMINARE le immagini selezionate?"
-
-#~ msgid "Are you sure you want to DELETE all the images from memory?"
-#~ msgstr "Siete sicuri di voler ELIMINARE tutte le immagini dalla memoria?"
-
-#~ msgid "Yes"
-#~ msgstr "Si"
-
-#~ msgid "Saving Image #%03i..."
-#~ msgstr "Salvataggio dell'immagine #%03i..."
-
-#~ msgid "Saving Thumbnail #%03i..."
-#~ msgstr "Salvataggio dell'anteprima #%03i..."
-
-#~ msgid "%s-thumbnail-%03i"
-#~ msgstr "%s-anteprima-%03i"
-
-#~ msgid "Done. Images saved in %s"
-#~ msgstr "Eseguito. Immagini salvate in %s"
-
-#~ msgid "%s/gphoto-image-%03i.jpg"
-#~ msgstr "%s/gphoto-immagine-%03i.jpg"
-
-#~ msgid ""
-#~ "\n"
-#~ "gPhoto user(s) that reported this model:\n"
-#~ msgstr ""
-#~ "\n"
-#~ "L'utente gPhoto ha riportato questo modello:\n"
-
-#~ msgid "Error: failed to open %s"
-#~ msgstr "Errore: non Х possibile aprire %s"
-
-#~ msgid "Missing Serial Device Permissions"
-#~ msgstr "Permessi assenti per il dispositivo seriale"
-
-#~ msgid "Please check the permissions (see the manual)."
-#~ msgstr "Si prega di controllare i permessi (fare riferimento al manuale)."
-
-#~ msgid "Opened %s."
-#~ msgstr "Aperti %s."
-
-#~ msgid "Could not open $HOME/.gphoto/gphotorc for writing."
-#~ msgstr "Non Х possibile aprire $HOME/.gphoto/gphotorc in scrittura."
-
-#~ msgid "Could not open $HOME/.gphoto/gphotorc for writing.\n"
-#~ msgstr "Non Х possibile aprire $HOME/.gphoto/gphotorc in scrittura.\n"
-
-#~ msgid ""
-#~ "Version Information-------------------Current Version: %sNew features all "
-#~ "over the place. Please seethe ChangeLog for more information.As always, "
-#~ "report bugs gphoto-devel@gphoto.orgThanx much."
-#~ msgstr ""
-#~ "Imformazioni versione-----------------Versione corrente: %s    Riferirsi "
-#~ "al ChangeLog per maggiori informazioni. Come sempre  riferirsi a gphoto-"
-#~ "devel@gphoto.org per la segnalazione di bug.Grazie."
-
-#~ msgid "OK"
-#~ msgstr "OK"
-
-#~ msgid "%s is not yet implemented"
-#~ msgstr "%s non Х ancora implementato"
-
-#~ msgid "Picture #%i\n"
-#~ msgstr "Immagine #%i\n"
-
-#~ msgid "Getting Index..."
-#~ msgstr "Ricezione indice..."
-
-#~ msgid "num_pictures_taken is %d\n"
-#~ msgstr "num_pictures_taken - %d\n"
-
-#~ msgid "Download cancelled."
-#~ msgstr "Download annullato."
-
-#~ msgid "Done getting index."
-#~ msgstr "Ricezione indice eseguita."
-
-#~ msgid "Nothing selected for download."
-#~ msgstr "Nessuna selelezione per il download."
-
-#~ msgid "Getting Image #%03i..."
-#~ msgstr "Ricezione immagine #%03i..."
-
-#~ msgid "Getting Thumbnail #%03i..."
-#~ msgstr "Ricezione anteprima #%03i..."
-
-#~ msgid "Download halted."
-#~ msgstr "Download interrotto."
-
-#~ msgid "Save all opened images"
-#~ msgstr "Salvate tutti le immagini aperte"
-
-#~ msgid "Saving the index is not yet supported"
-#~ msgstr "Il salvataggio dell'indice non Х ancora implementato"
-
-#~ msgid "Open Image..."
-#~ msgstr "Apertura immagine..."
-
-#~ msgid "Can't print the index yet."
-#~ msgstr "Attualmente non Х possibile stampare l'indice."
-
-#~ msgid "Print Command:"
-#~ msgstr "Comando di stampa:"
-
-#~ msgid "Print"
-#~ msgstr "Stampa"
-
-#~ msgid "Now spooling..."
-#~ msgstr "Spooling in corso..."
-
-#~ msgid "Spooling done. Printing may take a minute."
-#~ msgstr "Spooling eseguito. La stampa puР richiedere qualche minuto."
-
-#~ msgid "Can't modify the index colors."
-#~ msgstr "Non Х possibile modificare l'indice dei colori."
-
-#~ msgid "Can't scale the index."
-#~ msgstr "Impossibile scalare l'indice."
-
-#~ msgid "Resize Image..."
-#~ msgstr "Ridimensione l'immagine..."
-
-#~ msgid "Width:"
-#~ msgstr "Larghezza:"
-
-#~ msgid "Height:"
-#~ msgstr "Altezza:"
-
-#~ msgid "Resize"
-#~ msgstr "Ridimensionamento"
-
-#~ msgid "Can't manipulate the index."
-#~ msgstr "Non Х possibile manipolare l'indice."
-
-#~ msgid "Can't scale the index!"
-#~ msgstr "Non Х possibile ridurre l'indice!"
-
-#~ msgid "Scaling image by 50%..."
-#~ msgstr "Riduci l'immagine del 50%..."
-
-#~ msgid "Scaling image by 200%..."
-#~ msgstr "Riduci l'immagine del 200%..."
-
-#~ msgid "Post-Processing Options"
-#~ msgstr "Opzioni post-processo"
-
-#~ msgid "Enable post-processing"
-#~ msgstr "Attiva post-processo"
-
-#~ msgid "Post-processing command-line:"
-#~ msgstr "Linea di comando post-processo:"
-
-#~ msgid "http://www.gphoto.org/help.php3"
-#~ msgstr "http://www.gphoto.org/help.php3"
-
-#~ msgid "http://www.gphoto.org/"
-#~ msgstr "http://www.gphoto.org/"
-
-#~ msgid "http://www.gphoto.org/feedback.php3"
-#~ msgstr "http://www.gphoto.org/feedback.php3"
-
-#~ msgid "http://www.gphoto.org/news.php3"
-#~ msgstr "http://www.gphoto.org/news.php3"
-
-#~ msgid "http://www.gphoto.org/download.php3"
-#~ msgstr "http://www.gphoto.org/download.php3"
-
-#~ msgid "http://www.gphoto.org/cameras.php3"
-#~ msgstr "http://www.gphoto.org/cameras.php3"
-
-#~ msgid "http://www.gphoto.org/supporting.php3"
-#~ msgstr "http://www.gphoto.org/supporting.php3"
-
-#~ msgid "http://www.gphoto.org/lists.php3"
-#~ msgstr "http://www.gphoto.org/lists.php3"
-
-#~ msgid "http://www.gphoto.org/team.php3"
-#~ msgstr "http://www.gphoto.org/team.php3"
-
-#~ msgid "http://www.gphoto.org/themes.php3"
-#~ msgstr "http://www.gphoto.org/themes.php3"
-
-#~ msgid "http://www.gphoto.org/links.php3"
-#~ msgstr "http://www.gphoto.org/links.php3"
-
-#~ msgid "http://www.gphoto.org/todo.php3"
-#~ msgstr "http://www.gphoto.org/todo.php3"
-
-#~ msgid ""
-#~ "%s summary:\n"
-#~ "%s"
-#~ msgstr ""
-#~ "sommario %s:\n"
-#~ "%s"
-
-#~ msgid "gPhoto %s (%s) - the GNU digital camera application\n"
-#~ msgstr "gPhoto %s (%s) - applicazione GNU per le fotocamere digitali\n"
-
-#~ msgid ""
-#~ "Copyright (C) 1998-2000 Scott Fritzinger <scottf@unr.edu>\n"
-#~ "\n"
-#~ msgstr ""
-#~ "Copyright (C) 1998-2000 Scott Fritzinger <scottf@unr.edu>\n"
-#~ "\n"
-
-#~ msgid "Usage: gphoto [-h] [-c] [-n] [-s # filename] [-t # filename]\n"
-#~ msgstr ""
-#~ "Utilizzo: gphoto [-h] [-c] [-n] [-s # nomefile] [-t # nomefile]\n"
-#~ "Використання: gphoto [-h] [-c] [-n] [-s # назва_файлу] [-t # "
-#~ "назва_файлу]\n"
-
-#~ msgid "              [-d #] [-p filename] [-l filename]\n"
-#~ msgstr "              [-d #] [-p nomefile] [-l nomefile]\n"
-
-#~ msgid "\t-h                    display this help screen\n"
-#~ msgstr "\t-h                   visualizza questa maschera di aiuto\n"
-
-#~ msgid "\t-c                    display camera summary\n"
-#~ msgstr "\t-c                   visualizza informazioni sulla fotocamera\n"
-
-#~ msgid "\t-n                    display the # of pictures\n"
-#~ msgstr "\t-n                   visualizza il numero di immagini\n"
-
-#~ msgid "\t-s # filename         save image # as filename\n"
-#~ msgstr "\t-s # nomefile        salva l'immagine # con nome\n"
-
-#~ msgid "\t-t # filename         save thumbnail # as filename\n"
-#~ msgstr "\t-t # nomefile        salva anteprima # con nome\n"
-
-#~ msgid "\t-d #                  delete image # from camera\n"
-#~ msgstr "\t-d #                  elimina l'immagine # dalla fotocamera\n"
-
-#~ msgid "\t-p filename           take picture and save as filename\n"
-#~ msgstr "\t-p nomefile           prende l'immagine e la salva con nome\n"
-
-#~ msgid ""
-#~ "\t-l filename           save live preview as filename\n"
-#~ "\n"
-#~ msgstr ""
-#~ "\t-l nomefile            salva anteprima con nome\n"
-#~ "\n"
-
-#~ msgid "Report bugs and camera success to gphoto-devel@gphoto.org.\n"
-#~ msgstr "Riportate bug e critiche a gphoto-devel@gphoto.org\n"
-
-#~ msgid "See http://www.gphoto.org for the latest news and updates.\n"
-#~ msgstr ""
-#~ "Visitare http://www.gphoto.org per le ultime novitЮ e gli aggiornamenti.\n"
-
-#~ msgid "%i\n"
-#~ msgstr "%i\n"
-
-#~ msgid "ERROR: could not get image.\n"
-#~ msgstr "ERRORE: non Х possibile prelevare l'immagine.\n"
-
-#~ msgid "ERROR: could not save image.\n"
-#~ msgstr "ERRORE: non Х possibile salvare l'immagine.\n"
-
-#~ msgid "ERROR: 'filename' not specified.\n"
-#~ msgstr "ERRORE: 'nomefile' non specificato.\n"
-
-#~ msgid "ERROR: '#' and 'filename' not specified.\n"
-#~ msgstr "ERRORE: '#' e 'nomefile' non specificati.\n"
-
-#~ msgid "ERROR: '#' not specified.\n"
-#~ msgstr "ERRORE: \"#\" non specificato.\n"
-
-#~ msgid "ERROR: filename not specified.\n"
-#~ msgstr "ERRORE: nomefile non specificato.\n"
-
-#~ msgid "Taking picture...\n"
-#~ msgstr "Ricezione immagine...\n"
-
-#~ msgid "ERROR: could not take the picture.\n"
-#~ msgstr "ERRORE: non Х possibile ricevere l'immagine.\n"
-
-#~ msgid "Saving the new image (# %i) as %s: "
-#~ msgstr "Salvataggio della nuova immagine (# %i) come %s: "
-
-#~ msgid ""
-#~ "\n"
-#~ "ERROR: could not get image.\n"
-#~ msgstr ""
-#~ "\n"
-#~ "ERRORE: non Х possibile prelevare l'immagine.\n"
-
-#~ msgid "gPhoto release %s was brought to you by"
-#~ msgstr "gPhoto versione %s realizzato per voi da"
-
-#~ msgid "Web Page"
-#~ msgstr "Pagina web"
-
-#~ msgid "Next"
-#~ msgstr "Successivo"
-
-#~ msgid ""
-#~ "The gPhoto AUTHORS file appears to be missing!\n"
-#~ "\t      There should be a file called "
-#~ msgstr ""
-#~ "Il file degli autori di gPhoto sembra mancare!\n"
-#~ "\t      Potrebbe essere un file cancellato "
-
-#~ msgid "Select an Output Directory..."
-#~ msgstr "Selezione una directory di destinazione..."
-
-#~ msgid "Gallery Name:"
-#~ msgstr "Nome galleria:"
-
-#~ msgid "Theme:"
-#~ msgstr "Tema:"
-
-#~ msgid "Change..."
-#~ msgstr "Cambia..."
-
-#~ msgid "Export file as *.shtml?"
-#~ msgstr "Esporta il file come *.shtml?"
-
-#~ msgid "Set table border width to zero for thumbnails?"
-#~ msgstr ""
-#~ "Configura il bordo della tabella con larghezza zero per le anteprime?"
-
-#~ msgid ""
-#~ "Set image border width to zero? (so you don't see the link colors...)"
-#~ msgstr ""
-#~ "Configura il bordo immagine con larghezza zero? (non si potrЮ vedere il "
-#~ "colore dei link...)"
-
-#~ msgid "You must select a theme!"
-#~ msgstr "Dovete selezionare un tema!"
-
-#~ msgid "Not Available"
-#~ msgstr "Non disponibile"
-
-#~ msgid "<a href=\"picture-%03i.html\">Click Me<\\/a>"
-#~ msgstr "<a href=\"immagine-%03i.html\">Clic<\\/a>"
-
-#~ msgid "Getting Image #%i..."
-#~ msgstr "Ricezione immagine #%i..."
-
-#~ msgid "<img alt=\"%03i\" src=\"picture-%03i.%s\">"
-#~ msgstr "<img alt=\"%03i\" src=\"immagine-%03i.%s\">"
-
-#~ msgid "picture-%03i.%s"
-#~ msgstr "immagine-%03i.%s"
-
-#~ msgid "picture-%03i.html"
-#~ msgstr "immagine-%03i.html"
-
-#~ msgid "%spicture-%03i.html"
-#~ msgstr "%simmagine-%03i.html"
-
-#~ msgid "Loaded file:%s%s in %s"
-#~ msgstr "File aperti:%s%s в %s"
-
-#~ msgid "Gallery saved in: %s"
-#~ msgstr "Galleria salvata in: %s"
-
-#~ msgid "Color Adjustment"
-#~ msgstr "Aggiustamento colore"
-
-#~ msgid "gPhoto - Color Adjustment"
-#~ msgstr "gPhoto - Aggiustamento colore"
-
-#~ msgid "Gray Controls"
-#~ msgstr "Controlli di grigio"
-
-#~ msgid "Red Controls"
-#~ msgstr "Controlli di rosso"
-
-#~ msgid "Green Controls"
-#~ msgstr "Controlli di verde"
-
-#~ msgid "Blue Controls"
-#~ msgstr "Controlli di blu"
-
-#~ msgid "Colour Modifications:"
-#~ msgstr "Modifiche colore:"
-
-#~ msgid "Keep"
-#~ msgstr "Trattieni"
-
-#~ msgid "Reset all the color changes to normal values"
-#~ msgstr "Riporta ogni variazione di colore ai valori normali"
-
-#~ msgid "Always Apply"
-#~ msgstr "Applica sempre"
-
-#~ msgid "Getting live image..."
-#~ msgstr "Ricezione immagini live..."
-
-#~ msgid "Update Picture"
-#~ msgstr "Aggiorna immagine"
-
-#~ msgid "Take Picture"
-#~ msgstr "Ricevi immagine"
-
-#~ msgid ""
-#~ "\n"
-#~ "Launching Gnome Bugbuddy...\n"
-#~ msgstr ""
-#~ "\n"
-#~ "Avvio di Gnome Bugbuddy...\n"
-
-#~ msgid "gPhoto %s - the GNU digital camera application"
-#~ msgstr "gPhoto %s - Applicazione GNU per fotocamere digitali"
-
-#~ msgid "Save Opened Image(s)"
-#~ msgstr "Salva immagini aperte"
-
-#~ msgid "Print Image"
-#~ msgstr "Stampa immagine"
-
-#~ msgid "Close Image"
-#~ msgstr "Chiudi immagine"
-
-#~ msgid "Previous page"
-#~ msgstr "Pagina precedente"
-
-#~ msgid "Next page"
-#~ msgstr "Pagina successiva"
-
-#~ msgid "Download Empty Index"
-#~ msgstr "Download dell'indice vuoto"
-
-#~ msgid "Download Selected Images"
-#~ msgstr "Download delle immagini selezionate"
-
-#~ msgid "Halt Download"
-#~ msgstr "Interrompi download"
-
-#~ msgid "Rotate Clockwise"
-#~ msgstr "Rotazione in senso orario"
-
-#~ msgid "Rotate Counter-Clockwise"
-#~ msgstr "Rotazione in senso anti-orario"
-
-#~ msgid "Flip Horizontal"
-#~ msgstr "Rifletti orizzontalmente"
-
-#~ msgid "Flip Vertical"
-#~ msgstr "Rifletti verticalmente"
-
-#~ msgid "Colors"
-#~ msgstr "Colori"
-
-#~ msgid "Exit gPhoto"
-#~ msgstr "Esci da gPhoto"
-
-#~ msgid "gPhoto Message"
-#~ msgstr "Messaggio di gPhoto"
-
-#~ msgid "File %s exists. Overwrite?"
-#~ msgstr "File %s esistente. Sovrascrivere?"
-
-#~ msgid "load_image_mem: could not load image\n"
-#~ msgstr "load_image_mem: non Х possibile caricare l'immagine\n"
-
-#~ msgid "Fork failed. Exiting. \n"
-#~ msgstr "Fork fallito. Uscita.\n"
+#: src/gtkam-viewer.c:256
+#, fuzzy, c-format
+msgid "Downloading '%s' from folder '%s'..."
+msgstr "Non Х possibile ricevere l'anteprima"
+
+#: src/gtkam-viewer.c:307
+#, fuzzy, c-format
+msgid "Could not download '%s' from folder '%s'."
+msgstr "Non Х possibile ricevere l'anteprima"

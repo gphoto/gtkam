@@ -3,3 +3,4 @@ gphoto2_gtk
 Makefile
 Makefile.in
 gtkam
+gtkam-gimp

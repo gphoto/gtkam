@@ -8,3 +8,6 @@
 #undef PACKAGE_DATA_DIR
 #undef PACKAGE_SOURCE_DIR
 #undef DOCDIR
+
+#undef HAVE_GIMP
+#undef HAVE_JPEG

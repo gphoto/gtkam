@@ -1,3 +1,10 @@
+2001-11-12  Lutz Müller <urc8@rz.uni-karlsruhe.de>
+
+	* configure.in
+	* src/gtkam-gimp.c: Preliminary (ALPHA!!!!) gimp plugin. The most
+	  interesting thing here is that it actually won't crash gimp but does
+	  indeed display "something"...
+
 2001-11-11  Lutz Müller <urc8@rz.uni-karlsruhe.de>
 
 	* src/gtkam-list.c: Call gtk_icon_list_set_text_space here.

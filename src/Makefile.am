@@ -6,7 +6,6 @@ INCLUDES = \
 	@GTK_CFLAGS@
 
 bin_PROGRAMS = gtkam
-
 gtkam_SOURCES = \
 	gtkam-config.c gtkam-config.h \
 	gtkam-close.c gtkam-close.h \
@@ -24,5 +23,14 @@ gtkam_SOURCES = \
 	util.c util.h \
 	gtkiconlist.c gtkiconlist.h \
 	gtkitementry.c gtkitementry.h
-
 gtkam_LDADD = @GTK_LIBS@
+
+if HAVE_GIMP
+libexecdir = $(GIMP_PLUGIN_DIR)/plug-ins
+libexec_PROGRAMS = gtkam-gimp
+gtkam_gimp_SOURCES =			\
+	gtkam-error.c gtkam-error.h	\
+	gtkam-gimp.c			\
+	gtkam-preview.c gtkam-preview.h
+gtkam_gimp_LDADD = $(GIMP_LIBS) $(JPEG_LIBS)
+endif

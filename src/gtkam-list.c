@@ -49,10 +49,15 @@
 #include <gtk/gtkentry.h>
 #include <gtk/gtkitemfactory.h>
 #include <gtk/gtkliststore.h>
+#include <gtk/gtkmenuitem.h>
 #include <gtk/gtktreeselection.h>
 #include <gtk/gtkcellrenderertext.h>
 #include <gtk/gtkcellrendererpixbuf.h>
 #include <gtk/gtkstock.h>
+
+#ifdef HAVE_BONOBO
+#  include <bonobo-activation/bonobo-activation.h>
+#endif
 
 #include <gphoto2/gphoto2-list.h>
 #include <gphoto2/gphoto2-port-log.h>
@@ -451,6 +456,12 @@ selection_func (GtkTreeSelection *selection, GtkTreeModel *model,
 	return (TRUE);
 }
 
+static void
+on_view_as_activate (void)
+{
+	g_message ("Not yet implemented!");
+}
+
 static gint
 on_button_press_event (GtkWidget *widget, GdkEventButton *event,
 		       GtkamList *list)
@@ -474,13 +485,69 @@ on_button_press_event (GtkWidget *widget, GdkEventButton *event,
 
 		/* What operations does the camera support? */
 		w = gtk_item_factory_get_widget (list->priv->factory,
-						 "/Save");
+						 "/Delete");
 		gtk_widget_set_sensitive (w,
-			(a.file_operations & GP_FILE_OPERATION_DELETE) ||
-			(a.folder_operations & GP_FOLDER_OPERATION_DELETE_ALL));
+			(a.file_operations & GP_FILE_OPERATION_DELETE));
+
+#ifdef HAVE_BONOBO
+{
+    Bonobo_ServerInfoList *l;
+    guint i;
+    GtkWidget *item;
+    CORBA_Environment ev;
+    CameraFileInfo finfo;
+    gchar *fo, *fi, *query;
+
+    w = gtk_item_factory_get_widget (list->priv->factory, "/View as");
+    while (GTK_CONTAINER (w)->focus_child)
+	    gtk_container_remove (GTK_CONTAINER (w),
+			          GTK_CONTAINER (w)->focus_child);
+
+    fo = gtkam_list_get_folder_from_iter (list, &list->priv->iter);
+    fi = gtkam_list_get_name_from_iter (list, &list->priv->iter);
+    gp_camera_file_get_info (camera->camera, fo, fi, &finfo, NULL);
+    g_free (fo);
+    g_free (fi);
+
+    if (finfo.file.fields & GP_FILE_INFO_TYPE) {
+	CORBA_exception_init (&ev);
+	query = g_strconcat ("bonobo:supported_mime_types.has ('", 
+			     finfo.file.type, "')", NULL);
+	l = bonobo_activation_query (query, NULL, &ev);
+	g_free (query);
+	CORBA_exception_free (&ev);
+
+	if (l && l->_length) {
+		gtk_widget_set_sensitive (
+			gtk_item_factory_get_item (list->priv->factory,
+						   "/View as"), TRUE);
+		for (i = 0; i < l->_length; i++) {
+			Bonobo_ServerInfo *si = &l->_buffer[i];
+			const gchar *n;
+
+			n = bonobo_server_info_prop_lookup (si, "name", NULL);
+			if (!n)
+				n = si->iid;
+			item = gtk_menu_item_new_with_label (n);
+			gtk_widget_show (item);
+			gtk_menu_shell_append (GTK_MENU_SHELL (w), item);
+			g_signal_connect (G_OBJECT (item), "activate", 
+				G_CALLBACK (on_view_as_activate), list);
+		}
+	} else {
+		gtk_widget_set_sensitive (
+			gtk_item_factory_get_item (list->priv->factory, 
+						   "/View as"), FALSE);
+	}
+	if (l)
+		CORBA_free (l);
+    }
+}
+#endif
 
 		gtk_item_factory_popup (list->priv->factory, event->x_root,
 				event->y_root, event->button, event->time);
+
 		return (TRUE);
 	default:
 		return (FALSE);
@@ -708,6 +775,10 @@ on_edited (GtkCellRendererText *cell, const gchar *path,
 
 static GtkItemFactoryEntry mi[] =
 {
+#ifdef HAVE_BONOBO
+	{"/_View as", NULL, NULL, 0, "<Branch>"},
+	{"/sep0", NULL, NULL, 0, "<Separator>"},
+#endif
 	{"/_Info", NULL, action_info, 0, NULL},
 #ifdef HAVE_EXIF
 	{"/_Exif", NULL, action_exif, 0, NULL},

@@ -49,6 +49,10 @@
 
 #include <gtk/gtkmain.h>
 
+#ifdef HAVE_BONOBO
+#  include <bonobo-activation/bonobo-activation-init.h>
+#endif
+
 #include "gtkam-main.h"
 #include "gtkam-error.h"
 #include "util.h"
@@ -111,6 +115,9 @@ main (int argc, char *argv[])
 	}
 
 	gtk_init (&argc, &argv);
+#ifdef HAVE_BONOBO
+	bonobo_activation_init (argc, argv);
+#endif
 
 	/* Create the main window */
 	m = gtkam_main_new ();

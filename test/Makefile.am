@@ -1,11 +1,9 @@
 INCLUDES =			\
 	-I$(top_srcdir)		\
-	$(GTK_CFLAGS)		\
-	$(GP_CFLAGS)		\
-	$(EXIF_CFLAGS)		\
-	-I$(top_srcdir)/src
+	-I$(top_srcdir)/src	\
+	$(GTKAM_CFLAGS) $(BONOBO_CFLAGS) $(BONOBO_CFLAGS)
 
 noinst_PROGRAMS = test-fsel test-cancel
 
-test_fsel_LDADD   = $(GP_LIBS) $(GTK_LIBS) $(EXIF_LIBS) ../src/libgtkam.a
-test_cancel_LDADD = $(GP_LIBS) $(GTK_LIBS) $(EXIF_LIBS) ../src/libgtkam.a
+test_fsel_LDADD   = $(GTKAM_LIBS) $(EXIF_LIBS) $(BONOBO_LIBS) ../src/libgtkam.a
+test_cancel_LDADD = $(GTKAM_LIBS) $(EXIF_LIBS) $(BONOBO_LIBS) ../src/libgtkam.a

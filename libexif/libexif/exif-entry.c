@@ -32,21 +32,6 @@
 
 static const unsigned char ExifHeader[] = {0x45, 0x78, 0x69, 0x66, 0x00, 0x00};
 
-static struct {
-        ExifFormat format;
-        unsigned char size;
-} ExifFormatSize[] = {
-        {EXIF_FORMAT_BYTE,     1},
-        {EXIF_FORMAT_ASCII,    1},
-        {EXIF_FORMAT_SHORT,    2},
-        {EXIF_FORMAT_LONG,     4},
-        {EXIF_FORMAT_RATIONAL, 8},
-        {EXIF_FORMAT_SLONG,     4},
-        {EXIF_FORMAT_SRATIONAL, 8},
-	{EXIF_FORMAT_UNDEFINED, 1},
-        {0, 0}
-};
-
 struct _ExifEntryPrivate
 {
 	unsigned int ref_count;
@@ -107,7 +92,7 @@ void
 exif_entry_parse (ExifEntry *entry, const unsigned char *data,
 		  unsigned int size, unsigned int offset, ExifByteOrder order)
 {
-	unsigned int j, s, doff;
+	unsigned int s, doff;
 
 	entry->order = order;
 	entry->tag         = exif_get_short (data + offset + 0, order);
@@ -123,11 +108,7 @@ exif_entry_parse (ExifEntry *entry, const unsigned char *data,
 	 * Size? If bigger than 4 bytes, the actual data is not
 	 * in the entry but somewhere else (offset). Beware of subdirectories.
 	 */
-	for (s = j = 0; ExifFormatSize[j].size; j++)
-		if (ExifFormatSize[j].format == entry->format) {
-			s = ExifFormatSize[j].size * entry->components;
-			break;
-		}
+	s = exif_format_get_size (entry->format) * entry->components;
 	if (!s)
 		return;
 	if ((s > 4) || (entry->tag == EXIF_TAG_EXIF_IFD_POINTER) ||
@@ -166,11 +147,13 @@ exif_entry_dump (ExifEntry *entry, unsigned int indent)
 	if (!entry)
 		return;
 
-	printf ("%s  Tag: 0x%x ('%s')\n", buf, entry->tag,
+	printf ("%sTag: 0x%x ('%s')\n", buf, entry->tag,
 		exif_tag_get_name (entry->tag));
-	printf ("%s  Format: %i\n", buf, entry->format);
+	printf ("%s  Format: %i ('%s')\n", buf, entry->format,
+		exif_format_get_name (entry->format));
 	printf ("%s  Components: %i\n", buf, (int) entry->components);
 	printf ("%s  Size: %i\n", buf, entry->size);
+	printf ("%s  Value: %s\n", buf, exif_entry_get_value (entry));
 	if (entry->content->count)
 		exif_content_dump (entry->content, indent + 1);
 }
@@ -280,6 +263,7 @@ exif_entry_initialize (ExifEntry *entry, ExifTag tag)
 {
 	time_t t;
 	struct tm *tm;
+	ExifRational r;
 
 	if (!entry)
 		return;
@@ -353,19 +337,28 @@ exif_entry_initialize (ExifEntry *entry, ExifTag tag)
 		entry->format = EXIF_FORMAT_RATIONAL;
 		entry->size = sizeof (ExifRational);
 		entry->data = malloc (entry->size);
-		exif_set_rational (entry->data, entry->order, 72, 1);
+		r.numerator = 72;
+		r.denominator = 1;
+		exif_set_rational (entry->data, entry->order, r);
 		break;
 	case EXIF_TAG_REFERENCE_BLACK_WHITE:
 		entry->components = 6;
 		entry->format = EXIF_FORMAT_RATIONAL;
 		entry->size = sizeof (ExifRational) * entry->components;
 		entry->data = malloc (entry->size);
-		exif_set_rational (entry->data +   0, entry->order,   0, 1);
-		exif_set_rational (entry->data +   8, entry->order, 255, 1);
-		exif_set_rational (entry->data +  16, entry->order,   0, 1);
-		exif_set_rational (entry->data +  32, entry->order, 255, 1);
-		exif_set_rational (entry->data +  64, entry->order,   0, 1);
-		exif_set_rational (entry->data + 128, entry->order, 255, 1);
+		r.denominator = 1;
+		r.numerator = 0;
+		exif_set_rational (entry->data +   0, entry->order, r);
+		r.numerator = 255;
+		exif_set_rational (entry->data +   8, entry->order, r);
+		r.numerator = 0;
+		exif_set_rational (entry->data +  16, entry->order, r);
+		r.numerator = 255;
+		exif_set_rational (entry->data +  32, entry->order, r);
+		r.numerator = 0;
+		exif_set_rational (entry->data +  64, entry->order, r);
+		r.numerator = 255;
+		exif_set_rational (entry->data + 128, entry->order, r);
 		break;
 	case EXIF_TAG_DATE_TIME:
 	case EXIF_TAG_DATE_TIME_ORIGINAL:

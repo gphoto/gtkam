@@ -53,7 +53,8 @@ libexif-gtk/Makefile
 libexif-gtk/gtk-extensions/Makefile
 libjpeg/Makefile
 test/Makefile
-libexif.pc
+libexif/libexif.pc
+libexif-gtk/libexif-gtk.pc
 ])
 
 echo "

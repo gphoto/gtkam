@@ -21,3 +21,7 @@ libexifinclude_HEADERS = 	\
 	exif-tag.h		\
 	exif-utils.h
 
+pkgconfigdir = $(libdir)/pkgconfig
+pkgconfig_DATA = libexif.pc
+EXTRA_DIST = libexif.pc.in
+

@@ -51,3 +51,8 @@ libexif_gtk_la_LIBADD =				\
 	gtk-extensions/libgtk-extensions.la	\
 	$(top_builddir)/libexif/libexif.la	\
 	$(GTK_LIBS)
+
+pkgconfigdir = $(libdir)/pkgconfig
+pkgconfig_DATA = libexif-gtk.pc
+EXTRA_DIST = libexif-gtk.pc.in
+

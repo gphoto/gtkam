@@ -141,6 +141,7 @@ jpeg_data_new_from_data (const unsigned char *data,
                 case JPEG_MARKER_UNKNOWN14:
                 case JPEG_MARKER_UNKNOWN15:
                 case JPEG_MARKER_EXIF:
+		case JPEG_MARKER_JFIF:
 			
 			/* Read the length of the section */
 			len = (data[o + i + 1] << 8) | data[o + i + 2];

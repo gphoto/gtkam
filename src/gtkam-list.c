@@ -939,8 +939,8 @@ save_foreach_func (GtkTreeModel *model, GtkTreePath *path,
 static void
 gtkam_list_save_common (GtkamList *list, gboolean all)
 {
-	g_return_if_fail (GTKAM_IS_LIST (list));
         SaveAllData sad;
+	g_return_if_fail (GTKAM_IS_LIST (list));
 
         g_return_if_fail (GTKAM_IS_LIST (list));
 

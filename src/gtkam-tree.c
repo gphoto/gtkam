@@ -382,7 +382,6 @@ gtkam_tree_load (GtkamTree *tree)
 	guint i;
 
 	s = gtkam_status_new (_("Loading cameras..."));
-	gtk_widget_show (s);
 	gtk_signal_emit (GTK_OBJECT (tree), signals[NEW_STATUS], s);
 
 	gp_abilities_list_new (&al);
@@ -428,14 +427,13 @@ gtkam_tree_load (GtkamTree *tree)
 		item = gtkam_tree_item_cam_new ();
 		gtk_widget_show (item);
 		gtk_tree_append (GTK_TREE (tree), item);
-		gtkam_tree_item_set_camera (GTKAM_TREE_ITEM (item), camera);
-		gp_camera_unref (camera);
 		gtk_signal_connect (GTK_OBJECT (item), "new_status",
 				    GTK_SIGNAL_FUNC (on_new_status), tree);
-
+		gtkam_tree_item_set_camera (GTKAM_TREE_ITEM (item), camera);
                 if (gp_setting_get ("gtkam", "multi", multi) == GP_OK)
 			gtkam_tree_item_set_multi (GTKAM_TREE_ITEM (item),
 						   atoi (multi));
+		gp_camera_unref (camera);
         }
 
 	/* New style settings */
@@ -497,12 +495,12 @@ gtkam_tree_load (GtkamTree *tree)
                 item = gtkam_tree_item_cam_new ();
                 gtk_widget_show (item);
                 gtk_tree_append (GTK_TREE (tree), item);
-                gtkam_tree_item_set_camera (GTKAM_TREE_ITEM (item), camera);
-		gtkam_tree_item_set_multi (GTKAM_TREE_ITEM (item),
-					   atoi (multi));
-                gp_camera_unref (camera);
 		gtk_signal_connect (GTK_OBJECT (item), "new_status",
 				    GTK_SIGNAL_FUNC (on_new_status), tree);
+		gtkam_tree_item_set_camera (GTKAM_TREE_ITEM (item), camera);
+		gtkam_tree_item_set_multi (GTKAM_TREE_ITEM (item),
+					   atoi (multi));
+		gp_camera_unref (camera);
 	}
 
 	gp_abilities_list_free (al);

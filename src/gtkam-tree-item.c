@@ -174,6 +174,8 @@ set_multi (GtkamTreeItem *item, gboolean multi)
 static void
 set_camera (GtkamTreeItem *item, Camera *camera)
 {
+	GtkWidget *s;
+
 	if (item->priv->camera) {
 		gp_camera_unref (item->priv->camera);
 		item->priv->camera = NULL;
@@ -187,11 +189,14 @@ set_camera (GtkamTreeItem *item, Camera *camera)
 	 * Try to get a file listing. If that fails, put the camera
 	 * offline.
 	 */
+	s = gtkam_status_new (_("Trying to access camera..."));
+	gtk_signal_emit (GTK_OBJECT (item), signals[NEW_STATUS], s);
 	if (gp_camera_folder_list_files (camera, item->priv->folder,
-					 item->priv->dirs, NULL) < 0)
+		 item->priv->dirs, GTKAM_STATUS (s)->context->context) < 0)
 		gtkam_tree_item_set_online (item, FALSE);
 	else
 		gtkam_tree_item_set_online (item, TRUE);
+	gtk_object_destroy (GTK_OBJECT (s));
 
 	if (item->priv->multi)
 		gp_camera_exit (item->priv->camera, NULL);
@@ -623,7 +628,7 @@ gtkam_tree_item_set_online (GtkamTreeItem *item, gboolean online)
 		switch (result) {
 		case GP_OK:
 			status = g_strdup_printf ("%i",
-					  gp_list_count (item->priv->dirs));
+					  gp_list_count (item->priv->files));
 			gtk_label_set_text (GTK_LABEL (item->status), status);
 			g_free (status);
 			break;

@@ -176,7 +176,6 @@ on_text_activate (GtkMenuItem *i, GtkamTreeItem *item)
 		s = gtkam_status_new (_("Getting manual..."));
 		break;
 	}
-	gtk_widget_show (s);
 	gtk_signal_emit_by_name (GTK_OBJECT (item), "new_status", s);
 
 	switch (text_type) {
@@ -244,7 +243,6 @@ on_capture_activate (GtkMenuItem *i, GtkamTreeItem *item)
 
 	/* The camera doesn't support previews. Capture an image. */
 	s = gtkam_status_new (_("Capturing image..."));
-	gtk_widget_show (s);
 	gtk_signal_emit_by_name (GTK_OBJECT (item), "new_status", s);
 	result = gp_camera_capture (camera, GP_CAPTURE_IMAGE, &path,
 				GTKAM_STATUS (s)->context->context);

@@ -455,7 +455,10 @@ on_changed (GtkamList *list, GtkamMain *m)
 static void
 on_new_status (GtkamTree *tree, GtkWidget *status, GtkamMain *m)
 {
+	gtk_widget_show (status);
 	gtk_box_pack_start (GTK_BOX (m->priv->status), status, FALSE, FALSE, 0);
+	while (gtk_events_pending ())
+		gtk_main_iteration ();
 }
 
 static gboolean

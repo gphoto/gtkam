@@ -294,7 +294,7 @@ run (gchar *name, gint nparams, GimpParam *param, gint *nreturn_vals,
 		gp_camera_unref (camera);
 		if (result < 0) {
 			gp_file_unref (file);
-			g_warning ("Some more error messages would be fine...");
+			g_warning ("Error: %s", gp_result_as_string (result));
 			values[0].data.d_status = GIMP_PDB_EXECUTION_ERROR;
 			return;
 		}

@@ -60,6 +60,7 @@
 
 #include "support.h"
 #include "gtkam-error.h"
+#include "gtkam-close.h"
 
 struct _GtkamChooserPrivate
 {
@@ -298,6 +299,30 @@ on_speed_changed (GtkEntry *entry, GtkamChooser *chooser)
 	chooser->priv->needs_update = TRUE;
 }
 
+static void
+on_detect_clicked (GtkButton *button, GtkamChooser *chooser)
+{
+	GtkWidget *dialog;
+	CameraList list;
+	int result;
+	const char *name;
+
+	result = gp_autodetect (&list);
+	if (result < 0) {
+		dialog = gtkam_error_new (_("Could not detect any cameras"),
+					  result, NULL, GTK_WIDGET (chooser));
+		gtk_widget_show (dialog);
+	} else if (!gp_list_count (&list)) {
+		dialog = gtkam_close_new (_("No cameras detected."),
+					  GTK_WIDGET (chooser));
+		gtk_widget_show (dialog);
+	} else {
+//FIXME: Let user choose from the list
+		gp_list_get_name (&list, 0, &name);
+		gtk_entry_set_text (chooser->priv->entry_model, name);
+	}
+}
+
 GtkWidget *
 gtkam_chooser_new (Camera *opt_camera)
 {
@@ -315,7 +340,7 @@ gtkam_chooser_new (Camera *opt_camera)
 	gtk_container_set_border_width (GTK_CONTAINER (chooser), 5);
 	gtk_window_set_policy (GTK_WINDOW (chooser), TRUE, TRUE, TRUE);
 
-	table = gtk_table_new (3, 2, FALSE);
+	table = gtk_table_new (3, 3, FALSE);
 	gtk_table_set_row_spacings (GTK_TABLE (table), 5);
 	gtk_table_set_col_spacings (GTK_TABLE (table), 5);
 	gtk_widget_show (table);
@@ -346,13 +371,19 @@ gtkam_chooser_new (Camera *opt_camera)
 			gtk_combo_set_popdown_strings (GTK_COMBO (combo), list);
 	}
 
+	button = gtk_button_new_with_label (_("Detect"));
+	gtk_widget_show (button);
+	gtk_table_attach_defaults (GTK_TABLE (table), button, 2, 3, 0, 1);
+	gtk_signal_connect (GTK_OBJECT (button), "clicked",
+			    GTK_SIGNAL_FUNC (on_detect_clicked), chooser);
+
 	label = gtk_label_new (_("Port:"));
 	gtk_widget_show (label);
 	gtk_table_attach_defaults (GTK_TABLE (table), label, 0, 1, 1, 2);
 
 	combo = gtk_combo_new ();
 	gtk_widget_show (combo);
-	gtk_table_attach_defaults (GTK_TABLE (table), combo, 1, 2, 1, 2);
+	gtk_table_attach_defaults (GTK_TABLE (table), combo, 1, 3, 1, 2);
 	gtk_widget_set_sensitive (combo, FALSE);
 	chooser->priv->entry_port = GTK_ENTRY (GTK_COMBO (combo)->entry);
 	chooser->priv->combo_port = GTK_COMBO (combo);
@@ -362,7 +393,7 @@ gtkam_chooser_new (Camera *opt_camera)
 	chooser->priv->label_speed = label;
 
 	combo = gtk_combo_new ();
-	gtk_table_attach_defaults (GTK_TABLE (table), combo, 1, 2, 2, 3);
+	gtk_table_attach_defaults (GTK_TABLE (table), combo, 1, 3, 2, 3);
 	gtk_widget_set_sensitive (combo, FALSE);
 	chooser->priv->entry_speed = GTK_ENTRY (GTK_COMBO (combo)->entry);
 	gtk_entry_set_text (chooser->priv->entry_speed, _("Best"));

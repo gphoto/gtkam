@@ -85,7 +85,7 @@ struct _GtkamMainPrivate
 	GtkToggleButton *toggle_preview;
 
 	GtkWidget *item_delete, *item_delete_all, *item_capture, *item_config;
-	GtkWidget *item_save, *item_information, *item_manual;
+	GtkWidget *item_save, *item_information, *item_manual, *menu_delete;
 	GtkWidget *item_about_driver;
 
 	GtkWidget *debug;
@@ -463,6 +463,7 @@ gtkam_main_new (void)
 				     _("_Delete"));
 	gtk_widget_add_accelerator (item, "activate_item", accels, key, 0, 0);
 	gtk_container_add (GTK_CONTAINER (menu), item);
+	m->priv->menu_delete = item;
 
 	submenu = gtk_menu_new ();
 	gtk_menu_item_set_submenu (GTK_MENU_ITEM (item), submenu);
@@ -880,6 +881,15 @@ gtkam_main_set_camera (GtkamMain *m, Camera *camera)
 		gtk_widget_set_sensitive (m->priv->item_delete_all, TRUE);
 	else
 		gtk_widget_set_sensitive (m->priv->item_delete_all, FALSE);
+
+	/* Overall deletion */
+	if (camera && ((camera->abilities->file_operations &
+					GP_FILE_OPERATION_DELETE) || 
+		       (camera->abilities->folder_operations &
+					GP_FOLDER_OPERATION_DELETE_ALL)))
+		gtk_widget_set_sensitive (m->priv->menu_delete, TRUE);
+	else
+		gtk_widget_set_sensitive (m->priv->menu_delete, FALSE);
 
 	/* Configuration */
 	if (camera && camera->abilities->operations & GP_OPERATION_CONFIG)

@@ -1,5 +1,9 @@
 2001-10-11  Lutz Müller <urc8@rz.uni-karlsruhe.de>
 
+	* src/gtkam-chooser.c: "Detect" functionality
+
+2001-10-11  Lutz Müller <urc8@rz.uni-karlsruhe.de>
+
 	Colin Marquardt <colin@marquardt-home.de> found that bug:
 
 	* src/gtkam-list.c: Check for event != NULL

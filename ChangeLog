@@ -1,3 +1,7 @@
+2002-09-12  Hans Ulrich Niedermann <gp@n-dimensional.de>
+	
+	* configure.in: Version 0.1.9dev1 - distinguish from gtk1 version
+	
 2002-09-02  Patrick Mansfield <patmans@users.sourceforge.net>
 
 	* src/gtkam-preview.c: Add missing call to gtk_object_destroy() in
@@ -94,7 +98,7 @@
 
 2002-07-23  Lutz Müller <lutz@users.sourceforge.net>
 
-	Ü configure.in: Version 0.1.9
+	* configure.in: Version 0.1.9
 
 2002-07-23  Lutz Müller <lutz@users.sourceforge.net>
 

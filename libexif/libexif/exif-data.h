@@ -38,6 +38,11 @@ ExifData *exif_data_new_from_file (const char *path);
 ExifData *exif_data_new_from_data (const unsigned char *data,
 				   unsigned int size);
 
+void      exif_data_load_data (ExifData *data, const unsigned char *d, 
+			       unsigned int size);
+void      exif_data_save_data (ExifData *data, unsigned char **d,
+			       unsigned int *size);
+
 void      exif_data_ref   (ExifData *data);
 void      exif_data_unref (ExifData *data);
 void      exif_data_free  (ExifData *data);

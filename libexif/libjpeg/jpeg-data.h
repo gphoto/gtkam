@@ -24,16 +24,11 @@
 #include <libjpeg/jpeg-marker.h>
 #include <libexif/exif-data.h>
 
-typedef ExifData * JPEGContentExif;
+typedef ExifData * JPEGContentAPP1;
 
-typedef struct _JPEGContentSOF JPEGContentSOF;
-struct _JPEGContentSOF {
-	unsigned int height, width;
-	unsigned char precision, components;
-};
-
-typedef struct _JPEGContentSOS JPEGContentSOS;
-struct _JPEGContentSOS {
+typedef struct _JPEGContentGeneric JPEGContentGeneric;
+struct _JPEGContentGeneric
+{
 	unsigned char *data;
 	unsigned int size;
 };
@@ -41,9 +36,8 @@ struct _JPEGContentSOS {
 typedef union _JPEGContent JPEGContent;
 union _JPEGContent
 {
-	JPEGContentSOF sof;
-	JPEGContentSOS sos;
-	JPEGContentExif exif;
+	JPEGContentGeneric generic;
+	JPEGContentAPP1    app1;
 };
 
 typedef struct _JPEGSection JPEGSection;
@@ -60,6 +54,10 @@ struct _JPEGData
 {
 	JPEGSection *sections;
 	unsigned int count;
+
+	unsigned char *data;
+	unsigned int size;
+
 	JPEGDataPrivate *priv;
 };
 

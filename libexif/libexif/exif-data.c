@@ -64,56 +64,75 @@ ExifData *
 exif_data_new_from_data (const unsigned char *data, unsigned int size)
 {
 	ExifData *edata;
+
+	edata = exif_data_new ();
+	exif_data_load_data (edata, data, size);
+	return (edata);
+}
+
+void
+exif_data_load_data (ExifData *data, const unsigned char *d, unsigned int size)
+{
 	unsigned int o, len;
 	ExifByteOrder order;
 
 	if (!data)
-		return (NULL);
+		return;
+	if (!d)
+		return;
 
 	/* Search the exif marker */
 	for (o = 0; o < size; o++)
-		if (data[o] == JPEG_MARKER_APP1)
+		if (d[o] == JPEG_MARKER_APP1)
 			break;
 	if (o == size)
-		return (NULL);
+		return;
 	o++;
-	data += o;
+	d += o;
 	size -= o;
 
 	/* Size of exif data? */
 	if (size < 2)
-		return (NULL);
-	len = (data[0] << 8) | data[1];
+		return;
+	len = (d[0] << 8) | d[1];
 
 	/*
 	 * Verify the exif header
 	 * (offset 2, length 6).
 	 */
 	if (size < 2 + 6)
-		return (NULL);
-	if (memcmp (data + 2, ExifHeader, 6))
-		return (NULL);
+		return;
+	if (memcmp (d + 2, ExifHeader, 6))
+		return;
 
 	/*
 	 * Byte order (offset 8, length 2) plus two values for
 	 * correctness check (offset 10, length 2 and 4).
 	 */
 	if (size < 16)
-		return (NULL);
-	if (!memcmp (data + 8, "II", 2))
+		return;
+	if (!memcmp (d + 8, "II", 2))
 		order = EXIF_BYTE_ORDER_INTEL;
-	else if (!memcmp (data + 8, "MM", 2))
+	else if (!memcmp (d + 8, "MM", 2))
 		order = EXIF_BYTE_ORDER_MOTOROLA;
 	else
-		return (NULL);
+		return;
 
-	edata = exif_data_new ();
-	edata->priv->order = order;
+	data->priv->order = order;
 
 	/* Parse the actual exif data (offset 16) */
-	exif_content_parse (edata->content, data + 8, size - 8, 8, order);
+	exif_content_parse (data->content, d + 8, size - 8, 8, order);
+}
 
-	return (edata);
+void
+exif_data_save_data (ExifData *data, unsigned char **d, unsigned int *ds)
+{
+	if (!data)
+		return;
+	if (!d)
+		return;
+	if (!ds)
+		return;
 }
 
 ExifData *

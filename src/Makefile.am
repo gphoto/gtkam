@@ -45,7 +45,7 @@ gtkam_SOURCES = 				\
 	gtkam-debug.c gtkam-debug.h 		\
 	gtkam-exif.c gtkam-exif.h 		\
 	gtkam-main.c gtkam-main.h 		\
-	main.c
+	i18n.h main.c
 gtkam_LDADD =						\
 	libgtkam.a					\
 	$(EXIF_LIBS) $(GTKAM_LIBS) $(BONOBO_LIBS)	\

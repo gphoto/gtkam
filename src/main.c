@@ -53,7 +53,7 @@ main (int argc, char *argv[])
 
 	/* Register my callbacks for interaction */
 	gp_frontend_register(frontend_status, frontend_progress,
-		frontend_message, frontend_confirm, frontend_prompt);
+		frontend_message, frontend_confirm, NULL);
 
 	add_pixmap_directory (PACKAGE_DATA_DIR "/pixmaps");
 	add_pixmap_directory (PACKAGE_SOURCE_DIR "/pixmaps");

@@ -241,6 +241,7 @@ gtkam_viewer_load_file (GtkamViewer *v, GtkamCamera *camera,
 {
 	int r;
 	GtkWidget *s, *e;
+	GError *error = NULL;
 
 	g_return_if_fail (GTKAM_IS_VIEWER (v));
 	g_return_if_fail (GTKAM_IS_CAMERA (camera));
@@ -279,12 +280,18 @@ gtkam_viewer_load_file (GtkamViewer *v, GtkamCamera *camera,
 	gtk_timeout_remove (v->priv->timeout_id);
 	timeout_func (v);
 	v->priv->timeout_id = 0;
-	gdk_pixbuf_loader_close (v->priv->loader, NULL);
-	if (v->priv->pixbuf)
-		g_object_unref (G_OBJECT (v->priv->pixbuf));
-	v->priv->pixbuf = gdk_pixbuf_loader_get_pixbuf (v->priv->loader);
-	g_object_ref (G_OBJECT (v->priv->pixbuf));
-	show_pixbuf (v, &v->priv->image->allocation, TRUE);
+	gdk_pixbuf_loader_close (v->priv->loader, &error);
+	if (error) {
+		g_error_free (error);
+		error = NULL;
+	} else {
+		if (v->priv->pixbuf)
+			g_object_unref (G_OBJECT (v->priv->pixbuf));
+		v->priv->pixbuf = gdk_pixbuf_loader_get_pixbuf (
+							v->priv->loader);
+		g_object_ref (G_OBJECT (v->priv->pixbuf));
+		show_pixbuf (v, &v->priv->image->allocation, TRUE);
+	}
 
 	/* Clean up */
 	g_object_unref (G_OBJECT (v->priv->loader));

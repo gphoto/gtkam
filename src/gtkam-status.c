@@ -59,7 +59,7 @@ static GtkHBoxClass *parent_class;
 struct _GtkamStatusPrivate {
 	GtkWidget *status;
 
-	guint context_id, message_id;
+	guint message_id;
 
 	GPtrArray *progress;
 	GArray *target;
@@ -151,14 +151,14 @@ status_func (GPContext *c, const char *format, va_list args,
 
         /* Remove old status messages */
         if (status->priv->message_id)
-                gtk_statusbar_remove (GTK_STATUSBAR (status->priv->status),
-                                      status->priv->context_id,
+                gtk_statusbar_remove (GTK_STATUSBAR (status->priv->status), 0,
                                       status->priv->message_id);
+	else
+		gtk_widget_show (status->priv->status);
 
         msg = g_strdup_vprintf (format, args);
         status->priv->message_id = gtk_statusbar_push (
-                        GTK_STATUSBAR (status->priv->status),
-                        status->priv->context_id, msg);
+                        GTK_STATUSBAR (status->priv->status), 0, msg);
         g_free (msg);
 }
 
@@ -297,11 +297,10 @@ gtkam_status_new (const gchar *format, ...)
 
 	/* Status information */
 	status->priv->status = gtk_statusbar_new ();
-	gtk_widget_show (status->priv->status);
+	gtk_statusbar_set_has_resize_grip (GTK_STATUSBAR (status->priv->status),
+					   FALSE);
 	gtk_box_pack_start (GTK_BOX (status), status->priv->status,
 			    TRUE, TRUE, 0);
-	status->priv->context_id = gtk_statusbar_get_context_id (
-			GTK_STATUSBAR (status->priv->status), "libgphoto2");
 	gp_context_set_status_func (status->context->context,
 				    status_func, status);
 

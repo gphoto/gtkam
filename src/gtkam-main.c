@@ -67,6 +67,8 @@
 
 #ifdef HAVE_GNOME
 #  include <libgnome/gnome-help.h>
+#  include <libgnomeui/gnome-about.h>
+#  include <libgnomeui/gnome-href.h>
 #endif
 
 #include <gphoto2/gphoto2-camera.h>
@@ -459,23 +461,45 @@ action_about (gpointer callback_data, guint callback_action,
 {
 	GtkamMain *m = GTKAM_MAIN (callback_data);
 	GtkWidget *d;
-	gchar *buf;
-
-	buf = g_strdup_printf (
-		 _("%s %s\n\n"
-		   "gtKam was written by:\n"
-		   " - Scott Fritzinger <scottf@unr.edu>,\n"
-		   " - Lutz Mueller <urc8@rz.uni-karlsruhe.de>,\n"
-		   " - and many others.\n"
-		   "\n"
-		   "gtKam uses libgphoto2, a library to access a\n"
-		   "multitude of digital cameras. More \n"
-		   "information is available at\n"
+	const gchar *comments =
+		N_("gtkam is a program that lets you download\n"
+		   "images from many digital cameras. It uses\n"
+		   "libgphoto2. More info is available at\n"
 		   "http://www.gphoto.net.\n"
 		   "\n"
-		   "Enjoy the wonderful world of gphoto!"),
-		 PACKAGE, VERSION);
+		   "Enjoy the wonderful world of gphoto!");
+#ifdef HAVE_GNOME
+	GtkWidget *w;
+	const gchar *authors[] = {
+		"Scott Fritzinger <scottf@unr.edu>",
+		"Lutz Mueller <lutz@users.sourceforge.net>",
+		_("Many others"), NULL};
+	const gchar *documenters[] = {
+		"Michael J. Rensing <michael.rensing@shaw.ca>", NULL};
+	const gchar *translator_credits =
+		"Keld Simonsen <keld@dkuug.dk>\n"
+		"Marcus Meissner <marcus@jet.franken.de>\n"
+		"Fabian Mandelbaum <fabman@mandrakesoft.com>\n"
+		"Kjartan Maraas <kmaraas@online.no>\n"
+		"Andraz Tori <andraz.tori1@guest.arnes.si>";
+	GdkPixbuf *p;
+#else
+	gchar *buf;
+#endif
+
+#ifdef HAVE_GNOME
+	p = gdk_pixbuf_new_from_file (IMAGE_DIR "/gtkam-camera.png", NULL);
+	d = gnome_about_new (PACKAGE, VERSION, "GPL", _(comments), authors,
+			     documenters, translator_credits, p);
+	g_object_unref (G_OBJECT (p));
+	w = gnome_href_new ("http://www.gphoto.org", "http://www.gphoto.org");
+	gtk_widget_show (w);
+	gtk_box_pack_end (GTK_BOX (GTK_DIALOG (d)->vbox), w, FALSE, FALSE, 0);
+#else
+	buf = g_strdup_printf ("%s-%s\n\n%s", PACKAGE, VERSION, _(comments));
 	d = gtkam_close_new (buf);
+	g_free (buf);
+#endif
 	gtk_window_set_transient_for (GTK_WINDOW (d), GTK_WINDOW (m));
 	gtk_widget_show (d);
 }

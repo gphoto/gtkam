@@ -20,7 +20,7 @@ main (int argc, char **argv)
 	ExifData *edata;
 
 	if (argc <= 1) {
-		printf ("You need to specify a file!");
+		printf ("You need to specify a file!\n");
 		return (1);
 	}
 
@@ -28,8 +28,16 @@ main (int argc, char **argv)
 	gtk_init (&argc, &argv);
 
 	jdata = jpeg_data_new_from_file (argv[1]);
+	if (!jdata) {
+		printf ("Could not read '%s'!\n", argv[1]);
+		return (1);
+	}
 	edata = jpeg_data_get_exif_data (jdata);
 	jpeg_data_unref (jdata);
+	if (!edata) {
+		printf ("Could not find EXIF information in '%s'!\n", argv[1]);
+		return (1);
+	}
 
 	dialog = gtk_dialog_new ();
 	gtk_widget_show (dialog);

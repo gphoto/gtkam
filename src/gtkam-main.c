@@ -45,6 +45,7 @@
 #include <gtk/gtkcheckbutton.h>
 #include <gtk/gtkfilesel.h>
 #include <gtk/gtktreeselection.h>
+#include <gtk/gtktreestore.h>
 #include <gtk/gtkstock.h>
 #include <gtk/gtkimage.h>
 
@@ -319,6 +320,18 @@ action_add_camera (gpointer callback_data, guint callback_action,
 }
 
 static void
+action_rescan (gpointer callback_data, guint callback_action,
+		GtkWidget *widget)
+{
+	GtkamMain *m = GTKAM_MAIN (callback_data);
+
+	gtk_tree_store_clear (GTK_TREE_STORE (
+			gtk_tree_view_get_model (GTK_TREE_VIEW (m->priv->tree))));
+	
+	gtkam_tree_load (GTKAM_TREE (m->priv->tree));
+}
+
+static void
 action_view_thumbnails (gpointer callback_data, guint callback_action,
 			GtkWidget *widget)
 {
@@ -401,6 +414,7 @@ on_tree_new_error (GtkamTree *tree, GtkamTreeErrorData *e, GtkamMain *m)
 	GtkWidget *d;
 
 	d = gtkam_error_new (e->result, e->context, NULL, "%s", e->msg);
+
 	gtk_window_set_transient_for (GTK_WINDOW (d), GTK_WINDOW (m));
 	gtk_widget_show (d);
 }
@@ -594,6 +608,14 @@ on_zoom_in_clicked (GtkButton *button, GtkamMain *m)
 	gtkam_list_zoom_in (GTKAM_LIST (m->priv->list));
 }
 
+static void
+on_rescan_clicked (GtkButton *button, GtkamMain *m)
+{
+	gtk_tree_store_clear (GTK_TREE_STORE (
+			gtk_tree_view_get_model (GTK_TREE_VIEW (m->priv->tree))));
+	gtkam_tree_load (GTKAM_TREE (m->priv->tree));
+}
+
 static GtkItemFactoryEntry mi[] =
 {
 	{N_("/_File"), NULL, 0, 0, "<Branch>"},
@@ -626,6 +648,7 @@ static GtkItemFactoryEntry mi[] =
 	{N_("/Select/_None"), NULL, action_select_none, 0, NULL},
 	{N_("/_Camera"), NULL, 0, 0, "<Branch>"},
 	{N_("/Camera/_Add Camera..."), NULL, action_add_camera, 0, NULL},
+	{N_("/Camera/_Rescan"), NULL, action_rescan, 0, "<StockItem>", GTK_STOCK_REFRESH},
 	{N_("/_Help"), NULL, 0, 0, "<Branch>"},
 #ifdef HAVE_GNOME
 	{N_("/Help/_Contents"), NULL, action_help, 0, "<StockItem>",
@@ -697,6 +720,8 @@ gtkam_main_new (void)
 	gtk_toolbar_append_widget (GTK_TOOLBAR (t), i, NULL, NULL);
 	g_signal_connect (G_OBJECT (i), "toggled",
 			  G_CALLBACK (on_thumbnails_toggled), m);
+	gtk_toolbar_insert_stock (GTK_TOOLBAR (t), GTK_STOCK_REFRESH,
+		NULL, NULL, G_CALLBACK (on_rescan_clicked), m, -1);
 	gtk_toolbar_insert_stock (GTK_TOOLBAR (t), GTK_STOCK_ZOOM_IN,
 		NULL, NULL, G_CALLBACK (on_zoom_in_clicked), m, -1);
 	gtk_toolbar_insert_stock (GTK_TOOLBAR (t), GTK_STOCK_ZOOM_100,

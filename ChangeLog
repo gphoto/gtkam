@@ -1,4 +1,9 @@
-2004-02-31  Andrew Burton <adburton@users.sourceforge.net>
+2004-02-02  Andrew Burton <adburton@users.sourceforge.net>
+
+	*src/gtkam-main.c: Add 'Refresh' button (fixes SF feature
+	request 846947)
+
+2004-02-01  Andrew Burton <adburton@users.sourceforge.net>
 
 	GUI improvements to match Gnome HIG:
 

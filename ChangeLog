@@ -1,3 +1,12 @@
+2004-02-31  Andrew Burton <adburton@users.sourceforge.net>
+
+	GUI improvements to match Gnome HIG:
+
+	* src/gtkam-save.c
+	* src/gtkam-error.c
+	* src/gtkam-error.h
+	* src/gtkam-port.c
+
 2004-01-26  Andrew Burton <adburton@users.sourceforge.net>
 
 	* src/gtkam-save.c: Applied patch from Nils Rennebarth

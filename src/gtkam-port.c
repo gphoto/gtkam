@@ -141,11 +141,11 @@ on_ok_clicked (GtkButton *button, GtkamPort *port)
 	path = gtk_entry_get_text (GTK_ENTRY (port->priv->entry_path));
 	index = gp_port_info_list_lookup_path (list, path);
 	gp_port_info_list_free (list);
+
 	if (index < 0) {
-		msg = g_strdup_printf (_("Could not find an io-driver for "
-			"port '%s' ('%s')."), path,
-			gp_result_as_string (index));
-		d = gtkam_close_new (msg);
+		msg = g_strdup_printf (_("The port '%s' could not be found. Please make sure "
+		        "that the port exists."), path);
+		d = gtkam_error_new (index, NULL, GTK_WIDGET (port), msg);
 		g_free (msg);
 		gtk_window_set_transient_for (GTK_WINDOW (d),
 					      GTK_WINDOW (port));
@@ -177,8 +177,8 @@ gtkam_port_new (GtkWidget *opt_window)
 	gtk_container_set_border_width (GTK_CONTAINER (table), 10);
 	gtk_table_set_col_spacings (GTK_TABLE (table), 5);
 
-	label = gtk_label_new (_("Please specify the (extended) path to "
-		"the port you would like to use:"));
+	label = gtk_label_new (_("Please specify the path to "
+		"the port your camera is attached to:"));
 	gtk_widget_show (label);
 	gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
 	gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
@@ -189,17 +189,17 @@ gtkam_port_new (GtkWidget *opt_window)
 	gtk_table_attach_defaults (GTK_TABLE (table), entry, 1, 2, 1, 2);
 	port->priv->entry_path = entry;
 
-	button = gtk_button_new_from_stock (GTK_STOCK_OK);
-	gtk_widget_show (button);
-	g_signal_connect (GTK_OBJECT (button), "clicked",
-			    GTK_SIGNAL_FUNC (on_ok_clicked), port);
-	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (port)->action_area),
-			   button);
-
 	button = gtk_button_new_from_stock (GTK_STOCK_CANCEL);
 	gtk_widget_show (button);
 	g_signal_connect (GTK_OBJECT (button), "clicked",
 			    GTK_SIGNAL_FUNC (on_cancel_clicked), port);
+	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (port)->action_area),
+			   button);
+
+	button = gtk_button_new_from_stock (GTK_STOCK_OK);
+	gtk_widget_show (button);
+	g_signal_connect (GTK_OBJECT (button), "clicked",
+			    GTK_SIGNAL_FUNC (on_ok_clicked), port);
 	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (port)->action_area),
 			   button);
 

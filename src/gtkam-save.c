@@ -257,6 +257,9 @@ create_full_filename (const gchar *filename, CameraFileType type)
 	case GP_FILE_TYPE_AUDIO:
 		full_filename = g_strdup_printf ("audio_%s", filename);
 		break;
+	case GP_FILE_TYPE_EXIF:
+		full_filename = g_strdup_printf ("exif_%s", filename);
+		break;
 	default:
 		full_filename = g_strdup (filename);
 		break;
@@ -276,17 +279,16 @@ concat_dir_and_file (const gchar *dirname, const gchar *filename)
 		full_path = g_strdup_printf ("%s%s", dirname, filename);
 	else
 		full_path = g_strdup_printf ("%s/%s", dirname, filename);
-
 	return (full_path);
 }
 
 static void
 save_file (GtkamSave *save, CameraFile *file, guint n)
 {
-	gchar *full_path, *full_filename, *fsel_filename, *dirname, *msg, *number_filename;
+	gchar *full_path, *full_filename, *dirname, *msg, *number_filename;
 	const char *filename, *mime_type;
 	CameraFileType type;
-	const gchar *fsel_path, *prefix, *suffix, *progname;
+	const gchar *fsel_filename, *fsel_path, *prefix, *suffix, *progname;
 	GtkWidget *dialog;
 	int result;
 
@@ -316,7 +318,6 @@ save_file (GtkamSave *save, CameraFile *file, guint n)
 							 full_filename);
 			g_free (dirname);
 			g_free (full_filename);
-			g_free (fsel_filename);
 		
 		} else {
 
@@ -340,9 +341,9 @@ save_file (GtkamSave *save, CameraFile *file, guint n)
 
 	/* Check for existing file */
 	if (!save->priv->quiet && file_exists (full_path)) {
-		msg = g_strdup_printf (_("'%s' already exists."),
+		msg = g_strdup_printf (_("The file '%s' already exists."),
 				       full_path);
-		dialog = gtkam_close_new (msg);
+		dialog = gtkam_error_new (0, NULL, GTK_WIDGET (save), msg);
 		gtk_window_set_transient_for (GTK_WINDOW (dialog),
 					      save->priv->main_window);
 		gtk_widget_show (dialog);

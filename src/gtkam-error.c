@@ -26,17 +26,11 @@
 #include <string.h>
 
 #include <gtk/gtkimage.h>
-#include <gtk/gtktextview.h>
-#include <gtk/gtkmenuitem.h>
-#include <gtk/gtkoptionmenu.h>
-#include <gtk/gtkmenu.h>
 #include <gtk/gtklabel.h>
 #include <gtk/gtkvbox.h>
-#include <gtk/gtkvscrollbar.h>
 #include <gtk/gtkhbox.h>
 #include <gtk/gtksignal.h>
 #include <gtk/gtkbutton.h>
-#include <gtk/gtktogglebutton.h>
 #include <gtk/gtkstock.h>
 
 #include <gphoto2/gphoto2-result.h>
@@ -115,21 +109,9 @@ gtkam_error_get_type (void)
 }
 
 static void
-on_error_close_clicked (GtkButton *button, GtkamError *error)
+on_error_ok_clicked (GtkButton *button, GtkamError *error)
 {
 	gtk_object_destroy (GTK_OBJECT (error));
-}
-
-static void
-on_debug_toggled (GtkToggleButton *toggle, GtkamError *error)
-{
-	if (toggle->active && !GTK_WIDGET_VISIBLE (error->priv->hbox))
-		gtk_widget_show (error->priv->hbox);
-
-	if (!toggle->active && GTK_WIDGET_VISIBLE (error->priv->hbox))
-		gtk_widget_hide (error->priv->hbox);
-
-	gtk_window_resize (GTK_WINDOW (error), 1, 1);
 }
 
 GtkWidget *
@@ -137,77 +119,55 @@ gtkam_error_new (int result, GtkamContext *context, GtkWidget *opt_window,
 		 const gchar *format, ...)
 {
 	GtkamError *error;
-	GtkWidget *text, *vscrollbar, *button, *label, *hbox, *vbox, *image;
+	GtkWidget *button, *label, *hbox,  *image;
 	gchar *msg;
 	va_list args;
-	unsigned int i;
-	GtkTextBuffer *buf;
 
 	g_return_val_if_fail (result < 0, NULL);
 
 	error = g_object_new (GTKAM_TYPE_ERROR, NULL);
-	gtk_window_set_title (GTK_WINDOW (error),
-			      gp_result_as_string (result));
 
-	hbox = gtk_hbox_new (FALSE, 10);
+	gtk_dialog_set_has_separator (GTK_DIALOG (error), FALSE);
+	gtk_window_set_resizable (GTK_WINDOW (error), FALSE);
+	gtk_window_set_title (GTK_WINDOW (error), "");
+	gtk_container_set_border_width (GTK_CONTAINER (error), 6);
+
+	hbox = gtk_hbox_new (FALSE, 0);
 	gtk_widget_show (hbox);
-	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (error)->vbox), hbox,
-			    TRUE, TRUE, 0);
-	gtk_container_set_border_width (GTK_CONTAINER (hbox), 10);
+	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (error)->vbox), hbox, TRUE, TRUE, 0);
+	gtk_container_set_border_width (GTK_CONTAINER (hbox), 6);
+	gtk_box_set_spacing (GTK_BOX (hbox), 12);
 
-	image = gtk_image_new_from_file (IMAGE_DIR "/gtkam-camera.png");
+	image = gtk_image_new_from_stock (GTK_STOCK_DIALOG_ERROR, GTK_ICON_SIZE_DIALOG);
 	gtk_widget_show (image);
-	gtk_box_pack_start (GTK_BOX (hbox), image, FALSE, FALSE, 0);
-
-	vbox = gtk_vbox_new (FALSE, 0);
-	gtk_widget_show (vbox);
-	gtk_box_pack_start (GTK_BOX (hbox), vbox, TRUE, TRUE, 0);
+	gtk_box_pack_start (GTK_BOX (hbox), image, TRUE, TRUE, 0);
 
 	va_start (args, format);
 	msg = g_strdup_vprintf (format, args);
 	va_end (args);
-	label = gtk_label_new (msg);
+	if ((context) && (context->errors->pdata))
+		label = gtk_label_new (g_strdup_printf("%s%s%s%s",
+		                                       "<span weight=\"bold\" size=\"larger\">",
+	                                           msg,
+	                                           "</span>\n\n", 
+	                                           context->errors->pdata[0]));
+	else
+		label = gtk_label_new (g_strdup_printf("%s%s%s",
+		                                       "<span weight=\"bold\" size=\"larger\">",
+		                                       msg,
+		                                       "</span>"));
 	g_free (msg);
+
 	gtk_widget_show (label);
 	gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
-	gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
+	gtk_label_set_use_markup (GTK_LABEL (label), TRUE);
+	gtk_label_set_selectable (GTK_LABEL (label), TRUE);
+	gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
 
-	error->priv->hbox = gtk_hbox_new (FALSE, 0);
-	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (error)->vbox),
-			    error->priv->hbox, TRUE, TRUE, 0);
-
-	buf = gtk_text_buffer_new (NULL);
-	for (i = 0; context && (i < context->errors->len); i++) {
-		gtk_text_buffer_insert_at_cursor (buf,
-			context->errors->pdata[i],
-			strlen (context->errors->pdata[i]));
-		gtk_text_buffer_insert_at_cursor (buf, "\n", 1);
-	}
-	text = gtk_text_view_new_with_buffer (buf);
-	gtk_widget_show (text);
-	gtk_text_view_set_cursor_visible (GTK_TEXT_VIEW (text), FALSE);
-	gtk_text_view_set_editable (GTK_TEXT_VIEW (text), FALSE);
-	gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (text), GTK_WRAP_WORD);
-	gtk_box_pack_start (GTK_BOX (error->priv->hbox), text, TRUE, TRUE, 0);
-
-	vscrollbar = gtk_vscrollbar_new (GTK_TEXT_VIEW (text)->vadjustment);
-	gtk_widget_show (vscrollbar);
-	gtk_box_pack_end (GTK_BOX (error->priv->hbox),
-			  vscrollbar, FALSE, FALSE, 0);
-
-	button = gtk_toggle_button_new_with_label (
-					_("More"));
-	if (context && context->errors->len)
-		gtk_widget_show (button);
-	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (error)->action_area),
-			   button);
-	g_signal_connect (GTK_OBJECT (button), "toggled",
-			    GTK_SIGNAL_FUNC (on_debug_toggled), error); 
-
-	button = gtk_button_new_from_stock (GTK_STOCK_CLOSE);
+	button = gtk_button_new_from_stock (GTK_STOCK_OK);
 	gtk_widget_show (button);
 	g_signal_connect (GTK_OBJECT (button), "clicked",
-			    GTK_SIGNAL_FUNC (on_error_close_clicked), error);
+			    GTK_SIGNAL_FUNC (on_error_ok_clicked), error);
 	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (error)->action_area),
 			   button);
 	gtk_widget_grab_focus (button);

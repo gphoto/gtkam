@@ -1,3 +1,7 @@
+2004-04-30  Marcus Meissner  <marcus@jet.franken.de>
+
+	* src/gtkam-config.c: Fixed strict aliasing issues in code.
+
 2004-04-27  Andrew Burton <adburton@users.sourceforge.net>
 
 	* configure.in, help/C/gtkam.xml: Update version number

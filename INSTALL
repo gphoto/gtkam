@@ -1,21 +1,65 @@
 The installation procedure should be quite simple:
 
-0) You must have the gphoto2 libraries installed.
+===============================
+Step 0: Preparing configuration
+===============================
 
-1) ./configure --prefix=/usr --sysconfdir=/etc
+If you got your copy of libgphoto2 packaged as a .tar.gz or .tar.bz2 tarball, 
+SKIP THIS STEP. 
+
+You must have libgphoto2 installed. If you have compiled libgphoto2, then 
+you already have the required tools for compiling gtkam.
+
+If you got libgphoto2 from CVS, then you will have to prepare for step 1,
+the configuration of the sources.
+
+For that, we supply you with a script called 'autogen.sh'. It calls
+several tools in a certain sequence. For autogen.sh to work, you
+require the following tools
+
+	automake
+	autoconf
+	gettext
+	libtool
+
+in versions compatible to each other and to libgphoto2. Most
+combinations on current GNU/Linux systems work, whereas BSD systems
+tend to have some compatibility problems.
+
+=============================
+Step 1: Configure the sources
+=============================
+
+./configure --prefix=/usr --sysconfdir=/etc
 	or any other options (try --help)
 
-   If you have difficulties building on FreeBSD, try --disable-nls
-   or install the gettext port (cd /usr/ports/devel/gettext && make install).
+If you have difficulties building on FreeBSD, try --disable-nls
+or install the gettext port (cd /usr/ports/devel/gettext && make install).
 
-2) make install
+===========================
+Step 2: Compile the program
+===========================
 
-   This installs the software and documentation into the proper
-   directories on your system. If you want to use your system's
-   package system instead, follow a) for RPMs.
+To compile and install the program in one step, run
+
+make install
+
+This installs the software and documentation into the proper
+directories on your system. If you want to use your system's
+package system instead, follow a) for RPMs.
 
    a) make rpm
 
       If you're running a RPM based system (e.g. Redhat Linux or SuSE
       Linux), you can build RPM packages and install these. The
       packages will be located in packaging/rpm/RPMS/.
+
+====================================================
+Step 4: Installation is finished - now what do I do?
+====================================================
+
+At a command line, run 
+
+gtkam
+
+Enjoy!

@@ -9,7 +9,6 @@ INCLUDES =						\
 	$(EXIF_CFLAGS)					\
 	$(GTK_CFLAGS)					\
 	$(GIMP_CFLAGS)					\
-	$(GDK_PIXBUF_CFLAGS)				\
 	$(GP_CFLAGS)
 
 noinst_LIBRARIES = libgtkam.a
@@ -48,7 +47,7 @@ gtkam_SOURCES = 				\
 	main.c 					\
 	gtkiconlist.c gtkiconlist.h 		\
 	gtkitementry.c gtkitementry.h
-gtkam_LDADD = libgtkam.a $(EXIF_LIBS) $(GTK_LIBS) $(GP_LIBS) $(GDK_PIXBUF_LIBS)
+gtkam_LDADD = libgtkam.a $(EXIF_LIBS) $(GTK_LIBS) $(GP_LIBS)
 
 if HAVE_GIMP
 libexecdir = $(GIMP_PLUGIN_DIR)/plug-ins
@@ -58,6 +57,5 @@ gtkam_gimp_LDADD =		\
 	$(GIMP_LIBS)		\
 	$(EXIF_LIBS)		\
 	$(GP_LIBS)		\
-	$(GDK_PIXBUF_LIBS)	\
 	libgtkam.a
 endif

@@ -1,6 +1,13 @@
 				     GTKam
 				     -----
 
+LATEST NEWS: I am currently porting gtkam to gtk+-2.0. Therefore, this package
+is very likely to NOT compile. Please check out the gtkam-gtk-1 branch:
+
+cvs update -r gtkam
+
+
+
 Hi!
 
 Thank you for using GTKam and therefore supporting our efforts in providing
@@ -10,7 +17,7 @@ Requirements
 ------------
 
 GTKam is a GTK-frontend to gphoto2. Therefore, you need at least those two
-libraries. In addition, gdk-pixbuf is needed.
+libraries.
 
 If you would like to access EXIF information, libexif(-gtk) must be installed
 prior compilation of GTKam. Get libexif and libexif-gtk

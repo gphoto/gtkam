@@ -13,12 +13,16 @@ AC_HEADER_STDC
 CFLAGS="$CFLAGS -g -Wall -Wmissing-declarations -Wmissing-prototypes"
 LDFLAGS="$LDFLAGS -g -Wall"
 
-AM_PATH_GTK(1.2.0, ,
-            AC_MSG_ERROR(Cannot find GTK: Is gtk-config in path?))
-
 dnl Add the languages which your application supports here.
 ALL_LINGUAS="da de es fr hu it ja no pt_BR pt_PT ru sl sv uk"
 AM_GNU_GETTEXT
+
+dnl ---------------------------------------------------------------------------
+dnl gtk
+dnl ---------------------------------------------------------------------------
+PKG_CHECK_MODULES(GTK, gtk+-2.0)
+AC_SUBST(GTK_CFLAGS)
+AC_SUBST(GTK_LIBS)
 
 dnl ---------------------------------------------------------------------------
 dnl gphoto2
@@ -42,25 +46,6 @@ else
 fi
 AC_SUBST(GP_CFLAGS)
 AC_SUBST(GP_LIBS)
-
-dnl ---------------------------------------------------------------------------
-dnl gdk-pixbuf
-dnl ---------------------------------------------------------------------------
-dnl Check for gdk-pixbuf configuration
-AC_PATH_PROG(GDK_PIXBUF_CONFIG,gdk-pixbuf-config)
-if test -n "${GDK_PIXBUF_CONFIG}"; then
-	GDK_PIXBUF_CFLAGS="`$GDK_PIXBUF_CONFIG --cflags`"
-	GDK_PIXBUF_LIBS="`$GDK_PIXBUF_CONFIG --libs`"
-else
-	AC_MSG_ERROR([
-***
-*** gdk-pixbuf (and headers) is required. Available from GNOME CVS.
-*** Check http://www.gnome.org for details
-***])
-fi
-AC_SUBST(GDK_PIXBUF_CFLAGS)
-AC_SUBST(GDK_PIXBUF_LIBS)
-
 
 dnl ---------------------------------------------------------------------------
 dnl GIMP plugin

@@ -97,6 +97,7 @@ enum {
 	NAME_COLUMN,
 	FOLDER_COLUMN,
 	CAMERA_COLUMN,
+	IS_EDITABLE_COLUMN,
 	NUM_COLUMNS
 };
 
@@ -629,6 +630,54 @@ on_drag_data_get (GtkWidget *widget, GdkDragContext *context,
 	g_message ("Fixme: on_drag_data_get");
 }
 
+static void
+on_edited (GtkCellRendererText *cell, const gchar *path,
+	   const gchar *new_text, GtkamList *list)
+{
+	GtkTreeIter iter;
+	gchar *folder, *name;
+	GtkamCamera *camera;
+	CameraFileInfo info;
+	GtkWidget *s, *d;
+	int r;
+
+	g_return_if_fail (GTKAM_IS_LIST (list));
+
+	g_return_if_fail (gtk_tree_model_get_iter_from_string (
+			GTK_TREE_MODEL (list->priv->store), &iter, path));
+	camera = gtkam_list_get_camera_from_iter (list, &iter);
+	folder = gtkam_list_get_folder_from_iter (list, &iter);
+	name   = gtkam_list_get_name_from_iter (list, &iter);
+
+	/* Name really changed? */
+	if (!strcmp (name, new_text)) {
+		g_free (name);
+		g_free (folder);
+		return;
+	}
+
+	s = gtkam_status_new (_("Changing name of '%s' to '%s'..."),
+			      name, new_text);
+	g_signal_emit (G_OBJECT (list), signals[NEW_STATUS], 0, s);
+	memset (&info, 0, sizeof (CameraFileInfo));
+	info.file.fields = GP_FILE_INFO_NAME;
+	strncpy (info.file.name, new_text, sizeof (info.file.name) - 1);
+	r = gp_camera_file_set_info (camera->camera, folder, name, info,
+				     GTKAM_STATUS (s)->context->context);
+	if (r < 0) {
+		d = gtkam_error_new (r, GTKAM_STATUS (s)->context, NULL, 
+			_("Could not change the name of '%s' to '%s'."),
+			name, new_text);
+		g_signal_emit (G_OBJECT (list), signals[NEW_DIALOG], 0, d);
+		g_object_unref (G_OBJECT (d));
+	} else
+		gtk_list_store_set (list->priv->store,
+				    &iter, NAME_COLUMN, new_text, -1);
+	gtk_object_destroy (GTK_OBJECT (s));
+	g_free (folder);
+	g_free (name);
+}
+
 static GtkItemFactoryEntry mi[] =
 {
 	{"/_Info", NULL, action_info, 0, NULL},
@@ -651,6 +700,7 @@ gtkam_list_new (void)
 	GtkTreeSelection *selection;
 	GtkCellRenderer *renderer;
 	GtkAccelGroup *ag;
+	GtkTreeViewColumn *col;
 
         list = g_object_new (GTKAM_TYPE_LIST, NULL);
 	gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (list), FALSE);
@@ -677,7 +727,7 @@ gtkam_list_new (void)
 
 	list->priv->store = gtk_list_store_new (NUM_COLUMNS,
 				GDK_TYPE_PIXBUF, G_TYPE_STRING, G_TYPE_STRING,
-				GTKAM_TYPE_CAMERA);
+				GTKAM_TYPE_CAMERA, G_TYPE_BOOLEAN);
 	gtk_tree_view_set_model (GTK_TREE_VIEW (list),
 				 GTK_TREE_MODEL (list->priv->store));
 
@@ -689,9 +739,14 @@ gtkam_list_new (void)
 				     list->priv->col_previews);
 
 	/* Column for file names */
+	col = gtk_tree_view_column_new ();
+	gtk_tree_view_append_column (GTK_TREE_VIEW (list), col);
 	renderer = gtk_cell_renderer_text_new ();
-	gtk_tree_view_insert_column_with_attributes (GTK_TREE_VIEW (list),
-			-1, _("Name"), renderer, "text", NAME_COLUMN, NULL);
+	gtk_tree_view_column_pack_start (col, renderer, TRUE);
+	gtk_tree_view_column_set_attributes (col, renderer, "text",
+			NAME_COLUMN, "editable", IS_EDITABLE_COLUMN, NULL);
+	g_signal_connect (G_OBJECT (renderer), "edited",
+			  G_CALLBACK (on_edited), list);
 
         return (GTK_WIDGET (list));
 }
@@ -738,7 +793,7 @@ gtkam_list_add_folder (GtkamList *list, GtkamCamera *camera,
 		gtk_list_store_append (list->priv->store, &iter);
 		gtk_list_store_set (list->priv->store, &iter,
 			NAME_COLUMN, name, FOLDER_COLUMN, folder,
-			CAMERA_COLUMN, camera, -1);
+			CAMERA_COLUMN, camera, IS_EDITABLE_COLUMN, TRUE, -1);
 	}
 
 	if (camera->multi)
@@ -1044,6 +1099,6 @@ gtkam_list_add_file (GtkamList *list, GtkamCamera *camera,
 
 	gtk_list_store_append (list->priv->store, &iter);
 	gtk_list_store_set (list->priv->store, &iter,
-			    NAME_COLUMN, name, FOLDER_COLUMN, folder,
-			    CAMERA_COLUMN, camera, -1); 
+		NAME_COLUMN, name, FOLDER_COLUMN, folder,
+		CAMERA_COLUMN, camera, IS_EDITABLE_COLUMN, TRUE, -1); 
 }

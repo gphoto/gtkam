@@ -47,12 +47,14 @@
 #include <gtk/gtkhbox.h>
 #include <gtk/gtkframe.h>
 #include <gtk/gtkentry.h>
+#include <gtk/gtkwindow.h>
 
 #include <gphoto2/gphoto2-setting.h>
 
 #include "util.h"
 #include "gtkam-error.h"
 #include "gtkam-close.h"
+#include "gtkam-status.h"
 
 struct _GtkamSavePrivate
 {
@@ -64,11 +66,13 @@ struct _GtkamSavePrivate
 	GSList *filenames;
 
 	GtkToggleButton *toggle_preview, *toggle_normal, *toggle_raw,
-			*toggle_audio;
+			*toggle_audio, *toggle_exif;
 	GtkToggleButton *toggle_filename_camera;
 	GtkEntry *program, *prefix_entry;
 
 	gboolean quiet;
+
+	GtkWidget *status;
 };
 
 #define PARENT_TYPE GTK_TYPE_FILE_SELECTION
@@ -79,6 +83,11 @@ gtkam_save_destroy (GtkObject *object)
 {
 	GtkamSave *save = GTKAM_SAVE (object);
 	guint i;
+
+	if (save->priv->status) {
+		gtk_object_unref (GTK_OBJECT (save->priv->status));
+		save->priv->status = NULL;
+	}
 
 	if (save->priv->camera) {
 		gp_camera_unref (save->priv->camera);
@@ -300,7 +309,8 @@ save_file (GtkamSave *save, CameraFile *file, guint n)
 }
 
 static void
-get_file (GtkamSave *save, const gchar *filename, CameraFileType type, guint n)
+get_file (GtkamSave *save, const gchar *filename, CameraFileType type, guint n,
+	  GtkamStatus *s)
 {
 	int result;
 	GtkWidget *dialog;
@@ -309,23 +319,21 @@ get_file (GtkamSave *save, const gchar *filename, CameraFileType type, guint n)
 	gp_file_new (&file);
 	result = gp_camera_file_get (save->priv->camera,
 				     save->priv->path, filename, type, file,
-				     NULL);
+				     s->context->context);
 	if (save->priv->multi)
 		gp_camera_exit (save->priv->camera, NULL);
-	if (result < 0) {
-		switch (result) {
-		case GP_ERROR_CANCEL:
-			break;
-		default:
-			dialog = gtkam_error_new (result, NULL,
-				GTK_WIDGET (save),
-				_("Could not get '%s' from folder '%s'"),
-				filename, save->priv->path);
-			gtk_widget_show (dialog);
-		}
-	} else
+	switch (result) {
+	case GP_OK:
 		save_file (save, file, n);
-
+		break;
+	case GP_ERROR_CANCEL:
+		break;
+	default:
+		dialog = gtkam_error_new (result, s->context, GTK_WIDGET (save),
+			_("Could not get '%s' from folder '%s'"),
+			filename, save->priv->path);
+		gtk_widget_show (dialog);
+	}
 	gp_file_unref (file);
 }
 
@@ -334,10 +342,18 @@ on_ok_clicked (GtkButton *button, GtkamSave *save)
 {
 	guint i, count;
 	const gchar *filename;
+	GtkWidget *s;
+	unsigned int id;
 
 	gtk_widget_hide (GTK_WIDGET (save));
 
 	count = g_slist_length (save->priv->filenames);
+	s = gtkam_status_new (_("Downloading %i files..."), count);
+	gtk_widget_show (s);
+	gtk_box_pack_start (GTK_BOX (save->priv->status), s, FALSE, FALSE, 0);
+
+	id = gp_context_progress_start (GTKAM_STATUS (s)->context->context,
+		count, _("Downloading %i files..."), count);
 	for (i = 0; i < count; i++) {
 		filename = g_slist_nth_data (save->priv->filenames, i);
 
@@ -345,32 +361,42 @@ on_ok_clicked (GtkButton *button, GtkamSave *save)
 		if (!GTKAM_IS_SAVE (save))
 			return;
 
-		/* Normal */
 		if (save->priv->toggle_normal &&
 		    save->priv->toggle_normal->active)
-			get_file (save, filename, GP_FILE_TYPE_NORMAL, i + 1);
-
+			get_file (save, filename, GP_FILE_TYPE_NORMAL,
+				  i + 1, GTKAM_STATUS (s));
 		if (save->priv->toggle_preview &&
 		    save->priv->toggle_preview->active)
-			get_file (save, filename, GP_FILE_TYPE_PREVIEW, i + 1);
-
+			get_file (save, filename, GP_FILE_TYPE_PREVIEW,
+				  i + 1, GTKAM_STATUS (s));
 		if (save->priv->toggle_raw &&
 		    save->priv->toggle_raw->active)
-			get_file (save, filename, GP_FILE_TYPE_RAW, i + 1);
+			get_file (save, filename, GP_FILE_TYPE_RAW,
+				  i + 1, GTKAM_STATUS (s));
 		if (save->priv->toggle_audio &&
 		    save->priv->toggle_audio->active)
-			get_file (save, filename, GP_FILE_TYPE_AUDIO, i + 1);
+			get_file (save, filename, GP_FILE_TYPE_AUDIO,
+				  i + 1, GTKAM_STATUS (s));
+		if (save->priv->toggle_exif &&
+		    save->priv->toggle_exif->active)
+			get_file (save, filename, GP_FILE_TYPE_EXIF,
+				  i + 1, GTKAM_STATUS (s));
+
+		gp_context_progress_update (GTKAM_STATUS (s)->context->context,
+					   id, i + 1);
 	}
+	gp_context_progress_stop (GTKAM_STATUS (s)->context->context, id);
+	gtk_object_destroy (GTK_OBJECT (s));
 
 	gtk_object_destroy (GTK_OBJECT (save));
 }
 
 GtkWidget *
 gtkam_save_new (Camera *camera, gboolean multi, const gchar *path,
-		GSList *filenames, GtkWidget *opt_window)
+		GSList *filenames, GtkWidget *vbox)
 {
 	GtkamSave *save;
-	GtkWidget *hbox, *frame, *check, *label, *entry;
+	GtkWidget *hbox, *frame, *check, *label, *entry, *w;
 	GtkTooltips *tooltips;
 	GList *child;
 	guint i;
@@ -380,6 +406,7 @@ gtkam_save_new (Camera *camera, gboolean multi, const gchar *path,
 	g_return_val_if_fail (camera != NULL, NULL);
 	g_return_val_if_fail (path != NULL, NULL);
 	g_return_val_if_fail (filenames != NULL, NULL);
+	g_return_val_if_fail (GTK_IS_VBOX (vbox), NULL);
 
 	save = gtk_type_new (GTKAM_TYPE_SAVE);
 
@@ -457,6 +484,15 @@ gtkam_save_new (Camera *camera, gboolean multi, const gchar *path,
 		save->priv->toggle_preview = GTK_TOGGLE_BUTTON (check);
 	}
 
+	if (a.file_operations & GP_FILE_OPERATION_EXIF) {
+		check = gtk_check_button_new_with_label (_("Save EXIF data"));
+		gtk_widget_show (check);
+		gtk_box_pack_start (GTK_BOX (hbox), check, TRUE, TRUE, 0);
+		gtk_tooltips_set_tip (tooltips, check, _("EXIF data will be "
+			"saved if this is checked"), NULL);
+		save->priv->toggle_exif = GTK_TOGGLE_BUTTON (check);
+	}
+
 	hbox = gtk_hbox_new (FALSE, 0);
 	gtk_widget_show (hbox);
 	gtk_box_pack_start (GTK_BOX (GTK_FILE_SELECTION (save)->main_vbox),
@@ -487,6 +523,11 @@ gtkam_save_new (Camera *camera, gboolean multi, const gchar *path,
 	save->priv->toggle_filename_camera = GTK_TOGGLE_BUTTON (check);
 	gtk_toggle_button_set_active (save->priv->toggle_filename_camera, TRUE);
 
+	w = gtk_widget_get_ancestor (vbox, GTK_TYPE_WINDOW);
+	gtk_window_set_transient_for (GTK_WINDOW (save), GTK_WINDOW (w));
+	save->priv->status = vbox;
+	gtk_object_ref (GTK_OBJECT (vbox));
+
 	/* If we don't save multiple files, we are done */
 	if (g_slist_length (filenames) <= 1)
 		return (GTK_WIDGET (save));
@@ -513,10 +554,6 @@ gtkam_save_new (Camera *camera, gboolean multi, const gchar *path,
 	gtk_widget_set_sensitive (entry, FALSE);
 
 	gtk_widget_set_sensitive (save->priv->file_list, FALSE);
-
-	if (opt_window)
-		gtk_window_set_transient_for (GTK_WINDOW (save),
-					      GTK_WINDOW (opt_window));
 
 	return (GTK_WIDGET (save));
 }

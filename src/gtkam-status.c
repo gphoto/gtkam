@@ -161,7 +161,7 @@ start_func (GPContext *c, float target, const char *format,
 
         progress = gtk_progress_bar_new ();
         gtk_widget_show (progress);
-        gtk_box_pack_end (GTK_BOX (status), progress, FALSE, FALSE, 0);
+        gtk_box_pack_start (GTK_BOX (status), progress, FALSE, FALSE, 0);
         g_ptr_array_add (status->priv->progress, progress);
         g_array_append_val (status->priv->target, target);
 
@@ -181,12 +181,19 @@ update_func (GPContext *c, unsigned int id, float current, void *data)
 {
         GtkamStatus *status = GTKAM_STATUS (data);
         GtkProgress *progress;
+	gfloat target;
 
         g_return_if_fail (id < status->priv->progress->len);
 
+	target = g_array_index (status->priv->target, gfloat, id);
+	if (current > target) {
+		g_warning ("ID %i: target %f <-> current %f", id,
+			   target, current);
+		return;
+	}
+
         progress = status->priv->progress->pdata[id];
-        gtk_progress_set_percentage (progress,
-                current / g_array_index (status->priv->target, gfloat, id));
+        gtk_progress_set_percentage (progress, current / target);
 
         while (gtk_events_pending ())
                 gtk_main_iteration ();

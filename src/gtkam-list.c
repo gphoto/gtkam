@@ -270,13 +270,12 @@ on_save_activate (GtkMenuItem *menu_item, PopupData *data)
 {
 	GtkamList *list = data->list;
 	GtkIconListItem *item = data->item;
-	GtkWidget *save, *w;
+	GtkWidget *save;
 	GSList *files;
 
-	w = gtk_widget_get_ancestor (GTK_WIDGET (list), GTK_TYPE_WINDOW);
 	files = g_slist_append (NULL, item->label);
 	save = gtkam_save_new (list->priv->camera, list->priv->multi,
-			       list->path, files, w);
+			       list->path, files, list->priv->status);
 	g_slist_free (files);
 	gtk_widget_show (save);
 }
@@ -665,7 +664,7 @@ gtkam_list_save_selected (GtkamList *list)
 {
 	GtkIconListItem *item;
 	GSList *filenames = NULL;
-	GtkWidget *save, *w;
+	GtkWidget *save;
 	guint i;
 
 	g_return_if_fail (GTKAM_IS_LIST (list));
@@ -679,9 +678,8 @@ gtkam_list_save_selected (GtkamList *list)
 				gtk_entry_get_text (GTK_ENTRY (item->entry)));
 	}
 
-	w = gtk_widget_get_ancestor (GTK_WIDGET (list), GTK_TYPE_WINDOW);
 	save = gtkam_save_new (list->priv->camera, list->priv->multi, 
-			       list->path, filenames, w);
+			       list->path, filenames, list->priv->status);
 	g_slist_free (filenames);
 	gtk_widget_show (save);
 }

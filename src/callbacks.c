@@ -38,7 +38,7 @@ gboolean get_thumbnail (GtkWidget *widget, const char *name, GtkIconListItem *it
 	/* Get the thumbnail */
 	gp_file_new(&f);
 	folder = current_folder();
-	if (gp_camera_file_get_preview(gp_gtk_camera, folder, name, f) == GP_OK) {
+	if (gp_camera_file_get(gp_gtk_camera, folder, name, GP_FILE_TYPE_PREVIEW, f) == GP_OK) {
 		gp_file_get_data_and_size (f, &data, &size);
 		gdk_image_new_from_data((char*)data,size,1,&pixmap,&bitmap);
 		gtk_pixmap_set(GTK_PIXMAP(item->pixmap), pixmap, bitmap);
@@ -320,8 +320,8 @@ void save_selected_photos() {
 			frontend_message(gp_gtk_camera, msg);
 			gp_file_new(&f);
 			folder = current_folder();
-			if (gp_camera_file_get_file(gp_gtk_camera, folder,
-                                               gtk_object_get_data(GTK_OBJECT(item->pixmap),"name"), f) < 0) {
+			if (gp_camera_file_get(gp_gtk_camera, folder,
+                                               gtk_object_get_data(GTK_OBJECT(item->pixmap),"name"), GP_FILE_TYPE_NORMAL, f) < 0) {
                             sprintf(fname, "An error occurred when getting %s",
                                     (char*)gtk_object_get_data(GTK_OBJECT(item->pixmap),"name"));
                             frontend_message(gp_gtk_camera, fname);
@@ -337,7 +337,7 @@ void save_selected_photos() {
                                 if (num == 1) {
                                     strcpy(fname, path);
                                 } else {
-				    gp_file_get_type (f, &type);
+				    gp_file_get_mime_type (f, &type);
                                     slash = strrchr(type, '/');
                                     slash++;
                                     if (prefix) {
@@ -381,8 +381,8 @@ void save_selected_photos() {
 			frontend_status(gp_gtk_camera, msg);
 			gp_file_new(&f);
 			folder = current_folder();
-			gp_camera_file_get_preview(gp_gtk_camera, folder,
-			   gtk_object_get_data(GTK_OBJECT(item->pixmap), "name"), f);
+			gp_camera_file_get(gp_gtk_camera, folder,
+			   gtk_object_get_data(GTK_OBJECT(item->pixmap), "name"), GP_FILE_TYPE_PREVIEW, f);
 			/* determine the name to use */
 			if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(use_camera_filename))) {
 				slash = strrchr(path, '/');
@@ -923,8 +923,8 @@ void camera_index () {
 			/* Get the thumbnails */
 			gp_file_new(&f);
 			folder = current_folder();
-			if (gp_camera_file_get_preview(gp_gtk_camera, 
-			    folder, name, f) == GP_OK) {
+			if (gp_camera_file_get(gp_gtk_camera, 
+			    folder, name, GP_FILE_TYPE_PREVIEW, f) == GP_OK) {
 				gp_file_get_data_and_size (f, &data, &size);
 				gdk_image_new_from_data((char*)data,size,1,&pixmap,&bitmap);
 				item = gtk_icon_list_add_from_data(GTK_ICON_LIST(icon_list),

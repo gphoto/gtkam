@@ -97,7 +97,6 @@ on_camera_selected (GtkamChooser *chooser, Camera *camera, Camera **gimp_camera)
 {
 	*gimp_camera = camera;
 	gp_camera_ref (camera);
-	gtk_main_quit ();
 }
 
 typedef struct {

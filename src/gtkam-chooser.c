@@ -214,9 +214,9 @@ gtkam_chooser_get_camera (GtkamChooser *chooser)
 	 * Initialize the camera to check if it is really there. Exit
 	 * afterwards because other applications could need the camera, too.
 	 */
-	r = gp_camera_init (camera);
+	r = gp_camera_init (camera, NULL);
 	if (multi)
-		gp_camera_exit (camera);
+		gp_camera_exit (camera, NULL);
 	if (r < 0) {
 //		g_free (port_path);
 		dialog = gtkam_error_new (_("Could not initialize camera"),
@@ -389,7 +389,7 @@ on_detect_clicked (GtkButton *button, GtkamChooser *chooser)
 	const char *name;
 
 	result = gp_abilities_list_detect (chooser->priv->al,
-					   chooser->priv->il, &list);
+					   chooser->priv->il, &list, NULL);
 	if (result < 0) {
 		dialog = gtkam_error_new (_("Could not detect any cameras"),
 					  result, NULL, GTK_WIDGET (chooser));
@@ -522,7 +522,7 @@ gtkam_chooser_new (void)
 	chooser = gtk_type_new (GTKAM_TYPE_CHOOSER);
 
 	gp_abilities_list_new (&(chooser->priv->al));
-	gp_abilities_list_load (chooser->priv->al);
+	gp_abilities_list_load (chooser->priv->al, NULL);
 
 	gp_port_info_list_new (&(chooser->priv->il));
 	gp_port_info_list_load (chooser->priv->il);

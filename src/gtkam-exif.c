@@ -138,7 +138,9 @@ gtkam_exif_new (Camera *camera, gboolean multi,
 	/* Get exif data */
 	gp_file_new (&cfile);
 	result = gp_camera_file_get (camera, folder, file, GP_FILE_TYPE_EXIF,
-				     cfile);
+				     cfile, NULL);
+	if (multi)
+		gp_camera_exit (camera, NULL);
 	if (result < 0) {
 		gp_file_unref (cfile);
 		msg = g_strdup_printf (_("Could not get exif information for "

@@ -176,9 +176,9 @@ delete_all (GtkamDelete *delete)
 	const char *name;
 
 	r1 = gp_camera_folder_list_files (delete->priv->camera,
-					  delete->priv->path, &l1);
+					  delete->priv->path, &l1, NULL);
 	result = gp_camera_folder_delete_all (delete->priv->camera,
-					      delete->priv->path);
+					      delete->priv->path, NULL);
 	if (result < 0) {
 		msg = g_strdup_printf (_("Could not delete all files "
 				       "in '%s'"), delete->priv->path);
@@ -189,7 +189,8 @@ delete_all (GtkamDelete *delete)
 
 		/* See what files have been deleted */
 		r2 = gp_camera_folder_list_files (delete->priv->camera,
-						  delete->priv->path, &l2);
+						  delete->priv->path, &l2, 
+						  NULL);
 		if ((r1 == GP_OK) && (r2 == GP_OK)) {
 			for (r1 = 0; r1 < gp_list_count (&l1); r1++) {
 				gp_list_get_name (&l1, r1, &name);
@@ -223,7 +224,7 @@ delete_one (GtkamDelete *delete, const gchar *file)
 	int result;
 
 	result = gp_camera_file_delete (delete->priv->camera,
-					delete->priv->path, file);
+					delete->priv->path, file, NULL);
 	if (result < 0) {
 		msg = g_strdup_printf (_("Could not delete "
 			"'%s' in '%s'"), file, delete->priv->path);
@@ -268,7 +269,7 @@ on_delete_clicked (GtkButton *button, GtkamDelete *delete)
 		success = FALSE;
 
 	if (delete->priv->multi)
-		gp_camera_exit (delete->priv->camera);
+		gp_camera_exit (delete->priv->camera, NULL);
 
 	if (success)
 		gtk_object_destroy (GTK_OBJECT (delete));

@@ -349,9 +349,10 @@ on_capture_activate (GtkMenuItem *item, GtkamMain *m)
 	}
 
 	/* The camera doesn't support previews. Capture an image */
-	result = gp_camera_capture (m->priv->camera, GP_CAPTURE_IMAGE, &path);
+	result = gp_camera_capture (m->priv->camera, GP_CAPTURE_IMAGE, &path,
+				    NULL);
 	if (m->priv->multi)
-		gp_camera_exit (m->priv->camera);
+		gp_camera_exit (m->priv->camera, NULL);
 	if (result < 0) {
 		dialog = gtkam_error_new (_("Could not capture"), result,
 					  m->priv->camera, GTK_WIDGET (m));
@@ -479,9 +480,9 @@ on_information_activate (GtkMenuItem *item, GtkamMain *m)
 	if (!m->priv->camera)
 		return;
 
-	result = gp_camera_get_summary (m->priv->camera, &text);
+	result = gp_camera_get_summary (m->priv->camera, &text, NULL);
 	if (m->priv->multi)
-		gp_camera_exit (m->priv->camera);
+		gp_camera_exit (m->priv->camera, NULL);
 	if (result < 0)
 		dialog = gtkam_error_new (_("Could not retrieve information"),
 					  result, m->priv->camera,
@@ -501,9 +502,9 @@ on_manual_activate (GtkMenuItem *item, GtkamMain *m)
 	if (!m->priv->camera)
 		return;
 
-	result = gp_camera_get_manual (m->priv->camera, &text);
+	result = gp_camera_get_manual (m->priv->camera, &text, NULL);
 	if (m->priv->multi)
-		gp_camera_exit (m->priv->camera);
+		gp_camera_exit (m->priv->camera, NULL);
 	if (result < 0)
 		dialog = gtkam_error_new (_("Could not retrieve manual"),
 					  result, m->priv->camera,
@@ -523,9 +524,9 @@ on_about_driver_activate (GtkMenuItem *item, GtkamMain *m)
 	if (!m->priv->camera)
 		return;
 
-	result = gp_camera_get_about (m->priv->camera, &text);
+	result = gp_camera_get_about (m->priv->camera, &text, NULL);
 	if (m->priv->multi)
-		gp_camera_exit (m->priv->camera);
+		gp_camera_exit (m->priv->camera, NULL);
 	if (result < 0)
 		dialog = gtkam_error_new (_("Could not get information "
 					  "about the driver"), result, 
@@ -600,9 +601,9 @@ on_remove_dir_activate (GtkMenuItem *item, GtkamMain *m)
 	path = gtkam_tree_get_path (m->priv->tree);
 	dirname = g_dirname (path);
 	result = gp_camera_folder_remove_dir (m->priv->camera, dirname,
-					      g_basename (path));
+					      g_basename (path), NULL);
 	if (m->priv->multi)
-		gp_camera_exit (m->priv->camera);
+		gp_camera_exit (m->priv->camera, NULL);
 	if (result < 0) {
 		msg = g_strdup_printf (_("Could not remove '%s' from '%s'"),
 				       g_basename (path), dirname);
@@ -665,12 +666,12 @@ on_upload_activate (GtkMenuItem *item, GtkamMain *m)
 			gtkam_cancel_start_monitoring (GTKAM_CANCEL (cancel),
 						       file);
 			r = gp_camera_folder_put_file (m->priv->camera,
-						       folder, file);
+						       folder, file, NULL);
 			gtkam_cancel_stop_monitoring (GTKAM_CANCEL (cancel),
 						      file);
 			gtk_widget_destroy (cancel);
 			if (m->priv->multi)
-				gp_camera_exit (m->priv->camera);
+				gp_camera_exit (m->priv->camera, NULL);
 			if (r < 0) {
 				switch (r) {
 				case GP_ERROR_CANCEL:
@@ -728,7 +729,7 @@ on_changed (GtkamList *list, GtkamMain *m)
 	gtkam_main_update_sensitivity (m);
 }
 
-#ifndef OLD_PROGRESS
+#if 0
 static int
 progress_func (CameraFile *file, gfloat percentage, void *data)
 {
@@ -768,18 +769,12 @@ on_download_start (GtkamList *list, CameraFile *file, GtkamMain *m)
 	gtk_progress_set_show_text (GTK_PROGRESS (m->priv->progress), TRUE);
 
 	gtk_widget_show (m->priv->cancel);
-#ifndef OLD_PROGRESS
-	gp_file_set_progress_func (file, progress_func, m);
-#endif
 }
 
 static void
 on_download_stop (GtkamList *list, CameraFile *file, GtkamMain *m)
 {
 	gtk_widget_hide (m->priv->cancel);
-#ifndef OLD_PROGRESS
-	gp_file_set_progress_func (file, NULL, NULL);
-#endif
 	gtk_progress_set_percentage (GTK_PROGRESS (m->priv->progress), 0.);
 	gtk_progress_set_show_text (GTK_PROGRESS (m->priv->progress), FALSE);
 }
@@ -1324,9 +1319,6 @@ gtkam_main_set_camera (GtkamMain *m, Camera *camera, gboolean multi)
 	g_return_if_fail (camera != NULL);
 
 	if (camera) {
-#ifdef OLD_PROGRESS
-		gp_camera_set_progress_func (camera, progress_func, m);
-#endif
 		gp_camera_set_status_func (camera, status_func, m);
 		gp_camera_set_message_func (camera, message_func, m);
 	}

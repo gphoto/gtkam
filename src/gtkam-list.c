@@ -324,11 +324,12 @@ on_select_icon (GtkIconList *ilist, GtkIconListItem *item,
 		gtk_signal_emit (GTK_OBJECT (list), signals[DOWNLOAD_START],
 				 file);
 		result = gp_camera_file_get (list->priv->camera,
-			list->path, item->label, GP_FILE_TYPE_PREVIEW, file);
+			list->path, item->label, GP_FILE_TYPE_PREVIEW, file,
+			NULL);
 		gtk_signal_emit (GTK_OBJECT (list), signals[DOWNLOAD_STOP],
 				 file);
 		if (list->priv->multi)
-			gp_camera_exit (list->priv->camera);
+			gp_camera_exit (list->priv->camera, NULL);
 		if (result < 0) {
 			switch (result) {
 			case GP_ERROR_CANCEL:
@@ -397,7 +398,7 @@ on_select_icon (GtkIconList *ilist, GtkIconListItem *item,
 					 signals[DOWNLOAD_START], file);
 			if (gp_camera_file_get (list->priv->camera,
 				list->path, item->label, GP_FILE_TYPE_EXIF,
-				file) < 0)
+				file, NULL) < 0)
 				gtk_widget_set_sensitive (i, FALSE);
 			gtk_signal_emit (GTK_OBJECT (list), 
 					 signals[DOWNLOAD_STOP], file);
@@ -420,7 +421,7 @@ on_select_icon (GtkIconList *ilist, GtkIconListItem *item,
 			gtk_widget_show (i);
 			if (!(a.file_operations & GP_FILE_OPERATION_DELETE) ||
 			    (!gp_camera_file_get_info (list->priv->camera,
-					list->path, item->label, &info) &&
+					list->path, item->label, &info, NULL) &&
 			     (info.file.fields & GP_FILE_INFO_PERMISSIONS) && 
 			     (!(info.file.permissions & GP_FILE_PERM_DELETE))))
 				gtk_widget_set_sensitive (i, FALSE);
@@ -501,10 +502,11 @@ gtkam_list_set_path (GtkamList *list, const gchar *path)
 	if (!list->priv->camera)
 		return;
 
-	result = gp_camera_folder_list_files (list->priv->camera, path, &flist);
+	result = gp_camera_folder_list_files (list->priv->camera, path, &flist,
+					      NULL);
 	if (result < 0) {
 		if (list->priv->multi)
-			gp_camera_exit (list->priv->camera);
+			gp_camera_exit (list->priv->camera, NULL);
 		msg = g_strdup_printf (_("Could not get file list for folder "
 				       "'%s'"), path);
 		dialog = gtkam_error_new (msg, result, list->priv->camera, win);
@@ -532,7 +534,7 @@ gtkam_list_set_path (GtkamList *list, const gchar *path)
 		 * Second step: Get information about the image.
 		 */
 		result = gp_camera_file_get_info (list->priv->camera, path,
-						  name, &info);
+						  name, &info, NULL);
 		if (result != GP_OK) {
 			gp_log (GP_LOG_DEBUG, PACKAGE, "Could not get "
 				"information on '%s' in '%s': %s",
@@ -551,7 +553,7 @@ gtkam_list_set_path (GtkamList *list, const gchar *path)
 			gtk_signal_emit (GTK_OBJECT (list),
 					 signals[DOWNLOAD_START], file);
 			result = gp_camera_file_get (list->priv->camera, path,
-					name, GP_FILE_TYPE_PREVIEW, file);
+					name, GP_FILE_TYPE_PREVIEW, file, NULL);
 
 			/* Make sure we are not shutting down */
 			if (!GTKAM_IS_LIST (list)) {
@@ -639,7 +641,7 @@ gtkam_list_set_path (GtkamList *list, const gchar *path)
 		return;
 	
 	if (list->priv->multi)
-		gp_camera_exit (list->priv->camera);
+		gp_camera_exit (list->priv->camera, NULL);
 	gtk_signal_emit (GTK_OBJECT (list), signals[CHANGED]);
 }
 

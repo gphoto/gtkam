@@ -276,7 +276,8 @@ create_item (GtkamTree *tree, GtkTree *tree_to_add_to, const gchar *path)
 
 	/* Show the number of pictures in the folder */
 	gp_list_new (&list);
-	result = gp_camera_folder_list_files (tree->priv->camera, path, list);
+	result = gp_camera_folder_list_files (tree->priv->camera, path, list,
+					      NULL);
 
 	/* Make sure we are not shutting down */
 	if (!GTKAM_IS_TREE (tree))
@@ -301,9 +302,10 @@ create_item (GtkamTree *tree, GtkTree *tree_to_add_to, const gchar *path)
 
 	/* Subdirectories? */
 	gp_list_new (&list);
-	result = gp_camera_folder_list_folders (tree->priv->camera, path, list);
+	result = gp_camera_folder_list_folders (tree->priv->camera, path, list,
+						NULL);
 	if (tree->priv->multi)
-		gp_camera_exit (tree->priv->camera);
+		gp_camera_exit (tree->priv->camera, NULL);
 	if (result < 0) {
 		window = gtk_widget_get_ancestor (GTK_WIDGET (tree),
 						  GTK_TYPE_WINDOW);
@@ -346,7 +348,7 @@ on_tree_item_expand (GtkTreeItem *item, GtkamTree *tree)
 	if (!list) {
 		gp_list_new (&list);
 		result = gp_camera_folder_list_folders (tree->priv->camera,
-							path, list);
+							path, list, NULL);
 		if (result < 0) {
 			window = gtk_widget_get_ancestor (GTK_WIDGET (tree),
 							  GTK_TYPE_WINDOW);

@@ -74,7 +74,7 @@ idle_func (gpointer data)
 		gp_camera_new (&camera);
 
 		gp_abilities_list_new (&al);
-		gp_abilities_list_load (al);
+		gp_abilities_list_load (al, NULL);
 		gp_port_info_list_new (&il);
 		gp_port_info_list_load (il);
 

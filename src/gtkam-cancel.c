@@ -221,6 +221,7 @@ gtkam_cancel_set_message (GtkamCancel *cancel, const gchar *msg)
 	gtk_label_set_text (cancel->priv->label, msg);
 }
 
+#if 0
 static int
 progress_func (CameraFile *file, float percentage, void *data)
 {
@@ -242,14 +243,13 @@ progress_func (CameraFile *file, float percentage, void *data)
 
 	return (GP_OK);
 }
+#endif
 
 void
 gtkam_cancel_start_monitoring (GtkamCancel *cancel, CameraFile *file)
 {
 	g_return_if_fail (GTKAM_IS_CANCEL (cancel));
 	g_return_if_fail (file != NULL);
-
-	gp_file_set_progress_func (file, progress_func, cancel);
 }
 
 void
@@ -257,6 +257,4 @@ gtkam_cancel_stop_monitoring (GtkamCancel *cancel, CameraFile *file)
 {
 	g_return_if_fail (GTKAM_IS_CANCEL (cancel));
 	g_return_if_fail (file != NULL);
-
-	gp_file_set_progress_func (file, NULL, NULL);
 }

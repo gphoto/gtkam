@@ -160,9 +160,9 @@ on_ok_clicked (GtkButton *button, GtkamMkdir *mkdir)
 
 	path = gtk_entry_get_text (mkdir->priv->entry);
 	r = gp_camera_folder_make_dir (mkdir->priv->camera, mkdir->priv->path,
-				       g_basename (path));
+				       g_basename (path), NULL);
 	if (mkdir->priv->multi)
-		gp_camera_exit (mkdir->priv->camera);
+		gp_camera_exit (mkdir->priv->camera, NULL);
 	if (r < 0) {
 		msg = g_strdup_printf (_("Could not create new directory "
 				"'%s' in '%s'"), path, mkdir->priv->path);

@@ -321,10 +321,11 @@ get_file (GtkamSave *save, const gchar *filename, CameraFileType type, guint n)
 	gp_file_new (&file);
 	gtkam_cancel_start_monitoring (save->priv->cancel, file);
 	result = gp_camera_file_get (save->priv->camera,
-				     save->priv->path, filename, type, file);
+				     save->priv->path, filename, type, file,
+				     NULL);
 	gtkam_cancel_stop_monitoring (save->priv->cancel, file);
 	if (save->priv->multi)
-		gp_camera_exit (save->priv->camera);
+		gp_camera_exit (save->priv->camera, NULL);
 	if (result < 0) {
 		switch (result) {
 		case GP_ERROR_CANCEL:

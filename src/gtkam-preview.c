@@ -184,9 +184,9 @@ on_preview_capture_clicked (GtkButton *button, GtkamPreview *preview)
 	gchar *full_path;
 
 	result = gp_camera_capture (preview->priv->camera,
-				    GP_CAPTURE_IMAGE, &path);
+				    GP_CAPTURE_IMAGE, &path, NULL);
 	if (preview->priv->multi)
-		gp_camera_exit (preview->priv->camera);
+		gp_camera_exit (preview->priv->camera, NULL);
 	if (result != GP_OK) {
 		dialog = gtkam_error_new (_("Could not capture"),
 			result, preview->priv->camera, GTK_WIDGET (preview));
@@ -224,9 +224,9 @@ timeout_func (gpointer user_data)
 		return (FALSE);
 
 	gp_file_new (&file);
-	result = gp_camera_capture_preview (preview->priv->camera, file);
+	result = gp_camera_capture_preview (preview->priv->camera, file, NULL);
 	if (preview->priv->multi)
-		gp_camera_exit (preview->priv->camera);
+		gp_camera_exit (preview->priv->camera, NULL);
 	if (!GTKAM_IS_PREVIEW (preview))
 		return (FALSE);
 	if (result != GP_OK) {

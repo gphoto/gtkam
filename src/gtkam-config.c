@@ -165,9 +165,9 @@ gtkam_config_apply (GtkamConfig *config)
 	GtkWidget *dialog;
 
 	result = gp_camera_set_config (config->priv->camera,
-				       config->priv->config);
+				       config->priv->config, NULL);
 	if (config->priv->multi)
-		gp_camera_exit (config->priv->camera);
+		gp_camera_exit (config->priv->camera, NULL);
 	if (result != GP_OK) {
 		dialog = gtkam_error_new (_("Could not apply configuration"),
 					  result, config->priv->camera,
@@ -601,9 +601,9 @@ gtkam_config_new (Camera *camera, gboolean multi)
 
 	g_return_val_if_fail (camera != NULL, NULL);
 
-	result = gp_camera_get_config (camera, &config_widget);
+	result = gp_camera_get_config (camera, &config_widget, NULL);
 	if (multi)
-		gp_camera_exit (camera);
+		gp_camera_exit (camera, NULL);
 	if (result != GP_OK) {
 		dialog = gtkam_error_new (_("Could not get configuration"),
 					  result, camera, NULL);

@@ -124,6 +124,8 @@ typedef struct {
 	gfloat zoom;
 } PreviewParams;
 
+#if 0
+
 static int
 progress_func (CameraFile *file, float progress, void *data)
 {
@@ -132,6 +134,7 @@ progress_func (CameraFile *file, float progress, void *data)
 
 	return (GP_OK);
 }
+#endif
 
 static Camera *
 create_camera (CameraOperation operations, gboolean *multi,
@@ -213,12 +216,9 @@ get_file (Camera *camera, CameraFilePath path, gint nparams, GimpParam *param,
 			       path.name, path.folder);
         gimp_progress_init (msg);
 	g_free (msg);
-	gp_file_set_progress_func (file, progress_func, NULL);
         result = gp_camera_file_get (camera, path.folder, path.name,
-                                     GP_FILE_TYPE_NORMAL, file);
-	gp_file_set_progress_func (file, NULL, NULL);
-	gp_camera_exit (camera);
-        gp_camera_set_progress_func (camera, NULL, NULL);
+                                     GP_FILE_TYPE_NORMAL, file, NULL);
+	gp_camera_exit (camera, NULL);
         if (result < 0) {
                 gp_file_unref (file);
                 dialog = gtkam_error_new (_("Could not "
@@ -343,8 +343,9 @@ run_capture (gchar *name, gint nparams, GimpParam *param, gint *nreturn_vals,
 
 	case GIMP_RUN_NONINTERACTIVE:
 	case GIMP_RUN_WITH_LAST_VALS:
-		result = gp_camera_capture (camera, GP_CAPTURE_IMAGE, &path);
-		gp_camera_exit (camera);
+		result = gp_camera_capture (camera, GP_CAPTURE_IMAGE, &path,
+					    NULL);
+		gp_camera_exit (camera, NULL);
 		if (result < 0) {
 			dialog = gtkam_error_new (_("Could not capture"),
 				result, camera, NULL);

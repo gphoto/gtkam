@@ -215,9 +215,9 @@ on_rmdir_clicked (GtkButton *button, GtkamFSel *fsel)
         path = gtkam_tree_get_path (fsel->priv->tree);
         dirname = g_dirname (path);
 	result = gp_camera_folder_remove_dir (fsel->priv->camera, dirname,
-					      g_basename (path));
+					      g_basename (path), NULL);
 	if (fsel->priv->multi)
-		gp_camera_exit (fsel->priv->camera);
+		gp_camera_exit (fsel->priv->camera, NULL);
         if (result < 0) {
                 msg = g_strdup_printf (_("Could not remove '%s' from '%s'"),
                                        g_basename (path), dirname);

@@ -184,9 +184,11 @@ gtkam_info_update (GtkamInfo *info)
 
 	dir = g_dirname (info->priv->path);
 	result = gp_camera_file_set_info (info->priv->camera, dir,
-			g_basename (info->priv->path), info->priv->info_new);
+			g_basename (info->priv->path), info->priv->info_new,
+			NULL);
 	gp_camera_file_get_info (info->priv->camera, dir,
-			g_basename (info->priv->path), &info->priv->info);
+			g_basename (info->priv->path), &info->priv->info,
+			NULL);
 	g_free (dir);
 	gtk_signal_emit (GTK_OBJECT (info), signals[INFO_UPDATED],
 			 info->priv->path);
@@ -340,7 +342,7 @@ gtkam_info_new (Camera *camera, const gchar *path, GtkWidget *opt_window)
 	/* Get file info */
 	dir = g_dirname (path);
 	result = gp_camera_file_get_info (camera, dir, g_basename (path),
-					  &info->priv->info);
+					  &info->priv->info, NULL);
 	g_free (dir);
 	if (result < 0) {
 		msg = g_strdup_printf (_("Could not get information about "

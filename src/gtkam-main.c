@@ -499,6 +499,7 @@ action_about (gpointer callback_data, guint callback_action,
 		int i;
 		gchar *features;
 		const char **v = NULL;
+		gchar **g;
 		char *name = module_versions[n].name;
 		GPVersionFunc func = module_versions[n].version_func;
 		CHECK_NULL (name);
@@ -506,8 +507,9 @@ action_about (gpointer callback_data, guint callback_action,
 		v = func(GP_VERSION_VERBOSE);
 		CHECK_NULL (v);
 		CHECK_NULL (v[0]);
+		/* FIXME: how to cleanly convert from gchar* to char* ? */
+		g = (gchar **) v;
 		
-		/* FIXME: implicit conversion from gchar* to char* */
 		features = g_strjoinv("\n - ", v);
 		if (gcomments == NULL) {
 			gcomments = g_strdup_printf("%s %s has been compiled with the following options:\n - %s\n", 

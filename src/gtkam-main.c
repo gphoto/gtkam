@@ -503,7 +503,7 @@ action_about (gpointer callback_data, guint callback_action,
 		GPVersionFunc func = module_versions[n].version_func;
 		CHECK_NULL (name);
 		CHECK_NULL (func);
-		v = func(GP_VERSION_VERBOSE);
+		v = func(GP_VERSION_SHORT);
 		CHECK_NULL (v);
 		CHECK_NULL (v[0]);
 		CHECK_NULL (v[1]);

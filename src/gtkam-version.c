@@ -92,6 +92,30 @@ const module_version module_versions[] = {
 	{ NULL, NULL }
 };
 
+void log_version(GPLogLevel level, const char *domain)
+{
+	gp_log (level, domain, _("ALWAYS INCLUDE THE FOLLOWING LINES "
+				 "WHEN SENDING DEBUG MESSAGES TO THE "
+				 "MAILING LIST:"));
+
+	for (n = 0; module_versions[n].name != NULL; n++) {
+		int i;
+		const char **v = NULL;
+		char *name = module_versions[n].name;
+		GPVersionFunc func = module_versions[n].version_func;
+		CHECK_NULL (name);
+		CHECK_NULL (func);
+		v = func(GP_VERSION_VERBOSE);
+		CHECK_NULL (v);
+		CHECK_NULL (v[0]);
+		gp_log (level, domain, "%s %s", name, v[0]);
+		gp_log (level, domain, "%s has been compiled with the following options:", name);
+		for (i = 1; v[i] != NULL; i++) {
+			gp_log (level, domain, " + %s", v[i]);
+		}
+	}
+}
+
 /*
  * Local Variables:
  * c-file-style:"linux"

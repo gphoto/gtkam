@@ -421,16 +421,7 @@ create_widgets (GtkamConfig *config, CameraWidget *widget)
 
 	case GP_WIDGET_DATE:
 
-		/*
-		 * This stuff is broken (the clock thing is kind of
-		 * ridiculous). If you have time, port either
-		 * libgnomeui/gnome-dateedit.h or libgnomeui/gtk-clock.h to
-		 * gtk so that it can be used here. If not, don't 
-		 * complain.
-		 */
-
 		gp_widget_get_value (widget, &value_int);
-		tm = localtime ((time_t*) &value_int);
 		gtk_widget = gtk_vbox_new (FALSE, 5);
 		gtk_container_set_border_width (GTK_CONTAINER (gtk_widget), 5);
 
@@ -439,29 +430,34 @@ create_widgets (GtkamConfig *config, CameraWidget *widget)
 		gtk_widget_show (calendar);
 		gtk_box_pack_start (GTK_BOX (gtk_widget), calendar, FALSE,
 				    FALSE, 0);
-		gtk_calendar_select_month (GTK_CALENDAR (calendar),
-					   tm->tm_mon, tm->tm_year + 1900);
-		gtk_calendar_select_day (GTK_CALENDAR (calendar), tm->tm_mday);
-		gtk_signal_connect (GTK_OBJECT (calendar), "day_selected",
-				    GTK_SIGNAL_FUNC (on_day_selected), widget);
 
 		/* Create the clock */
 		clock = gtkam_clock_new ();
-		gtkam_clock_set (GTKAM_CLOCK (clock), tm->tm_hour, tm->tm_min,
-				 tm->tm_sec);
 		gtk_widget_show (clock);
 		gtk_box_pack_start (GTK_BOX (gtk_widget), clock,
 				    FALSE, FALSE, 0);
-		gtk_signal_connect (GTK_OBJECT (clock), "changed",
-				    GTK_SIGNAL_FUNC (on_clock_changed), widget);
-		gtk_signal_connect (GTK_OBJECT (clock), "next_day",
-			GTK_SIGNAL_FUNC (on_clock_next_day), widget);
-		gtk_signal_connect (GTK_OBJECT (clock), "previous_day",
-			GTK_SIGNAL_FUNC (on_clock_previous_day), widget);
+
+		/* Set date & time */
+		tm = localtime ((time_t*) &value_int);
+		gtk_calendar_select_month (GTK_CALENDAR (calendar),
+					   tm->tm_mon, tm->tm_year + 1900);
+		gtk_calendar_select_day (GTK_CALENDAR (calendar), tm->tm_mday); 
+		gtkam_clock_set (GTKAM_CLOCK (clock), tm->tm_hour, tm->tm_min,
+				 tm->tm_sec);
 
 		/* We need clock and calendar together */
 		gtk_object_set_data (GTK_OBJECT (clock), "calendar", calendar);
 		gtk_object_set_data (GTK_OBJECT (calendar), "clock", clock);
+
+		/* Connect the signals */
+		gtk_signal_connect (GTK_OBJECT (clock), "changed",
+			GTK_SIGNAL_FUNC (on_clock_changed), widget);
+		gtk_signal_connect (GTK_OBJECT (clock), "next_day",
+			GTK_SIGNAL_FUNC (on_clock_next_day), widget);
+		gtk_signal_connect (GTK_OBJECT (clock), "previous_day",
+			GTK_SIGNAL_FUNC (on_clock_previous_day), widget);
+		gtk_signal_connect (GTK_OBJECT (calendar), "day_selected",
+			GTK_SIGNAL_FUNC (on_day_selected), widget);
 
 		break;
 

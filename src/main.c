@@ -125,8 +125,6 @@ main (int argc, char *argv[])
 	GtkWidget *m;
 	int x, log = -1, load = 1;
 	GdkPixbuf *pixbuf;
-	GdkPixmap *map;
-	GdkBitmap *mask;
 
 	gtk_set_locale ();
 	bindtextdomain (PACKAGE, GTKAM_LOCALEDIR);
@@ -169,7 +167,11 @@ main (int argc, char *argv[])
 
 	pixbuf = gdk_pixbuf_new_from_file (IMAGE_DIR "/gtkam-camera.png");
 	if (pixbuf) {
+		GdkPixmap *map;
+		GdkBitmap *mask;
+
 		gdk_pixbuf_render_pixmap_and_mask (pixbuf, &map, &mask, 127);
+		gdk_pixbuf_unref (pixbuf);
 		gdk_window_set_icon (GTK_WIDGET (m)->window, NULL, map, mask);
 	} else
 		g_warning ("Could not load '" IMAGE_DIR "/gtkam-camera.png'.");

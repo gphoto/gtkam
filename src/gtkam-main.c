@@ -80,8 +80,6 @@
 #include "gtkam-status.h"
 #include "gtkam-tree.h"
 
-#include "support.h"
-
 struct _GtkamMainPrivate
 {
 	GtkWidget *tree, *list;

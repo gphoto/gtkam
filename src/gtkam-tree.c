@@ -66,8 +66,6 @@
 #include <gphoto2/gphoto2-setting.h>
 #include <gphoto2/gphoto2-camera.h>
 
-#include "support.h"
-
 #include "gtkam-camera.h"
 #include "gtkam-chooser.h"
 #include "gtkam-close.h"

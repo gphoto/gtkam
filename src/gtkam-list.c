@@ -695,6 +695,8 @@ gtkam_list_new (void)
 
         list = g_object_new (GTKAM_TYPE_LIST, NULL);
 	gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (list), FALSE);
+	gtk_tree_view_set_enable_search (GTK_TREE_VIEW (list), TRUE);
+	gtk_tree_view_set_reorderable (GTK_TREE_VIEW (list), TRUE);
 	gtk_tree_view_enable_model_drag_source (GTK_TREE_VIEW (list),
 		GDK_BUTTON1_MASK, targets, G_N_ELEMENTS (targets),
 		GDK_ACTION_COPY);

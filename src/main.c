@@ -52,7 +52,6 @@
 #include "gtkam-main.h"
 #include "gtkam-error.h"
 #include "util.h"
-#include "support.h"
 
 static void
 log_func (GPLogLevel level, const char *domain, const char *format,

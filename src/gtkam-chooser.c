@@ -63,7 +63,6 @@
 #include <gphoto2/gphoto2-abilities-list.h>
 #include <gphoto2/gphoto2-setting.h>
 
-#include "support.h"
 #include "gtkam-error.h"
 #include "gtkam-close.h"
 #include "gtkam-port.h"

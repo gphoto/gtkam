@@ -1,3 +1,7 @@
+2002-07-26  Lutz Müller <lutz@users.sourceforge.net>
+
+	* src/support.[c,h]: Removed.
+
 2002-07-23  Lutz Müller <lutz@users.sourceforge.net>
 
 	* test/Makefile.am: Add $(EXIF_[CFLAGS,LIBS]).

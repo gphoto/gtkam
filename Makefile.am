@@ -2,7 +2,7 @@
 
 EXTRA_DIST = @PACKAGE@.spec @PACKAGE@.spec.in autogen.sh acconfig.h gphoto2-gtk.glade MANUAL
 
-SUBDIRS = po src intl
+SUBDIRS = po src intl art
 
 gtkamdocdir = $(prefix)/doc/gtkam
 gtkamdoc_DATA = AUTHORS COPYING MANUAL

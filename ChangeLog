@@ -1,3 +1,8 @@
+2001-10-25 Lutz Müller <urc8@rz.uni-karlsruhe.de>
+
+	* art: Some images
+	* src: Add camera pictures to the dialogs
+
 2001-10-27 Hans Ulrich Niedermann <gp@n-dimensional.de>
 	
 	* src/gtkam-main.c: added version information to about dialog

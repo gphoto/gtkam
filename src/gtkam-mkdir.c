@@ -25,6 +25,10 @@
 #include <gtk/gtkbutton.h>
 #include <gtk/gtksignal.h>
 #include <gtk/gtkbox.h>
+#include <gtk/gtkhbox.h>
+#include <gtk/gtkvbox.h>
+#include <gtk/gtkpixmap.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
 
 #include "gtkam-error.h"
 
@@ -170,8 +174,11 @@ GtkWidget *
 gtkam_mkdir_new (Camera *camera, const gchar *path, GtkWidget *opt_window)
 {
 	GtkamMkdir *mkdir;
-	GtkWidget *label, *entry, *button;
+	GtkWidget *label, *entry, *button, *hbox, *vbox, *image;
 	gchar *msg;
+	GdkPixmap *pixmap;
+	GdkBitmap *bitmap;
+	GdkPixbuf *pixbuf;
 
 	g_return_val_if_fail (camera != NULL, NULL);
 	g_return_val_if_fail (path != NULL, NULL);
@@ -184,6 +191,31 @@ gtkam_mkdir_new (Camera *camera, const gchar *path, GtkWidget *opt_window)
 		gtk_window_set_transient_for (GTK_WINDOW (mkdir),
 					      GTK_WINDOW (opt_window));
 
+	hbox = gtk_hbox_new (FALSE, 10);
+	gtk_widget_show (hbox);
+	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (mkdir)->vbox), hbox,
+			    TRUE, TRUE, 0);
+	gtk_container_set_border_width (GTK_CONTAINER (hbox), 10);
+
+	pixbuf = gdk_pixbuf_new_from_file (IMAGE_DIR "/gtkam-folder.png");
+	if (!pixbuf) {
+		g_warning ("Could not load " IMAGE_DIR "/gtkam-folder.png");
+	} else {
+		gdk_pixbuf_render_pixmap_and_mask (pixbuf, &pixmap, &bitmap, 5);
+		gdk_pixbuf_unref (pixbuf);
+		image = gtk_pixmap_new (pixmap, bitmap);
+		if (pixmap)
+			gdk_pixmap_unref (pixmap);
+		if (bitmap)
+			gdk_bitmap_unref (bitmap);
+		gtk_widget_show (image);
+		gtk_box_pack_start (GTK_BOX (hbox), image, FALSE, FALSE, 0);
+	}
+
+	vbox = gtk_vbox_new (FALSE, 0);
+	gtk_widget_show (vbox);
+	gtk_box_pack_start (GTK_BOX (hbox), vbox, TRUE, TRUE, 0);
+
 	msg = g_strdup_printf (_("Please choose a name "
 				 "for the directory that "
 				 "should be created in "
@@ -193,12 +225,12 @@ gtkam_mkdir_new (Camera *camera, const gchar *path, GtkWidget *opt_window)
 	gtk_widget_show (label);
 	gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
 	gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
-	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (mkdir)->vbox), label,
+	gtk_box_pack_start (GTK_BOX (vbox), label,
 			    TRUE, TRUE, 0);
 
 	entry = gtk_entry_new ();
 	gtk_widget_show (entry);
-	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (mkdir)->vbox), entry,
+	gtk_box_pack_start (GTK_BOX (vbox), entry,
 			    TRUE, TRUE, 0);
 	gtk_entry_set_text (GTK_ENTRY (entry), _("New directory"));
 	mkdir->priv->entry = GTK_ENTRY (entry);

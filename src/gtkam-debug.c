@@ -60,7 +60,9 @@ struct _GtkamDebugPrivate
 {
 	GtkText *text;
 
-	guint error_id, debug_id, data_id, verbose_id;
+	gboolean log_error, log_verbose, log_debug, log_data;
+
+	guint log_func_id;
 };
 
 #define PARENT_TYPE GTK_TYPE_DIALOG
@@ -71,19 +73,9 @@ gtkam_debug_destroy (GtkObject *object)
 {
 	GtkamDebug *debug = GTKAM_DEBUG (object);
 
-	if (debug->priv->error_id) {
-		gp_log_remove_func (debug->priv->error_id);
-		debug->priv->error_id = 0;
-	}
-
-	if (debug->priv->debug_id) {
-		gp_log_remove_func (debug->priv->debug_id);
-		debug->priv->debug_id = 0;
-	}
-
-	if (debug->priv->data_id) {
-		gp_log_remove_func (debug->priv->data_id);
-		debug->priv->data_id = 0;
+	if (debug->priv->log_func_id) {
+		gp_log_remove_func (debug->priv->log_func_id);
+		debug->priv->log_func_id = 0;
 	}
 
 	GTK_OBJECT_CLASS (parent_class)->destroy (object);
@@ -137,8 +129,8 @@ gtkam_debug_get_type (void)
 }
 
 static void
-gp_log_func (int level, const char *domain, const char *format,
-	     va_list args, void *data)
+log_func (int level, const char *domain, const char *format,
+	  va_list args, void *data)
 {
 	GtkamDebug *debug;
 	const gchar *err = "*** ERROR *** ";
@@ -153,21 +145,21 @@ gp_log_func (int level, const char *domain, const char *format,
 
 	switch (level) {
 	case GP_LOG_ERROR:
-		if (!debug->priv->error_id)
+		if (!debug->priv->log_error)
 			return;
 		gtk_text_insert (debug->priv->text, NULL, NULL, NULL,
 				 err, strlen (err));
 		break;
 	case GP_LOG_VERBOSE:
-		if (!debug->priv->verbose_id)
+		if (!debug->priv->log_verbose)
 			return;
 		break;
 	case GP_LOG_DEBUG:
-		if (!debug->priv->debug_id)
+		if (!debug->priv->log_debug)
 			return;
 		break;
 	case GP_LOG_DATA:
-		if (!debug->priv->data_id)
+		if (!debug->priv->log_data)
 			return;
 		break;
 	default:
@@ -185,49 +177,25 @@ gp_log_func (int level, const char *domain, const char *format,
 static void
 on_debug_toggled (GtkToggleButton *toggle, GtkamDebug *debug)
 {
-	if (toggle->active && !debug->priv->debug_id)
-		debug->priv->debug_id = gp_log_add_func (GP_LOG_DEBUG,
-							 gp_log_func, debug);
-	else if (!toggle->active && debug->priv->debug_id) {
-		gp_log_remove_func (debug->priv->debug_id);
-		debug->priv->debug_id = 0;
-	}
+	debug->priv->log_debug = toggle->active;
 }
 
 static void
 on_verbose_toggled (GtkToggleButton *toggle, GtkamDebug *debug)
 {
-	if (toggle->active && !debug->priv->verbose_id)
-		debug->priv->verbose_id = gp_log_add_func (GP_LOG_VERBOSE,
-							   gp_log_func, debug);
-	else if (!toggle->active && debug->priv->verbose_id) {
-		gp_log_remove_func (debug->priv->verbose_id);
-		debug->priv->verbose_id = 0;
-	}
+	debug->priv->log_verbose = toggle->active;
 }
 
 static void
 on_error_toggled (GtkToggleButton *toggle, GtkamDebug *debug)
 {
-	if (toggle->active && !debug->priv->error_id)
-		debug->priv->error_id = gp_log_add_func (GP_LOG_ERROR,
-							 gp_log_func, debug);
-	else if (!toggle->active && debug->priv->error_id) {
-		gp_log_remove_func (debug->priv->error_id);
-		debug->priv->error_id = 0;
-	}
+	debug->priv->log_error = toggle->active;
 }
 
 static void
 on_data_toggled (GtkToggleButton *toggle, GtkamDebug *debug)
 {
-	if (toggle->active && !debug->priv->data_id)
-		debug->priv->data_id = gp_log_add_func (GP_LOG_DATA,
-						       gp_log_func, debug);
-	else if (!toggle->active && debug->priv->data_id) {
-		gp_log_remove_func (debug->priv->data_id);
-		debug->priv->data_id = 0;
-	}
+	debug->priv->log_data = toggle->active;
 }
 
 static void
@@ -294,6 +262,9 @@ gtkam_debug_new (void)
 	GtkWidget *button, *text, *vscrollbar, *hbox, *check, *label;
 
 	debug = gtk_type_new (GTKAM_TYPE_DEBUG);
+
+	debug->priv->log_func_id = gp_log_add_func (GP_LOG_ALL,
+						    log_func, debug);
 
 	hbox = gtk_hbox_new (FALSE, 5);
 	gtk_widget_show (hbox);

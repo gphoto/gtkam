@@ -44,6 +44,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <gtk/gtkhbox.h>
 #include <gtk/gtkvbox.h>
 #include <gtk/gtklabel.h>
 #include <gtk/gtktogglebutton.h>
@@ -55,6 +56,8 @@
 #include <gtk/gtkbutton.h>
 #include <gtk/gtkentry.h>
 #include <gtk/gtkcombo.h>
+#include <gtk/gtkpixmap.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
 
 #include <gphoto2/gphoto2-abilities-list.h>
 #include <gphoto2/gphoto2-setting.h>
@@ -364,13 +367,17 @@ GtkWidget *
 gtkam_chooser_new (Camera *opt_camera)
 {
 	GtkamChooser *chooser;
-	GtkWidget *table, *label, *button, *combo, *dialog;
+	GtkWidget *table, *label, *button, *combo, *dialog, *hbox, *vbox;
+	GtkWidget *image;
 	gint i, s;
 	GList *list;
 	int count;
 	gchar *speed, *port;
 	CameraAbilities a;
 	GPPortInfo info;
+	GdkPixmap *pixmap;
+	GdkBitmap *bitmap;
+	GdkPixbuf *pixbuf;
 
 	chooser = gtk_type_new (GTKAM_TYPE_CHOOSER);
 
@@ -384,11 +391,36 @@ gtkam_chooser_new (Camera *opt_camera)
 	gtk_container_set_border_width (GTK_CONTAINER (chooser), 5);
 	gtk_window_set_policy (GTK_WINDOW (chooser), TRUE, TRUE, TRUE);
 
+	hbox = gtk_hbox_new (FALSE, 10);
+	gtk_widget_show (hbox);
+	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (chooser)->vbox), hbox,
+			    TRUE, TRUE, 0);
+	gtk_container_set_border_width (GTK_CONTAINER (hbox), 10);
+
+	pixbuf = gdk_pixbuf_new_from_file (IMAGE_DIR "/gtkam-camera.png");
+	if (!pixbuf)
+		g_warning ("Could not load " IMAGE_DIR "/gtkam-camera.png");
+	else {
+		gdk_pixbuf_render_pixmap_and_mask (pixbuf, &pixmap, &bitmap, 5);
+		gdk_pixbuf_unref (pixbuf);
+		image = gtk_pixmap_new (pixmap, bitmap);
+		if (pixmap)
+			gdk_pixmap_unref (pixmap);
+		if (bitmap)
+			gdk_bitmap_unref (bitmap);
+		gtk_widget_show (image);
+		gtk_box_pack_start (GTK_BOX (hbox), image, FALSE, FALSE, 0);
+	}
+
+	vbox = gtk_vbox_new (FALSE, 0);
+	gtk_widget_show (vbox);
+	gtk_box_pack_start (GTK_BOX (hbox), vbox, TRUE, TRUE, 0);
+
 	table = gtk_table_new (3, 3, FALSE);
 	gtk_table_set_row_spacings (GTK_TABLE (table), 5);
 	gtk_table_set_col_spacings (GTK_TABLE (table), 5);
 	gtk_widget_show (table);
-	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (chooser)->vbox), table,
+	gtk_box_pack_start (GTK_BOX (vbox), table,
 			    TRUE, TRUE, 0);
 
 	label = gtk_label_new (_("Model:"));

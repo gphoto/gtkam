@@ -2,6 +2,7 @@
 
 INCLUDES = \
 	-I$(top_srcdir)/intl \
+	-DIMAGE_DIR=\"$(datadir)/images/gtkam\" \
 	@GTK_CFLAGS@
 
 bin_PROGRAMS = gtkam

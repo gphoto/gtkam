@@ -287,6 +287,12 @@ on_configure_activate (GtkMenuItem *item, GtkamMain *m)
 		return;
 
 	dialog = gtkam_config_new (m->priv->camera);
+	if (!dialog) {
+
+		/* The error has already been reported */
+		return;
+	}
+
 	gtk_window_set_transient_for (GTK_WINDOW (dialog), GTK_WINDOW (m));
 	gtk_widget_show (dialog);
 }

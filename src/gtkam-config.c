@@ -486,6 +486,8 @@ gtkam_config_new (Camera *camera)
 	gp_camera_ref (camera);
 
 	config->priv->notebook = gtk_notebook_new ();
+	gtk_container_set_border_width (GTK_CONTAINER (config->priv->notebook),
+					5);
 	gtk_widget_show (config->priv->notebook);
 	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (config)->vbox),
 			    config->priv->notebook, TRUE, TRUE, 0);

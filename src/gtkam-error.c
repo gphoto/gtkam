@@ -54,6 +54,8 @@
 #include <gtk/gtksignal.h>
 #include <gtk/gtkbutton.h>
 #include <gtk/gtktogglebutton.h>
+#include <gtk/gtkpixmap.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
 
 #include <gphoto2/gphoto2-result.h>
 #include <gphoto2/gphoto2-port-log.h>
@@ -144,7 +146,10 @@ gtkam_error_new (const gchar *msg, int result, Camera *opt_camera,
 		 GtkWidget *opt_window)
 {
 	GtkamError *error;
-	GtkWidget *text, *vscrollbar, *button, *label;
+	GtkWidget *text, *vscrollbar, *button, *label, *hbox, *vbox, *image;
+	GdkPixbuf *pixbuf;
+	GdkBitmap *bitmap;
+	GdkPixmap *pixmap;
 	const char *error_info;
 	gchar *full_msg;
 
@@ -153,13 +158,38 @@ gtkam_error_new (const gchar *msg, int result, Camera *opt_camera,
 	error = gtk_type_new (GTKAM_TYPE_ERROR);
 	gtk_window_set_policy (GTK_WINDOW (error), TRUE, TRUE, TRUE);
 
-	full_msg = g_strdup_printf ("%s:\n\n'%s'", msg,
+	hbox = gtk_hbox_new (FALSE, 10);
+	gtk_widget_show (hbox);
+	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (error)->vbox), hbox,
+			    TRUE, TRUE, 0);
+	gtk_container_set_border_width (GTK_CONTAINER (hbox), 10);
+
+	pixbuf = gdk_pixbuf_new_from_file (IMAGE_DIR "/gtkam-camera.png");
+	if (!pixbuf)
+		g_warning ("Could not load " IMAGE_DIR "/gtkam-camera.png");
+	else {
+		gdk_pixbuf_render_pixmap_and_mask (pixbuf, &pixmap, &bitmap, 5);
+		gdk_pixbuf_unref (pixbuf);
+		image = gtk_pixmap_new (pixmap, bitmap);
+		if (pixmap)
+			gdk_pixmap_unref (pixmap);
+		if (bitmap)
+			gdk_bitmap_unref (bitmap);
+		gtk_widget_show (image);
+		gtk_box_pack_start (GTK_BOX (hbox), image, FALSE, FALSE, 0);
+	}
+
+	vbox = gtk_vbox_new (FALSE, 0);
+	gtk_widget_show (vbox);
+	gtk_box_pack_start (GTK_BOX (hbox), vbox, TRUE, TRUE, 0);
+
+	full_msg = g_strdup_printf ("%s ('%s')", msg,
 				    gp_result_as_string (result));
 	label = gtk_label_new (full_msg);
 	g_free (full_msg);
 	gtk_widget_show (label);
-	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (error)->vbox), label,
-			    FALSE, FALSE, 0);
+	gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
+	gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
 
 	error->priv->hbox = gtk_hbox_new (FALSE, 0);
 	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (error)->vbox),

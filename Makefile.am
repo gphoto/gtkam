@@ -5,7 +5,7 @@ EXTRA_DIST =
 SUBDIRS = po src test intl art pixmaps packaging
 
 gtkamdocdir = $(prefix)/doc/gtkam
-gtkamdoc_DATA = AUTHORS COPYING MANUAL
+gtkamdoc_DATA = AUTHORS COPYING
 
 ########################################################################
 # create .tar.bz2 distribution package for convenience if the

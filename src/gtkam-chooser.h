@@ -1,4 +1,4 @@
-/* gtkam-preview.h
+/* gtkam-chooser.h
  *
  * Copyright (C) 2001 Lutz Müller <urc8@rz.uni-karlsruhe.de>
  *
@@ -18,36 +18,36 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GTKAM_PREVIEW_H__
-#define __GTKAM_PREVIEW_H__
+#ifndef __GTKAM_CHOOSER_H__
+#define __GTKAM_CHOOSER_H__
 
 #include <gphoto2/gphoto2-camera.h>
 #include <gtk/gtkdialog.h>
 
-#define GTKAM_TYPE_PREVIEW  (gtkam_preview_get_type ())
-#define GTKAM_PREVIEW(o)    (GTK_CHECK_CAST((o),GTKAM_TYPE_PREVIEW,GtkamPreview))
-#define GTKAM_IS_PREVIEW(o) (GTK_CHECK_TYPE((o),GTKAM_TYPE_PREVIEW))
+#define GTKAM_TYPE_CHOOSER  (gtkam_chooser_get_type ())
+#define GTKAM_CHOOSER(o)    (GTK_CHECK_CAST((o),GTKAM_TYPE_CHOOSER,GtkamChooser))
+#define GTKAM_IS_CHOOSER(o) (GTK_CHECK_TYPE((o),GTKAM_TYPE_CHOOSER))
 
-typedef struct _GtkamPreview        GtkamPreview;
-typedef struct _GtkamPreviewPrivate GtkamPreviewPrivate;
-typedef struct _GtkamPreviewClass   GtkamPreviewClass;
+typedef struct _GtkamChooser        GtkamChooser;
+typedef struct _GtkamChooserPrivate GtkamChooserPrivate;
+typedef struct _GtkamChooserClass   GtkamChooserClass;
 
-struct _GtkamPreview
+struct _GtkamChooser
 {
 	GtkDialog parent;
 
-	GtkamPreviewPrivate *priv;
+	GtkamChooserPrivate *priv;
 };
 
-struct _GtkamPreviewClass
+struct _GtkamChooserClass
 {
 	GtkDialogClass parent_class;
 
 	/* Signals */
-	void (* captured) (GtkamPreview *preview, const gchar *path);
+	void (* camera_selected) (GtkamChooser *chooser, Camera *camera);
 };
 
-GtkType    gtkam_preview_get_type (void);
-GtkWidget *gtkam_preview_new      (Camera *camera);
+GtkType    gtkam_chooser_get_type (void);
+GtkWidget *gtkam_chooser_new      (Camera *opt_camera);
 
-#endif /* __GTKAM_PREVIEW_H__ */
+#endif /* __GTKAM_CHOOSER_H__ */

@@ -46,6 +46,6 @@ struct _GtkamErrorClass
 
 GtkType    gtkam_error_get_type (void);
 GtkWidget *gtkam_error_new      (const char *msg, int result,
-				 Camera *opt_camera);
+				 Camera *opt_camera, GtkWidget *opt_window);
 
 #endif /* __GTKAM_ERROR_H__ */

@@ -120,7 +120,8 @@ on_debug_toggled (GtkToggleButton *toggle, GtkamError *error)
 }
 
 GtkWidget *
-gtkam_error_new (const gchar *msg, int result, Camera *opt_camera)
+gtkam_error_new (const gchar *msg, int result, Camera *opt_camera,
+		 GtkWidget *opt_window)
 {
 	GtkamError *error;
 	GtkWidget *text, *vscrollbar, *button, *label;
@@ -177,6 +178,10 @@ gtkam_error_new (const gchar *msg, int result, Camera *opt_camera)
 	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (error)->action_area),
 			   button);
 	gtk_widget_grab_focus (button);
+
+	if (opt_window)
+		gtk_window_set_transient_for (GTK_WINDOW (error),
+					      GTK_WINDOW (opt_window));
 
 	return (GTK_WIDGET (error));
 }

@@ -2,6 +2,7 @@
 # include <config.h>
 #endif
 
+#include <gphoto2.h>
 #include <dirent.h>
 #include <stdio.h>    
 #include <stdlib.h>
@@ -10,8 +11,6 @@
 
 #include <gdk-pixbuf/gdk-pixbuf-loader.h>
 #include <gdk-pixbuf/gdk-pixbuf.h> 
-#include <gphoto2.h>
-#include "callbacks.h"
 #include "support.h"
 #include "util.h"
 
@@ -48,7 +47,6 @@ int gdk_image_new_from_data (char *image_data, int image_size, int scale,
 	loader = gdk_pixbuf_loader_new();
 
 	if (!gdk_pixbuf_loader_write (loader, image_data, image_size)) {
-		debug_print("Loader choked on image data");
 		return (GP_ERROR);
 	}
 
@@ -56,7 +54,6 @@ int gdk_image_new_from_data (char *image_data, int image_size, int scale,
 	pixbuf = gdk_pixbuf_loader_get_pixbuf (loader);
 
 	if (!pixbuf) {
-		debug_print("Loader choked on image data");
 		return (GP_ERROR);
 	}
 
@@ -114,7 +111,6 @@ int wait_for_hide (GtkWidget *dialog,
         while (cont) {
 		/* because the window manager could destroy the window */
 		if(!GTK_IS_OBJECT(dialog)) {
-			debug_print("window manager destroyed");
 			return 0;
 		}
 		if (GTK_WIDGET_VISIBLE(dialog))
@@ -124,17 +120,14 @@ int wait_for_hide (GtkWidget *dialog,
 	}
 
 	if(!GTK_IS_OBJECT(dialog)) {
-		debug_print("window manager destroyed");
 		return 0;
 	}
 
         if (strcmp("CANCEL",
            (char*)gtk_object_get_data(GTK_OBJECT(dialog), "button"))==0) {
-		debug_print("clicked cancel");
 		gtk_widget_destroy(dialog);
                 return 0;
 	}
-	debug_print("clicked ok");
         return 1;
 }
 

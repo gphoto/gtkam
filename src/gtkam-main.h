@@ -1,4 +1,4 @@
-/* gtkam-preview.h
+/* gtkam-main.h
  *
  * Copyright (C) 2001 Lutz Müller <urc8@rz.uni-karlsruhe.de>
  *
@@ -18,36 +18,35 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GTKAM_PREVIEW_H__
-#define __GTKAM_PREVIEW_H__
+#ifndef __GTKAM_MAIN_H__
+#define __GTKAM_MAIN_H__
 
 #include <gphoto2/gphoto2-camera.h>
-#include <gtk/gtkdialog.h>
+#include <gtk/gtkwindow.h>
 
-#define GTKAM_TYPE_PREVIEW  (gtkam_preview_get_type ())
-#define GTKAM_PREVIEW(o)    (GTK_CHECK_CAST((o),GTKAM_TYPE_PREVIEW,GtkamPreview))
-#define GTKAM_IS_PREVIEW(o) (GTK_CHECK_TYPE((o),GTKAM_TYPE_PREVIEW))
+#define GTKAM_TYPE_MAIN  (gtkam_main_get_type ())
+#define GTKAM_MAIN(o)    (GTK_CHECK_CAST((o),GTKAM_TYPE_MAIN,GtkamMain))
+#define GTKAM_IS_MAIN(o) (GTK_CHECK_TYPE((o),GTKAM_TYPE_MAIN))
 
-typedef struct _GtkamPreview        GtkamPreview;
-typedef struct _GtkamPreviewPrivate GtkamPreviewPrivate;
-typedef struct _GtkamPreviewClass   GtkamPreviewClass;
+typedef struct _GtkamMain        GtkamMain;
+typedef struct _GtkamMainPrivate GtkamMainPrivate;
+typedef struct _GtkamMainClass   GtkamMainClass;
 
-struct _GtkamPreview
+struct _GtkamMain
 {
-	GtkDialog parent;
+	GtkWindow parent;
 
-	GtkamPreviewPrivate *priv;
+	GtkamMainPrivate *priv;
 };
 
-struct _GtkamPreviewClass
+struct _GtkamMainClass
 {
-	GtkDialogClass parent_class;
-
-	/* Signals */
-	void (* captured) (GtkamPreview *preview, const gchar *path);
+	GtkWindowClass parent_class;
 };
 
-GtkType    gtkam_preview_get_type (void);
-GtkWidget *gtkam_preview_new      (Camera *camera);
+GtkType    gtkam_main_get_type (void);
+GtkWidget *gtkam_main_new      (void);
 
-#endif /* __GTKAM_PREVIEW_H__ */
+void       gtkam_main_set_camera (GtkamMain *m, Camera *camera);
+
+#endif /* __GTKAM_MAIN_H__ */

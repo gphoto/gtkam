@@ -168,6 +168,7 @@ void 		gtk_icon_list_set_selection_mode(GtkIconList *iconlist,
 						 gint mode);
 void		gtk_icon_list_select_icon	(GtkIconList *iconlist, 
 						 GtkIconListItem *item);
+void		gtk_icon_list_select_all	(GtkIconList *iconlist);
 void		gtk_icon_list_unselect_icon	(GtkIconList *iconlist, 
 						 GtkIconListItem *item);
 void		gtk_icon_list_unselect_all	(GtkIconList *iconlist);

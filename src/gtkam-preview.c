@@ -51,6 +51,13 @@ struct _GtkamPreviewPrivate
 #define PARENT_TYPE GTK_TYPE_DIALOG
 static GtkDialogClass *parent_class;
 
+enum {
+	CAPTURED,
+	LAST_SIGNAL
+};
+
+static guint signals[LAST_SIGNAL] = {0};
+
 static void
 gtkam_preview_destroy (GtkObject *object)
 {
@@ -87,6 +94,13 @@ gtkam_preview_class_init (GtkamPreviewClass *klass)
 	object_class = GTK_OBJECT_CLASS (klass);
 	object_class->destroy  = gtkam_preview_destroy;
 	object_class->finalize = gtkam_preview_finalize;
+
+	signals[CAPTURED] = gtk_signal_new ("captured", GTK_RUN_LAST,
+		object_class->type,
+		GTK_SIGNAL_OFFSET (GtkamPreviewClass, captured),
+		gtk_marshal_NONE__POINTER, GTK_TYPE_NONE, 1,
+		GTK_TYPE_POINTER);
+	gtk_object_class_add_signals (object_class, signals, LAST_SIGNAL);
 
 	parent_class = gtk_type_class (PARENT_TYPE);
 }
@@ -129,17 +143,25 @@ on_preview_capture_clicked (GtkButton *button, GtkamPreview *preview)
 	int result;
 	CameraFilePath path;
 	GtkWidget *dialog;
+	gchar *full_path;
 
 	result = gp_camera_capture (preview->priv->camera,
 				    GP_OPERATION_CAPTURE_IMAGE, &path);
 	if (result != GP_OK) {
 		dialog = gtkam_error_new ("Could not capture",
-					  result, preview->priv->camera);
-		gtk_window_set_transient_for (GTK_WINDOW (dialog),
-					      GTK_WINDOW (preview));
+			result, preview->priv->camera, GTK_WIDGET (preview));
 		gtk_widget_show (dialog);
-	} else
+	} else {
+		if (!strcmp (path.folder, "/"))
+			full_path = g_strdup_printf ("/%s", path.name);
+		else
+			full_path = g_strdup_printf ("%s/%s", path.folder,
+						     path.name);
+		gtk_signal_emit (GTK_OBJECT (preview), signals[CAPTURED],
+				 full_path);
+		g_free (full_path);
 		gtk_object_destroy (GTK_OBJECT (preview));
+	}
 }
 
 static gboolean

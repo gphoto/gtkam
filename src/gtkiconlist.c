@@ -739,6 +739,25 @@ unselect_all(GtkIconList *iconlist)
   iconlist->selection = NULL;
 }
 
+static void
+select_all(GtkIconList *iconlist)
+{
+  GList *icons;
+  GtkIconListItem *item;
+
+  if (iconlist->selection){
+    g_list_free(iconlist->selection);
+    iconlist->selection = NULL;
+  }
+  icons = iconlist->icons;
+  while(icons){
+    item = (GtkIconListItem *)icons->data;
+    select_icon(iconlist, item, NULL);
+    iconlist->selection = g_list_append(iconlist->selection, item);
+    icons = icons->next;
+  }
+}
+
 void
 gtk_icon_list_construct (GtkIconList *icon_list, guint icon_width, guint mode)
 {
@@ -1523,6 +1542,12 @@ void
 gtk_icon_list_select_icon(GtkIconList *iconlist, GtkIconListItem *item)
 {
   select_icon(iconlist, item, NULL);
+}
+
+void
+gtk_icon_list_select_all (GtkIconList *iconlist)
+{
+  select_all(iconlist);
 }
 
 void

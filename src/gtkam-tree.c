@@ -131,7 +131,7 @@ static void
 create_item (GtkamTree *tree, GtkTree *tree_to_add_to, const gchar *path)
 {
 	CameraList *list;
-	GtkWidget *item, *pixmap, *label, *subtree, *hbox, *dialog;
+	GtkWidget *item, *pixmap, *label, *subtree, *hbox, *dialog, *window;
 	int result;
 
 	item = gtk_tree_item_new ();
@@ -175,9 +175,11 @@ create_item (GtkamTree *tree, GtkTree *tree_to_add_to, const gchar *path)
 	gp_list_new (&list);
 	result = gp_camera_folder_list_folders (tree->priv->camera, path, list);
 	if (result < 0) {
+		window = gtk_widget_get_ancestor (GTK_WIDGET (tree),
+						  GTK_TYPE_WINDOW);
 		dialog = gtkam_error_new ("Could not get list of folders for "
 					  "folder '/'.", result,
-					  tree->priv->camera);
+					  tree->priv->camera, window);
 		gtk_widget_show (dialog);
 	} else if (gp_list_count (list) > 0) {
 		subtree = gtk_tree_new ();

@@ -1,4 +1,4 @@
-/* gtkam-preview.h
+/* gtkam-close.h
  *
  * Copyright (C) 2001 Lutz Müller <urc8@rz.uni-karlsruhe.de>
  *
@@ -18,36 +18,32 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GTKAM_PREVIEW_H__
-#define __GTKAM_PREVIEW_H__
+#ifndef __GTKAM_CLOSE_H__
+#define __GTKAM_CLOSE_H__
 
-#include <gphoto2/gphoto2-camera.h>
 #include <gtk/gtkdialog.h>
 
-#define GTKAM_TYPE_PREVIEW  (gtkam_preview_get_type ())
-#define GTKAM_PREVIEW(o)    (GTK_CHECK_CAST((o),GTKAM_TYPE_PREVIEW,GtkamPreview))
-#define GTKAM_IS_PREVIEW(o) (GTK_CHECK_TYPE((o),GTKAM_TYPE_PREVIEW))
+#define GTKAM_TYPE_CLOSE  (gtkam_close_get_type ())
+#define GTKAM_CLOSE(o)    (GTK_CHECK_CAST((o),GTKAM_TYPE_CLOSE,GtkamClose))
+#define GTKAM_IS_CLOSE(o) (GTK_CHECK_TYPE((o),GTKAM_TYPE_CLOSE))
 
-typedef struct _GtkamPreview        GtkamPreview;
-typedef struct _GtkamPreviewPrivate GtkamPreviewPrivate;
-typedef struct _GtkamPreviewClass   GtkamPreviewClass;
+typedef struct _GtkamClose        GtkamClose;
+typedef struct _GtkamClosePrivate GtkamClosePrivate;
+typedef struct _GtkamCloseClass   GtkamCloseClass;
 
-struct _GtkamPreview
+struct _GtkamClose
 {
 	GtkDialog parent;
 
-	GtkamPreviewPrivate *priv;
+	GtkamClosePrivate *priv;
 };
 
-struct _GtkamPreviewClass
+struct _GtkamCloseClass
 {
 	GtkDialogClass parent_class;
-
-	/* Signals */
-	void (* captured) (GtkamPreview *preview, const gchar *path);
 };
 
-GtkType    gtkam_preview_get_type (void);
-GtkWidget *gtkam_preview_new      (Camera *camera);
+GtkType    gtkam_close_get_type (void);
+GtkWidget *gtkam_close_new      (const gchar *msg, GtkWidget *opt_window);
 
-#endif /* __GTKAM_PREVIEW_H__ */
+#endif /* __GTKAM_CLOSE_H__ */

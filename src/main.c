@@ -14,32 +14,32 @@
 #include <unistd.h>
 #include <gtk/gtk.h>
 
-#include "callbacks.h"
 #include "frontend.h"
 #include "interface.h"
 #include "support.h"
 
+#include "gtkam-main.h"
+#include "gtkam-error.h"
+
 /* The Globals */
-GtkWidget *gp_gtk_main_window		= NULL;
 GtkWidget *gp_gtk_progress_window	= NULL;
 int	   gp_gtk_debug			= 0;
-char	   gp_gtk_camera_model[1024];
-int	   gp_gtk_camera_init		= 0;
-int	   gp_gtk_old_width		= 640;
-Camera*	   gp_gtk_camera 		= NULL;
 
 int
 main (int argc, char *argv[])
 {
-	char buf[1024];
-	int x, y;
+	GtkWidget *m, *dialog;
+	char buf[1024], port[1024], speed[1024], model[1024];
+	int x, y, result;
+	Camera *camera;
+	gchar *msg;
 
 #ifdef ENABLE_NLS
 	bindtextdomain (PACKAGE, PACKAGE_LOCALE_DIR);
 	textdomain (PACKAGE);
 #endif
 
-//	g_log_set_always_fatal (G_LOG_LEVEL_CRITICAL);
+	g_log_set_always_fatal (G_LOG_LEVEL_CRITICAL);
 
 	gtk_set_locale ();
 	gtk_init (&argc, &argv);
@@ -59,39 +59,53 @@ main (int argc, char *argv[])
 	add_pixmap_directory (PACKAGE_SOURCE_DIR "/pixmaps");
 
 	gp_gtk_progress_window = create_progress_window();
-	gp_gtk_main_window = create_main_window ();
-	gtk_widget_show (gp_gtk_main_window);
-	gtk_signal_connect(GTK_OBJECT(gp_gtk_main_window), "check_resize",
-		GTK_SIGNAL_FUNC(icon_resize), NULL);
 
-	/* Retrieve the last width/height of the window */
-        if (gp_setting_get("gtkam", "width", buf)==GP_OK) {
-		x = atoi(buf);
-		if (gp_setting_get("gtkam", "height", buf)==GP_OK) {
-			y = atoi(buf);
-		        gdk_window_resize(gp_gtk_main_window->window, x, y);
+	/* Create the main window */
+	m = gtkam_main_new ();
+        if (gp_setting_get ("gtkam", "width", buf) == GP_OK) {
+		x = atoi (buf);
+		if (gp_setting_get ("gtkam", "height", buf) == GP_OK) {
+			y = atoi (buf);
+		        gtk_widget_set_usize (GTK_WIDGET (m), x, y);
 		}
 	}
-
-	gdk_window_get_size(gp_gtk_main_window->window, &x, &y);
-	gp_gtk_old_width = x;
+	gtk_widget_show (m);
+	gtk_signal_connect (GTK_OBJECT (m), "delete_event",
+			    GTK_SIGNAL_FUNC (gtk_main_quit), NULL);
 
 	/* Retrieve the last camera used by gtkam */
-	if (gp_setting_get("gtkam", "camera", buf)==GP_OK) {
-		camera_set ();
+	if (((gp_setting_get ("gtkam", "camera", model) == GP_OK) ||
+	     (gp_setting_get ("gtkam", "model", model) == GP_OK)) && 
+	    ((gp_setting_get ("gtkam", "port", port) == GP_OK) ||
+	     (gp_setting_get ("gtkam", "port name", port) == GP_OK)) && 
+	    (gp_setting_get ("gtkam", "speed", speed) == GP_OK)) {
+		gp_camera_new (&camera);
+		gp_camera_set_model (camera, model);
+		if (strcmp (port, "None"))
+			gp_camera_set_port_name (camera, port);
+		if (atoi (speed))
+			gp_camera_set_port_speed (camera, atoi (speed));
+
+		result = gp_camera_init (camera);
+		if (result < 0) {
+			msg = g_strdup_printf ("Could not initialize '%s' "
+					       "on port '%s'", model, port);
+			dialog = gtkam_error_new (msg, result, camera, NULL);
+			g_free (msg);
+			gtk_widget_show (dialog);
+		} else
+			gtkam_main_set_camera (GTKAM_MAIN (m), camera);
+		gp_camera_unref (camera);
 	}
 
-	/* Set the current working directory */
-	getcwd(buf, 1024);
-	strcat(buf, "/");
-	gp_setting_set("gtkam", "cwd", buf);
-
-	gtk_signal_connect (GTK_OBJECT(gp_gtk_main_window), "delete_event",
-		GTK_SIGNAL_FUNC(main_quit), NULL);
-
-	if (gp_setting_get("gtkam", "camera", buf)!=GP_OK)
-		camera_select();
-	
 	gtk_main ();
+
+	sprintf (buf, "%i", m->allocation.width);
+	gp_setting_set ("gtkam", "width", buf);
+	sprintf (buf, "%i", m->allocation.height);
+	gp_setting_set ("gtkam", "height", buf);
+
+	gp_exit ();
+
 	return 0;
 }

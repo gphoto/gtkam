@@ -143,9 +143,8 @@ gtkam_config_apply (GtkamConfig *config)
 				       config->priv->config);
 	if (result != GP_OK) {
 		dialog = gtkam_error_new ("Could not apply configuration",
-					  result, config->priv->camera);
-		gtk_window_set_transient_for (GTK_WINDOW (dialog),
-					      GTK_WINDOW (dialog));
+					  result, config->priv->camera,
+					  GTK_WIDGET (config));
 		gtk_widget_show (dialog);
 	}
 }
@@ -243,9 +242,8 @@ on_button_clicked (GtkButton *button, CameraWidget *widget)
 	result = callback (config->priv->camera, widget);
 	if (result != GP_OK) {
 		dialog = gtkam_error_new ("Could not execute command",
-					  result, config->priv->camera);
-		gtk_window_set_transient_for (GTK_WINDOW (dialog),
-					      GTK_WINDOW (config));
+					  result, config->priv->camera,
+					  GTK_WIDGET (config));
 		gtk_widget_show (dialog);
 	}
 }
@@ -450,7 +448,7 @@ gtkam_config_new (Camera *camera)
 	result = gp_camera_get_config (camera, &config_widget);
 	if (result != GP_OK) {
 		dialog = gtkam_error_new ("Could not get configuration",
-					  result, camera);
+					  result, camera, NULL);
 		gtk_widget_show (dialog);
 		return (NULL);
 	}

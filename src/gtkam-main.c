@@ -351,7 +351,7 @@ on_folder_selected (GtkamTree *tree, const gchar *folder, GtkamMain *m)
 static void
 on_folder_unselected (GtkamTree *tree, const gchar *folder, GtkamMain *m)
 {
-	gtk_icon_list_clear (GTK_ICON_LIST (m->priv->list));
+	gtkam_list_set_path (m->priv->list, NULL);
 	update_sensitivity_folder (m);
 }
 

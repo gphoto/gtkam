@@ -241,22 +241,29 @@ gtkam_list_set_path (GtkamList *list, const gchar *path)
 	gint i;
 
 	g_return_if_fail (GTKAM_IS_LIST (list));
-	g_return_if_fail (path != NULL);
 
-	if (list->path)
-		g_free (list->path);
-	list->path = g_strdup (path);
-
-	window = gtk_widget_get_ancestor (GTK_WIDGET (list), GTK_TYPE_WINDOW);
-	m = gtk_widget_get_ancestor (GTK_WIDGET (list), GTKAM_TYPE_MAIN);
-
+	/* Remove all current items */
 	gtk_icon_list_freeze (GTK_ICON_LIST (list));
 	gtk_icon_list_clear (GTK_ICON_LIST (list));
 	gtk_icon_list_thaw (GTK_ICON_LIST (list));
 
+	/* If we don't have a path, that's it */
+	if (list->path) {
+		g_free (list->path);
+		list->path = NULL;
+	}
+	if (!path)
+		return;
+	else
+		list->path = g_strdup (path);
+
+	window = gtk_widget_get_ancestor (GTK_WIDGET (list), GTK_TYPE_WINDOW);
+	m = gtk_widget_get_ancestor (GTK_WIDGET (list), GTKAM_TYPE_MAIN);
+
 	if (m)
 		gtkam_main_select_set_sensitive (GTKAM_MAIN (m), FALSE);
 
+	/* If we don't have a camera, we can't do anything */
 	if (!list->priv->camera)
 		return;
 

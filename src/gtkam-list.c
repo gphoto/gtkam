@@ -59,6 +59,9 @@
 #include "gdk-pixbuf-hacks.h"
 #include "gtkam-info.h"
 
+/* Should that be configurable? */
+#define ICON_WIDTH 80
+
 struct _GtkamListPrivate
 {
 	Camera *camera;
@@ -180,13 +183,22 @@ gdk_pixbuf_new_from_camera_file (CameraFile *file)
 	GdkPixbuf *pixbuf;
 	const char *data;
 	unsigned long size;
+	guint w, h;
+	gfloat scale;
 
 	gp_file_get_data_and_size (file, &data, &size);
 	loader = gdk_pixbuf_loader_new ();
 	gdk_pixbuf_loader_write (loader, data, size);
 	gdk_pixbuf_loader_close (loader);
 	pixbuf = gdk_pixbuf_loader_get_pixbuf (loader);
-	gdk_pixbuf_ref (pixbuf);
+	w = gdk_pixbuf_get_width (pixbuf);
+	h = gdk_pixbuf_get_height (pixbuf);
+	if ((w > ICON_WIDTH) || (h > ICON_WIDTH)) {
+		scale = MAX ((gfloat) ICON_WIDTH / w, (gfloat) ICON_WIDTH / h);
+		pixbuf = gdk_pixbuf_scale_simple (pixbuf, scale * w, scale * h,
+						  GDK_INTERP_NEAREST);
+	} else
+		gdk_pixbuf_ref (pixbuf);
 	gtk_object_destroy (GTK_OBJECT (loader));
 
 	return (pixbuf);
@@ -370,9 +382,9 @@ gtkam_list_new (void)
         GtkamList *list;
 
         list = gtk_type_new (GTKAM_TYPE_LIST);
-        gtk_icon_list_construct (GTK_ICON_LIST (list), 80,
+        gtk_icon_list_construct (GTK_ICON_LIST (list), ICON_WIDTH,
                                  GTK_ICON_LIST_TEXT_BELOW);
-	gtk_icon_list_set_text_space (GTK_ICON_LIST (list), 80);
+	gtk_icon_list_set_text_space (GTK_ICON_LIST (list), ICON_WIDTH);
         gtk_icon_list_set_selection_mode (GTK_ICON_LIST (list),
                                           GTK_SELECTION_MULTIPLE);
         gtk_icon_list_set_editable (GTK_ICON_LIST (list), FALSE);

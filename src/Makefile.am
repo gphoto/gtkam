@@ -1,8 +1,9 @@
 ## Process this file with automake to produce Makefile.in
 
-INCLUDES = \
-	-I$(top_srcdir)/intl \
-	-DIMAGE_DIR=\"$(datadir)/images/gtkam\" \
+INCLUDES =						\
+	-I$(top_srcdir)/intl				\
+	-DIMAGE_DIR=\"$(datadir)/images/gtkam\" 	\
+	-DGTKAM_LOCALEDIR=\""$(datadir)/locale"\"	\
 	@GTK_CFLAGS@
 
 noinst_LIBRARIES = libgtkam.a

@@ -107,7 +107,7 @@ main (int argc, char *argv[])
 	int x, y;
 
 	gtk_set_locale ();
-	bindtextdomain (PACKAGE, PACKAGE_LOCALE_DIR);
+	bindtextdomain (PACKAGE, GTKAM_LOCALEDIR);
 	textdomain (PACKAGE);
 
 	gtk_init (&argc, &argv);

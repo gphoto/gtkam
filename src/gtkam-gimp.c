@@ -161,7 +161,7 @@ run (gchar *name, gint nparams, GimpParam *param, gint *nreturn_vals,
 		gtk_signal_connect (GTK_OBJECT (chooser), "camera_selected",
 				    GTK_SIGNAL_FUNC (on_camera_selected),
 				    &camera);
-		gtk_signal_connect (GTK_OBJECT (chooser), "delete_event",
+		gtk_signal_connect (GTK_OBJECT (chooser), "destroy",
 				    GTK_SIGNAL_FUNC (gtk_main_quit), NULL);
 		gtk_main ();
 
@@ -211,8 +211,7 @@ run (gchar *name, gint nparams, GimpParam *param, gint *nreturn_vals,
 			memset (&path, 0, sizeof (CameraFilePath));
 			gtk_signal_connect (GTK_OBJECT (preview), "captured",
 				GTK_SIGNAL_FUNC (on_captured), &path);
-			gtk_signal_connect (GTK_OBJECT (preview),
-				"delete_event",
+			gtk_signal_connect (GTK_OBJECT (preview), "destroy",
 				GTK_SIGNAL_FUNC (gtk_main_quit), NULL);
 			gtk_main ();
 
@@ -249,7 +248,7 @@ run (gchar *name, gint nparams, GimpParam *param, gint *nreturn_vals,
 			gp_camera_unref (camera);
 
 			/* Wait until the user closes the dialog */
-			gtk_signal_connect (GTK_OBJECT (dialog), "delete_event",
+			gtk_signal_connect (GTK_OBJECT (dialog), "destroy",
 				GTK_SIGNAL_FUNC (gtk_main_quit), NULL);
 			gtk_main ();
 
@@ -277,7 +276,7 @@ run (gchar *name, gint nparams, GimpParam *param, gint *nreturn_vals,
 		gp_camera_unref (camera);
 
 		/* Wait until the user closes the dialog */
-		gtk_signal_connect (GTK_OBJECT (dialog), "delete_event",
+		gtk_signal_connect (GTK_OBJECT (dialog), "destroy",
 				    GTK_SIGNAL_FUNC (gtk_main_quit), NULL);
 		gtk_main ();
 

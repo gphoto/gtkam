@@ -595,6 +595,8 @@ gtkam_main_new (void)
 	gtk_window_set_title (GTK_WINDOW (m), PACKAGE);
 	gtk_window_set_default_size (GTK_WINDOW (m), 640, 480);
 	gtk_window_set_policy (GTK_WINDOW (m), TRUE, TRUE, TRUE);
+	gtk_signal_connect (GTK_OBJECT (m), "delete_event",
+			    GTK_SIGNAL_FUNC (gtk_object_destroy), NULL);
 
 	vbox = gtk_vbox_new (FALSE, 1);
 	gtk_widget_show (vbox);

@@ -480,6 +480,8 @@ gtkam_config_new (Camera *camera)
 	}
 
 	config = gtk_type_new (GTKAM_TYPE_CONFIG);
+	gtk_signal_connect (GTK_OBJECT (config), "delete_event",
+			    GTK_SIGNAL_FUNC (gtk_object_destroy), NULL);
 
 	config->priv->camera = camera;
 	config->priv->config = config_widget;

@@ -125,7 +125,7 @@ main (int argc, char *argv[])
 		}
 	}
 	gtk_widget_show (m);
-	gtk_signal_connect (GTK_OBJECT (m), "delete_event",
+	gtk_signal_connect (GTK_OBJECT (m), "destroy",
 			    GTK_SIGNAL_FUNC (gtk_main_quit), NULL);
 	gtk_idle_add (idle_func, m);
 

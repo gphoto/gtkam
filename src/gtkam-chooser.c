@@ -444,6 +444,8 @@ gtkam_chooser_new (void)
 	gtk_window_set_title (GTK_WINDOW (chooser), _("Select Camera"));
 	gtk_container_set_border_width (GTK_CONTAINER (chooser), 5);
 	gtk_window_set_policy (GTK_WINDOW (chooser), TRUE, TRUE, TRUE);
+	gtk_signal_connect (GTK_OBJECT (chooser), "delete_event",
+			    GTK_SIGNAL_FUNC (gtk_object_destroy), NULL);
 
 	hbox = gtk_hbox_new (FALSE, 10);
 	gtk_widget_show (hbox);

@@ -191,6 +191,9 @@ gtkam_mkdir_new (Camera *camera, const gchar *path, GtkWidget *opt_window)
 	g_return_val_if_fail (path != NULL, NULL);
 
 	mkdir = gtk_type_new (GTKAM_TYPE_MKDIR);
+	gtk_signal_connect (GTK_OBJECT (mkdir), "delete_event",
+			    GTK_SIGNAL_FUNC (gtk_object_destroy), NULL);
+
 	mkdir->priv->path = g_strdup (path);
 	mkdir->priv->camera = camera;
 	gp_camera_ref (camera);

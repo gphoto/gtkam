@@ -157,6 +157,8 @@ gtkam_error_new (const gchar *msg, int result, Camera *opt_camera,
 
 	error = gtk_type_new (GTKAM_TYPE_ERROR);
 	gtk_window_set_policy (GTK_WINDOW (error), TRUE, TRUE, TRUE);
+	gtk_signal_connect (GTK_OBJECT (error), "delete_event",
+			    GTK_SIGNAL_FUNC (gtk_object_destroy), NULL);
 
 	hbox = gtk_hbox_new (FALSE, 10);
 	gtk_widget_show (hbox);

@@ -132,6 +132,8 @@ gtkam_close_new (const gchar *msg, GtkWidget *opt_window)
 	g_return_val_if_fail (msg != NULL, NULL);
 
 	close = gtk_type_new (GTKAM_TYPE_CLOSE);
+	gtk_signal_connect (GTK_OBJECT (close), "delete_event",
+			    GTK_SIGNAL_FUNC (gtk_object_destroy), NULL);
 
 	hbox = gtk_hbox_new (FALSE, 10);
 	gtk_widget_show (hbox);

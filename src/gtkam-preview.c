@@ -514,6 +514,8 @@ gtkam_preview_new (Camera *camera)
 	gtk_window_set_title (GTK_WINDOW (preview), _("Capture"));
 	gtk_container_set_border_width (GTK_CONTAINER (preview), 5);
 	gtk_window_set_policy (GTK_WINDOW (preview), TRUE, TRUE, TRUE);
+	gtk_signal_connect (GTK_OBJECT (preview), "delete_event",
+			    GTK_SIGNAL_FUNC (gtk_object_destroy), NULL);
 
 	preview->priv->camera = camera;
 	gp_camera_ref (camera);

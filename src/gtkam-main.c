@@ -846,6 +846,8 @@ progress_func (Camera *camera, float progress, void *data)
 void
 gtkam_main_set_camera (GtkamMain *m, Camera *camera)
 {
+	CameraAbilities a;
+
 	g_return_if_fail (GTKAM_IS_MAIN (m));
 	g_return_if_fail (camera != NULL);
 
@@ -855,9 +857,10 @@ gtkam_main_set_camera (GtkamMain *m, Camera *camera)
 	if (camera)
 		gp_camera_ref (camera);
 
+	gp_camera_get_abilities (camera, &a);
+
 	/* Previews */
-	if (camera &&
-	    camera->abilities->file_operations & GP_FILE_OPERATION_PREVIEW)
+	if (camera && a.file_operations & GP_FILE_OPERATION_PREVIEW)
 		gtk_widget_set_sensitive (GTK_WIDGET (m->priv->toggle_preview),
 					  TRUE);
 	else {
@@ -867,39 +870,33 @@ gtkam_main_set_camera (GtkamMain *m, Camera *camera)
 	}
 
 	/* Capture */
-	if (camera &&
-	    camera->abilities->operations & (GP_OPERATION_CAPTURE_PREVIEW |
-		    			     GP_OPERATION_CAPTURE_IMAGE))
+	if (camera && a.operations & (GP_OPERATION_CAPTURE_PREVIEW |
+				      GP_OPERATION_CAPTURE_IMAGE))
 		gtk_widget_set_sensitive (m->priv->item_capture, TRUE);
 	else
 		gtk_widget_set_sensitive (m->priv->item_capture, FALSE);
 
 	/* Delete */
-	if (camera &&
-	    camera->abilities->file_operations & GP_FILE_OPERATION_DELETE)
+	if (camera && a.file_operations & GP_FILE_OPERATION_DELETE)
 		gtk_widget_set_sensitive (m->priv->item_delete, TRUE);
 	else
 		gtk_widget_set_sensitive (m->priv->item_delete, FALSE);
 
 	/* Delete all */
-	if (camera && 
-	    camera->abilities->folder_operations &
-	    				GP_FOLDER_OPERATION_DELETE_ALL)
+	if (camera && a.folder_operations & GP_FOLDER_OPERATION_DELETE_ALL)
 		gtk_widget_set_sensitive (m->priv->item_delete_all, TRUE);
 	else
 		gtk_widget_set_sensitive (m->priv->item_delete_all, FALSE);
 
 	/* Overall deletion */
-	if (camera && ((camera->abilities->file_operations &
-					GP_FILE_OPERATION_DELETE) || 
-		       (camera->abilities->folder_operations &
-					GP_FOLDER_OPERATION_DELETE_ALL)))
+	if (camera && ((a.file_operations & GP_FILE_OPERATION_DELETE) ||
+		       (a.folder_operations & GP_FOLDER_OPERATION_DELETE_ALL)))
 		gtk_widget_set_sensitive (m->priv->menu_delete, TRUE);
 	else
 		gtk_widget_set_sensitive (m->priv->menu_delete, FALSE);
 
 	/* Configuration */
-	if (camera && camera->abilities->operations & GP_OPERATION_CONFIG)
+	if (camera && a.operations & GP_OPERATION_CONFIG)
 		gtk_widget_set_sensitive (m->priv->item_config, TRUE);
 	else
 		gtk_widget_set_sensitive (m->priv->item_config, FALSE);

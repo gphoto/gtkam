@@ -44,6 +44,7 @@
 #include <gphoto2/gphoto2-camera.h>
 #include <gphoto2/gphoto2-core.h>
 #include <gphoto2/gphoto2-setting.h>
+#include <gphoto2/gphoto2-port-log.h>
 #include <gtk/gtkmain.h>
 
 #include "gtkam-main.h"
@@ -66,6 +67,7 @@ main (int argc, char *argv[])
 	textdomain (PACKAGE);
 
 //	g_log_set_always_fatal (G_LOG_LEVEL_CRITICAL);
+	gp_log_history_set_size (1024);
 
 	gtk_init (&argc, &argv);
 

@@ -55,7 +55,7 @@
 #include <gtk/gtktogglebutton.h>
 
 #include <gphoto2/gphoto2-result.h>
-#include <gphoto2/gphoto2-debug.h>
+#include <gphoto2/gphoto2-port-log.h>
 
 struct _GtkamErrorPrivate
 {
@@ -174,7 +174,7 @@ gtkam_error_new (const gchar *msg, int result, Camera *opt_camera,
 	gtk_text_set_editable (GTK_TEXT (text), FALSE);
 	gtk_box_pack_start (GTK_BOX (error->priv->hbox), text, TRUE, TRUE, 0);
 
-	history = gp_debug_history_get ();
+	history = gp_log_history_get ();
 	gtk_text_insert (GTK_TEXT (text), NULL, NULL, NULL,
 			 history, strlen (history));
 

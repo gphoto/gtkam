@@ -232,6 +232,7 @@ gtkam_list_set_path (GtkamList *list, const gchar *path)
 	gchar *msg;
 	CameraList flist;
 	CameraFile *file;
+	CameraAbilities a;
 	int result;
 	const char *name, *data;
 	long int size;
@@ -279,9 +280,9 @@ gtkam_list_set_path (GtkamList *list, const gchar *path)
 				name, NULL);
 		gtk_icon_list_thaw (GTK_ICON_LIST (list));
 
+		gp_camera_get_abilities (list->priv->camera, &a);
 		if (list->priv->thumbnails &&
-		    (list->priv->camera->abilities->file_operations &
-		     GP_FILE_OPERATION_PREVIEW)) {
+		    (a.file_operations & GP_FILE_OPERATION_PREVIEW)) {
 			result = gp_camera_file_get (list->priv->camera, path,
 					name, GP_FILE_TYPE_PREVIEW, file);
 			if (result < 0) {

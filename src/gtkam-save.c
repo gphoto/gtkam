@@ -363,6 +363,7 @@ gtkam_save_new (Camera *camera, const gchar *path, GSList *filenames,
 	char buf[1024];
 	GList *child;
 	guint i;
+	CameraAbilities a;
 
 	g_return_val_if_fail (camera != NULL, NULL);
 	g_return_val_if_fail (path != NULL, NULL);
@@ -414,7 +415,8 @@ gtkam_save_new (Camera *camera, const gchar *path, GSList *filenames,
 			      "this is checked"), NULL);
 	save->priv->toggle_normal = GTK_TOGGLE_BUTTON (check);
 
-	if (camera->abilities->file_operations & GP_FILE_OPERATION_RAW) {
+	gp_camera_get_abilities (camera, &a);
+	if (a.file_operations & GP_FILE_OPERATION_RAW) {
 		check = gtk_check_button_new_with_label (_("Save raw data"));
 		gtk_widget_show (check);
 		gtk_box_pack_start (GTK_BOX (hbox), check, TRUE, TRUE, 0);
@@ -423,7 +425,7 @@ gtkam_save_new (Camera *camera, const gchar *path, GSList *filenames,
 		save->priv->toggle_raw = GTK_TOGGLE_BUTTON (check);
 	}
 
-	if (camera->abilities->file_operations & GP_FILE_OPERATION_PREVIEW) {
+	if (a.file_operations & GP_FILE_OPERATION_PREVIEW) {
 		check = gtk_check_button_new_with_label (_("Save thumbnails"));
 		gtk_widget_show (check);
 		gtk_box_pack_start (GTK_BOX (hbox), check, TRUE, TRUE, 0);

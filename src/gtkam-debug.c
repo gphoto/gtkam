@@ -149,9 +149,6 @@ log_func (GPLogLevel level, const char *domain, const char *format,
 
         debug = GTKAM_DEBUG (data);
 
-	while (gtk_events_pending ())
-		gtk_main_iteration ();
-
 	switch (level) {
 	case GP_LOG_ERROR:
 		if (!debug->priv->log_error)

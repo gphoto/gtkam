@@ -429,7 +429,7 @@ gtkam_main_add_status (GtkamMain *m, GtkWidget *status)
 
 	g_object_ref (G_OBJECT (status));
 	gtk_box_pack_start (GTK_BOX (m->priv->status), status, FALSE, FALSE, 0);
-	gtk_widget_show_now (status);
+	gtk_widget_show (status);
 }
 
 static void

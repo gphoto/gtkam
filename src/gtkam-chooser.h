@@ -23,7 +23,7 @@
 
 #include <gphoto2/gphoto2-camera.h>
 
-#include <gtk/gtkdialog.h>
+#include <gtkam-dialog.h>
 
 #include <gtkam-camera.h>
 
@@ -37,7 +37,7 @@ typedef struct _GtkamChooserClass   GtkamChooserClass;
 
 struct _GtkamChooser
 {
-	GtkDialog parent;
+	GtkamDialog parent;
 
 	GtkWidget *apply_button;
 
@@ -46,7 +46,7 @@ struct _GtkamChooser
 
 struct _GtkamChooserClass
 {
-	GtkDialogClass parent_class;
+	GtkamDialogClass parent_class;
 
 	/* Signals */
 	void (* camera_selected) (GtkamChooser *, GtkamCamera *);

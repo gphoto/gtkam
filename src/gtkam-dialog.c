@@ -145,7 +145,9 @@ gtkam_dialog_add_status (GtkamDialog *dialog, GtkWidget *status)
 	g_return_if_fail (GTKAM_IS_DIALOG (dialog));
 	g_return_if_fail (GTK_IS_WIDGET (status));
 
+	g_object_ref (G_OBJECT (status));
 	gtk_box_pack_start (GTK_BOX (dialog->priv->status), status,
 			    FALSE, FALSE, 0);
 	gtk_widget_show (status);
+	gtk_widget_queue_draw (status);
 }

@@ -63,7 +63,6 @@ struct _GtkamStatusPrivate {
 
 	GPtrArray *progress;
 	GArray *target;
-	GArray *last;
 
 	gboolean cancel;
 };
@@ -80,7 +79,6 @@ gtkam_status_destroy (GtkObject *object)
 
 	g_ptr_array_set_size (status->priv->progress, 0);
 	g_array_set_size (status->priv->target, 0);
-	g_array_set_size (status->priv->last, 0);
 
 	GTK_OBJECT_CLASS (parent_class)->destroy (object);
 }
@@ -92,7 +90,6 @@ gtkam_status_finalize (GObject *object)
 
 	g_ptr_array_free (status->priv->progress, TRUE);
 	g_array_free (status->priv->target, TRUE);
-	g_array_free (status->priv->last, TRUE);
 
 	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
@@ -122,7 +119,6 @@ gtkam_status_init (GTypeInstance *instance, gpointer g_class)
 	status->priv = g_new0 (GtkamStatusPrivate, 1);
 	status->priv->progress = g_ptr_array_new ();
 	status->priv->target = g_array_new (FALSE, TRUE, sizeof (float));
-	status->priv->last   = g_array_new (FALSE, TRUE, sizeof (float));
 }
 
 GType
@@ -164,8 +160,6 @@ status_func (GPContext *c, const char *format, va_list args,
                         GTK_STATUSBAR (status->priv->status),
                         status->priv->context_id, msg);
         g_free (msg);
-        while (gtk_events_pending ())
-                gtk_main_iteration ();
 }
 
 static void
@@ -192,13 +186,10 @@ start_func (GPContext *c, float target, const char *format,
         GtkWidget *progress;
         gchar *msg;
 	guint i;
-	float last = 0.;
 
         progress = gtk_progress_bar_new ();
         gtk_box_pack_start (GTK_BOX (status), progress, FALSE, FALSE, 0);
-	gtk_widget_show_now (progress);
-	gtk_progress_bar_set_pulse_step (GTK_PROGRESS_BAR (progress),
-					 1 / target);
+	gtk_widget_show (progress);
 
 	for (i = 0; i < status->priv->progress->len; i++)
 		if (!status->priv->progress->pdata[i])
@@ -206,11 +197,9 @@ start_func (GPContext *c, float target, const char *format,
 	if (i == status->priv->progress->len) {
 	        g_ptr_array_add (status->priv->progress, progress);
 	        g_array_append_val (status->priv->target, target);
-		g_array_append_val (status->priv->last, last);
 	} else {
 		status->priv->progress->pdata[i] = progress;
 		g_array_index (status->priv->target, gfloat, i) = target;
-		g_array_index (status->priv->last, gfloat, i) = 0.;
 	}
 
         msg = g_strdup_vprintf (format, args);
@@ -224,7 +213,8 @@ static void
 update_func (GPContext *c, unsigned int id, float current, void *data)
 {
         GtkamStatus *status = GTKAM_STATUS (data);
-        GtkProgressBar *progress;
+	GtkWidget *w;
+        GtkProgressBar *p;
 	gfloat target;
 
         g_return_if_fail (id < status->priv->progress->len);
@@ -236,10 +226,13 @@ update_func (GPContext *c, unsigned int id, float current, void *data)
 		return;
 	}
 
-        progress = status->priv->progress->pdata[id];
-	while (current > g_array_index (status->priv->last, float, id)) {
-		g_array_index (status->priv->last, float, id)++;
-		gtk_progress_bar_pulse (progress);
+        p = status->priv->progress->pdata[id];
+	gtk_progress_bar_set_fraction (p, 
+		current / g_array_index (status->priv->target, float, id));
+	w = gtk_widget_get_ancestor (GTK_WIDGET (p), GTK_TYPE_WINDOW);
+	if (w) {
+		gtk_widget_queue_draw (w);
+		gdk_window_process_updates (w->window, TRUE);
 	}
 }
 
@@ -266,11 +259,15 @@ cancel_func (GPContext *c, void *data)
 {
         GtkamStatus *status = GTKAM_STATUS (data);
 
-	while (gtk_events_pending ())
-		gtk_main_iteration ();
-
         return (status->priv->cancel ? GP_CONTEXT_FEEDBACK_CANCEL :
 				       GP_CONTEXT_FEEDBACK_OK);
+}
+
+static void
+idle_func (GPContext *c, void *data)
+{
+	while (gtk_events_pending ())
+		gtk_main_iteration ();
 }
 
 GtkWidget *
@@ -318,6 +315,10 @@ gtkam_status_new (const gchar *format, ...)
 	/* Messages */
 	gp_context_set_message_func (status->context->context, message_func,
 				     status);
+
+	/* Idle */
+	gp_context_set_idle_func (status->context->context, idle_func,
+				  status);
 
 	return (GTK_WIDGET (status));
 }

@@ -203,6 +203,7 @@ gtkam_config_close (GtkamConfig *config)
 {
 	while (gtk_events_pending ())
 		gtk_main_iteration ();
+
 	gtk_object_destroy (GTK_OBJECT (config));
 }
 
@@ -702,7 +703,7 @@ gtkam_config_new (GtkamCamera *camera)
 
 	g_return_val_if_fail (camera != NULL, NULL);
 
-	cancel = gtkam_cancel_new (NULL, _("Getting configuration..."));
+	cancel = gtkam_cancel_new (_("Getting configuration..."));
 	gtk_widget_show (cancel);
 	result = gp_camera_get_config (camera->camera, &config_widget,
 		GTKAM_CANCEL (cancel)->context->context);

@@ -26,7 +26,6 @@
 
 #include <gtk/gtklabel.h>
 #include <gtk/gtkstatusbar.h>
-#include <gtk/gtkprogressbar.h>
 #include <gtk/gtkmain.h>
 #include <gtk/gtkbutton.h>
 #include <gtk/gtksignal.h>

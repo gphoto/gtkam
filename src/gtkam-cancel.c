@@ -60,8 +60,7 @@
 struct _GtkamCancelPrivate
 {
 	GPtrArray *array_hbox, *array_progress;
-	GArray *array_target;
-	GArray *last;
+	GArray *target;
 
 	gboolean cancelled;
 };
@@ -88,8 +87,7 @@ gtkam_cancel_destroy (GtkObject *object)
 
 	g_ptr_array_set_size (cancel->priv->array_hbox, 0);
 	g_ptr_array_set_size (cancel->priv->array_progress, 0);
-	g_array_set_size (cancel->priv->array_target, 0);
-	g_array_set_size (cancel->priv->last, 0);
+	g_array_set_size (cancel->priv->target, 0);
 
 	GTK_OBJECT_CLASS (parent_class)->destroy (object);
 }
@@ -99,10 +97,9 @@ gtkam_cancel_finalize (GObject *object)
 {
 	GtkamCancel *cancel = GTKAM_CANCEL (object);
 
-	g_array_free (cancel->priv->array_target, TRUE);
+	g_array_free (cancel->priv->target, TRUE);
 	g_ptr_array_free (cancel->priv->array_hbox, TRUE);
 	g_ptr_array_free (cancel->priv->array_progress, TRUE);
-	g_array_free (cancel->priv->last, TRUE);
 	g_free (cancel->priv);
 
 	G_OBJECT_CLASS (parent_class)->finalize (object);
@@ -138,8 +135,7 @@ gtkam_cancel_init (GTypeInstance *instance, gpointer g_class)
 	cancel->priv = g_new0 (GtkamCancelPrivate, 1);
 	cancel->priv->array_hbox = g_ptr_array_new ();
 	cancel->priv->array_progress = g_ptr_array_new ();
-	cancel->priv->array_target = g_array_new (FALSE, TRUE, sizeof (float));
-	cancel->priv->last = g_array_new (FALSE, TRUE, sizeof (float));
+	cancel->priv->target = g_array_new (FALSE, TRUE, sizeof (float));
 }
 
 GType
@@ -175,9 +171,6 @@ cancel_func (GPContext *c, void *data)
 {
 	GtkamCancel *cancel = GTKAM_CANCEL (data);
 
-	while (gtk_events_pending ())
-		gtk_main_iteration ();
-
 	return (cancel->priv->cancelled ? GP_CONTEXT_FEEDBACK_CANCEL :
 					  GP_CONTEXT_FEEDBACK_OK);
 }
@@ -202,10 +195,9 @@ start_func (GPContext *c, float target, const char *format,
 	    va_list args, void *data)
 {
 	GtkamCancel *cancel = GTKAM_CANCEL (data);
-	GtkWidget *progress, *label, *hbox;
+	GtkWidget *p, *label, *hbox;
 	gchar *msg;
 	unsigned int i;
-	float last = 0.;
 
 	hbox = gtk_hbox_new (FALSE, 5);
 	gtk_widget_show (hbox);
@@ -218,29 +210,22 @@ start_func (GPContext *c, float target, const char *format,
 	gtk_widget_show (label);
 	gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
 
-	progress = gtk_progress_bar_new ();
-	gtk_progress_bar_set_pulse_step (GTK_PROGRESS_BAR (progress),
-					 1. / target);
-	gtk_widget_show (progress);
-	gtk_box_pack_start (GTK_BOX (hbox), progress, TRUE, TRUE, 0);
+	p = gtk_progress_bar_new ();
+	gtk_widget_show (p);
+	gtk_box_pack_start (GTK_BOX (hbox), p, TRUE, TRUE, 0);
 
 	for (i = 0; i < cancel->priv->array_progress->len; i++)
 		if (!cancel->priv->array_progress->pdata[i])
 			break;
 	if (i == cancel->priv->array_progress->len) {
 		g_ptr_array_add (cancel->priv->array_hbox, hbox);
-		g_ptr_array_add (cancel->priv->array_progress, progress);
-		g_array_append_val (cancel->priv->array_target, target);
-		g_array_append_val (cancel->priv->last, last);
+		g_ptr_array_add (cancel->priv->array_progress, p);
+		g_array_append_val (cancel->priv->target, target);
 	} else {
 		cancel->priv->array_hbox->pdata[i] = hbox;
-		cancel->priv->array_progress->pdata[i] = progress;
-		g_array_index (cancel->priv->array_target, gfloat, i) = target;
-		g_array_index (cancel->priv->last, gfloat, i) = 0.;
+		cancel->priv->array_progress->pdata[i] = p;
+		g_array_index (cancel->priv->target, gfloat, i) = target;
 	}
-
-	while (gtk_events_pending ())
-		gtk_main_iteration ();
 
 	return (cancel->priv->array_progress->len - 1);
 }
@@ -249,18 +234,15 @@ static void
 update_func (GPContext *c, unsigned int id, float current, void *data)
 {
 	GtkamCancel *cancel = GTKAM_CANCEL (data);
-	GtkProgressBar *progress;
+	GtkProgressBar *p;
 
 	g_return_if_fail (id < cancel->priv->array_progress->len);
 
-	progress = cancel->priv->array_progress->pdata[id];
-	while (current > g_array_index (cancel->priv->last, float, id)) {
-		g_array_index (cancel->priv->last, float, id)++;
-		gtk_progress_bar_pulse (progress);
-	}
-
-	while (gtk_events_pending ())
-		gtk_main_iteration ();
+	p = cancel->priv->array_progress->pdata[id];
+	gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR (p), 
+		current / g_array_index (cancel->priv->target, float, id));
+	gtk_widget_queue_draw (GTK_WIDGET (cancel));
+	gdk_window_process_updates (GTK_WIDGET (cancel)->window, TRUE);
 }
 
 static void
@@ -274,7 +256,7 @@ stop_func (GPContext *c, unsigned int id, void *data)
 
 	cancel->priv->array_hbox->pdata[id] = NULL;
 	cancel->priv->array_progress->pdata[id] = NULL;
-	g_array_index (cancel->priv->array_target, gfloat, id) = 0.;
+	g_array_index (cancel->priv->target, gfloat, id) = 0.;
 }
 
 GtkWidget *
@@ -291,10 +273,12 @@ gtkam_cancel_new (const gchar *format, ...)
 	msg = g_strdup_vprintf (format, args);
 	va_end (args);
 	label = gtk_label_new (msg);
-	gtk_widget_show (label);
 	g_free (msg);
+	gtk_widget_show (label);
+	gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
+	gtk_misc_set_alignment (GTK_MISC (label), 0., 0.);
 	gtk_box_pack_start (GTK_BOX (GTKAM_DIALOG (cancel)->vbox),
-			    label, FALSE, FALSE, 0);
+			    label, TRUE, TRUE, 0);
 
 	button = gtk_button_new_from_stock (GTK_STOCK_CANCEL);
 	gtk_widget_show (button);

@@ -86,8 +86,8 @@ struct _GtkamChooserPrivate
 	gboolean needs_update;
 };
 
-#define PARENT_TYPE GTK_TYPE_DIALOG
-static GtkDialogClass *parent_class;
+#define PARENT_TYPE GTKAM_TYPE_DIALOG
+static GtkamDialogClass *parent_class;
 
 enum {
 	CAMERA_SELECTED,
@@ -285,11 +285,7 @@ gtkam_chooser_get_camera (GtkamChooser *chooser)
 	 * afterwards because other applications could need the camera, too.
 	 */
 	status = gtkam_status_new (_("Initializing camera..."));
-	gtk_widget_show (status);
-	gtk_box_pack_end (GTK_BOX (GTK_DIALOG (chooser)->vbox), status,
-			  FALSE, FALSE, 0);
-	while (gtk_events_pending ())
-		gtk_main_iteration ();
+	gtkam_dialog_add_status (GTKAM_DIALOG (chooser), status);
 	r = gp_camera_init (camera, GTKAM_STATUS (status)->context->context);
 	if (multi)
 		gp_camera_exit (camera, NULL);
@@ -454,9 +450,7 @@ on_detect_clicked (GtkButton *button, GtkamChooser *chooser)
 	const char *name;
 
 	status = gtkam_status_new (_("Detecting cameras..."));
-	gtk_widget_show (status);
-	gtk_box_pack_end (GTK_BOX (GTK_DIALOG (chooser)->vbox), status,
-			  FALSE, FALSE, 0);
+	gtkam_dialog_add_status (GTKAM_DIALOG (chooser), status);
 	result = gp_abilities_list_detect (chooser->priv->al,
 		chooser->priv->il, &list,
 		GTKAM_STATUS (status)->context->context);
@@ -591,8 +585,7 @@ GtkWidget *
 gtkam_chooser_new (void)
 {
 	GtkamChooser *chooser;
-	GtkWidget *table, *label, *button, *combo, *hbox, *vbox, *check;
-	GtkWidget *image;
+	GtkWidget *table, *label, *button, *combo, *vbox, *check;
 
 	chooser = g_object_new (GTKAM_TYPE_CHOOSER, NULL);
 
@@ -609,19 +602,10 @@ gtkam_chooser_new (void)
 	gtk_window_set_title (GTK_WINDOW (chooser), _("Select Camera"));
 	gtk_container_set_border_width (GTK_CONTAINER (chooser), 5);
 
-	hbox = gtk_hbox_new (FALSE, 10);
-	gtk_widget_show (hbox);
-	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (chooser)->vbox), hbox,
-			    TRUE, TRUE, 0);
-	gtk_container_set_border_width (GTK_CONTAINER (hbox), 10);
-
-	image = gtk_image_new_from_file (IMAGE_DIR "/gtkam-camera.png");
-	gtk_widget_show (image);
-	gtk_box_pack_start (GTK_BOX (hbox), image, FALSE, FALSE, 0);
-
 	vbox = gtk_vbox_new (FALSE, 0);
 	gtk_widget_show (vbox);
-	gtk_box_pack_start (GTK_BOX (hbox), vbox, TRUE, TRUE, 0);
+	gtk_box_pack_start (GTK_BOX (GTKAM_DIALOG (chooser)->vbox),
+			    vbox, TRUE, TRUE, 0);
 
 	table = gtk_table_new (3, 3, FALSE);
 	gtk_table_set_row_spacings (GTK_TABLE (table), 5);

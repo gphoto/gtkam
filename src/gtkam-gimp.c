@@ -194,7 +194,7 @@ get_file (GtkamCamera *camera, const gchar *folder, const gchar *name,
 	GtkWidget *dialog, *c;
 	CameraFile *file;
 	static GimpParam values[1];
-	GimpDrawable *drawable;
+	GimpDrawable *d;
 	GimpPixelRgn pixel_rgn;
 	gint32 image_id, layer_id;
 	GdkPixbufLoader *loader;
@@ -206,8 +206,7 @@ get_file (GtkamCamera *camera, const gchar *folder, const gchar *name,
 	guint w, h;
 
 	gp_file_new (&file);
-	c = gtkam_cancel_new (NULL, _("Downloading '%s' from '%s'..."),
-			      name, folder);
+	c = gtkam_cancel_new (_("Downloading '%s' from '%s'..."), name, folder);
 	gtk_widget_show (c);
         result = gp_camera_file_get (camera->camera, folder, name,
 		GP_FILE_TYPE_NORMAL, file, GTKAM_CANCEL (c)->context->context);
@@ -258,15 +257,16 @@ get_file (GtkamCamera *camera, const gchar *folder, const gchar *name,
 
 	image_id = gimp_image_new (w, h, GIMP_RGB);
         gimp_image_set_filename (image_id, (gchar *) name);
-        layer_id = gimp_layer_new (image_id, _("Background"), w, h,
+        layer_id = gimp_layer_new (image_id, _("Image"), w, h,
                                    GIMP_RGB_IMAGE, 100, GIMP_NORMAL_MODE);
         gimp_image_add_layer (image_id, layer_id, 0);
-        drawable = gimp_drawable_get (layer_id);
-        gimp_pixel_rgn_init (&pixel_rgn, drawable, 0, 0, r, h, TRUE, FALSE);
+        d = gimp_drawable_get (layer_id);
+        gimp_pixel_rgn_init (&pixel_rgn, d, 0, 0, d->width, d->height,
+			     TRUE, FALSE);
         gimp_pixel_rgn_set_rect (&pixel_rgn, pixels, 0, 0, w, h);
         gdk_pixbuf_unref (pixbuf);
-        gimp_drawable_flush (drawable);
-        gimp_drawable_detach (drawable);
+        gimp_drawable_flush (d);
+        gimp_drawable_detach (d);
         gimp_display_new (image_id);
 
 	return (image_id);
@@ -285,6 +285,7 @@ run_capture (gchar *name, gint nparams, GimpParam *param, gint *nreturn_vals,
 	static PreviewParams preview_params = {0};
 	GimpRunMode run_mode = param[0].data.d_int32;
 	gint32 image_id;
+	gulong id;
 
 	camera = create_camera (GP_OPERATION_CAPTURE_IMAGE,
 				nparams, param, nreturn_vals, return_vals);
@@ -312,8 +313,8 @@ run_capture (gchar *name, gint nparams, GimpParam *param, gint *nreturn_vals,
 			memset (&path, 0, sizeof (CameraFilePath));
 			g_signal_connect (G_OBJECT (preview), "captured",
 				G_CALLBACK (on_captured), &path);
-			g_signal_connect (G_OBJECT (preview), "destroy",
-				G_CALLBACK (gtk_main_quit), NULL);
+			id = g_signal_connect (G_OBJECT (preview), "destroy",
+					G_CALLBACK (gtk_main_quit), NULL);
 			gtk_main ();
 
 			/* Check if the user cancelled */
@@ -327,6 +328,7 @@ run_capture (gchar *name, gint nparams, GimpParam *param, gint *nreturn_vals,
 			}
 
 			/* Store the settings for later runs */
+			g_signal_handler_disconnect (G_OBJECT (preview), id);
 			preview_params.angle = 
 				gtkam_preview_get_angle (
 						GTKAM_PREVIEW (preview));
@@ -409,6 +411,7 @@ run_load (gchar *name, gint nparams, GimpParam *param, gint *nreturn_vals,
 	GtkTreeSelection *s;
 	GimpRunMode run_mode = param[0].data.d_int32;
 	LoadData ld;
+	gulong id;
 
 	switch (run_mode) {
 	case GIMP_RUN_INTERACTIVE:
@@ -422,8 +425,8 @@ run_load (gchar *name, gint nparams, GimpParam *param, gint *nreturn_vals,
 		g_signal_connect (G_OBJECT (GTKAM_FSEL (fsel)->ok_button),
 			"clicked", G_CALLBACK (on_fsel_ok_clicked),
 			&selected);
-		g_signal_connect (G_OBJECT (fsel), "destroy",
-			    G_CALLBACK (gtk_main_quit), NULL);
+		id = g_signal_connect (G_OBJECT (fsel), "destroy",
+				       G_CALLBACK (gtk_main_quit), NULL);
 		gtk_main ();
 
 		/* Check if the user cancelled */
@@ -435,6 +438,7 @@ run_load (gchar *name, gint nparams, GimpParam *param, gint *nreturn_vals,
 			return;
 		}
 
+		g_signal_handler_disconnect (G_OBJECT (fsel), id);
 		gtk_widget_hide (fsel);
 		while (gtk_events_pending ())
 			gtk_main_iteration ();

@@ -1,6 +1,14 @@
+2003-12-06  Lutz Mueller <lutz@users.sourceforge.net>
+
+	More GUI improvements by Andrew Burton <adb@iinet.net.au>:
+
+	* src/gtkam-mkdir.c
+	* src/gtkam-delete.c
+	* src/gtkam-error.c
+
 2003-12-03  Lutz Mueller <lutz@users.sourceforge.net>
 
-	More suggestions b Andrew Burton <adb@iinet.net.au> without 
+	More suggestions by Andrew Burton <adb@iinet.net.au> without 
 	ChangeLog
 
 	* src/gtkam-chooser.c: GUI improvements.

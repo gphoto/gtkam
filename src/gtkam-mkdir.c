@@ -228,6 +228,13 @@ gtkam_mkdir_new (GtkamCamera *camera, const gchar *path)
 	gtk_entry_set_text (GTK_ENTRY (entry), _("New directory"));
 	mkdir->priv->entry = GTK_ENTRY (entry);
 
+	button = gtk_button_new_from_stock (GTK_STOCK_CANCEL);
+	gtk_widget_show (button);
+	g_signal_connect (GTK_OBJECT (button), "clicked",
+			    GTK_SIGNAL_FUNC (on_cancel_clicked), mkdir);
+	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (mkdir)->action_area),
+			   button);
+
 	button = gtk_button_new_from_stock (GTK_STOCK_OK);
 	gtk_widget_show (button);
 	g_signal_connect (GTK_OBJECT (button), "clicked",
@@ -235,13 +242,6 @@ gtkam_mkdir_new (GtkamCamera *camera, const gchar *path)
 	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (mkdir)->action_area),
 			   button);
 	gtk_widget_grab_focus (button);
-
-	button = gtk_button_new_from_stock (GTK_STOCK_CANCEL);
-	gtk_widget_show (button);
-	g_signal_connect (GTK_OBJECT (button), "clicked",
-			    GTK_SIGNAL_FUNC (on_cancel_clicked), mkdir);
-	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (mkdir)->action_area),
-			   button);
 
 	return (GTK_WIDGET (mkdir));
 }

@@ -328,13 +328,6 @@ gtkam_delete_new (void)
 	gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (scrolled),
 					       delete->priv->vbox);
 
-	button = gtk_button_new_from_stock (GTK_STOCK_DELETE);
-	gtk_widget_show (button);
-	g_signal_connect (GTK_OBJECT (button), "clicked",
-			    GTK_SIGNAL_FUNC (on_delete_clicked), delete);
-	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (delete)->action_area),
-			   button);
-
 	button = gtk_button_new_from_stock (GTK_STOCK_CANCEL);
 	gtk_widget_show (button);
 	g_signal_connect (GTK_OBJECT (button), "clicked",
@@ -342,6 +335,13 @@ gtkam_delete_new (void)
 	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (delete)->action_area),
 			   button);
 	gtk_widget_grab_focus (button);
+
+	button = gtk_button_new_from_stock (GTK_STOCK_DELETE);
+	gtk_widget_show (button);
+	g_signal_connect (GTK_OBJECT (button), "clicked",
+			    GTK_SIGNAL_FUNC (on_delete_clicked), delete);
+	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (delete)->action_area),
+			   button);
 
 	return (GTK_WIDGET (delete));
 }

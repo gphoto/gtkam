@@ -128,6 +128,8 @@ on_debug_toggled (GtkToggleButton *toggle, GtkamError *error)
 
 	if (!toggle->active && GTK_WIDGET_VISIBLE (error->priv->hbox))
 		gtk_widget_hide (error->priv->hbox);
+
+	gtk_window_resize (GTK_WINDOW (error), 1, 1);
 }
 
 GtkWidget *
@@ -185,6 +187,7 @@ gtkam_error_new (int result, GtkamContext *context, GtkWidget *opt_window,
 	gtk_widget_show (text);
 	gtk_text_view_set_cursor_visible (GTK_TEXT_VIEW (text), FALSE);
 	gtk_text_view_set_editable (GTK_TEXT_VIEW (text), FALSE);
+	gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (text), GTK_WRAP_WORD);
 	gtk_box_pack_start (GTK_BOX (error->priv->hbox), text, TRUE, TRUE, 0);
 
 	vscrollbar = gtk_vscrollbar_new (GTK_TEXT_VIEW (text)->vadjustment);

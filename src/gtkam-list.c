@@ -918,13 +918,11 @@ gtkam_list_new (void)
 
 	/* Column for previews */
 	renderer = gtk_cell_renderer_pixbuf_new ();
-	g_object_set (G_OBJECT (renderer), "xalign", 0.0, NULL);
 	gtk_tree_view_insert_column_with_attributes (GTK_TREE_VIEW (list),
 		-1, _("Preview"), renderer, "pixbuf", PREVIEW_COLUMN, NULL);
 
 	/* Column for file names */
 	renderer = gtk_cell_renderer_text_new ();
-	g_object_set (G_OBJECT (renderer), "xalign", 0.0, NULL);
 	gtk_tree_view_insert_column_with_attributes (GTK_TREE_VIEW (list),
 			-1, _("Name"), renderer, "text", NAME_COLUMN, NULL);
 

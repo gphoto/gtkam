@@ -65,8 +65,8 @@ struct _GtkamPortPrivate
 	GtkWidget *entry_path;
 };
 
-#define PARENT_TYPE GTK_TYPE_DIALOG
-static GtkDialogClass *parent_class;
+#define PARENT_TYPE GTKAM_TYPE_DIALOG
+static GtkamDialogClass *parent_class;
 
 enum {
 	PORT_ADDED,
@@ -127,15 +127,22 @@ gtkam_port_init (GTypeInstance *instance, gpointer g_class)
 GType
 gtkam_port_get_type (void)
 {
-	GTypeInfo tinfo;
+	static GType type = 0;
 
-	memset (&tinfo, 0, sizeof (GTypeInfo));
-	tinfo.class_size    = sizeof (GtkamPortClass);
-	tinfo.class_init    = gtkam_port_class_init;
-	tinfo.instance_size = sizeof (GtkamPort);
-	tinfo.instance_init = gtkam_port_init;
+	if (!type) {
+		GTypeInfo ti;
 
-	return (g_type_register_static (PARENT_TYPE, "GtkamPort", &tinfo, 0));
+		memset (&ti, 0, sizeof (GTypeInfo));
+		ti.class_size    = sizeof (GtkamPortClass);
+		ti.class_init    = gtkam_port_class_init;
+		ti.instance_size = sizeof (GtkamPort);
+		ti.instance_init = gtkam_port_init;
+
+		type = g_type_register_static (PARENT_TYPE, "GtkamPort",
+					       &ti, 0);
+	}
+
+	return (type);
 }
 
 static void
@@ -175,20 +182,16 @@ GtkWidget *
 gtkam_port_new (GtkWidget *opt_window)
 {
 	GtkamPort *port;
-	GtkWidget *label, *button, *entry, *image, *table;
+	GtkWidget *label, *button, *entry, *table;
 
 	port = g_object_new (GTKAM_TYPE_PORT, NULL);
 
 	table = gtk_table_new (2, 2, FALSE);
 	gtk_widget_show (table);
-	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (port)->vbox), table,
+	gtk_box_pack_start (GTK_BOX (GTKAM_DIALOG (port)->vbox), table,
 			    TRUE, TRUE, 0);
 	gtk_container_set_border_width (GTK_CONTAINER (table), 10);
 	gtk_table_set_col_spacings (GTK_TABLE (table), 5);
-
-	image = gtk_image_new_from_file (IMAGE_DIR "/gtkam-camera.png");
-	gtk_widget_show (image);
-	gtk_table_attach_defaults (GTK_TABLE (table), image, 0, 1, 1, 2);
 
 	label = gtk_label_new (_("Please specify the (extended) path to "
 		"the port you would like to use:"));

@@ -69,6 +69,7 @@
 #include "gtkam-chooser.h"
 #include "gtkam-mkdir.h"
 #include "gtkam-preview.h"
+#include "gtkam-config.h"
 
 typedef struct _GtkamTreeCameraData GtkamTreeCameraData;
 struct _GtkamTreeCameraData {
@@ -681,7 +682,15 @@ static void
 action_preferences (gpointer callback_data, guint callback_action,
 		    GtkWidget *widget)
 {
-	g_warning ("Fixme: action_preferences");
+	GtkWidget *d;
+	GtkamTree *tree = GTKAM_TREE (callback_data);
+	Camera *camera;
+	gboolean multi;
+
+	camera = gtkam_tree_get_camera_from_iter (tree, &tree->priv->iter);
+	multi  = gtkam_tree_get_multi_from_iter  (tree, &tree->priv->iter);
+	d = gtkam_config_new (camera, multi);
+	g_signal_emit (G_OBJECT (tree), signals[NEW_DIALOG], 0, d);
 }
 
 static void
@@ -920,7 +929,6 @@ gtkam_tree_new (void)
 
         /* Column for folder names. */
         renderer = gtk_cell_renderer_text_new ();
-        g_object_set (G_OBJECT (renderer), "xalign", 0.0, NULL);
         gtk_tree_view_insert_column_with_attributes (GTK_TREE_VIEW (tree),
                         -1, _("Folder"), renderer, "text",
                         FOLDER_COLUMN, NULL);

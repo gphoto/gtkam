@@ -147,6 +147,8 @@ gtkam_config_init (GTypeInstance *instance, gpointer g_class)
 	config->priv = g_new0 (GtkamConfigPrivate, 1);
 	config->priv->hash = g_hash_table_new (g_direct_hash, g_direct_equal);
 	config->priv->tooltips = gtk_tooltips_new ();
+	g_object_ref (G_OBJECT (config->priv->tooltips));
+	gtk_object_sink (GTK_OBJECT (config->priv->tooltips));
 }
 
 GType
@@ -688,7 +690,7 @@ create_widgets (GtkamConfig *config, CameraWidget *widget)
 }
 
 GtkWidget *
-gtkam_config_new (Camera *camera, gboolean multi, GtkWidget *opt_window)
+gtkam_config_new (Camera *camera, gboolean multi)
 {
 	GtkamConfig *config;
 	GtkWidget *button, *dialog, *cancel;
@@ -697,7 +699,7 @@ gtkam_config_new (Camera *camera, gboolean multi, GtkWidget *opt_window)
 
 	g_return_val_if_fail (camera != NULL, NULL);
 
-	cancel = gtkam_cancel_new (opt_window, _("Getting configuration..."));
+	cancel = gtkam_cancel_new (NULL, _("Getting configuration..."));
 	gtk_widget_show (cancel);
 	result = gp_camera_get_config (camera, &config_widget,
 		GTKAM_CANCEL (cancel)->context->context);
@@ -711,7 +713,7 @@ gtkam_config_new (Camera *camera, gboolean multi, GtkWidget *opt_window)
 		return (NULL);
 	default:
 		dialog = gtkam_error_new (result,
-			GTKAM_CANCEL (cancel)->context, opt_window,
+			GTKAM_CANCEL (cancel)->context, NULL,
 			_("Could not get configuration."));
 		gtk_widget_show (dialog);
 		gtk_object_destroy (GTK_OBJECT (cancel));
@@ -720,9 +722,6 @@ gtkam_config_new (Camera *camera, gboolean multi, GtkWidget *opt_window)
 	gtk_object_destroy (GTK_OBJECT (cancel));
 
 	config = g_object_new (GTKAM_TYPE_CONFIG, NULL);
-	if (opt_window)
-		gtk_window_set_transient_for (GTK_WINDOW (config), 
-					      GTK_WINDOW (opt_window));
 
 	config->priv->camera = camera;
 	config->priv->config = config_widget;

@@ -335,11 +335,11 @@ on_radio_270_toggled (GtkToggleButton *toggle, GtkamPreview *preview)
 static void
 on_configure_clicked (GtkButton *button, GtkamPreview *preview)
 {
-	GtkWidget *dialog;
+	GtkWidget *d;
 
-	dialog = gtkam_config_new (preview->priv->camera,
-				   preview->priv->multi, GTK_WIDGET (preview));
-	gtk_widget_show (dialog);
+	d = gtkam_config_new (preview->priv->camera, preview->priv->multi);
+	gtk_window_set_transient_for (GTK_WINDOW (d), GTK_WINDOW (preview));
+	gtk_widget_show (d);
 }
 
 static void

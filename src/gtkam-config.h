@@ -45,7 +45,6 @@ struct _GtkamConfigClass
 };
 
 GtkType    gtkam_config_get_type (void);
-GtkWidget *gtkam_config_new      (Camera *camera, gboolean multi,
-				  GtkWidget *opt_window);
+GtkWidget *gtkam_config_new      (Camera *camera, gboolean multi);
 
 #endif /* __GTKAM_CONFIG_H__ */

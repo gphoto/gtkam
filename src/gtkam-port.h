@@ -21,7 +21,7 @@
 #ifndef __GTKAM_PORT_H__
 #define __GTKAM_PORT_H__
 
-#include <gtk/gtkdialog.h>
+#include <gtkam-dialog.h>
 
 #define GTKAM_TYPE_PORT  (gtkam_port_get_type ())
 #define GTKAM_PORT(o)    (GTK_CHECK_CAST((o),GTKAM_TYPE_PORT,GtkamPort))
@@ -33,14 +33,14 @@ typedef struct _GtkamPortClass   GtkamPortClass;
 
 struct _GtkamPort
 {
-	GtkDialog parent;
+	GtkamDialog parent;
 
 	GtkamPortPrivate *priv;
 };
 
 struct _GtkamPortClass
 {
-	GtkDialogClass parent_class;
+	GtkamDialogClass parent_class;
 
 	/* Signals */
 	void (* port_added) (GtkamPort *port, const gchar *path);

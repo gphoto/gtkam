@@ -95,6 +95,7 @@ main (int argc, char *argv[])
 
 	gtk_set_locale ();
 	bindtextdomain (PACKAGE, GTKAM_LOCALEDIR);
+	bind_textdomain_codeset (PACKAGE, "UTF-8");
 	textdomain (PACKAGE);
 
 	/* Process command-line parameters */

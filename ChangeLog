@@ -1,3 +1,7 @@
+2002-11-08  Lutz Müller <lutz@users.sourceforge.net>
+
+	* src/main.c: Fix for UTF-8.
+
 2002-11-07  Lutz Müller <lutz@users.sourceforge.net>
 
 	* tests/Makefile.am: Add $(EXIF_CFLAGS)

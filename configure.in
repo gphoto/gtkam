@@ -37,20 +37,6 @@ else
   exit 1
 fi
 
-dnl Check for libgpio configuration
-AC_PATH_PROG(LIBGPIO_CONFIG,gpio-config)
-if test -n "${LIBGPIO_CONFIG}"; then
-  CFLAGS="$CFLAGS `$LIBGPIO_CONFIG --cflags`"
-  LIBS="$LIBS `$LIBGPIO_CONFIG --libs`"
-else
-  AC_MSG_ERROR([
-***
-*** libgpio is required. Available from gPhoto's Sourceforge CVS.
-*** Check http://www.gphoto.net/download.html for details
-***])
-  exit 1
-fi
-
 dnl Check for gdk-pixbuf configuration
 AC_PATH_PROG(GDK_PIXBUF_CONFIG,gdk-pixbuf-config)
 if test -n "${GDK_PIXBUF_CONFIG}"; then

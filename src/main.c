@@ -47,7 +47,7 @@ main (int argc, char *argv[])
 		if (strcmp(argv[1], "-d")==0)
 			gp_gtk_debug = GP_DEBUG_HIGH;
 		   else
-			gp_gtk_debug = 0;
+			gp_gtk_debug = GP_DEBUG_NONE;
 	}
 
 	/* Initialize gPhoto2 */

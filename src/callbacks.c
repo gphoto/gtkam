@@ -91,7 +91,7 @@ void idle() {
 
         while (gtk_events_pending())
                 gtk_main_iteration();
-	usleep(100000);
+	// usleep(100000);
         while (gtk_events_pending())
                 gtk_main_iteration();
 }
@@ -317,54 +317,58 @@ void save_selected_photos() {
 			frontend_message(gp_gtk_camera, msg);
 			f = gp_file_new();
 			folder = current_folder();
-			gp_camera_file_get(gp_gtk_camera, f, folder,
-			   gtk_object_get_data(GTK_OBJECT(item->pixmap), "name"));
-			/* determine the name to use */
-			if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(use_camera_filename))) {
-				slash = strrchr(path, '/');
-				*slash = 0;
-				sprintf(fname, "%s/%s", path,
-					(char*)gtk_object_get_data(GTK_OBJECT(item->pixmap), "name"));
-				*slash = '/';
-			} else {
-			   if (num == 1) {
-				strcpy(fname, path);
-			   } else {
-				slash = strrchr(f->type, '/');
-				slash++;
-				if (prefix) {
-					if (slash)
-						sprintf(fname, "%s%s%04i.%s", path, prefix, x, slash);
-					  else
-						sprintf(fname, "%s%s%04i", path, prefix, x);
-				} else {
-					if (slash)
-						sprintf(fname, "%sphoto%04i.%s", path, x, slash);
-					   else
-						sprintf(fname, "%sphoto%04i", path, x);
-				}
-			   }
-			}
-			progname = gtk_entry_get_text(GTK_ENTRY(program));
+			if (gp_camera_file_get(gp_gtk_camera, f, folder,
+                                               gtk_object_get_data(GTK_OBJECT(item->pixmap),"name")) < 0) {
+                            sprintf(fname, "An error occurred when getting %s",
+                                    (char*)gtk_object_get_data(GTK_OBJECT(item->pixmap),"name"));
+                            frontend_message(gp_gtk_camera, fname);
+                        } else {
+                            /* determine the name to use */
+                            if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(use_camera_filename))) {
+                                slash = strrchr(path, '/');
+                                *slash = 0;
+                                sprintf(fname, "%s/%s", path,
+                                        (char*)gtk_object_get_data(GTK_OBJECT(item->pixmap), "name"));
+                                *slash = '/';
+                            } else {
+                                if (num == 1) {
+                                    strcpy(fname, path);
+                                } else {
+                                    slash = strrchr(f->type, '/');
+                                    slash++;
+                                    if (prefix) {
+                                        if (slash)
+                                            sprintf(fname, "%s%s%04i.%s", path, prefix, x, slash);
+                                        else
+                                            sprintf(fname, "%s%s%04i", path, prefix, x);
+                                    } else {
+                                        if (slash)
+                                            sprintf(fname, "%sphoto%04i.%s", path, x, slash);
+                                        else
+                                            sprintf(fname, "%sphoto%04i", path, x);
+                                    }
+                                }
+                            }
+                            progname = gtk_entry_get_text(GTK_ENTRY(program));
 
-			/* check for existing file */
-			if (file_exists(fname)) {
-				sprintf(msg, "%s already exists. Overwrite?", fname);
-				gtk_widget_hide(gp_gtk_progress_window);
-				if (frontend_confirm(gp_gtk_camera, msg)) {
-					gp_file_save(f, fname);
-					if (strlen(progname)>0)
-						exec_command(progname, fname);
-				}
-				gtk_widget_show(gp_gtk_progress_window);
-			} else {
-				gp_file_save(f, fname);
-				if (strlen(progname)>0)
-					exec_command(progname, fname);
-			}
-
-			gp_file_free(f);
-		   }
+                            /* check for existing file */
+                            if (file_exists(fname)) {
+                                sprintf(msg, "%s already exists. Overwrite?", fname);
+                                gtk_widget_hide(gp_gtk_progress_window);
+                                if (frontend_confirm(gp_gtk_camera, msg)) {
+                                    gp_file_save(f, fname);
+                                    if (strlen(progname)>0)
+                                        exec_command(progname, fname);
+                                }
+                                gtk_widget_show(gp_gtk_progress_window);
+                            } else {
+                                gp_file_save(f, fname);
+                                if (strlen(progname)>0)
+                                    exec_command(progname, fname);
+                            }
+                        }
+                        gp_file_free(f);
+                   }
 
 		   /* Save the thumbnail */
 		   if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(save_thumbs))) {
@@ -415,7 +419,9 @@ void save_selected_photos() {
 		}
 	}
 	gtk_widget_destroy(window);
-	frontend_progress(gp_gtk_camera, NULL, 0.00);
+
+
+        frontend_progress(gp_gtk_camera, NULL, 0.00);
 	gtk_widget_hide(gp_gtk_progress_window);
 }
 
@@ -686,7 +692,7 @@ void camera_select_update_camera(GtkWidget *entry, gpointer data) {
 	}
 
 	/* Get the number of ports */
-	if ((num_ports = gp_port_count())<0) {
+	if ((num_ports = gp_port_count_get())<0) {
 		frontend_message(NULL, _("Could not retrieve number of ports"));
 		return;
 	}
@@ -697,7 +703,7 @@ void camera_select_update_camera(GtkWidget *entry, gpointer data) {
 	port_list = g_list_alloc();
 	for (x=0; x<num_ports; x++) {
 		append=0;
-		if (gp_port_info(x, &info)==GP_OK) {
+		if (gp_port_info_get(x, &info) == GP_OK) {
 			if ((info.type == GP_PORT_SERIAL) && 
 				SERIAL_SUPPORTED(a.port))
 				append=1;
@@ -713,7 +719,7 @@ void camera_select_update_camera(GtkWidget *entry, gpointer data) {
 			if ((info.type == GP_PORT_USB) &&
 				USB_SUPPORTED(a.port))
 				append=1;
-			if (append) {
+                        if (append) {
 				sprintf(buf, "%s (%s)", info.name, info.path);
 				port_list = g_list_append(port_list, strdup(buf));
 

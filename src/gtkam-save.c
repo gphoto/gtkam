@@ -371,7 +371,7 @@ on_ok_clicked (GtkButton *button, GtkamSave *save)
 			break;
 
 		msg = g_strdup_printf (_("Getting '%s' (%i of %i)..."),
-				       filename, i, count);
+				       filename, i + 1, count);
 		gtkam_cancel_set_message (save->priv->cancel, msg);
 		g_free (msg);
 

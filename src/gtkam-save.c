@@ -422,6 +422,11 @@ gtkam_save_new (Camera *camera, gboolean multi, const gchar *path,
 			save->priv->filenames,
 			g_strdup (g_slist_nth_data (filenames, i)));
 
+	cancel = gtkam_cancel_new (opt_window);
+	gtk_signal_connect (GTK_OBJECT (cancel), "cancel",
+			    GTK_SIGNAL_FUNC (on_cancel), save);
+	save->priv->cancel = GTKAM_CANCEL (cancel);
+
 	child = gtk_container_children (
 			GTK_CONTAINER (GTK_FILE_SELECTION (save)->main_vbox));
 	child = gtk_container_children (
@@ -547,11 +552,6 @@ gtkam_save_new (Camera *camera, gboolean multi, const gchar *path,
 	if (opt_window)
 		gtk_window_set_transient_for (GTK_WINDOW (save),
 					      GTK_WINDOW (opt_window));
-
-	cancel = gtkam_cancel_new (opt_window);
-	gtk_signal_connect (GTK_OBJECT (cancel), "cancel",
-			    GTK_SIGNAL_FUNC (on_cancel), save);
-	save->priv->cancel = GTKAM_CANCEL (cancel);
 
 	return (GTK_WIDGET (save));
 }

@@ -113,9 +113,6 @@ main (int argc, char *argv[])
 //	g_log_set_always_fatal (G_LOG_LEVEL_CRITICAL);
 	gtk_init (&argc, &argv);
 
-	add_pixmap_directory (PACKAGE_DATA_DIR "/pixmaps");
-	add_pixmap_directory (PACKAGE_SOURCE_DIR "/pixmaps");
-
 	/* Create the main window */
 	m = gtkam_main_new ();
         if (gp_setting_get ("gtkam", "width", buf) == GP_OK) {

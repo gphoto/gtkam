@@ -33,6 +33,7 @@
 #include "gtkam-preview.h"
 #include "gtkam-chooser.h"
 #include "gtkam-error.h"
+#include "gtkam-fsel.h"
 
 #ifdef ENABLE_NLS
 #  include <libintl.h>
@@ -53,31 +54,43 @@
 #  define N_(String) (String)
 #endif
 
-#define PLUG_IN_NAME "gtkam-gimp"
 #define PLUG_IN_PRINT_NAME "GtkamGimp"
-#define PLUG_IN_DESCRIPTION "Capture images using your digital camera"
-#define PLUG_IN_HELP "This plug-in will let you capture images using your digital camera"
-#define PLUG_IN_AUTHOR "Lutz Müller <urc8@rz.uni-karlsruhe.de>"
-#define PLUG_IN_COPYRIGHT "GPL"
-#define PLUG_IN_VERSION VERSION
-
-#define NUMBER_IN_ARGS 1
-#define IN_ARGS {GIMP_PDB_INT32, "CaptureType", "GP_CAPTURE_IMAGE, GP_CAPTURE_VIDEO, GP_CAPTURE_AUDIO"}
-
-#define NUMBER_OUT_ARGS 1
-#define OUT_ARGS {GIMP_PDB_IMAGE, "image", "Output image"}
 
 static void
 query (void)
 {
-	static GimpParamDef in_args[] = {IN_ARGS};
-	static GimpParamDef out_args[] = {OUT_ARGS};
+	static GimpParamDef load_args[] = {
+		{GIMP_PDB_INT32, "run_mode", "Interactive, non-interactive"},
+		{GIMP_PDB_STRING, "filename", "The name of the file to load"}};
+	static GimpParamDef load_return_vals[] = {
+		{GIMP_PDB_IMAGE, "image", "Output image"}};
+	static GimpParamDef capture_args[] = {
+		{GIMP_PDB_INT32, "CaptureType", "Image, Video, Audio"}};
+	static GimpParamDef capture_return_vals[] = {
+		{GIMP_PDB_IMAGE, "image", "Output image"}};
+	static gint nload_args          = sizeof (load_args) /
+				          sizeof (load_args[0]);
+	static gint ncapture_args       = sizeof (capture_args) /
+				          sizeof (capture_args[0]);
+	static int nload_return_vals    = sizeof (load_return_vals) /
+					  sizeof (load_return_vals[0]);
+	static int ncapture_return_vals = sizeof (capture_return_vals) /
+					  sizeof (capture_return_vals[0]);
 
-	gimp_install_procedure (PLUG_IN_NAME, PLUG_IN_DESCRIPTION,
-		PLUG_IN_HELP, PLUG_IN_AUTHOR, PLUG_IN_COPYRIGHT,
-		PLUG_IN_VERSION, N_("<Toolbox>/File/Acquire/From Camera..."),
-		NULL, GIMP_EXTENSION, NUMBER_IN_ARGS, NUMBER_OUT_ARGS,
-		in_args, out_args);
+	gimp_install_procedure ("gtkam-capture", _("Captures images from "
+		"digital camera"), "Nothing here yet. Patches welcome.",
+		"Lutz Müller <urc8@rz.uni-karlsruhe.de>", "GPL", VERSION,
+		N_("<Toolbox>/File/Acquire/Capture from Camera..."),
+		NULL, GIMP_EXTENSION, ncapture_args, ncapture_return_vals,
+		capture_args, capture_return_vals);
+
+	gimp_install_procedure ("gtkam-load", _("Loads files from digital "
+		"cameras"), "Nothing here yet. Patches welcome.", 
+		"Lutz Müller <urc8@rz.uni-karlsruhe.de>",
+		"GPL", VERSION,
+		N_("<Toolbox>/File/Acquire/Load from Camera..."),
+		NULL, GIMP_EXTENSION, nload_args, nload_return_vals,
+		load_args, load_return_vals);
 }
 
 static void
@@ -110,18 +123,68 @@ progress_func (Camera *camera, float progress, void *data)
 	gimp_progress_update (progress);
 }
 
-static void
-run (gchar *name, gint nparams, GimpParam *param, gint *nreturn_vals,
-     GimpParam **return_vals)
+static Camera *
+create_camera (CameraOperation operations, 
+	       gint nparams, GimpParam *param, gint *nreturn_vals,
+	       GimpParam **return_vals)
 {
+	GimpRunModeType run_mode = param[0].data.d_int32;
 	Camera *camera = NULL;
-	CameraFilePath path;
-	CameraAbilities a;
+	GtkWidget *chooser;
+	static GimpParam values[1];
+
+        switch (run_mode) {
+        case GIMP_RUN_INTERACTIVE:
+
+                /* Initialize gtk through gimp */
+                gimp_ui_init ("gtkam-gimp", TRUE);
+
+                /* Let the use choose a camera */
+                chooser = gtkam_chooser_new ();
+                gtk_widget_hide (GTKAM_CHOOSER (chooser)->apply_button);
+                gtk_widget_show (chooser);
+                gtkam_chooser_set_camera_mask (GTKAM_CHOOSER (chooser),
+					       operations);
+                gtk_signal_connect (GTK_OBJECT (chooser), "camera_selected",
+                                    GTK_SIGNAL_FUNC (on_camera_selected),
+                                    &camera);
+                gtk_signal_connect (GTK_OBJECT (chooser), "destroy",
+                                    GTK_SIGNAL_FUNC (gtk_main_quit), NULL);
+                gtk_main ();
+
+                /* Check if the user cancelled */
+		if (!camera) {
+			*nreturn_vals = 1;
+			*return_vals = values;
+			values[0].type = GIMP_PDB_STATUS;
+                        values[0].data.d_status = GIMP_PDB_CANCEL;
+                        return NULL;
+                }
+
+                break;
+        case GIMP_RUN_NONINTERACTIVE:
+        case GIMP_RUN_WITH_LAST_VALS:
+
+                g_warning ("Implement!");
+		*nreturn_vals = 1;
+		*return_vals = values;
+		values[0].type = GIMP_PDB_STATUS;
+                values[0].data.d_status = GIMP_PDB_EXECUTION_ERROR;
+                return NULL;
+
+                break;
+        }
+
+	return (camera);
+}
+
+static gint32
+get_file (Camera *camera, CameraFilePath path, gint nparams, GimpParam *param,
+	  gint *nreturn_vals, GimpParam **return_vals)
+{
+	GtkWidget *dialog;
 	CameraFile *file;
-	int result;
-	GtkWidget *preview, *chooser, *dialog;
-	static GimpParam values[2];
-	static PreviewParams preview_params = {0, 1.};
+	static GimpParam values[1];
 	GimpDrawable *drawable;
 	GimpPixelRgn pixel_rgn;
 	gint32 image_id, layer_id;
@@ -130,63 +193,82 @@ run (gchar *name, gint nparams, GimpParam *param, gint *nreturn_vals,
 	long int size;
 	const char *data;
 	guchar *pixels;
-	int r;
+	int r, result;
 	guint w, h;
-	GimpRunModeType run_mode = param[0].data.d_int32;
 
-	values[0].type = GIMP_PDB_STATUS;
-	values[0].data.d_status = GIMP_PDB_SUCCESS;
-	*nreturn_vals = 1;
-	*return_vals = values;
+	gp_file_new (&file);
+        gimp_progress_init (_("Downloading file"));
+        gp_camera_set_progress_func (camera, progress_func, NULL);
+        result = gp_camera_file_get (camera, path.folder, path.name,
+                                     GP_FILE_TYPE_NORMAL, file);
+        gp_camera_set_progress_func (camera, NULL, NULL);
+        if (result < 0) {
+                gp_file_unref (file);
+                dialog = gtkam_error_new (_("Could not "
+                        "download file"), result, camera, NULL);
+                gtk_widget_show (dialog);
+                gp_camera_unref (camera);
 
-	/*
-	 * ----------------------------------------------------------------
-	 * Step 1: Create the camera
-	 * ----------------------------------------------------------------
-	 */
-	switch (run_mode) {
-	case GIMP_RUN_INTERACTIVE:
+                /* Wait until the user closes the dialog */
+                gtk_signal_connect (GTK_OBJECT (dialog), "destroy",
+                                    GTK_SIGNAL_FUNC (gtk_main_quit), NULL);
+                gtk_main ();
 
-		/* Initialize gtk through gimp */
-		gimp_ui_init ("gtkam-gimp", TRUE);
-
-		/* Let the use choose a camera */
-		chooser = gtkam_chooser_new ();
-		gtk_widget_hide (GTKAM_CHOOSER (chooser)->apply_button);
-		gtk_widget_show (chooser);
-		gtkam_chooser_set_camera_mask (GTKAM_CHOOSER (chooser),
-					       GP_OPERATION_CAPTURE_IMAGE |
-					       GP_OPERATION_CAPTURE_PREVIEW);
-		gtk_signal_connect (GTK_OBJECT (chooser), "camera_selected",
-				    GTK_SIGNAL_FUNC (on_camera_selected),
-				    &camera);
-		gtk_signal_connect (GTK_OBJECT (chooser), "destroy",
-				    GTK_SIGNAL_FUNC (gtk_main_quit), NULL);
-		gtk_main ();
-
-		/* Check if the user cancelled */
-		if (!camera) {
-			values[0].data.d_status = GIMP_PDB_CANCEL;
-			return;
-		}
-
-		break;
-	case GIMP_RUN_NONINTERACTIVE:
-	case GIMP_RUN_WITH_LAST_VALS:
-
-		g_warning ("Implement!");
+		*nreturn_vals = 1;
+		*return_vals = values;
+		values[0].type = GIMP_PDB_STATUS;
 		values[0].data.d_status = GIMP_PDB_EXECUTION_ERROR;
+                return -1;
+        }
+
+	gp_file_get_data_and_size (file, &data, &size);
+        loader = gdk_pixbuf_loader_new ();
+        gdk_pixbuf_loader_write (loader, data, size);
+        gp_file_unref (file);
+        gdk_pixbuf_loader_close (loader);
+        pixbuf = gdk_pixbuf_loader_get_pixbuf (loader);
+        w = gdk_pixbuf_get_width (pixbuf);
+        h = gdk_pixbuf_get_height (pixbuf);
+        r = gdk_pixbuf_get_rowstride (pixbuf);
+        pixels = gdk_pixbuf_get_pixels (pixbuf);
+        gdk_pixbuf_ref (pixbuf);
+        gtk_object_unref (GTK_OBJECT (loader));
+
+	image_id = gimp_image_new (w, h, GIMP_RGB);
+        gimp_image_set_filename (image_id, path.name);
+        layer_id = gimp_layer_new (image_id, _("Background"), w, h,
+                                   GIMP_RGB_IMAGE, 100, GIMP_NORMAL_MODE);
+        gimp_image_add_layer (image_id, layer_id, 0);
+        drawable = gimp_drawable_get (layer_id);
+        gimp_pixel_rgn_init (&pixel_rgn, drawable, 0, 0, r, h, TRUE, FALSE);
+        gimp_pixel_rgn_set_rect (&pixel_rgn, pixels, 0, 0, w, h);
+        gdk_pixbuf_unref (pixbuf);
+        gimp_drawable_flush (drawable);
+        gimp_drawable_detach (drawable);
+        gimp_display_new (image_id);
+
+	return (image_id);
+}
+
+static void
+run_capture (gchar *name, gint nparams, GimpParam *param, gint *nreturn_vals,
+	     GimpParam **return_vals)
+{
+	Camera *camera = NULL;
+	CameraFilePath path;
+	CameraAbilities a;
+	int result;
+	GtkWidget *preview, *dialog;
+	static GimpParam values[2];
+	static PreviewParams preview_params = {0, 1.};
+	GimpRunModeType run_mode = param[0].data.d_int32;
+	gint32 image_id;
+
+	camera = create_camera (GP_OPERATION_CAPTURE_IMAGE,
+				nparams, param, nreturn_vals, return_vals);
+	if (!camera)
 		return;
 
-		break;
-	}
-	g_assert (camera);
-
-	/*
-	 * ----------------------------------------------------------------
-	 * Step 2: Capture an image
-	 * ----------------------------------------------------------------
-	 */
 	switch (run_mode) {
 	case GIMP_RUN_INTERACTIVE:
 
@@ -198,7 +280,7 @@ run (gchar *name, gint nparams, GimpParam *param, gint *nreturn_vals,
 		if (a.operations & GP_OPERATION_CAPTURE_PREVIEW) {
 
 			/* Get settings from a previous run (if any) */
-			gimp_get_data (PLUG_IN_NAME, &preview_params);
+			gimp_get_data (name, &preview_params);
 
 			/* Create the preview window */
 			preview = gtkam_preview_new (camera);
@@ -217,6 +299,9 @@ run (gchar *name, gint nparams, GimpParam *param, gint *nreturn_vals,
 			/* Check if the user cancelled */
 			if (!strlen (path.folder)) {
 				gp_camera_unref (camera);
+				*nreturn_vals = 1;
+				*return_vals = values;
+				values[0].type = GIMP_PDB_STATUS;
 				values[0].data.d_status = GIMP_PDB_CANCEL;
 				return;
 			}
@@ -231,7 +316,7 @@ run (gchar *name, gint nparams, GimpParam *param, gint *nreturn_vals,
 				gtkam_preview_get_angle (
 						GTKAM_PREVIEW (preview));
 			gtk_object_destroy (GTK_OBJECT (preview));
-			gimp_set_data (PLUG_IN_NAME, &preview_params,
+			gimp_set_data (name, &preview_params,
 				       sizeof (PreviewParams));
 
 			break;
@@ -251,79 +336,103 @@ run (gchar *name, gint nparams, GimpParam *param, gint *nreturn_vals,
 				GTK_SIGNAL_FUNC (gtk_main_quit), NULL);
 			gtk_main ();
 
+			*nreturn_vals = 1;
+			*return_vals = values;
+			values[0].type = GIMP_PDB_STATUS; 
 			values[0].data.d_status = GIMP_PDB_EXECUTION_ERROR;
 			return;
 		}
 	}
 
-	/*
-	 * ----------------------------------------------------------------
-	 * Step 3: Download the file
-	 * ----------------------------------------------------------------
-	 */
-	gp_file_new (&file);
-	gimp_progress_init (_("Downloading file"));
-	gp_camera_set_progress_func (camera, progress_func, NULL);
-	result = gp_camera_file_get (camera, path.folder, path.name,
-				     GP_FILE_TYPE_NORMAL, file);
-	gp_camera_set_progress_func (camera, NULL, NULL);
-	if (result < 0) {
-		gp_file_unref (file);
-		dialog = gtkam_error_new (_("Could not "
-			"download file"), result, camera, NULL);
-		gtk_widget_show (dialog);
-		gp_camera_unref (camera);
-
-		/* Wait until the user closes the dialog */
-		gtk_signal_connect (GTK_OBJECT (dialog), "destroy",
-				    GTK_SIGNAL_FUNC (gtk_main_quit), NULL);
-		gtk_main ();
-
-		values[0].data.d_status = GIMP_PDB_EXECUTION_ERROR;
-		return;
-	}
+	image_id = get_file (camera, path,
+			     nparams, param, nreturn_vals, return_vals);
 	gp_camera_unref (camera);
+	if (image_id < 0)
+		return;
 
-	/*
-	 * ----------------------------------------------------------------
-	 * Step 4: Convert file into pixbuf
-	 * ----------------------------------------------------------------
-	 */
-	gp_file_get_data_and_size (file, &data, &size);
-	loader = gdk_pixbuf_loader_new ();
-	gdk_pixbuf_loader_write (loader, data, size);
-	gp_file_unref (file);
-	gdk_pixbuf_loader_close (loader);
-	pixbuf = gdk_pixbuf_loader_get_pixbuf (loader);
-	w = gdk_pixbuf_get_width (pixbuf);
-	h = gdk_pixbuf_get_height (pixbuf);
-	r = gdk_pixbuf_get_rowstride (pixbuf);
-	pixels = gdk_pixbuf_get_pixels (pixbuf);
-	gdk_pixbuf_ref (pixbuf);
-	gtk_object_unref (GTK_OBJECT (loader));
-
-	/*
-	 * ----------------------------------------------------------------
-	 * Step 5: Take the pixbuf and make a gimp window out of it
-	 * ----------------------------------------------------------------
-	 */
-	image_id = gimp_image_new (w, h, GIMP_RGB);
-	gimp_image_set_filename (image_id, path.name);
-	layer_id = gimp_layer_new (image_id, _("Background"), w, h,
-				   GIMP_RGB_IMAGE, 100, GIMP_NORMAL_MODE);
-	gimp_image_add_layer (image_id, layer_id, 0);
-	drawable = gimp_drawable_get (layer_id);
-	gimp_pixel_rgn_init (&pixel_rgn, drawable, 0, 0, r, h, TRUE, FALSE);
-	gimp_pixel_rgn_set_rect (&pixel_rgn, pixels, 0, 0, w, h);
-	gdk_pixbuf_unref (pixbuf);
-	gimp_drawable_flush (drawable);
-	gimp_drawable_detach (drawable);
-	gimp_display_new (image_id);
-
-	/* Tell gimp about the new image */
 	*nreturn_vals = 2;
+	*return_vals = values;
+	values[0].type = GIMP_PDB_STATUS;
+	values[0].data.d_status = GIMP_PDB_SUCCESS;
 	values[1].type = GIMP_PDB_IMAGE;
 	values[1].data.d_image = image_id;
+}
+
+static void
+on_selected (GtkamFSel *fsel, const gchar *path, CameraFilePath *fpath)
+{
+	gchar *dirname;
+
+	dirname = g_dirname (path);
+	strncpy (fpath->folder, dirname, sizeof (fpath->folder));
+	g_free (dirname);
+	strncpy (fpath->name, g_basename (path), sizeof (fpath->name));
+}
+
+static void
+run_load (gchar *name, gint nparams, GimpParam *param, gint *nreturn_vals,
+	  GimpParam **return_vals)
+{
+	Camera *camera;
+	CameraFilePath path;
+	GtkWidget *fsel;
+	gint32 image_id;
+	static GimpParam values[2];
+
+	/* Create the camera */
+	camera = create_camera (GP_OPERATION_NONE, 
+				nparams, param, nreturn_vals, return_vals);
+        if (!camera)
+                return;
+
+	/* Show the file selection dialog */
+	fsel = gtkam_fsel_new (camera, NULL);
+	gtk_widget_show (fsel);
+	gtk_signal_connect (GTK_OBJECT (fsel), "selected",
+			    GTK_SIGNAL_FUNC (on_selected), &path);
+	gtk_signal_connect (GTK_OBJECT (fsel), "destroy",
+			    GTK_SIGNAL_FUNC (gtk_main_quit), NULL);
+	gtk_main ();
+
+	/* Check if the user cancelled */
+	if (!strlen (path.folder)) {
+		gp_camera_unref (camera);
+		*nreturn_vals = 1;
+		*return_vals = values;
+		values[0].type = GIMP_PDB_STATUS;
+		values[0].data.d_status = GIMP_PDB_CANCEL;
+		return;
+	}
+
+	/* Get the file and display it */
+	image_id = get_file (camera, path,
+			     nparams, param, nreturn_vals, return_vals);
+	gp_camera_unref (camera);
+	if (image_id < 0)
+		return;
+
+	*nreturn_vals = 2;
+	*return_vals = values;
+	values[1].type = GIMP_PDB_IMAGE;
+	values[1].data.d_image = image_id;
+}
+
+static void
+run (gchar *name, gint nparams, GimpParam *params, gint *nreturn_vals,
+     GimpParam **return_vals)
+{
+	static GimpParam values[1];
+
+	if (!strcmp (name, "gtkam-capture"))
+		run_capture (name, nparams, params, nreturn_vals, return_vals);
+	else if (!strcmp (name, "gtkam-load"))
+		run_load (name, nparams, params, nreturn_vals, return_vals);
+	else {
+		*nreturn_vals = 1;
+		*return_vals = values;
+		values[0].type = GIMP_PDB_STATUS;
+		values[0].data.d_status = GIMP_PDB_CALLING_ERROR;
+	}
 }
 
 GimpPlugInInfo PLUG_IN_INFO = {

@@ -73,6 +73,9 @@ create_pixmap                          (GtkWidget       *widget,
   GtkWidget *pixmap;
   GList *elem;
 
+  add_pixmap_directory (PACKAGE_DATA_DIR "/pixmaps");
+  add_pixmap_directory (PACKAGE_SOURCE_DIR "/pixmaps");
+
   if (!filename || !filename[0])
       return create_dummy_pixmap (widget);
 

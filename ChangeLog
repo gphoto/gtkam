@@ -1,3 +1,7 @@
+2001-11-20  Lutz Müller <urc8@rz.uni-karlsruhe.de>
+
+	* src: Prepare file loading from within gimp
+
 2001-11-19  Lutz Müller <urc8@rz.uni-karlsruhe.de>
 
 	Bug reported by Mariusz Woloszyn:

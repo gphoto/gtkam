@@ -659,14 +659,6 @@ action_delete (gpointer callback_data, guint callback_action,
 }
 
 static void
-on_drag_data_get (GtkWidget *widget, GdkDragContext *context,
-		  GtkSelectionData *selection_data, guint info, guint time,
-		  GtkamList *list)
-{
-	g_message ("Fixme: on_drag_data_get");
-}
-
-static void
 on_edited (GtkCellRendererText *cell, const gchar *path,
 	   const gchar *new_text, GtkamList *list)
 {
@@ -725,10 +717,6 @@ static GtkItemFactoryEntry mi[] =
 	{"/_Delete", NULL, action_delete, 0, "<StockItem>", GTK_STOCK_DELETE}
 };
 
-static GtkTargetEntry targets[] = {
-	{"image/x-unknown", 0, 0}
-};
-
 GtkWidget *
 gtkam_list_new (void)
 {
@@ -742,13 +730,9 @@ gtkam_list_new (void)
 	gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (list), FALSE);
 	gtk_tree_view_set_enable_search (GTK_TREE_VIEW (list), TRUE);
 	gtk_tree_view_set_reorderable (GTK_TREE_VIEW (list), TRUE);
-	gtk_tree_view_enable_model_drag_source (GTK_TREE_VIEW (list),
-		GDK_BUTTON1_MASK, targets, G_N_ELEMENTS (targets),
-		GDK_ACTION_COPY);
+
 	g_signal_connect (G_OBJECT (list), "button_press_event",
 			  G_CALLBACK (on_button_press_event), list);
-	g_signal_connect (G_OBJECT (list), "drag_data_get",
-			  G_CALLBACK (on_drag_data_get), list);
 
 	ag = gtk_accel_group_new ();
 	list->priv->factory = gtk_item_factory_new (GTK_TYPE_MENU, "<popup>",

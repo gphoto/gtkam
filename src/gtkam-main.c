@@ -97,7 +97,7 @@ struct _GtkamMainPrivate
 #define PARENT_TYPE GTK_TYPE_WINDOW
 static GtkWindowClass *parent_class;
 
-	static void
+static void
 gtkam_main_destroy (GtkObject *object)
 {
 	GtkamMain *m = GTKAM_MAIN (object);
@@ -107,7 +107,7 @@ gtkam_main_destroy (GtkObject *object)
 	GTK_OBJECT_CLASS (parent_class)->destroy (object);
 }
 
-	static void
+static void
 gtkam_main_finalize (GObject *object)
 {
 	GtkamMain *m = GTKAM_MAIN (object);
@@ -117,7 +117,7 @@ gtkam_main_finalize (GObject *object)
 	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
-	static void
+static void
 gtkam_main_class_init (gpointer g_class, gpointer class_data)
 {
 	GtkObjectClass *object_class;
@@ -132,7 +132,7 @@ gtkam_main_class_init (gpointer g_class, gpointer class_data)
 	parent_class = g_type_class_peek_parent (g_class);
 }
 
-	static void
+static void
 gtkam_main_init (GTypeInstance *instance, gpointer g_class)
 {
 	GtkamMain *m = GTKAM_MAIN (instance);
@@ -140,7 +140,7 @@ gtkam_main_init (GTypeInstance *instance, gpointer g_class)
 	m->priv = g_new0 (GtkamMainPrivate, 1);
 }
 
-	GType
+GType
 gtkam_main_get_type (void)
 {
 	static GType type = 0;
@@ -161,7 +161,7 @@ gtkam_main_get_type (void)
 	return (type);
 }
 
-	static void
+static void
 gtkam_main_update_sensitivity (GtkamMain *m)
 {
 	guint i, s;
@@ -170,23 +170,20 @@ gtkam_main_update_sensitivity (GtkamMain *m)
 	s = gtkam_list_count_selected (GTKAM_LIST (m->priv->list));
 
 	gtk_widget_set_sensitive (
-			gtk_item_factory_get_widget (m->priv->factory, "/Select/None"),
-			(s != 0));
+		gtk_item_factory_get_widget (m->priv->factory, "/Select/None"),
+		(s != 0));
 	gtk_widget_set_sensitive (
-			gtk_item_factory_get_widget (m->priv->factory,
-				"/File/Delete Photos/Selected"),
-			(s != 0));
+		gtk_item_factory_get_widget (m->priv->factory,
+			"/File/Delete Photos/Selected"), (s != 0));
 	gtk_widget_set_sensitive (
-			gtk_item_factory_get_widget (m->priv->factory,
-				"/File/Save Photos/Selected"),
-			(s != 0));
+		gtk_item_factory_get_widget (m->priv->factory,
+			"/File/Save Photos/Selected"), (s != 0));
 	gtk_widget_set_sensitive (
-			gtk_item_factory_get_widget (m->priv->factory, "/Select/All"),
-			(s != i));
+		gtk_item_factory_get_widget (m->priv->factory, "/Select/All"),
+		(s != i));
 	gtk_widget_set_sensitive (
-			gtk_item_factory_get_widget (m->priv->factory,
-				"/Select/Inverse"),
-			(i != 0));
+		gtk_item_factory_get_widget (m->priv->factory,
+			"/Select/Inverse"), (i != 0));
 }
 
 static void
@@ -522,11 +519,15 @@ static GtkItemFactoryEntry mi[] =
 {
 	{"/_File", NULL, 0, 0, "<Branch>"},
 	{"/File/_Save Photos", NULL, 0, 0, "<Branch>"},
-	{"/File/Save Photos/_Selected", NULL, action_save_sel, 0, NULL},
-	{"/File/Save Photos/_All", NULL, action_save_all, 0, NULL},
+	{"/File/Save Photos/_Selected", NULL, action_save_sel, 0,
+					"<StockItem>", GTK_STOCK_SAVE},
+	{"/File/Save Photos/_All", NULL, action_save_all, 0,
+					"<StockItem>", GTK_STOCK_SAVE},
 	{"/File/_Delete Photos", NULL, 0, 0, "<Branch>"},
-	{"/File/Delete Photos/_Selected", NULL, action_delete_sel, 0, NULL},
-	{"/File/Delete Photos/_All", NULL, action_delete_all, 0, NULL},
+	{"/File/Delete Photos/_Selected", NULL, action_delete_sel, 0,
+					"<StockItem>", GTK_STOCK_DELETE},
+	{"/File/Delete Photos/_All", NULL, action_delete_all, 0,
+					"<StockItem>", GTK_STOCK_DELETE},
 	{"/File/sep1", NULL, 0, 0, "<Separator>"},
 	{"/File/_Quit", NULL, action_quit, 0, "<StockItem>", GTK_STOCK_QUIT},
 	{"/_View", NULL, 0, 0, "<Branch>"},
@@ -701,6 +702,8 @@ gtkam_main_new (void)
 			  G_CALLBACK (on_new_status), m);
 	g_signal_connect (G_OBJECT (m->priv->list), "new_dialog",
 			  G_CALLBACK (on_new_dialog), m);
+
+	gtkam_main_update_sensitivity (m);
 
 	return (GTK_WIDGET (m));
 }

@@ -50,9 +50,6 @@ main (int argc, char *argv[])
 			gp_gtk_debug = GP_DEBUG_NONE;
 	}
 
-	/* Initialize gPhoto2 */
-	gp_init(gp_gtk_debug);
-
 	/* Register my callbacks for interaction */
 	gp_frontend_register(frontend_status, frontend_progress,
 		frontend_message, frontend_confirm, frontend_prompt);

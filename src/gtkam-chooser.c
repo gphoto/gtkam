@@ -320,6 +320,8 @@ on_detect_clicked (GtkButton *button, GtkamChooser *chooser)
 //FIXME: Let user choose from the list
 		gp_list_get_name (&list, 0, &name);
 		gtk_entry_set_text (chooser->priv->entry_model, name);
+		gtk_entry_set_text (chooser->priv->entry_port,
+				    "Universal Serial Bus (usb:)");
 	}
 }
 

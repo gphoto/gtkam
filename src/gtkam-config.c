@@ -201,12 +201,14 @@ create_page (GtkamConfig *config, CameraWidget *widget)
 	/* Label */
 	if (widget) {
 		gp_widget_get_info  (widget, &info);
+		if (!strlen (info))
+			info = N_("No additional information available");
 		gp_widget_get_label (widget, &l);
 		label = gtk_label_new (_(l));
 		gtk_tooltips_set_tip (config->priv->tooltips, label, _(info),
 				      NULL);
 	} else
-		label = gtk_label_new (_("Others"));
+		label = gtk_label_new (_("General Settings"));
 	gtk_widget_show (label);
 
 	/* VBox */
@@ -384,6 +386,8 @@ create_widgets (GtkamConfig *config, CameraWidget *widget)
 
 	gp_widget_get_label (widget, &label);
 	gp_widget_get_info  (widget, &info);
+	if (!strlen (info)) 
+		info = N_("No additional information available");
 	gp_widget_get_type  (widget, &type);
 
 	switch (type) {

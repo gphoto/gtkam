@@ -49,7 +49,7 @@ struct _GtkamTreeClass
 };
 
 GtkType    gtkam_tree_get_type (void);
-GtkWidget *gtkam_tree_new      (void);
+GtkWidget *gtkam_tree_new      (GtkWidget *vbox);
 
 void         gtkam_tree_set_camera (GtkamTree *tree, Camera *camera,
 				    gboolean multi);

@@ -52,6 +52,7 @@
 #include <gdk-pixbuf/gdk-pixbuf.h>
 
 #include "gtkam-error.h"
+#include "gtkam-status.h"
 
 struct _GtkamDeletePrivate
 {
@@ -169,23 +170,36 @@ gp_list_lookup_name (CameraList *list, const char *name)
 static gboolean
 delete_all (GtkamDelete *delete)
 {
-	GtkWidget *d;
-	gchar *msg, *path;
+	GtkWidget *d, *s;
+	gchar *path;
 	int result, r1, r2;
 	CameraList l1, l2;
 	const char *name;
 
+	s = gtkam_status_new (_("Deleting all files in '%s'..."), 
+			      delete->priv->path);
+	gtk_widget_show (s);
+	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (delete)->vbox), s,
+			    FALSE, FALSE, 0);
 	r1 = gp_camera_folder_list_files (delete->priv->camera,
 					  delete->priv->path, &l1, NULL);
 	result = gp_camera_folder_delete_all (delete->priv->camera,
-					      delete->priv->path, NULL);
-	if (result < 0) {
-		msg = g_strdup_printf (_("Could not delete all files "
-				       "in '%s'"), delete->priv->path);
-		d = gtkam_error_new (msg, result, delete->priv->camera,
-				     GTK_WIDGET (delete));
-		g_free (msg);
+		delete->priv->path, GTKAM_STATUS (s)->context->context);
+	switch (result) {
+	case GP_OK:
+		gtk_signal_emit (GTK_OBJECT (delete),
+				 signals[ALL_DELETED], delete->priv->path);
+		gtk_object_destroy (GTK_OBJECT (s));
+		return (TRUE);
+	case GP_ERROR_CANCEL:
+		gtk_object_destroy (GTK_OBJECT (s));
+		return (TRUE);
+	default:
+		d = gtkam_error_new (result, GTKAM_STATUS (s)->context,
+			GTK_WIDGET (delete), _("Could not delete all files "
+			"in '%s'."), delete->priv->path);
 		gtk_widget_show (d);
+		gtk_object_destroy (GTK_OBJECT (s));
 
 		/* See what files have been deleted */
 		r2 = gp_camera_folder_list_files (delete->priv->camera,
@@ -209,31 +223,26 @@ delete_all (GtkamDelete *delete)
 			}
 		}
 		return (FALSE);
-	} else {
-		gtk_signal_emit (GTK_OBJECT (delete),
-				 signals[ALL_DELETED], delete->priv->path);
-		return (TRUE);
 	}
 }
 
 static gboolean
 delete_one (GtkamDelete *delete, const gchar *file)
 {
-	GtkWidget *d;
-	gchar *path, *msg;
+	GtkWidget *d, *s;
+	gchar *path;
 	int result;
 
+	s = gtkam_status_new (_("Deleting file '%s' from folder '%s'..."),
+			      file, delete->priv->path);
+	gtk_widget_show (s);
+	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (delete)->vbox), s,
+			    FALSE, FALSE, 0);
 	result = gp_camera_file_delete (delete->priv->camera,
-					delete->priv->path, file, NULL);
-	if (result < 0) {
-		msg = g_strdup_printf (_("Could not delete "
-			"'%s' in '%s'"), file, delete->priv->path);
-		d = gtkam_error_new (msg, result, delete->priv->camera,
-				     GTK_WIDGET (delete));
-		g_free (msg);
-		gtk_widget_show (d);
-		return (FALSE);
-	} else {
+		delete->priv->path, file, GTKAM_STATUS (s)->context->context);
+	switch (result) {
+	case GP_OK:
+		gtk_object_destroy (GTK_OBJECT (s));
 		if (strlen (delete->priv->path) == 1)
 			path = g_strdup_printf ("/%s", file);
 		else
@@ -243,6 +252,17 @@ delete_one (GtkamDelete *delete, const gchar *file)
 				 path);
 		g_free (path);
 		return (TRUE);
+	case GP_ERROR_CANCEL:
+		gtk_object_destroy (GTK_OBJECT (s));
+		return (FALSE);
+	default:
+		d = gtkam_error_new (result, GTKAM_STATUS (s)->context,
+			GTK_WIDGET (delete), _("Could not delete "
+			"file '%s' in folder '%s'."),
+			file, delete->priv->path);
+		gtk_widget_show (d);
+		gtk_object_destroy (GTK_OBJECT (s));
+		return (FALSE);
 	}
 }
 

@@ -23,6 +23,7 @@
 
 #include <gphoto2/gphoto2-camera.h>
 #include <gtk/gtkdialog.h>
+#include <gtkam-context.h>
 
 #define GTKAM_TYPE_ERROR  (gtkam_error_get_type ())
 #define GTKAM_ERROR(o)    (GTK_CHECK_CAST((o),GTKAM_TYPE_ERROR,GtkamError))
@@ -45,7 +46,8 @@ struct _GtkamErrorClass
 };
 
 GtkType    gtkam_error_get_type (void);
-GtkWidget *gtkam_error_new      (const char *msg, int result,
-				 Camera *opt_camera, GtkWidget *opt_window);
+GtkWidget *gtkam_error_new      (int result, GtkamContext *context,
+				 GtkWidget *opt_window, const gchar *format,
+				 ...);
 
 #endif /* __GTKAM_ERROR_H__ */

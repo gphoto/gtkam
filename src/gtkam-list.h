@@ -47,12 +47,10 @@ struct _GtkamListClass
 
 	/* Signals */
 	void (* changed)        (GtkamList *list);
-	void (* download_start) (GtkamList *list, CameraFile *file);
-	void (* download_stop)  (GtkamList *list, CameraFile *file);
 };
 
 GtkType    gtkam_list_get_type (void);
-GtkWidget *gtkam_list_new      (void);
+GtkWidget *gtkam_list_new      (GtkWidget *vbox);
 
 void       gtkam_list_set_camera     (GtkamList *list, Camera *camera,
 				      gboolean multi);

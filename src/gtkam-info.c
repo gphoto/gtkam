@@ -54,7 +54,9 @@
 #include <gtk/gtkpixmap.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 
+#include "gtkam-cancel.h"
 #include "gtkam-error.h"
+#include "gtkam-status.h"
 
 struct _GtkamInfoPrivate
 {
@@ -177,30 +179,41 @@ static gboolean
 gtkam_info_update (GtkamInfo *info)
 {
 	int result;
-	gchar *dir, *msg;
-	GtkWidget *dialog;
+	gchar *dir;
+	GtkWidget *dialog, *s;
 
 	g_return_val_if_fail (GTKAM_IS_INFO (info), FALSE);
 
 	dir = g_dirname (info->priv->path);
+
+	s = gtkam_status_new (_("Getting information for file '%s' in "
+			      "'%s'..."), dir, g_basename (info->priv->path));
+	gtk_widget_show (s);
 	result = gp_camera_file_set_info (info->priv->camera, dir,
-			g_basename (info->priv->path), info->priv->info_new,
-			NULL);
+		g_basename (info->priv->path), info->priv->info_new,
+		GTKAM_STATUS (s)->context->context);
 	gp_camera_file_get_info (info->priv->camera, dir,
 			g_basename (info->priv->path), &info->priv->info,
 			NULL);
 	g_free (dir);
 	gtk_signal_emit (GTK_OBJECT (info), signals[INFO_UPDATED],
 			 info->priv->path);
-	if (result < 0) {
-		msg = g_strdup_printf (_("Could not set file information for "
-				       "'%s'"), info->priv->path);
-		dialog = gtkam_error_new (msg, result, info->priv->camera,
-					  GTK_WIDGET (info));
-		g_free (msg);
+	switch (result) {
+	case GP_OK:
+		break;
+	case GP_ERROR_CANCEL:
+		gtk_object_destroy (GTK_OBJECT (s));
+		return FALSE;
+	default:
+		dialog = gtkam_error_new (result, GTKAM_STATUS (s)->context,
+			GTK_WIDGET (info),
+			_("Could not set file information for "
+			"'%s'"), info->priv->path);
 		gtk_widget_show (dialog);
+		gtk_object_destroy (GTK_OBJECT (s));
 		return (FALSE);
 	}
+	gtk_object_destroy (GTK_OBJECT (s));
 
 	info->priv->needs_update = FALSE;
 	gtkam_info_update_sensitivity (info);
@@ -320,15 +333,40 @@ gtkam_info_new (Camera *camera, const gchar *path, GtkWidget *opt_window)
 {
 	GtkamInfo *info;
 	GtkWidget *button, *image, *hbox, *dialog, *notebook, *page, *label;
-	GtkWidget *check, *entry;
+	GtkWidget *check, *entry, *c;
 	GdkPixmap *pixmap;
 	GdkBitmap *bitmap;
 	GdkPixbuf *pixbuf;
 	gchar *dir, *msg;
 	int result;
+	CameraFileInfo i;
 
 	g_return_val_if_fail (camera != NULL, NULL);
 	g_return_val_if_fail (path != NULL, NULL);
+
+	/* Get file info */
+	dir = g_dirname (path);
+	c = gtkam_cancel_new (opt_window,
+		_("Getting information about file '%s' in "
+		"folder '%s'..."), g_basename (path), dir);
+	result = gp_camera_file_get_info (camera, dir, g_basename (path),
+		&i, GTKAM_CANCEL (c)->context->context);
+	g_free (dir);
+	switch (result) {
+	case GP_OK:
+		break;
+	case GP_ERROR_CANCEL:
+		gtk_object_destroy (GTK_OBJECT (c));
+		return (NULL);
+	default:
+		dialog = gtkam_error_new (result, GTKAM_CANCEL (c)->context,
+			opt_window, _("Could not get information about file "
+			"'%s' in folder '%s'."), path);
+		gtk_widget_show (dialog);
+		gtk_object_destroy (GTK_OBJECT (c));
+		return (NULL);
+	}
+	gtk_object_destroy (GTK_OBJECT (c));
 
 	info = gtk_type_new (GTKAM_TYPE_INFO);
 	gtk_signal_connect (GTK_OBJECT (info), "delete_event",
@@ -338,21 +376,7 @@ gtkam_info_new (Camera *camera, const gchar *path, GtkWidget *opt_window)
 	info->priv->camera = camera;
 	gp_camera_ref (camera);
 	info->priv->path = g_strdup (path);
-
-	/* Get file info */
-	dir = g_dirname (path);
-	result = gp_camera_file_get_info (camera, dir, g_basename (path),
-					  &info->priv->info, NULL);
-	g_free (dir);
-	if (result < 0) {
-		msg = g_strdup_printf (_("Could not get information about "
-				       "'%s'"), path);
-		dialog = gtkam_error_new (msg, result, camera, opt_window);
-		g_free (msg);
-		gtk_widget_show (dialog);
-		gtk_object_destroy (GTK_OBJECT (info));
-		return (NULL);
-	}
+	memcpy (&info->priv->info, &i, sizeof (CameraFileInfo));
 
 	hbox = gtk_hbox_new (FALSE, 10);
 	gtk_widget_show (hbox);

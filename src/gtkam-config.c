@@ -61,8 +61,10 @@
 #include <gtk/gtkcalendar.h>
 #include <gtk/gtkmain.h>
 
-#include <gtkam-error.h>
-#include <gtkam-clock.h>
+#include "gtkam-cancel.h"
+#include "gtkam-error.h"
+#include "gtkam-clock.h"
+#include "gtkam-status.h"
 
 struct _GtkamConfigPrivate
 {
@@ -162,18 +164,28 @@ static void
 gtkam_config_apply (GtkamConfig *config)
 {
 	int result;
-	GtkWidget *dialog;
+	GtkWidget *dialog, *status;
 
+	status = gtkam_status_new (_("Applying configuration..."));
+	gtk_widget_show (status);
+	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (config)->vbox), status,
+			    FALSE, FALSE, 0);
 	result = gp_camera_set_config (config->priv->camera,
-				       config->priv->config, NULL);
+		config->priv->config, GTKAM_STATUS (status)->context->context);
 	if (config->priv->multi)
 		gp_camera_exit (config->priv->camera, NULL);
-	if (result != GP_OK) {
-		dialog = gtkam_error_new (_("Could not apply configuration"),
-					  result, config->priv->camera,
-					  GTK_WIDGET (config));
+	switch (result) {
+	case GP_OK:
+		break;
+	case GP_ERROR_CANCEL:
+		break;
+	default:
+		dialog = gtkam_error_new (result,
+			GTKAM_STATUS (status)->context, GTK_WIDGET (config),
+			_("Could not apply configuration.")),
 		gtk_widget_show (dialog);
 	}
+	gtk_object_destroy (GTK_OBJECT (status));
 }
 
 static void
@@ -278,9 +290,8 @@ on_button_clicked (GtkButton *button, CameraWidget *widget)
 	gp_widget_get_value (widget, &callback);
 	result = callback (config->priv->camera, widget);
 	if (result != GP_OK) {
-		dialog = gtkam_error_new (_("Could not execute command"),
-					  result, config->priv->camera,
-					  GTK_WIDGET (config));
+		dialog = gtkam_error_new (result, NULL, GTK_WIDGET (config),
+			_("Could not execute command"));
 		gtk_widget_show (dialog);
 	}
 }
@@ -592,28 +603,43 @@ create_widgets (GtkamConfig *config, CameraWidget *widget)
 }
 
 GtkWidget *
-gtkam_config_new (Camera *camera, gboolean multi)
+gtkam_config_new (Camera *camera, gboolean multi, GtkWidget *opt_window)
 {
 	GtkamConfig *config;
-	GtkWidget *button, *dialog;
+	GtkWidget *button, *dialog, *cancel;
 	CameraWidget *config_widget;
 	int result;
 
 	g_return_val_if_fail (camera != NULL, NULL);
 
-	result = gp_camera_get_config (camera, &config_widget, NULL);
+	cancel = gtkam_cancel_new (opt_window, _("Getting configuration..."));
+	gtk_widget_show (cancel);
+	result = gp_camera_get_config (camera, &config_widget,
+		GTKAM_CANCEL (cancel)->context->context);
 	if (multi)
 		gp_camera_exit (camera, NULL);
-	if (result != GP_OK) {
-		dialog = gtkam_error_new (_("Could not get configuration"),
-					  result, camera, NULL);
+	switch (result) {
+	case GP_OK:
+		break;
+	case GP_ERROR_CANCEL:
+		gtk_object_destroy (GTK_OBJECT (cancel));
+		return (NULL);
+	default:
+		dialog = gtkam_error_new (result,
+			GTKAM_CANCEL (cancel)->context, opt_window,
+			_("Could not get configuration."));
 		gtk_widget_show (dialog);
+		gtk_object_destroy (GTK_OBJECT (cancel));
 		return (NULL);
 	}
+	gtk_object_destroy (GTK_OBJECT (cancel));
 
 	config = gtk_type_new (GTKAM_TYPE_CONFIG);
 	gtk_signal_connect (GTK_OBJECT (config), "delete_event",
 			    GTK_SIGNAL_FUNC (gtk_object_destroy), NULL);
+	if (opt_window)
+		gtk_window_set_transient_for (GTK_WINDOW (config), 
+					      GTK_WINDOW (opt_window));
 
 	config->priv->camera = camera;
 	config->priv->config = config_widget;

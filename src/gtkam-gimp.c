@@ -31,6 +31,7 @@
 #include <libgimp/gimpui.h>
 
 #include "gtkam-preview.h"
+#include "gtkam-cancel.h"
 #include "gtkam-chooser.h"
 #include "gtkam-error.h"
 #include "gtkam-fsel.h"
@@ -196,7 +197,7 @@ static gint32
 get_file (Camera *camera, CameraFilePath path, gint nparams, GimpParam *param,
 	  gint *nreturn_vals, GimpParam **return_vals)
 {
-	GtkWidget *dialog;
+	GtkWidget *dialog, *c;
 	CameraFile *file;
 	static GimpParam values[1];
 	GimpDrawable *drawable;
@@ -209,20 +210,28 @@ get_file (Camera *camera, CameraFilePath path, gint nparams, GimpParam *param,
 	guchar *pixels;
 	int r, result;
 	guint w, h;
-	gchar *msg;
 
 	gp_file_new (&file);
-	msg = g_strdup_printf (_("Downloading '%s' from '%s'..."),
-			       path.name, path.folder);
-        gimp_progress_init (msg);
-	g_free (msg);
+	c = gtkam_cancel_new (NULL, _("Downloading '%s' from '%s'..."),
+			      path.name, path.folder);
         result = gp_camera_file_get (camera, path.folder, path.name,
-                                     GP_FILE_TYPE_NORMAL, file, NULL);
+		GP_FILE_TYPE_NORMAL, file, GTKAM_CANCEL (c)->context->context);
 	gp_camera_exit (camera, NULL);
-        if (result < 0) {
+	switch (result) {
+	case GP_OK:
+		break;
+	case GP_ERROR_CANCEL:
+		*nreturn_vals = 1;
+		*return_vals = values;
+		values[0].type = GIMP_PDB_STATUS;
+		values[0].data.d_status = GIMP_PDB_CANCEL;
+		return -1;
+	default:
                 gp_file_unref (file);
-                dialog = gtkam_error_new (_("Could not "
-                        "download file"), result, camera, NULL);
+		dialog = gtkam_error_new (result, GTKAM_CANCEL (c)->context,
+			NULL, _("Could not "
+                        "download file '%s' from folder '%s'."),
+			path.name, path.folder);
                 gtk_widget_show (dialog);
 
                 /* Wait until the user closes the dialog */
@@ -274,7 +283,7 @@ run_capture (gchar *name, gint nparams, GimpParam *param, gint *nreturn_vals,
 	CameraFilePath path;
 	CameraAbilities a;
 	int result;
-	GtkWidget *preview, *dialog;
+	GtkWidget *preview;
 	static GimpParam values[2];
 	static PreviewParams preview_params = {0, 1.};
 	GimpRunModeType run_mode = param[0].data.d_int32;
@@ -347,16 +356,6 @@ run_capture (gchar *name, gint nparams, GimpParam *param, gint *nreturn_vals,
 					    NULL);
 		gp_camera_exit (camera, NULL);
 		if (result < 0) {
-			dialog = gtkam_error_new (_("Could not capture"),
-				result, camera, NULL);
-			gtk_widget_show (dialog);
-			gp_camera_unref (camera);
-
-			/* Wait until the user closes the dialog */
-			gtk_signal_connect (GTK_OBJECT (dialog), "destroy",
-				GTK_SIGNAL_FUNC (gtk_main_quit), NULL);
-			gtk_main ();
-
 			*nreturn_vals = 1;
 			*return_vals = values;
 			values[0].type = GIMP_PDB_STATUS; 

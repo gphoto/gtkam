@@ -20,6 +20,8 @@
 #include <config.h>
 #include "gtkam-mkdir.h"
 
+#include <string.h>
+
 #include <gtk/gtklabel.h>
 #include <gtk/gtkentry.h>
 #include <gtk/gtkbutton.h>
@@ -31,8 +33,7 @@
 #include <gdk-pixbuf/gdk-pixbuf.h>
 
 #include "gtkam-error.h"
-
-#include <string.h>
+#include "gtkam-status.h"
 
 #ifdef ENABLE_NLS
 #  include <libintl.h>
@@ -153,34 +154,43 @@ on_cancel_clicked (GtkButton *button, GtkamMkdir *mkdir)
 static void
 on_ok_clicked (GtkButton *button, GtkamMkdir *mkdir)
 {
-	GtkWidget *dialog;
+	GtkWidget *dialog, *s;
 	int r;
 	const gchar *path;
-	gchar *msg, *full_path;
+	gchar *full_path;
 
 	path = gtk_entry_get_text (mkdir->priv->entry);
+	s = gtkam_status_new (_("Creating folder '%s' in "
+		"folder '%s'..."), g_basename (path), mkdir->priv->path);
+	gtk_widget_show (s);
+	gtk_box_pack_end (GTK_BOX (GTK_DIALOG (mkdir)), s, FALSE, FALSE, 0);
 	r = gp_camera_folder_make_dir (mkdir->priv->camera, mkdir->priv->path,
-				       g_basename (path), NULL);
+			g_basename (path), GTKAM_STATUS (s)->context->context);
 	if (mkdir->priv->multi)
 		gp_camera_exit (mkdir->priv->camera, NULL);
-	if (r < 0) {
-		msg = g_strdup_printf (_("Could not create new directory "
-				"'%s' in '%s'"), path, mkdir->priv->path);
-		dialog = gtkam_error_new (msg, r, mkdir->priv->camera,
-					  GTK_WIDGET (mkdir));
-		g_free (msg);
-		gtk_widget_show (dialog);
-	} else {
+	switch (r) {
+	case GP_OK:
 		if (strlen (mkdir->priv->path) > 1)
 			full_path = g_strdup_printf ("%s/%s",
-						     mkdir->priv->path, path);
+					mkdir->priv->path, path);
 		else
 			full_path = g_strdup_printf ("/%s", path);
 		gtk_signal_emit (GTK_OBJECT (mkdir),
 				 signals[DIR_CREATED], full_path);
 		g_free (full_path);
+		gtk_object_destroy (GTK_OBJECT (mkdir));
+		break;
+	case GP_ERROR_CANCEL:
+		break;
+	default:
+		dialog = gtkam_error_new (r, GTKAM_STATUS (s)->context,
+			GTK_WIDGET (mkdir),
+			_("Could not create folder '%s' in folder '%s'."),
+			g_basename (path), mkdir->priv->path);
+		gtk_widget_show (dialog);
+		break;
 	}
-	gtk_object_destroy (GTK_OBJECT (mkdir));
+	gtk_object_destroy (GTK_OBJECT (s));
 }
 
 GtkWidget *

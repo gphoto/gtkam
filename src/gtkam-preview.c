@@ -57,8 +57,9 @@
 #include <gtk/gtkhscale.h>
 #include <gdk-pixbuf/gdk-pixbuf-loader.h>
 
-#include "gtkam-error.h"
 #include "gtkam-config.h"
+#include "gtkam-error.h"
+#include "gtkam-status.h"
 #include "gdk-pixbuf-hacks.h"
 
 struct _GtkamPreviewPrivate
@@ -180,26 +181,35 @@ on_preview_capture_clicked (GtkButton *button, GtkamPreview *preview)
 {
 	int result;
 	CameraFilePath path;
-	GtkWidget *dialog;
+	GtkWidget *dialog, *s;
 	gchar *full_path;
 
+	s = gtkam_status_new (_("Capturing image..."));
+	gtk_widget_show (s);
+	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (preview)->vbox), s,
+			    FALSE, FALSE, 0);
 	result = gp_camera_capture (preview->priv->camera,
-				    GP_CAPTURE_IMAGE, &path, NULL);
+		GP_CAPTURE_IMAGE, &path, GTKAM_STATUS (s)->context->context);
 	if (preview->priv->multi)
 		gp_camera_exit (preview->priv->camera, NULL);
-	if (result != GP_OK) {
-		dialog = gtkam_error_new (_("Could not capture"),
-			result, preview->priv->camera, GTK_WIDGET (preview));
-		gtk_widget_show (dialog);
-	} else {
+	switch (result) {
+	case GP_OK:
 		if (!strcmp (path.folder, "/"))
 			full_path = g_strdup_printf ("/%s", path.name);
 		else
 			full_path = g_strdup_printf ("%s/%s", path.folder,
-						     path.name);
+					path.name);
 		gtk_signal_emit (GTK_OBJECT (preview), signals[CAPTURED],
 				 full_path);
 		g_free (full_path);
+		break;
+	case GP_ERROR_CANCEL:
+		break;
+	default:
+		dialog = gtkam_error_new (result, GTKAM_STATUS (s)->context,
+			GTK_WIDGET (preview), _("Could not capture image."));
+		gtk_widget_show (dialog);
+		break;
 	}
 }
 
@@ -356,7 +366,8 @@ on_configure_clicked (GtkButton *button, GtkamPreview *preview)
 {
 	GtkWidget *dialog;
 
-	dialog = gtkam_config_new (preview->priv->camera, preview->priv->multi);
+	dialog = gtkam_config_new (preview->priv->camera,
+				   preview->priv->multi, GTK_WIDGET (preview));
 	gtk_widget_show (dialog);
 }
 

@@ -48,6 +48,7 @@
 
 #include <libexif-gtk/gtk-exif-browser.h>
 
+#include "gtkam-cancel.h"
 #include "gtkam-error.h"
 
 struct _GtkamExifPrivate
@@ -125,10 +126,9 @@ gtkam_exif_new (Camera *camera, gboolean multi,
 		const gchar *folder, const gchar *file, GtkWidget *opt_window)
 {
 	GtkamExif *exif;
-	GtkWidget *button, *dialog, *browser;
+	GtkWidget *button, *dialog, *browser, *c;
 	CameraFile *cfile;
 	int result;
-	gchar *msg;
 	const char *data;
 	long int size;
 	ExifData *edata;
@@ -137,26 +137,39 @@ gtkam_exif_new (Camera *camera, gboolean multi,
 
 	/* Get exif data */
 	gp_file_new (&cfile);
+	c = gtkam_cancel_new (opt_window,
+		_("Getting EXIF information for file '%s' in "
+		"folder '%s'..."), file, folder);
+	gtk_widget_show (c);
 	result = gp_camera_file_get (camera, folder, file, GP_FILE_TYPE_EXIF,
-				     cfile, NULL);
+			     cfile, GTKAM_CANCEL (c)->context->context);
 	if (multi)
 		gp_camera_exit (camera, NULL);
-	if (result < 0) {
+	switch (result) {
+	case GP_OK:
+		break;
+	case GP_ERROR_CANCEL:
+		gtk_object_destroy (GTK_OBJECT (c));
+		return (NULL);
+	default:
 		gp_file_unref (cfile);
-		msg = g_strdup_printf (_("Could not get exif information for "
+		dialog = gtkam_error_new (result, GTKAM_CANCEL (c)->context,
+			opt_window, _("Could not get exif information for "
 			"'%s' in folder '%s'"), file, folder);
-		dialog = gtkam_error_new (msg, result, camera, opt_window);
-		g_free (msg);
 		gtk_widget_show (dialog);
+		gtk_object_destroy (GTK_OBJECT (c));
 		return (NULL);
 	}
+	gtk_object_destroy (GTK_OBJECT (c));
+
 	gp_file_get_data_and_size (cfile, &data, &size);
 	edata = exif_data_new_from_data (data, size);
 	gp_file_unref (cfile);
 	if (!edata) {
-		dialog = gtkam_error_new ("Could not interpret exif data",
-				GP_ERROR_CORRUPTED_DATA, NULL, opt_window);
+		dialog = gtkam_error_new (GP_ERROR_CORRUPTED_DATA, NULL,
+			opt_window, _("Could not interpret EXIF data."));
 		gtk_widget_show (dialog);
+		return (NULL);
 	}
 
 	exif = gtk_type_new (GTKAM_TYPE_EXIF);

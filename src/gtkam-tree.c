@@ -56,12 +56,13 @@
 
 #include "support.h"
 #include "gtkam-error.h"
+#include "gtkam-status.h"
 
 struct _GtkamTreePrivate
 {
 	Camera *camera;
 
-	GtkWidget *root;
+	GtkWidget *root, *status;
 
 	const gchar *folder;
 
@@ -92,6 +93,11 @@ gtkam_tree_destroy (GtkObject *object)
 	if (tree->priv->camera) {
 		gp_camera_unref (tree->priv->camera);
 		tree->priv->camera = NULL;
+	}
+
+	if (tree->priv->status) {
+		gtk_object_unref (GTK_OBJECT (tree->priv->status));
+		tree->priv->status = NULL;
 	}
 
 	if (tree->priv->pixmap_camera) {
@@ -227,9 +233,12 @@ create_item (GtkamTree *tree, GtkTree *tree_to_add_to, const gchar *path)
 {
 	CameraList *list;
 	CameraAbilities a;
-	GtkWidget *item, *image, *label, *subtree, *hbox, *dialog, *window;
+	GtkWidget *item, *image, *label, *subtree, *hbox, *dialog, *w, *s;
 	int result;
-	gchar *msg, *l;
+	gchar *l;
+
+	/* In case anything goes wrong, we need the parent window. */
+	w = gtk_widget_get_ancestor (GTK_WIDGET (tree), GTK_TYPE_WINDOW);
 
 	item = gtk_tree_item_new ();
 	gtk_widget_show (item);
@@ -276,53 +285,56 @@ create_item (GtkamTree *tree, GtkTree *tree_to_add_to, const gchar *path)
 
 	/* Show the number of pictures in the folder */
 	gp_list_new (&list);
+	s = gtkam_status_new (_("Listing contents of folder '%s'..."), path);
+	gtk_widget_show (s);
+	gtk_box_pack_start (GTK_BOX (tree->priv->status), s, FALSE, FALSE, 0);
 	result = gp_camera_folder_list_files (tree->priv->camera, path, list,
-					      NULL);
-
-	/* Make sure we are not shutting down */
-	if (!GTKAM_IS_TREE (tree))
-		return;
-
-	if (result < 0) {
-		window = gtk_widget_get_ancestor (GTK_WIDGET (tree),
-						  GTK_TYPE_WINDOW);
-		msg = g_strdup_printf (_("Could not retrieve file "
-				       "list for folder '%s'"), path);
-		dialog = gtkam_error_new (msg, result,
-					  tree->priv->camera, window);
-		gtk_widget_show (dialog);
-	} else {
+				GTKAM_STATUS (s)->context->context);
+	switch (result) {
+	case GP_OK:
 		l = g_strdup_printf (" (%i)", gp_list_count (list));
 		label = gtk_label_new (l);
 		g_free (l);
 		gtk_widget_show (label);
 		gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
+		break;
+	case GP_ERROR_CANCEL:
+		break;
+	default:
+		dialog = gtkam_error_new (result, GTKAM_STATUS (s)->context, w,
+			_("Could not retrieve file list for folder '%s'."),
+			path);
+		gtk_widget_show (dialog);
 	}
 	gp_list_unref (list);
 
 	/* Subdirectories? */
 	gp_list_new (&list);
 	result = gp_camera_folder_list_folders (tree->priv->camera, path, list,
-						NULL);
+					GTKAM_STATUS (s)->context->context);
 	if (tree->priv->multi)
 		gp_camera_exit (tree->priv->camera, NULL);
-	if (result < 0) {
-		window = gtk_widget_get_ancestor (GTK_WIDGET (tree),
-						  GTK_TYPE_WINDOW);
-		msg = g_strdup_printf (_("Could not get list of folders for "
-				       "folder '%s'."), path);
-		dialog = gtkam_error_new (msg, result,
-					  tree->priv->camera, window);
-		g_free (msg);
+	switch (result) {
+	case GP_OK:
+		if (gp_list_count (list) > 0) {
+			subtree = gtk_tree_new ();
+			gtk_widget_show (subtree);
+			gtk_tree_item_set_subtree (GTK_TREE_ITEM (item),
+						   subtree);
+			gp_list_ref (list);
+			gtk_object_set_data_full (GTK_OBJECT (item), "list",
+				  list, (GtkDestroyNotify) gp_list_unref);
+		}
+		break;
+	case GP_ERROR_CANCEL:
+		break;
+	default:
+		dialog = gtkam_error_new (result, GTKAM_STATUS (s)->context, w,
+			_("Could not get list of folders for folder '%s'."),
+			path);
 		gtk_widget_show (dialog);
-	} else if (gp_list_count (list) > 0) {
-		subtree = gtk_tree_new ();
-		gtk_widget_show (subtree);
-		gtk_tree_item_set_subtree (GTK_TREE_ITEM (item), subtree);
-		gp_list_ref (list);
-		gtk_object_set_data_full (GTK_OBJECT (item), "list", list,
-					  (GtkDestroyNotify) gp_list_unref);
 	}
+	gtk_object_destroy (GTK_OBJECT (s));
 	gp_list_unref (list);
 }
 
@@ -332,10 +344,10 @@ on_tree_item_expand (GtkTreeItem *item, GtkamTree *tree)
 	CameraList *list;
 	const char *name;
 	const gchar *path;
-	gchar *new_path, *msg;
+	gchar *new_path;
 	gint i;
 	int result;
-	GtkWidget *dialog, *window;
+	GtkWidget *dialog, *window, *s;
 
 	/* Check if we've expanded this item before */
 	if (gtk_object_get_data (GTK_OBJECT (item), "expanded"))
@@ -346,23 +358,33 @@ on_tree_item_expand (GtkTreeItem *item, GtkamTree *tree)
 
 	/* If we don't have a list, get one. */
 	if (!list) {
+		s = gtkam_status_new (_("Getting list of "
+				"folders in '%s'..."), path);
 		gp_list_new (&list);
 		result = gp_camera_folder_list_folders (tree->priv->camera,
-							path, list, NULL);
-		if (result < 0) {
+			path, list, GTKAM_STATUS (s)->context->context);
+		switch (result) {
+		case GP_OK:
+			gtk_object_set_data_full (GTK_OBJECT (item), "list",
+				list, (GtkDestroyNotify) gp_list_unref);
+			break;
+		case GP_ERROR_CANCEL:
+			gp_list_unref (list);
+			list = NULL;
+			break;
+		default:
 			window = gtk_widget_get_ancestor (GTK_WIDGET (tree),
 							  GTK_TYPE_WINDOW);
-			msg = g_strdup_printf (_("Could not get list of "
+			dialog = gtkam_error_new (result,
+				GTKAM_STATUS (s)->context, window,
+				_("Could not get list of "
 				"folders for folder '%s'."), path);
-			dialog = gtkam_error_new (msg, result,
-						  tree->priv->camera, window);
-			g_free (msg);
 			gtk_widget_show (dialog);
 			gp_list_unref (list);
 			list = NULL;
-		} else
-			gtk_object_set_data_full (GTK_OBJECT (item), "list",
-				list, (GtkDestroyNotify) gp_list_unref);
+			break;
+		}
+		gtk_object_destroy (GTK_OBJECT (s));
 	}
 
 	/* If we've got a list, populate the subtree */
@@ -387,11 +409,17 @@ on_tree_item_expand (GtkTreeItem *item, GtkamTree *tree)
 }
 
 GtkWidget *
-gtkam_tree_new (void)
+gtkam_tree_new (GtkWidget *vbox)
 {
 	GtkamTree *tree;
 
+	g_return_val_if_fail (GTK_IS_VBOX (vbox), NULL);
+
 	tree = gtk_type_new (GTKAM_TYPE_TREE);
+
+	tree->priv->status = vbox;
+	gtk_object_ref (GTK_OBJECT (tree->priv->status));
+
 	gtk_signal_connect (GTK_OBJECT (tree), "selection_changed",
 			    GTK_SIGNAL_FUNC (on_tree_selection_changed), NULL);
 

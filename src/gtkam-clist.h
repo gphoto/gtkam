@@ -53,7 +53,7 @@ struct _GtkamCListClass
 };
 
 GtkType    gtkam_clist_get_type (void);
-GtkWidget *gtkam_clist_new      (void);
+GtkWidget *gtkam_clist_new      (GtkWidget *vbox);
 
 void       gtkam_clist_set_camera     (GtkamCList *list, Camera *camera,
 				       gboolean multi);

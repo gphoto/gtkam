@@ -55,8 +55,8 @@
 
 struct _GtkamCancelPrivate
 {
-	GtkProgress *progress;
-	GtkLabel *label;
+	GPtrArray *array_hbox, *array_progress;
+	GArray *array_target;
 
 	gboolean cancelled;
 };
@@ -76,7 +76,14 @@ gtkam_cancel_destroy (GtkObject *object)
 {
 	GtkamCancel *cancel = GTKAM_CANCEL (object);
 
-	cancel = NULL;
+	if (cancel->context) {
+		gtk_object_unref (GTK_OBJECT (cancel->context));
+		cancel->context = NULL;
+	}
+
+	g_ptr_array_set_size (cancel->priv->array_hbox, 0);
+	g_ptr_array_set_size (cancel->priv->array_progress, 0);
+	g_array_set_size (cancel->priv->array_target, 0);
 
 	GTK_OBJECT_CLASS (parent_class)->destroy (object);
 }
@@ -86,6 +93,9 @@ gtkam_cancel_finalize (GtkObject *object)
 {
 	GtkamCancel *cancel = GTKAM_CANCEL (object);
 
+	g_array_free (cancel->priv->array_target, TRUE);
+	g_ptr_array_free (cancel->priv->array_hbox, TRUE);
+	g_ptr_array_free (cancel->priv->array_progress, TRUE);
 	g_free (cancel->priv);
 
 	GTK_OBJECT_CLASS (parent_class)->finalize (object);
@@ -112,7 +122,12 @@ gtkam_cancel_class_init (GtkamCancelClass *klass)
 static void
 gtkam_cancel_init (GtkamCancel *cancel)
 {
+	cancel->context = gtkam_context_new ();
+
 	cancel->priv = g_new0 (GtkamCancelPrivate, 1);
+	cancel->priv->array_hbox = g_ptr_array_new ();
+	cancel->priv->array_progress = g_ptr_array_new ();
+	cancel->priv->array_target = g_array_new (FALSE, TRUE, sizeof (gfloat));
 }
 
 GtkType
@@ -141,14 +156,87 @@ on_cancel_clicked (GtkButton *button, GtkamCancel *cancel)
 	gtk_signal_emit (GTK_OBJECT (cancel), signals[CANCEL]);
 }
 
+static GPContextFeedback
+cancel_func (GPContext *c, void *data)
+{
+	GtkamCancel *cancel = GTKAM_CANCEL (data);
+
+	return (cancel->priv->cancelled ? GP_CONTEXT_FEEDBACK_CANCEL :
+					  GP_CONTEXT_FEEDBACK_OK);
+}
+
+static unsigned int
+start_func (GPContext *c, float target, const char *format,
+	    va_list args, void *data)
+{
+	GtkamCancel *cancel = GTKAM_CANCEL (data);
+	GtkWidget *progress, *label, *hbox;
+	gchar *msg;
+
+	hbox = gtk_hbox_new (FALSE, 5);
+	gtk_widget_show (hbox);
+	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (cancel)->vbox), hbox,
+			    TRUE, TRUE, 0);
+	g_ptr_array_add (cancel->priv->array_hbox, hbox);
+
+	msg = g_strdup_vprintf (format, args);
+	label = gtk_label_new (msg);
+	g_free (msg);
+	gtk_widget_show (label);
+	gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
+
+	progress = gtk_progress_bar_new ();
+	gtk_widget_show (progress);
+	gtk_box_pack_start (GTK_BOX (hbox), progress, TRUE, TRUE, 0);
+	g_ptr_array_add (cancel->priv->array_progress, progress);
+	g_array_append_val (cancel->priv->array_target, target);
+
+	return (cancel->priv->array_progress->len - 1);
+}
+
+static void
+update_func (GPContext *c, unsigned int id, float current, void *data)
+{
+	GtkamCancel *cancel = GTKAM_CANCEL (data);
+	GtkProgress *progress;
+
+	g_return_if_fail (id < cancel->priv->array_progress->len);
+
+	progress = cancel->priv->array_progress->pdata[id];
+	gtk_progress_set_percentage (progress,
+		current / g_array_index (cancel->priv->array_target,
+					 gfloat, id));
+
+	while (gtk_events_pending ())
+		gtk_main_iteration ();
+}
+
+static void
+stop_func (GPContext *c, unsigned int id, void *data)
+{
+	GtkamCancel *cancel = GTKAM_CANCEL (data);
+	GtkObject *hbox;
+
+	g_return_if_fail (id < cancel->priv->array_progress->len);
+
+	hbox = cancel->priv->array_hbox->pdata[id];
+	g_ptr_array_remove_index (cancel->priv->array_hbox, id);
+	g_ptr_array_remove_index (cancel->priv->array_progress, id);
+	g_array_remove_index (cancel->priv->array_target, id);
+
+	gtk_object_destroy (GTK_OBJECT (hbox));
+}
+
 GtkWidget *
-gtkam_cancel_new (GtkWidget *opt_window)
+gtkam_cancel_new (GtkWidget *opt_window, const gchar *format, ...)
 {
 	GtkamCancel *cancel;
-	GtkWidget *label, *button, *progress, *image, *hbox;
+	GtkWidget *label, *button, *image, *hbox;
 	GdkPixmap *pixmap;
 	GdkBitmap *bitmap;
 	GdkPixbuf *pixbuf;
+	va_list args;
+	gchar *msg;
 
 	cancel = gtk_type_new (GTKAM_TYPE_CANCEL);
 
@@ -177,18 +265,12 @@ gtkam_cancel_new (GtkWidget *opt_window)
 		gtk_box_pack_start (GTK_BOX (hbox), image, FALSE, FALSE, 0);
 	}
 
-	label = gtk_label_new ("");
-	gtk_widget_show (label);
-	gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
-	gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
-	gtk_box_pack_start (GTK_BOX (hbox), label, TRUE, TRUE, 0);
-	cancel->priv->label = GTK_LABEL (label);
-
-	progress = gtk_progress_bar_new ();
-	gtk_widget_show (progress);
-	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (cancel)->vbox), progress,
-			    FALSE, FALSE, 0);
-	cancel->priv->progress = GTK_PROGRESS (progress);
+	va_start (args, format);
+	msg = g_strdup_vprintf (format, args);
+	va_end (args);
+	label = gtk_label_new (msg);
+	g_free (msg);
+	gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
 
 	button = gtk_button_new_with_label (_("Cancel"));
 	gtk_widget_show (button);
@@ -202,59 +284,10 @@ gtkam_cancel_new (GtkWidget *opt_window)
 		gtk_window_set_transient_for (GTK_WINDOW (cancel),
 					      GTK_WINDOW (opt_window));
 
+	gp_context_set_progress_funcs (cancel->context->context, start_func,
+				       update_func, stop_func, cancel);
+	gp_context_set_cancel_func (cancel->context->context,
+				    cancel_func, cancel);
+
 	return (GTK_WIDGET (cancel));
-}
-
-void
-gtkam_cancel_set_percentage (GtkamCancel *cancel, gfloat percentage)
-{
-	g_return_if_fail (GTKAM_IS_CANCEL (cancel));
-
-	gtk_progress_set_percentage (cancel->priv->progress, percentage);
-}
-
-void
-gtkam_cancel_set_message (GtkamCancel *cancel, const gchar *msg)
-{
-	g_return_if_fail (GTKAM_IS_CANCEL (cancel));
-
-	gtk_label_set_text (cancel->priv->label, msg);
-}
-
-#if 0
-static int
-progress_func (CameraFile *file, float percentage, void *data)
-{
-	GtkamCancel *cancel;
-
-	while (gtk_events_pending ())
-		gtk_main_iteration ();
-
-	if (!GTKAM_IS_CANCEL (data))
-		return (GP_ERROR_CANCEL);
-	cancel = GTKAM_CANCEL (data);
-
-	gtkam_cancel_set_percentage (cancel, percentage);
-
-	if (cancel->priv->cancelled) {
-		cancel->priv->cancelled = FALSE;
-		return (GP_ERROR_CANCEL);
-	}
-
-	return (GP_OK);
-}
-#endif
-
-void
-gtkam_cancel_start_monitoring (GtkamCancel *cancel, CameraFile *file)
-{
-	g_return_if_fail (GTKAM_IS_CANCEL (cancel));
-	g_return_if_fail (file != NULL);
-}
-
-void
-gtkam_cancel_stop_monitoring (GtkamCancel *cancel, CameraFile *file)
-{
-	g_return_if_fail (GTKAM_IS_CANCEL (cancel));
-	g_return_if_fail (file != NULL);
 }

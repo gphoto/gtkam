@@ -43,6 +43,7 @@
 #endif
 
 #include <gtk/gtkbutton.h>
+#include <gtk/gtkvbox.h>
 #include <gtk/gtklabel.h>
 #include <gtk/gtksignal.h>
 #include <gtk/gtkhbox.h>
@@ -53,9 +54,10 @@
 #include <gdk-pixbuf/gdk-pixbuf.h>
 
 #include "gtkam-clist.h"
-#include "gtkam-tree.h"
-#include "gtkam-mkdir.h"
 #include "gtkam-error.h"
+#include "gtkam-mkdir.h"
+#include "gtkam-tree.h"
+#include "gtkam-status.h"
 
 struct _GtkamFSelPrivate
 {
@@ -65,6 +67,7 @@ struct _GtkamFSelPrivate
 	GtkamCList *clist;
 
 	GtkWidget *mkdir, *rmdir;
+	GtkWidget *status;
 
 	gboolean multi;
 };
@@ -208,25 +211,33 @@ static void
 on_rmdir_clicked (GtkButton *button, GtkamFSel *fsel)
 {
 	const gchar *path;
-        gchar *dirname, *msg;
+        gchar *dirname;
         int result;
-        GtkWidget *dialog;
+        GtkWidget *dialog, *s;
 
         path = gtkam_tree_get_path (fsel->priv->tree);
         dirname = g_dirname (path);
+	s = gtkam_status_new (_("Removing '%s' from '%s'..."), dirname, path);
+	gtk_widget_show (s);
+	gtk_box_pack_end (GTK_BOX (GTK_DIALOG (fsel)->vbox), s,
+			  FALSE, FALSE, 0);
 	result = gp_camera_folder_remove_dir (fsel->priv->camera, dirname,
-					      g_basename (path), NULL);
+		g_basename (path), GTKAM_STATUS (s)->context->context);
 	if (fsel->priv->multi)
 		gp_camera_exit (fsel->priv->camera, NULL);
-        if (result < 0) {
-                msg = g_strdup_printf (_("Could not remove '%s' from '%s'"),
-                                       g_basename (path), dirname);
-                dialog = gtkam_error_new (msg, result, fsel->priv->camera,
-					  NULL);
-                g_free (msg);
+	switch (result) {
+	case GP_OK:
+		gtkam_tree_remove_dir (fsel->priv->tree, path);
+		break;
+	case GP_ERROR_CANCEL:
+		break;
+	default:
+		dialog = gtkam_error_new (result, GTKAM_STATUS (s)->context,
+			NULL, _("Could not remove '%s' from '%s'"),
+			g_basename (path), dirname);
                 gtk_widget_show (dialog);
-        } else
-                gtkam_tree_remove_dir (fsel->priv->tree, path);
+        }
+	gtk_object_destroy (GTK_OBJECT (s));
         g_free (dirname);
 }
 
@@ -254,6 +265,11 @@ gtkam_fsel_new (Camera *camera, gboolean multi, GtkWidget *opt_window)
 	fsel->priv->camera = camera;
 	gp_camera_ref (camera);
 	fsel->priv->multi = multi;
+
+	fsel->priv->status = gtk_vbox_new (FALSE, 0);
+	gtk_widget_show (fsel->priv->status);
+	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (fsel)->vbox),
+			    fsel->priv->status, FALSE, FALSE, 0);
 
 	hbox = gtk_hbox_new (FALSE, 5);
 	gtk_widget_show (hbox);
@@ -310,7 +326,7 @@ gtkam_fsel_new (Camera *camera, gboolean multi, GtkWidget *opt_window)
 	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled),
 				GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 
-	tree = gtkam_tree_new ();
+	tree = gtkam_tree_new (fsel->priv->status);
 	gtk_widget_show (tree);
 	gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (scrolled),
 					       tree);
@@ -327,7 +343,7 @@ gtkam_fsel_new (Camera *camera, gboolean multi, GtkWidget *opt_window)
 	gtk_paned_pack2 (GTK_PANED (hpaned), scrolled, TRUE, TRUE);
 	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled),
 				GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
-	clist = gtkam_clist_new ();
+	clist = gtkam_clist_new (fsel->priv->status);
 	gtk_widget_show (clist);
 	gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (scrolled),
 					       clist);

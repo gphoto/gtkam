@@ -142,16 +142,17 @@ on_debug_toggled (GtkToggleButton *toggle, GtkamError *error)
 }
 
 GtkWidget *
-gtkam_error_new (const gchar *msg, int result, Camera *opt_camera,
-		 GtkWidget *opt_window)
+gtkam_error_new (int result, GtkamContext *context, GtkWidget *opt_window,
+		 const gchar *format, ...)
 {
 	GtkamError *error;
 	GtkWidget *text, *vscrollbar, *button, *label, *hbox, *vbox, *image;
 	GdkPixbuf *pixbuf;
 	GdkBitmap *bitmap;
 	GdkPixmap *pixmap;
-	const char *error_info;
-	gchar *full_msg;
+	gchar *msg;
+	va_list args;
+	unsigned int i;
 
 	g_return_val_if_fail (result < 0, NULL);
 
@@ -159,6 +160,8 @@ gtkam_error_new (const gchar *msg, int result, Camera *opt_camera,
 	gtk_window_set_policy (GTK_WINDOW (error), TRUE, TRUE, TRUE);
 	gtk_signal_connect (GTK_OBJECT (error), "delete_event",
 			    GTK_SIGNAL_FUNC (gtk_object_destroy), NULL);
+	gtk_window_set_title (GTK_WINDOW (error),
+			      gp_result_as_string (result));
 
 	hbox = gtk_hbox_new (FALSE, 10);
 	gtk_widget_show (hbox);
@@ -185,10 +188,11 @@ gtkam_error_new (const gchar *msg, int result, Camera *opt_camera,
 	gtk_widget_show (vbox);
 	gtk_box_pack_start (GTK_BOX (hbox), vbox, TRUE, TRUE, 0);
 
-	full_msg = g_strdup_printf ("%s ('%s')", msg,
-				    _(gp_result_as_string (result)));
-	label = gtk_label_new (full_msg);
-	g_free (full_msg);
+	va_start (args, format);
+	msg = g_strdup_vprintf (format, args);
+	va_end (args);
+	label = gtk_label_new (msg);
+	g_free (msg);
 	gtk_widget_show (label);
 	gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
 	gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
@@ -202,9 +206,12 @@ gtkam_error_new (const gchar *msg, int result, Camera *opt_camera,
 	gtk_text_set_editable (GTK_TEXT (text), FALSE);
 	gtk_box_pack_start (GTK_BOX (error->priv->hbox), text, TRUE, TRUE, 0);
 
-	error_info = _(gp_camera_get_error (opt_camera));
-	gtk_text_insert (GTK_TEXT (text), NULL, NULL, NULL,
-			 error_info, strlen (error_info));
+	for (i = 0; i < context->errors->len; i++) {
+		gtk_text_insert (GTK_TEXT (text), NULL, NULL, NULL,
+			context->errors->pdata[i],
+			strlen (context->errors->pdata[i]));
+		gtk_text_insert (GTK_TEXT (text), NULL, NULL, NULL, "\n", 1);
+	}
 
 	vscrollbar = gtk_vscrollbar_new (GTK_TEXT (text)->vadj);
 	gtk_widget_show (vscrollbar);
@@ -213,7 +220,8 @@ gtkam_error_new (const gchar *msg, int result, Camera *opt_camera,
 
 	button = gtk_toggle_button_new_with_label (
 					_("More"));
-	gtk_widget_show (button);
+	if (context->errors->len)
+		gtk_widget_show (button);
 	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (error)->action_area),
 			   button);
 	gtk_signal_connect (GTK_OBJECT (button), "toggled",

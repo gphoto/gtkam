@@ -66,12 +66,14 @@
 #include "gtkam-chooser.h"
 #include "gtkam-close.h"
 #include "gtkam-config.h"
+#include "gtkam-context.h"
 #include "gtkam-debug.h"
 #include "gtkam-delete.h"
 #include "gtkam-error.h"
 #include "gtkam-list.h"
 #include "gtkam-mkdir.h"
 #include "gtkam-preview.h"
+#include "gtkam-status.h"
 #include "gtkam-tree.h"
 
 #include "support.h"
@@ -83,10 +85,6 @@ struct _GtkamMainPrivate
 	GtkamTree *tree;
 	GtkamList *list;
 
-	GtkStatusbar   *status;
-	GtkProgressBar *progress;
-	guint context_id, message_id;
-
 	GtkToggleButton *toggle_preview;
 
 	GtkWidget *item_delete, *item_delete_all, *item_capture, *item_config;
@@ -95,11 +93,10 @@ struct _GtkamMainPrivate
 	GtkWidget *select_all, *select_none, *select_inverse;
 	GtkWidget *make_dir, *remove_dir, *upload;
 
-	GtkWidget *cancel;
+	GtkWidget *status;
 
 	GtkWidget *vbox;
 
-	gboolean cancelled;
 	gboolean multi;
 };
 
@@ -329,7 +326,7 @@ static void
 on_capture_activate (GtkMenuItem *item, GtkamMain *m)
 {
 	CameraAbilities a;
-	GtkWidget *dialog;
+	GtkWidget *dialog, *s;
 	int result;
 	CameraFilePath path;
 
@@ -348,19 +345,29 @@ on_capture_activate (GtkMenuItem *item, GtkamMain *m)
 		return;
 	}
 
-	/* The camera doesn't support previews. Capture an image */
+	/* The camera doesn't support previews. Capture an image. */
+	s = gtkam_status_new (_("Capturing image..."));
+	gtk_widget_show (s);
+	gtk_box_pack_start (GTK_BOX (m->priv->status), s, FALSE, FALSE, 0);
 	result = gp_camera_capture (m->priv->camera, GP_CAPTURE_IMAGE, &path,
-				    NULL);
+				GTKAM_STATUS (s)->context->context);
 	if (m->priv->multi)
 		gp_camera_exit (m->priv->camera, NULL);
-	if (result < 0) {
-		dialog = gtkam_error_new (_("Could not capture"), result,
-					  m->priv->camera, GTK_WIDGET (m));
-		gtk_widget_show (dialog);
-	} else
+	switch (result) {
+	case GP_OK:
 		if (m->priv->list->path && !strcmp (path.folder,
 						    m->priv->list->path))
 			gtkam_list_refresh (m->priv->list);
+		break;
+	case GP_ERROR_CANCEL:
+		break;
+	default:
+		dialog = gtkam_error_new (result, GTKAM_STATUS (s)->context,
+			GTK_WIDGET (m), _("Could not capture."));
+		gtk_widget_show (dialog);
+		break;
+	}
+	gtk_object_destroy (GTK_OBJECT (s));
 }
 
 static void
@@ -371,7 +378,8 @@ on_configure_activate (GtkMenuItem *item, GtkamMain *m)
 	if (!m->priv->camera)
 		return;
 
-	dialog = gtkam_config_new (m->priv->camera, m->priv->multi);
+	dialog = gtkam_config_new (m->priv->camera, m->priv->multi,
+				   GTK_WIDGET (m));
 	if (!dialog) {
 
 		/* The error has already been reported */
@@ -475,21 +483,31 @@ on_information_activate (GtkMenuItem *item, GtkamMain *m)
 {
 	int result;
 	CameraText text;
-	GtkWidget *dialog;
+	GtkWidget *dialog, *s;
 
 	if (!m->priv->camera)
 		return;
 
-	result = gp_camera_get_summary (m->priv->camera, &text, NULL);
+	s = gtkam_status_new (_("Getting information about the camera..."));
+	gtk_widget_show (s);
+	gtk_box_pack_start (GTK_BOX (m->priv->status), s, FALSE, FALSE, 0);
+	result = gp_camera_get_summary (m->priv->camera, &text,
+					GTKAM_STATUS (s)->context->context);
 	if (m->priv->multi)
 		gp_camera_exit (m->priv->camera, NULL);
-	if (result < 0)
-		dialog = gtkam_error_new (_("Could not retrieve information"),
-					  result, m->priv->camera,
-					  GTK_WIDGET (m));
-	else
+	switch (result) {
+	case GP_OK:
 		dialog = gtkam_close_new (text.text, GTK_WIDGET (m));
-	gtk_widget_show (dialog);
+		gtk_widget_show (dialog);
+		break;
+	case GP_ERROR_CANCEL:
+		break;
+	default:
+		dialog = gtkam_error_new (result, GTKAM_STATUS (s)->context,
+			GTK_WIDGET (m), _("Could not retrieve information."));
+		gtk_widget_show (dialog);
+	}
+	gtk_object_destroy (GTK_OBJECT (s));
 }
 
 static void
@@ -497,21 +515,32 @@ on_manual_activate (GtkMenuItem *item, GtkamMain *m)
 {
 	int result;
 	CameraText text;
-	GtkWidget *dialog;
+	GtkWidget *dialog, *s;
 
 	if (!m->priv->camera)
 		return;
 
-	result = gp_camera_get_manual (m->priv->camera, &text, NULL);
+	s = gtkam_status_new (_("Getting manual..."));
+	gtk_widget_show (s);
+	gtk_box_pack_start (GTK_BOX (m->priv->status), s, FALSE, FALSE, 0);
+	result = gp_camera_get_manual (m->priv->camera, &text,
+				GTKAM_STATUS (s)->context->context);
 	if (m->priv->multi)
 		gp_camera_exit (m->priv->camera, NULL);
-	if (result < 0)
-		dialog = gtkam_error_new (_("Could not retrieve manual"),
-					  result, m->priv->camera,
-					  GTK_WIDGET (m));
-	else
+	switch (result) {
+	case GP_OK:
 		dialog = gtkam_close_new (text.text, GTK_WIDGET (m));
-	gtk_widget_show (dialog);
+		gtk_widget_show (dialog);
+		break;
+	case GP_ERROR_CANCEL:
+		break;
+	default:
+		dialog = gtkam_error_new (result,
+			GTKAM_STATUS (s)->context, GTK_WIDGET (m),
+			_("Could not retrieve manual."));
+		gtk_widget_show (dialog);
+	}
+	gtk_object_destroy (GTK_OBJECT (s));
 }
 
 static void
@@ -519,21 +548,33 @@ on_about_driver_activate (GtkMenuItem *item, GtkamMain *m)
 {
 	int result;
 	CameraText text;
-	GtkWidget *dialog;
+	GtkWidget *dialog, *s;
 
 	if (!m->priv->camera)
 		return;
 
-	result = gp_camera_get_about (m->priv->camera, &text, NULL);
+	s = gtkam_status_new (_("Getting information about the driver..."));
+	gtk_widget_show (s);
+	gtk_box_pack_start (GTK_BOX (m->priv->status), s, FALSE, FALSE, 0);
+	result = gp_camera_get_about (m->priv->camera, &text,
+			GTKAM_STATUS (s)->context->context);
 	if (m->priv->multi)
 		gp_camera_exit (m->priv->camera, NULL);
-	if (result < 0)
-		dialog = gtkam_error_new (_("Could not get information "
-					  "about the driver"), result, 
-					  m->priv->camera, GTK_WIDGET (m));
-	else
+	switch (result) {
+	case GP_OK:
 		dialog = gtkam_close_new (text.text, GTK_WIDGET (m));
-	gtk_widget_show (dialog);
+		gtk_widget_show (dialog);
+		break;
+	case GP_ERROR_CANCEL:
+		break;
+	default:
+		dialog = gtkam_error_new (result,
+			GTKAM_STATUS (s)->context, GTK_WIDGET (m),
+			_("Could not get information about the driver"));
+		gtk_widget_show (dialog);
+		break;
+	}
+	gtk_object_destroy (GTK_OBJECT (s));
 }
 
 static void
@@ -594,25 +635,34 @@ static void
 on_remove_dir_activate (GtkMenuItem *item, GtkamMain *m)
 {
 	const gchar *path;
-	gchar *dirname, *msg;
+	gchar *dirname;
 	int result;
-	GtkWidget *dialog;
+	GtkWidget *dialog, *s;
 
 	path = gtkam_tree_get_path (m->priv->tree);
 	dirname = g_dirname (path);
+	s = gtkam_status_new (_("Removing folder '%s' from folder '%s'..."),
+			      dirname, path);
+	gtk_widget_show (s);
+	gtk_box_pack_start (GTK_BOX (m->priv->status), s, FALSE, FALSE, 0);
 	result = gp_camera_folder_remove_dir (m->priv->camera, dirname,
-					      g_basename (path), NULL);
+			g_basename (path), GTKAM_STATUS (s)->context->context);
 	if (m->priv->multi)
 		gp_camera_exit (m->priv->camera, NULL);
-	if (result < 0) {
-		msg = g_strdup_printf (_("Could not remove '%s' from '%s'"),
-				       g_basename (path), dirname);
-		dialog = gtkam_error_new (msg, result, m->priv->camera,
-					  GTK_WIDGET (m));
-		g_free (msg);
-		gtk_widget_show (dialog);
-	} else
+	switch (result) {
+	case GP_OK:
 		gtkam_tree_remove_dir (m->priv->tree, path);
+		break;
+	case GP_ERROR_CANCEL:
+		break;
+	default:
+		dialog = gtkam_error_new (result, GTKAM_STATUS (s)->context, 
+			GTK_WIDGET (m), _("Could not remove '%s' from '%s'"),
+			g_basename (path), dirname);
+		gtk_widget_show (dialog);
+		break;
+	}
+	gtk_object_destroy (GTK_OBJECT (s));
 	g_free (dirname);
 }
 
@@ -627,11 +677,10 @@ static void
 on_upload_activate (GtkMenuItem *item, GtkamMain *m)
 {
 	CameraFile *file;
-	GtkWidget *fsel, *dialog, *cancel;
+	GtkWidget *fsel, *dialog, *s;
 	gboolean ok = FALSE;
 	const char *path;
 	int r;
-	gchar *msg;
 	const char *folder;
 
 	folder = gtkam_tree_get_path (m->priv->tree);
@@ -652,42 +701,36 @@ on_upload_activate (GtkMenuItem *item, GtkamMain *m)
 		gp_file_new (&file);
 		r = gp_file_open (file, path);
 		if (r < 0) {
-			msg = g_strdup_printf (_("Could not open '%s'"), path);
-			dialog = gtkam_error_new (msg, r, NULL, GTK_WIDGET (m));
-			g_free (msg);
+			dialog = gtkam_error_new (r, NULL, GTK_WIDGET (m),
+				_("Could not open '%s'"), path);
 			gtk_widget_show (dialog);
 		} else {
 			gtk_widget_hide (fsel);
-			cancel = gtkam_cancel_new (GTK_WIDGET (m));
-			gtk_widget_show (cancel);
-			msg = g_strdup_printf (_("Uploading '%s'..."), path);
-			gtkam_cancel_set_message (GTKAM_CANCEL (cancel), msg);
-			g_free (msg);
-			gtkam_cancel_start_monitoring (GTKAM_CANCEL (cancel),
-						       file);
+			s = gtkam_status_new (_("Uploading '%s' into "
+				"folder '%s'..."), g_basename (path), folder);
+			gtk_widget_show (s);
+			gtk_box_pack_start (GTK_BOX (m->priv->status), s,
+					    FALSE, FALSE, 0);
 			r = gp_camera_folder_put_file (m->priv->camera,
-						       folder, file, NULL);
-			gtkam_cancel_stop_monitoring (GTKAM_CANCEL (cancel),
-						      file);
-			gtk_widget_destroy (cancel);
+				folder, file,
+				GTKAM_STATUS (s)->context->context);
 			if (m->priv->multi)
 				gp_camera_exit (m->priv->camera, NULL);
-			if (r < 0) {
-				switch (r) {
-				case GP_ERROR_CANCEL:
-					break;
-				default:
-					msg = g_strdup_printf (_("Coult not "
-						"upload '%s' into folder "
-						"'%s'"), path, folder);
-					dialog = gtkam_error_new (msg, r,
-						m->priv->camera,
-						GTK_WIDGET (m));
-					g_free (msg);
-					gtk_widget_show (dialog);
-				}
-			} else
+			switch (r) {
+			case GP_OK:
 				gtkam_list_refresh (m->priv->list);
+				break;
+			case GP_ERROR_CANCEL:
+				break;
+			default:
+				dialog = gtkam_error_new (r,
+					GTKAM_STATUS (s)->context,
+					GTK_WIDGET (m),
+					_("Coult not upload '%s' into folder "
+					"'%s'"), path, folder);
+				gtk_widget_show (dialog);
+			}
+			gtk_object_destroy (GTK_OBJECT (s));
 		}
 		gp_file_unref (file);
 	}
@@ -729,69 +772,13 @@ on_changed (GtkamList *list, GtkamMain *m)
 	gtkam_main_update_sensitivity (m);
 }
 
-#if 0
-static int
-progress_func (CameraFile *file, gfloat percentage, void *data)
-{
-	GtkamMain *m;
-	const gchar *name;
-	gchar *msg;
-
-	while (gtk_events_pending ())
-		gtk_main_iteration ();
-
-	if (!GTKAM_IS_MAIN (data))
-		return (GP_ERROR_CANCEL);
-	m = GTKAM_MAIN (data);
-
-	gtk_progress_set_percentage (GTK_PROGRESS (m->priv->progress), 
-				     percentage);
-	if (gp_file_get_name (file, &name) == GP_OK) {
-		msg = g_strdup_printf (_("Downloading '%s'..."), name);
-		gtk_progress_set_format_string (
-				GTK_PROGRESS (m->priv->progress), msg);
-		g_free (msg);
-	}
-
-	if (m->priv->cancelled) {
-		m->priv->cancelled = FALSE;
-		return (GP_ERROR_CANCEL);
-	}
-
-	return (GP_OK);
-}
-#endif
-
-static void
-on_download_start (GtkamList *list, CameraFile *file, GtkamMain *m)
-{
-	gtk_progress_set_percentage (GTK_PROGRESS (m->priv->progress), 0.);
-	gtk_progress_set_show_text (GTK_PROGRESS (m->priv->progress), TRUE);
-
-	gtk_widget_show (m->priv->cancel);
-}
-
-static void
-on_download_stop (GtkamList *list, CameraFile *file, GtkamMain *m)
-{
-	gtk_widget_hide (m->priv->cancel);
-	gtk_progress_set_percentage (GTK_PROGRESS (m->priv->progress), 0.);
-	gtk_progress_set_show_text (GTK_PROGRESS (m->priv->progress), FALSE);
-}
-
-static void
-on_cancel_clicked (GtkButton *button, GtkamMain *m)
-{
-	m->priv->cancelled = TRUE;
-}
-
 GtkWidget *
 gtkam_main_new (void)
 {
 	GtkamMain *m;
 	GtkWidget *vbox, *menubar, *menu, *item, *separator, *submenu;
-	GtkWidget *frame, *scrolled, *check, *tree, *list, *label, *hbox;
-	GtkWidget *button, *hpaned, *toolbar, *icon, *status, *progress;
+	GtkWidget *frame, *scrolled, *check, *tree, *list, *label;
+	GtkWidget *button, *hpaned, *toolbar, *icon;
 	GtkAccelGroup *accel_group, *accels, *subaccels;
 	GtkTooltips *tooltips;
 	guint key;
@@ -1166,28 +1153,11 @@ gtkam_main_new (void)
 		GTK_SIGNAL_FUNC (on_exit_activate), m);
 
 	/*
-	 * Status and progress bar
+	 * Context information
 	 */
-	hbox = gtk_hbox_new (FALSE, 2);
-	gtk_widget_show (hbox);
-	gtk_box_pack_end (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
-
-	status = gtk_statusbar_new ();
-	gtk_widget_show (status);
-	gtk_box_pack_start (GTK_BOX (hbox), status, TRUE, TRUE, 0);
-	m->priv->status = GTK_STATUSBAR (status);
-	m->priv->context_id = gtk_statusbar_get_context_id (m->priv->status,
-							    "libgphoto2");
-
-	progress = gtk_progress_bar_new ();
-	gtk_widget_show (progress);
-	gtk_box_pack_start (GTK_BOX (hbox), progress, FALSE, FALSE, 0);
-	m->priv->progress = GTK_PROGRESS_BAR (progress);
-
-	m->priv->cancel = gtk_button_new_with_label (_("Cancel"));
-	gtk_box_pack_start (GTK_BOX (hbox), m->priv->cancel, FALSE, FALSE, 0);
-	gtk_signal_connect (GTK_OBJECT (m->priv->cancel), "clicked",
-			    GTK_SIGNAL_FUNC (on_cancel_clicked), m);
+	m->priv->status = gtk_vbox_new (FALSE, 0);
+	gtk_widget_show (m->priv->status);
+	gtk_box_pack_end (GTK_BOX (vbox), m->priv->status, FALSE, FALSE, 0);
 
 	/*
 	 * Main content
@@ -1225,7 +1195,7 @@ gtkam_main_new (void)
 	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled),
 				GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 
-	tree = gtkam_tree_new ();
+	tree = gtkam_tree_new (m->priv->status);
 	gtk_widget_show (tree);
 	gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (scrolled),
 					       tree);
@@ -1244,17 +1214,13 @@ gtkam_main_new (void)
 	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled),
 			GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 
-	list = gtkam_list_new ();
+	list = gtkam_list_new (m->priv->status);
 	gtk_widget_show (list);
 	gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (scrolled),
 					       list);
 	m->priv->list = GTKAM_LIST (list);
 	gtk_signal_connect (GTK_OBJECT (list), "changed",
 			    GTK_SIGNAL_FUNC (on_changed), m);
-	gtk_signal_connect (GTK_OBJECT (list), "download_start",
-			    GTK_SIGNAL_FUNC (on_download_start), m);
-	gtk_signal_connect (GTK_OBJECT (list), "download_stop",
-			    GTK_SIGNAL_FUNC (on_download_stop), m);
 	gtk_signal_connect (GTK_OBJECT (list), "select_icon",
 			    GTK_SIGNAL_FUNC (on_select_icon), m);
 	gtk_signal_connect (GTK_OBJECT (list), "unselect_icon",
@@ -1263,25 +1229,6 @@ gtkam_main_new (void)
 			    GTK_SIGNAL_FUNC (on_size_allocate), m);
 
 	return (GTK_WIDGET (m));
-}
-
-static void
-status_func (Camera *camera, const char *status, void *data)
-{
-	GtkamMain *m = data;
-
-	/* Make sure we are not sutting down */
-	if (!GTKAM_IS_MAIN (m))
-		return;
-
-	if (m->priv->message_id)
-		gtk_statusbar_remove (m->priv->status, m->priv->context_id,
-				      m->priv->message_id);
-	if (status && *status)
-		m->priv->message_id = gtk_statusbar_push (m->priv->status,
-						m->priv->context_id, status);
-	while (gtk_events_pending ())
-		gtk_main_iteration ();
 }
 
 static void
@@ -1294,22 +1241,6 @@ message_func (Camera *camera, const char *message, void *data)
 	gtk_widget_show (dialog);
 }
 
-#ifdef OLD_PROGRESS
-static void
-progress_func (Camera *camera, float progress, void *data)
-{
-	GtkamMain *m = data;
-
-	/* Make sure we are not shutting down */
-	if (!GTKAM_IS_MAIN (data))
-		return;
-
-	gtk_progress_bar_update (m->priv->progress, progress);
-	while (gtk_events_pending ())
-		gtk_main_iteration ();
-}
-#endif
-
 void
 gtkam_main_set_camera (GtkamMain *m, Camera *camera, gboolean multi)
 {
@@ -1318,10 +1249,8 @@ gtkam_main_set_camera (GtkamMain *m, Camera *camera, gboolean multi)
 	g_return_if_fail (GTKAM_IS_MAIN (m));
 	g_return_if_fail (camera != NULL);
 
-	if (camera) {
-		gp_camera_set_status_func (camera, status_func, m);
+	if (camera)
 		gp_camera_set_message_func (camera, message_func, m);
-	}
 
 	if (m->priv->camera)
 		gp_camera_unref (m->priv->camera);

@@ -66,6 +66,7 @@
 #include "gtkam-error.h"
 #include "gtkam-close.h"
 #include "gtkam-port.h"
+#include "gtkam-status.h"
 
 struct _GtkamChooserPrivate
 {
@@ -168,12 +169,12 @@ gtkam_chooser_get_type (void)
 static Camera *
 gtkam_chooser_get_camera (GtkamChooser *chooser)
 {
-	GtkWidget *dialog;
+	GtkWidget *dialog, *status;
 	GPPortInfo info;
 	Camera *camera;
 	CameraAbilities abilities;
 	const gchar *model, *port, *speed;
-	gchar *speed_number, *port_path, *right;
+	gchar *speed_number, *port_path, *right, *tmp;
 	int m, p, r;
 	gboolean multi;
 
@@ -188,7 +189,9 @@ gtkam_chooser_get_camera (GtkamChooser *chooser)
 		port_path = g_strdup (port);
 		right = strrchr (port_path, ')');
 		*right = '\0';
-		port_path = strrchr (port_path, '(') + 1;
+		tmp = g_strdup (strrchr (port_path, '(') + 1);
+		g_free (port_path);
+		port_path = tmp;
 	}
 
 	gp_camera_new (&camera);
@@ -214,22 +217,35 @@ gtkam_chooser_get_camera (GtkamChooser *chooser)
 	 * Initialize the camera to check if it is really there. Exit
 	 * afterwards because other applications could need the camera, too.
 	 */
-	r = gp_camera_init (camera, NULL);
+	status = gtkam_status_new (_("Initializing camera..."));
+	gtk_widget_show (status);
+	gtk_box_pack_end (GTK_BOX (GTK_DIALOG (chooser)->vbox), status,
+			  FALSE, FALSE, 0);
+	r = gp_camera_init (camera, GTKAM_STATUS (status)->context->context);
 	if (multi)
 		gp_camera_exit (camera, NULL);
-	if (r < 0) {
-//		g_free (port_path);
-		dialog = gtkam_error_new (_("Could not initialize camera"),
-			r, camera, GTK_WIDGET (chooser));
+	switch (r) {
+	case GP_OK:
+		break;
+	case GP_ERROR_CANCEL:
+		g_free (port_path);
+		break;
+	default:
+		g_free (port_path);
+		dialog = gtkam_error_new (r, GTKAM_STATUS (status)->context,
+			GTK_WIDGET (chooser),
+			_("Could not initialize camera."));
 		gtk_widget_show (dialog);
 		gp_camera_unref (camera);
+		gtk_object_destroy (GTK_OBJECT (status));
 		return (NULL);
 	}
+	gtk_object_destroy (GTK_OBJECT (status));
 
 	/* Remember the settings */
 	gp_setting_set ("gtkam", "model", (char*) model);
 	gp_setting_set ("gtkam", "path", port_path);
-//	g_free (port_path);
+	g_free (port_path);
 	if (!strcmp (speed, _("Best")))
 		speed_number = g_strdup ("0");
 	else
@@ -327,7 +343,6 @@ gtkam_chooser_update_for_model (GtkamChooser *chooser)
 	const gchar *model;
 	int m, result, i;
 	CameraAbilities a;
-	gchar *msg;
 	GtkWidget *dialog;
 	GList *list;
 
@@ -336,11 +351,8 @@ gtkam_chooser_update_for_model (GtkamChooser *chooser)
 	m = gp_abilities_list_lookup_model (chooser->priv->al, model);
 	result = gp_abilities_list_get_abilities (chooser->priv->al, m, &a);
 	if (result < 0) {
-		msg = g_strdup_printf (_("Could not get abilities of "
-				       "model '%s'"), model);
-		dialog = gtkam_error_new (msg, result, NULL,
-					  GTK_WIDGET (chooser));
-		g_free (msg);
+		dialog = gtkam_error_new (result, NULL, GTK_WIDGET (chooser),
+			_("Could not get abilities of model '%s'."), model);
 		gtk_widget_show (dialog);
 		return;
 	}
@@ -383,28 +395,42 @@ on_speed_changed (GtkEntry *entry, GtkamChooser *chooser)
 static void
 on_detect_clicked (GtkButton *button, GtkamChooser *chooser)
 {
-	GtkWidget *dialog;
+	GtkWidget *dialog, *status;
 	CameraList list;
 	int result;
 	const char *name;
 
+	status = gtkam_status_new (_("Detecting cameras..."));
+	gtk_widget_show (status);
+	gtk_box_pack_end (GTK_BOX (GTK_DIALOG (chooser)->vbox), status,
+			  FALSE, FALSE, 0);
 	result = gp_abilities_list_detect (chooser->priv->al,
-					   chooser->priv->il, &list, NULL);
-	if (result < 0) {
-		dialog = gtkam_error_new (_("Could not detect any cameras"),
-					  result, NULL, GTK_WIDGET (chooser));
+		chooser->priv->il, &list,
+		GTKAM_STATUS (status)->context->context);
+	switch (result) {
+	case GP_OK:
+		if (!gp_list_count (&list)) {
+			dialog = gtkam_close_new (_("No cameras detected."),
+						  GTK_WIDGET (chooser));
+			gtk_widget_show (dialog);
+		} else {
+			//FIXME: Let user choose from the list
+			gp_list_get_name (&list, 0, &name);
+			gtk_entry_set_text (chooser->priv->entry_model, name);
+			gtk_entry_set_text (chooser->priv->entry_port,
+					"Universal Serial Bus (usb:)");
+		}
+		break;
+	case GP_ERROR_CANCEL:
+		break;
+	default:
+		dialog = gtkam_error_new (result,
+			GTKAM_STATUS (status)->context, GTK_WIDGET (chooser),
+			_("Could not detect any cameras."));
 		gtk_widget_show (dialog);
-	} else if (!gp_list_count (&list)) {
-		dialog = gtkam_close_new (_("No cameras detected."),
-					  GTK_WIDGET (chooser));
-		gtk_widget_show (dialog);
-	} else {
-//FIXME: Let user choose from the list
-		gp_list_get_name (&list, 0, &name);
-		gtk_entry_set_text (chooser->priv->entry_model, name);
-		gtk_entry_set_text (chooser->priv->entry_port,
-				    "Universal Serial Bus (usb:)");
+		break;
 	}
+	gtk_object_destroy (GTK_OBJECT (status));
 }
 
 static void
@@ -756,9 +782,9 @@ gtkam_chooser_set_camera_mask (GtkamChooser *chooser,
 
 	n = gp_abilities_list_count (chooser->priv->al);
 	if (n < 0) {
-		dialog = gtkam_error_new (_("Could not get number of "
-			"supported camera models"),
-			n, NULL, GTK_WIDGET (chooser));
+		dialog = gtkam_error_new (n, NULL, GTK_WIDGET (chooser),
+			_("Could not get number of "
+			"supported camera models"));
 		gtk_widget_show (dialog);
 		return;
 	}
@@ -786,8 +812,8 @@ gtkam_chooser_set_port_mask (GtkamChooser *chooser, GPPortType types)
 
 	n = gp_port_info_list_count (chooser->priv->il);
 	if (n < 0) {
-		dialog = gtkam_error_new (_("Could not get number of ports"),
-					  n, NULL, GTK_WIDGET (chooser));
+		dialog = gtkam_error_new (n, NULL, GTK_WIDGET (chooser),
+			_("Could not get number of ports."));
 		gtk_widget_show (dialog);
 		return;
 	}

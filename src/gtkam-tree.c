@@ -190,6 +190,7 @@ create_item (GtkamTree *tree, GtkTree *tree_to_add_to, const gchar *path)
 	gtk_widget_show (hbox);
 	gtk_container_add (GTK_CONTAINER (item), hbox);
 
+	/* Show a nice pixmap */
 	if (!strcmp (path, "/"))
 		pixmap = create_pixmap (GTK_WIDGET (tree), "camera.xpm");
 	else
@@ -197,32 +198,17 @@ create_item (GtkamTree *tree, GtkTree *tree_to_add_to, const gchar *path)
 	gtk_widget_show (pixmap);
 	gtk_box_pack_start (GTK_BOX (hbox), pixmap, FALSE, FALSE, 0);
 
+	/* Show the label (camera name or folder name) */
 	if (!tree->priv->camera)
 		label = gtk_label_new (_("No camera set"));
 	else {
-		gp_list_new (&list);
-		result = gp_camera_folder_list_files (tree->priv->camera,
-						      path, list);
-		if (result < 0) {
-			window = gtk_widget_get_ancestor (GTK_WIDGET (tree),
-							  GTK_TYPE_WINDOW);
-			msg = g_strdup_printf (_("Could not retrieve file "
-				"list for folder '%s'"), path);
-			dialog = gtkam_error_new (msg, result,
-					tree->priv->camera, window);
-			gtk_widget_show (dialog);
-		}
-
 		if (!strcmp (path, "/")) {
 			gp_camera_get_abilities (tree->priv->camera, &a);
-			l = g_strdup_printf ("%s (%i)", a.model,
-					     gp_list_count (list));
+			l = g_strdup (a.model);
 		} else
-			l = g_strdup_printf ("%s (%i)", g_basename (path),
-					     gp_list_count (list));
+			l = g_strdup (g_basename (path));
 		label = gtk_label_new (l);
 		g_free (l);
-		gp_list_unref (list);
 	}
 	gtk_widget_show (label);
 	gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
@@ -230,6 +216,26 @@ create_item (GtkamTree *tree, GtkTree *tree_to_add_to, const gchar *path)
 	/* Return if we don't have a camera */
 	if (!tree->priv->camera)
 		return;
+
+	/* Show the number of pictures in the folder */
+	gp_list_new (&list);
+	result = gp_camera_folder_list_files (tree->priv->camera, path, list);
+	if (result < 0) {
+		window = gtk_widget_get_ancestor (GTK_WIDGET (tree),
+						  GTK_TYPE_WINDOW);
+		msg = g_strdup_printf (_("Could not retrieve file "
+				       "list for folder '%s'"), path);
+		dialog = gtkam_error_new (msg, result,
+					  tree->priv->camera, window);
+		gtk_widget_show (dialog);
+	} else {
+		l = g_strdup_printf (" (%i)", gp_list_count (list));
+		label = gtk_label_new (l);
+		g_free (l);
+		gtk_widget_show (label);
+		gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
+	}
+	gp_list_unref (list);
 
 	/* Subdirectories? */
 	gp_list_new (&list);

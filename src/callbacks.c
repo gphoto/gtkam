@@ -20,6 +20,7 @@
 #include <gtkam-config.h>
 #include <gtkam-debug.h>
 #include <gtkam-error.h>
+#include <gtkam-preview.h>
 
 #include "../pixmaps/no_thumbnail.xpm"
 
@@ -1050,19 +1051,6 @@ void camera_delete_all() {
 	camera_delete_common(1);
 }
 
-void camera_configure() {
-
-	GtkWidget *config;
-
-        debug_print("camera configure");
-
-	if (!gp_gtk_camera_init)
-		CHECK_RESULT (camera_set ());
-
-	config = gtkam_config_new (gp_gtk_camera);
-	gtk_widget_show (config);
-}
-
 void camera_show_information() {
 
 	CameraText buf;
@@ -1293,9 +1281,26 @@ void on_delete_all_activate (GtkMenuItem *menuitem, gpointer user_data) {
 	camera_delete_all();
 }
 
+void on_capture_activate (GtkMenuItem *menuitem, gpointer user_data) {
+
+	GtkWidget *dialog;
+
+	if (!gp_gtk_camera_init)
+		CHECK_RESULT (camera_set ());
+
+	dialog = gtkam_preview_new (gp_gtk_camera);
+	gtk_widget_show (dialog);
+}
 
 void on_configure_activate (GtkMenuItem *menuitem, gpointer user_data) {
-	camera_configure();
+
+	GtkWidget *dialog;
+
+	if (!gp_gtk_camera_init)
+		CHECK_RESULT (camera_set ());
+
+	dialog = gtkam_config_new (gp_gtk_camera);
+	gtk_widget_show (dialog); 
 }
 
 

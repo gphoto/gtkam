@@ -11,9 +11,9 @@
 #include <unistd.h>
 #include <string.h>
 
+#include <gphoto2.h>
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtk.h>
-#include <gphoto2.h>
 
 #include "globals.h"
 #include "gtkiconlist.h"
@@ -229,7 +229,7 @@ create_main_window (void)
   GtkWidget *selected_photos1;
   GtkWidget *all_images1;
   GtkWidget *separator3;
-  GtkWidget *configure1;
+  GtkWidget *configure1, *capture1;
   GtkWidget *information1;
   GtkWidget *manual1;
   GtkWidget *about_the_driver1;
@@ -623,6 +623,18 @@ create_main_window (void)
   gtk_container_add (GTK_CONTAINER (camera1_menu), separator3);
   gtk_widget_set_sensitive (separator3, FALSE);
 
+	capture1 = gtk_menu_item_new_with_label ("");
+	tmp_key = gtk_label_parse_uline (GTK_LABEL (GTK_BIN (capture1)->child),
+					 _("Capture"));
+	gtk_widget_add_accelerator (capture1, "activate_item",
+				    camera1_menu_accels, tmp_key, 0, 0);
+	gtk_widget_ref (capture1);
+	gtk_object_set_data_full (GTK_OBJECT (main_window), "capture1", 
+				  capture1,
+				  (GtkDestroyNotify) gtk_widget_unref);
+	gtk_widget_show (capture1);
+	gtk_container_add (GTK_CONTAINER (camera1_menu), capture1);
+
   configure1 = gtk_menu_item_new_with_label ("");
   tmp_key = gtk_label_parse_uline (GTK_LABEL (GTK_BIN (configure1)->child),
                                    _("_Configure..."));
@@ -848,7 +860,7 @@ create_main_window (void)
   tooltip = gtk_tooltips_new();
   gtk_tooltips_set_tip (tooltip, configure_button, _("Configure the camera"), NULL);
   gtk_signal_connect(GTK_OBJECT(configure_button), "clicked", 
-	GTK_SIGNAL_FUNC(camera_configure), NULL);
+	GTK_SIGNAL_FUNC(on_configure_activate), NULL);
 
   label5 = gtk_label_new (_("     "));
   gtk_widget_ref (label5);
@@ -1051,6 +1063,8 @@ create_main_window (void)
   gtk_signal_connect (GTK_OBJECT (all_images1), "activate",
                       GTK_SIGNAL_FUNC (on_delete_all_activate),
                       NULL);
+	gtk_signal_connect (GTK_OBJECT (capture1), "activate",
+			    GTK_SIGNAL_FUNC (on_capture_activate), NULL);
   gtk_signal_connect (GTK_OBJECT (configure1), "activate",
                       GTK_SIGNAL_FUNC (on_configure_activate),
                       NULL);

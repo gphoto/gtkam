@@ -1,5 +1,9 @@
 2001-10-05  Lutz Müller <urc8@rz.uni-karlsruhe.de>
 
+	* src/gtkam-preview.[c,h]: New
+
+2001-10-05  Lutz Müller <urc8@rz.uni-karlsruhe.de>
+
 	* src/gtkam-error.[c,h]:
 	* src/gtkam-config.[c,h]:
 	* src/gtkam-debug.[c,h]: New

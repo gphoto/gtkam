@@ -321,7 +321,7 @@ create_widgets (GtkamConfig *config, CameraWidget *widget)
 
 	case GP_WIDGET_DATE:
 
-		g_warning ("GP_WIDGET_DATE not implemented!");
+		gtk_widget = gtk_label_new ("Date & Time not implemented!");
 		break;
 
 	case GP_WIDGET_TEXT:

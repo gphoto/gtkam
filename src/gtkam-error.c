@@ -131,6 +131,7 @@ gtkam_error_new (int result, Camera *opt_camera)
 	g_return_val_if_fail (result < 0, NULL);
 
 	error = gtk_type_new (GTKAM_TYPE_ERROR);
+	gtk_window_set_policy (GTK_WINDOW (error), TRUE, TRUE, TRUE);
 
 	if (opt_camera)
 		msg = gp_camera_get_result_as_string (opt_camera, result);

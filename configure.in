@@ -15,7 +15,7 @@ LDFLAGS="$LDFLAGS -g -Wall"
 
 dnl Add the languages which your application supports here.
 ALL_LINGUAS="da de es fr hu it ja no pt_BR pt_PT ru sl sv uk"
-AM_GNU_GETTEXT
+AM_GNU_GETTEXT([external])
 
 dnl ---------------------------------------------------------------------------
 dnl We need the location of pkg-config.
@@ -157,9 +157,8 @@ if test "x$GCC" = "xyes"; then
 fi
 changequote([,])dnl
 
-AC_OUTPUT([
+AC_OUTPUT([ m4/Makefile 
 Makefile
-intl/Makefile
 art/Makefile
 pixmaps/Makefile
 packaging/Makefile

@@ -1,8 +1,8 @@
 ## Process this file with automake to produce Makefile.in
 
-EXTRA_DIST =
+EXTRA_DIST = config.rpath 
 
-SUBDIRS = po src test intl art pixmaps packaging
+SUBDIRS = m4  po src test art pixmaps packaging
 
 gtkamdocdir = $(datadir)/doc/gtkam
 gtkamdoc_DATA = AUTHORS COPYING
@@ -40,3 +40,5 @@ cvs-tags: Makefile
 	@echo cvs tag "@PACKAGE@-$$(echo '@VERSION@' | sed 's/\./_/g')"
 
 endif
+
+ACLOCAL_AMFLAGS = -I m4

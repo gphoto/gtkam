@@ -434,7 +434,7 @@ gtkam_preview_new (Camera *camera, gboolean multi)
 	vbox = gtk_vbox_new (FALSE, 0);
 	gtk_widget_show (vbox);
 	gtk_box_pack_end (GTK_BOX (hbox), vbox, FALSE, FALSE, 0);
-	radio = gtk_radio_button_new_with_label (NULL, _("0°"));
+	radio = gtk_radio_button_new_with_label (NULL, _("0 degrees"));
 	gtk_widget_show (radio);
 	gtk_box_pack_start (GTK_BOX (vbox), radio, FALSE, FALSE, 0);
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (radio), TRUE);
@@ -444,32 +444,32 @@ gtkam_preview_new (Camera *camera, gboolean multi)
 	gtk_tooltips_set_tip (preview->priv->tooltips, radio,
 			      _("Don't rotate thumbnail"), NULL);
 	group = gtk_radio_button_group (GTK_RADIO_BUTTON (radio));
-	radio = gtk_radio_button_new_with_label (group, _("-90°"));
+	radio = gtk_radio_button_new_with_label (group, _("-90 degrees"));
 	gtk_widget_show (radio);
 	gtk_box_pack_start (GTK_BOX (vbox), radio, FALSE, FALSE, 0);
 	gtk_signal_connect (GTK_OBJECT (radio), "toggled",
 			    GTK_SIGNAL_FUNC (on_radio_270_toggled), preview);
 	preview->priv->angle_90 = GTK_TOGGLE_BUTTON (radio);
 	gtk_tooltips_set_tip (preview->priv->tooltips, radio,
-			      _("Rotate thumbnail by -90°"), NULL);
+			      _("Rotate thumbnail by -90 degrees"), NULL);
 	group = gtk_radio_button_group (GTK_RADIO_BUTTON (radio));
-	radio = gtk_radio_button_new_with_label (group, _("+90°"));
+	radio = gtk_radio_button_new_with_label (group, _("+90 degrees"));
 	gtk_widget_show (radio);
 	gtk_box_pack_start (GTK_BOX (vbox), radio, FALSE, FALSE, 0);
 	gtk_signal_connect (GTK_OBJECT (radio), "toggled",
 			    GTK_SIGNAL_FUNC (on_radio_90_toggled), preview);
 	preview->priv->angle_180 = GTK_TOGGLE_BUTTON (radio);
 	gtk_tooltips_set_tip (preview->priv->tooltips, radio, 
-			      _("Rotate thumbnail by 90°"), NULL);
+			      _("Rotate thumbnail by 90 degrees"), NULL);
 	group = gtk_radio_button_group (GTK_RADIO_BUTTON (radio));
-	radio = gtk_radio_button_new_with_label (group, _("180°"));
+	radio = gtk_radio_button_new_with_label (group, _("180 degrees"));
 	gtk_widget_show (radio);
 	gtk_box_pack_start (GTK_BOX (vbox), radio, FALSE, FALSE, 0);
 	gtk_signal_connect (GTK_OBJECT (radio), "toggled",
 			    GTK_SIGNAL_FUNC (on_radio_180_toggled), preview);
 	preview->priv->angle_270 = GTK_TOGGLE_BUTTON (radio);
 	gtk_tooltips_set_tip (preview->priv->tooltips, radio, 
-			      _("Rotate thumbnail by 180°"), NULL);
+			      _("Rotate thumbnail by 180 degrees"), NULL);
 
 	/* Zoom */
 	hbox = gtk_hbox_new (FALSE, 0);

@@ -55,6 +55,7 @@
 #include <gtk/gtkentry.h>
 #include <gtk/gtkcombo.h>
 
+#include <gphoto2/gphoto2-port-core.h>
 #include <gphoto2/gphoto2-core.h>
 #include <gphoto2/gphoto2-setting.h>
 
@@ -148,6 +149,7 @@ static void
 on_apply_clicked (GtkButton *button, GtkamChooser *chooser)
 {
 	Camera *camera;
+	CameraAbilities abilities;
 	const gchar *model, *port, *speed;
 	int result;
 	GtkWidget *dialog;
@@ -172,7 +174,8 @@ on_apply_clicked (GtkButton *button, GtkamChooser *chooser)
 	}
 
 	gp_camera_new (&camera);
-	gp_camera_set_model (camera, model);
+	gp_camera_abilities_by_name (model, &abilities);
+	gp_camera_set_abilities (camera, abilities);
 	if (strcmp (port_name, _("None")))
 		gp_camera_set_port_name  (camera, port_name);
 	if (strcmp (speed, _("Best")))
@@ -252,7 +255,7 @@ on_model_changed (GtkEntry *entry, GtkamChooser *chooser)
 		return;
 	}
 
-	count = gp_port_count_get ();
+	count = gp_port_core_count ();
 	if (count < 0) {
 		dialog = gtkam_error_new (_("Could not get number of ports"),
 					  count, NULL, GTK_WIDGET (chooser));
@@ -262,7 +265,7 @@ on_model_changed (GtkEntry *entry, GtkamChooser *chooser)
 
 	list = NULL;
 	for (i = 0; i < count; i++) {
-		gp_port_info_get (i, &info);
+		gp_port_core_get_info (i, &info);
 		if (info.type & a.port)
 			list = g_list_append (list,
 					      g_strdup_printf ("%s (%s)",

@@ -58,6 +58,7 @@ main (int argc, char *argv[])
 	char buf[1024], port[1024], speed[1024], model[1024];
 	int x, y, result;
 	Camera *camera;
+	CameraAbilities abilities;
 	gchar *msg;
 
 	gtk_set_locale ();
@@ -91,7 +92,8 @@ main (int argc, char *argv[])
 	     (gp_setting_get ("gtkam", "port name", port) == GP_OK)) && 
 	    (gp_setting_get ("gtkam", "speed", speed) == GP_OK)) {
 		gp_camera_new (&camera);
-		gp_camera_set_model (camera, model);
+		gp_camera_abilities_by_name (model, &abilities);
+		gp_camera_set_abilities (camera, abilities);
 		if (strcmp (port, "None") && strcmp (model, "Directory Browse"))
 			gp_camera_set_port_name (camera, port);
 		if (atoi (speed))

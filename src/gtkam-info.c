@@ -562,7 +562,6 @@ gtkam_info_new (Camera *camera, const gchar *path, GtkWidget *opt_window)
 		gtk_table_set_col_spacings (GTK_TABLE (page), 5);
 		gtk_table_set_row_spacings (GTK_TABLE (page), 2);
 		label = gtk_label_new (_("Audio"));
-		label = gtk_label_new (_("Preview")); 
 		gtk_widget_show (label); 
 		gtk_notebook_append_page (GTK_NOTEBOOK (notebook), page, label);
 

@@ -46,7 +46,7 @@ struct _GtkamSavePrivate
 	GSList *filenames;
 
 	GtkToggleButton *toggle_preview, *toggle_normal, *toggle_raw;
-	GtkToggleButton *toggle_override;
+	GtkToggleButton *toggle_filename_camera;
 	GtkEntry *program, *prefix_entry;
 
 	gboolean quiet;
@@ -135,7 +135,7 @@ on_cancel_clicked (GtkButton *button, GtkamSave *save)
 }
 
 static void
-on_override_toggled (GtkToggleButton *toggle, GtkamSave *save)
+on_filename_camera_toggled (GtkToggleButton *toggle, GtkamSave *save)
 {
 	if (save->priv->prefix_entry)
 		gtk_widget_set_sensitive (GTK_WIDGET (save->priv->prefix_entry),
@@ -143,7 +143,7 @@ on_override_toggled (GtkToggleButton *toggle, GtkamSave *save)
 	else
 		gtk_widget_set_sensitive (
 				GTK_FILE_SELECTION (save)->selection_entry,
-				toggle->active);
+				!toggle->active);
 }
 
 static gchar *
@@ -173,6 +173,8 @@ concat_dir_and_file (const gchar *dirname, const gchar *filename)
 
 	if (!strcmp (dirname, "/"))
 		full_path = g_strdup_printf ("/%s", filename);
+	else if (dirname[strlen (dirname) - 1] == '/')
+		full_path = g_strdup_printf ("%s%s", dirname, filename);
 	else
 		full_path = g_strdup_printf ("%s/%s", dirname, filename);
 
@@ -195,15 +197,13 @@ save_file (GtkamSave *save, CameraFile *file, guint n)
 
 	fsel_path = gtk_file_selection_get_filename (GTK_FILE_SELECTION (save));
 
-	if (!save->priv->toggle_override->active) {
+	if (save->priv->toggle_filename_camera->active) {
 
 		/* Use filename provided by the CameraFile */
 		full_filename = create_full_filename (filename, type);
-printf ("FULL_FILENAME: %s\n", full_filename);
 
 		if (g_slist_length (save->priv->filenames) > 1) {
 			dirname = g_dirname (fsel_path);
-printf ("DIRNAME: %s\n", dirname);
 			full_path = concat_dir_and_file (dirname,
 							 full_filename);
 			g_free (dirname);
@@ -460,7 +460,7 @@ gtkam_save_new (Camera *camera, const gchar *path, GSList *filenames)
 			      "for none.", NULL);
 	save->priv->program = GTK_ENTRY (entry);
 
-	check = gtk_check_button_new_with_label ("Use the filenames provided "
+	check = gtk_check_button_new_with_label ("Use filenames provided "
 						 "by the camera");
 	gtk_widget_show (check);
 	gtk_box_pack_start (GTK_BOX (GTK_FILE_SELECTION (save)->main_vbox),
@@ -468,12 +468,12 @@ gtkam_save_new (Camera *camera, const gchar *path, GSList *filenames)
 	gtk_tooltips_set_tip (tooltips, check, "Choose whether to use the "
 			      "filename provided by the camera", NULL);
 	gtk_signal_connect (GTK_OBJECT (check), "toggled",
-			    GTK_SIGNAL_FUNC (on_override_toggled), save);
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (check), FALSE);
-	save->priv->toggle_override = GTK_TOGGLE_BUTTON (check);
+			    GTK_SIGNAL_FUNC (on_filename_camera_toggled), save);
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (check), TRUE);
+	save->priv->toggle_filename_camera = GTK_TOGGLE_BUTTON (check);
 
 	/* If we don't save multiple files, we are done */
-	if (g_slist_length (filenames) < 1)
+	if (g_slist_length (filenames) <= 1)
 		return (GTK_WIDGET (save));
 	
 	gtk_widget_set_sensitive (GTK_FILE_SELECTION (save)->selection_entry,

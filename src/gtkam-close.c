@@ -143,7 +143,7 @@ gtkam_close_new (const gchar *msg, GtkWidget *opt_window)
 	if (!pixbuf)
 		g_warning ("Could not load " IMAGE_DIR "/gtkam-camera.png");
 	else {
-		gdk_pixbuf_render_pixmap_and_mask (pixbuf, &pixmap, &bitmap, 5);
+		gdk_pixbuf_render_pixmap_and_mask (pixbuf, &pixmap, &bitmap, 127);
 		gdk_pixbuf_unref (pixbuf);
 		image = gtk_pixmap_new (pixmap, bitmap);
 		if (pixmap)

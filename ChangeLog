@@ -1,3 +1,7 @@
+2001-10-29 Lutz Müller <urc8@rz.uni-karlsruhe.de>
+
+	* src: Adjust alpha to 127 - that makes those images looking better
+
 2001-10-25 Lutz Müller <urc8@rz.uni-karlsruhe.de>
 
 	* art: Some images

@@ -1,0 +1,79 @@
+Summary: graphical frontend for libgphoto2
+Name: @PACKAGE@
+Version: @VERSION@
+Release: 0
+License: LGPL
+Group: Applications/Multimedia
+BuildRoot: %{_tmppath}/%{name}-%{version}-root
+Source: http://www.gphoto.org/dist/%{name}-%{version}.tar.gz
+Url: http://www.gphoto.org/
+Requires: gphoto
+Requires: libusb
+BuildRequires: gphoto-devel
+BuildRequires: gtk-doc
+BuildRequires: findutils
+
+
+%description
+gtkam is a GUI frontend for libgphoto2
+
+%prep
+rm -rf $RPM_BUILD_DIR/%{name}-%{version}
+%setup -q -n %{name}-%{version}
+
+%build
+CFLAGS="${CFLAGS:-%optflags}" ; export CFLAGS ;
+CXXFLAGS="${CXXFLAGS:-%optflags}" ; export CXXFLAGS ;
+FFLAGS="${FFLAGS:-%optflags}" ; export FFLAGS ;
+%{?__libtoolize:[ -f configure.in ] && %{__libtoolize} --copy --force} ;
+./configure %{_target_platform} \
+        --prefix=%{_prefix} \
+        --exec-prefix=%{_exec_prefix} \
+        --bindir=%{_bindir} \
+        --sbindir=%{_sbindir} \
+        --sysconfdir=%{_sysconfdir} \
+        --datadir=%{_datadir} \
+        --includedir=%{_includedir} \
+        --libdir=%{_libdir} \
+        --libexecdir=%{_libexecdir} \
+        --localstatedir=%{_localstatedir} \
+        --sharedstatedir=%{_sharedstatedir} \
+        --mandir=%{_mandir} \
+        --infodir=%{_infodir} \
+        --with-html-dir=%{_docdir}/%{name}-%{version}/html
+make
+
+%install
+rm -rf $RPM_BUILD_ROOT
+
+make DESTDIR=%{buildroot} \
+        prefix=%{_prefix} \
+        exec_prefix=%{_exec_prefix} \
+        bindir=%{_bindir} \
+        sbindir=%{_sbindir} \
+        sysconfdir=%{_sysconfdir} \
+        datadir=%{_datadir} \
+        docdir=%{_docdir}/%{name}-%{version} \
+        includedir=%{_includedir} \
+        libdir=%{_libdir} \
+        libexecdir=%{_libexecdir} \
+        localstatedir=%{_localstatedir} \
+        sharedstatedir=%{_sharedstatedir} \
+        mandir=%{_mandir} \
+        infodir=%{_infodir} \
+install
+
+find %{buildroot} -type f | sed 's!^%{buildroot}!!' | sort > %{name}-%{version}.files
+
+%clean
+rm -rf $RPM_BUILD_ROOT
+
+
+%files -f %{name}-%{version}.files
+%defattr(-,root,root)
+%doc README COPYING AUTHORS NEWS MANUAL
+
+%changelog
+* Sun Oct 21 2001 Hans Ulrich Niedermann <gp@n-dimensional.de>
+- integrated spec file into source package
+

@@ -1,6 +1,6 @@
 /* gtkam-chooser.c
  *
- * Copyright © 2001 Lutz Müller <lutz@users.sf.net>
+ * Copyright Â© 2001 Lutz MÃ¼ller <lutz@users.sf.net>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -41,6 +41,7 @@
 #include <gtk/gtkimage.h>
 #include <gtk/gtktooltips.h>
 #include <gtk/gtkstock.h>
+#include <gtk/gtkexpander.h>
 
 #include <gphoto2/gphoto2-abilities-list.h>
 #include <gphoto2/gphoto2-setting.h>
@@ -340,34 +341,6 @@ on_ok_clicked (GtkButton *button, GtkamChooser *chooser)
 }
 
 static void
-on_more_options_toggled (GtkToggleButton *toggle, GtkamChooser *chooser)
-{
-	if (toggle->active) {
-		gtk_widget_show (chooser->priv->check_multi);
-		gtk_widget_show (chooser->priv->label_speed);
-		gtk_widget_show (GTK_WIDGET (chooser->priv->combo_speed));
-		gtk_widget_show (chooser->priv->button_add);
-		gtk_widget_ref (GTK_WIDGET (chooser->priv->combo_port));
-		gtk_container_remove (GTK_CONTAINER (chooser->priv->table),
-				      GTK_WIDGET (chooser->priv->combo_port));
-		gtk_table_attach_defaults (GTK_TABLE (chooser->priv->table),
-			GTK_WIDGET (chooser->priv->combo_port), 1, 2, 1, 2);
-		gtk_widget_unref (GTK_WIDGET (chooser->priv->combo_port));
-	} else {
-		gtk_widget_hide (chooser->priv->check_multi);
-		gtk_widget_hide (chooser->priv->label_speed);
-		gtk_widget_hide (GTK_WIDGET (chooser->priv->combo_speed));
-		gtk_widget_hide (chooser->priv->button_add);
-		gtk_widget_ref (GTK_WIDGET (chooser->priv->combo_port));
-		gtk_container_remove (GTK_CONTAINER (chooser->priv->table),
-				      GTK_WIDGET (chooser->priv->combo_port));
-		gtk_table_attach_defaults (GTK_TABLE (chooser->priv->table),
-			GTK_WIDGET (chooser->priv->combo_port), 1, 3, 1, 2);
-		gtk_widget_unref (GTK_WIDGET (chooser->priv->combo_port));
-	}
-}
-
-static void
 gtkam_chooser_update_for_model (GtkamChooser *chooser)
 {
 	const gchar *model;
@@ -568,7 +541,7 @@ GtkWidget *
 gtkam_chooser_new (void)
 {
 	GtkamChooser *chooser;
-	GtkWidget *table, *label, *button, *combo, *vbox, *check;
+	GtkWidget *table, *label, *button, *combo, *vbox, *hbox, *check, *expander;
 
 	chooser = g_object_new (GTKAM_TYPE_CHOOSER, NULL);
 
@@ -658,12 +631,41 @@ gtkam_chooser_new (void)
 			    GTK_SIGNAL_FUNC (on_multi_toggled), chooser);
 	chooser->priv->check_multi = check;
 
-	button = gtk_toggle_button_new_with_label (_("Enhanced"));
-	gtk_widget_show (button);
-	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (chooser)->action_area),
-			   button);
-	g_signal_connect (GTK_OBJECT (button), "toggled",
-			    GTK_SIGNAL_FUNC (on_more_options_toggled), chooser);
+	expander = gtk_expander_new (_("Enhanced"));
+	gtk_widget_show (expander);
+	gtk_box_pack_start (GTK_BOX (vbox), expander, FALSE, FALSE, 0);
+
+	vbox = gtk_vbox_new (TRUE, 6);
+	gtk_widget_show (vbox);
+	gtk_container_add (GTK_CONTAINER (expander), vbox);
+
+	hbox = gtk_hbox_new (FALSE, 6);
+	gtk_widget_show (hbox);
+	gtk_box_pack_start (GTK_BOX (vbox), hbox, TRUE, TRUE, 6);
+
+	label = gtk_label_new (_("Speed:"));
+	gtk_widget_show (label);
+	gtk_box_pack_start (GTK_BOX (hbox), label, TRUE, TRUE, 6);
+	chooser->priv->label_speed = label;
+
+	combo = gtk_combo_new ();
+	gtk_widget_show (combo);
+	gtk_box_pack_start (GTK_BOX (hbox), combo, TRUE, TRUE, 6);
+	gtk_widget_set_sensitive (combo, FALSE);
+	chooser->priv->entry_speed = GTK_ENTRY (GTK_COMBO (combo)->entry);
+	gtk_entry_set_text (chooser->priv->entry_speed, _("Best"));
+	chooser->priv->combo_speed = GTK_COMBO (combo);
+#if 0
+	gtk_entry_set_editable (chooser->priv->entry_speed, FALSE);
+#endif
+
+	check = gtk_check_button_new_with_label (_("Allow multiple frontends"));
+	gtk_widget_show (check);
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (check), FALSE);
+	gtk_box_pack_start (GTK_BOX (vbox), check, TRUE, TRUE, 6);
+	g_signal_connect (GTK_OBJECT (check), "toggled",
+			    GTK_SIGNAL_FUNC (on_multi_toggled), chooser);
+	chooser->priv->check_multi = check;
 
 	button = gtk_button_new_from_stock (GTK_STOCK_CANCEL);
 	gtk_widget_show (button);

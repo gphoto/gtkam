@@ -175,12 +175,22 @@ start_func (GPContext *c, float target, const char *format,
         GtkamStatus *status = GTKAM_STATUS (data);
         GtkWidget *progress;
         gchar *msg;
+	guint i;
 
         progress = gtk_progress_bar_new ();
         gtk_widget_show (progress);
         gtk_box_pack_start (GTK_BOX (status), progress, FALSE, FALSE, 0);
-        g_ptr_array_add (status->priv->progress, progress);
-        g_array_append_val (status->priv->target, target);
+
+	for (i = 0; i < status->priv->progress->len; i++)
+		if (!status->priv->progress->pdata[i])
+			break;
+	if (i == status->priv->progress->len) {
+	        g_ptr_array_add (status->priv->progress, progress);
+	        g_array_append_val (status->priv->target, target);
+	} else {
+		status->priv->progress->pdata[i] = progress;
+		g_array_index (status->priv->target, gfloat, i) = target;
+	}
 
         msg = g_strdup_vprintf (format, args);
         gtk_progress_set_format_string (GTK_PROGRESS (progress), msg);
@@ -220,14 +230,12 @@ static void
 stop_func (GPContext *c, unsigned int id, void *data)
 {
         GtkamStatus *status = GTKAM_STATUS (data);
-        GtkObject *progress;
 
         g_return_if_fail (id < status->priv->progress->len);
 
-        progress = status->priv->progress->pdata[id];
-        g_ptr_array_remove_index (status->priv->progress, id);
-        g_array_remove_index (status->priv->target, id);
-        gtk_object_destroy (GTK_OBJECT (progress));
+	gtk_object_destroy (GTK_OBJECT (status->priv->progress->pdata[id]));
+	status->priv->progress->pdata[id] = NULL;
+	g_array_index (status->priv->target, gfloat, id) = 0.;
 }
 
 static void

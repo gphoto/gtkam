@@ -940,7 +940,6 @@ static void
 gtkam_list_save_common (GtkamList *list, gboolean all)
 {
         SaveAllData sad;
-	g_return_if_fail (GTKAM_IS_LIST (list));
 
         g_return_if_fail (GTKAM_IS_LIST (list));
 

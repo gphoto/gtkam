@@ -508,16 +508,19 @@ action_about (gpointer callback_data, guint callback_action,
 		CHECK_NULL (v[0]);
 		CHECK_NULL (v[1]);
 
-		features = g_strjoinv("\n - ", &v[1]);
+		/* FIXME: implicit conversion from char to gchar */
+		features = g_strjoinv(", ", &v[1]);
+
 		if (gcomments == NULL) {
-			gcomments = g_strdup_printf("%s\n\n%s %s has been compiled with the following options:\n - %s\n", 
+			gcomments = g_strdup_printf("%s\n\n%s %s with options: %s\n", 
 						    _(comments), name, v[0], features);
 		} else {
 			gchar *old = gcomments;
-			gcomments = g_strdup_printf("%s\n%s %s has been compiled with the following options:\n - %s\n", 
+			gcomments = g_strdup_printf("%s\n%s %s with options: %s\n", 
 						    gcomments, name, v[0], features);
 			free(old);
 		}
+
 		free(features);
 	}
 

@@ -21,6 +21,25 @@
 #include <config.h>
 #include "gtkam-save.h"
 
+#ifdef ENABLE_NLS
+#  include <libintl.h>
+#  undef _
+#  define _(String) dgettext (PACKAGE, String)
+#  ifdef gettext_noop
+#    define N_(String) gettext_noop (String)
+#  else
+#    define N_(String) (String)
+#  endif
+#else
+#  define textdomain(String) (String)
+#  define gettext(String) (String)
+#  define dgettext(Domain,Message) (Message)
+#  define dcgettext(Domain,Message,Type) (Message)
+#  define bindtextdomain(Domain,Directory) (Domain)
+#  define _(String) (String)
+#  define N_(String) (String)
+#endif
+
 #include <stdio.h>
 #include <string.h>
 
@@ -250,7 +269,7 @@ save_file (GtkamSave *save, CameraFile *file, guint n)
 
 	/* Check for existing file */
 	if (!save->priv->quiet && file_exists (full_path)) {
-		msg = g_strdup_printf ("'%s' already exists.",
+		msg = g_strdup_printf (_("'%s' already exists."),
 				       full_path);
 		dialog = gtkam_close_new (msg, GTK_WIDGET (save));
 		gtk_widget_show (dialog);
@@ -261,7 +280,7 @@ save_file (GtkamSave *save, CameraFile *file, guint n)
 
 	result = gp_file_save (file, full_path);
 	if (result < 0) {
-		msg = g_strdup_printf ("Could not save file to '%s'",
+		msg = g_strdup_printf (_("Could not save file to '%s'"),
 				       full_path);
 		dialog = gtkam_error_new (msg, result, NULL, GTK_WIDGET (save));
 		g_free (msg);
@@ -286,7 +305,7 @@ get_file (GtkamSave *save, const gchar *filename, CameraFileType type,
 	result = gp_camera_file_get (save->priv->camera,
 				     save->priv->path, filename, type, file);
 	if (result < 0) {
-		msg = g_strdup_printf ("Could not get '%s' from folder '%s'",
+		msg = g_strdup_printf (_("Could not get '%s' from folder '%s'"),
 				       filename, save->priv->path);
 		dialog = gtkam_error_new (msg, result, save->priv->camera,
 					  GTK_WIDGET (save));
@@ -365,7 +384,7 @@ gtkam_save_new (Camera *camera, const gchar *path, GSList *filenames,
 			GTK_CONTAINER (child->next->next->data));
 	save->priv->file_list = GTK_WIDGET (child->next->data);
 
-	gtk_window_set_title (GTK_WINDOW (save), "Save selected photos...");
+	gtk_window_set_title (GTK_WINDOW (save), _("Save selected photos..."));
 	gtk_signal_connect (GTK_OBJECT (GTK_FILE_SELECTION (save)->ok_button),
 			    "clicked", GTK_SIGNAL_FUNC (on_ok_clicked), save);
 	gtk_signal_connect (
@@ -378,7 +397,7 @@ gtkam_save_new (Camera *camera, const gchar *path, GSList *filenames,
 
 	tooltips = gtk_tooltips_new ();
 
-	frame = gtk_frame_new ("What to save:");
+	frame = gtk_frame_new (_("What to save:"));
 	gtk_widget_show (frame);
 	gtk_box_pack_start (GTK_BOX (GTK_FILE_SELECTION (save)->main_vbox),
 			    frame, FALSE, FALSE, 0);
@@ -387,29 +406,29 @@ gtkam_save_new (Camera *camera, const gchar *path, GSList *filenames,
 	gtk_widget_show (hbox);
 	gtk_container_add (GTK_CONTAINER (frame), hbox);
 
-	check = gtk_check_button_new_with_label ("Save photos");
+	check = gtk_check_button_new_with_label (_("Save photos"));
 	gtk_widget_show (check);
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (check), TRUE);
 	gtk_box_pack_start (GTK_BOX (hbox), check, TRUE, TRUE, 0);
-	gtk_tooltips_set_tip (tooltips, check, "Photos will be saved if this "
-			      "is checked", NULL);
+	gtk_tooltips_set_tip (tooltips, check, _("Photos will be saved if "
+			      "this is checked"), NULL);
 	save->priv->toggle_normal = GTK_TOGGLE_BUTTON (check);
 
 	if (camera->abilities->file_operations & GP_FILE_OPERATION_RAW) {
-		check = gtk_check_button_new_with_label ("Save raw data");
+		check = gtk_check_button_new_with_label (_("Save raw data"));
 		gtk_widget_show (check);
 		gtk_box_pack_start (GTK_BOX (hbox), check, TRUE, TRUE, 0);
-		gtk_tooltips_set_tip (tooltips, check, "Raw data will be "
-				      "saved if this is checked", NULL);
+		gtk_tooltips_set_tip (tooltips, check, _("Raw data will be "
+				      "saved if this is checked"), NULL);
 		save->priv->toggle_raw = GTK_TOGGLE_BUTTON (check);
 	}
 
 	if (camera->abilities->file_operations & GP_FILE_OPERATION_PREVIEW) {
-		check = gtk_check_button_new_with_label ("Save thumbnails");
+		check = gtk_check_button_new_with_label (_("Save thumbnails"));
 		gtk_widget_show (check);
 		gtk_box_pack_start (GTK_BOX (hbox), check, TRUE, TRUE, 0);
-		gtk_tooltips_set_tip (tooltips, check, "Thumbnails will be "
-				      "saved if this is checked", NULL);
+		gtk_tooltips_set_tip (tooltips, check, _("Thumbnails will be "
+				      "saved if this is checked"), NULL);
 		save->priv->toggle_preview = GTK_TOGGLE_BUTTON (check);
 	}
 
@@ -418,25 +437,25 @@ gtkam_save_new (Camera *camera, const gchar *path, GSList *filenames,
 	gtk_box_pack_start (GTK_BOX (GTK_FILE_SELECTION (save)->main_vbox),
 			    hbox, TRUE, TRUE, 0);
 
-	label = gtk_label_new ("Open image(s) with:");
+	label = gtk_label_new (_("Open image(s) with:"));
 	gtk_widget_show (label);
 	gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
 
 	entry = gtk_entry_new ();
 	gtk_widget_show (entry);
 	gtk_box_pack_start (GTK_BOX (hbox), entry, TRUE, TRUE, 0);
-	gtk_tooltips_set_tip (tooltips, entry, "Type in the name of the "
-			      "program you want to run. Leave blank "
-			      "for none.", NULL);
+	gtk_tooltips_set_tip (tooltips, entry, _("Type in the name of the "
+			      "program you want to run, leave blank "
+			      "for none"), NULL);
 	save->priv->program = GTK_ENTRY (entry);
 
-	check = gtk_check_button_new_with_label ("Use filenames provided "
-						 "by the camera");
+	check = gtk_check_button_new_with_label (_("Use filenames provided "
+						 "by the camera"));
 	gtk_widget_show (check);
 	gtk_box_pack_start (GTK_BOX (GTK_FILE_SELECTION (save)->main_vbox),
 			    check, TRUE, TRUE, 0);
-	gtk_tooltips_set_tip (tooltips, check, "Choose whether to use the "
-			      "filename provided by the camera", NULL);
+	gtk_tooltips_set_tip (tooltips, check, _("Choose whether to use the "
+			      "filename provided by the camera"), NULL);
 	gtk_signal_connect (GTK_OBJECT (check), "toggled",
 			    GTK_SIGNAL_FUNC (on_filename_camera_toggled), save);
 	save->priv->toggle_filename_camera = GTK_TOGGLE_BUTTON (check);
@@ -457,7 +476,7 @@ gtkam_save_new (Camera *camera, const gchar *path, GSList *filenames,
 	gtk_box_reorder_child (GTK_BOX (GTK_FILE_SELECTION (save)->main_vbox),
 			       hbox, 256);
 	
-	label = gtk_label_new ("Filename prefix: ");
+	label = gtk_label_new (_("Filename prefix: "));
 	gtk_widget_show (label);
 	gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
 

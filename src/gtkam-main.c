@@ -21,6 +21,25 @@
 #include <config.h>
 #include "gtkam-main.h"
 
+#ifdef ENABLE_NLS
+#  include <libintl.h>
+#  undef _
+#  define _(String) dgettext (PACKAGE, String)
+#  ifdef gettext_noop
+#    define N_(String) gettext_noop (String)
+#  else
+#    define N_(String) (String)
+#  endif
+#else
+#  define textdomain(String) (String)
+#  define gettext(String) (String)
+#  define dgettext(Domain,Message) (Message)
+#  define dcgettext(Domain,Message,Type) (Message)
+#  define bindtextdomain(Domain,Directory) (Domain)
+#  define _(String) (String)
+#  define N_(String) (String)
+#endif
+
 #include <stdio.h>
 
 #include <gdk/gdkkeysyms.h>
@@ -297,7 +316,7 @@ on_information_activate (GtkMenuItem *item, GtkamMain *m)
 
 	result = gp_camera_get_summary (m->priv->camera, &text);
 	if (result < 0)
-		dialog = gtkam_error_new ("Could not retrieve information",
+		dialog = gtkam_error_new (_("Could not retrieve information"),
 					  result, m->priv->camera,
 					  GTK_WIDGET (m));
 	else
@@ -317,7 +336,7 @@ on_manual_activate (GtkMenuItem *item, GtkamMain *m)
 
 	result = gp_camera_get_manual (m->priv->camera, &text);
 	if (result < 0)
-		dialog = gtkam_error_new ("Could not retrieve manual",
+		dialog = gtkam_error_new (_("Could not retrieve manual"),
 					  result, m->priv->camera,
 					  GTK_WIDGET (m));
 	else
@@ -337,8 +356,8 @@ on_about_driver_activate (GtkMenuItem *item, GtkamMain *m)
 
 	result = gp_camera_get_about (m->priv->camera, &text);
 	if (result < 0)
-		dialog = gtkam_error_new ("Could not get information "
-					  "about the driver", result, 
+		dialog = gtkam_error_new (_("Could not get information "
+					  "about the driver"), result, 
 					  m->priv->camera, GTK_WIDGET (m));
 	else
 		dialog = gtkam_close_new (text.text, GTK_WIDGET (m));
@@ -367,12 +386,18 @@ on_about_activate (GtkamDebug *debug, GtkamMain *m)
 {
 	GtkWidget *dialog;
 
-	dialog = gtkam_close_new ("gtKam was written by:\n"
-				  "Scott Fritzinger <scottf@unr.edu>\n"
-				  "\n"
-				  "gtKam uses the gPhoto2 libraries.\n"
-				  "More information is available at\n"
-				  "http://www.gphoto.net", GTK_WIDGET (m));
+	dialog = gtkam_close_new (
+		_("gtKam was written by:\n"
+		  " - Scott Fritzinger <scottf@unr.edu>,\n"
+		  " - Lutz Müller <urc8@rz.uni-karlsruhe.de>,\n"
+		  " - and many others.\n"
+		  "\n"
+		  "gtKam uses libgphoto2, a library to access a\n"
+		  "multitude of digital cameras. More \n"
+		  "information is available at\n"
+		  "http://www.gphoto.net.\n"
+		  "\n"
+		  "Enjoy the wonderful world of gphoto!"), GTK_WIDGET (m));
 	gtk_widget_show (dialog);
 }
 
@@ -410,7 +435,7 @@ gtkam_main_new (void)
 	item = gtk_menu_item_new_with_label ("");
 	gtk_widget_show (item);
 	key = gtk_label_parse_uline (GTK_LABEL (GTK_BIN (item)->child),
-				     "_File");
+				     _("_File"));
 	gtk_widget_add_accelerator (item, "activate_item", accel_group, key,
 				    GDK_MOD1_MASK, 0);
 	gtk_container_add (GTK_CONTAINER (menubar), item);
@@ -423,7 +448,7 @@ gtkam_main_new (void)
 	gtk_widget_show (item);
 	gtk_widget_set_sensitive (item, FALSE);
 	key = gtk_label_parse_uline (GTK_LABEL (GTK_BIN (item)->child),
-				     "_Save Selected Photos...");
+				     _("_Save Selected Photos..."));
 	gtk_widget_add_accelerator (item, "activate_item", accels, key, 0, 0);
 	gtk_container_add (GTK_CONTAINER (menu), item);
 	gtk_widget_add_accelerator (item, "activate", accels, GDK_s,
@@ -435,7 +460,7 @@ gtkam_main_new (void)
 	item = gtk_menu_item_new_with_label ("");
 	gtk_widget_show (item);
 	key = gtk_label_parse_uline (GTK_LABEL (GTK_BIN (item)->child),
-				     "_Delete");
+				     _("_Delete"));
 	gtk_widget_add_accelerator (item, "activate_item", accels, key, 0, 0);
 	gtk_container_add (GTK_CONTAINER (menu), item);
 
@@ -447,7 +472,7 @@ gtkam_main_new (void)
 	gtk_widget_show (item);
 	gtk_widget_set_sensitive (item, FALSE);
 	key = gtk_label_parse_uline (GTK_LABEL (GTK_BIN (item)->child),
-				     "_Selected Photos");
+				     _("_Selected Photos"));
 	gtk_widget_add_accelerator (item, "activate_item", subaccels,
 				    key, 0, 0);
 	gtk_container_add (GTK_CONTAINER (submenu), item);
@@ -458,7 +483,7 @@ gtkam_main_new (void)
 	item = gtk_menu_item_new_with_label ("");
 	gtk_widget_show (item);
 	key = gtk_label_parse_uline (GTK_LABEL (GTK_BIN (item)->child),
-				     "_All Photos");
+				     _("_All Photos"));
 	gtk_widget_add_accelerator (item, "activate_item", subaccels,
 				    key, 0, 0);
 	gtk_container_add (GTK_CONTAINER (submenu), item);
@@ -475,7 +500,7 @@ gtkam_main_new (void)
 	item = gtk_menu_item_new_with_label ("");
 	gtk_widget_show (item);
 	key = gtk_label_parse_uline (GTK_LABEL (GTK_BIN (item)->child),
-				     ("_Exit"));
+				     _("_Exit"));
 	gtk_widget_add_accelerator (item, "activate_item", accels, key, 0, 0);
 	gtk_signal_connect (GTK_OBJECT (item), "activate",
 			    GTK_SIGNAL_FUNC (on_exit_activate), m);
@@ -487,7 +512,7 @@ gtkam_main_new (void)
 	item = gtk_menu_item_new_with_label ("");
 	gtk_widget_show (item);
 	key = gtk_label_parse_uline (GTK_LABEL (GTK_BIN (item)->child),
-				     "_Select");
+				     _("_Select"));
 	gtk_widget_add_accelerator (item, "activate_item", accel_group, key,
 				    GDK_MOD1_MASK, 0);
 	gtk_container_add (GTK_CONTAINER (menubar), item);
@@ -499,7 +524,7 @@ gtkam_main_new (void)
 	item = gtk_menu_item_new_with_label ("");
 	gtk_widget_show (item);
 	key = gtk_label_parse_uline (GTK_LABEL (GTK_BIN (item)->child),
-				     "_All");
+				     _("_All"));
 	gtk_widget_add_accelerator (item, "activate_item", accels, key, 0, 0);
 	gtk_container_add (GTK_CONTAINER (menu), item);
 	gtk_signal_connect (GTK_OBJECT (item), "activate",
@@ -508,7 +533,7 @@ gtkam_main_new (void)
 	item = gtk_menu_item_new_with_label ("");
 	gtk_widget_show (item);
 	key = gtk_label_parse_uline (GTK_LABEL (GTK_BIN (item)->child),
-				     "_Inverse");
+				     _("_Inverse"));
 	gtk_widget_add_accelerator (item, "activate_item", accels, key, 0, 0);
 	gtk_container_add (GTK_CONTAINER (menu), item);
 	gtk_signal_connect (GTK_OBJECT (item), "activate",
@@ -517,7 +542,7 @@ gtkam_main_new (void)
 	item = gtk_menu_item_new_with_label ("");
 	gtk_widget_show (item);
 	key = gtk_label_parse_uline (GTK_LABEL (GTK_BIN (item)->child),
-				     "_None");
+				     _("_None"));
 	gtk_widget_add_accelerator (item, "activate_item", accels, key, 0, 0);
 	gtk_container_add (GTK_CONTAINER (menu), item);
 	gtk_signal_connect (GTK_OBJECT (item), "activate",
@@ -529,7 +554,7 @@ gtkam_main_new (void)
 	item = gtk_menu_item_new_with_label ("");
 	gtk_widget_show (item);
 	key = gtk_label_parse_uline (GTK_LABEL (GTK_BIN (item)->child),
-				     "_Camera");
+				     _("_Camera"));
 	gtk_widget_add_accelerator (item, "activate_item", accel_group, key,
 				    GDK_MOD1_MASK, 0);
 	gtk_container_add (GTK_CONTAINER (menubar), item);
@@ -541,7 +566,7 @@ gtkam_main_new (void)
 	item = gtk_menu_item_new_with_label ("");
 	gtk_widget_show (item);
 	key = gtk_label_parse_uline (GTK_LABEL (GTK_BIN (item)->child),
-				     "_Select Camera...");
+				     _("_Select Camera..."));
 	gtk_widget_add_accelerator (item, "activate_item", accels, key, 0, 0);
 	gtk_container_add (GTK_CONTAINER (menu), item);
 	gtk_signal_connect (GTK_OBJECT (item), "activate",
@@ -556,7 +581,7 @@ gtkam_main_new (void)
 	gtk_widget_show (item);
 	gtk_widget_set_sensitive (item, FALSE);
 	key = gtk_label_parse_uline (GTK_LABEL (GTK_BIN (item)->child),
-				     "Ca_pture");
+				     _("Ca_pture"));
 	gtk_widget_add_accelerator (item, "activate_item", accels, key, 0, 0);
 	gtk_container_add (GTK_CONTAINER (menu), item);
 	gtk_signal_connect (GTK_OBJECT (item), "activate",
@@ -567,7 +592,7 @@ gtkam_main_new (void)
 	gtk_widget_show (item);
 	gtk_widget_set_sensitive (item, FALSE);
 	key = gtk_label_parse_uline (GTK_LABEL (GTK_BIN (item)->child),
-				     "_Configure");
+				     _("_Configure"));
 	gtk_widget_add_accelerator (item, "activate_item", accels, key, 0, 0);
 	gtk_container_add (GTK_CONTAINER (menu), item);
 	gtk_signal_connect (GTK_OBJECT (item), "activate",
@@ -578,7 +603,7 @@ gtkam_main_new (void)
 	gtk_widget_show (item);
 	gtk_widget_set_sensitive (item, FALSE);
 	key = gtk_label_parse_uline (GTK_LABEL (GTK_BIN (item)->child),
-				     "_Information");
+				     _("_Information"));
 	gtk_widget_add_accelerator (item, "activate_item", accels, key, 0, 0);
 	gtk_container_add (GTK_CONTAINER (menu), item);
 	gtk_signal_connect (GTK_OBJECT (item), "activate",
@@ -589,7 +614,7 @@ gtkam_main_new (void)
 	gtk_widget_show (item);
 	gtk_widget_set_sensitive (item, FALSE);
 	key = gtk_label_parse_uline (GTK_LABEL (GTK_BIN (item)->child),
-				     "_Manual");
+				     _("_Manual"));
 	gtk_widget_add_accelerator (item, "activate_item", accels, key, 0, 0);
 	gtk_container_add (GTK_CONTAINER (menu), item);
 	gtk_signal_connect (GTK_OBJECT (item), "activate",
@@ -600,7 +625,7 @@ gtkam_main_new (void)
 	gtk_widget_show (item);
 	gtk_widget_set_sensitive (item, FALSE);
 	key = gtk_label_parse_uline (GTK_LABEL (GTK_BIN (item)->child),
-				     "_About the Driver");
+				     _("_About the Driver"));
 	gtk_widget_add_accelerator (item, "activate_item", accels, key, 0, 0);
 	gtk_container_add (GTK_CONTAINER (menu), item);
 	gtk_signal_connect (GTK_OBJECT (item), "activate",
@@ -613,7 +638,7 @@ gtkam_main_new (void)
 	item = gtk_menu_item_new_with_label ("");
 	gtk_widget_show (item);
 	key = gtk_label_parse_uline (GTK_LABEL (GTK_BIN (item)->child),
-				     "_Help");
+				     _("_Help"));
 	gtk_widget_add_accelerator (item, "activate_item", accel_group,
 				    key, 0, 0);
 	gtk_container_add (GTK_CONTAINER (menubar), item);
@@ -625,7 +650,7 @@ gtkam_main_new (void)
 	item = gtk_menu_item_new_with_label ("");
 	gtk_widget_show (item);
 	key = gtk_label_parse_uline (GTK_LABEL (GTK_BIN (item)->child),
-				     "_Debug");
+				     _("_Debug"));
 	gtk_widget_add_accelerator (item, "activate_item", accels, key, 0, 0);
 	gtk_container_add (GTK_CONTAINER (menu), item);
 	gtk_signal_connect (GTK_OBJECT (item), "activate",
@@ -634,7 +659,7 @@ gtkam_main_new (void)
 	item = gtk_menu_item_new_with_label ("");
 	gtk_widget_show (item);
 	key = gtk_label_parse_uline (GTK_LABEL (GTK_BIN (item)->child),
-				     "_About");
+				     _("_About"));
 	gtk_widget_add_accelerator (item, "activate_item", accels, key, 0, 0);
 	gtk_container_add (GTK_CONTAINER (menu), item);
 	gtk_signal_connect (GTK_OBJECT (item), "activate",
@@ -653,7 +678,8 @@ gtkam_main_new (void)
 			GTK_TOOLBAR_CHILD_BUTTON, NULL, NULL, NULL, NULL,
 			icon, NULL, NULL);
 	gtk_widget_show (button);
-	gtk_tooltips_set_tip (tooltips, button, "Save selected photos", NULL);
+	gtk_tooltips_set_tip (tooltips, button, _("Save selected photos"),
+			      NULL);
 	gtk_signal_connect (GTK_OBJECT (button), "clicked",
 		GTK_SIGNAL_FUNC (on_save_selected_photos_clicked), m);
 
@@ -662,7 +688,8 @@ gtkam_main_new (void)
 			GTK_TOOLBAR_CHILD_BUTTON, NULL, NULL, NULL, NULL,
 			icon, NULL, NULL);
 	gtk_widget_show (button);
-	gtk_tooltips_set_tip (tooltips, button, "Delete selected photos", NULL);
+	gtk_tooltips_set_tip (tooltips, button, _("Delete selected photos"),
+			      NULL);
 	gtk_signal_connect (GTK_OBJECT (button), "clicked",
 		GTK_SIGNAL_FUNC (on_delete_selected_photos_clicked), m);
 
@@ -675,7 +702,7 @@ gtkam_main_new (void)
 			GTK_TOOLBAR_CHILD_BUTTON, NULL, NULL, NULL, NULL,
 			icon, NULL, NULL);
 	gtk_widget_show (button);
-	gtk_tooltips_set_tip (tooltips, button, "Configure camera", NULL);
+	gtk_tooltips_set_tip (tooltips, button, _("Configure camera"), NULL);
 	gtk_signal_connect (GTK_OBJECT (button), "clicked",
 		GTK_SIGNAL_FUNC (on_configure_camera_clicked), m);
 
@@ -688,7 +715,7 @@ gtkam_main_new (void)
 			GTK_TOOLBAR_CHILD_BUTTON, NULL, NULL, NULL, NULL,
 			icon, NULL, NULL);
 	gtk_widget_show (button);
-	gtk_tooltips_set_tip (tooltips, button, "Exit", NULL);
+	gtk_tooltips_set_tip (tooltips, button, _("Exit"), NULL);
 	gtk_signal_connect (GTK_OBJECT (button), "clicked",
 		GTK_SIGNAL_FUNC (on_exit_activate), m);
 
@@ -727,11 +754,11 @@ gtkam_main_new (void)
 	gtk_widget_show (vbox);
 	gtk_paned_pack1 (GTK_PANED (hpaned), vbox, FALSE, TRUE);
 
-	frame = gtk_frame_new ("Index Setttings");
+	frame = gtk_frame_new (_("Index Settings"));
 	gtk_widget_show (frame);
 	gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, FALSE, 0);
 
-	check = gtk_check_button_new_with_label ("View Thumbnails");
+	check = gtk_check_button_new_with_label (_("View Thumbnails"));
 	gtk_widget_show (check);
 	gtk_widget_set_sensitive (check, FALSE);
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (check), TRUE);

@@ -21,6 +21,25 @@
 #include <config.h>
 #include "gtkam-preview.h"
 
+#ifdef ENABLE_NLS
+#  include <libintl.h>
+#  undef _
+#  define _(String) dgettext (PACKAGE, String)
+#  ifdef gettext_noop
+#    define N_(String) gettext_noop (String)
+#  else
+#    define N_(String) (String)
+#  endif
+#else
+#  define textdomain(String) (String)
+#  define gettext(String) (String)
+#  define dgettext(Domain,Message) (Message)
+#  define dcgettext(Domain,Message,Type) (Message)
+#  define bindtextdomain(Domain,Directory) (Domain)
+#  define _(String) (String)
+#  define N_(String) (String)
+#endif
+
 #include <stdio.h>
 
 #include <gtk/gtkvbox.h>
@@ -148,7 +167,7 @@ on_preview_capture_clicked (GtkButton *button, GtkamPreview *preview)
 	result = gp_camera_capture (preview->priv->camera,
 				    GP_OPERATION_CAPTURE_IMAGE, &path);
 	if (result != GP_OK) {
-		dialog = gtkam_error_new ("Could not capture",
+		dialog = gtkam_error_new (_("Could not capture"),
 			result, preview->priv->camera, GTK_WIDGET (preview));
 		gtk_widget_show (dialog);
 	} else {
@@ -259,7 +278,7 @@ gtkam_preview_new (Camera *camera)
 	gtk_widget_show (hbox);
 	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (preview)->vbox), hbox,
 			    FALSE, FALSE, 0);
-	check = gtk_check_button_new_with_label ("Refresh every ");
+	check = gtk_check_button_new_with_label (_("Refresh every "));
 	gtk_widget_show (check);
 	gtk_box_pack_start (GTK_BOX (hbox), check, FALSE, FALSE, 0);
 	gtk_signal_connect (GTK_OBJECT (check), "toggled",
@@ -278,11 +297,11 @@ gtkam_preview_new (Camera *camera)
 
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (check), TRUE);
 
-	label = gtk_label_new (" second(s)");
+	label = gtk_label_new (_(" second(s)"));
 	gtk_widget_show (label);
 	gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
 
-	button = gtk_button_new_with_label ("Capture");
+	button = gtk_button_new_with_label (_("Capture"));
 	gtk_widget_show (button);
 	gtk_signal_connect (GTK_OBJECT (button), "clicked",
 			    GTK_SIGNAL_FUNC (on_preview_capture_clicked),
@@ -291,7 +310,7 @@ gtkam_preview_new (Camera *camera)
 			   button);
 	gtk_widget_grab_focus (button);
 
-	button = gtk_button_new_with_label ("Cancel");
+	button = gtk_button_new_with_label (_("Cancel"));
 	gtk_widget_show (button);
 	gtk_signal_connect (GTK_OBJECT (button), "clicked",
 			    GTK_SIGNAL_FUNC (on_preview_close_clicked), preview);

@@ -6,386 +6,379 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2001-03-26 09:08-0800\n"
+"POT-Creation-Date: 2001-10-09 20:22+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=CHARSET\n"
-"Content-Transfer-Encoding: ENCODING\n"
+"Content-Transfer-Encoding: 8bit\n"
 
-#: src/interface.c:43
-msgid "Save selected photos..."
+#: src/gtkam-chooser.c:182 src/main.c:102
+#, c-format
+msgid "Could not initialize '%s' on port '%s'"
 msgstr ""
 
-#: src/interface.c:73
-msgid "Photos will be saved if this is checked."
+#: src/gtkam-chooser.c:164 src/gtkam-chooser.c:175
+msgid "None"
 msgstr ""
 
-#: src/interface.c:83
-msgid "Thumbnails will be saved if this is checked."
+#: src/gtkam-chooser.c:177 src/gtkam-chooser.c:279 src/gtkam-chooser.c:367
+#: src/gtkam-chooser.c:422
+msgid "Best"
 msgstr ""
 
-#: src/interface.c:110
-msgid ""
-"Type in the name of the program's executable you want to run. Leave blank "
-"for none."
+#: src/gtkam-chooser.c:245
+#, c-format
+msgid "Could not get abilities of model '%s'"
 msgstr ""
 
-#: src/interface.c:122
-msgid "Choose whether to use the filename provided by the camera"
+#: src/gtkam-chooser.c:256
+msgid "Could not get number of ports"
 msgstr ""
 
-#: src/interface.c:273 src/interface.c:1086 src/interface.c:1212
-#: src/interface.c:1297 src/interface.c:1404
-msgid "gtKam"
-msgstr ""
-
-#: src/interface.c:293
-msgid "_File"
-msgstr ""
-
-#: src/interface.c:325
-msgid "_Save Selected Photos..."
-msgstr ""
-
-#: src/interface.c:384
-msgid "_Exit"
-msgstr ""
-
-#: src/interface.c:398
-msgid "_Edit"
-msgstr ""
-
-#: src/interface.c:416
-msgid "_Select"
-msgstr ""
-
-#: src/interface.c:434
-msgid "_All"
-msgstr ""
-
-#: src/interface.c:448
-msgid "_Inverse"
-msgstr ""
-
-#: src/interface.c:462
-msgid "_None"
-msgstr ""
-
-#: src/interface.c:476
-msgid "_Camera"
-msgstr ""
-
-#: src/interface.c:492
-msgid "Select Camera..."
-msgstr ""
-
-#: src/interface.c:574
-msgid "_Delete"
-msgstr ""
-
-#: src/interface.c:592
-msgid "_Selected Photos"
-msgstr ""
-
-#: src/interface.c:606
-msgid "_All Images"
-msgstr ""
-
-#: src/interface.c:628
-msgid "_Configure..."
-msgstr ""
-
-#: src/interface.c:639
-msgid "_Information..."
-msgstr ""
-
-#: src/interface.c:650
-msgid "_Manual..."
-msgstr ""
-
-#: src/interface.c:661
-msgid "_About the driver..."
-msgstr ""
-
-#: src/interface.c:672
-msgid "_Help"
-msgstr ""
-
-#: src/interface.c:690
-msgid "_User's Manual..."
-msgstr ""
-
-#: src/interface.c:705
-msgid "_Authors..."
-msgstr ""
-
-#: src/interface.c:716
-msgid "_License..."
-msgstr ""
-
-#: src/interface.c:727
-msgid "About _gtKam..."
-msgstr ""
-
-#: src/interface.c:768
-msgid "button2"
-msgstr ""
-
-#: src/interface.c:776
-msgid "Save selected photos"
-msgstr ""
-
-#: src/interface.c:792
-msgid "Delete selected photos"
-msgstr ""
-
-#: src/interface.c:796 src/interface.c:819 src/interface.c:842
-msgid "     "
-msgstr ""
-
-#: src/interface.c:807
-msgid "Refresh"
-msgstr ""
-
-#: src/interface.c:817
-msgid "Reload photo index"
-msgstr ""
-
-#: src/interface.c:830
-msgid "Configure"
-msgstr ""
-
-#: src/interface.c:838
-msgid "Configure the camera"
-msgstr ""
-
-#: src/interface.c:853
-msgid "Exit"
-msgstr ""
-
-#: src/interface.c:863
-msgid "Exit gtKam"
-msgstr ""
-
-#. __main
-#: src/interface.c:882
-msgid "Index Settings"
-msgstr ""
-
-#: src/interface.c:889
-msgid "View Thumbnails"
-msgstr ""
-
-#: src/interface.c:1123 src/interface.c:1240 src/interface.c:1324
-msgid "    Close    "
-msgstr ""
-
-#: src/interface.c:1148
-msgid "gtKam Confirmation"
-msgstr ""
-
-#: src/interface.c:1161
-msgid "Are you sure?"
-msgstr ""
-
-#: src/interface.c:1183
-msgid "Yes"
-msgstr ""
-
-#: src/interface.c:1190
-msgid "No"
-msgstr ""
-
-#: src/interface.c:1225 src/interface.c:1360 src/interface.c:1417
-msgid "No message."
-msgstr ""
-
-#: src/interface.c:1347
-msgid "gtKam Progress"
-msgstr ""
-
-#: src/interface.c:1382
-msgid "    Cancel    "
-msgstr ""
-
-#: src/interface.c:1453
+#: src/gtkam-chooser.c:314
 msgid "Select Camera"
 msgstr ""
 
-#: src/interface.c:1480
-msgid "Select Model:"
+#: src/gtkam-chooser.c:325
+msgid "Model:"
 msgstr ""
 
-#: src/interface.c:1509
-msgid "Select Port:"
+#: src/gtkam-chooser.c:337
+#, c-format
+msgid "Could not retrieve number of cameras: %s"
 msgstr ""
 
-#: src/interface.c:1531
-msgid "Select Speed:"
+#: src/gtkam-chooser.c:348
+msgid "Port:"
 msgstr ""
 
-#: src/interface.c:1560
-msgid "OK"
+#: src/gtkam-chooser.c:359
+msgid "Speed:"
 msgstr ""
 
-#: src/interface.c:1567
+#: src/gtkam-chooser.c:370
+msgid "Enhanced"
+msgstr ""
+
+#: src/gtkam-chooser.c:377 src/gtkam-config.c:487
+msgid "Ok"
+msgstr ""
+
+#: src/gtkam-chooser.c:385 src/gtkam-config.c:494
+msgid "Apply"
+msgstr ""
+
+#: src/gtkam-chooser.c:392 src/gtkam-close.c:148 src/gtkam-config.c:501
+#: src/gtkam-debug.c:292 src/gtkam-error.c:194
+msgid "Close"
+msgstr ""
+
+#: src/gtkam-config.c:164
+msgid "Could not apply configuration"
+msgstr ""
+
+#: src/gtkam-config.c:205
+msgid "Others"
+msgstr ""
+
+#: src/gtkam-config.c:263
+msgid "Could not execute command"
+msgstr ""
+
+#: src/gtkam-config.c:343
+msgid "Date & Time not implemented!"
+msgstr ""
+
+#: src/gtkam-config.c:469
+msgid "Could not get configuration"
+msgstr ""
+
+#: src/gtkam-debug.c:164
+msgid "Save As..."
+msgstr ""
+
+#: src/gtkam-debug.c:188
+#, c-format
+msgid "Could not open '%s'!"
+msgstr ""
+
+#: src/gtkam-debug.c:236
+msgid "No debugging"
+msgstr ""
+
+#: src/gtkam-debug.c:243
+msgid "Low debugging"
+msgstr ""
+
+#: src/gtkam-debug.c:250
+msgid "Medium debugging"
+msgstr ""
+
+#: src/gtkam-debug.c:257
+msgid "High debugging"
+msgstr ""
+
+#: src/gtkam-debug.c:285
+msgid "Save As"
+msgstr ""
+
+#: src/gtkam-error.c:187
+msgid "Show debugging messages"
+msgstr ""
+
+#: src/gtkam-list.c:187
+#, c-format
+msgid "Could not get preview of file '%s' in folder '%s'"
+msgstr ""
+
+#: src/gtkam-list.c:257
+#, c-format
+msgid "Could not get file list for folder '%s'"
+msgstr ""
+
+#: src/gtkam-list.c:281
+#, c-format
+msgid "Could not get file '%s'"
+msgstr ""
+
+#: src/gtkam-list.c:363
+#, c-format
+msgid "Could not delete '%s' in folder '%s'"
+msgstr ""
+
+#: src/gtkam-list.c:397
+msgid "Could not delete all photos"
+msgstr ""
+
+#: src/gtkam-main.c:319
+msgid "Could not retrieve information"
+msgstr ""
+
+#: src/gtkam-main.c:339
+msgid "Could not retrieve manual"
+msgstr ""
+
+#: src/gtkam-main.c:359
+msgid "Could not get information about the driver"
+msgstr ""
+
+#: src/gtkam-main.c:390
+msgid ""
+"gtKam was written by:\n"
+" - Scott Fritzinger <scottf@unr.edu>,\n"
+" - Lutz Müller <urc8@rz.uni-karlsruhe.de>,\n"
+" - and many others.\n"
+"\n"
+"gtKam uses libgphoto2, a library to access a multitude of digital cameras. "
+"More \n"
+"information is available at\n"
+"http://www.gphoto.net.\n"
+"\n"
+"Enjoy the wonderful world of gphoto!"
+msgstr ""
+
+#: src/gtkam-main.c:438
+msgid "_File"
+msgstr ""
+
+#: src/gtkam-main.c:451
+msgid "_Save Selected Photos..."
+msgstr ""
+
+#: src/gtkam-main.c:463
+msgid "_Delete"
+msgstr ""
+
+#: src/gtkam-main.c:475
+msgid "_Selected Photos"
+msgstr ""
+
+#: src/gtkam-main.c:486
+msgid "_All Photos"
+msgstr ""
+
+#: src/gtkam-main.c:503
+msgid "_Exit"
+msgstr ""
+
+#: src/gtkam-main.c:515
+msgid "_Select"
+msgstr ""
+
+#: src/gtkam-main.c:527
+msgid "_All"
+msgstr ""
+
+#: src/gtkam-main.c:536
+msgid "_Inverse"
+msgstr ""
+
+#: src/gtkam-main.c:545
+msgid "_None"
+msgstr ""
+
+#: src/gtkam-main.c:557
+msgid "_Camera"
+msgstr ""
+
+#: src/gtkam-main.c:569
+msgid "_Select Camera..."
+msgstr ""
+
+#: src/gtkam-main.c:584
+msgid "Ca_pture"
+msgstr ""
+
+#: src/gtkam-main.c:595
+msgid "_Configure"
+msgstr ""
+
+#: src/gtkam-main.c:606
+msgid "_Information"
+msgstr ""
+
+#: src/gtkam-main.c:617
+msgid "_Manual"
+msgstr ""
+
+#: src/gtkam-main.c:628
+msgid "_About the Driver"
+msgstr ""
+
+#: src/gtkam-main.c:641
+msgid "_Help"
+msgstr ""
+
+#: src/gtkam-main.c:653
+msgid "_Debug"
+msgstr ""
+
+#: src/gtkam-main.c:662
+msgid "_About"
+msgstr ""
+
+#: src/gtkam-main.c:681
+msgid "Save selected photos"
+msgstr ""
+
+#: src/gtkam-main.c:691
+msgid "Delete selected photos"
+msgstr ""
+
+#: src/gtkam-main.c:705
+msgid "Configure camera"
+msgstr ""
+
+#: src/gtkam-main.c:718
+msgid "Exit"
+msgstr ""
+
+#: src/gtkam-main.c:757
+msgid "Index Setttings"
+msgstr ""
+
+#: src/gtkam-main.c:761
+msgid "View Thumbnails"
+msgstr ""
+
+#: src/gtkam-preview.c:170
+msgid "Could not capture"
+msgstr ""
+
+#: src/gtkam-preview.c:203
+#, c-format
+msgid "Could not capture: %s"
+msgstr ""
+
+#: src/gtkam-preview.c:281
+msgid "Refresh every "
+msgstr ""
+
+#: src/gtkam-preview.c:300
+msgid " second(s)"
+msgstr ""
+
+#: src/gtkam-preview.c:304
+msgid "Capture"
+msgstr ""
+
+#: src/gtkam-preview.c:313
 msgid "Cancel"
 msgstr ""
 
-#: src/callbacks.c:63 src/callbacks.c:892
-msgid "Could not retrieve the picture list."
-msgstr ""
-
-#: src/callbacks.c:127
-msgid "Initializing camera..."
-msgstr ""
-
-#: src/callbacks.c:131
-msgid "You must choose a camera"
-msgstr ""
-
-#: src/callbacks.c:591
+#: src/gtkam-save.c:272
 #, c-format
-msgid ""
-"Could not open folder\n"
-"%s"
+msgid "'%s' already exists."
 msgstr ""
 
-#: src/callbacks.c:688
+#: src/gtkam-save.c:283
 #, c-format
-msgid "Could not get abilities for %s"
+msgid "Could not save file to '%s'"
 msgstr ""
 
-#: src/callbacks.c:695
-msgid "Could not retrieve number of ports"
-msgstr ""
-
-#: src/callbacks.c:736
-msgid "Error retrieving the port list"
-msgstr ""
-
-#: src/callbacks.c:769
-msgid "Could not retrieve number of cameras"
-msgstr ""
-
-#: src/callbacks.c:820
-msgid "You must choose a camera model"
-msgstr ""
-
-#: src/callbacks.c:825
-msgid "You must choose a port"
-msgstr ""
-
-#: src/callbacks.c:830
-msgid "You must choose a port speed"
-msgstr ""
-
-#: src/callbacks.c:882 src/callbacks.c:958
-msgid "ERROR: please choose your camera model again"
-msgstr ""
-
-#: src/callbacks.c:887 src/callbacks.c:964
-msgid "Could not retrieve the camera's abilities"
-msgstr ""
-
-#: src/callbacks.c:909
+#: src/gtkam-save.c:308
 #, c-format
-msgid ""
-"Getting Thumbnail #%04i of %04i\n"
-"%s"
+msgid "Could not get '%s' from folder '%s'"
 msgstr ""
 
-#: src/callbacks.c:969
-msgid "This camera does not support deleting photos."
+#: src/gtkam-save.c:387
+msgid "Save selected photos..."
 msgstr ""
 
-#: src/callbacks.c:974
-msgid "Are you sure you want to DELETE ALL the photos?"
+#: src/gtkam-save.c:400
+msgid "What to save:"
 msgstr ""
 
-#: src/callbacks.c:976
-msgid "Are you sure you want to DELETE the selected photos?"
+#: src/gtkam-save.c:409
+msgid "Save photos"
 msgstr ""
 
-#: src/callbacks.c:989 src/callbacks.c:1005
-#, c-format
-msgid "Could not delete photo #%04i. Stopping."
+#: src/gtkam-save.c:413
+msgid "Photos will be saved if this is checked"
 msgstr ""
 
-#: src/callbacks.c:1069
-msgid "Retrieving camera information..."
+#: src/gtkam-save.c:418
+msgid "Save raw data"
 msgstr ""
 
-#: src/callbacks.c:1075
-msgid "Could not retrieve camera information"
+#: src/gtkam-save.c:421
+msgid "Raw data will be saved if this is checked"
 msgstr ""
 
-#: src/callbacks.c:1093
-msgid "Could not retrieve the camera manual"
+#: src/gtkam-save.c:427
+msgid "Save thumbnails"
 msgstr ""
 
-#: src/callbacks.c:1111
-msgid "Could not retrieve library information"
+#: src/gtkam-save.c:430
+msgid "Thumbnails will be saved if this is checked"
 msgstr ""
 
-#: src/callbacks.c:1127
-msgid ""
-"gtKam was written by:\n"
-"Scott Fritzinger <scottf@unr.edu>\n"
-"\n"
-"gtKam uses the gPhoto2 libraries.\n"
-"More information is available at\n"
-"http://www.gphoto.net"
+#: src/gtkam-save.c:440
+msgid "Open image(s) with:"
 msgstr ""
 
-#: src/callbacks.c:1144
-msgid "Can't find gtKam AUTHORS file"
+#: src/gtkam-save.c:447
+msgid "Type in the name of the program you want to run, leave blank for none"
 msgstr ""
 
-#: src/callbacks.c:1147
-msgid "gtKam Authors"
+#: src/gtkam-save.c:452
+msgid "Use filenames provided by the camera"
 msgstr ""
 
-#: src/callbacks.c:1152
-msgid "Can't find gPhoto2 AUTHORS file"
+#: src/gtkam-save.c:457
+msgid "Choose whether to use the filename provided by the camera"
 msgstr ""
 
-#: src/callbacks.c:1155
-msgid "gPhoto2 Authors"
+#: src/gtkam-save.c:479
+msgid "Filename prefix: "
 msgstr ""
 
-#: src/callbacks.c:1179
-msgid "Can't find gtKam COPYING file"
+#: src/gtkam-tree.c:185
+msgid "No camera set"
 msgstr ""
 
-#: src/callbacks.c:1182
-msgid "gtKam License"
-msgstr ""
-
-#: src/callbacks.c:1187
-msgid "Can't find gPhoto2 COPYING file"
-msgstr ""
-
-#: src/callbacks.c:1190
-msgid "gPhoto2 License"
-msgstr ""
-
-#: src/callbacks.c:1211
-msgid "Can't find gtKam MANUAL file"
-msgstr ""
-
-#: src/callbacks.c:1216
-msgid "gtKam Manual"
-msgstr ""
-
-#: src/support.c:121
-#, c-format
-msgid "Couldn't find pixmap file: %s"
-msgstr ""
-
-#: src/support.c:130
-#, c-format
-msgid "Error loading pixmap file: %s"
+#: src/gtkam-tree.c:201
+msgid "Could not get list of folders for folder '/'."
 msgstr ""

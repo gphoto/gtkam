@@ -21,6 +21,25 @@
 #include <config.h>
 #include "gtkam-config.h"
 
+#ifdef ENABLE_NLS
+#  include <libintl.h>
+#  undef _
+#  define _(String) dgettext (PACKAGE, String)
+#  ifdef gettext_noop
+#    define N_(String) gettext_noop (String)
+#  else
+#    define N_(String) (String)
+#  endif
+#else
+#  define textdomain(String) (String)
+#  define gettext(String) (String)
+#  define dgettext(Domain,Message) (Message)
+#  define dcgettext(Domain,Message,Type) (Message)
+#  define bindtextdomain(Domain,Directory) (Domain)
+#  define _(String) (String)
+#  define N_(String) (String)
+#endif
+
 #include <stdio.h>
 
 #include <gtk/gtktooltips.h>
@@ -142,7 +161,7 @@ gtkam_config_apply (GtkamConfig *config)
 	result = gp_camera_set_config (config->priv->camera,
 				       config->priv->config);
 	if (result != GP_OK) {
-		dialog = gtkam_error_new ("Could not apply configuration",
+		dialog = gtkam_error_new (_("Could not apply configuration"),
 					  result, config->priv->camera,
 					  GTK_WIDGET (config));
 		gtk_widget_show (dialog);
@@ -183,7 +202,7 @@ create_page (GtkamConfig *config, CameraWidget *widget)
 		gtk_tooltips_set_tip (config->priv->tooltips, label, info,
 				      NULL);
 	} else
-		label = gtk_label_new ("Others");
+		label = gtk_label_new (_("Others"));
 	gtk_widget_show (label);
 
 	/* VBox */
@@ -241,7 +260,7 @@ on_button_clicked (GtkButton *button, CameraWidget *widget)
 	gp_widget_get_value (widget, &callback);
 	result = callback (config->priv->camera, widget);
 	if (result != GP_OK) {
-		dialog = gtkam_error_new ("Could not execute command",
+		dialog = gtkam_error_new (_("Could not execute command"),
 					  result, config->priv->camera,
 					  GTK_WIDGET (config));
 		gtk_widget_show (dialog);
@@ -321,7 +340,7 @@ create_widgets (GtkamConfig *config, CameraWidget *widget)
 
 	case GP_WIDGET_DATE:
 
-		gtk_widget = gtk_label_new ("Date & Time not implemented!");
+		gtk_widget = gtk_label_new (_("Date & Time not implemented!"));
 		break;
 
 	case GP_WIDGET_TEXT:
@@ -447,7 +466,7 @@ gtkam_config_new (Camera *camera)
 
 	result = gp_camera_get_config (camera, &config_widget);
 	if (result != GP_OK) {
-		dialog = gtkam_error_new ("Could not get configuration",
+		dialog = gtkam_error_new (_("Could not get configuration"),
 					  result, camera, NULL);
 		gtk_widget_show (dialog);
 		return (NULL);
@@ -465,21 +484,21 @@ gtkam_config_new (Camera *camera)
 			    config->priv->notebook, TRUE, TRUE, 0);
 	create_widgets (config, config_widget);
 
-	button = gtk_button_new_with_label ("Ok");
+	button = gtk_button_new_with_label (_("Ok"));
 	gtk_widget_show (button);
 	gtk_signal_connect (GTK_OBJECT (button), "clicked",
 			    GTK_SIGNAL_FUNC (on_config_ok_clicked), config);
 	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (config)->action_area),
 			   button);
 
-	button = gtk_button_new_with_label ("Apply");
+	button = gtk_button_new_with_label (_("Apply"));
 	gtk_widget_show (button);
 	gtk_signal_connect (GTK_OBJECT (button), "clicked",
 			    GTK_SIGNAL_FUNC (on_config_apply_clicked), config);
 	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (config)->action_area),
 			   button);
 
-	button = gtk_button_new_with_label ("Close");
+	button = gtk_button_new_with_label (_("Close"));
 	gtk_widget_show (button);
 	gtk_signal_connect (GTK_OBJECT (button), "clicked",
 			    GTK_SIGNAL_FUNC (on_config_close_clicked), config);

@@ -21,6 +21,25 @@
 #include <config.h>
 #include "gtkam-close.h"
 
+#ifdef ENABLE_NLS
+#  include <libintl.h>
+#  undef _
+#  define _(String) dgettext (PACKAGE, String)
+#  ifdef gettext_noop
+#    define N_(String) gettext_noop (String)
+#  else
+#    define N_(String) (String)
+#  endif
+#else
+#  define textdomain(String) (String)
+#  define gettext(String) (String)
+#  define dgettext(Domain,Message) (Message)
+#  define dcgettext(Domain,Message,Type) (Message)
+#  define bindtextdomain(Domain,Directory) (Domain)
+#  define _(String) (String)
+#  define N_(String) (String)
+#endif
+
 #include <gtk/gtkbutton.h>
 #include <gtk/gtklabel.h>
 #include <gtk/gtksignal.h>
@@ -126,7 +145,7 @@ gtkam_close_new (const gchar *msg, GtkWidget *opt_window)
 		gtk_box_pack_start (GTK_BOX (GTK_DIALOG (close)->vbox), label,
 				    FALSE, FALSE, 0);
 
-	button = gtk_button_new_with_label ("Close");
+	button = gtk_button_new_with_label (_("Close"));
 	gtk_widget_show (button);
 	gtk_signal_connect (GTK_OBJECT (button), "clicked",
 			    GTK_SIGNAL_FUNC (on_close_close_clicked), close);

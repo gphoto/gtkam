@@ -21,6 +21,25 @@
 #include <config.h>
 #include "gtkam-list.h"
 
+#ifdef ENABLE_NLS
+#  include <libintl.h>
+#  undef _
+#  define _(String) dgettext (PACKAGE, String)
+#  ifdef gettext_noop
+#    define N_(String) gettext_noop (String)
+#  else
+#    define N_(String) (String)
+#  endif
+#else
+#  define textdomain(String) (String)
+#  define gettext(String) (String)
+#  define dgettext(Domain,Message) (Message)
+#  define dcgettext(Domain,Message,Type) (Message)
+#  define bindtextdomain(Domain,Directory) (Domain)
+#  define _(String) (String)
+#  define N_(String) (String)
+#endif
+
 #include <stdio.h>
 
 #include <gtk/gtkmain.h>
@@ -165,8 +184,8 @@ on_select_icon (GtkIconList *ilist, GtkIconListItem *item,
 	if (result < 0) {
 		window = gtk_widget_get_ancestor (GTK_WIDGET (list),
 						  GTK_TYPE_WINDOW);
-		msg = g_strdup_printf ("Could not get preview of file "
-				       "'%s' in folder '%s'", item->label,
+		msg = g_strdup_printf (_("Could not get preview of file "
+				       "'%s' in folder '%s'"), item->label,
 				       list->path);
 		dialog = gtkam_error_new (msg, result,
 					  list->priv->camera, window);
@@ -235,8 +254,8 @@ gtkam_list_set_path (GtkamList *list, const gchar *path)
 
 	result = gp_camera_folder_list_files (list->priv->camera, path, &flist);
 	if (result < 0) {
-		msg = g_strdup_printf ("Could not get file list for folder "
-				       "'%s'", path);
+		msg = g_strdup_printf (_("Could not get file list for folder "
+				       "'%s'"), path);
 		dialog = gtkam_error_new (msg, result, list->priv->camera,
 					  window);
 		gtk_widget_show (dialog);
@@ -259,8 +278,8 @@ gtkam_list_set_path (GtkamList *list, const gchar *path)
 			result = gp_camera_file_get (list->priv->camera, path,
 					name, GP_FILE_TYPE_PREVIEW, file);
 			if (result < 0) {
-				msg = g_strdup_printf ("Could not get file "
-						       "'%s'", name);
+				msg = g_strdup_printf (_("Could not get file "
+						       "'%s'"), name);
 				dialog = gtkam_error_new (msg, result,
 							  list->priv->camera,
 							  window);
@@ -341,8 +360,8 @@ gtkam_list_delete_selected (GtkamList *list)
 		if (result < 0) {
 			window = gtk_widget_get_ancestor (GTK_WIDGET (list),
 							  GTK_TYPE_WINDOW);
-			msg = g_strdup_printf ("Could not delete '%s' in "
-					       "folder '%s'", filename,
+			msg = g_strdup_printf (_("Could not delete '%s' in "
+					       "folder '%s'"), filename,
 					       list->path);
 			dialog = gtkam_error_new (msg, result,
 				list->priv->camera, window);
@@ -375,7 +394,7 @@ gtkam_list_delete_all (GtkamList *list)
 	if (result < 0) {
 		window = gtk_widget_get_ancestor (GTK_WIDGET (list),
 						  GTK_TYPE_WINDOW);
-		dialog = gtkam_error_new ("Could not delete all photos",
+		dialog = gtkam_error_new (_("Could not delete all photos"),
 					  result, list->priv->camera,
 					  window);
 		gtk_widget_show (dialog);

@@ -21,6 +21,25 @@
 #include <config.h>
 #include "gtkam-tree.h"
 
+#ifdef ENABLE_NLS
+#  include <libintl.h>
+#  undef _
+#  define _(String) dgettext (PACKAGE, String)
+#  ifdef gettext_noop
+#    define N_(String) gettext_noop (String)
+#  else
+#    define N_(String) (String)
+#  endif
+#else
+#  define textdomain(String) (String)
+#  define gettext(String) (String)
+#  define dgettext(Domain,Message) (Message)
+#  define dcgettext(Domain,Message,Type) (Message)
+#  define bindtextdomain(Domain,Directory) (Domain)
+#  define _(String) (String)
+#  define N_(String) (String)
+#endif
+
 #include <stdio.h>
 
 #include <gtk/gtkvbox.h>
@@ -135,6 +154,7 @@ create_item (GtkamTree *tree, GtkTree *tree_to_add_to, const gchar *path)
 	CameraList *list;
 	GtkWidget *item, *pixmap, *label, *subtree, *hbox, *dialog, *window;
 	int result;
+	gchar *msg;
 
 	item = gtk_tree_item_new ();
 	gtk_widget_show (item);
@@ -163,7 +183,7 @@ create_item (GtkamTree *tree, GtkTree *tree_to_add_to, const gchar *path)
 		if (tree->priv->camera)
 			label = gtk_label_new (tree->priv->camera->model);
 		else
-			label = gtk_label_new ("No camera set");
+			label = gtk_label_new (_("No camera set"));
 	} else
 		label = gtk_label_new (g_basename (path));
 	gtk_widget_show (label);
@@ -179,9 +199,11 @@ create_item (GtkamTree *tree, GtkTree *tree_to_add_to, const gchar *path)
 	if (result < 0) {
 		window = gtk_widget_get_ancestor (GTK_WIDGET (tree),
 						  GTK_TYPE_WINDOW);
-		dialog = gtkam_error_new ("Could not get list of folders for "
-					  "folder '/'.", result,
+		msg = g_strdup_printf (_("Could not get list of folders for "
+				       "folder '%s'."), path);
+		dialog = gtkam_error_new (msg, result,
 					  tree->priv->camera, window);
+		g_free (msg);
 		gtk_widget_show (dialog);
 	} else if (gp_list_count (list) > 0) {
 		subtree = gtk_tree_new ();

@@ -21,6 +21,25 @@
 #include <config.h>
 #include "gtkam-debug.h"
 
+#ifdef ENABLE_NLS
+#  include <libintl.h>
+#  undef _
+#  define _(String) dgettext (PACKAGE, String)
+#  ifdef gettext_noop
+#    define N_(String) gettext_noop (String)
+#  else
+#    define N_(String) (String)
+#  endif
+#else
+#  define textdomain(String) (String)
+#  define gettext(String) (String)
+#  define dgettext(Domain,Message) (Message)
+#  define dcgettext(Domain,Message,Type) (Message)
+#  define bindtextdomain(Domain,Directory) (Domain)
+#  define _(String) (String)
+#  define N_(String) (String)
+#endif
+
 #include <stdio.h>
 
 #include <gtk/gtktext.h>
@@ -142,7 +161,7 @@ on_debug_save_as_clicked (GtkButton *button, GtkamDebug *debug)
 	gboolean ok = FALSE;
 	const char *fname;
 
-	fsel = gtk_file_selection_new ("Save As...");
+	fsel = gtk_file_selection_new (_("Save As..."));
 	gtk_window_set_transient_for (GTK_WINDOW (fsel), GTK_WINDOW (debug));
 	gtk_widget_show (fsel);
 
@@ -166,7 +185,7 @@ on_debug_save_as_clicked (GtkButton *button, GtkamDebug *debug)
 						GTK_FILE_SELECTION (fsel));
 		file = fopen (fname, "w");
 		if (!file)
-			g_warning ("Could not open '%s'!", fname);
+			g_warning (_("Could not open '%s'!"), fname);
 		else {
 			buffer = gtk_editable_get_chars (
 				GTK_EDITABLE (debug->priv->text), 0,
@@ -214,28 +233,28 @@ gtkam_debug_new (void)
 	menu = gtk_menu_new ();
 	gtk_widget_show (menu);
 
-	item = gtk_menu_item_new_with_label ("No debugging");
+	item = gtk_menu_item_new_with_label (_("No debugging"));
 	gtk_widget_show (item);
 	gtk_signal_connect (GTK_OBJECT (item), "activate",
 			    GTK_SIGNAL_FUNC (on_no_debugging_activate),
 			    debug);
 	gtk_menu_append (GTK_MENU (menu), item);
 
-	item = gtk_menu_item_new_with_label ("Low debugging");
+	item = gtk_menu_item_new_with_label (_("Low debugging"));
 	gtk_widget_show (item);
 	gtk_signal_connect (GTK_OBJECT (item), "activate",
 			    GTK_SIGNAL_FUNC (on_low_debugging_activate),
 			    debug);
 	gtk_menu_append (GTK_MENU (menu), item);
 
-	item = gtk_menu_item_new_with_label ("Medium debugging");
+	item = gtk_menu_item_new_with_label (_("Medium debugging"));
 	gtk_widget_show (item);
 	gtk_signal_connect (GTK_OBJECT (item), "activate",
 			    GTK_SIGNAL_FUNC (on_medium_debugging_activate),
 			    debug);
 	gtk_menu_append (GTK_MENU (menu), item);
 
-	item = gtk_menu_item_new_with_label ("High debugging");
+	item = gtk_menu_item_new_with_label (_("High debugging"));
 	gtk_widget_show (item);
 	gtk_signal_connect (GTK_OBJECT (item), "activate",
 			    GTK_SIGNAL_FUNC (on_high_debugging_activate),
@@ -263,14 +282,14 @@ gtkam_debug_new (void)
 	gtk_widget_show (vscrollbar);
 	gtk_box_pack_end (GTK_BOX (hbox), vscrollbar, FALSE, FALSE, 0);
 
-	button = gtk_button_new_with_label ("Save As");
+	button = gtk_button_new_with_label (_("Save As"));
 	gtk_widget_show (button);
 	gtk_signal_connect (GTK_OBJECT (button), "clicked",
 			    GTK_SIGNAL_FUNC (on_debug_save_as_clicked), debug);
 	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (debug)->action_area),
 			   button);
 
-	button = gtk_button_new_with_label ("Close");
+	button = gtk_button_new_with_label (_("Close"));
 	gtk_widget_show (button);
 	gtk_signal_connect (GTK_OBJECT (button), "clicked",
 			    GTK_SIGNAL_FUNC (on_debug_close_clicked), debug);

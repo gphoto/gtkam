@@ -21,6 +21,25 @@
 #include <config.h>
 #include "gtkam-error.h"
 
+#ifdef ENABLE_NLS
+#  include <libintl.h>
+#  undef _
+#  define _(String) dgettext (PACKAGE, String)
+#  ifdef gettext_noop
+#    define N_(String) gettext_noop (String)
+#  else
+#    define N_(String) (String)
+#  endif
+#else
+#  define textdomain(String) (String)
+#  define gettext(String) (String)
+#  define dgettext(Domain,Message) (Message)
+#  define dcgettext(Domain,Message,Type) (Message)
+#  define bindtextdomain(Domain,Directory) (Domain)
+#  define _(String) (String)
+#  define N_(String) (String)
+#endif
+
 #include <stdio.h>
 
 #include <gtk/gtktext.h>
@@ -164,14 +183,15 @@ gtkam_error_new (const gchar *msg, int result, Camera *opt_camera,
 	gtk_box_pack_end (GTK_BOX (error->priv->hbox),
 			  vscrollbar, FALSE, FALSE, 0);
 
-	button = gtk_toggle_button_new_with_label ("Show debugging messages");
+	button = gtk_toggle_button_new_with_label (
+					_("Show debugging messages"));
 	gtk_widget_show (button);
 	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (error)->action_area),
 			   button);
 	gtk_signal_connect (GTK_OBJECT (button), "toggled",
 			    GTK_SIGNAL_FUNC (on_debug_toggled), error); 
 
-	button = gtk_button_new_with_label ("Close");
+	button = gtk_button_new_with_label (_("Close"));
 	gtk_widget_show (button);
 	gtk_signal_connect (GTK_OBJECT (button), "clicked",
 			    GTK_SIGNAL_FUNC (on_error_close_clicked), error);

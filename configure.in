@@ -79,6 +79,13 @@ AC_SUBST(GNOME_LIBS)
 AC_SUBST(APP_DATADIR)
 
 dnl ---------------------------------------------------------------------------
+dnl omf/scrollkeper/gnome-style docs
+dnl ---------------------------------------------------------------------------
+
+GTKAM_C_IDENTIFIER="file:/usr/local/share/gnome/help/gtkam/C/gtkam.xml"
+AC_SUBST(GTKAM_C_IDENTIFIER)
+
+dnl ---------------------------------------------------------------------------
 dnl GIMP plugin
 dnl ---------------------------------------------------------------------------
 try_gimp=true
@@ -170,6 +177,7 @@ src/Makefile
 test/Makefile
 doc/Makefile
 omf-install/Makefile
+omf-install/gtkam-C.omf
 help/Makefile
 help/C/Makefile
 ])

@@ -14,6 +14,8 @@
 # $(localstatedir) in this or when people build RPMs it will update
 # the real database on their system instead of the one under RPM_BUILD_ROOT.
 
+EXTRA_DIST = gtkam-C.omf.in
+
 omf_dest_dir=$(datadir)/omf/gtkam
 scrollkeeper_localstate_dir = $(localstatedir)/scrollkeeper
 

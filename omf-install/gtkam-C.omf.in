@@ -13,7 +13,7 @@
     </date>
     <subject category="GNOME|Applications|Graphics"/>
     <format mime="text/xml"/>
-    <identifier url="file:/usr/local/share/gnome/help/gtkam/C/gtkam.xml"/>
+    <identifier url="@GTKAM_C_IDENTIFIER@"/>
     <language code="C"/>
   </resource>
 </omf>

@@ -1,5 +1,13 @@
 2002-06-26  Lutz Müller <lutz@users.sourceforge.net>
 
+	Patrick Mansfield <patman@aracnet.com> spotted a bug which I am 
+	trying to fix by ...
+
+	* src/gtkam-preview.c: ... destroying the preview only after no
+	  more idle calls are waiting.
+
+2002-06-26  Lutz Müller <lutz@users.sourceforge.net>
+
 	* autogen.sh: Removed. Will check in a simplified version later.
 
 2002-06-26  Lutz Müller <lutz@users.sourceforge.net>

@@ -169,10 +169,23 @@ gtkam_preview_get_type (void)
 	return (preview_type);
 }
 
+static gboolean
+idle_destroy (gpointer data)
+{
+	while (gtk_events_pending ())
+		gtk_main_iteration ();
+
+	gtk_object_destroy (GTK_OBJECT (data));
+
+	return (FALSE);
+}
+
 static void
 on_preview_close_clicked (GtkButton *button, GtkamPreview *preview)
 {
-	gtk_object_destroy (GTK_OBJECT (preview));
+	gtk_widget_hide (GTK_WIDGET (preview));
+
+	gtk_idle_add (idle_destroy, preview);
 }
 
 static void

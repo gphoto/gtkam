@@ -21,6 +21,8 @@
 #include <config.h>
 #include "gtk-options.h"
 
+#include <string.h>
+
 void
 gtk_options_sort (GtkOptions *options)
 {

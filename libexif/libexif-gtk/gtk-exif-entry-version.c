@@ -38,6 +38,8 @@
 #include "gtk-extensions/gtk-option-menu-option.h"
 #include "gtk-extensions/gtk-options.h"
 
+#include <string.h>
+
 struct _GtkExifEntryVersionPrivate {
 	ExifEntry *entry;
 

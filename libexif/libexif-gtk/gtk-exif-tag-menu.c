@@ -23,6 +23,8 @@
 
 #include <gtk/gtksignal.h>
 
+#include <string.h>
+
 #ifdef ENABLE_NLS
 #  include <libintl.h>
 #  undef _

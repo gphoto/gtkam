@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gtKam\n"
-"POT-Creation-Date: 2002-05-04 08:29+0200\n"
+"POT-Creation-Date: 2002-05-13 17:25+0200\n"
 "PO-Revision-Date: 2002-01-26 21:30MET\n"
 "Last-Translator: Jérôme Fenal <jerome@fenal.org>\n"
 "Language-Team: Français <traduc@traduc.org>\n"
@@ -15,19 +15,19 @@ msgstr ""
 "X-Generator: KBabel 0.9.5\n"
 
 #. Cancellation
-#: src/gtkam-cancel.c:307 src/gtkam-chooser.c:669 src/gtkam-delete.c:410
-#: src/gtkam-fsel.c:365 src/gtkam-info.c:681 src/gtkam-mkdir.c:274
+#: src/gtkam-cancel.c:307 src/gtkam-chooser.c:723 src/gtkam-delete.c:410
+#: src/gtkam-fsel.c:275 src/gtkam-info.c:681 src/gtkam-mkdir.c:274
 #: src/gtkam-port.c:229 src/gtkam-status.c:279
 msgid "Cancel"
 msgstr "Annuler"
 
 #. Port?
-#: src/gtkam-chooser.c:196 src/gtkam-chooser.c:214
+#: src/gtkam-chooser.c:246 src/gtkam-chooser.c:268
 msgid "None"
 msgstr "Aucun"
 
 #. Speed?
-#: src/gtkam-chooser.c:222 src/gtkam-chooser.c:359 src/gtkam-chooser.c:634
+#: src/gtkam-chooser.c:276 src/gtkam-chooser.c:413 src/gtkam-chooser.c:688
 msgid "Best"
 msgstr "Meilleure"
 
@@ -35,109 +35,109 @@ msgstr "Meilleure"
 #. * Initialize the camera to check if it is really there. Exit
 #. * afterwards because other applications could need the camera, too.
 #.
-#: src/gtkam-chooser.c:229
+#: src/gtkam-chooser.c:283
 msgid "Initializing camera..."
 msgstr "Initialisation de l'appareil photo..."
 
-#: src/gtkam-chooser.c:247
+#: src/gtkam-chooser.c:301
 msgid "Could not initialize camera."
 msgstr "Impossible d'initialiser l'appareil."
 
-#: src/gtkam-chooser.c:350
+#: src/gtkam-chooser.c:404
 #, c-format
 msgid "Could not get abilities of model '%s'."
 msgstr "Impossible de récupérer les fonctionnalités de '%s'."
 
-#: src/gtkam-chooser.c:398
+#: src/gtkam-chooser.c:452
 msgid "Detecting cameras..."
 msgstr "Détection des appareils photos."
 
-#: src/gtkam-chooser.c:408
+#: src/gtkam-chooser.c:462
 msgid "No cameras detected."
 msgstr "Pas d'appareil détecté."
 
-#: src/gtkam-chooser.c:424
+#: src/gtkam-chooser.c:478
 msgid "Could not detect any cameras."
 msgstr "Impossible de détecter un quelconque appareil."
 
-#: src/gtkam-chooser.c:550
+#: src/gtkam-chooser.c:604
 msgid "Select Camera"
 msgstr "Sélection d'un appareil photo"
 
-#: src/gtkam-chooser.c:588
+#: src/gtkam-chooser.c:642
 msgid "Model:"
 msgstr "Modèle : "
 
-#: src/gtkam-chooser.c:599
+#: src/gtkam-chooser.c:653
 msgid "Detect"
 msgstr "Détection"
 
-#: src/gtkam-chooser.c:605
+#: src/gtkam-chooser.c:659
 #, fuzzy
 msgid "Detect USB camera"
 msgstr "Détection des appareils photos."
 
-#: src/gtkam-chooser.c:607
+#: src/gtkam-chooser.c:661
 msgid "Port:"
 msgstr "Port : "
 
-#: src/gtkam-chooser.c:619
+#: src/gtkam-chooser.c:673
 msgid "Add"
 msgstr "Ajouter"
 
-#: src/gtkam-chooser.c:626
+#: src/gtkam-chooser.c:680
 msgid "Speed:"
 msgstr "Vitesse : "
 
-#: src/gtkam-chooser.c:638
+#: src/gtkam-chooser.c:692
 msgid "Allow multiple frontends"
 msgstr "Autoriser plusieurs interfaces"
 
-#: src/gtkam-chooser.c:645
+#: src/gtkam-chooser.c:699
 msgid "Enhanced"
 msgstr "Étendue"
 
-#: src/gtkam-chooser.c:652 src/gtkam-config.c:733 src/gtkam-fsel.c:357
+#: src/gtkam-chooser.c:706 src/gtkam-config.c:733 src/gtkam-fsel.c:267
 #: src/gtkam-info.c:655 src/gtkam-mkdir.c:266 src/gtkam-port.c:222
 msgid "Ok"
 msgstr "Ok"
 
-#: src/gtkam-chooser.c:661 src/gtkam-config.c:740 src/gtkam-info.c:663
+#: src/gtkam-chooser.c:715 src/gtkam-config.c:740 src/gtkam-info.c:663
 msgid "Apply"
 msgstr "Appliquer"
 
-#: src/gtkam-chooser.c:709
+#: src/gtkam-chooser.c:763
 msgid "Could not get number of supported camera models"
 msgstr "Impossible de connaître le nombre d'appareils photo supportés"
 
-#: src/gtkam-chooser.c:739
+#: src/gtkam-chooser.c:793
 msgid "Could not get number of ports."
 msgstr "Impossible de connaître le nombre de ports."
 
-#: src/gtkam-clist.c:228 src/gtkam-info.c:565
+#: src/gtkam-clist.c:188 src/gtkam-info.c:565
 msgid "Preview"
 msgstr "Prévisualisation"
 
-#: src/gtkam-clist.c:228
+#: src/gtkam-clist.c:188
 msgid "Filename"
 msgstr "Fichier"
 
-#: src/gtkam-clist.c:280
+#: src/gtkam-clist.c:222
 #, c-format
 msgid "Getting file '%s' from folder '%s'..."
 msgstr "Récupération du fichier '%s' du dossier '%s'..."
 
-#: src/gtkam-clist.c:315
+#: src/gtkam-clist.c:255
 #, c-format
 msgid "Could not get file '%s'."
 msgstr "Impossible de récupérer le fichier '%s'."
 
-#: src/gtkam-clist.c:363
+#: src/gtkam-clist.c:300
 #, c-format
 msgid "Getting list of files in folder '%s'..."
 msgstr "Récupération de la liste des fichiers du dossier '%s'..."
 
-#: src/gtkam-clist.c:388
+#: src/gtkam-clist.c:316
 #, c-format
 msgid "Could not get file list for folder '%s'."
 msgstr "Impossible de récupérer la liste des fichiers du dossier '%s'..."
@@ -292,52 +292,34 @@ msgstr "Impossible d'initialiser l'appareil."
 msgid "Gtkam has been compiled without exif support."
 msgstr ""
 
-#: src/gtkam-fsel.c:209
-#, c-format
-msgid "Removing '%s' from '%s'..."
-msgstr "Effacement de '%s' dans '%s'..."
-
-#: src/gtkam-fsel.c:224
-#, c-format
-msgid "Could not remove '%s' from '%s'"
-msgstr "Impossible d'effacer '%s' dans '%s'"
-
-#: src/gtkam-fsel.c:281
-msgid "Make"
-msgstr "Créer"
-
-#: src/gtkam-fsel.c:287
-msgid "Remove"
-msgstr "Effacer"
-
-#: src/gtkam-gimp.c:81
+#: src/gtkam-gimp.c:82
 msgid "Captures images from digital camera"
 msgstr "Capturer les images de l'appareil numérique"
 
-#: src/gtkam-gimp.c:84
+#: src/gtkam-gimp.c:85
 msgid "<Toolbox>/File/Acquire/Capture from Camera..."
 msgstr "<Boîte à outils>/Fichier/Acquisition/Capture depuis l'appareil..."
 
-#: src/gtkam-gimp.c:88
+#: src/gtkam-gimp.c:89
 msgid "Loads files from digital cameras"
 msgstr "Charge les fichiers depuis l'appareil numérique"
 
-#: src/gtkam-gimp.c:92
+#: src/gtkam-gimp.c:93
 msgid "<Toolbox>/File/Acquire/Load from Camera..."
 msgstr "<Boîte à outils>/Fichier/Acquisition/Chargement depuis l'appareil..."
 
-#: src/gtkam-gimp.c:215
+#: src/gtkam-gimp.c:216
 #, c-format
 msgid "Downloading '%s' from '%s'..."
 msgstr "Chargement de '%s' depuis '%s'..."
 
-#: src/gtkam-gimp.c:234
+#: src/gtkam-gimp.c:235
 #, c-format
 msgid "Could not download file '%s' from folder '%s'."
 msgstr "Impossible de charger '%s' depuis le dossier '%s'."
 
 # Attention !!! fait référence à la traduction du Gimp
-#: src/gtkam-gimp.c:268
+#: src/gtkam-gimp.c:269
 msgid "Background"
 msgstr "Fond"
 
@@ -481,80 +463,80 @@ msgstr ""
 "http://www.gphoto.net\n"
 "Appréciez le monde merveilleux de gphoto !"
 
-#: src/gtkam-main.c:504
+#: src/gtkam-main.c:507
 msgid "_File"
 msgstr "_Fichier"
 
-#: src/gtkam-main.c:517
+#: src/gtkam-main.c:520
 msgid "_Save Selected Photos..."
 msgstr "Enregi_stre les photos sélectionnées..."
 
-#: src/gtkam-main.c:529
+#: src/gtkam-main.c:532
 msgid "_Delete Photos"
 msgstr "E_ffacer les photos"
 
-#: src/gtkam-main.c:542
+#: src/gtkam-main.c:545
 msgid "_Selected"
 msgstr "_Sélection"
 
-#: src/gtkam-main.c:553 src/gtkam-main.c:594
+#: src/gtkam-main.c:556 src/gtkam-main.c:597
 msgid "_All"
 msgstr "_Tout"
 
-#: src/gtkam-main.c:569
+#: src/gtkam-main.c:572
 msgid "_Exit"
 msgstr "_Quitter"
 
-#: src/gtkam-main.c:581
+#: src/gtkam-main.c:584
 msgid "_Select"
 msgstr "_Sélection"
 
-#: src/gtkam-main.c:605
+#: src/gtkam-main.c:608
 msgid "_Inverse"
 msgstr "_Intervertir"
 
-#: src/gtkam-main.c:616
+#: src/gtkam-main.c:619
 msgid "_None"
 msgstr "_Aucun"
 
-#: src/gtkam-main.c:629
+#: src/gtkam-main.c:632
 msgid "_Camera"
 msgstr "_Appareil photo"
 
-#: src/gtkam-main.c:641
+#: src/gtkam-main.c:644
 #, fuzzy
 msgid "_Add Camera..."
 msgstr "_Choisir un appareil photo..."
 
-#: src/gtkam-main.c:653
+#: src/gtkam-main.c:656
 msgid "_Help"
 msgstr "_Aide"
 
-#: src/gtkam-main.c:665
+#: src/gtkam-main.c:668
 msgid "_Debug..."
 msgstr "_Débogage..."
 
-#: src/gtkam-main.c:674
+#: src/gtkam-main.c:677
 msgid "_About..."
 msgstr "_À propos..."
 
-#: src/gtkam-main.c:693
+#: src/gtkam-main.c:696
 msgid "Save selected photos..."
 msgstr "Enregistrer les photos sélectionnées..."
 
-#: src/gtkam-main.c:703
+#: src/gtkam-main.c:706
 msgid "Delete selected photos"
 msgstr "Effacer les photos sélectionnées"
 
-#: src/gtkam-main.c:721
+#: src/gtkam-main.c:724
 msgid "Exit"
 msgstr "Quitter"
 
-#: src/gtkam-main.c:749
+#: src/gtkam-main.c:752
 msgid "Index Settings"
 msgstr "Configuration de l'index"
 
-#: src/gtkam-main.c:753
+#: src/gtkam-main.c:756
 msgid "View Thumbnails"
 msgstr "Voir les vignettes"
 
@@ -785,7 +767,7 @@ msgstr "Préfixe de nom de fichier :"
 msgid "Start numbering with: "
 msgstr ""
 
-#: src/gtkam-tree.c:336
+#: src/gtkam-tree.c:384
 #, fuzzy
 msgid "Loading cameras..."
 msgstr "Détection des appareils photos."
@@ -808,6 +790,18 @@ msgstr "Impossible de récupérer le fichier '%s'."
 #, fuzzy, c-format
 msgid "Error loading pixmap file: %s"
 msgstr "Récupération de %i images..."
+
+#~ msgid "Removing '%s' from '%s'..."
+#~ msgstr "Effacement de '%s' dans '%s'..."
+
+#~ msgid "Could not remove '%s' from '%s'"
+#~ msgstr "Impossible d'effacer '%s' dans '%s'"
+
+#~ msgid "Make"
+#~ msgstr "Créer"
+
+#~ msgid "Remove"
+#~ msgstr "Effacer"
 
 #~ msgid "Do you really want to delete ALL files in '%s'?"
 #~ msgstr "Êtes-vous sûr de bien vouloir effacer TOUS les fichiers de '%s' ?"

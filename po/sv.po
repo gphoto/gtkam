@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gphoto 0.4.3\n"
-"POT-Creation-Date: 2002-05-04 08:29+0200\n"
+"POT-Creation-Date: 2002-05-13 17:25+0200\n"
 "PO-Revision-Date: 2000-04-21 23:23+0200\n"
 "Last-Translator: Andreas Hyden <a.hyden@cyberpoint.se>\n"
 "Language-Team: Swedish <sv@li.org>\n"
@@ -14,20 +14,20 @@ msgstr ""
 "Content-Transfer-Encoding: 8-bit\n"
 
 #. Cancellation
-#: src/gtkam-cancel.c:307 src/gtkam-chooser.c:669 src/gtkam-delete.c:410
-#: src/gtkam-fsel.c:365 src/gtkam-info.c:681 src/gtkam-mkdir.c:274
+#: src/gtkam-cancel.c:307 src/gtkam-chooser.c:723 src/gtkam-delete.c:410
+#: src/gtkam-fsel.c:275 src/gtkam-info.c:681 src/gtkam-mkdir.c:274
 #: src/gtkam-port.c:229 src/gtkam-status.c:279
 msgid "Cancel"
 msgstr "Avbryt"
 
 #. Port?
-#: src/gtkam-chooser.c:196 src/gtkam-chooser.c:214
+#: src/gtkam-chooser.c:246 src/gtkam-chooser.c:268
 #, fuzzy
 msgid "None"
 msgstr "Nej"
 
 #. Speed?
-#: src/gtkam-chooser.c:222 src/gtkam-chooser.c:359 src/gtkam-chooser.c:634
+#: src/gtkam-chooser.c:276 src/gtkam-chooser.c:413 src/gtkam-chooser.c:688
 #, fuzzy
 msgid "Best"
 msgstr "Nollställ"
@@ -36,119 +36,119 @@ msgstr "Nollställ"
 #. * Initialize the camera to check if it is really there. Exit
 #. * afterwards because other applications could need the camera, too.
 #.
-#: src/gtkam-chooser.c:229
+#: src/gtkam-chooser.c:283
 #, fuzzy
 msgid "Initializing camera..."
 msgstr "Kunde inte ta bild."
 
-#: src/gtkam-chooser.c:247
+#: src/gtkam-chooser.c:301
 #, fuzzy
 msgid "Could not initialize camera."
 msgstr "Kunde inte ta bild."
 
-#: src/gtkam-chooser.c:350
+#: src/gtkam-chooser.c:404
 #, fuzzy, c-format
 msgid "Could not get abilities of model '%s'."
 msgstr "Kunde inte få antalet bilder"
 
-#: src/gtkam-chooser.c:398
+#: src/gtkam-chooser.c:452
 #, fuzzy
 msgid "Detecting cameras..."
 msgstr "Välj modell/port..."
 
-#: src/gtkam-chooser.c:408
+#: src/gtkam-chooser.c:462
 msgid "No cameras detected."
 msgstr ""
 
-#: src/gtkam-chooser.c:424
+#: src/gtkam-chooser.c:478
 #, fuzzy
 msgid "Could not detect any cameras."
 msgstr "Kunde inte ta bild."
 
-#: src/gtkam-chooser.c:550
+#: src/gtkam-chooser.c:604
 #, fuzzy
 msgid "Select Camera"
 msgstr "Direktsänd kamera!"
 
-#: src/gtkam-chooser.c:588
+#: src/gtkam-chooser.c:642
 #, fuzzy
 msgid "Model:"
 msgstr "Kameramodell:"
 
-#: src/gtkam-chooser.c:599
+#: src/gtkam-chooser.c:653
 msgid "Detect"
 msgstr ""
 
-#: src/gtkam-chooser.c:605
+#: src/gtkam-chooser.c:659
 #, fuzzy
 msgid "Detect USB camera"
 msgstr "Välj modell/port..."
 
-#: src/gtkam-chooser.c:607
+#: src/gtkam-chooser.c:661
 msgid "Port:"
 msgstr "Port:"
 
-#: src/gtkam-chooser.c:619
+#: src/gtkam-chooser.c:673
 msgid "Add"
 msgstr ""
 
-#: src/gtkam-chooser.c:626
+#: src/gtkam-chooser.c:680
 msgid "Speed:"
 msgstr ""
 
-#: src/gtkam-chooser.c:638
+#: src/gtkam-chooser.c:692
 msgid "Allow multiple frontends"
 msgstr ""
 
-#: src/gtkam-chooser.c:645
+#: src/gtkam-chooser.c:699
 msgid "Enhanced"
 msgstr ""
 
-#: src/gtkam-chooser.c:652 src/gtkam-config.c:733 src/gtkam-fsel.c:357
+#: src/gtkam-chooser.c:706 src/gtkam-config.c:733 src/gtkam-fsel.c:267
 #: src/gtkam-info.c:655 src/gtkam-mkdir.c:266 src/gtkam-port.c:222
 msgid "Ok"
 msgstr ""
 
-#: src/gtkam-chooser.c:661 src/gtkam-config.c:740 src/gtkam-info.c:663
+#: src/gtkam-chooser.c:715 src/gtkam-config.c:740 src/gtkam-info.c:663
 msgid "Apply"
 msgstr "Verktställ"
 
-#: src/gtkam-chooser.c:709
+#: src/gtkam-chooser.c:763
 #, fuzzy
 msgid "Could not get number of supported camera models"
 msgstr "Kunde inte få antalet bilder"
 
-#: src/gtkam-chooser.c:739
+#: src/gtkam-chooser.c:793
 #, fuzzy
 msgid "Could not get number of ports."
 msgstr "Kunde inte få antalet bilder"
 
-#: src/gtkam-clist.c:228 src/gtkam-info.c:565
+#: src/gtkam-clist.c:188 src/gtkam-info.c:565
 #, fuzzy
 msgid "Preview"
 msgstr "Föregående"
 
-#: src/gtkam-clist.c:228
+#: src/gtkam-clist.c:188
 #, fuzzy
 msgid "Filename"
 msgstr "Filnamn prefix:"
 
-#: src/gtkam-clist.c:280
+#: src/gtkam-clist.c:222
 #, fuzzy, c-format
 msgid "Getting file '%s' from folder '%s'..."
 msgstr "Hämtar minibild  %i..."
 
-#: src/gtkam-clist.c:315
+#: src/gtkam-clist.c:255
 #, fuzzy, c-format
 msgid "Could not get file '%s'."
 msgstr "Kunde inte få tag på förhandsgranskning"
 
-#: src/gtkam-clist.c:363
+#: src/gtkam-clist.c:300
 #, fuzzy, c-format
 msgid "Getting list of files in folder '%s'..."
 msgstr "Kunde inte få tag på förhandsgranskning"
 
-#: src/gtkam-clist.c:388
+#: src/gtkam-clist.c:316
 #, fuzzy, c-format
 msgid "Could not get file list for folder '%s'."
 msgstr "Kunde inte hämta #%i"
@@ -311,51 +311,33 @@ msgstr "Kunde inte ta bild."
 msgid "Gtkam has been compiled without exif support."
 msgstr ""
 
-#: src/gtkam-fsel.c:209
-#, fuzzy, c-format
-msgid "Removing '%s' from '%s'..."
-msgstr "Kunde inte hämta #%i"
-
-#: src/gtkam-fsel.c:224
-#, fuzzy, c-format
-msgid "Could not remove '%s' from '%s'"
-msgstr "Kunde inte hämta #%i"
-
-#: src/gtkam-fsel.c:281
-msgid "Make"
-msgstr ""
-
-#: src/gtkam-fsel.c:287
-msgid "Remove"
-msgstr ""
-
-#: src/gtkam-gimp.c:81
+#: src/gtkam-gimp.c:82
 msgid "Captures images from digital camera"
 msgstr ""
 
-#: src/gtkam-gimp.c:84
+#: src/gtkam-gimp.c:85
 msgid "<Toolbox>/File/Acquire/Capture from Camera..."
 msgstr ""
 
-#: src/gtkam-gimp.c:88
+#: src/gtkam-gimp.c:89
 msgid "Loads files from digital cameras"
 msgstr ""
 
-#: src/gtkam-gimp.c:92
+#: src/gtkam-gimp.c:93
 msgid "<Toolbox>/File/Acquire/Load from Camera..."
 msgstr ""
 
-#: src/gtkam-gimp.c:215
+#: src/gtkam-gimp.c:216
 #, c-format
 msgid "Downloading '%s' from '%s'..."
 msgstr ""
 
-#: src/gtkam-gimp.c:234
+#: src/gtkam-gimp.c:235
 #, fuzzy, c-format
 msgid "Could not download file '%s' from folder '%s'."
 msgstr "Kunde inte få tag på förhandsgranskning"
 
-#: src/gtkam-gimp.c:268
+#: src/gtkam-gimp.c:269
 msgid "Background"
 msgstr ""
 
@@ -485,88 +467,88 @@ msgid ""
 "Enjoy the wonderful world of gphoto!"
 msgstr ""
 
-#: src/gtkam-main.c:504
+#: src/gtkam-main.c:507
 msgid "_File"
 msgstr ""
 
-#: src/gtkam-main.c:517
+#: src/gtkam-main.c:520
 msgid "_Save Selected Photos..."
 msgstr ""
 
-#: src/gtkam-main.c:529
+#: src/gtkam-main.c:532
 #, fuzzy
 msgid "_Delete Photos"
 msgstr "Ta bort markerade bilder"
 
-#: src/gtkam-main.c:542
+#: src/gtkam-main.c:545
 #, fuzzy
 msgid "_Selected"
 msgstr "Direktsänd kamera!"
 
-#: src/gtkam-main.c:553 src/gtkam-main.c:594
+#: src/gtkam-main.c:556 src/gtkam-main.c:597
 msgid "_All"
 msgstr ""
 
-#: src/gtkam-main.c:569
+#: src/gtkam-main.c:572
 msgid "_Exit"
 msgstr ""
 
-#: src/gtkam-main.c:581
+#: src/gtkam-main.c:584
 msgid "_Select"
 msgstr ""
 
-#: src/gtkam-main.c:605
+#: src/gtkam-main.c:608
 msgid "_Inverse"
 msgstr ""
 
-#: src/gtkam-main.c:616
+#: src/gtkam-main.c:619
 #, fuzzy
 msgid "_None"
 msgstr "Klar."
 
-#: src/gtkam-main.c:629
+#: src/gtkam-main.c:632
 #, fuzzy
 msgid "_Camera"
 msgstr "Direktsänd kamera!"
 
-#: src/gtkam-main.c:641
+#: src/gtkam-main.c:644
 #, fuzzy
 msgid "_Add Camera..."
 msgstr "Välj modell/port..."
 
-#: src/gtkam-main.c:653
+#: src/gtkam-main.c:656
 #, fuzzy
 msgid "_Help"
 msgstr "Hjälp"
 
-#: src/gtkam-main.c:665
+#: src/gtkam-main.c:668
 msgid "_Debug..."
 msgstr ""
 
-#: src/gtkam-main.c:674
+#: src/gtkam-main.c:677
 msgid "_About..."
 msgstr ""
 
-#: src/gtkam-main.c:693
+#: src/gtkam-main.c:696
 #, fuzzy
 msgid "Save selected photos..."
 msgstr "Spara bild(er)..."
 
-#: src/gtkam-main.c:703
+#: src/gtkam-main.c:706
 #, fuzzy
 msgid "Delete selected photos"
 msgstr "Ta bort markerade bilder"
 
-#: src/gtkam-main.c:721
+#: src/gtkam-main.c:724
 msgid "Exit"
 msgstr ""
 
-#: src/gtkam-main.c:749
+#: src/gtkam-main.c:752
 #, fuzzy
 msgid "Index Settings"
 msgstr "Färginställningar"
 
-#: src/gtkam-main.c:753
+#: src/gtkam-main.c:756
 msgid "View Thumbnails"
 msgstr ""
 
@@ -801,7 +783,7 @@ msgstr "Filnamn prefix:"
 msgid "Start numbering with: "
 msgstr ""
 
-#: src/gtkam-tree.c:336
+#: src/gtkam-tree.c:384
 #, fuzzy
 msgid "Loading cameras..."
 msgstr "Välj modell/port..."
@@ -822,6 +804,14 @@ msgstr "Kunde inte få tag på förhandsgranskning"
 #, fuzzy, c-format
 msgid "Error loading pixmap file: %s"
 msgstr "Nerladdningen klar."
+
+#, fuzzy
+#~ msgid "Removing '%s' from '%s'..."
+#~ msgstr "Kunde inte hämta #%i"
+
+#, fuzzy
+#~ msgid "Could not remove '%s' from '%s'"
+#~ msgstr "Kunde inte hämta #%i"
 
 #, fuzzy
 #~ msgid "Could not capture."

@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gtkam 20011126\n"
-"POT-Creation-Date: 2002-05-04 08:29+0200\n"
+"POT-Creation-Date: 2002-05-13 17:25+0200\n"
 "PO-Revision-Date: 2002-02-01 21:42+0900\n"
 "Last-Translator: AMANO Kazuhiro <haa13142@jnb.odn.ne.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
@@ -15,19 +15,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #. Cancellation
-#: src/gtkam-cancel.c:307 src/gtkam-chooser.c:669 src/gtkam-delete.c:410
-#: src/gtkam-fsel.c:365 src/gtkam-info.c:681 src/gtkam-mkdir.c:274
+#: src/gtkam-cancel.c:307 src/gtkam-chooser.c:723 src/gtkam-delete.c:410
+#: src/gtkam-fsel.c:275 src/gtkam-info.c:681 src/gtkam-mkdir.c:274
 #: src/gtkam-port.c:229 src/gtkam-status.c:279
 msgid "Cancel"
 msgstr "取り消し"
 
 #. Port?
-#: src/gtkam-chooser.c:196 src/gtkam-chooser.c:214
+#: src/gtkam-chooser.c:246 src/gtkam-chooser.c:268
 msgid "None"
 msgstr "なし"
 
 #. Speed?
-#: src/gtkam-chooser.c:222 src/gtkam-chooser.c:359 src/gtkam-chooser.c:634
+#: src/gtkam-chooser.c:276 src/gtkam-chooser.c:413 src/gtkam-chooser.c:688
 msgid "Best"
 msgstr "最適"
 
@@ -35,109 +35,109 @@ msgstr "最適"
 #. * Initialize the camera to check if it is really there. Exit
 #. * afterwards because other applications could need the camera, too.
 #.
-#: src/gtkam-chooser.c:229
+#: src/gtkam-chooser.c:283
 msgid "Initializing camera..."
 msgstr "カメラを初期化しています..."
 
-#: src/gtkam-chooser.c:247
+#: src/gtkam-chooser.c:301
 msgid "Could not initialize camera."
 msgstr "カメラを初期化することが出来ませんでした"
 
-#: src/gtkam-chooser.c:350
+#: src/gtkam-chooser.c:404
 #, c-format
 msgid "Could not get abilities of model '%s'."
 msgstr "型式 '%s' の仕様が取得できませんでした"
 
-#: src/gtkam-chooser.c:398
+#: src/gtkam-chooser.c:452
 msgid "Detecting cameras..."
 msgstr "カメラの検出..."
 
-#: src/gtkam-chooser.c:408
+#: src/gtkam-chooser.c:462
 msgid "No cameras detected."
 msgstr "検出されたカメラがありません。"
 
-#: src/gtkam-chooser.c:424
+#: src/gtkam-chooser.c:478
 msgid "Could not detect any cameras."
 msgstr "カメラを一つも検出することが出来ませんでした"
 
-#: src/gtkam-chooser.c:550
+#: src/gtkam-chooser.c:604
 msgid "Select Camera"
 msgstr "カメラを選択します"
 
-#: src/gtkam-chooser.c:588
+#: src/gtkam-chooser.c:642
 msgid "Model:"
 msgstr "型式:"
 
-#: src/gtkam-chooser.c:599
+#: src/gtkam-chooser.c:653
 msgid "Detect"
 msgstr "検出"
 
-#: src/gtkam-chooser.c:605
+#: src/gtkam-chooser.c:659
 #, fuzzy
 msgid "Detect USB camera"
 msgstr "カメラの検出..."
 
-#: src/gtkam-chooser.c:607
+#: src/gtkam-chooser.c:661
 msgid "Port:"
 msgstr "ポート:"
 
-#: src/gtkam-chooser.c:619
+#: src/gtkam-chooser.c:673
 msgid "Add"
 msgstr "追加"
 
-#: src/gtkam-chooser.c:626
+#: src/gtkam-chooser.c:680
 msgid "Speed:"
 msgstr "スピード:"
 
-#: src/gtkam-chooser.c:638
+#: src/gtkam-chooser.c:692
 msgid "Allow multiple frontends"
 msgstr "複数のフロントエンドを使用する"
 
-#: src/gtkam-chooser.c:645
+#: src/gtkam-chooser.c:699
 msgid "Enhanced"
 msgstr "拡張"
 
-#: src/gtkam-chooser.c:652 src/gtkam-config.c:733 src/gtkam-fsel.c:357
+#: src/gtkam-chooser.c:706 src/gtkam-config.c:733 src/gtkam-fsel.c:267
 #: src/gtkam-info.c:655 src/gtkam-mkdir.c:266 src/gtkam-port.c:222
 msgid "Ok"
 msgstr "OK"
 
-#: src/gtkam-chooser.c:661 src/gtkam-config.c:740 src/gtkam-info.c:663
+#: src/gtkam-chooser.c:715 src/gtkam-config.c:740 src/gtkam-info.c:663
 msgid "Apply"
 msgstr "適用"
 
-#: src/gtkam-chooser.c:709
+#: src/gtkam-chooser.c:763
 msgid "Could not get number of supported camera models"
 msgstr "サポートしているカメラの型式数を取得できませんでした"
 
-#: src/gtkam-chooser.c:739
+#: src/gtkam-chooser.c:793
 msgid "Could not get number of ports."
 msgstr "ポート数を取得できませんでした"
 
-#: src/gtkam-clist.c:228 src/gtkam-info.c:565
+#: src/gtkam-clist.c:188 src/gtkam-info.c:565
 msgid "Preview"
 msgstr "プレビュー"
 
-#: src/gtkam-clist.c:228
+#: src/gtkam-clist.c:188
 msgid "Filename"
 msgstr "ファイル名"
 
-#: src/gtkam-clist.c:280
+#: src/gtkam-clist.c:222
 #, c-format
 msgid "Getting file '%s' from folder '%s'..."
 msgstr " フォルダ '%2$s'からファイル'%1$s'を取得しています..."
 
-#: src/gtkam-clist.c:315
+#: src/gtkam-clist.c:255
 #, c-format
 msgid "Could not get file '%s'."
 msgstr "ファイル '%s' を取得できませんでした"
 
-#: src/gtkam-clist.c:363
+#: src/gtkam-clist.c:300
 #, c-format
 msgid "Getting list of files in folder '%s'..."
 msgstr "フォルダ '%s' のファイル一覧を取得しています..."
 
-#: src/gtkam-clist.c:388
+#: src/gtkam-clist.c:316
 #, c-format
 msgid "Could not get file list for folder '%s'."
 msgstr "フォルダ '%s' のファイル一覧を取得できませんでした"
@@ -291,51 +291,33 @@ msgstr "カメラを初期化することが出来ませんでした"
 msgid "Gtkam has been compiled without exif support."
 msgstr ""
 
-#: src/gtkam-fsel.c:209
-#, c-format
-msgid "Removing '%s' from '%s'..."
-msgstr "'%2$s' から '%1$s' を削除中..."
-
-#: src/gtkam-fsel.c:224
-#, c-format
-msgid "Could not remove '%s' from '%s'"
-msgstr "'%2$s' から '%1$s' を削除することが出来ませんでした"
-
-#: src/gtkam-fsel.c:281
-msgid "Make"
-msgstr "作成"
-
-#: src/gtkam-fsel.c:287
-msgid "Remove"
-msgstr "削除"
-
-#: src/gtkam-gimp.c:81
+#: src/gtkam-gimp.c:82
 msgid "Captures images from digital camera"
 msgstr "デジタルカメラから画像をキャプチャします"
 
-#: src/gtkam-gimp.c:84
+#: src/gtkam-gimp.c:85
 msgid "<Toolbox>/File/Acquire/Capture from Camera..."
 msgstr "<Toolbox>/File/Acquire/カメラからキャプチャ..."
 
-#: src/gtkam-gimp.c:88
+#: src/gtkam-gimp.c:89
 msgid "Loads files from digital cameras"
 msgstr "デジタルカメラからファイルを読み込みます"
 
-#: src/gtkam-gimp.c:92
+#: src/gtkam-gimp.c:93
 msgid "<Toolbox>/File/Acquire/Load from Camera..."
 msgstr "<Toolbox>/File/Acquire/カメラから読み込み..."
 
-#: src/gtkam-gimp.c:215
+#: src/gtkam-gimp.c:216
 #, c-format
 msgid "Downloading '%s' from '%s'..."
 msgstr "'%2$s' から '%1$s' のダウンロード中..."
 
-#: src/gtkam-gimp.c:234
+#: src/gtkam-gimp.c:235
 #, c-format
 msgid "Could not download file '%s' from folder '%s'."
 msgstr "フォルダ '%2$s' から '%1$s' をダウンロードできませんでした"
 
-#: src/gtkam-gimp.c:268
+#: src/gtkam-gimp.c:269
 msgid "Background"
 msgstr "背景"
 
@@ -478,80 +460,80 @@ msgstr ""
 "\n"
 "gPhoto の素晴らしい世界をお楽しみ下さい！"
 
-#: src/gtkam-main.c:504
+#: src/gtkam-main.c:507
 msgid "_File"
 msgstr "ファイル(_F)"
 
-#: src/gtkam-main.c:517
+#: src/gtkam-main.c:520
 msgid "_Save Selected Photos..."
 msgstr "選択した写真の保存(_S)..."
 
-#: src/gtkam-main.c:529
+#: src/gtkam-main.c:532
 msgid "_Delete Photos"
 msgstr "写真の消去(_D)"
 
-#: src/gtkam-main.c:542
+#: src/gtkam-main.c:545
 msgid "_Selected"
 msgstr "選択済(_S)"
 
-#: src/gtkam-main.c:553 src/gtkam-main.c:594
+#: src/gtkam-main.c:556 src/gtkam-main.c:597
 msgid "_All"
 msgstr "全て(_A)"
 
-#: src/gtkam-main.c:569
+#: src/gtkam-main.c:572
 msgid "_Exit"
 msgstr "終了(_E)"
 
-#: src/gtkam-main.c:581
+#: src/gtkam-main.c:584
 msgid "_Select"
 msgstr "選択(_S)"
 
-#: src/gtkam-main.c:605
+#: src/gtkam-main.c:608
 msgid "_Inverse"
 msgstr "反転(_I)"
 
-#: src/gtkam-main.c:616
+#: src/gtkam-main.c:619
 msgid "_None"
 msgstr "なし(_N)"
 
-#: src/gtkam-main.c:629
+#: src/gtkam-main.c:632
 msgid "_Camera"
 msgstr "カメラ(_C)"
 
-#: src/gtkam-main.c:641
+#: src/gtkam-main.c:644
 #, fuzzy
 msgid "_Add Camera..."
 msgstr "カメラの選択(_S)..."
 
-#: src/gtkam-main.c:653
+#: src/gtkam-main.c:656
 msgid "_Help"
 msgstr "ヘルプ(_H)"
 
-#: src/gtkam-main.c:665
+#: src/gtkam-main.c:668
 msgid "_Debug..."
 msgstr "デバッグ(_D)..."
 
-#: src/gtkam-main.c:674
+#: src/gtkam-main.c:677
 msgid "_About..."
 msgstr "gtkamについて(_A)..."
 
-#: src/gtkam-main.c:693
+#: src/gtkam-main.c:696
 msgid "Save selected photos..."
 msgstr "選択した写真を保存します..."
 
-#: src/gtkam-main.c:703
+#: src/gtkam-main.c:706
 msgid "Delete selected photos"
 msgstr "選択した写真を削除します"
 
-#: src/gtkam-main.c:721
+#: src/gtkam-main.c:724
 msgid "Exit"
 msgstr "gtkam を終了します"
 
-#: src/gtkam-main.c:749
+#: src/gtkam-main.c:752
 msgid "Index Settings"
 msgstr "設定のインデックス"
 
-#: src/gtkam-main.c:753
+#: src/gtkam-main.c:756
 msgid "View Thumbnails"
 msgstr "サムネイルを表示する"
 
@@ -776,7 +758,7 @@ msgstr "ファイル名の接頭子: "
 msgid "Start numbering with: "
 msgstr ""
 
-#: src/gtkam-tree.c:336
+#: src/gtkam-tree.c:384
 #, fuzzy
 msgid "Loading cameras..."
 msgstr "カメラの検出..."
@@ -799,6 +781,18 @@ msgstr "Pixmap ファイルが見つかりませんでした: %s"
 #, c-format
 msgid "Error loading pixmap file: %s"
 msgstr "Pixmap ファイルが読み込めませんでした: %s"
+
+#~ msgid "Removing '%s' from '%s'..."
+#~ msgstr "'%2$s' から '%1$s' を削除中..."
+
+#~ msgid "Could not remove '%s' from '%s'"
+#~ msgstr "'%2$s' から '%1$s' を削除することが出来ませんでした"
+
+#~ msgid "Make"
+#~ msgstr "作成"
+
+#~ msgid "Remove"
+#~ msgstr "削除"
 
 #~ msgid "Do you really want to delete ALL files in '%s'?"
 #~ msgstr "'%s'中のすべてのファイルを本当に消去してもよろしいですか?"

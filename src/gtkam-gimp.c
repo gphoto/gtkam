@@ -402,44 +402,63 @@ run_load (gchar *name, gint nparams, GimpParam *param, gint *nreturn_vals,
 	gboolean selected = FALSE;
 	GtkamCListEntry *entry;
 	GList *list;
+	GimpRunModeType run_mode = param[0].data.d_int32;
 
-	/* Show the file selection dialog */
-	fsel = gtkam_fsel_new (NULL);
-	gtk_widget_show (fsel);
-	gtk_signal_connect (GTK_OBJECT (GTKAM_FSEL (fsel)->ok_button),
-		"clicked", GTK_SIGNAL_FUNC (on_fsel_ok_clicked), &selected);
-	gtk_signal_connect (GTK_OBJECT (fsel), "destroy",
+	switch (run_mode) {
+	case GIMP_RUN_INTERACTIVE:
+
+		/* Initialize gtk through gimp */
+		gimp_ui_init ("gtkam-gimp", TRUE);
+
+		/* Show the file selection dialog */
+		fsel = gtkam_fsel_new (NULL);
+		gtk_widget_show (fsel);
+		gtk_signal_connect (GTK_OBJECT (GTKAM_FSEL (fsel)->ok_button),
+			"clicked", GTK_SIGNAL_FUNC (on_fsel_ok_clicked),
+			&selected);
+		gtk_signal_connect (GTK_OBJECT (fsel), "destroy",
 			    GTK_SIGNAL_FUNC (gtk_main_quit), NULL);
-	gtk_main ();
+		gtk_main ();
 
-	/* Check if the user cancelled */
-	if (!selected) {
+		/* Check if the user cancelled */
+		if (!selected) {
+			*nreturn_vals = 1;
+			*return_vals = values;
+			values[0].type = GIMP_PDB_STATUS;
+			values[0].data.d_status = GIMP_PDB_CANCEL;
+			return;
+		}
+
+		gtk_widget_hide (fsel);
+		while (gtk_events_pending ())
+			gtk_main_iteration ();
+
+		/* Get the file(s) and display it */
+		list = GTKAM_CLIST (GTKAM_FSEL (fsel)->clist)->selection;
+		for (i = 0; i < g_list_length (list); i++) {
+			entry = g_list_nth_data (list, i);
+			strcpy (path.folder, entry->folder);
+			strcpy (path.name, entry->name);
+			image_id = get_file (entry->camera, path,
+				nparams, param, nreturn_vals, return_vals);
+		}
+		gtk_object_destroy (GTK_OBJECT (fsel));
+
 		*nreturn_vals = 1;
 		*return_vals = values;
 		values[0].type = GIMP_PDB_STATUS;
-		values[0].data.d_status = GIMP_PDB_CANCEL;
-		return;
+		values[0].data.d_status = GIMP_PDB_SUCCESS;
+		break;
+
+	default:
+		
+		g_warning ("Implement!");
+		*nreturn_vals = 1;
+		*return_vals = values;
+		values[0].type = GIMP_PDB_STATUS;
+		values[0].data.d_status = GIMP_PDB_EXECUTION_ERROR;
+		break;
 	}
-
-	gtk_widget_hide (fsel);
-	while (gtk_events_pending ())
-		gtk_main_iteration ();
-
-	/* Get the file(s) and display it */
-	list = GTKAM_CLIST (GTKAM_FSEL (fsel)->clist)->selection;
-	for (i = 0; i < g_list_length (list); i++) {
-		entry = g_list_nth_data (list, i);
-		strcpy (path.folder, entry->folder);
-		strcpy (path.name, entry->name);
-		image_id = get_file (entry->camera, path,
-				     nparams, param, nreturn_vals, return_vals);
-	}
-	gtk_object_destroy (GTK_OBJECT (fsel));
-
-	*nreturn_vals = 1;
-	*return_vals = values;
-	values[0].type = GIMP_PDB_STATUS;
-	values[0].data.d_status = GIMP_PDB_SUCCESS;
 }
 
 static void

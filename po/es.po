@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gtKam\n"
-"POT-Creation-Date: 2002-05-04 08:29+0200\n"
+"POT-Creation-Date: 2002-05-13 17:25+0200\n"
 "PO-Revision-Date: 2002-03-01 13:40+0100\n"
 "Last-Translator: Fabian Mandelbaum <fabman@mandrakesoft.com>\n"
 "Language-Team: gphoto-devel <gphoto-devel@gphoto.net>\n"
@@ -15,20 +15,20 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #. Cancellation
-#: src/gtkam-cancel.c:307 src/gtkam-chooser.c:669 src/gtkam-delete.c:410
-#: src/gtkam-fsel.c:365 src/gtkam-info.c:681 src/gtkam-mkdir.c:274
+#: src/gtkam-cancel.c:307 src/gtkam-chooser.c:723 src/gtkam-delete.c:410
+#: src/gtkam-fsel.c:275 src/gtkam-info.c:681 src/gtkam-mkdir.c:274
 #: src/gtkam-port.c:229 src/gtkam-status.c:279
 msgid "Cancel"
 msgstr "Cancelar"
 
 #. Port?
-#: src/gtkam-chooser.c:196 src/gtkam-chooser.c:214
+#: src/gtkam-chooser.c:246 src/gtkam-chooser.c:268
 #, fuzzy
 msgid "None"
 msgstr "_Nada"
 
 #. Speed?
-#: src/gtkam-chooser.c:222 src/gtkam-chooser.c:359 src/gtkam-chooser.c:634
+#: src/gtkam-chooser.c:276 src/gtkam-chooser.c:413 src/gtkam-chooser.c:688
 msgid "Best"
 msgstr ""
 
@@ -36,118 +36,118 @@ msgstr ""
 #. * Initialize the camera to check if it is really there. Exit
 #. * afterwards because other applications could need the camera, too.
 #.
-#: src/gtkam-chooser.c:229
+#: src/gtkam-chooser.c:283
 msgid "Initializing camera..."
 msgstr "Inicializando la cámara..."
 
-#: src/gtkam-chooser.c:247
+#: src/gtkam-chooser.c:301
 #, fuzzy
 msgid "Could not initialize camera."
 msgstr "Inicializando la cámara..."
 
-#: src/gtkam-chooser.c:350
+#: src/gtkam-chooser.c:404
 #, fuzzy, c-format
 msgid "Could not get abilities of model '%s'."
 msgstr "No se pueden recuperar las funcionalidades de %s"
 
-#: src/gtkam-chooser.c:398
+#: src/gtkam-chooser.c:452
 #, fuzzy
 msgid "Detecting cameras..."
 msgstr "Seleccionar cámara"
 
-#: src/gtkam-chooser.c:408
+#: src/gtkam-chooser.c:462
 msgid "No cameras detected."
 msgstr ""
 
-#: src/gtkam-chooser.c:424
+#: src/gtkam-chooser.c:478
 #, fuzzy
 msgid "Could not detect any cameras."
 msgstr "No se puede obtener la cantidad de cámaras"
 
-#: src/gtkam-chooser.c:550
+#: src/gtkam-chooser.c:604
 msgid "Select Camera"
 msgstr "Seleccionar cámara"
 
-#: src/gtkam-chooser.c:588
+#: src/gtkam-chooser.c:642
 #, fuzzy
 msgid "Model:"
 msgstr "Seleccione el modelo:"
 
-#: src/gtkam-chooser.c:599
+#: src/gtkam-chooser.c:653
 #, fuzzy
 msgid "Detect"
 msgstr "_Seleccionar"
 
-#: src/gtkam-chooser.c:605
+#: src/gtkam-chooser.c:659
 #, fuzzy
 msgid "Detect USB camera"
 msgstr "Seleccionar cámara"
 
-#: src/gtkam-chooser.c:607
+#: src/gtkam-chooser.c:661
 msgid "Port:"
 msgstr ""
 
-#: src/gtkam-chooser.c:619
+#: src/gtkam-chooser.c:673
 msgid "Add"
 msgstr ""
 
-#: src/gtkam-chooser.c:626
+#: src/gtkam-chooser.c:680
 #, fuzzy
 msgid "Speed:"
 msgstr "Seleccione la velocidad:"
 
-#: src/gtkam-chooser.c:638
+#: src/gtkam-chooser.c:692
 msgid "Allow multiple frontends"
 msgstr ""
 
-#: src/gtkam-chooser.c:645
+#: src/gtkam-chooser.c:699
 msgid "Enhanced"
 msgstr ""
 
-#: src/gtkam-chooser.c:652 src/gtkam-config.c:733 src/gtkam-fsel.c:357
+#: src/gtkam-chooser.c:706 src/gtkam-config.c:733 src/gtkam-fsel.c:267
 #: src/gtkam-info.c:655 src/gtkam-mkdir.c:266 src/gtkam-port.c:222
 msgid "Ok"
 msgstr ""
 
-#: src/gtkam-chooser.c:661 src/gtkam-config.c:740 src/gtkam-info.c:663
+#: src/gtkam-chooser.c:715 src/gtkam-config.c:740 src/gtkam-info.c:663
 msgid "Apply"
 msgstr ""
 
-#: src/gtkam-chooser.c:709
+#: src/gtkam-chooser.c:763
 #, fuzzy
 msgid "Could not get number of supported camera models"
 msgstr "No se puede obtener la cantidad de cámaras"
 
-#: src/gtkam-chooser.c:739
+#: src/gtkam-chooser.c:793
 #, fuzzy
 msgid "Could not get number of ports."
 msgstr "No se puede obtener la cantidad de puertos"
 
-#: src/gtkam-clist.c:228 src/gtkam-info.c:565
+#: src/gtkam-clist.c:188 src/gtkam-info.c:565
 msgid "Preview"
 msgstr ""
 
-#: src/gtkam-clist.c:228
+#: src/gtkam-clist.c:188
 #, fuzzy
 msgid "Filename"
 msgstr "_Archivo"
 
-#: src/gtkam-clist.c:280
+#: src/gtkam-clist.c:222
 #, c-format
 msgid "Getting file '%s' from folder '%s'..."
 msgstr ""
 
-#: src/gtkam-clist.c:315
+#: src/gtkam-clist.c:255
 #, fuzzy, c-format
 msgid "Could not get file '%s'."
 msgstr "No se pueden recuperar las funcionalidades de %s"
 
-#: src/gtkam-clist.c:363
+#: src/gtkam-clist.c:300
 #, c-format
 msgid "Getting list of files in folder '%s'..."
 msgstr ""
 
-#: src/gtkam-clist.c:388
+#: src/gtkam-clist.c:316
 #, fuzzy, c-format
 msgid "Could not get file list for folder '%s'."
 msgstr "No se pueden recuperar las funcionalidades de %s"
@@ -310,53 +310,35 @@ msgstr "Inicializando la cámara..."
 msgid "Gtkam has been compiled without exif support."
 msgstr ""
 
-#: src/gtkam-fsel.c:209
-#, c-format
-msgid "Removing '%s' from '%s'..."
-msgstr ""
-
-#: src/gtkam-fsel.c:224
-#, fuzzy, c-format
-msgid "Could not remove '%s' from '%s'"
-msgstr "No se pueden recuperar las funcionalidades de %s"
-
-#: src/gtkam-fsel.c:281
-msgid "Make"
-msgstr ""
-
-#: src/gtkam-fsel.c:287
-msgid "Remove"
-msgstr ""
-
-#: src/gtkam-gimp.c:81
+#: src/gtkam-gimp.c:82
 msgid "Captures images from digital camera"
 msgstr ""
 
-#: src/gtkam-gimp.c:84
+#: src/gtkam-gimp.c:85
 msgid "<Toolbox>/File/Acquire/Capture from Camera..."
 msgstr ""
 
-#: src/gtkam-gimp.c:88
+#: src/gtkam-gimp.c:89
 msgid "Loads files from digital cameras"
 msgstr ""
 
-#: src/gtkam-gimp.c:92
+#: src/gtkam-gimp.c:93
 msgid "<Toolbox>/File/Acquire/Load from Camera..."
 msgstr ""
 
-#: src/gtkam-gimp.c:215
+#: src/gtkam-gimp.c:216
 #, c-format
 msgid "Downloading '%s' from '%s'..."
 msgstr ""
 
-#: src/gtkam-gimp.c:234
+#: src/gtkam-gimp.c:235
 #, fuzzy, c-format
 msgid "Could not download file '%s' from folder '%s'."
 msgstr ""
 "No se pudo abrir la carpeta\n"
 "%s"
 
-#: src/gtkam-gimp.c:268
+#: src/gtkam-gimp.c:269
 msgid "Background"
 msgstr ""
 
@@ -494,83 +476,83 @@ msgstr ""
 "Para mayor información consulte\n"
 "http://www.gphoto.net"
 
-#: src/gtkam-main.c:504
+#: src/gtkam-main.c:507
 msgid "_File"
 msgstr "_Archivo"
 
-#: src/gtkam-main.c:517
+#: src/gtkam-main.c:520
 msgid "_Save Selected Photos..."
 msgstr "_Guardar las fotos seleccionadas..."
 
-#: src/gtkam-main.c:529
+#: src/gtkam-main.c:532
 #, fuzzy
 msgid "_Delete Photos"
 msgstr "_Selección de fotos"
 
-#: src/gtkam-main.c:542
+#: src/gtkam-main.c:545
 #, fuzzy
 msgid "_Selected"
 msgstr "_Seleccionar"
 
-#: src/gtkam-main.c:553 src/gtkam-main.c:594
+#: src/gtkam-main.c:556 src/gtkam-main.c:597
 msgid "_All"
 msgstr "_Todo"
 
-#: src/gtkam-main.c:569
+#: src/gtkam-main.c:572
 msgid "_Exit"
 msgstr "_Salir"
 
-#: src/gtkam-main.c:581
+#: src/gtkam-main.c:584
 msgid "_Select"
 msgstr "_Seleccionar"
 
-#: src/gtkam-main.c:605
+#: src/gtkam-main.c:608
 msgid "_Inverse"
 msgstr "_Invertir"
 
-#: src/gtkam-main.c:616
+#: src/gtkam-main.c:619
 msgid "_None"
 msgstr "_Nada"
 
-#: src/gtkam-main.c:629
+#: src/gtkam-main.c:632
 msgid "_Camera"
 msgstr "_Cámara"
 
-#: src/gtkam-main.c:641
+#: src/gtkam-main.c:644
 #, fuzzy
 msgid "_Add Camera..."
 msgstr "Seleccionar cámara"
 
-#: src/gtkam-main.c:653
+#: src/gtkam-main.c:656
 msgid "_Help"
 msgstr "_Ayuda"
 
-#: src/gtkam-main.c:665
+#: src/gtkam-main.c:668
 msgid "_Debug..."
 msgstr ""
 
-#: src/gtkam-main.c:674
+#: src/gtkam-main.c:677
 #, fuzzy
 msgid "_About..."
 msgstr "_Autores..."
 
-#: src/gtkam-main.c:693
+#: src/gtkam-main.c:696
 msgid "Save selected photos..."
 msgstr "Guardar las fotos seleccionadas..."
 
-#: src/gtkam-main.c:703
+#: src/gtkam-main.c:706
 msgid "Delete selected photos"
 msgstr "Eliminar las fotos seleccionadas"
 
-#: src/gtkam-main.c:721
+#: src/gtkam-main.c:724
 msgid "Exit"
 msgstr "Salir"
 
-#: src/gtkam-main.c:749
+#: src/gtkam-main.c:752
 msgid "Index Settings"
 msgstr ""
 
-#: src/gtkam-main.c:753
+#: src/gtkam-main.c:756
 msgid "View Thumbnails"
 msgstr ""
 
@@ -808,7 +790,7 @@ msgstr ""
 msgid "Start numbering with: "
 msgstr ""
 
-#: src/gtkam-tree.c:336
+#: src/gtkam-tree.c:384
 #, fuzzy
 msgid "Loading cameras..."
 msgstr "Seleccionar cámara"
@@ -829,6 +811,10 @@ msgstr "No se puede encontrar el archivo pixmap %s"
 #, fuzzy, c-format
 msgid "Error loading pixmap file: %s"
 msgstr "No se puede encontrar el archivo pixmap %s"
+
+#, fuzzy
+#~ msgid "Could not remove '%s' from '%s'"
+#~ msgstr "No se pueden recuperar las funcionalidades de %s"
 
 #, fuzzy
 #~ msgid "Could not retrieve information."

@@ -88,6 +88,9 @@ main (int argc, char *argv[])
 
 	gtk_signal_connect (GTK_OBJECT(gp_gtk_main_window), "delete_event",
 		GTK_SIGNAL_FUNC(main_quit), NULL);
+
+	if (gp_setting_get("gtk-old", "camera", buf)==GP_ERROR)
+		camera_select();
 	
 	gtk_main ();
 	return 0;

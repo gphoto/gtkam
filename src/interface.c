@@ -972,7 +972,7 @@ create_main_window (void)
   gtk_widget_show (frame);
   gtk_box_pack_start (GTK_BOX (vbox2), frame, FALSE, FALSE, 0);
   
-  checkbutton = gtk_check_button_new_with_label("View camera thumbnails");
+  checkbutton = gtk_check_button_new_with_label("View Thumbnails");
   gtk_widget_ref (checkbutton);
   gtk_object_set_data_full (GTK_OBJECT (main_window), "use_thumbs", checkbutton,
                             (GtkDestroyNotify) gtk_widget_unref);

@@ -1,3 +1,8 @@
+2002-06-19  Lutz Müller <lutz@users.sourceforge.net>
+
+	* acconfig.h: Removed.
+	* configure.in: Version 0.1.6
+
 2002-05-21  Lutz Müller <lutz@users.sourceforge.net>
 
 	Fix the patch by Alvaro <psst@euskalnet.net> (2002-04-04):

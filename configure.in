@@ -1,7 +1,7 @@
 dnl Process this file with autoconf to produce a configure script.
-
+AC_PREREQ(2.50)
 AC_INIT(configure.in)
-AM_INIT_AUTOMAKE(gtkam, 0.1.5)
+AM_INIT_AUTOMAKE(gtkam, 0.1.6)
 AM_CONFIG_HEADER(config.h)
 
 AC_ISC_POSIX
@@ -29,7 +29,8 @@ if test -n "${GPHOTO_CONFIG}"; then
 	LDFLAGS_save="$LDFLAGS"
 	LDFLAGS="$GP_LIBS"
 	AC_CHECK_LIB(gphoto2, gp_camera_set_timeout_funcs, [
-		AC_DEFINE(HAVE_GP_CAMERA_SET_TIMEOUT_FUNCS)])
+		AC_DEFINE(HAVE_GP_CAMERA_SET_TIMEOUT_FUNCS,,[
+			Whether to use new features of libgphoto2])])
 	LDFLAGS="$LDFLAGS_save"
 else
 	AC_MSG_ERROR([
@@ -84,7 +85,7 @@ if $try_gimp; then
 	AM_PATH_GIMP(1.1.24,
 		have_gimp=true
 		gimp_msg=yes
-		AC_DEFINE(HAVE_GIMP))
+		AC_DEFINE(HAVE_GIMP,,[Whether to compile the gimp plugin]))
 fi
 AM_CONDITIONAL(HAVE_GIMP, $have_gimp)
 AC_SUBST(GIMP_CFLAGS)
@@ -111,7 +112,7 @@ if $try_exif; then
                         EXIF_LIBS=`$PKG_CONFIG --libs libexif-gtk`
                         have_exif=true
                         exif_msg=yes
-                        AC_DEFINE(HAVE_EXIF)
+                        AC_DEFINE(HAVE_EXIF,,[Whether to use libexif])
                 fi
                 AC_MSG_RESULT($exif_msg)
         fi

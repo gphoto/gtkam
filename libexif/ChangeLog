@@ -1,3 +1,13 @@
+2002-01-02  Hans Ulrich Niedermann <gp@n-dimensional.de>
+
+	* libexif/exif-data.c
+	* libexif-gtk/gtk-exif-entry-ascii.c
+	* libexif-gtk/gtk-exif-entry-copyright.c
+	* libexif-gtk/gtk-exif-entry-version.c
+	* libexif-gtk/gtk-exif-tag-menu.c
+	* libexif-gtk/gtk-extensions/gtk-options.c
+	* libjpeg/jpeg-data.c: added missing #include <string.h>
+
 2001-12-20  Lutz Müller <urc8@rz.uni-karlsruhe.de>
 
 	* libexif-gtk: Added widget for resolution.

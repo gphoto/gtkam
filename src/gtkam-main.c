@@ -452,7 +452,7 @@ action_about (gpointer callback_data, guint callback_action,
 		N_("gtkam is a program that lets you download\n"
 		   "images from many digital cameras. It uses\n"
 		   "libgphoto2. More info is available at\n"
-		   "http://www.gphoto.net.\n"
+		   "http://www.gphoto.org.\n"
 		   "\n"
 		   "Enjoy the wonderful world of gphoto!");
 #ifdef HAVE_GNOME

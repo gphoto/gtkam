@@ -206,7 +206,7 @@ gtkam_error_new (int result, GtkamContext *context, GtkWidget *opt_window,
 	gtk_text_set_editable (GTK_TEXT (text), FALSE);
 	gtk_box_pack_start (GTK_BOX (error->priv->hbox), text, TRUE, TRUE, 0);
 
-	for (i = 0; i < context->errors->len; i++) {
+	for (i = 0; context && (i < context->errors->len); i++) {
 		gtk_text_insert (GTK_TEXT (text), NULL, NULL, NULL,
 			context->errors->pdata[i],
 			strlen (context->errors->pdata[i]));
@@ -220,7 +220,7 @@ gtkam_error_new (int result, GtkamContext *context, GtkWidget *opt_window,
 
 	button = gtk_toggle_button_new_with_label (
 					_("More"));
-	if (context->errors->len)
+	if (context && context->errors->len)
 		gtk_widget_show (button);
 	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (error)->action_area),
 			   button);

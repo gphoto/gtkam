@@ -1,6 +1,7 @@
 2002-02-26  Lutz Müller <lutz@users.sourceforge.net>
 
 	* src/gtkam-info.c: %li instead of %i to fix some compile warnings.
+	* src/gtkam-error.c: Check for context == NULL.
 
 2002-02-02  Colin Marquardt  <colin@marquardt-home.de>
 

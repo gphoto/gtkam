@@ -47,7 +47,7 @@
 #include <gtk/gtkhbox.h>
 #include <gtk/gtkvbox.h>
 #include <gtk/gtklabel.h>
-#include <gtk/gtktogglebutton.h>
+#include <gtk/gtkcheckbutton.h>
 #include <gtk/gtkhbox.h>
 #include <gtk/gtktable.h>
 #include <gtk/gtksignal.h>
@@ -71,7 +71,7 @@ struct _GtkamChooserPrivate
 	CameraAbilitiesList *al;
 	GPPortInfoList *il;
 
-	GtkWidget *label_speed;
+	GtkWidget *label_speed, *check_multi;
 	GtkEntry *entry_model, *entry_port, *entry_speed;
 	GtkCombo *combo_model, *combo_port, *combo_speed;
 
@@ -173,10 +173,12 @@ gtkam_chooser_get_camera (GtkamChooser *chooser)
 	int m, p, r;
 	gchar *port_name;
 	guint i;
+	gboolean multi;
 
 	model = gtk_entry_get_text (chooser->priv->entry_model);
 	port  = gtk_entry_get_text (chooser->priv->entry_port);
 	speed = gtk_entry_get_text (chooser->priv->entry_speed);
+	multi = GTK_TOGGLE_BUTTON (chooser->priv->check_multi)->active;
 
 	if (!port || !*port)
 		port_name = g_strdup (_("None"));
@@ -230,7 +232,11 @@ gtkam_chooser_get_camera (GtkamChooser *chooser)
 	else
 		speed_number = g_strdup (speed);
 	gp_setting_set ("gtkam", "speed", (char*) speed_number);
-	g_free (speed_number); 
+	g_free (speed_number);
+	if (multi)
+		gp_setting_set ("gtkam", "multi", "1");
+	else
+		gp_setting_set ("gtkam", "multi", "0");
 
 	return (camera);
 }
@@ -267,13 +273,17 @@ on_ok_clicked (GtkButton *button, GtkamChooser *chooser)
 	Camera *camera;
 
 	if (chooser->priv->needs_update) {
+		gtk_widget_hide (GTK_WIDGET (chooser));
+		while (gtk_events_pending ())
+			gtk_main_iteration ();
 		camera = gtkam_chooser_get_camera (chooser);
 		if (camera) {
 			gtk_signal_emit (GTK_OBJECT (chooser),
 					 signals[CAMERA_SELECTED], camera);
 			gp_camera_unref (camera);
 			gtk_object_destroy (GTK_OBJECT (chooser));
-		}
+		} else
+			gtk_widget_show (GTK_WIDGET (chooser));
 	} else
 		gtk_object_destroy (GTK_OBJECT (chooser));
 }
@@ -282,9 +292,11 @@ static void
 on_more_options_toggled (GtkToggleButton *toggle, GtkamChooser *chooser)
 {
 	if (toggle->active) {
+		gtk_widget_show (chooser->priv->check_multi);
 		gtk_widget_show (chooser->priv->label_speed);
 		gtk_widget_show (GTK_WIDGET (chooser->priv->combo_speed));
 	} else {
+		gtk_widget_hide (chooser->priv->check_multi);
 		gtk_widget_hide (chooser->priv->label_speed);
 		gtk_widget_hide (GTK_WIDGET (chooser->priv->combo_speed));
 	}
@@ -425,17 +437,24 @@ gtkam_chooser_set_port_list (GtkamChooser *chooser, GList *list)
 				GTK_WIDGET (chooser->priv->combo_port), FALSE);
 }
 
+static void
+on_multi_toggled (GtkToggleButton *toggle, GtkamChooser *chooser)
+{
+	chooser->priv->needs_update = TRUE;
+	gtk_widget_set_sensitive (chooser->apply_button, TRUE);
+}
+
 GtkWidget *
 gtkam_chooser_new (void)
 {
 	GtkamChooser *chooser;
-	GtkWidget *table, *label, *button, *combo, *hbox, *vbox;
+	GtkWidget *table, *label, *button, *combo, *hbox, *vbox, *check;
 	GtkWidget *image;
 	GdkPixmap *pixmap;
 	GdkBitmap *bitmap;
 	GdkPixbuf *pixbuf;
-	char port[1024], speed[1024], model[1024];
-	gboolean p, s, m;
+	char port[1024], speed[1024], model[1024], multi[1024];
+	gboolean p, s, m, mult;
 
 	chooser = gtk_type_new (GTKAM_TYPE_CHOOSER);
 
@@ -524,6 +543,13 @@ gtkam_chooser_new (void)
 	chooser->priv->combo_speed = GTK_COMBO (combo);
 	gtk_entry_set_editable (chooser->priv->entry_speed, FALSE);
 
+	check = gtk_check_button_new_with_label (_("Allow multiple frontends"));
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (check), TRUE);
+	gtk_table_attach_defaults (GTK_TABLE (table), check, 0, 2, 3, 4);
+	gtk_signal_connect (GTK_OBJECT (check), "toggled",
+			    GTK_SIGNAL_FUNC (on_multi_toggled), chooser);
+	chooser->priv->check_multi = check;
+
 	button = gtk_toggle_button_new_with_label (_("Enhanced"));
 	gtk_widget_show (button);
 	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (chooser)->action_area),
@@ -566,7 +592,7 @@ gtkam_chooser_new (void)
 			    GTK_SIGNAL_FUNC (on_speed_changed), chooser);
 
 	/* Remember what we update */
-	p = m = s = FALSE;
+	mult = p = m = s = FALSE;
 
 	/* Do we have a model? */
 	if ((gp_setting_get ("gtkam", "camera", model) == GP_OK) ||
@@ -610,7 +636,20 @@ gtkam_chooser_new (void)
 		s = TRUE;
 	}
 
-	chooser->priv->needs_update = !m || !p || !s;
+	/* Do we have the multi option? */
+	if (gp_setting_get ("gtkam", "multi", multi) == GP_OK) {
+		if (atoi (multi))
+			gtk_toggle_button_set_active (
+				GTK_TOGGLE_BUTTON (chooser->priv->check_multi),
+				TRUE);
+		else
+			gtk_toggle_button_set_active (
+				GTK_TOGGLE_BUTTON (chooser->priv->check_multi),
+				FALSE);
+		mult = TRUE;
+	}
+
+	chooser->priv->needs_update = !m || !p || !s || !mult;
 	gtk_widget_set_sensitive (chooser->apply_button,
 				  chooser->priv->needs_update);
 

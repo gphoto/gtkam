@@ -567,7 +567,6 @@ gtkam_chooser_new (void)
 {
 	GtkamChooser *chooser;
 	GtkWidget *table, *label, *button, *combo, *vbox, *check;
-	gchar *t;
 
 	chooser = g_object_new (GTKAM_TYPE_CHOOSER, NULL);
 
@@ -581,9 +580,7 @@ gtkam_chooser_new (void)
 	gp_port_info_list_new (&(chooser->priv->il));
 	gp_port_info_list_load (chooser->priv->il);
 
-	t = g_locale_to_utf8 (_("Select Camera"), -1, NULL, NULL, NULL);
-	gtk_window_set_title (GTK_WINDOW (chooser), t);
-	g_free (t);
+	gtk_window_set_title (GTK_WINDOW (chooser), _("Select Camera"));
 	gtk_container_set_border_width (GTK_CONTAINER (chooser), 5);
 
 	vbox = gtk_vbox_new (FALSE, 0);
@@ -610,10 +607,7 @@ gtkam_chooser_new (void)
 #if 0
 	gtk_entry_set_editable (chooser->priv->entry_model, FALSE);
 #endif
-
-	t = g_locale_to_utf8 (_("Detect"), -1, NULL, NULL, NULL);
-	button = gtk_button_new_with_label (t);
-	g_free (t);
+	button = gtk_button_new_with_label (_("Detect"));
 	gtk_widget_show (button);
 	gtk_table_attach_defaults (GTK_TABLE (table), button, 2, 3, 0, 1);
 	g_signal_connect (GTK_OBJECT (button), "clicked",
@@ -655,20 +649,14 @@ gtkam_chooser_new (void)
 #if 0
 	gtk_entry_set_editable (chooser->priv->entry_speed, FALSE);
 #endif
-
-	t = g_locale_to_utf8 (_("Allow multiple frontends"), -1,
-			      NULL, NULL, NULL);
-	check = gtk_check_button_new_with_label (t);
-	g_free (t);
+	check = gtk_check_button_new_with_label (_("Allow multiple frontends"));
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (check), FALSE);
 	gtk_table_attach_defaults (GTK_TABLE (table), check, 0, 2, 3, 4);
 	g_signal_connect (GTK_OBJECT (check), "toggled",
 			    GTK_SIGNAL_FUNC (on_multi_toggled), chooser);
 	chooser->priv->check_multi = check;
 
-	t = g_locale_to_utf8 (_("Enhanced"), -1, NULL, NULL, NULL);
-	button = gtk_toggle_button_new_with_label (t);
-	g_free (t);
+	button = gtk_toggle_button_new_with_label (_("Enhanced"));
 	gtk_widget_show (button);
 	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (chooser)->action_area),
 			   button);

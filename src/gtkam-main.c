@@ -493,11 +493,11 @@ action_about (gpointer callback_data, guint callback_action,
 		features = g_strjoinv(", ", &v[1]);
 
 		if (gcomments == NULL) {
-			gcomments = g_strdup_printf("%s\n\n%s %s with options:\n    %s\n", 
+			gcomments = g_strdup_printf(_("%s\n\n%s %s with options:\n    %s\n"), 
 						    _(comments), name, v[0], features);
 		} else {
 			gchar *old = gcomments;
-			gcomments = g_strdup_printf("%s\n%s %s with options:\n    %s\n", 
+			gcomments = g_strdup_printf(_("%s\n%s %s with options:\n    %s\n"), 
 						    gcomments, name, v[0], features);
 			free(old);
 		}
@@ -634,16 +634,7 @@ static GtkItemFactoryEntry mi[] =
 static gchar *
 translate_func (const gchar *path, gpointer data)
 {
-	gchar *result;
-	GError *e = NULL;
-
-	result = g_locale_to_utf8 (_(path), -1, NULL, NULL, &e);
-	if (e) {
-		g_warning ("Could not convert '%s' to UTF-8: '%s'", path,
-			   e->message);
-		g_error_free (e);
-	}
-	return (result);
+	return (_(path));
 }
 
 #endif

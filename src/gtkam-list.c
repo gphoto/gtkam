@@ -875,17 +875,27 @@ on_edited (GtkCellRendererText *cell, const gchar *path,
 
 static GtkItemFactoryEntry mi[] =
 {
-	{"/_View with...", NULL, NULL, 0, "<Branch>"},
-	{"/View with.../Built-in viewer", NULL, action_view, 0, NULL},
+	{N_("/_View with..."), NULL, NULL, 0, "<Branch>"},
+	{N_("/View with.../Built-in viewer"), NULL, action_view, 0, NULL},
 	{"/sep0", NULL, NULL, 0, "<Separator>"},
-	{"/_Info", NULL, action_info, 0, NULL},
+	{N_("/_Info"), NULL, action_info, 0, NULL},
 #ifdef HAVE_EXIF
-	{"/_Exif", NULL, action_exif, 0, NULL},
+	{N_("/_Exif"), NULL, action_exif, 0, NULL},
 #endif
 	{"/sep1", NULL, NULL, 0, "<Separator>"},
-	{"/_Save", NULL, action_save, 0, "<StockItem>", GTK_STOCK_SAVE},
-	{"/_Delete", NULL, action_delete, 0, "<StockItem>", GTK_STOCK_DELETE}
+	{N_("/_Save"), NULL, action_save, 0, "<StockItem>", GTK_STOCK_SAVE},
+	{N_("/_Delete"), NULL, action_delete, 0, "<StockItem>", GTK_STOCK_DELETE}
 };
+
+#ifdef ENABLE_NLS
+
+static gchar *
+translate_func (const gchar *path, gpointer data)
+{
+	return (_(path));
+}
+
+#endif
 
 GtkWidget *
 gtkam_list_new (void)
@@ -907,6 +917,10 @@ gtkam_list_new (void)
 	ag = gtk_accel_group_new ();
 	list->priv->factory = gtk_item_factory_new (GTK_TYPE_MENU, "<popup>",
 						    ag);
+#ifdef ENABLE_NLS
+	gtk_item_factory_set_translate_func (GTK_ITEM_FACTORY (list->priv->factory),
+					translate_func, NULL, NULL);
+#endif
 	gtk_item_factory_create_items (list->priv->factory,
 				       G_N_ELEMENTS (mi), mi, list);
 	g_object_ref (G_OBJECT (list->priv->factory));

@@ -827,20 +827,30 @@ on_add_camera_activate (GtkMenuItem *item, GtkamTree *tree)
 
 static GtkItemFactoryEntry mi[] =
 {
-	{"/Upload file", NULL, action_upload, 0, NULL},
-	{"/Make directory", NULL, action_mkdir, 0, NULL},
-	{"/Remove directory", NULL, action_rmdir, 0, NULL},
+	{N_("/Upload file"), NULL, action_upload, 0, NULL},
+	{N_("/Make directory"), NULL, action_mkdir, 0, NULL},
+	{N_("/Remove directory"), NULL, action_rmdir, 0, NULL},
 	{"/sep1", NULL, NULL, 0, "<Separator>"},
-	{"/Capture", NULL, action_capture, 0, NULL},
-	{"/Preferences", NULL, action_preferences, 0,
+	{N_("/Capture"), NULL, action_capture, 0, NULL},
+	{N_("/Preferences"), NULL, action_preferences, 0,
 	 "<StockItem>", GTK_STOCK_PREFERENCES},
-	{"/Summary", NULL, action_summary, 0, NULL},
-	{"/Manual", NULL, action_manual, 0, NULL},
-	{"/About", NULL, action_about, 0, NULL},
+	{N_("/Summary"), NULL, action_summary, 0, NULL},
+	{N_("/Manual"), NULL, action_manual, 0, NULL},
+	{N_("/About"), NULL, action_about, 0, NULL},
 	{"/sep2", NULL, NULL, 0, "<Separator>"},
-	{"/Select Camera", NULL, action_select_camera, 0, NULL},
-	{"/Remove Camera", NULL, action_remove_camera, 0, NULL},
+	{N_("/Select Camera"), NULL, action_select_camera, 0, NULL},
+	{N_("/Remove Camera"), NULL, action_remove_camera, 0, NULL},
 };
+
+#ifdef ENABLE_NLS
+
+static gchar *
+translate_func (const gchar *path, gpointer data)
+{
+    return (_(path));
+}
+
+#endif
 
 static gint
 on_button_press_event (GtkWidget *widget, GdkEventButton *event,
@@ -959,11 +969,15 @@ gtkam_tree_new (void)
 			  G_CALLBACK (on_button_press_event), tree);
 
 	gtk_tooltips_set_tip (tree->priv->tooltips, GTK_WIDGET (tree),
-		_("Please right-click to access additional menus"), NULL);
+		(_("Please right-click to access additional menus")), NULL);
 
 	ag = gtk_accel_group_new ();
 	tree->priv->factory = gtk_item_factory_new (GTK_TYPE_MENU,
 						    "<popup>", ag);
+#ifdef ENABLE_NLS
+	gtk_item_factory_set_translate_func (GTK_ITEM_FACTORY (tree->priv->factory),
+					translate_func, NULL, NULL);
+#endif
 	gtk_item_factory_create_items (tree->priv->factory, 
 				       G_N_ELEMENTS (mi), mi, tree);
 	g_object_ref (G_OBJECT (tree->priv->factory));

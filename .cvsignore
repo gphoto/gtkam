@@ -13,6 +13,7 @@ config.cache
 libtool
 config.status
 stamp-h
+stamp-h1
 Makefile
 ABOUT-NLS
 intl

@@ -480,7 +480,7 @@ on_view_as_activate (GtkMenuItem *item, ViewAsData *d)
 
 	w = bonobo_window_new (d->file, d->file);
 	c = bonobo_widget_new_control_from_objref (control, CORBA_OBJECT_NIL);
-	gtk_widget_show ©;
+	gtk_widget_show (c);
 	bonobo_window_set_contents (BONOBO_WINDOW (w), c);
 
 	gtk_widget_show (w);

@@ -1146,7 +1146,7 @@ gtkam_tree_load (GtkamTree *tree)
 		gtk_tree_store_set (tree->priv->store, &iter,
 				    FOLDER_COLUMN, model,
 				    CAMERA_COLUMN, c, -1);
-		g_object_unref (G_OBJECT ©);
+		g_object_unref (G_OBJECT (c));
 		gtkam_tree_update_iter (tree, &iter);
 	}
 

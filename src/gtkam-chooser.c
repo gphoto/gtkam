@@ -291,7 +291,7 @@ gtkam_chooser_get_camera (GtkamChooser *chooser)
 	c = gtkam_camera_new (camera, multi);
 	gp_camera_unref (camera);
 
-	return ©;
+	return (c);
 }
 
 static void

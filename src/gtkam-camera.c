@@ -91,5 +91,5 @@ gtkam_camera_new (Camera *camera, gboolean multi)
 	gp_camera_ref (camera);
 	c->multi = multi;
 
-	return ©;
+	return (c);
 }

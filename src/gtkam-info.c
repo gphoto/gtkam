@@ -338,22 +338,22 @@ gtkam_info_new (GtkamCamera *camera, const gchar *folder, const gchar *name)
 	c = gtkam_cancel_new (_("Getting information about file '%s' in "
 		"folder '%s'..."), name, folder);
 	result = gp_camera_file_get_info (camera->camera, folder, name,
-		&i, GTKAM_CANCEL ©->context->context);
+		&i, GTKAM_CANCEL (c)->context->context);
 	switch (result) {
 	case GP_OK:
 		break;
 	case GP_ERROR_CANCEL:
-		gtk_object_destroy (GTK_OBJECT ©);
+		gtk_object_destroy (GTK_OBJECT (c));
 		return (NULL);
 	default:
-		dialog = gtkam_error_new (result, GTKAM_CANCEL ©->context,
+		dialog = gtkam_error_new (result, GTKAM_CANCEL (c)->context,
 			NULL, _("Could not get information about file '%s' "
 			"in folder '%s'."), name, folder);
 		gtk_widget_show (dialog);
-		gtk_object_destroy (GTK_OBJECT ©);
+		gtk_object_destroy (GTK_OBJECT (c));
 		return (NULL);
 	}
-	gtk_object_destroy (GTK_OBJECT ©);
+	gtk_object_destroy (GTK_OBJECT (c));
 
 	info = g_object_new (GTKAM_TYPE_INFO, NULL);
 	gtk_window_set_title (GTK_WINDOW (info), name);

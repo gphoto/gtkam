@@ -1,5 +1,9 @@
 2002-05-13  Lutz Müller <lutz@users.sourceforge.net>
 
+	* configure.in: Version 0.1.5
+
+2002-05-13  Lutz Müller <lutz@users.sourceforge.net>
+
 	* src/gtkam-gimp.c: Prevent crash by using gimp_ui_init.
 
 2002-05-12  Lutz Müller <lutz@users.sourceforge.net>

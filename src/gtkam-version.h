@@ -24,12 +24,16 @@
 /* for detailed version message */
 #include <gphoto2/gphoto2-version.h>
 
+/* for logging of version */
+#include <gphoto2/gphoto2-port-log.h>
+
 typedef struct {
 	char *name;
 	GPVersionFunc version_func;
 } module_version;
 
 extern const module_version module_versions[];
+
 extern void log_version (GPLogLevel level, const char *domain);
 
 #endif __GTKAM_VERSION_H__

@@ -1,4 +1,4 @@
-/* version.c
+/* gtkam-version.c
  *
  * Copyright (C) 2002 Hans Ulrich Niedermann <gp@n-dimensional.de
  *

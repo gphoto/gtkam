@@ -487,21 +487,51 @@ action_about (gpointer callback_data, guint callback_action,
 	gchar *buf;
 #endif
 
+	gchar *translated_comments = _(comments);
+	gchar *gcomments = NULL;
+
+	for (n = 0; module_versions[n].name != NULL; n++) {
+	  int i;
+	  gchar *features;
+	  const char **v = NULL;
+	  char *name = module_versions[n].name;
+	  GPVersionFunc func = module_versions[n].version_func;
+	  CHECK_NULL (name);
+	  CHECK_NULL (func);
+	  v = func(GP_VERSION_VERBOSE);
+	  CHECK_NULL (v);
+	  CHECK_NULL (v[0]);
+	  
+	  /* FIXME: implicit conversion from gchar* to char* */
+	  features = g_strjoinv("\n - ", v);
+	  if (gcomments == NULL) {
+	    gcomments = g_strdup_printf("%s %s has been compiled with the following options:\n - %s\n", 
+					name, v[0], features);
+	  } else {
+	    gchar *old = gcomments;
+	    gcomments = g_strdup_printf("%s%s %s has been compiled with the following options:\n - %s\n", 
+					gcomments, name, v[0], features);
+	    free(old)
+	  }
+	  free(features);
+	}
+
 #ifdef HAVE_GNOME
 	p = gdk_pixbuf_new_from_file (IMAGE_DIR "/gtkam-camera.png", NULL);
-	d = gnome_about_new (PACKAGE, VERSION, "GPL", _(comments), authors,
+	d = gnome_about_new (PACKAGE, VERSION, "GPL", gcomments, authors,
 			     documenters, translator_credits, p);
 	g_object_unref (G_OBJECT (p));
 	w = gnome_href_new ("http://www.gphoto.org", "http://www.gphoto.org");
 	gtk_widget_show (w);
 	gtk_box_pack_end (GTK_BOX (GTK_DIALOG (d)->vbox), w, FALSE, FALSE, 0);
 #else
-	buf = g_strdup_printf ("%s-%s\n\n%s", PACKAGE, VERSION, _(comments));
+	buf = g_strdup_printf ("%s-%s\n\n%s", PACKAGE, VERSION, gcomments);
 	d = gtkam_close_new (buf);
 	g_free (buf);
 #endif
 	gtk_window_set_transient_for (GTK_WINDOW (d), GTK_WINDOW (m));
 	gtk_widget_show (d);
+	// FIXME free(gcomments);
 }
 
 static gboolean

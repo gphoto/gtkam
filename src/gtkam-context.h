@@ -22,8 +22,7 @@
 #define __GTKAM_CONTEXT_H__
 
 #include <gphoto2/gphoto2-context.h>
-#include <gtk/gtkobject.h>
-#include <gtk/gtkwidget.h>
+#include <glib-object.h>
 
 #define GTKAM_TYPE_CONTEXT  (gtkam_context_get_type ())
 #define GTKAM_CONTEXT(o)    (GTK_CHECK_CAST((o),GTKAM_TYPE_CONTEXT,GtkamContext))
@@ -35,7 +34,7 @@ typedef struct _GtkamContextClass   GtkamContextClass;
 
 struct _GtkamContext
 {
-	GtkObject parent;
+	GObject parent;
 
 	GPContext *context;
 
@@ -46,10 +45,10 @@ struct _GtkamContext
 
 struct _GtkamContextClass
 {
-	GtkObjectClass parent_class;
+	GObjectClass parent_class;
 };
 
-GtkType       gtkam_context_get_type (void);
+GType         gtkam_context_get_type (void);
 GtkamContext *gtkam_context_new      (void);
 
 #endif /* __GTKAM_CONTEXT_H__ */

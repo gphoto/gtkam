@@ -68,25 +68,26 @@ gtkam_close_destroy (GtkObject *object)
 }
 
 static void
-gtkam_close_finalize (GtkObject *object)
+gtkam_close_finalize (GObject *object)
 {
 	GtkamClose *close = GTKAM_CLOSE (object);
 
 	g_free (close->priv);
 
-	GTK_OBJECT_CLASS (parent_class)->finalize (object);
+	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 static void
-gtkam_close_class_init (GtkamCloseClass *klass)
+gtkam_close_class_init (GObjectClass *klass)
 {
 	GtkObjectClass *object_class;
 
 	object_class = GTK_OBJECT_CLASS (klass);
 	object_class->destroy  = gtkam_close_destroy;
-	object_class->finalize = gtkam_close_finalize;
+	
+	klass->finalize = gtkam_close_finalize;
 
-	parent_class = gtk_type_class (PARENT_TYPE);
+	parent_class = g_type_class_peek_parent (klass);
 }
 
 static void
@@ -128,6 +129,7 @@ gtkam_close_new (const gchar *msg, GtkWidget *opt_window)
 	GdkPixmap *pixmap;
 	GdkBitmap *bitmap;
 	GdkPixbuf *pixbuf;
+	GError *e;
 
 	g_return_val_if_fail (msg != NULL, NULL);
 
@@ -141,10 +143,13 @@ gtkam_close_new (const gchar *msg, GtkWidget *opt_window)
 			    TRUE, TRUE, 0);
 	gtk_container_set_border_width (GTK_CONTAINER (hbox), 10);
 
-	pixbuf = gdk_pixbuf_new_from_file (IMAGE_DIR "/gtkam-camera.png");
-	if (!pixbuf)
-		g_warning ("Could not load " IMAGE_DIR "/gtkam-camera.png");
-	else {
+	pixbuf = gdk_pixbuf_new_from_file (IMAGE_DIR "/gtkam-camera.png", &e);
+	if (!pixbuf) {
+		g_assert (e);
+		g_warning ("Could not load " IMAGE_DIR "/gtkam-camera.png: "
+			   "'%s'.", e->message);
+		g_error_free (e);
+	} else {
 		gdk_pixbuf_render_pixmap_and_mask (pixbuf, &pixmap, &bitmap, 127);
 		gdk_pixbuf_unref (pixbuf);
 		image = gtk_pixmap_new (pixmap, bitmap);

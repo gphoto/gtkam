@@ -114,25 +114,26 @@ gtkam_config_destroy (GtkObject *object)
 }
 
 static void
-gtkam_config_finalize (GtkObject *object)
+gtkam_config_finalize (GObject *object)
 {
 	GtkamConfig *config = GTKAM_CONFIG (object);
 
 	g_free (config->priv);
 
-	GTK_OBJECT_CLASS (parent_class)->finalize (object);
+	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 static void
-gtkam_config_class_init (GtkamConfigClass *klass)
+gtkam_config_class_init (GObjectClass *klass)
 {
 	GtkObjectClass *object_class;
 
 	object_class = GTK_OBJECT_CLASS (klass);
 	object_class->destroy  = gtkam_config_destroy;
-	object_class->finalize = gtkam_config_finalize;
+	
+	klass->finalize = gtkam_config_finalize;
 
-	parent_class = gtk_type_class (PARENT_TYPE);
+	parent_class = g_type_class_peek_parent (klass);
 }
 
 static void
@@ -314,12 +315,13 @@ on_button_clicked (GtkButton *button, CameraWidget *widget)
 static void
 on_entry_changed (GtkEntry *entry, CameraWidget *widget)
 {
-	char *value = NULL, *value_new;
+	char *value = NULL;
+	const char *value_new;
 
 	gp_widget_get_value (widget, &value);
 	value_new = gtk_entry_get_text (entry);
 	if (!value || strcmp (value, value_new))
-		gp_widget_set_value (widget, value_new);
+		gp_widget_set_value (widget, (void *) value_new);
 }
 
 static void

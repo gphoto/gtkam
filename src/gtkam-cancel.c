@@ -106,20 +106,17 @@ gtkam_cancel_finalize (GObject *object)
 }
 
 static void
-gtkam_cancel_class_init (GtkamCancelClass *klass)
+gtkam_cancel_class_init (GObjectClass *klass)
 {
 	GtkObjectClass *object_class;
-	GObjectClass *gobject_class;
 
 	object_class = GTK_OBJECT_CLASS (klass);
 	object_class->destroy  = gtkam_cancel_destroy;
 
-	gobject_class = G_OBJECT_CLASS (klass);
-	gobject_class->finalize = gtkam_cancel_finalize;
+	klass->finalize = gtkam_cancel_finalize;
 
 	signals[CANCEL] = g_signal_new ("cancel",
-		G_TYPE_FROM_CLASS (object_class),
-		G_SIGNAL_RUN_LAST,
+		G_TYPE_FROM_CLASS (klass), G_SIGNAL_RUN_LAST,
 		G_STRUCT_OFFSET (GtkamCancelClass, cancel), NULL, NULL,
 		g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
 

@@ -43,7 +43,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#include <gtk/gtktext.h>
+#include <gtk/gtktextview.h>
 #include <gtk/gtkmenuitem.h>
 #include <gtk/gtkoptionmenu.h>
 #include <gtk/gtkmenu.h>
@@ -79,25 +79,26 @@ gtkam_error_destroy (GtkObject *object)
 }
 
 static void
-gtkam_error_finalize (GtkObject *object)
+gtkam_error_finalize (GObject *object)
 {
 	GtkamError *error = GTKAM_ERROR (object);
 
 	g_free (error->priv);
 
-	GTK_OBJECT_CLASS (parent_class)->finalize (object);
+	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 static void
-gtkam_error_class_init (GtkamErrorClass *klass)
+gtkam_error_class_init (GObjectClass *klass)
 {
 	GtkObjectClass *object_class;
 
 	object_class = GTK_OBJECT_CLASS (klass);
 	object_class->destroy  = gtkam_error_destroy;
-	object_class->finalize = gtkam_error_finalize;
 
-	parent_class = gtk_type_class (PARENT_TYPE);
+	klass->finalize = gtkam_error_finalize;
+
+	parent_class = g_type_class_peek_parent (klass);
 }
 
 static void
@@ -153,6 +154,9 @@ gtkam_error_new (int result, GtkamContext *context, GtkWidget *opt_window,
 	gchar *msg;
 	va_list args;
 	unsigned int i;
+	GError *e = NULL;
+	GtkTextBuffer *buf;
+	GtkTextIter iter;
 
 	g_return_val_if_fail (result < 0, NULL);
 
@@ -169,10 +173,13 @@ gtkam_error_new (int result, GtkamContext *context, GtkWidget *opt_window,
 			    TRUE, TRUE, 0);
 	gtk_container_set_border_width (GTK_CONTAINER (hbox), 10);
 
-	pixbuf = gdk_pixbuf_new_from_file (IMAGE_DIR "/gtkam-camera.png");
-	if (!pixbuf)
-		g_warning ("Could not load " IMAGE_DIR "/gtkam-camera.png");
-	else {
+	pixbuf = gdk_pixbuf_new_from_file (IMAGE_DIR "/gtkam-camera.png", &e);
+	if (!pixbuf) {
+		g_assert (e != NULL);
+		g_warning ("Could not load " IMAGE_DIR "/gtkam-camera.png: "
+			   "'%s'.", e->message);
+		g_error_free (e);
+	} else {
 		gdk_pixbuf_render_pixmap_and_mask (pixbuf, &pixmap, &bitmap, 127);
 		gdk_pixbuf_unref (pixbuf);
 		image = gtk_pixmap_new (pixmap, bitmap);
@@ -201,19 +208,19 @@ gtkam_error_new (int result, GtkamContext *context, GtkWidget *opt_window,
 	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (error)->vbox),
 			    error->priv->hbox, TRUE, TRUE, 0);
 
-	text = gtk_text_new (NULL, NULL);
+	buf = gtk_text_buffer_new (NULL);
+	for (i = 0; context && (i < context->errors->len); i++) {
+		gtk_text_buffer_insert (buf, &iter, context->errors->pdata[i],
+					strlen (context->errors->pdata[i]));
+		gtk_text_buffer_insert (buf, &iter, "\n", 1);
+	}
+	text = gtk_text_view_new_with_buffer (buf);
 	gtk_widget_show (text);
-	gtk_text_set_editable (GTK_TEXT (text), FALSE);
+	gtk_text_view_set_cursor_visible (GTK_TEXT_VIEW (text), FALSE);
+	gtk_text_view_set_editable (GTK_TEXT_VIEW (text), FALSE);
 	gtk_box_pack_start (GTK_BOX (error->priv->hbox), text, TRUE, TRUE, 0);
 
-	for (i = 0; context && (i < context->errors->len); i++) {
-		gtk_text_insert (GTK_TEXT (text), NULL, NULL, NULL,
-			context->errors->pdata[i],
-			strlen (context->errors->pdata[i]));
-		gtk_text_insert (GTK_TEXT (text), NULL, NULL, NULL, "\n", 1);
-	}
-
-	vscrollbar = gtk_vscrollbar_new (GTK_TEXT (text)->vadj);
+	vscrollbar = gtk_vscrollbar_new (GTK_TEXT_VIEW (text)->vadjustment);
 	gtk_widget_show (vscrollbar);
 	gtk_box_pack_end (GTK_BOX (error->priv->hbox),
 			  vscrollbar, FALSE, FALSE, 0);

@@ -76,43 +76,43 @@ gtkam_clock_destroy (GtkObject *object)
 }
 
 static void
-gtkam_clock_finalize (GtkObject *object)
+gtkam_clock_finalize (GObject *object)
 {
 	GtkamClock *clock = GTKAM_CLOCK (object);
 
 	g_free (clock->priv);
 
-	GTK_OBJECT_CLASS (parent_class)->finalize (object);
+	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 static void
-gtkam_clock_class_init (GtkamClockClass *klass)
+gtkam_clock_class_init (GObjectClass *klass)
 {
 	GtkObjectClass *object_class;
 
 	object_class = GTK_OBJECT_CLASS (klass);
 	object_class->destroy  = gtkam_clock_destroy;
-	object_class->finalize = gtkam_clock_finalize;
 
-	signals[CHANGED] = gtk_signal_new ("changed", GTK_RUN_LAST,
-		object_class->type,
-		GTK_SIGNAL_OFFSET (GtkamClockClass, changed),
-		gtk_marshal_NONE__NONE, GTK_TYPE_NONE, 0);
-	signals[NEXT_DAY] = gtk_signal_new ("next_day", GTK_RUN_LAST,
-		object_class->type,
-		GTK_SIGNAL_OFFSET (GtkamClockClass, next_day),
-		gtk_marshal_NONE__NONE, GTK_TYPE_NONE, 0);
-	signals[PREVIOUS_DAY] = gtk_signal_new ("previous_day", GTK_RUN_LAST,
-		object_class->type,
-		GTK_SIGNAL_OFFSET (GtkamClockClass, previous_day),
-		gtk_marshal_NONE__NONE, GTK_TYPE_NONE, 0);
-	signals[SET] = gtk_signal_new ("set", GTK_RUN_LAST,
-		object_class->type,
-		GTK_SIGNAL_OFFSET (GtkamClockClass, set),
-		gtk_marshal_NONE__NONE, GTK_TYPE_NONE, 0);
-	gtk_object_class_add_signals (object_class, signals, LAST_SIGNAL);
+	klass->finalize = gtkam_clock_finalize;
 
-	parent_class = gtk_type_class (PARENT_TYPE);
+	signals[CHANGED] = g_signal_new ("changed",
+		G_TYPE_FROM_CLASS (klass), G_SIGNAL_RUN_LAST,
+		G_STRUCT_OFFSET (GtkamClockClass, changed), NULL, NULL,
+		g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
+	signals[NEXT_DAY] = g_signal_new ("next_day",
+		G_TYPE_FROM_CLASS (klass), G_SIGNAL_RUN_LAST,
+		G_STRUCT_OFFSET (GtkamClockClass, next_day), NULL, NULL,
+		g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
+	signals[PREVIOUS_DAY] = g_signal_new ("previous_day",
+		G_TYPE_FROM_CLASS (klass), G_SIGNAL_RUN_LAST,
+		G_STRUCT_OFFSET (GtkamClockClass, previous_day), NULL, NULL,
+		g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
+	signals[SET] = g_signal_new ("set",
+		G_TYPE_FROM_CLASS (klass), G_SIGNAL_RUN_LAST,
+		G_STRUCT_OFFSET (GtkamClockClass, set), NULL, NULL,
+		g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
+
+	parent_class = g_type_class_peek_parent (klass);
 }
 
 static void

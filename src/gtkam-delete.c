@@ -108,75 +108,98 @@ gtkam_delete_destroy (GtkObject *object)
 }
 
 static void
-gtkam_delete_finalize (GtkObject *object)
+gtkam_delete_finalize (GObject *object)
 {
 	GtkamDelete *delete = GTKAM_DELETE (object);
 
 	g_free (delete->priv);
 
-	GTK_OBJECT_CLASS (parent_class)->finalize (object);
+	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
-typedef void (* GtkamSignal_NONE__POINTER_BOOL_POINTER_POINTER)
-        (GtkObject *object, gpointer arg1, gboolean arg2, gpointer arg3,
-         gpointer arg4, gpointer user_data);
-
 static void
-gtkam_marshal_NONE__POINTER_BOOL_POINTER_POINTER (GtkObject *object,
-                                                  GtkSignalFunc func,
-                                                  gpointer func_data,
-                                                  GtkArg *args)
+gtkam_marshal_VOID__POINTER_BOOL_POINTER_POINTER (GClosure *closure,
+		GValue *return_value, guint n_param_values,
+		const GValue *param_values,
+		gpointer invocation_hint, gpointer marshal_data)
 {
-        GtkamSignal_NONE__POINTER_BOOL_POINTER_POINTER rfunc;
+	typedef void (*GMarshalFunc_VOID__POINTER_BOOL_POINTER_POINTER) (
+			gpointer, gpointer, gboolean, gpointer, gpointer,
+			gpointer);
+	register GMarshalFunc_VOID__POINTER_BOOL_POINTER_POINTER callback;
+	register GCClosure *cc = (GCClosure*) closure;
+	register gpointer data1, data2;
 
-        rfunc = (GtkamSignal_NONE__POINTER_BOOL_POINTER_POINTER) func;
-        (*rfunc) (object, GTK_VALUE_POINTER (args[0]),
-                          GTK_VALUE_BOOL (args[1]),
-                          GTK_VALUE_POINTER (args[2]),
-                          GTK_VALUE_POINTER (args[3]), func_data);
+	g_return_if_fail (n_param_values == 4);
+
+	if (G_CCLOSURE_SWAP_DATA (closure)) {
+		data1 = closure->data;
+		data2 = g_value_peek_pointer (param_values + 0);
+	} else {
+		data1 = g_value_peek_pointer (param_values + 0);
+		data2 = closure->data;
+	}
+	callback = (GMarshalFunc_VOID__POINTER_BOOL_POINTER_POINTER) (
+			marshal_data ? marshal_data : cc->callback);
+	callback (data1, g_value_get_pointer (param_values + 1),
+			 g_value_get_boolean (param_values + 2),
+			 g_value_get_pointer (param_values + 3),
+			 g_value_get_pointer (param_values + 4), data2);
 }
 
-typedef void (* GtkamSignal_NONE__POINTER_BOOL_POINTER) (GtkObject *object,
-         gpointer arg1, gboolean arg2, gpointer arg3, gpointer user_data);
-
 static void
-gtkam_marshal_NONE__POINTER_BOOL_POINTER (GtkObject *object,
-                                          GtkSignalFunc func,
-                                          gpointer func_data,
-                                          GtkArg *args)
+gtkam_marshal_VOID__POINTER_BOOL_POINTER (GClosure *closure,
+		GValue *return_value, guint n_param_values,
+		const GValue *param_values, 
+		gpointer invocation_hint, gpointer marshal_data)
 {
-        GtkamSignal_NONE__POINTER_BOOL_POINTER rfunc;
+	typedef void (*GMarshalFunc_VOID__POINTER_BOOL_POINTER) (
+			gpointer, gpointer, gboolean, gpointer, gpointer);
+	register GMarshalFunc_VOID__POINTER_BOOL_POINTER callback;
+	register GCClosure *cc = (GCClosure*) closure;
+	register gpointer data1, data2;
 
-        rfunc = (GtkamSignal_NONE__POINTER_BOOL_POINTER) func;
-        (*rfunc) (object, GTK_VALUE_POINTER (args[0]),
-                          GTK_VALUE_BOOL (args[1]),
-                          GTK_VALUE_POINTER (args[2]), func_data);
+	g_return_if_fail (n_param_values == 3);
+
+	if (G_CCLOSURE_SWAP_DATA (closure)) {
+		data1 = closure->data;
+		data2 = g_value_peek_pointer (param_values + 0);
+	} else {
+		data1 = g_value_peek_pointer (param_values + 0);
+		data2 = closure->data;
+	}
+	callback = (GMarshalFunc_VOID__POINTER_BOOL_POINTER) (
+			marshal_data ? marshal_data : cc->callback);
+	callback (data1, g_value_get_pointer (param_values + 1),
+			 g_value_get_boolean (param_values + 2),
+			 g_value_get_pointer (param_values + 3), data2);
 }
 
+
 static void
-gtkam_delete_class_init (GtkamDeleteClass *klass)
+gtkam_delete_class_init (GObjectClass *klass)
 {
 	GtkObjectClass *object_class;
 
 	object_class = GTK_OBJECT_CLASS (klass);
 	object_class->destroy  = gtkam_delete_destroy;
-	object_class->finalize = gtkam_delete_finalize;
 
-	signals[FILE_DELETED] = gtk_signal_new ("file_deleted",
-		GTK_RUN_FIRST, object_class->type,
-		GTK_SIGNAL_OFFSET (GtkamDeleteClass, file_deleted),
-		gtkam_marshal_NONE__POINTER_BOOL_POINTER_POINTER,
-		GTK_TYPE_NONE, 4, GTK_TYPE_POINTER, GTK_TYPE_BOOL,
-		GTK_TYPE_POINTER, GTK_TYPE_POINTER);
-	signals[ALL_DELETED] = gtk_signal_new ("all_deleted",
-		GTK_RUN_FIRST, object_class->type,
-		GTK_SIGNAL_OFFSET (GtkamDeleteClass, all_deleted),
-		gtkam_marshal_NONE__POINTER_BOOL_POINTER,
-		GTK_TYPE_NONE, 3, GTK_TYPE_POINTER, GTK_TYPE_BOOL,
-		GTK_TYPE_POINTER);
-	gtk_object_class_add_signals (object_class, signals, LAST_SIGNAL);
+	klass->finalize = gtkam_delete_finalize;
 
-	parent_class = gtk_type_class (PARENT_TYPE);
+	signals[FILE_DELETED] = g_signal_new ("file_deleted",
+		G_TYPE_FROM_CLASS (klass), G_SIGNAL_RUN_LAST,
+		G_STRUCT_OFFSET (GtkamDeleteClass, file_deleted), NULL, NULL,
+		gtkam_marshal_VOID__POINTER_BOOL_POINTER_POINTER,
+		G_TYPE_NONE, 4, G_TYPE_POINTER, G_TYPE_BOOLEAN,
+		G_TYPE_POINTER, G_TYPE_POINTER);
+	signals[ALL_DELETED] = g_signal_new ("all_deleted",
+		G_TYPE_FROM_CLASS (klass), G_SIGNAL_RUN_LAST,
+		G_STRUCT_OFFSET (GtkamDeleteClass, all_deleted), NULL, NULL,
+		gtkam_marshal_VOID__POINTER_BOOL_POINTER,
+		G_TYPE_NONE, 3, G_TYPE_POINTER, G_TYPE_BOOLEAN,
+		G_TYPE_POINTER);
+
+	parent_class = g_type_class_peek_parent (klass);
 }
 
 static void
@@ -347,6 +370,7 @@ gtkam_delete_new (GtkWidget *status)
 	GdkPixmap *pixmap;
 	GdkBitmap *bitmap;
 	GdkPixbuf *pixbuf;
+	GError *e;
 
 	g_return_val_if_fail (status != NULL, NULL);
 
@@ -361,10 +385,13 @@ gtkam_delete_new (GtkWidget *status)
 			    TRUE, TRUE, 0);
 	gtk_container_set_border_width (GTK_CONTAINER (hbox), 10);
 
-	pixbuf = gdk_pixbuf_new_from_file (IMAGE_DIR "/gtkam-camera.png");
-	if (!pixbuf)
-		g_warning ("Could not load " IMAGE_DIR "/gtkam-camera.png");
-	else {
+	pixbuf = gdk_pixbuf_new_from_file (IMAGE_DIR "/gtkam-camera.png", &e);
+	if (!pixbuf) {
+		g_assert (e != NULL);
+		g_warning ("Could not load " IMAGE_DIR "/gtkam-camera.png: "
+			   "'%s'.", e->message);
+		g_error_free (e);
+	} else {
 		gdk_pixbuf_render_pixmap_and_mask (pixbuf, &pixmap, &bitmap, 127);
 		gdk_pixbuf_unref (pixbuf);
 		image = gtk_pixmap_new (pixmap, bitmap);

@@ -55,7 +55,6 @@
 
 #include <gdk-pixbuf/gdk-pixbuf.h>
 
-#include "gtkam-clist.h"
 #include "gtkam-error.h"
 #include "gtkam-tree.h"
 #include "gtkam-status.h"
@@ -64,7 +63,15 @@ struct _GtkamFSelPrivate
 {
 	GtkamTree *tree;
 
+	GtkListStore *model;
+	GtkWidget *list;
+
 	GtkWidget *status;
+};
+
+enum {
+	FILENAME,
+	NUM_COLUMNS
 };
 
 #define PARENT_TYPE GTK_TYPE_DIALOG
@@ -137,16 +144,16 @@ static void
 on_folder_selected (GtkamTree *tree, Camera *camera, gboolean multi,
 		    const gchar *folder, GtkamFSel *fsel)
 {
-	gtkam_clist_add_folder (GTKAM_CLIST (fsel->clist), camera, multi,
-				folder);
+	gtkam_tree_store_file_add_folder (GTKAM_TREE_STORE_FILE (fsel->tsf),
+					  camera, multi, folder);
 }
 
 static void
 on_folder_unselected (GtkamTree *tree, Camera *camera, gboolean multi,
 		      const gchar *folder, GtkamFSel *fsel)
 {
-	gtkam_clist_remove_folder (GTKAM_CLIST (fsel->clist), camera, multi,
-				   folder);
+	gtkam_tree_store_file_remove_folder (GTKAM_TREE_STORE_FILE (fsel->tsf),
+					     camera, multi, folder);
 }
 
 static void
@@ -188,6 +195,8 @@ gtkam_fsel_new (GtkWidget *opt_window)
 	GdkPixmap *pixmap;
 	GdkBitmap *bitmap;
 	GdkPixbuf *pixbuf;
+	GtkTreeSelection *selection;
+	GtkTreeViewColumn *column;
 
 	fsel = gtk_type_new (GTKAM_TYPE_FSEL);
 	gtk_container_set_border_width (
@@ -247,22 +256,26 @@ gtkam_fsel_new (GtkWidget *opt_window)
 			    GTK_SIGNAL_FUNC (on_new_status), fsel);
 	gtk_idle_add (load_tree, tree);
 
-	/* CList */
+	/* File list */
 	scrolled = gtk_scrolled_window_new (NULL, NULL);
 	gtk_widget_show (scrolled);
 	gtk_paned_pack2 (GTK_PANED (hpaned), scrolled, TRUE, TRUE);
 	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled),
 				GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
-	fsel->clist = gtkam_clist_new ();
-	gtk_widget_show (fsel->clist);
+	fsel->model = gtk_list_store_new (NUM_COLMNS, G_TYPE_STRING);
+	fsel->list = gtk_tree_view_new_with_model (
+					GTK_TREE_MODEL (fsel->model));
+	selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (fsel->list));
+	gtk_tree_selection_set_mode (selection, GTK_SELECTION_BROWSE);
+	column = gtk_tree_view_column_new_with_attributes (_("Filename"),
+			gtk_cell_renderer_text_new (), "text", FILENAME, NULL);
+	tk_tree_view_column_set_sort_column_id (column, FILENAME);
+	gtk_tree_view_column_set_min_width (column, 150);
+	gtk_tree_view_append_column (GTK_TREE_VIEW (fsel->list), column);
+	gtk_tree_view_set_headers_clickable (GTK_TREE_VIEW (fsel->list), TRUE);
+	gtk_widget_show (fsel->list);
 	gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (scrolled),
-					       fsel->clist);
-	gtk_signal_connect (GTK_OBJECT (fsel->clist), "entry_selected",
-			    GTK_SIGNAL_FUNC (on_entry_selected), fsel);
-	gtk_signal_connect (GTK_OBJECT (fsel->clist), "entry_unselected",
-			    GTK_SIGNAL_FUNC (on_entry_unselected), fsel);
-	gtk_signal_connect (GTK_OBJECT (fsel->clist), "new_status",
-			    GTK_SIGNAL_FUNC (on_new_status), fsel);
+					       fsel->list);
 
 	button = gtk_button_new_with_label (_("Ok"));
 	gtk_widget_show (button);

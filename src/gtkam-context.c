@@ -48,8 +48,8 @@
 #  define N_(String) (String)
 #endif
 
-#define PARENT_TYPE GTK_TYPE_OBJECT
-static GtkObjectClass *parent_class;
+#define PARENT_TYPE G_TYPE_OBJECT
+static GObjectClass *parent_class;
 
 struct _GtkamContextPrivate {
 };
@@ -73,7 +73,7 @@ gtkam_context_destroy (GtkObject *object)
 }
 
 static void
-gtkam_context_finalize (GtkObject *object)
+gtkam_context_finalize (GObject *object)
 {
 	GtkamContext *context = GTKAM_CONTEXT (object);
 
@@ -84,19 +84,20 @@ gtkam_context_finalize (GtkObject *object)
 
 	g_free (context->priv);
 
-	GTK_OBJECT_CLASS (parent_class)->finalize (object);
+	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 static void
-gtkam_context_class_init (GtkamContextClass *klass)
+gtkam_context_class_init (GObjectClass *klass)
 {
 	GtkObjectClass *object_class;
 
 	object_class = GTK_OBJECT_CLASS (klass);
 	object_class->destroy  = gtkam_context_destroy;
-	object_class->finalize = gtkam_context_finalize;
 
-	parent_class = gtk_type_class (PARENT_TYPE);
+	klass->finalize = gtkam_context_finalize;
+
+	parent_class = g_type_class_peek_parent (klass);
 }
 
 static void
@@ -108,7 +109,7 @@ gtkam_context_init (GtkamContext *context)
 	context->priv = g_new (GtkamContextPrivate, 1);
 }
 
-GtkType
+GType
 gtkam_context_get_type (void)
 {
 	static GtkType context_type = 0;

@@ -823,8 +823,9 @@ status_func (Camera *camera, const char *status, void *data)
 	if (m->priv->message_id)
 		gtk_statusbar_remove (m->priv->status, m->priv->context_id,
 				      m->priv->message_id);
-	m->priv->message_id = gtk_statusbar_push (m->priv->status,
-						  m->priv->context_id, status);
+	if (status && *status)
+		m->priv->message_id = gtk_statusbar_push (m->priv->status,
+						m->priv->context_id, status);
 	while (gtk_events_pending ())
 		gtk_main_iteration ();
 }

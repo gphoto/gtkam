@@ -678,8 +678,7 @@ select_icon(GtkIconList *iconlist, GtkIconListItem *item, GdkEvent *event)
 
   if(item->state == GTK_STATE_SELECTED) return;
 
-//  not thread safe -SF
-//  iconlist->selection = g_list_append(iconlist->selection, item);
+  iconlist->selection = g_list_append(iconlist->selection, item);
 
   item->state = GTK_STATE_SELECTED;  
   if(item->entry) gtk_widget_grab_focus(item->entry);

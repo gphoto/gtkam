@@ -24,7 +24,7 @@
 #include <gtkam-tree.h>
 #include <gtkam-list.h>
 
-char *current_folder();
+const gchar *current_folder();
 
 #define CHECK_RESULT(res) {int r = (res); if (r < 0) { GtkWidget *dialog = gtkam_error_new ("Error", r, NULL); gtk_widget_show (dialog); return; }}
 #define CHECK_CAM_RESULT(c,res) {int r = (res); if (r < 0) { GtkWidget *dialog = gtkam_error_new ("Error", r, c); gtk_widget_show (dialog); return; }}
@@ -110,7 +110,6 @@ int camera_set() {
 	/* Clear out the icon listing */
 	file_list = lookup_widget (gp_gtk_main_window, "file_list");
 	gtkam_list_set_camera (GTKAM_LIST (file_list), new_camera);
-	gtkam_list_set_path (GTKAM_LIST (file_list), NULL);
 
 	/* Clear out the folder tree */
 	folder_tree = lookup_widget (gp_gtk_main_window, "folder_tree");
@@ -183,175 +182,11 @@ void toggle_sensitivity (GtkWidget *button, gpointer data) {
 
 void save_selected_photos() {
 
-	GtkWidget *icon_list, *window, *ok, *cancel, 
-		  *use_camera_filename, *save_photos, *save_thumbs, *prefix_entry,
-		  *program;
-	GtkIconListItem *item;
-	CameraFile *f;
-	char msg[1024], fname[1024];
-	char *path, *prefix=NULL, *slash;
-	char *folder, *progname;
-	int num=0, x;
-	const char *type;
-
-	debug_print("save selected photo");
+	GtkWidget *file_list;
 
 	/* Count the number of icons selected */
-	icon_list = (GtkWidget*)lookup_widget(gp_gtk_main_window, "file_list");
-	for (x=0; x<GTK_ICON_LIST(icon_list)->num_icons; x++) {
-		item = gtk_icon_list_get_nth(GTK_ICON_LIST(icon_list), x);
-		if (item->state == GTK_STATE_SELECTED)
-			num++;
-	}
-
-	if (num == 0) {
-		frontend_message(NULL, "Please select some photos to save first");
-		return;
-	}
-
-	if (num > 1)
-		window = create_save_window(1);
-	   else
-		window = create_save_window(0);
-
-	ok = GTK_FILE_SELECTION(window)->ok_button;
-	cancel = GTK_FILE_SELECTION(window)->cancel_button;
-
-	if (wait_for_hide(window, ok, cancel)==0)
-		return;
-
-	/* Get some settings from the file selection window */
-	path = gtk_file_selection_get_filename(GTK_FILE_SELECTION(window));	
-	use_camera_filename = (GtkWidget*)lookup_widget(window, "use_camera_filename");
-	save_photos = (GtkWidget*)lookup_widget(window, "save_photos");
-	save_thumbs = (GtkWidget*)lookup_widget(window, "save_thumbs");
-	program = (GtkWidget*)lookup_widget(window, "program");
-
-	if (num > 1) {
-		prefix_entry = (GtkWidget*)lookup_widget(window, "prefix");
-		prefix = gtk_entry_get_text(GTK_ENTRY(prefix_entry));
-	}
-
-	frontend_progress(gp_gtk_camera, NULL, 0.00);
-	gtk_widget_show(gp_gtk_progress_window);
-	for (x=0; x<GTK_ICON_LIST(icon_list)->num_icons; x++) {
-		item = gtk_icon_list_get_nth(GTK_ICON_LIST(icon_list), x);
-		if (item->state == GTK_STATE_SELECTED) {
-		   /* Save the photo */
-		   if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(save_photos))) {
-			sprintf(msg, "Saving photo #%04i of %04i\n%s", x+1,
-				GTK_ICON_LIST(icon_list)->num_icons,
-				(char*)gtk_object_get_data(GTK_OBJECT(item->pixmap), "name"));
-			frontend_message(gp_gtk_camera, msg);
-			gp_file_new(&f);
-			folder = current_folder();
-			if (gp_camera_file_get(gp_gtk_camera, folder,
-                                               gtk_object_get_data(GTK_OBJECT(item->pixmap),"name"), GP_FILE_TYPE_NORMAL, f) < 0) {
-                            sprintf(fname, "An error occurred when getting %s",
-                                    (char*)gtk_object_get_data(GTK_OBJECT(item->pixmap),"name"));
-                            frontend_message(gp_gtk_camera, fname);
-                        } else {
-                            /* determine the name to use */
-                            if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(use_camera_filename))) {
-                                slash = strrchr(path, '/');
-                                *slash = 0;
-                                sprintf(fname, "%s/%s", path,
-                                        (char*)gtk_object_get_data(GTK_OBJECT(item->pixmap), "name"));
-                                *slash = '/';
-                            } else {
-                                if (num == 1) {
-                                    strcpy(fname, path);
-                                } else {
-				    gp_file_get_mime_type (f, &type);
-                                    slash = strrchr(type, '/');
-                                    slash++;
-                                    if (prefix) {
-                                        if (slash)
-                                            sprintf(fname, "%s%s%04i.%s", path, prefix, x, slash);
-                                        else
-                                            sprintf(fname, "%s%s%04i", path, prefix, x);
-                                    } else {
-                                        if (slash)
-                                            sprintf(fname, "%sphoto%04i.%s", path, x, slash);
-                                        else
-                                            sprintf(fname, "%sphoto%04i", path, x);
-                                    }
-                                }
-                            }
-                            progname = gtk_entry_get_text(GTK_ENTRY(program));
-
-                            /* check for existing file */
-                            if (file_exists(fname)) {
-                                sprintf(msg, "%s already exists. Overwrite?", fname);
-                                gtk_widget_hide(gp_gtk_progress_window);
-                                if (frontend_confirm(gp_gtk_camera, msg)) {
-                                    gp_file_save(f, fname);
-                                    if (strlen(progname)>0)
-                                        exec_command(progname, fname);
-                                }
-                                gtk_widget_show(gp_gtk_progress_window);
-                            } else {
-                                gp_file_save(f, fname);
-                                if (strlen(progname)>0)
-                                    exec_command(progname, fname);
-                            }
-                        }
-                        gp_file_free(f);
-                   }
-
-		   /* Save the thumbnail */
-		   if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(save_thumbs))) {
-			sprintf(msg, "Saving thumbnail #%04i of %04i\n%s", x+1, num,
-				(char*)gtk_object_get_data(GTK_OBJECT(item->pixmap), "name"));
-			frontend_status(gp_gtk_camera, msg);
-			gp_file_new(&f);
-			folder = current_folder();
-			gp_camera_file_get(gp_gtk_camera, folder,
-			   gtk_object_get_data(GTK_OBJECT(item->pixmap), "name"), GP_FILE_TYPE_PREVIEW, f);
-			/* determine the name to use */
-			if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(use_camera_filename))) {
-				slash = strrchr(path, '/');
-				*slash = 0;
-				sprintf(fname, "%s/thumb_%s", path, 
-					(char*)gtk_object_get_data(GTK_OBJECT(item->pixmap), "name"));
-				*slash = '/';
-			} else {
-			   if (num == 1) {
-				strcpy(fname, path);
-			   } else {
-				if (prefix)
-					sprintf(fname, "%sthumb_%s%04i", path, prefix, x);
-				   else
-					sprintf(fname, "%sthumb_%04i", path, x);
-			   }
-			}
-
-			progname = gtk_entry_get_text(GTK_ENTRY(program));
-
-			/* check for existing file */
-			if (file_exists(fname)) {
-				sprintf(msg, "%s already exists. Overwrite?", fname);
-				if (frontend_confirm(gp_gtk_camera, msg)) {
-					gp_file_save(f, fname);
-					if (strlen(progname)>0)
-						exec_command(progname, fname);
-				} else {
-					/* Ask for another filename! */
-				}
-			} else {
-				gp_file_save(f, fname);
-				if (strlen(progname)>0)
-					exec_command(progname, fname);
-			}
-			gp_file_free(f);
-		   }
-		}
-	}
-	gtk_widget_destroy(window);
-
-
-        frontend_progress(gp_gtk_camera, NULL, 0.00);
-	gtk_widget_hide(gp_gtk_progress_window);
+	file_list = lookup_widget (gp_gtk_main_window, "file_list");
+	gtkam_list_save_selected (GTKAM_LIST (file_list));
 }
 
 void export_gallery() {
@@ -412,10 +247,10 @@ void select_none() {
 /* Folder Callbacks */
 /* ----------------------------------------------------------- */
 
-char *current_folder () {
+const char *current_folder () {
 
 	GtkWidget *folder_tree;
-	char *path;
+	const char *path;
 
 	folder_tree = lookup_widget(gp_gtk_main_window, "folder_tree");
 	path = gtkam_tree_get_path (GTKAM_TREE (folder_tree));
@@ -428,8 +263,7 @@ void folder_refresh (GtkWidget *widget, gpointer data) {
 	GtkWidget *file_list;
 
 	file_list = lookup_widget (gp_gtk_main_window, "file_list");
-
-	gtkam_list_set_path (GTKAM_LIST (file_list), current_folder ());
+	gtkam_list_refresh (GTKAM_LIST (file_list));
 }
 
 /* Camera operations */
@@ -679,7 +513,6 @@ on_folder_selected (GtkamTree *tree, const gchar *folder, gpointer data)
 		CHECK_RESULT (camera_set ());
 
 	file_list = lookup_widget (gp_gtk_main_window, "file_list");
-
 	gtkam_list_set_path (GTKAM_LIST (file_list), folder);
 }
 

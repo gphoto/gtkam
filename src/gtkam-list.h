@@ -52,5 +52,6 @@ void       gtkam_list_set_path       (GtkamList *list, const gchar *path);
 void       gtkam_list_set_thumbnails (GtkamList *list, gboolean thumbnails);
 
 void       gtkam_list_save_selected  (GtkamList *list);
+void       gtkam_list_refresh        (GtkamList *list);
 
 #endif /* __GTKAM_LIST_H__ */

@@ -29,7 +29,9 @@
 
 #include "gtkam-error.h"
 #include "util.h"
+#include "frontend.h"
 #include "../pixmaps/no_thumbnail.xpm"
+#include "gtkam-save.h"
 
 struct _GtkamListPrivate
 {
@@ -133,9 +135,10 @@ gtkam_list_set_camera (GtkamList *list, Camera *camera)
 	if (list->priv->camera)
 		gp_camera_unref (list->priv->camera);
 	list->priv->camera = camera;
-	gp_camera_ref (camera);
+	if (camera)
+		gp_camera_ref (camera);
 
-	gtkam_list_set_path (list, NULL);
+	gtkam_list_refresh (list);
 }
 
 static gint
@@ -217,16 +220,15 @@ gtkam_list_set_path (GtkamList *list, const gchar *path)
 	gint i;
 
 	g_return_if_fail (GTKAM_IS_LIST (list));
+	g_return_if_fail (path != NULL);
 
-	if (path) {
-		if (list->priv->path)
-			g_free (list->priv->path);
-		list->priv->path = g_strdup (path);
-	}
+	if (list->priv->path)
+		g_free (list->priv->path);
+	list->priv->path = g_strdup (path);
 
 	gtk_icon_list_clear (GTK_ICON_LIST (list));
 
-	if (!list->priv->camera || !path)
+	if (!list->priv->camera)
 		return;
 
 	result = gp_camera_folder_list_files (list->priv->camera, path, &flist);
@@ -293,25 +295,23 @@ gtkam_list_set_path (GtkamList *list, const gchar *path)
 void
 gtkam_list_set_thumbnails (GtkamList *list, gboolean thumbnails)
 {
-	gchar *path = NULL;
-
 	g_return_if_fail (GTKAM_IS_LIST (list));
 
 	if (list->priv->thumbnails == thumbnails)
 		return;
 
 	list->priv->thumbnails = thumbnails;
-
-	if (list->priv->path)
-		path = g_strdup (list->priv->path);
-	gtkam_list_set_path (list, path);
-	if (path)
-		g_free (path);
+	gtkam_list_refresh (list);
 }
 
 void
 gtkam_list_save_selected (GtkamList *list)
 {
+	GtkIconListItem *item;
+	GSList *filenames = NULL;
+	GtkWidget *save;
+	guint i;
+
 	g_return_if_fail (GTKAM_IS_LIST (list));
 
 	if (!g_list_length (GTK_ICON_LIST (list)->selection)) {
@@ -320,5 +320,30 @@ gtkam_list_save_selected (GtkamList *list)
 		return;
 	}
 
-	g_warning ("Implement!");
+	for (i = 0; i < g_list_length (GTK_ICON_LIST (list)->selection); i++) {
+		item = g_list_nth_data (GTK_ICON_LIST (list)->selection, i);
+		filenames = g_slist_append (filenames,
+				gtk_entry_get_text (GTK_ENTRY (item->entry)));
+	}
+
+	save = gtkam_save_new (list->priv->camera, list->priv->path,
+			       filenames);
+	g_slist_free (filenames);
+	gtk_widget_show (save);
+}
+
+void
+gtkam_list_refresh (GtkamList *list)
+{
+	gchar *path = NULL;
+
+	g_return_if_fail (GTKAM_IS_LIST (list));
+
+	gtk_icon_list_clear (GTK_ICON_LIST (list));
+
+	if (list->priv->path && list->priv->camera) {
+		path = g_strdup (list->priv->path);
+		gtkam_list_set_path (list, path);
+		g_free (path);
+	}
 }

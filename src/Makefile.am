@@ -12,6 +12,7 @@ gtkam_SOURCES = \
 	gtkam-error.c gtkam-error.h \
 	gtkam-list.c gtkam-list.h \
 	gtkam-preview.c gtkam-preview.h \
+	gtkam-save.c gtkam-save.h \
 	gtkam-tree.c gtkam-tree.h \
 	main.c \
 	support.c support.h \

@@ -453,6 +453,21 @@ get_digits (double d)
 }
 
 static void
+on_set_system_time_clicked (GtkButton *button, GtkamClock *clock)
+{
+	GtkCalendar *c;
+	time_t t;
+	struct tm *tm;
+
+	c = GTK_CALENDAR (g_object_get_data (G_OBJECT (clock), "calendar"));
+	t = time (NULL);
+	tm = localtime (&t);
+	gtk_calendar_select_month (c, tm->tm_mon, tm->tm_year + 1900);
+	gtk_calendar_select_day (c, tm->tm_mday);
+	gtkam_clock_set (clock, tm->tm_hour, tm->tm_min, tm->tm_sec);
+}
+
+static void
 create_widgets (GtkamConfig *config, CameraWidget *widget)
 {
 	CameraWidget *parent, *child;
@@ -462,8 +477,8 @@ create_widgets (GtkamConfig *config, CameraWidget *widget)
 	int value_int;
 	float value_float, min, max, increment;
 	const char *choice;
-	GtkWidget *vbox, *button, *gtk_widget = NULL, *frame, *calendar;
-	GtkWidget *clock;
+	GtkWidget *vbox, *button, *gw = NULL, *frame, *calendar;
+	GtkWidget *clock, *hbox;
 	GtkObject *adjustment;
 	GSList *group = NULL;
 	GList *options = NULL;
@@ -497,39 +512,40 @@ create_widgets (GtkamConfig *config, CameraWidget *widget)
 	
 	case GP_WIDGET_BUTTON:
 
-		gtk_widget = gtk_vbox_new (FALSE, 10);
-		gtk_container_set_border_width (GTK_CONTAINER (gtk_widget), 10);
+		gw = gtk_vbox_new (FALSE, 10);
+		gtk_container_set_border_width (GTK_CONTAINER (gw), 10);
 		button = gtk_button_new_with_label (_(label));
 		gtk_widget_show (button);
 		g_signal_connect (GTK_OBJECT (button), "clicked",
 				GTK_SIGNAL_FUNC (on_button_clicked), widget);
-		gtk_container_add (GTK_CONTAINER (gtk_widget), button);
+		gtk_container_add (GTK_CONTAINER (gw), button);
 		if (strlen (info))
 			gtk_tooltips_set_tip (config->priv->tooltips,
 				button, info, NULL);
 		else
-			gtk_tooltips_set_tip (config->priv->tooltips,
-				button,
-				_("No additional information available. (2)"), NULL);
+			gtk_tooltips_set_tip (config->priv->tooltips, button,
+				_("No additional information available. (2)"),
+				NULL);
 		break;
 
 	case GP_WIDGET_DATE:
 
 		gp_widget_get_value (widget, &value_int);
-		gtk_widget = gtk_vbox_new (FALSE, 5);
-		gtk_container_set_border_width (GTK_CONTAINER (gtk_widget), 5);
+		gw = gtk_vbox_new (FALSE, 5);
+		gtk_container_set_border_width (GTK_CONTAINER (gw), 5);
 
 		/* Create the calendar */
 		calendar = gtk_calendar_new ();
 		gtk_widget_show (calendar);
-		gtk_box_pack_start (GTK_BOX (gtk_widget), calendar, FALSE,
-				    FALSE, 0);
+		gtk_box_pack_start (GTK_BOX (gw), calendar, FALSE, FALSE, 0);
 
 		/* Create the clock */
 		clock = gtkam_clock_new ();
 		gtk_widget_show (clock);
-		gtk_box_pack_start (GTK_BOX (gtk_widget), clock,
-				    FALSE, FALSE, 0);
+		hbox = gtk_hbox_new (5, FALSE);
+		gtk_widget_show (hbox);
+		gtk_box_pack_start (GTK_BOX (gw), hbox, FALSE, FALSE, 0);
+		gtk_box_pack_start (GTK_BOX (hbox), clock, FALSE, FALSE, 0);
 
 		/* Set date & time */
 		tm = localtime ((time_t*) &value_int);
@@ -542,6 +558,14 @@ create_widgets (GtkamConfig *config, CameraWidget *widget)
 		/* We need clock and calendar together */
 		g_object_set_data (G_OBJECT (clock), "calendar", calendar);
 		g_object_set_data (G_OBJECT (calendar), "clock", clock);
+
+		/* Make it easy for users to select the system's time */
+		button = gtk_button_new_with_label (_("Set to system's time"));
+		gtk_widget_show (button);
+		gtk_box_pack_end (GTK_BOX (hbox), button, FALSE, FALSE, 0);
+		g_signal_connect (G_OBJECT (button), "clicked",
+				  G_CALLBACK (on_set_system_time_clicked),
+				  clock);
 
 		/* Connect the signals */
 		g_signal_connect (GTK_OBJECT (clock), "next_day",
@@ -558,18 +582,18 @@ create_widgets (GtkamConfig *config, CameraWidget *widget)
 	case GP_WIDGET_TEXT:
 
 		gp_widget_get_value (widget, &value_char);
-		gtk_widget = gtk_entry_new ();
+		gw = gtk_entry_new ();
 		if (value_char)
-			gtk_entry_set_text (GTK_ENTRY (gtk_widget),
+			gtk_entry_set_text (GTK_ENTRY (gw),
 					    _(value_char));
-		g_signal_connect (GTK_OBJECT (gtk_widget), "changed",
+		g_signal_connect (GTK_OBJECT (gw), "changed",
 				GTK_SIGNAL_FUNC (on_entry_changed), widget);
 		if (strlen (info))
 			gtk_tooltips_set_tip (config->priv->tooltips,
-				gtk_widget, info, NULL);
+				gw, info, NULL);
 		else
 			gtk_tooltips_set_tip (config->priv->tooltips,
-				gtk_widget,
+				gw,
 				_("No additional information available. (3)"), NULL);
 		break;
 	
@@ -584,41 +608,41 @@ create_widgets (GtkamConfig *config, CameraWidget *widget)
 						 0);
 		g_signal_connect (adjustment, "value_changed",
 			GTK_SIGNAL_FUNC (on_adjustment_value_changed), widget);
-		gtk_widget = gtk_hscale_new (GTK_ADJUSTMENT (adjustment));
-		gtk_scale_set_digits (GTK_SCALE (gtk_widget), 
+		gw = gtk_hscale_new (GTK_ADJUSTMENT (adjustment));
+		gtk_scale_set_digits (GTK_SCALE (gw), 
 				      get_digits (increment));
-		gtk_range_set_update_policy (GTK_RANGE (gtk_widget),
+		gtk_range_set_update_policy (GTK_RANGE (gw),
 					     GTK_UPDATE_DISCONTINUOUS);
 		if (strlen (info))
 			gtk_tooltips_set_tip (config->priv->tooltips,
-				      gtk_widget, info, NULL);
+				      gw, info, NULL);
 		else
 			gtk_tooltips_set_tip (config->priv->tooltips,
-				gtk_widget,
+				gw,
 				_("No additional information available. (4)"), NULL);
 		break;
 
 	case GP_WIDGET_MENU:
 
-		gtk_widget = gtk_combo_new ();
+		gw = gtk_combo_new ();
 		gp_widget_get_value (widget, &value_char);
 		for (i = 0; i < gp_widget_count_choices (widget); i++) {
 			gp_widget_get_choice (widget, i, &choice);
 			options = g_list_append (options, g_strdup (_(choice)));
 		}
-		gtk_combo_set_popdown_strings (GTK_COMBO (gtk_widget), options);
-		gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (gtk_widget)->entry),
+		gtk_combo_set_popdown_strings (GTK_COMBO (gw), options);
+		gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (gw)->entry),
 				    _(value_char));
-		g_signal_connect (GTK_OBJECT (GTK_COMBO (gtk_widget)->entry),
+		g_signal_connect (GTK_OBJECT (GTK_COMBO (gw)->entry),
 			"changed", GTK_SIGNAL_FUNC (on_entry_changed), widget);
 		break;
 
 	case GP_WIDGET_RADIO:
 
 		if (gp_widget_count_choices (widget) < 6)
-			gtk_widget = gtk_hbox_new (FALSE, 5);
+			gw = gtk_hbox_new (FALSE, 5);
 		else
-			gtk_widget = gtk_vbox_new (FALSE, 5);
+			gw = gtk_vbox_new (FALSE, 5);
 		gp_widget_get_value (widget, &value_char);
 		for (i = 0; i < gp_widget_count_choices (widget); i++) {
 			gp_widget_get_choice (widget, i, &choice);
@@ -629,7 +653,7 @@ create_widgets (GtkamConfig *config, CameraWidget *widget)
 					GTK_RADIO_BUTTON (button));
 			g_object_set_data (G_OBJECT (button), "value",
 					     (char*) choice);
-			gtk_box_pack_start (GTK_BOX (gtk_widget), button,
+			gtk_box_pack_start (GTK_BOX (gw), button,
 					    FALSE, FALSE, 0);
 			if (value_char && !strcmp (value_char, choice))
 				gtk_toggle_button_set_active (
@@ -650,19 +674,18 @@ create_widgets (GtkamConfig *config, CameraWidget *widget)
 
 	case GP_WIDGET_TOGGLE:
 
-		gtk_widget = gtk_check_button_new_with_label (label);
+		gw = gtk_check_button_new_with_label (label);
 		gp_widget_get_value (widget, &value_int);
-		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gtk_widget),
+		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gw),
 					      (value_int != 0));
-		g_signal_connect (GTK_OBJECT (gtk_widget), "toggled",
+		g_signal_connect (GTK_OBJECT (gw), "toggled",
 				    GTK_SIGNAL_FUNC (on_toggle_button_toggled),
 				    widget);
 		if (strlen (info))
 			gtk_tooltips_set_tip (config->priv->tooltips,
-				      gtk_widget, info, NULL);
+				      gw, info, NULL);
 		else
-			gtk_tooltips_set_tip (config->priv->tooltips,
-				gtk_widget,
+			gtk_tooltips_set_tip (config->priv->tooltips, gw,
 				_("No additional information available. (6)"), NULL);
 		break;
 
@@ -672,9 +695,9 @@ create_widgets (GtkamConfig *config, CameraWidget *widget)
 		return;
 	}
 
-	gtk_widget_show (gtk_widget);
+	gtk_widget_show (gw);
 	gtk_widget_show (frame);
-	gtk_container_add (GTK_CONTAINER (frame), gtk_widget);
+	gtk_container_add (GTK_CONTAINER (frame), gw);
 
 	gp_widget_get_parent (widget, &parent);
 	gp_widget_get_type (parent, &type);

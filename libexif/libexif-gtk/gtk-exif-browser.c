@@ -299,11 +299,11 @@ on_tag_selected (GtkExifTagMenu *menu, ExifTag tag, GtkExifBrowser *browser)
 	ExifEntry *entry;
 
 	entry = exif_entry_new ();
-	exif_entry_initialize (entry, tag);
 	exif_content_add_entry (browser->priv->list->content, entry);
-	exif_entry_unref (entry);
+	exif_entry_initialize (entry, tag);
 	gtk_exif_content_list_add_entry (browser->priv->list, entry);
 	gtk_exif_browser_show_entry (browser, entry);
+	exif_entry_unref (entry);
 }
 
 static void

@@ -158,6 +158,24 @@ gtk_options_new (GtkOptionsList *list)
 	return (GTK_WIDGET (options));
 }
 
+static void
+gtk_options_list_sort (GtkOptionsList *list)
+{
+	GtkOptionsList entry;
+	guint i = 0;
+
+	while (list[i+1].name) {
+		if (strcmp (list[i].name, list[i + 1].name) > 0) {
+			entry = list[i];
+			list[i] = list[i + 1];
+			list[i + 1] = entry;
+			if (i)
+				i--;
+		} else
+			i++;
+	}
+}
+
 void
 gtk_options_construct (GtkOptions *options, GtkOptionsList *list)
 {
@@ -166,6 +184,9 @@ gtk_options_construct (GtkOptions *options, GtkOptionsList *list)
 
 	g_return_if_fail (GTK_IS_OPTIONS (options));
 	g_return_if_fail (list != NULL);
+
+	/* Sort the list */
+	gtk_options_list_sort (list);
 
 	menu = gtk_menu_new ();
 	gtk_widget_show (menu);

@@ -23,6 +23,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <time.h>
 
 //#define DEBUG
 
@@ -264,6 +265,9 @@ exif_entry_get_value (ExifEntry *entry)
 void
 exif_entry_initialize (ExifEntry *entry, ExifTag tag)
 {
+	time_t t;
+	struct tm *tm;
+
 	if (!entry)
 		return;
 	if (!entry->parent || entry->data)
@@ -353,11 +357,16 @@ exif_entry_initialize (ExifEntry *entry, ExifTag tag)
 	case EXIF_TAG_DATE_TIME:
 	case EXIF_TAG_DATE_TIME_ORIGINAL:
 	case EXIF_TAG_DATE_TIME_DIGITIZED:
+		t = time (NULL);
+		tm = localtime (&t);
 		entry->components = 20;
 		entry->format = EXIF_FORMAT_ASCII;
-		entry->size = sizeof (ExifAscii) * entry->components;
+		entry->size = sizeof (ExifByte) * entry->components;
 		entry->data = malloc (entry->size);
-		strncpy (entry->data, "0000:00:00 00:00:00", entry->size);
+		snprintf (entry->data, entry->size, 
+			  "%04i:%02i:%02i %02i:%02i:%02i",
+			  tm->tm_year + 1900, tm->tm_mon, tm->tm_mday,
+			  tm->tm_hour, tm->tm_min, tm->tm_sec);
 		break;
 	case EXIF_TAG_IMAGE_DESCRIPTION:
 	case EXIF_TAG_MAKE:
@@ -366,14 +375,14 @@ exif_entry_initialize (ExifEntry *entry, ExifTag tag)
 	case EXIF_TAG_ARTIST:
 		entry->components = strlen ("[None]") + 1;
 		entry->format = EXIF_FORMAT_ASCII;
-		entry->size = sizeof (ExifAscii) * entry->components;
+		entry->size = sizeof (ExifByte) * entry->components;
 		entry->data = malloc (entry->size);
 		strncpy (entry->data, "[None]", entry->size);
 		break;
 	case EXIF_TAG_COPYRIGHT:
 		entry->components = (strlen ("[None]") + 1) * 2;
 		entry->format = EXIF_FORMAT_ASCII;
-		entry->size = sizeof (ExifAscii) * entry->components;
+		entry->size = sizeof (ExifByte) * entry->components;
 		entry->data = malloc (entry->size);
 		strcpy (entry->data +                     0, "[None]");
 		strcpy (entry->data + strlen ("[None]") + 1, "[None]");

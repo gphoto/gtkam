@@ -4,7 +4,7 @@ EXTRA_DIST =
 
 SUBDIRS = po src test intl art pixmaps packaging
 
-gtkamdocdir = $(data)/doc/gtkam
+gtkamdocdir = $(datadir)/doc/gtkam
 gtkamdoc_DATA = AUTHORS COPYING
 
 ########################################################################

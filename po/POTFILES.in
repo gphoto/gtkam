@@ -22,4 +22,3 @@ src/gtkam-save.c
 src/gtkam-status.c
 src/gtkam-tree.c
 src/gtkam-util.c
-src/support.c

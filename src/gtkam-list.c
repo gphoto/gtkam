@@ -122,21 +122,6 @@ gtkam_list_get_type (void)
 	return (list_type);
 }
 
-GtkWidget *
-gtkam_list_new (void)
-{
-	GtkamList *list;
-
-	list = gtk_type_new (GTKAM_TYPE_LIST);
-	gtk_icon_list_construct (GTK_ICON_LIST (list), 80,
-				 GTK_ICON_LIST_TEXT_BELOW);
-	gtk_icon_list_set_selection_mode (GTK_ICON_LIST (list),
-					  GTK_SELECTION_MULTIPLE);
-	gtk_icon_list_set_editable (GTK_ICON_LIST (list), FALSE);
-
-	return (GTK_WIDGET (list));
-}
-
 void
 gtkam_list_set_camera (GtkamList *list, Camera *camera)
 {
@@ -156,12 +141,11 @@ gtkam_list_set_camera (GtkamList *list, Camera *camera)
 	gtkam_list_refresh (list);
 }
 
-static gint
-on_button_press_event (GtkWidget *widget, GdkEventButton *event,
-		       GtkamList *list)
+static gboolean
+on_select_icon (GtkIconList *ilist, GtkIconListItem *item,
+		GdkEventButton *event, GtkamList *list)
 {
 	GtkWidget *dialog, *window;
-	GtkIconListItem *item;
 	CameraFile *file;
 	GdkPixmap *pixmap;
 	GdkBitmap *bitmap;
@@ -169,49 +153,55 @@ on_button_press_event (GtkWidget *widget, GdkEventButton *event,
 	long int size;
 	int result;
 	gchar *msg;
-	gint i;
-	GList *glist;
-
-	glist = GTK_ICON_LIST (list)->icons;
-	for (item = NULL, i = 0; i < g_list_length (glist); i++) {
-		item = g_list_nth_data (glist, i);
-		if ((item->entry == widget) || (item->pixmap == widget))
-			break;
-	}
-	g_return_val_if_fail (i != g_list_length (glist), TRUE);
 
 	/* Double-click: Get thumbnail */
-	if (event->type == GDK_2BUTTON_PRESS) {
-		gp_file_new (&file);
-		result = gp_camera_file_get (list->priv->camera,
-					     list->path, item->label,
-					     GP_FILE_TYPE_PREVIEW, file);
-		if (result < 0) {
-			window = gtk_widget_get_ancestor (GTK_WIDGET (list),
-							  GTK_TYPE_WINDOW);
-			msg = g_strdup_printf ("Could not get preview of file "
-					       "'%s' in folder '%s'",
-					       item->label,
-					       list->path);
-			dialog = gtkam_error_new (msg, result,
-						  list->priv->camera, window);
-			g_free (msg);
-			gtk_widget_show (dialog);
-		} else {
-			gp_file_get_data_and_size (file, &data, &size);
-			gdk_image_new_from_data ((char*) data, size, 1,
-						 &pixmap, &bitmap);
-			gtk_pixmap_set (GTK_PIXMAP (item->pixmap),
-					pixmap, bitmap);
-			item->state = GTK_STATE_SELECTED;
-		}
-		gp_file_unref (file);
+	if (event->type != GDK_2BUTTON_PRESS)
+		return (TRUE);
+
+	gp_file_new (&file);
+	result = gp_camera_file_get (list->priv->camera,
+				     list->path, item->label,
+				     GP_FILE_TYPE_PREVIEW, file);
+	if (result < 0) {
+		window = gtk_widget_get_ancestor (GTK_WIDGET (list),
+						  GTK_TYPE_WINDOW);
+		msg = g_strdup_printf ("Could not get preview of file "
+				       "'%s' in folder '%s'", item->label,
+				       list->path);
+		dialog = gtkam_error_new (msg, result,
+					  list->priv->camera, window);
+		g_free (msg);
+		gtk_widget_show (dialog);
+	} else {
+		gp_file_get_data_and_size (file, &data, &size);
+		gdk_image_new_from_data ((char*) data, size, 1,
+					 &pixmap, &bitmap);
+		gtk_pixmap_set (GTK_PIXMAP (item->pixmap), pixmap, bitmap);
+		item->state = GTK_STATE_SELECTED;
 	}
+	gp_file_unref (file);
 
 	while (gtk_events_pending ())
 		gtk_main_iteration ();
 
-	return (TRUE);
+	return (FALSE);
+}
+
+GtkWidget *
+gtkam_list_new (void)
+{
+        GtkamList *list;
+
+        list = gtk_type_new (GTKAM_TYPE_LIST);
+        gtk_icon_list_construct (GTK_ICON_LIST (list), 80,
+                                 GTK_ICON_LIST_TEXT_BELOW);
+        gtk_icon_list_set_selection_mode (GTK_ICON_LIST (list),
+                                          GTK_SELECTION_MULTIPLE);
+        gtk_icon_list_set_editable (GTK_ICON_LIST (list), FALSE);
+        gtk_signal_connect (GTK_OBJECT (list), "select_icon",
+                            GTK_SIGNAL_FUNC (on_select_icon), list);
+
+        return (GTK_WIDGET (list));
 }
 
 void
@@ -283,14 +273,6 @@ gtkam_list_set_path (GtkamList *list, const gchar *path)
 						pixmap, bitmap);
 			}
 		}
-		gtk_signal_connect (GTK_OBJECT (item->pixmap),
-				    "button_press_event",
-				    GTK_SIGNAL_FUNC (on_button_press_event),
-				    list);
-		gtk_signal_connect (GTK_OBJECT (item->entry),
-				    "button_press_event",
-				    GTK_SIGNAL_FUNC (on_button_press_event),
-				    list);
 	}
 	gp_file_unref (file);
 }

@@ -1,0 +1,862 @@
+# Czech translation of gtkam
+# Copyright (C) 2003 Miloslav Trmac
+# This file is distributed under the same license as the gtkam package.
+# Miloslav Trmac <mitr@volny.cz>, 2003.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: gtkam VERSION\n"
+"POT-Creation-Date: 2003-07-12 18:43+0200\n"
+"PO-Revision-Date: 2003-07-12 15:49+0200\n"
+"Last-Translator: Miloslav Trmac <mitr@volny.cz>\n"
+"Language-Team: Czech <cs@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/gtkam-chooser.c:231 src/gtkam-chooser.c:253
+msgid "None"
+msgstr "Žádný"
+
+#: src/gtkam-chooser.c:261 src/gtkam-chooser.c:394 src/gtkam-chooser.c:647
+msgid "Best"
+msgstr "Nejlepší"
+
+#: src/gtkam-chooser.c:268
+msgid "Initializing camera..."
+msgstr "Inicializuji fotoaparát..."
+
+#: src/gtkam-chooser.c:282
+msgid "Could not initialize camera."
+msgstr "Nemohu inicializovat fotoaparát."
+
+#: src/gtkam-chooser.c:385
+#, c-format
+msgid "Could not get abilities of model '%s'."
+msgstr "Nemohu získat schopnosti modelu '%s'."
+
+#: src/gtkam-chooser.c:433
+msgid "Detecting cameras..."
+msgstr "Detekuji fotoaparáty..."
+
+#: src/gtkam-chooser.c:441
+msgid "No cameras detected."
+msgstr "Nedetekován žádný fotoaparát."
+
+#: src/gtkam-chooser.c:458
+msgid "Could not detect any cameras."
+msgstr "Nemohu detekovat žádný fotoaparát."
+
+#: src/gtkam-chooser.c:583
+msgid "Select Camera"
+msgstr "Vyberte fotoaparát"
+
+#: src/gtkam-chooser.c:598
+msgid "Model:"
+msgstr "Model:"
+
+#: src/gtkam-chooser.c:610
+msgid "Detect"
+msgstr "Detekovat"
+
+#: src/gtkam-chooser.c:616
+msgid "Detect USB camera"
+msgstr "Detekovat USB fotoaparát"
+
+#: src/gtkam-chooser.c:618
+msgid "Port:"
+msgstr "Port:"
+
+#: src/gtkam-chooser.c:639
+msgid "Speed:"
+msgstr "Rychlost:"
+
+#: src/gtkam-chooser.c:652
+msgid "Allow multiple frontends"
+msgstr "Povolit více rozhraní"
+
+#: src/gtkam-chooser.c:659
+msgid "Enhanced"
+msgstr "Vylepšené"
+
+#: src/gtkam-chooser.c:723
+msgid "Could not get number of supported camera models"
+msgstr "Nemohu získat počet podporovaných modelů fotoaparátů"
+
+#: src/gtkam-chooser.c:753
+msgid "Could not get number of ports."
+msgstr "Nemohu získat počet portů."
+
+#: src/gtkam-config.c:161
+msgid "Applying configuration..."
+msgstr "Nastavuji konfiguraci..."
+
+#: src/gtkam-config.c:177
+msgid "Could not apply configuration."
+msgstr "Nemohu nastavit konfiguraci."
+
+#: src/gtkam-config.c:225
+msgid "No additional information available. (1)"
+msgstr "Další informace nejsou k dispozici. (1)"
+
+#: src/gtkam-config.c:230
+msgid "General Settings"
+msgstr "Obecná nastavení"
+
+#: src/gtkam-config.c:305
+msgid "Could not execute command."
+msgstr "Nemohu spustit příkaz."
+
+#: src/gtkam-config.c:509
+msgid "No additional information available. (2)"
+msgstr "Další informace nejsou k dispozici. (2)"
+
+#: src/gtkam-config.c:545
+msgid "Set to system's time"
+msgstr "Nastavit na systémový čas"
+
+#: src/gtkam-config.c:579
+msgid "No additional information available. (3)"
+msgstr "Další informace nejsou k dispozici. (3)"
+
+#: src/gtkam-config.c:604
+msgid "No additional information available. (4)"
+msgstr "Další informace nejsou k dispozici. (4)"
+
+#: src/gtkam-config.c:651
+msgid "No additional information available. (5)"
+msgstr "Další informace nejsou k dispozici. (5)"
+
+#: src/gtkam-config.c:671
+msgid "No additional information available. (6)"
+msgstr "Další informace nejsou k dispozici. (6)"
+
+#: src/gtkam-config.c:711
+msgid "Getting configuration..."
+msgstr "Získávám nastavení..."
+
+#: src/gtkam-config.c:726
+msgid "Could not get configuration."
+msgstr "Nemohu získat nastavení."
+
+#: src/gtkam-debug.c:241
+msgid "Save As..."
+msgstr "Uložit jako..."
+
+#: src/gtkam-debug.c:263
+#, c-format
+msgid "Could not open '%s'!"
+msgstr "Nemohu otevřít '%s'!"
+
+#: src/gtkam-debug.c:308
+msgid "Type of messages to log:"
+msgstr "Typ zpráv, které zaznamenávat"
+
+#: src/gtkam-debug.c:312
+msgid "Error"
+msgstr "Chyba"
+
+#: src/gtkam-debug.c:319
+msgid "Verbose"
+msgstr "Podrobné"
+
+#: src/gtkam-debug.c:326
+msgid "Debug"
+msgstr "Ladění"
+
+#: src/gtkam-debug.c:333
+msgid "Data"
+msgstr "Data"
+
+#: src/gtkam-delete.c:180
+#, c-format
+msgid "Deleting all files in '%s'..."
+msgstr "Odstraňuji všechny soubory v '%s'..."
+
+#: src/gtkam-delete.c:200
+#, c-format
+msgid "Could not delete all files in '%s'."
+msgstr "Nemohu odstranit všechny soubory v '%s'."
+
+#: src/gtkam-delete.c:233
+#, c-format
+msgid "Deleting file '%s' from folder '%s'..."
+msgstr "Odstraňuji soubor '%s' z adresáře '%s'..."
+
+#: src/gtkam-delete.c:254
+#, c-format
+msgid "Could not delete file '%s' in folder '%s'."
+msgstr "Nemohu odstranit soubor '%s' z adresáře '%s'."
+
+#: src/gtkam-delete.c:368
+msgid "Do you really want to delete the following file?"
+msgstr "Opravdu chcete odstranit následující soubor?"
+
+#: src/gtkam-delete.c:371
+#, c-format
+msgid "Do you really want to delete the following %i files?"
+msgstr "Opravdu chcete odstranit následujících %i souborů?"
+
+#: src/gtkam-delete.c:378
+#, c-format
+msgid "'%s' in folder '%s'"
+msgstr "'%s' v adresáři '%s'"
+
+#: src/gtkam-delete.c:381
+#, c-format
+msgid "All files in folder '%s'"
+msgstr "Všechny soubory v adresáři '%s'"
+
+#: src/gtkam-error.c:196
+msgid "More"
+msgstr "Více"
+
+#: src/gtkam-exif.c:137
+#, c-format
+msgid "Getting EXIF information for file '%s' in folder '%s'..."
+msgstr "Získávám informace EXIF o souboru '%s' v adresáři '%s'..."
+
+#: src/gtkam-exif.c:153
+#, c-format
+msgid "Could not get exif information for '%s' in folder '%s'"
+msgstr "Nemohu získat informace exif o '%s' v adresáři '%s'"
+
+#: src/gtkam-exif.c:166
+msgid "Could not interpret EXIF data."
+msgstr "Nemohu interpretovat data EXIF."
+
+#: src/gtkam-exif.c:183
+msgid "Gtkam has been compiled without exif support."
+msgstr "Gtkam byl přeložen bez podpory exif."
+
+#: src/gtkam-gimp.c:67
+msgid "Captures images from digital camera"
+msgstr "Zachytí obrázky z digitálního fotoaparátu"
+
+#: src/gtkam-gimp.c:70
+msgid "<Toolbox>/File/Acquire/Capture from Camera..."
+msgstr "<Toolbox>/Soubor/Získat/Zachytit z fotoaparátu..."
+
+#: src/gtkam-gimp.c:74
+msgid "Loads files from digital cameras"
+msgstr "Načte soubory z digitálních fotoaparátů"
+
+#: src/gtkam-gimp.c:78
+msgid "<Toolbox>/File/Acquire/Load from Camera..."
+msgstr "<Toolbox>/Soubor/Získat/Načíst z fotoaparátu..."
+
+#: src/gtkam-gimp.c:191 src/gtkam-list.c:488
+#, c-format
+msgid "Downloading '%s' from '%s'..."
+msgstr "Stahuji '%s' z '%s'..."
+
+#: src/gtkam-gimp.c:209
+#, c-format
+msgid "Could not download file '%s' from folder '%s'."
+msgstr "Nemohu stáhnout soubor '%s' z adresáře '%s'."
+
+#: src/gtkam-gimp.c:242
+msgid "Image"
+msgstr "Obrázek"
+
+#: src/gtkam-info.c:182
+#, c-format
+msgid "Setting information for file '%s' in '%s'..."
+msgstr "Nastavuji informace o souboru '%s' v '%s'..."
+
+#: src/gtkam-info.c:209
+#, c-format
+msgid "Could not set file information for '%s' in folder '%s'"
+msgstr "Nemohu nastavit informace o souboru '%s' v adresáři '%s'"
+
+#: src/gtkam-info.c:338
+#, c-format
+msgid "Getting information about file '%s' in folder '%s'..."
+msgstr "Získávám informace o souboru '%s' v adresáři '%s'..."
+
+#: src/gtkam-info.c:350
+#, c-format
+msgid "Could not get information about file '%s' in folder '%s'."
+msgstr "Nemohu získat informace o souboru '%s' v adresáři '%s'."
+
+#: src/gtkam-info.c:378
+msgid "File"
+msgstr "Soubor"
+
+#: src/gtkam-info.c:384
+msgid "Name:"
+msgstr "Název:"
+
+#: src/gtkam-info.c:407 src/gtkam-info.c:515
+msgid "Mime type:"
+msgstr "Typ mime:"
+
+#: src/gtkam-info.c:425
+msgid "Last modified:"
+msgstr "Naposledy změněn:"
+
+#: src/gtkam-info.c:446 src/gtkam-info.c:532 src/gtkam-info.c:580
+msgid "Size:"
+msgstr "Velikost:"
+
+#: src/gtkam-info.c:453
+#, c-format
+msgid "%li bytes"
+msgstr "%li bajtů"
+
+#: src/gtkam-info.c:467
+msgid "Permissions:"
+msgstr "Oprávnění:"
+
+#: src/gtkam-info.c:479
+msgid "Read"
+msgstr "Čtení"
+
+#: src/gtkam-info.c:490
+msgid "Delete"
+msgstr "Odstranění"
+
+#: src/gtkam-info.c:509 src/gtkam-list.c:943
+msgid "Preview"
+msgstr "Náhled"
+
+#: src/gtkam-info.c:557
+msgid "Audio"
+msgstr "Zvuk"
+
+#: src/gtkam-info.c:563
+msgid "Mime type: "
+msgstr "Typ mime: "
+
+#: src/gtkam-list.c:316
+#, c-format
+msgid "Downloading thumbnail of '%s' from folder '%s'..."
+msgstr "Načítám miniaturu '%s' z adresáře '%s'..."
+
+#: src/gtkam-list.c:854
+#, c-format
+msgid "Changing name of '%s' to '%s'..."
+msgstr "Měním název '%s' na '%s'..."
+
+#: src/gtkam-list.c:864
+#, c-format
+msgid "Could not change the name of '%s' to '%s'."
+msgstr "Nemohu změnit název '%s' na '%s'."
+
+#: src/gtkam-list.c:878
+msgid "/_View with..."
+msgstr "/_Zobrazit s..."
+
+#: src/gtkam-list.c:879
+msgid "/View with.../Built-in viewer"
+msgstr "/_Zobrazit s.../Vestavěným prohlížečem"
+
+#: src/gtkam-list.c:881
+msgid "/_Info"
+msgstr "/_Informace"
+
+#: src/gtkam-list.c:883
+msgid "/_Exif"
+msgstr "/_Exif"
+
+#: src/gtkam-list.c:886
+msgid "/_Save"
+msgstr "/_Uložit"
+
+#: src/gtkam-list.c:887
+msgid "/_Delete"
+msgstr "/_Odstranit"
+
+#: src/gtkam-list.c:949
+msgid "Name"
+msgstr "Název"
+
+#: src/gtkam-list.c:971
+#, c-format
+msgid "Listing files in folder '%s'..."
+msgstr "Vypisuji soubory v adresáři '%s'..."
+
+#: src/gtkam-list.c:987
+#, c-format
+msgid "Could not get file list for folder '%s'"
+msgstr "Nemohu získat seznam souborů v adresáři '%s'"
+
+#: src/gtkam-main.c:452
+msgid ""
+"gtkam is a program that lets you download\n"
+"images from many digital cameras. It uses\n"
+"libgphoto2. More info is available at\n"
+"http://www.gphoto.net.\n"
+"\n"
+"Enjoy the wonderful world of gphoto!"
+msgstr ""
+"gtkam je program, který vám umožňuje stahovat\n"
+"obrázky z mnoha digitálních fotoaparátů. Používá\n"
+"libgphoto2. Více informací je k dispozici na\n"
+"http://www.gphoto.net.\n"
+"\n"
+"Užijte si kouzelný svět gphoto!"
+
+#: src/gtkam-main.c:463
+msgid "Many others"
+msgstr "Mnoho dalších"
+
+#: src/gtkam-main.c:496
+#, c-format
+msgid ""
+"%s\n"
+"\n"
+"%s %s with options:\n"
+"    %s\n"
+msgstr ""
+"%s\n"
+"\n"
+"%s %s s přepínači:\n"
+"    %s\n"
+
+#: src/gtkam-main.c:500
+#, c-format
+msgid ""
+"%s\n"
+"%s %s with options:\n"
+"    %s\n"
+msgstr ""
+"%s\n"
+"%s %s s přepínači:\n"
+"    %s\n"
+
+#: src/gtkam-main.c:593
+msgid "/_File"
+msgstr "/_Soubor"
+
+#: src/gtkam-main.c:594
+msgid "/File/_Save Photos"
+msgstr "/Soubor/_Uložit fotografie"
+
+#: src/gtkam-main.c:595
+msgid "/File/Save Photos/_Selected"
+msgstr "/Soubor/_Uložit fotografie/Vy_brané"
+
+#: src/gtkam-main.c:597
+msgid "/File/Save Photos/_All"
+msgstr "/Soubor/_Uložit fotografie/_Všechny"
+
+#: src/gtkam-main.c:599
+msgid "/File/_Delete Photos"
+msgstr "/Soubor/_Odstranit fotografie"
+
+#: src/gtkam-main.c:600
+msgid "/File/Delete Photos/_Selected"
+msgstr "/Soubor/_Odstranit fotografie/Vy_brané"
+
+#: src/gtkam-main.c:602
+msgid "/File/Delete Photos/_All"
+msgstr "/Soubor/_Odstranit fotografie/_Všechny"
+
+#: src/gtkam-main.c:605
+msgid "/File/_Quit"
+msgstr "/Soubor/_Konec"
+
+#: src/gtkam-main.c:607
+msgid "/_View"
+msgstr "/_Zobrazit"
+
+#: src/gtkam-main.c:608
+msgid "/View/_View Thumbnails"
+msgstr "/Zobrazit/_Zobrazovat miniatury"
+
+#: src/gtkam-main.c:611
+msgid "/View/Zoom _In"
+msgstr "/Zobrazit/Z_většit"
+
+#: src/gtkam-main.c:613
+msgid "/View/Zoom _100"
+msgstr "/Zobrazit/Zvětšení _100"
+
+#: src/gtkam-main.c:615
+msgid "/View/Zoom _Out"
+msgstr "/Zobrazit/Z_menšit"
+
+#: src/gtkam-main.c:617
+msgid "/_Select"
+msgstr "/_Vybrat"
+
+#: src/gtkam-main.c:618
+msgid "/Select/_All"
+msgstr "/Vybrat/_Vše"
+
+#: src/gtkam-main.c:619
+msgid "/Select/_Inverse"
+msgstr "/Vybrat/_Opak"
+
+#: src/gtkam-main.c:620
+msgid "/Select/_None"
+msgstr "/Vybrat/_Nic"
+
+#: src/gtkam-main.c:621
+msgid "/_Camera"
+msgstr "/_Fotoaparát"
+
+#: src/gtkam-main.c:622
+msgid "/Camera/_Add Camera..."
+msgstr "/_Fotoaparát/_Přidat fotoaparát..."
+
+#: src/gtkam-main.c:623
+msgid "/_Help"
+msgstr "/_Nápověda"
+
+#: src/gtkam-main.c:625
+msgid "/Help/_Contents"
+msgstr "/Nápověda/_Obsah"
+
+#: src/gtkam-main.c:628
+msgid "/Help/_Debug"
+msgstr "/Nápověda/_Ladění"
+
+#: src/gtkam-main.c:629
+msgid "/Help/_About"
+msgstr "/Nápověda/O _aplikaci"
+
+#: src/gtkam-main.c:687
+msgid "View Thumbnails"
+msgstr "Zobrazovat náhledy"
+
+#: src/gtkam-main.c:708
+msgid "_Help"
+msgstr "_Nápověda"
+
+#: src/gtkam-main.c:720
+msgid "_Debug..."
+msgstr "_Ladění..."
+
+#: src/gtkam-main.c:729
+msgid "_About..."
+msgstr "O _aplikaci..."
+
+#: src/gtkam-mkdir.c:152
+#, c-format
+msgid "Creating folder '%s' in folder '%s'..."
+msgstr "Vytvářím adresář '%s' v adresáři '%s'..."
+
+#: src/gtkam-mkdir.c:186
+#, c-format
+msgid "Could not create folder '%s' in folder '%s'."
+msgstr "Nemohu vytvořit adresář '%s' v adresáři '%s'."
+
+#: src/gtkam-mkdir.c:212
+#, c-format
+msgid "Please choose a name for the directory that should be created in '%s':"
+msgstr "Zvolte prosím název adresáře, který má být vytvořen v '%s':"
+
+#: src/gtkam-mkdir.c:228
+msgid "New directory"
+msgstr "Nový adresář"
+
+#: src/gtkam-port.c:145
+#, c-format
+msgid "Could not find an io-driver for port '%s' ('%s')."
+msgstr "Nemohu najít io-ovladač pro port '%s' ('%s')."
+
+#: src/gtkam-port.c:180
+msgid "Please specify the (extended) path to the port you would like to use:"
+msgstr "Zadejte prosím (rozšířenou) cestu k portu, který chcete používat:"
+
+#: src/gtkam-preview.c:187 src/gtkam-tree.c:773
+msgid "Capturing image..."
+msgstr "Zachytávám obrázek..."
+
+#: src/gtkam-preview.c:209
+msgid "Could not capture image."
+msgstr "Nemohu zachytit obrázek."
+
+#: src/gtkam-preview.c:345 src/gtkam-preview.c:408
+msgid "Capture"
+msgstr "Zachytit"
+
+#: src/gtkam-preview.c:371
+msgid "0 degrees"
+msgstr "0 stupňů"
+
+#: src/gtkam-preview.c:379
+msgid "Don't rotate thumbnail"
+msgstr "Nerotovat miniaturu"
+
+#: src/gtkam-preview.c:381
+msgid "-90 degrees"
+msgstr "-90 stupňů"
+
+#: src/gtkam-preview.c:388
+msgid "Rotate thumbnail by -90 degrees"
+msgstr "Rotovat miniaturu o -90 stupňů"
+
+#: src/gtkam-preview.c:390
+msgid "+90 degrees"
+msgstr "+90 stupňů"
+
+#: src/gtkam-preview.c:397
+msgid "Rotate thumbnail by 90 degrees"
+msgstr "Rotovat miniaturu o 90 stupňů"
+
+#: src/gtkam-preview.c:399
+msgid "180 degrees"
+msgstr "180 stupňů"
+
+#: src/gtkam-preview.c:406
+msgid "Rotate thumbnail by 180 degrees"
+msgstr "Rotovat miniaturu o 180 stupňů"
+
+#: src/gtkam-save.c:302
+msgid "photo"
+msgstr "fotografie"
+
+#: src/gtkam-save.c:319
+#, c-format
+msgid "'%s' already exists."
+msgstr "'%s' již existuje."
+
+#: src/gtkam-save.c:333
+#, c-format
+msgid "Could not save file to '%s'."
+msgstr "Nemohu uložit soubor do '%s'."
+
+#: src/gtkam-save.c:369
+#, c-format
+msgid "Could not get '%s' from folder '%s'."
+msgstr "Nemohu získat '%s' z adresáře '%s'."
+
+#: src/gtkam-save.c:391
+msgid "Downloading file"
+msgstr "Stahuji soubor"
+
+#: src/gtkam-save.c:393
+#, c-format
+msgid "Downloading %i files"
+msgstr "Stahuji %i souborů"
+
+#: src/gtkam-save.c:400
+#, c-format
+msgid "Downloading %i files..."
+msgstr "Stahuji %i souborů..."
+
+#: src/gtkam-save.c:475
+msgid "What to save:"
+msgstr "Co uložit:"
+
+#: src/gtkam-save.c:484
+msgid "Save photos"
+msgstr "Uložit fotografie"
+
+#: src/gtkam-save.c:488
+msgid "Photos will be saved if this is checked"
+msgstr "Je-li toto zaškrtnuto, budou uloženy fotografie"
+
+#: src/gtkam-save.c:492
+msgid "Save raw data"
+msgstr "Uložit původní data"
+
+#: src/gtkam-save.c:495
+msgid "Raw data will be saved if this is checked"
+msgstr "Je-li toto zaškrtnuto, budou uložena původní data"
+
+#: src/gtkam-save.c:499
+msgid "Save audio data"
+msgstr "Uložit zvuková data"
+
+#: src/gtkam-save.c:502
+msgid "Audio data will be saved if this is checked"
+msgstr "Je-li toto zaškrtnuto, budou uložena zvuková data"
+
+#: src/gtkam-save.c:506
+msgid "Save thumbnails"
+msgstr "Uložit miniatury"
+
+#: src/gtkam-save.c:509
+msgid "Thumbnails will be saved if this is checked"
+msgstr "Je-li toto zaškrtnuto, budou uloženy miniatury"
+
+#: src/gtkam-save.c:513
+msgid "Save EXIF data"
+msgstr "Uložit data EXIF"
+
+#: src/gtkam-save.c:516
+msgid "EXIF data will be saved if this is checked"
+msgstr "Je-li toto zaškrtnuto, budou uložena data EXIF"
+
+#: src/gtkam-save.c:525
+msgid "Open image(s) with: "
+msgstr "Otevřít obrázky pomocí: "
+
+#: src/gtkam-save.c:532
+msgid "Type in the name of the program you want to run, leave blank for none"
+msgstr "Napište název programu, který chcete spustit, nechte prázdné pro žádný"
+
+#: src/gtkam-save.c:538
+msgid "Use filename(s) provided by the camera"
+msgstr "Použít názvy souborů poskytnuté fotoaparátem"
+
+#: src/gtkam-save.c:542
+msgid "Choose whether to use the filename provided by the camera"
+msgstr "Vyberte, jestli používat název souboru poskytnutý fotoaparátem"
+
+#: src/gtkam-save.c:557
+msgid "Filename prefix: "
+msgstr "Předpona názvu souboru: "
+
+#: src/gtkam-save.c:566
+msgid "Start numbering with: "
+msgstr "Začít číslovat od: "
+
+#: src/gtkam-save.c:605
+#, c-format
+msgid "Save '%s'..."
+msgstr "Uložit '%s'..."
+
+#: src/gtkam-save.c:627
+msgid "Save photos..."
+msgstr "Uložit fotografie..."
+
+#: src/gtkam-tree.c:291
+#, c-format
+msgid "Listing folders in '%s'..."
+msgstr "Vypisuji adresáře v '%s'..."
+
+#: src/gtkam-tree.c:312
+#, c-format
+msgid "Could not list folders in '%s'."
+msgstr "Nemohu vypsat adresáře v '%s'."
+
+#: src/gtkam-tree.c:409
+#, c-format
+msgid "Could not open '%s'."
+msgstr "Nemohu otevřít '%s'."
+
+#: src/gtkam-tree.c:416
+#, c-format
+msgid "Uploading '%s' into folder '%s'..."
+msgstr "Odesílám '%s' do adresáře '%s'..."
+
+#: src/gtkam-tree.c:436
+#, c-format
+msgid "Could not upload '%s' into '%s'."
+msgstr "Nemohu odeslat '%s' do '%s'."
+
+#: src/gtkam-tree.c:460
+#, c-format
+msgid "Upload into '%s'..."
+msgstr "Odeslat do '%s'..."
+
+#: src/gtkam-tree.c:536
+#, c-format
+msgid "Removing directory '%s'..."
+msgstr "Odstraňuji adresář '%s'..."
+
+#: src/gtkam-tree.c:553
+#, c-format
+msgid "Could not remove directory '%s'."
+msgstr "Nemohu odstranit adresář '%s'."
+
+#: src/gtkam-tree.c:582
+msgid "Getting information about the camera..."
+msgstr "Získávám informace o fotoaparátu..."
+
+#: src/gtkam-tree.c:586
+msgid "Getting information about the driver..."
+msgstr "Získávám informace o ovladači..."
+
+#: src/gtkam-tree.c:590
+msgid "Getting manual..."
+msgstr "Získávám manuál..."
+
+#: src/gtkam-tree.c:621
+msgid "Could not retrieve information."
+msgstr "Nemohu získat informace."
+
+#: src/gtkam-tree.c:791
+msgid "Could not capture."
+msgstr "Nemohu zachytit."
+
+#: src/gtkam-tree.c:830
+msgid "/Upload file"
+msgstr "/Odeslat soubor"
+
+#: src/gtkam-tree.c:831
+msgid "/Make directory"
+msgstr "/Vytvořit adresář"
+
+#: src/gtkam-tree.c:832
+msgid "/Remove directory"
+msgstr "/Odstranit adresář"
+
+#: src/gtkam-tree.c:834
+msgid "/Capture"
+msgstr "/Zachytit"
+
+#: src/gtkam-tree.c:835
+msgid "/Preferences"
+msgstr "/Nastavení"
+
+#: src/gtkam-tree.c:837
+msgid "/Summary"
+msgstr "/Souhrn"
+
+#: src/gtkam-tree.c:838
+msgid "/Manual"
+msgstr "/Manuál"
+
+#: src/gtkam-tree.c:839
+msgid "/About"
+msgstr "/O aplikaci"
+
+#: src/gtkam-tree.c:841
+msgid "/Select Camera"
+msgstr "/Vybrat fotoaparát"
+
+#: src/gtkam-tree.c:842
+msgid "/Remove Camera"
+msgstr "/Odstranit fotoaparát"
+
+#: src/gtkam-tree.c:872
+msgid "_Add Camera..."
+msgstr "_Přidat fotoaparát..."
+
+#: src/gtkam-tree.c:972
+msgid "Please right-click to access additional menus"
+msgstr "Další menu vyvolejte kliknutím pravým tlačítkem"
+
+#: src/gtkam-tree.c:1001
+msgid "Folder"
+msgstr "Adresář"
+
+#: src/gtkam-tree.c:1094
+msgid "Loading cameras..."
+msgstr "Načítám fotoaparáty..."
+
+#: src/gtkam-util.c:46
+#, c-format
+msgid ""
+"Could not display '%s'. Either the image type ('%s') is not supported by gtk "
+"or the file itself is corrupt."
+msgstr ""
+"Nemohu zobrazit '%s'. Buď formát obrázku ('%s') není podporován gtk, nebo je "
+"soubor poškozen."
+
+#: src/gtkam-version.c:102
+msgid ""
+"ALWAYS INCLUDE THE FOLLOWING LINES WHEN SENDING DEBUG MESSAGES TO THE "
+"MAILING LIST:"
+msgstr ""
+"PŘI POSÍLÁNÍ LADICÍCH ZPRÁV DO KONFERENCE VŽDY POŠLETE NÁSLEDUJÍCÍ ŘÁDKY:"
+
+#: src/gtkam-viewer.c:238
+#, c-format
+msgid "Downloading '%s' from folder '%s'..."
+msgstr "Stahuji '%s' z adresáře '%s'..."
+
+#: src/gtkam-viewer.c:289
+#, c-format
+msgid "Could not download '%s' from folder '%s'."
+msgstr "Nemohu stáhnout '%s' z adresáře '%s'."
+
+#: src/main.c:111
+msgid "Image Download Program"
+msgstr "Program pro stažení obrázků"

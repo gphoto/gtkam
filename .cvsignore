@@ -1,3 +1,4 @@
+*~ .*~
 gtkam.spec
 config.guess
 config.sub
@@ -18,3 +19,5 @@ stamp-h1
 Makefile
 ABOUT-NLS
 intl
+*.patch *.patch.new
+*.tar.gz *.tar.bz2

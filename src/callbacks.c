@@ -32,12 +32,15 @@ gboolean get_thumbnail (GtkWidget *widget, const char *name, GtkIconListItem *it
 	char *folder;
 	GdkPixmap *pixmap;
 	GdkBitmap *bitmap;
+	const char *data;
+	long int size;
 
 	/* Get the thumbnail */
 	gp_file_new(&f);
 	folder = current_folder();
 	if (gp_camera_file_get_preview(gp_gtk_camera, folder, name, f) == GP_OK) {
-		gdk_image_new_from_data(f->data,f->size,1,&pixmap,&bitmap);
+		gp_file_get_data_and_size (f, &data, &size);
+		gdk_image_new_from_data((char*)data,size,1,&pixmap,&bitmap);
 		gtk_pixmap_set(GTK_PIXMAP(item->pixmap), pixmap, bitmap);
 	}
 	gp_file_free(f);
@@ -264,6 +267,7 @@ void save_selected_photos() {
 	char *path, *prefix=NULL, *slash;
 	char *folder, *progname;
 	int num=0, x;
+	const char *type;
 
 	debug_print("save selected photo");
 
@@ -333,7 +337,8 @@ void save_selected_photos() {
                                 if (num == 1) {
                                     strcpy(fname, path);
                                 } else {
-                                    slash = strrchr(f->type, '/');
+				    gp_file_get_type (f, &type);
+                                    slash = strrchr(type, '/');
                                     slash++;
                                     if (prefix) {
                                         if (slash)
@@ -613,7 +618,7 @@ void folder_expand (GtkWidget *tree_item, gpointer data) {
 			sprintf(buf, "/%s", name);
 		   else
 			sprintf(buf, "%s/%s", path, name);
-		item = folder_item(tree, name);
+		item = folder_item(tree, (char*)name);
 		gtk_object_set_data(GTK_OBJECT(item), "path", strdup(buf));
 	}
 
@@ -869,6 +874,8 @@ void camera_index () {
 	char *folder;
 	int x, count=0, get_thumbnails = 1;
 	const char *name;
+	const char *data;
+	long int size;
 
 	debug_print("camera index");
 	
@@ -918,7 +925,8 @@ void camera_index () {
 			folder = current_folder();
 			if (gp_camera_file_get_preview(gp_gtk_camera, 
 			    folder, name, f) == GP_OK) {
-				gdk_image_new_from_data(f->data,f->size,1,&pixmap,&bitmap);
+				gp_file_get_data_and_size (f, &data, &size);
+				gdk_image_new_from_data((char*)data,size,1,&pixmap,&bitmap);
 				item = gtk_icon_list_add_from_data(GTK_ICON_LIST(icon_list),
 					no_thumbnail_xpm,name,NULL);
 				gtk_pixmap_set(GTK_PIXMAP(item->pixmap), pixmap, bitmap);
@@ -1132,6 +1140,8 @@ void help_authors() {
 	char buf[1024];
 	CameraFile *f, *g;
 	GtkWidget *window, *ok;
+	const char *data;
+	long int size;
 
 	window = create_message_window_notebook();
 	ok   = (GtkWidget*) lookup_widget(window, "close");
@@ -1144,7 +1154,8 @@ void help_authors() {
 		frontend_message(NULL, _("Can't find gtKam AUTHORS file"));
 		return;
 	}
-	message_window_notebook_append(window, _("gtKam Authors"), f->data);
+	gp_file_get_data_and_size (f, &data, &size);
+	message_window_notebook_append(window, _("gtKam Authors"), (char*)data);
 
 	sprintf(buf, "%s/AUTHORS", GPDOCDIR);
 	gp_file_new(&g);
@@ -1152,7 +1163,8 @@ void help_authors() {
 		frontend_message(NULL, _("Can't find gPhoto2 AUTHORS file"));
 		return;
 	}
-	message_window_notebook_append(window, _("gPhoto2 Authors"), g->data);
+	gp_file_get_data_and_size (g, &data, &size);
+	message_window_notebook_append(window, _("gPhoto2 Authors"), (char*)data);
 
 	wait_for_hide(window, ok, NULL);
 
@@ -1167,6 +1179,8 @@ void help_license() {
 	char buf[1024];
 	CameraFile *f, *g;
 	GtkWidget *window, *ok;
+	const char *data;
+	long int size;
 
 	window = create_message_window_notebook();
 	ok   = (GtkWidget*) lookup_widget(window, "close");
@@ -1179,7 +1193,8 @@ void help_license() {
 		frontend_message(NULL, _("Can't find gtKam COPYING file"));
 		return;
 	}
-	message_window_notebook_append(window, _("gtKam License"), f->data);
+	gp_file_get_data_and_size (f, &data, &size);
+	message_window_notebook_append(window, _("gtKam License"), (char*)data);
 
 	sprintf(buf, "%s/COPYING", GPDOCDIR);
 	gp_file_new(&g);
@@ -1187,7 +1202,8 @@ void help_license() {
 		frontend_message(NULL, _("Can't find gPhoto2 COPYING file"));
 		return;
 	}
-	message_window_notebook_append(window, _("gPhoto2 License"), g->data);
+	gp_file_get_data_and_size (g, &data, &size);
+	message_window_notebook_append(window, _("gPhoto2 License"), (char*)data);
 
 	wait_for_hide(window, ok, NULL);
 
@@ -1202,6 +1218,8 @@ void help_manual() {
 	char buf[1024];
 	CameraFile *f;
 	GtkWidget *window, *ok;
+	const char *data;
+	long int size;
 
 	debug_print("help manual");
 
@@ -1213,7 +1231,8 @@ void help_manual() {
 	}
 	window = create_message_window_notebook();
 	ok = (GtkWidget*) lookup_widget(window, "close");
-	message_window_notebook_append(window, _("gtKam Manual"), f->data);
+	gp_file_get_data_and_size (f, &data, &size);
+	message_window_notebook_append(window, _("gtKam Manual"), (char*)data);
 
 	wait_for_hide(window, ok, NULL);
 

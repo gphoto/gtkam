@@ -4,7 +4,7 @@
 LATEST NEWS: I am currently porting gtkam to gtk+-2.0. Therefore, this package
 is very likely to NOT compile. Please check out the gtkam-gtk-1 branch:
 
-cvs update -r gtkam
+cvs update -r gtkam-gtk-1
 
 
 

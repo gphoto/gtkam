@@ -1,3 +1,7 @@
+2001-10-27 Hans Ulrich Niedermann <gp@n-dimensional.de>
+	
+	* src/gtkam-main.c: added version information to about dialog
+	
 2001-10-25 Lutz Müller <urc8@rz.uni-karlsruhe.de>
 
 	* src: Adapt to changes in gphoto2-port

@@ -272,6 +272,7 @@ gtkam_list_set_path (GtkamList *list, const gchar *path)
 		item = gtk_icon_list_add_from_data (
 				GTK_ICON_LIST (list), no_thumbnail_xpm,
 				name, NULL);
+
 		if (list->priv->thumbnails &&
 		    (list->priv->camera->abilities->file_operations &
 		     GP_FILE_OPERATION_PREVIEW)) {

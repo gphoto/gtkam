@@ -1,0 +1,1280 @@
+# Danish translation of gphoto
+# Copyright (C) 2000 Free Software Foundation, Inc.
+# Kenneth Christiansen <kenneth@ripen.dk> 2000.
+# Keld Simonsen <keld@dkuug.dk>, 2000.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: gphoto 0.4.3\n"
+"POT-Creation-Date: 2002-01-04 10:46+0100\n"
+"PO-Revision-Date: 2000-04-19 10:12+02:00\n"
+"Last-Translator: Keld Simonsen <keld@dkuug.dk>\n"
+"Language-Team: Dansk <dansk@klid.dk>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+#. Port?
+#: src/gtkam-chooser.c:186 src/gtkam-chooser.c:202
+#, fuzzy
+msgid "None"
+msgstr "Nej"
+
+#. Speed?
+#: src/gtkam-chooser.c:210 src/gtkam-chooser.c:233 src/gtkam-chooser.c:352
+#: src/gtkam-chooser.c:612 src/gtkam-chooser.c:719
+#, fuzzy
+msgid "Best"
+msgstr "Sæt tilbage"
+
+#. 		g_free (port_path);
+#: src/gtkam-chooser.c:222
+#, fuzzy
+msgid "Could not initialize camera"
+msgstr "Kunne ikke tage billede."
+
+#: src/gtkam-chooser.c:339
+#, fuzzy, c-format
+msgid "Could not get abilities of model '%s'"
+msgstr "Kunne ikke hente antal billeder"
+
+#: src/gtkam-chooser.c:394
+#, fuzzy
+msgid "Could not detect any cameras"
+msgstr "Kunne ikke tage billede."
+
+#: src/gtkam-chooser.c:398
+msgid "No cameras detected."
+msgstr ""
+
+#: src/gtkam-chooser.c:530
+#, fuzzy
+msgid "Select Camera"
+msgstr "Levende kamera!"
+
+#: src/gtkam-chooser.c:568
+#, fuzzy
+msgid "Model:"
+msgstr "Kameramodel:"
+
+#: src/gtkam-chooser.c:579
+msgid "Detect"
+msgstr ""
+
+#: src/gtkam-chooser.c:585
+msgid "Port:"
+msgstr "Port:"
+
+#: src/gtkam-chooser.c:597
+msgid "Add"
+msgstr ""
+
+#: src/gtkam-chooser.c:604
+msgid "Speed:"
+msgstr ""
+
+#: src/gtkam-chooser.c:616
+msgid "Allow multiple frontends"
+msgstr ""
+
+#: src/gtkam-chooser.c:623
+msgid "Enhanced"
+msgstr ""
+
+#: src/gtkam-chooser.c:630 src/gtkam-config.c:631 src/gtkam-fsel.c:341
+#: src/gtkam-info.c:606 src/gtkam-mkdir.c:256
+msgid "Ok"
+msgstr ""
+
+#: src/gtkam-chooser.c:639 src/gtkam-config.c:638 src/gtkam-info.c:614
+msgid "Apply"
+msgstr "Anvend"
+
+#: src/gtkam-chooser.c:647 src/gtkam-delete.c:390 src/gtkam-fsel.c:349
+#: src/gtkam-info.c:632 src/gtkam-main.c:1192 src/gtkam-mkdir.c:264
+msgid "Cancel"
+msgstr "Afbryd"
+
+#: src/gtkam-chooser.c:759
+#, fuzzy
+msgid "Could not get number of supported camera models"
+msgstr "Kunne ikke hente antal billeder"
+
+#: src/gtkam-chooser.c:789
+#, fuzzy
+msgid "Could not get number of ports"
+msgstr "Kunne ikke hente antal billeder"
+
+#: src/gtkam-clist.c:220 src/gtkam-info.c:516
+#, fuzzy
+msgid "Preview"
+msgstr "Foregående"
+
+#: src/gtkam-clist.c:220
+#, fuzzy
+msgid "Filename"
+msgstr "Filnavn præfiks:"
+
+#: src/gtkam-clist.c:272 src/gtkam-list.c:569
+#, fuzzy, c-format
+msgid "Could not get file '%s'"
+msgstr "Kunne ikke finde smugkig"
+
+#: src/gtkam-clist.c:345 src/gtkam-list.c:508
+#, c-format
+msgid "Could not get file list for folder '%s'"
+msgstr ""
+
+#: src/gtkam-close.c:176 src/gtkam-config.c:645 src/gtkam-debug.c:330
+#: src/gtkam-error.c:222 src/gtkam-preview.c:525
+msgid "Close"
+msgstr "Luk"
+
+#: src/gtkam-config.c:172
+#, fuzzy
+msgid "Could not apply configuration"
+msgstr "Konfiguration af kamera"
+
+#: src/gtkam-config.c:217 src/gtkam-config.c:402
+msgid "No additional information available"
+msgstr ""
+
+#: src/gtkam-config.c:223
+#, fuzzy
+msgid "General Settings"
+msgstr "Farveindstillinger"
+
+#: src/gtkam-config.c:281
+#, fuzzy
+msgid "Could not execute command"
+msgstr "FEJL: Kunne ikke slette billede.\n"
+
+#: src/gtkam-config.c:608
+#, fuzzy
+msgid "Could not get configuration"
+msgstr "Kunne ikke finde smugkig"
+
+#: src/gtkam-debug.c:215
+#, fuzzy
+msgid "Save As..."
+msgstr "Gem billede(r)..."
+
+#: src/gtkam-debug.c:239
+#, fuzzy, c-format
+msgid "Could not open '%s'!"
+msgstr ""
+"Kunne ikke åbne:\n"
+"%s"
+
+#: src/gtkam-debug.c:276
+msgid "Type of messages to log:"
+msgstr ""
+
+#: src/gtkam-debug.c:280
+msgid "Error"
+msgstr ""
+
+#: src/gtkam-debug.c:287
+msgid "Verbose"
+msgstr ""
+
+#: src/gtkam-debug.c:294
+msgid "Debug"
+msgstr ""
+
+#: src/gtkam-debug.c:301
+msgid "Data"
+msgstr ""
+
+#: src/gtkam-debug.c:323
+#, fuzzy
+msgid "Save As"
+msgstr "Gem"
+
+#: src/gtkam-delete.c:183
+#, c-format
+msgid "Could not delete all files in '%s'"
+msgstr ""
+
+#: src/gtkam-delete.c:228
+#, fuzzy, c-format
+msgid "Could not delete '%s' in '%s'"
+msgstr "Kunne ikke hente #%i"
+
+#: src/gtkam-delete.c:334
+msgid "Do you really want to delete the following file?"
+msgstr ""
+
+#: src/gtkam-delete.c:337
+#, c-format
+msgid "Do you really want to delete the following %i files?"
+msgstr ""
+
+#: src/gtkam-delete.c:373
+#, c-format
+msgid "Do you really want to delete ALL files in '%s'?"
+msgstr ""
+
+#. Delete
+#: src/gtkam-delete.c:383 src/gtkam-info.c:497 src/gtkam-list.c:419
+msgid "Delete"
+msgstr ""
+
+#: src/gtkam-error.c:215
+msgid "More"
+msgstr ""
+
+#: src/gtkam-fsel.c:222 src/gtkam-main.c:607
+#, fuzzy, c-format
+msgid "Could not remove '%s' from '%s'"
+msgstr "Kunne ikke hente #%i"
+
+#: src/gtkam-fsel.c:267
+msgid "Make"
+msgstr ""
+
+#: src/gtkam-fsel.c:273
+msgid "Remove"
+msgstr ""
+
+#: src/gtkam-gimp.c:80
+msgid "Captures images from digital camera"
+msgstr ""
+
+#: src/gtkam-gimp.c:83
+msgid "<Toolbox>/File/Acquire/Capture from Camera..."
+msgstr ""
+
+#: src/gtkam-gimp.c:87
+msgid "Loads files from digital cameras"
+msgstr ""
+
+#: src/gtkam-gimp.c:91
+msgid "<Toolbox>/File/Acquire/Load from Camera..."
+msgstr ""
+
+#: src/gtkam-gimp.c:212
+#, c-format
+msgid "Downloading '%s' from '%s'..."
+msgstr ""
+
+#: src/gtkam-gimp.c:224
+#, fuzzy
+msgid "Could not download file"
+msgstr "Kunne ikke gemme #%i"
+
+#: src/gtkam-gimp.c:255
+msgid "Background"
+msgstr ""
+
+#: src/gtkam-gimp.c:349 src/gtkam-main.c:356 src/gtkam-preview.c:191
+#, fuzzy
+msgid "Could not capture"
+msgstr "Kunne ikke tage billede."
+
+#: src/gtkam-info.c:194
+#, c-format
+msgid "Could not set file information for '%s'"
+msgstr ""
+
+#: src/gtkam-info.c:346
+#, c-format
+msgid "Could not get information about '%s'"
+msgstr ""
+
+#: src/gtkam-info.c:386
+msgid "File"
+msgstr ""
+
+#: src/gtkam-info.c:392
+msgid "Name:"
+msgstr ""
+
+#: src/gtkam-info.c:414 src/gtkam-info.c:522
+msgid "Mime type:"
+msgstr ""
+
+#: src/gtkam-info.c:432
+#, fuzzy
+msgid "Creation time:"
+msgstr "Opret"
+
+#: src/gtkam-info.c:453 src/gtkam-info.c:539 src/gtkam-info.c:587
+msgid "Size:"
+msgstr ""
+
+#: src/gtkam-info.c:460
+#, c-format
+msgid "%i bytes"
+msgstr ""
+
+#: src/gtkam-info.c:474
+msgid "Permissions:"
+msgstr ""
+
+#: src/gtkam-info.c:486
+msgid "Read"
+msgstr ""
+
+#: src/gtkam-info.c:564
+msgid "Audio"
+msgstr ""
+
+#: src/gtkam-info.c:570
+msgid "Mime type: "
+msgstr ""
+
+#: src/gtkam-info.c:623
+msgid "Reset"
+msgstr "Sæt tilbage"
+
+#: src/gtkam-list.c:338
+#, fuzzy, c-format
+msgid "Could not get preview of file '%s' in folder '%s'"
+msgstr "Kunne ikke finde smugkig"
+
+#: src/gtkam-list.c:384
+msgid "Info"
+msgstr ""
+
+#: src/gtkam-list.c:390
+msgid "Exif"
+msgstr ""
+
+#. Save
+#: src/gtkam-list.c:412
+msgid "Save"
+msgstr "Gem"
+
+#: src/gtkam-main.c:486
+#, fuzzy
+msgid "Could not retrieve information"
+msgstr "Kunne ikke hente #%i"
+
+#: src/gtkam-main.c:508
+#, fuzzy
+msgid "Could not retrieve manual"
+msgstr "Kunne ikke hente #%i"
+
+#: src/gtkam-main.c:530
+msgid "Could not get information about the driver"
+msgstr ""
+
+#: src/gtkam-main.c:554
+#, c-format
+msgid ""
+"%s %s\n"
+"\n"
+"gtKam was written by:\n"
+" - Scott Fritzinger <scottf@unr.edu>,\n"
+" - Lutz Mueller <urc8@rz.uni-karlsruhe.de>,\n"
+" - and many others.\n"
+"\n"
+"gtKam uses libgphoto2, a library to access a\n"
+"multitude of digital cameras. More \n"
+"information is available at\n"
+"http://www.gphoto.net.\n"
+"\n"
+"Enjoy the wonderful world of gphoto!"
+msgstr ""
+
+#: src/gtkam-main.c:638
+msgid "Upload"
+msgstr ""
+
+#: src/gtkam-main.c:654
+#, fuzzy, c-format
+msgid "Could not open '%s'"
+msgstr ""
+"Kunne ikke åbne:\n"
+"%s"
+
+#: src/gtkam-main.c:662
+#, c-format
+msgid "Uploading '%s'..."
+msgstr ""
+
+#: src/gtkam-main.c:679
+#, c-format
+msgid "Coult not upload '%s' into folder '%s'"
+msgstr ""
+
+#: src/gtkam-main.c:749
+#, fuzzy, c-format
+msgid "Downloading '%s'..."
+msgstr "Nedlastning fuldført."
+
+#: src/gtkam-main.c:829
+msgid "_File"
+msgstr ""
+
+#: src/gtkam-main.c:842
+msgid "_Save Selected Photos..."
+msgstr ""
+
+#: src/gtkam-main.c:854
+msgid "_Delete"
+msgstr ""
+
+#: src/gtkam-main.c:867
+msgid "_Selected Photos"
+msgstr ""
+
+#: src/gtkam-main.c:878
+msgid "_All Photos"
+msgstr ""
+
+#: src/gtkam-main.c:895
+msgid "_Exit"
+msgstr ""
+
+#: src/gtkam-main.c:907
+msgid "F_older"
+msgstr ""
+
+#: src/gtkam-main.c:920
+#, fuzzy
+msgid "_Create"
+msgstr "Opret"
+
+#: src/gtkam-main.c:931
+msgid "_Remove"
+msgstr ""
+
+#: src/gtkam-main.c:947
+msgid "_Upload file"
+msgstr ""
+
+#: src/gtkam-main.c:960
+msgid "_Select"
+msgstr ""
+
+#: src/gtkam-main.c:973
+msgid "_All"
+msgstr ""
+
+#: src/gtkam-main.c:984
+msgid "_Inverse"
+msgstr ""
+
+#: src/gtkam-main.c:995
+#, fuzzy
+msgid "_None"
+msgstr "Færdig."
+
+#: src/gtkam-main.c:1008
+#, fuzzy
+msgid "_Camera"
+msgstr "Levende kamera!"
+
+#: src/gtkam-main.c:1020
+#, fuzzy
+msgid "_Select Camera..."
+msgstr "Vælg model/port..."
+
+#: src/gtkam-main.c:1035
+msgid "Ca_pture"
+msgstr ""
+
+#: src/gtkam-main.c:1046
+#, fuzzy
+msgid "_Configure"
+msgstr "Bekræft"
+
+#: src/gtkam-main.c:1057
+msgid "_Information"
+msgstr ""
+
+#: src/gtkam-main.c:1068
+#, fuzzy
+msgid "_Manual"
+msgstr "Brugermanual"
+
+#: src/gtkam-main.c:1079
+msgid "_About the Driver"
+msgstr ""
+
+#: src/gtkam-main.c:1092
+#, fuzzy
+msgid "_Help"
+msgstr "Hjælp"
+
+#: src/gtkam-main.c:1104
+msgid "_Debug"
+msgstr ""
+
+#: src/gtkam-main.c:1113
+msgid "_About"
+msgstr ""
+
+#: src/gtkam-main.c:1132
+msgid "Save selected photos"
+msgstr ""
+
+#: src/gtkam-main.c:1142
+#, fuzzy
+msgid "Delete selected photos"
+msgstr "Slet valgte billeder"
+
+#: src/gtkam-main.c:1156
+#, fuzzy
+msgid "Configure camera"
+msgstr "Bekræft"
+
+#: src/gtkam-main.c:1169
+msgid "Exit"
+msgstr ""
+
+#: src/gtkam-main.c:1214
+#, fuzzy
+msgid "Index Settings"
+msgstr "Farveindstillinger"
+
+#: src/gtkam-main.c:1218
+msgid "View Thumbnails"
+msgstr ""
+
+#: src/gtkam-mkdir.c:167
+#, c-format
+msgid "Could not create new directory '%s' in '%s'"
+msgstr ""
+
+#: src/gtkam-mkdir.c:237
+#, c-format
+msgid "Please choose a name for the directory that should be created in '%s':"
+msgstr ""
+
+#: src/gtkam-mkdir.c:253
+#, fuzzy
+msgid "New directory"
+msgstr "Uddata-katalog:"
+
+#: src/gtkam-preview.c:377 src/gtkam-preview.c:505
+#, fuzzy
+msgid "Capture"
+msgstr "Opret"
+
+#: src/gtkam-preview.c:426
+msgid "0°"
+msgstr ""
+
+#: src/gtkam-preview.c:434
+#, fuzzy
+msgid "Don't rotate thumbnail"
+msgstr "Hent miniatureindeks"
+
+#: src/gtkam-preview.c:436
+msgid "-90°"
+msgstr ""
+
+#: src/gtkam-preview.c:443
+msgid "Rotate thumbnail by -90°"
+msgstr ""
+
+#: src/gtkam-preview.c:445
+msgid "+90°"
+msgstr ""
+
+#: src/gtkam-preview.c:452
+msgid "Rotate thumbnail by 90°"
+msgstr ""
+
+#: src/gtkam-preview.c:454
+msgid "180°"
+msgstr ""
+
+#: src/gtkam-preview.c:461
+msgid "Rotate thumbnail by 180°"
+msgstr ""
+
+#: src/gtkam-preview.c:469
+#, c-format
+msgid "100%"
+msgstr ""
+
+#: src/gtkam-preview.c:476
+msgid "Don't enlarge thumbnail"
+msgstr ""
+
+#: src/gtkam-preview.c:478
+#, c-format
+msgid "150%"
+msgstr ""
+
+#: src/gtkam-preview.c:485
+#, c-format
+msgid "Enlarge thumbnail by 50%"
+msgstr ""
+
+#: src/gtkam-preview.c:487
+#, c-format
+msgid "200%"
+msgstr ""
+
+#: src/gtkam-preview.c:494
+#, c-format
+msgid "Enlarge thumbnail by 100%"
+msgstr ""
+
+#: src/gtkam-preview.c:496
+#, c-format
+msgid "250%"
+msgstr ""
+
+#: src/gtkam-preview.c:503
+#, c-format
+msgid "Enlarge thumbnail by 150%"
+msgstr ""
+
+#: src/gtkam-preview.c:516
+#, fuzzy
+msgid "Configure"
+msgstr "Bekræft"
+
+#: src/gtkam-save.c:286
+#, c-format
+msgid "'%s' already exists."
+msgstr ""
+
+#: src/gtkam-save.c:297
+#, fuzzy, c-format
+msgid "Could not save file to '%s'"
+msgstr "Kunne ikke gemme #%i"
+
+#: src/gtkam-save.c:334
+#, c-format
+msgid "Could not get '%s' from folder '%s'"
+msgstr ""
+
+#: src/gtkam-save.c:373
+#, fuzzy, c-format
+msgid "Getting '%s' (%i of %i)..."
+msgstr "Henter miniature %i..."
+
+#: src/gtkam-save.c:437
+#, fuzzy, c-format
+msgid "Save '%s'..."
+msgstr "Gem billede(r)..."
+
+#: src/gtkam-save.c:440
+#, fuzzy
+msgid "Save photos..."
+msgstr "Gem billede(r)..."
+
+#: src/gtkam-save.c:450
+msgid "What to save:"
+msgstr ""
+
+#: src/gtkam-save.c:459
+msgid "Save photos"
+msgstr ""
+
+#: src/gtkam-save.c:463
+msgid "Photos will be saved if this is checked"
+msgstr ""
+
+#: src/gtkam-save.c:469
+msgid "Save raw data"
+msgstr ""
+
+#: src/gtkam-save.c:472
+msgid "Raw data will be saved if this is checked"
+msgstr ""
+
+#: src/gtkam-save.c:478
+msgid "Save audio data"
+msgstr ""
+
+#: src/gtkam-save.c:481
+msgid "Audio data will be saved if this is checked"
+msgstr ""
+
+#: src/gtkam-save.c:487
+#, fuzzy
+msgid "Save thumbnails"
+msgstr "thumbnail-%03i.%s"
+
+#: src/gtkam-save.c:490
+msgid "Thumbnails will be saved if this is checked"
+msgstr ""
+
+#: src/gtkam-save.c:500
+#, fuzzy
+msgid "Open image(s) with:"
+msgstr "Åbn billede"
+
+#: src/gtkam-save.c:507
+msgid "Type in the name of the program you want to run, leave blank for none"
+msgstr ""
+
+#. Filenames provided by camera
+#: src/gtkam-save.c:513
+msgid "Use filenames provided by the camera"
+msgstr ""
+
+#: src/gtkam-save.c:518
+msgid "Choose whether to use the filename provided by the camera"
+msgstr ""
+
+#: src/gtkam-save.c:540
+#, fuzzy
+msgid "Filename prefix: "
+msgstr "Filnavn præfiks:"
+
+#: src/gtkam-tree.c:260
+msgid "No camera set"
+msgstr ""
+
+#: src/gtkam-tree.c:288
+#, fuzzy, c-format
+msgid "Could not retrieve file list for folder '%s'"
+msgstr "Kunne ikke hente #%i"
+
+#: src/gtkam-tree.c:310 src/gtkam-tree.c:353
+#, c-format
+msgid "Could not get list of folders for folder '%s'."
+msgstr ""
+
+#: src/gtkam-util.c:64
+#, c-format
+msgid ""
+"Could not display '%s'. Either the image type ('%s') is not supported by gtk "
+"or the file itself is corrupt."
+msgstr ""
+
+#~ msgid "No configuration options."
+#~ msgstr "Ingen konfigurationsvalg."
+
+#~ msgid "Mail image needs to be implemented!"
+#~ msgstr "Send billede skal implementeres!"
+
+#~ msgid "Taking picture..."
+#~ msgstr "Ta'r billede..."
+
+#~ msgid "New picture is #%03i"
+#~ msgstr "Nyt billede er #%03i"
+
+#~ msgid "Deleting ALL pictures."
+#~ msgstr "Sletter ALLE billeder."
+
+#~ msgid "Deleting %i...\n"
+#~ msgstr "Sletter %i...\n"
+
+#~ msgid "Deleted all images."
+#~ msgstr "Slettede alle billeer."
+
+#~ msgid "Deleting selected pictures..."
+#~ msgstr "Sletter valgte billeder..."
+
+#~ msgid "Nothing selected to be deleted."
+#~ msgstr "Intet valgt til sletning"
+
+#~ msgid "Are you sure you want to DELETE the selected images?"
+#~ msgstr "Er du sikker på at du vil SLETTE de valgte billeder?"
+
+#~ msgid "Are you sure you want to DELETE all the images from memory?"
+#~ msgstr "Er du sikker på at du vil SLETTE alle billederne fra hukommelsen?"
+
+#~ msgid "Yes"
+#~ msgstr "Ja"
+
+#~ msgid "Saving Image #%03i..."
+#~ msgstr "Gemmer billede #%03i..."
+
+#~ msgid "Saving Thumbnail #%03i..."
+#~ msgstr "Gemmer miniature #%03i..."
+
+#~ msgid "%s-thumbnail-%03i"
+#~ msgstr "%s-miniature-%03i"
+
+#~ msgid "Done. Images saved in %s"
+#~ msgstr "Færdig. Billeder gemt i %s"
+
+#~ msgid "%s/gphoto-image-%03i.jpg"
+#~ msgstr "%s/gphoto-billede-%03i.jpg"
+
+#~ msgid ""
+#~ "\n"
+#~ "gPhoto user(s) that reported this model:\n"
+#~ msgstr ""
+#~ "\n"
+#~ "gPhoto bruger(e) som har rapporteret denne model:\n"
+
+#~ msgid "Error: failed to open %s"
+#~ msgstr "Fejl: kunne ikke åbne %s"
+
+#~ msgid "Missing Serial Device Permissions"
+#~ msgstr "Mangler rettigheder til seriel-enheden"
+
+#~ msgid "Please check the permissions (see the manual)."
+#~ msgstr "Tjek venligst rettighederne (se manualen)."
+
+#~ msgid "Opened %s."
+#~ msgstr "Åbnede %s."
+
+#~ msgid "Could not open $HOME/.gphoto/gphotorc for writing."
+#~ msgstr "Kunne ikke åbne $HOME/.gphoto/gphotorc for skriving."
+
+#~ msgid "Could not open $HOME/.gphoto/gphotorc for writing.\n"
+#~ msgstr "Kunne ikke åbne $HOME/.gphoto/gphotorc for skriving.\n"
+
+#~ msgid ""
+#~ "Version Information-------------------Current Version: %sNew features all "
+#~ "over the place. Please seethe ChangeLog for more information.As always, "
+#~ "report bugs gphoto-devel@gphoto.orgThanx much."
+#~ msgstr ""
+#~ "Versionsinformation-------------------Denne version: %sNye funktioner "
+#~ "over det hele. Se venligst ChangeLog for mere information. Som altid, "
+#~ "rapportér fejl til gphoto-devel@gphoto.org. Mange tak."
+
+#~ msgid "OK"
+#~ msgstr "Ok"
+
+#~ msgid ""
+#~ "This program is free software; you can redistribute it and/or modifyit "
+#~ "under the terms of the GNU General Public License as published bythe Free "
+#~ "Software Foundation; either version 2 of the License, or(at your option) "
+#~ "any later version.This program is distributed in the hope that it will be "
+#~ "useful,but WITHOUT ANY WARRANTY; without even the implied warranty "
+#~ "ofMERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See theGNU "
+#~ "General Public License for more details.You should have received a copy "
+#~ "of the GNU General Public Licensealong with this program; if not, write "
+#~ "to the Free SoftwareFoundation, Inc., 675 Mass Ave, Cambridge, MA 02139, "
+#~ "USA.See http://www.gnu.org for more details on the GNU project."
+#~ msgstr ""
+#~ "Dette program er frit programmel; du kan redistribuere det og/eller ændre "
+#~ "det under betingelserne i GNUs Generelle Offentlige Licens (GPL) som "
+#~ "offentliggjort af Free Software Foundation; enten version 2 af licensen, "
+#~ "eller (efter dit eget valg) en hvilkensomhelst senere version. Dette "
+#~ "program er distribueret i håbet om at det vil være nyttigt, men UDEN "
+#~ "NOGENSOMHELST GARANTI; endog uden en underliggende garanti om SALGBARHED "
+#~ "eller EGNETHED FOR ET BESTEMT FORMÅL. Se GNUs Generelle Offentlige Licens "
+#~ "for flere detaljer. Du skulle have modtaget en kopi af GNUs Generelle "
+#~ "Offentlige Licens sammen med dette program; hvis dette ikke er tilfældet, "
+#~ "så skriv til Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA "
+#~ "02139, USA. Se http://www.gnu.org for flere detaljer om GNU-projektet."
+
+#~ msgid "%s is not yet implemented"
+#~ msgstr "%s er ikke implementeret endnu"
+
+#~ msgid "Picture #%i\n"
+#~ msgstr "Billede #%i\n"
+
+#~ msgid "Getting Index..."
+#~ msgstr "Henter indeks..."
+
+#~ msgid "num_pictures_taken is %d\n"
+#~ msgstr "num_pictures_taken er %d\n"
+
+#~ msgid "Download cancelled."
+#~ msgstr "Nedlastning afbrudt."
+
+#~ msgid "Done getting index."
+#~ msgstr "Færdig med at hente indeks."
+
+#~ msgid "Nothing selected for download."
+#~ msgstr "Ingenting valgt for nedlastning."
+
+#~ msgid "Getting Image #%03i..."
+#~ msgstr "Henter billede #%03i..."
+
+#~ msgid "Getting Thumbnail #%03i..."
+#~ msgstr "Henter miniature #%03i..."
+
+#~ msgid "Download halted."
+#~ msgstr "Nedlastning stoppet."
+
+#~ msgid "Save all opened images"
+#~ msgstr "Gem alle åbne billeder"
+
+#~ msgid "Saving the index is not yet supported"
+#~ msgstr "Gemning af indeks er ikke understøttet endnu"
+
+#~ msgid "Open Image..."
+#~ msgstr "Åbn billede..."
+
+#~ msgid "Can't print the index yet."
+#~ msgstr "Kan ikke udskrive indeksen endnu."
+
+#~ msgid "Print Image..."
+#~ msgstr "Udskriv billede..."
+
+#~ msgid "Print Command:"
+#~ msgstr "Udskriftskommando:"
+
+#~ msgid "Print"
+#~ msgstr "Udskriv"
+
+#~ msgid "Now spooling..."
+#~ msgstr "Sender udskrift..."
+
+#~ msgid "Spooling done. Printing may take a minute."
+#~ msgstr "Sending af udskrift færdig. Udskrift kan tage lidt tid."
+
+#~ msgid "Can't modify the index colors."
+#~ msgstr "Kan ikke ændre indeksfarverne."
+
+#~ msgid "Can't scale the index."
+#~ msgstr "Kan ikke skalere indeksen."
+
+#~ msgid "Resize Image..."
+#~ msgstr "Ændr billedestørrelse..."
+
+#~ msgid "Width:"
+#~ msgstr "Bredde:"
+
+#~ msgid "Height:"
+#~ msgstr "Højde:"
+
+#~ msgid "Resize"
+#~ msgstr "Ændr størrelse"
+
+#~ msgid "Can't manipulate the index."
+#~ msgstr "Kan ikke manipulere indekset."
+
+#~ msgid "Can't scale the index!"
+#~ msgstr "Kan ikke skalére indekset!"
+
+#~ msgid "Scaling image by 50%..."
+#~ msgstr "Skalérer billede med 50%..."
+
+#~ msgid "Scaling image by 200%..."
+#~ msgstr "Skalérer billede med 200%..."
+
+#~ msgid "Post-Processing Options"
+#~ msgstr "Efterbehandlingsindstillinger"
+
+#~ msgid "Enable post-processing"
+#~ msgstr "Aktivér efterbehandling"
+
+#~ msgid "Post-processing command-line:"
+#~ msgstr "Kommandolinje for efterbehandling:"
+
+#~ msgid "http://www.gphoto.org/help.php3"
+#~ msgstr "http://www.gphoto.org/help.php3"
+
+#~ msgid "http://www.gphoto.org/"
+#~ msgstr "http://www.gphoto.org/"
+
+#~ msgid "http://www.gphoto.org/feedback.php3"
+#~ msgstr "http://www.gphoto.org/feedback.php3"
+
+#~ msgid "http://www.gphoto.org/news.php3"
+#~ msgstr "http://www.gphoto.org/news.php3"
+
+#~ msgid "http://www.gphoto.org/download.php3"
+#~ msgstr "http://www.gphoto.org/download.php3"
+
+#~ msgid "http://www.gphoto.org/cameras.php3"
+#~ msgstr "http://www.gphoto.org/cameras.php3"
+
+#~ msgid "http://www.gphoto.org/supporting.php3"
+#~ msgstr "http://www.gphoto.org/supporting.php3"
+
+#~ msgid "http://www.gphoto.org/lists.php3"
+#~ msgstr "http://www.gphoto.org/lists.php3"
+
+#~ msgid "http://www.gphoto.org/team.php3"
+#~ msgstr "http://www.gphoto.org/team.php3"
+
+#~ msgid "http://www.gphoto.org/themes.php3"
+#~ msgstr "http://www.gphoto.org/themes.php3"
+
+#~ msgid "http://www.gphoto.org/links.php3"
+#~ msgstr "http://www.gphoto.org/links.php3"
+
+#~ msgid "http://www.gphoto.org/todo.php3"
+#~ msgstr "http://www.gphoto.org/todo.php3"
+
+#~ msgid ""
+#~ "%s summary:\n"
+#~ "%s"
+#~ msgstr ""
+#~ "%s oversigt:\n"
+#~ "%s"
+
+#~ msgid "gPhoto %s (%s) - the GNU digital camera application\n"
+#~ msgstr "gPhoto %s (%s) - Gnu applikation for digitale kameraer\n"
+
+#~ msgid ""
+#~ "Copyright (C) 1998-2000 Scott Fritzinger <scottf@unr.edu>\n"
+#~ "\n"
+#~ msgstr ""
+#~ "Ophavsret (C) 1998-2000 Scott Fritzinger <scottf@unr.edu>\n"
+#~ "\n"
+
+#~ msgid "Usage: gphoto [-h] [-c] [-n] [-s # filename] [-t # filename]\n"
+#~ msgstr "Brug: gphoto [-h] [-c] [-n] [-s nr filnavn] [-t nr filnavn]\n"
+
+#~ msgid "              [-d #] [-p filename] [-l filename]\n"
+#~ msgstr "                 [-d nr] [-p filnavn] [-l filnavn]\n"
+
+#~ msgid "\t-h                    display this help screen\n"
+#~ msgstr "-h                      vis denne hjælpetekst\n"
+
+#~ msgid "\t-c                    display camera summary\n"
+#~ msgstr "\t-c                    vis kamera oversigt\n"
+
+#~ msgid "\t-n                    display the # of pictures\n"
+#~ msgstr "\t-n                    vis antal billeder\n"
+
+#~ msgid "\t-s # filename         save image # as filename\n"
+#~ msgstr "\t-s nr filnavn         gem billede nummer nr som filnavn\n"
+
+#~ msgid "\t-t # filename         save thumbnail # as filename\n"
+#~ msgstr "\t-t # filnavn         gem miniature nummer nr som filnavn\n"
+
+#~ msgid "\t-d #                  delete image # from camera\n"
+#~ msgstr "\t-d nr                  slet billede nummer nr fra kamera\n"
+
+#~ msgid "\t-p filename           take picture and save as filename\n"
+#~ msgstr "\t-p filnavn           tag billede og gem som filnavn\n"
+
+#~ msgid ""
+#~ "\t-l filename           save live preview as filename\n"
+#~ "\n"
+#~ msgstr ""
+#~ "\t-l filnavn           gem levende smugkig som filnavn\n"
+#~ "\n"
+
+#~ msgid "gPhoto is free GNU software; you can redistribute it and/or\n"
+#~ msgstr "gPhoto er frit programmel; du kan redistribuere det og/eller\n"
+
+#~ msgid "modify it under the terms of the GNU General Public License \n"
+#~ msgstr ""
+#~ "ændre det under betingelserne i GNUs Generelle Offentlige Licens (GPL)\n"
+
+#~ msgid "as published by the Free Software Foundation; either version \n"
+#~ msgstr "som offentliggjort af Free Software Foundation; enten version \n"
+
+#~ msgid "2 of the License, or any later version.  Visit gphoto/COPYING\n"
+#~ msgstr ""
+#~ "2 af licensen, eller en hvilkensomhelst senere version. Se gphoto/"
+#~ "COPYING\n"
+
+#~ msgid ""
+#~ "in the source distribution to read the GNU GPL license terms.\n"
+#~ "\n"
+#~ msgstr ""
+#~ "i kilde-distributionen for at læse licensbetingelserne for GNU GPL.\n"
+#~ "\n"
+
+#~ msgid "Report bugs and camera success to gphoto-devel@gphoto.org.\n"
+#~ msgstr "Rapportér bugs og kamera succes til gphoto-devel@gphoto.org.\n"
+
+#~ msgid "See http://www.gphoto.org for the latest news and updates.\n"
+#~ msgstr "Se http://www.gphoto.org for de seneste nyheder og opdateringer.\n"
+
+#~ msgid "%i\n"
+#~ msgstr "%i\n"
+
+#~ msgid "ERROR: could not get image.\n"
+#~ msgstr "FEJL: kunne ikke få fat på billede.\n"
+
+#~ msgid "ERROR: could not save image.\n"
+#~ msgstr "FEJL: kunne ikke gemme billede.\n"
+
+#~ msgid "ERROR: 'filename' not specified.\n"
+#~ msgstr "FEJL: 'filename' ikke angivet.\n"
+
+#~ msgid "ERROR: '#' and 'filename' not specified.\n"
+#~ msgstr "FEJL: 'nummer' og 'filnavn' ikke angivet.\n"
+
+#~ msgid "ERROR: '#' not specified.\n"
+#~ msgstr "FEJL: 'nummer' ikke angivet.\n"
+
+#~ msgid "ERROR: filename not specified.\n"
+#~ msgstr "FEJL: filnavn ikke angivet.\n"
+
+#~ msgid "Taking picture...\n"
+#~ msgstr "Tager billede...\n"
+
+#~ msgid "ERROR: could not take the picture.\n"
+#~ msgstr "FEJL: kunne ikke tage billedet.\n"
+
+#~ msgid "Saving the new image (# %i) as %s: "
+#~ msgstr "Gemmer det billede (nummer %i) som %s: "
+
+#~ msgid ""
+#~ "\n"
+#~ "ERROR: could not get image.\n"
+#~ msgstr ""
+#~ "\n"
+#~ "FEJL: kunne ikke få fat på billede.\n"
+
+#~ msgid "gPhoto release %s was brought to you by"
+#~ msgstr "gPhoto version %s blev bragt til dig af"
+
+#~ msgid "Web Page"
+#~ msgstr "Web side"
+
+#~ msgid "Next"
+#~ msgstr "Næste"
+
+#~ msgid ""
+#~ "The gPhoto AUTHORS file appears to be missing!\n"
+#~ "\t      There should be a file called "
+#~ msgstr ""
+#~ "gPhoto AUTHORS filen ser ud til at mangle!\n"
+#~ "\t      Der skulle være en fil kaldet "
+
+#~ msgid "Select an Output Directory..."
+#~ msgstr "Vælg et uddata-katalog..."
+
+#~ msgid "Gallery Name:"
+#~ msgstr "Galleri-navn:"
+
+#~ msgid "Theme:"
+#~ msgstr "Tema:"
+
+#~ msgid "Change..."
+#~ msgstr "Ændr..."
+
+#~ msgid "Export file as *.shtml?"
+#~ msgstr "Eksport fil som *.shtml?"
+
+#~ msgid "Set table border width to zero for thumbnails?"
+#~ msgstr "Sæt tabelkantens bredde til nul for miniaturer?"
+
+#~ msgid ""
+#~ "Set image border width to zero? (so you don't see the link colors...)"
+#~ msgstr "Sæt billedkantens bredde til nul? (så du ikke ser lænke-farver...)"
+
+#~ msgid "You must select a theme!"
+#~ msgstr "Du skal vælge a tema!"
+
+#~ msgid "Getting Thumbnail #%i..."
+#~ msgstr "Finder miniature #%i..."
+
+#~ msgid "Not Available"
+#~ msgstr "Ikke tilgængelig"
+
+#~ msgid "<a href=\"picture-%03i.html\">Click Me<\\/a>"
+#~ msgstr "<a href=\"picture-%03i.html\">Click Me<\\/a>"
+
+#~ msgid "Getting Image #%i..."
+#~ msgstr "Finder Billede nummer %i..."
+
+#~ msgid "<img alt=\"%03i\" src=\"picture-%03i.%s\">"
+#~ msgstr "<img alt=\"%03i\" src=\"picture-%03i.%s\">"
+
+#~ msgid "picture-%03i.%s"
+#~ msgstr "picture-%03i.%s"
+
+#~ msgid "picture-%03i.html"
+#~ msgstr "picture-%03i.html"
+
+#~ msgid "%spicture-%03i.html"
+#~ msgstr "%spicture-%03i.html"
+
+#~ msgid "Loaded file:%s%s in %s"
+#~ msgstr "Indlæste fil:%s%s in %s"
+
+#~ msgid "Gallery saved in: %s"
+#~ msgstr "Galleri gemt i: %s"
+
+#~ msgid "Color Adjustment"
+#~ msgstr "Farvejustering"
+
+#~ msgid "gPhoto - Color Adjustment"
+#~ msgstr "gPhoto - farvejustering"
+
+#~ msgid "Gray Controls"
+#~ msgstr "Grå kontrol"
+
+#~ msgid "Red Controls"
+#~ msgstr "Rød kontrol"
+
+#~ msgid "Green Controls"
+#~ msgstr "Grøn kontrol"
+
+#~ msgid "Blue Controls"
+#~ msgstr "Blå kontrol"
+
+#~ msgid "Colour Modifications:"
+#~ msgstr "Farveændringer:"
+
+#~ msgid "Keep"
+#~ msgstr "Behold"
+
+#~ msgid "Reset all the color changes to normal values"
+#~ msgstr "Sæt alle farveændringerne tilbage til normale værdier"
+
+#~ msgid "Always Apply"
+#~ msgstr "Anvend altid"
+
+#~ msgid "Getting live image..."
+#~ msgstr "Finder levende billede..."
+
+#~ msgid "Update Picture"
+#~ msgstr "Opdatér billede"
+
+#~ msgid "Take Picture"
+#~ msgstr "Tag billede"
+
+#~ msgid ""
+#~ "\n"
+#~ "Launching Gnome Bugbuddy...\n"
+#~ msgstr ""
+#~ "\n"
+#~ "Stater Gnome Bugbuddy...\n"
+
+#~ msgid "gPhoto %s - the GNU digital camera application"
+#~ msgstr "gPhoto %s - Gnu applikation for digitale kameraer"
+
+#~ msgid "Image Index"
+#~ msgstr "Billedindeks"
+
+#~ msgid "Save Opened Image(s)"
+#~ msgstr "Gem åbnet billede(s)"
+
+#~ msgid "Print Image"
+#~ msgstr "Udskriv billede"
+
+#~ msgid "Close Image"
+#~ msgstr "Luk billede"
+
+#~ msgid "Previous page"
+#~ msgstr "Forrige billede"
+
+#~ msgid "Next page"
+#~ msgstr "Næste side"
+
+#~ msgid "Download Empty Index"
+#~ msgstr "Hent tomt indeks"
+
+#~ msgid "Download Selected Images"
+#~ msgstr "Hent valgte billeder"
+
+#~ msgid "Halt Download"
+#~ msgstr "Stop nedhentning"
+
+#~ msgid "Rotate Clockwise"
+#~ msgstr "Rotér med uret"
+
+#~ msgid "Rotate Counter-Clockwise"
+#~ msgstr "Rotér mod uret"
+
+#~ msgid "Flip Horizontal"
+#~ msgstr "Vend vandret"
+
+#~ msgid "Flip Vertical"
+#~ msgstr "Vend lodret"
+
+#~ msgid "Colors"
+#~ msgstr "Farver"
+
+#~ msgid "Exit gPhoto"
+#~ msgstr "Afslut gPhoto"
+
+#~ msgid "gPhoto Message"
+#~ msgstr "gPhoto besked"
+
+#~ msgid "File %s exists. Overwrite?"
+#~ msgstr "File %s eksisterer. Overskriv?"
+
+#~ msgid "load_image_mem: could not load image\n"
+#~ msgstr "load_image_mem: kunne ikke hente billede\n"
+
+#~ msgid "Fork failed. Exiting. \n"
+#~ msgstr "Fork fejlede. Afslutter. \n"

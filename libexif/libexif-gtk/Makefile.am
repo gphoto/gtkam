@@ -14,7 +14,7 @@ libexif_gtkinclude_HEADERS =		\
 	gtk-exif-tree.h			\
 	gtk-exif-tree-item.h
 
-libexif_gtk_la_SOURCES =		\
+libexif_gtk_la_SOURCES =			\
 	gtk-exif-browser.c		\
 	gtk-exif-content-list.c		\
 	gtk-exif-entry.c		\

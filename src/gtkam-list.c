@@ -53,7 +53,9 @@
 
 #include <gphoto2/gphoto2-list.h>
 
+#include "gtkam-close.h"
 #include "gtkam-error.h"
+#include "gtkam-exif.h"
 #include "../pixmaps/no_thumbnail.xpm"
 #include "gtkam-save.h"
 #include "gdk-pixbuf-hacks.h"
@@ -242,6 +244,24 @@ on_delete_activate (GtkMenuItem *menu_item, PopupData *data)
 }
 
 static void
+on_exif_activate (GtkMenuItem *menu_item, PopupData *data)
+{
+	GtkamList *list = data->list;
+	GtkWidget *dialog, *w;
+
+	w = gtk_widget_get_ancestor (GTK_WIDGET (data->list), GTK_TYPE_WINDOW);
+#if 0
+	dialog = gtkam_exif_new (list->priv->camera, list->priv->multi, 
+				 list->path, data->item->label, w);
+#else
+	list = NULL;
+	dialog = gtkam_close_new ("Not implemented!", w);
+#endif
+	if (dialog)
+		gtk_widget_show (dialog);
+}
+
+static void
 on_save_activate (GtkMenuItem *menu_item, PopupData *data)
 {
 	GtkamList *list = data->list;
@@ -279,6 +299,7 @@ on_select_icon (GtkIconList *ilist, GtkIconListItem *item,
 		GdkEventButton *event, GtkamList *list)
 {
 	CameraAbilities a;
+	CameraFile *file;
 	GtkWidget *dialog, *w;
 	int result;
 	gchar *msg;
@@ -349,6 +370,18 @@ on_select_icon (GtkIconList *ilist, GtkIconListItem *item,
 			gtk_container_add (GTK_CONTAINER (data->menu), i);
 			gtk_signal_connect (GTK_OBJECT (i), "activate",
 				GTK_SIGNAL_FUNC (on_info_activate), data);
+
+			i = gtk_menu_item_new_with_label (_("Exif"));
+			gtk_widget_show (i);
+			gtk_container_add (GTK_CONTAINER (data->menu), i);
+			gtk_signal_connect (GTK_OBJECT (i), "activate",
+				GTK_SIGNAL_FUNC (on_exif_activate), data);
+			gp_file_new (&file);
+			if (gp_camera_file_get (list->priv->camera,
+				list->path, item->label, GP_FILE_TYPE_EXIF,
+				file) < 0)
+				gtk_widget_set_sensitive (i, FALSE);
+			gp_file_unref (file);
 
 			i = gtk_menu_item_new ();
 			gtk_widget_show (i);

@@ -2,6 +2,7 @@
 
 INCLUDES =						\
 	-I$(top_srcdir)/intl				\
+	-I$(top_srcdir)/libexif				\
 	-DIMAGE_DIR=\"$(datadir)/images/gtkam\" 	\
 	-DGTKAM_LOCALEDIR=\""$(datadir)/locale"\"	\
 	@GTK_CFLAGS@
@@ -35,7 +36,9 @@ gtkam_SOURCES = \
 	main.c \
 	gtkiconlist.c gtkiconlist.h \
 	gtkitementry.c gtkitementry.h
-gtkam_LDADD = @GTK_LIBS@ libgtkam.a
+gtkam_LDADD = 							\
+	libgtkam.a						\
+	 @GTK_LIBS@
 
 if HAVE_GIMP
 libexecdir = $(GIMP_PLUGIN_DIR)/plug-ins

@@ -334,7 +334,7 @@ static void
 adjust_time (GtkCalendar *calendar, GtkamClock *clock, CameraWidget *widget)
 {
 	struct tm tm;
-	time_t time;
+	int time;
 
 	memset (&tm, 0, sizeof (struct tm));
 	gtkam_clock_get (clock, (guchar*) &tm.tm_hour,
@@ -346,9 +346,8 @@ adjust_time (GtkCalendar *calendar, GtkamClock *clock, CameraWidget *widget)
 	 * starts counting at 1900, whereas gtk_calendar starts counting at 0.
 	 */
 	tm.tm_year = tm.tm_year - 1900;
-
-	time = mktime (&tm);
-	gp_widget_set_value (widget, (int*) &time);
+	time = (int)mktime (&tm);
+	gp_widget_set_value (widget, &time);
 }
 
 static void
@@ -466,6 +465,7 @@ create_widgets (GtkamConfig *config, CameraWidget *widget)
 	GList *options = NULL;
 	gint i, id;
 	struct tm *tm;
+	time_t tt;
 
 	gp_widget_get_label (widget, &label);
 	frame = gtk_frame_new (label);
@@ -530,7 +530,8 @@ create_widgets (GtkamConfig *config, CameraWidget *widget)
 		gtk_box_pack_start (GTK_BOX (hbox), clock, FALSE, FALSE, 0);
 
 		/* Set date & time */
-		tm = localtime ((time_t*) &value_int);
+		tt = value_int;
+		tm = localtime (&tt);
 		gtk_calendar_select_month (GTK_CALENDAR (calendar),
 					   tm->tm_mon, tm->tm_year + 1900);
 		gtk_calendar_select_day (GTK_CALENDAR (calendar), tm->tm_mday); 

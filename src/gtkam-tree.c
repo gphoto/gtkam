@@ -240,6 +240,7 @@ create_item (GtkamTree *tree, GtkTree *tree_to_add_to, const gchar *path)
 	/* Subdirectories? */
 	gp_list_new (&list);
 	result = gp_camera_folder_list_folders (tree->priv->camera, path, list);
+	gp_camera_exit (tree->priv->camera);
 	if (result < 0) {
 		window = gtk_widget_get_ancestor (GTK_WIDGET (tree),
 						  GTK_TYPE_WINDOW);

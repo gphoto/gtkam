@@ -1,3 +1,9 @@
+2001-11-22  Lutz Müller <urc8@rz.uni-karlsruhe.de>
+
+	* src: Call gp_camera_exit after each camera operation in order to
+	  give other applications the chance to access the camera, too. This
+	  should be a configurable option at some time in the future.
+
 2001-11-20  Lutz Müller <urc8@rz.uni-karlsruhe.de>
 
 	* src: Prepare file loading from within gimp

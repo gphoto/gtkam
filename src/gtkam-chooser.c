@@ -207,8 +207,12 @@ gtkam_chooser_get_camera (GtkamChooser *chooser)
 	if (strcmp (speed, _("Best")))
 		gp_camera_set_port_speed (camera, atoi (speed));
 
-	/* Initialize the camera */
+	/*
+	 * Initialize the camera to check if it is really there. Exit
+	 * afterwards because other applications could need the camera, too.
+	 */
 	r = gp_camera_init (camera);
+	gp_camera_exit (camera);
 	if (r < 0) {
 		dialog = gtkam_error_new (_("Could not initialize camera"),
 			r, camera, GTK_WIDGET (chooser));

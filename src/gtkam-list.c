@@ -182,6 +182,7 @@ on_select_icon (GtkIconList *ilist, GtkIconListItem *item,
 	result = gp_camera_file_get (list->priv->camera,
 				     list->path, item->label,
 				     GP_FILE_TYPE_PREVIEW, file);
+	gp_camera_exit (list->priv->camera);
 	if (result < 0) {
 		window = gtk_widget_get_ancestor (GTK_WIDGET (list),
 						  GTK_TYPE_WINDOW);
@@ -270,6 +271,7 @@ gtkam_list_set_path (GtkamList *list, const gchar *path)
 
 	result = gp_camera_folder_list_files (list->priv->camera, path, &flist);
 	if (result < 0) {
+		gp_camera_exit (list->priv->camera);
 		msg = g_strdup_printf (_("Could not get file list for folder "
 				       "'%s'"), path);
 		dialog = gtkam_error_new (msg, result, list->priv->camera,
@@ -311,6 +313,8 @@ gtkam_list_set_path (GtkamList *list, const gchar *path)
 		gtkam_main_select_set_sensitive (GTKAM_MAIN (m), TRUE);
 	}
 	gp_file_unref (file);
+
+	gp_camera_exit (list->priv->camera);
 }
 
 void

@@ -164,6 +164,7 @@ gtkam_config_apply (GtkamConfig *config)
 
 	result = gp_camera_set_config (config->priv->camera,
 				       config->priv->config);
+	gp_camera_exit (config->priv->camera);
 	if (result != GP_OK) {
 		dialog = gtkam_error_new (_("Could not apply configuration"),
 					  result, config->priv->camera,
@@ -590,6 +591,7 @@ gtkam_config_new (Camera *camera)
 	g_return_val_if_fail (camera != NULL, NULL);
 
 	result = gp_camera_get_config (camera, &config_widget);
+	gp_camera_exit (camera);
 	if (result != GP_OK) {
 		dialog = gtkam_error_new (_("Could not get configuration"),
 					  result, camera, NULL);

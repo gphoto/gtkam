@@ -204,6 +204,7 @@ get_file (Camera *camera, CameraFilePath path, gint nparams, GimpParam *param,
         gp_camera_set_progress_func (camera, progress_func, NULL);
         result = gp_camera_file_get (camera, path.folder, path.name,
                                      GP_FILE_TYPE_NORMAL, file);
+	gp_camera_exit (camera);
         gp_camera_set_progress_func (camera, NULL, NULL);
         if (result < 0) {
                 gp_file_unref (file);
@@ -330,6 +331,7 @@ run_capture (gchar *name, gint nparams, GimpParam *param, gint *nreturn_vals,
 	case GIMP_RUN_NONINTERACTIVE:
 	case GIMP_RUN_WITH_LAST_VALS:
 		result = gp_camera_capture (camera, GP_CAPTURE_IMAGE, &path);
+		gp_camera_exit (camera);
 		if (result < 0) {
 			dialog = gtkam_error_new (_("Could not capture"),
 				result, camera, NULL);

@@ -355,8 +355,8 @@ on_ok_clicked (GtkButton *button, GtkamSave *save)
 			get_file (save, filename, GP_FILE_TYPE_AUDIO, file,
 				  i + 1);
 	}
-
 	gp_file_unref (file);
+	gp_camera_exit (save->priv->camera);
 
 	gtk_widget_destroy (GTK_WIDGET (save));
 }

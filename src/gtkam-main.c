@@ -288,6 +288,7 @@ on_capture_activate (GtkMenuItem *item, GtkamMain *m)
 
 	/* The camera doesn't support previews. Capture an image */
 	result = gp_camera_capture (m->priv->camera, GP_CAPTURE_IMAGE, &path);
+	gp_camera_exit (m->priv->camera);
 	if (result < 0) {
 		dialog = gtkam_error_new (_("Could not capture"), result,
 					  m->priv->camera, GTK_WIDGET (m));
@@ -386,6 +387,7 @@ on_information_activate (GtkMenuItem *item, GtkamMain *m)
 		return;
 
 	result = gp_camera_get_summary (m->priv->camera, &text);
+	gp_camera_exit (m->priv->camera);
 	if (result < 0)
 		dialog = gtkam_error_new (_("Could not retrieve information"),
 					  result, m->priv->camera,
@@ -406,6 +408,7 @@ on_manual_activate (GtkMenuItem *item, GtkamMain *m)
 		return;
 
 	result = gp_camera_get_manual (m->priv->camera, &text);
+	gp_camera_exit (m->priv->camera);
 	if (result < 0)
 		dialog = gtkam_error_new (_("Could not retrieve manual"),
 					  result, m->priv->camera,
@@ -426,6 +429,7 @@ on_about_driver_activate (GtkMenuItem *item, GtkamMain *m)
 		return;
 
 	result = gp_camera_get_about (m->priv->camera, &text);
+	gp_camera_exit (m->priv->camera);
 	if (result < 0)
 		dialog = gtkam_error_new (_("Could not get information "
 					  "about the driver"), result, 
@@ -508,6 +512,7 @@ on_remove_dir_activate (GtkMenuItem *item, GtkamMain *m)
 	dirname = g_dirname (path);
 	result = gp_camera_folder_remove_dir (m->priv->camera, dirname,
 					      g_basename (path));
+	gp_camera_exit (m->priv->camera);
 	if (result < 0) {
 		msg = g_strdup_printf (_("Could not remove '%s' from '%s'"),
 				       g_basename (path), dirname);
@@ -563,6 +568,7 @@ on_upload_activate (GtkMenuItem *item, GtkamMain *m)
 		} else {
 			r = gp_camera_folder_put_file (m->priv->camera,
 						       folder, file);
+			gp_camera_exit (m->priv->camera);
 			if (r < 0) {
 				msg = g_strdup_printf (_("Coult not upload "
 					"'%s' into folder '%s'"), path, folder);

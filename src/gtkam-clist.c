@@ -262,6 +262,7 @@ idle_func (gpointer idle_data)
 	gp_file_new (&file);
 	result = gp_camera_file_get (id->clist->priv->camera, id->clist->path,
 				     id->file, GP_FILE_TYPE_PREVIEW, file);
+	gp_camera_exit (id->clist->priv->camera);
 	if (result < 0) {
 		msg = g_strdup_printf (_("Could not get file '%s'"),
 			id->file);
@@ -333,6 +334,7 @@ gtkam_clist_set_path (GtkamCList *list, const gchar *path)
 	window = gtk_widget_get_ancestor (GTK_WIDGET (list), GTK_TYPE_WINDOW);
 
 	result = gp_camera_folder_list_files (list->priv->camera, path, &flist);
+	gp_camera_exit (list->priv->camera);
 	if (result < 0) {
 		msg = g_strdup_printf (_("Could not get file list for folder "
 				       "'%s'"), path);

@@ -48,6 +48,7 @@ static struct {
 	{JPEG_MARKER_EOI, "EOI", "End of image"},
 	{JPEG_MARKER_SOS, "SOS", "Start of image data"},
 	{JPEG_MARKER_EXIF, "EXIF", "EXIF data"},
+	{JPEG_MARKER_JFIF, "JFIF", ""},
 	{JPEG_MARKER_COM, "COM", "Comment"},
         {0, NULL, NULL}
 };

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gphoto 0.4.3\n"
-"POT-Creation-Date: 2002-06-03 21:48+0200\n"
+"POT-Creation-Date: 2002-07-22 09:22+0200\n"
 "PO-Revision-Date: 2000-04-21 23:23+0200\n"
 "Last-Translator: Andreas Hyden <a.hyden@cyberpoint.se>\n"
 "Language-Team: Swedish <sv@li.org>\n"
@@ -13,21 +13,14 @@ msgstr ""
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8-bit\n"
 
-#. Cancellation
-#: src/gtkam-cancel.c:307 src/gtkam-chooser.c:723 src/gtkam-delete.c:410
-#: src/gtkam-fsel.c:275 src/gtkam-info.c:681 src/gtkam-mkdir.c:274
-#: src/gtkam-port.c:229 src/gtkam-status.c:279
-msgid "Cancel"
-msgstr "Avbryt"
-
 #. Port?
-#: src/gtkam-chooser.c:246 src/gtkam-chooser.c:268
+#: src/gtkam-chooser.c:250 src/gtkam-chooser.c:272
 #, fuzzy
 msgid "None"
 msgstr "Nej"
 
 #. Speed?
-#: src/gtkam-chooser.c:276 src/gtkam-chooser.c:413 src/gtkam-chooser.c:688
+#: src/gtkam-chooser.c:280 src/gtkam-chooser.c:413 src/gtkam-chooser.c:667
 #, fuzzy
 msgid "Best"
 msgstr "Nollställ"
@@ -36,7 +29,7 @@ msgstr "Nollställ"
 #. * Initialize the camera to check if it is really there. Exit
 #. * afterwards because other applications could need the camera, too.
 #.
-#: src/gtkam-chooser.c:283
+#: src/gtkam-chooser.c:287
 #, fuzzy
 msgid "Initializing camera..."
 msgstr "Kunde inte ta bild."
@@ -56,400 +49,341 @@ msgstr "Kunde inte få antalet bilder"
 msgid "Detecting cameras..."
 msgstr "Välj modell/port..."
 
-#: src/gtkam-chooser.c:462
+#: src/gtkam-chooser.c:460
 msgid "No cameras detected."
 msgstr ""
 
-#: src/gtkam-chooser.c:478
+#: src/gtkam-chooser.c:477
 #, fuzzy
 msgid "Could not detect any cameras."
 msgstr "Kunde inte ta bild."
 
-#: src/gtkam-chooser.c:604
+#: src/gtkam-chooser.c:602
 #, fuzzy
 msgid "Select Camera"
 msgstr "Direktsänd kamera!"
 
-#: src/gtkam-chooser.c:642
+#: src/gtkam-chooser.c:617
 #, fuzzy
 msgid "Model:"
 msgstr "Kameramodell:"
 
-#: src/gtkam-chooser.c:653
+#: src/gtkam-chooser.c:630
 msgid "Detect"
 msgstr ""
 
-#: src/gtkam-chooser.c:659
+#: src/gtkam-chooser.c:636
 #, fuzzy
 msgid "Detect USB camera"
 msgstr "Välj modell/port..."
 
-#: src/gtkam-chooser.c:661
+#: src/gtkam-chooser.c:638
 msgid "Port:"
 msgstr "Port:"
 
-#: src/gtkam-chooser.c:673
-msgid "Add"
-msgstr ""
-
-#: src/gtkam-chooser.c:680
+#: src/gtkam-chooser.c:659
 msgid "Speed:"
 msgstr ""
 
-#: src/gtkam-chooser.c:692
+#: src/gtkam-chooser.c:673
 msgid "Allow multiple frontends"
 msgstr ""
 
-#: src/gtkam-chooser.c:699
+#: src/gtkam-chooser.c:680
 msgid "Enhanced"
 msgstr ""
 
-#: src/gtkam-chooser.c:706 src/gtkam-config.c:733 src/gtkam-fsel.c:267
-#: src/gtkam-info.c:655 src/gtkam-mkdir.c:266 src/gtkam-port.c:222
-msgid "Ok"
-msgstr ""
-
-#: src/gtkam-chooser.c:715 src/gtkam-config.c:740 src/gtkam-info.c:663
-msgid "Apply"
-msgstr "Verktställ"
-
-#: src/gtkam-chooser.c:763
+#: src/gtkam-chooser.c:744
 #, fuzzy
 msgid "Could not get number of supported camera models"
 msgstr "Kunde inte få antalet bilder"
 
-#: src/gtkam-chooser.c:793
+#: src/gtkam-chooser.c:774
 #, fuzzy
 msgid "Could not get number of ports."
 msgstr "Kunde inte få antalet bilder"
 
-#: src/gtkam-clist.c:188 src/gtkam-info.c:565
-#, fuzzy
-msgid "Preview"
-msgstr "Föregående"
-
-#: src/gtkam-clist.c:188
-#, fuzzy
-msgid "Filename"
-msgstr "Filnamn prefix:"
-
-#: src/gtkam-clist.c:225
-#, fuzzy, c-format
-msgid "Getting file '%s' from folder '%s'..."
-msgstr "Hämtar minibild  %i..."
-
-#: src/gtkam-clist.c:258
-#, fuzzy, c-format
-msgid "Could not get file '%s'."
-msgstr "Kunde inte få tag på förhandsgranskning"
-
-#: src/gtkam-clist.c:303
-#, fuzzy, c-format
-msgid "Getting list of files in folder '%s'..."
-msgstr "Kunde inte få tag på förhandsgranskning"
-
-#: src/gtkam-clist.c:319
-#, fuzzy, c-format
-msgid "Could not get file list for folder '%s'."
-msgstr "Kunde inte hämta #%i"
-
-#: src/gtkam-close.c:176 src/gtkam-config.c:747 src/gtkam-debug.c:330
-#: src/gtkam-error.c:230 src/gtkam-exif.c:206 src/gtkam-preview.c:528
-msgid "Close"
-msgstr "Stäng"
-
-#: src/gtkam-config.c:171
+#: src/gtkam-config.c:179
 #, fuzzy
 msgid "Applying configuration..."
 msgstr "Kamerakonfiguration"
 
-#: src/gtkam-config.c:187
+#: src/gtkam-config.c:195
 #, fuzzy
 msgid "Could not apply configuration."
 msgstr "Kamerakonfiguration"
 
-#: src/gtkam-config.c:234
+#: src/gtkam-config.c:243
 msgid "No additional information available. (1)"
 msgstr ""
 
-#: src/gtkam-config.c:239
+#: src/gtkam-config.c:248
 #, fuzzy
 msgid "General Settings"
 msgstr "Färginställningar"
 
-#: src/gtkam-config.c:309
+#: src/gtkam-config.c:323
 #, fuzzy
 msgid "Could not execute command."
 msgstr "FEL: Kunde inte ta bort bild.\n"
 
-#: src/gtkam-config.c:498
+#: src/gtkam-config.c:527
 msgid "No additional information available. (2)"
 msgstr ""
 
-#: src/gtkam-config.c:558
+#. Make it easy for users to select the system's time
+#: src/gtkam-config.c:563
+msgid "Set to system's time"
+msgstr ""
+
+#: src/gtkam-config.c:597
 msgid "No additional information available. (3)"
 msgstr ""
 
-#: src/gtkam-config.c:583
+#: src/gtkam-config.c:622
 msgid "No additional information available. (4)"
 msgstr ""
 
-#: src/gtkam-config.c:630
+#: src/gtkam-config.c:669
 msgid "No additional information available. (5)"
 msgstr ""
 
-#: src/gtkam-config.c:651
+#: src/gtkam-config.c:689
 msgid "No additional information available. (6)"
 msgstr ""
 
-#: src/gtkam-config.c:691
+#: src/gtkam-config.c:729
 #, fuzzy
 msgid "Getting configuration..."
 msgstr "Kunde inte få tag på förhandsgranskning"
 
-#: src/gtkam-config.c:706
+#: src/gtkam-config.c:744
 #, fuzzy
 msgid "Could not get configuration."
 msgstr "Kunde inte få tag på förhandsgranskning"
 
-#: src/gtkam-debug.c:215 src/gtkam-debug.c:323
+#: src/gtkam-debug.c:221
 #, fuzzy
 msgid "Save As..."
 msgstr "Spara bild(er)..."
 
-#: src/gtkam-debug.c:239
+#: src/gtkam-debug.c:243
 #, fuzzy, c-format
 msgid "Could not open '%s'!"
 msgstr ""
 "Kunde inte öppna:\n"
 "%s"
 
-#: src/gtkam-debug.c:276
+#: src/gtkam-debug.c:279
 msgid "Type of messages to log:"
 msgstr ""
 
-#: src/gtkam-debug.c:280
+#: src/gtkam-debug.c:283
 msgid "Error"
 msgstr ""
 
-#: src/gtkam-debug.c:287
+#: src/gtkam-debug.c:290
 msgid "Verbose"
 msgstr ""
 
-#: src/gtkam-debug.c:294
+#: src/gtkam-debug.c:297
 msgid "Debug"
 msgstr ""
 
-#: src/gtkam-debug.c:301
+#: src/gtkam-debug.c:304
 msgid "Data"
 msgstr ""
 
-#: src/gtkam-delete.c:231
+#: src/gtkam-delete.c:198
 #, c-format
 msgid "Deleting all files in '%s'..."
 msgstr ""
 
-#: src/gtkam-delete.c:249
+#: src/gtkam-delete.c:218
 #, fuzzy, c-format
 msgid "Could not delete all files in '%s'."
 msgstr "Kunde inte hämta #%i"
 
-#: src/gtkam-delete.c:276
+#: src/gtkam-delete.c:251
 #, fuzzy, c-format
 msgid "Deleting file '%s' from folder '%s'..."
 msgstr "Kunde inte hämta #%i"
 
-#: src/gtkam-delete.c:294
+#: src/gtkam-delete.c:272
 #, fuzzy, c-format
 msgid "Could not delete file '%s' in folder '%s'."
 msgstr "Kunde inte få tag på förhandsgranskning"
 
-#. Delete
-#: src/gtkam-delete.c:403 src/gtkam-info.c:546 src/gtkam-list.c:436
-msgid "Delete"
-msgstr ""
-
-#: src/gtkam-delete.c:437
+#: src/gtkam-delete.c:386
 msgid "Do you really want to delete the following file?"
 msgstr ""
 
-#: src/gtkam-delete.c:440
+#: src/gtkam-delete.c:389
 #, c-format
 msgid "Do you really want to delete the following %i files?"
 msgstr ""
 
-#: src/gtkam-delete.c:447
+#: src/gtkam-delete.c:396
 #, fuzzy, c-format
 msgid "'%s' in folder '%s'"
 msgstr "Kunde inte få tag på förhandsgranskning"
 
-#: src/gtkam-delete.c:450
+#: src/gtkam-delete.c:399
 #, fuzzy, c-format
 msgid "All files in folder '%s'"
 msgstr "Kunde inte få tag på förhandsgranskning"
 
-#: src/gtkam-error.c:222
+#: src/gtkam-error.c:214
 msgid "More"
 msgstr ""
 
-#: src/gtkam-exif.c:150
+#: src/gtkam-exif.c:151
 #, fuzzy, c-format
 msgid "Getting EXIF information for file '%s' in folder '%s'..."
 msgstr "Kunde inte få tag på förhandsgranskning"
 
-#: src/gtkam-exif.c:166
+#: src/gtkam-exif.c:167
 #, fuzzy, c-format
 msgid "Could not get exif information for '%s' in folder '%s'"
 msgstr "Kunde inte få tag på förhandsgranskning"
 
-#: src/gtkam-exif.c:179
+#: src/gtkam-exif.c:180
 #, fuzzy
 msgid "Could not interpret EXIF data."
 msgstr "Kunde inte ta bild."
 
-#: src/gtkam-exif.c:198
+#: src/gtkam-exif.c:197
 msgid "Gtkam has been compiled without exif support."
 msgstr ""
 
-#: src/gtkam-gimp.c:82
+#: src/gtkam-gimp.c:85
 msgid "Captures images from digital camera"
 msgstr ""
 
-#: src/gtkam-gimp.c:85
+#: src/gtkam-gimp.c:88
 msgid "<Toolbox>/File/Acquire/Capture from Camera..."
 msgstr ""
 
-#: src/gtkam-gimp.c:89
+#: src/gtkam-gimp.c:92
 msgid "Loads files from digital cameras"
 msgstr ""
 
-#: src/gtkam-gimp.c:93
+#: src/gtkam-gimp.c:96
 msgid "<Toolbox>/File/Acquire/Load from Camera..."
 msgstr ""
 
-#: src/gtkam-gimp.c:216
+#: src/gtkam-gimp.c:209
 #, c-format
 msgid "Downloading '%s' from '%s'..."
 msgstr ""
 
-#: src/gtkam-gimp.c:235
+#: src/gtkam-gimp.c:227
 #, fuzzy, c-format
 msgid "Could not download file '%s' from folder '%s'."
 msgstr "Kunde inte få tag på förhandsgranskning"
 
-#: src/gtkam-gimp.c:269
-msgid "Background"
-msgstr ""
+#: src/gtkam-gimp.c:260
+#, fuzzy
+msgid "Image"
+msgstr "Bildindex"
 
-#: src/gtkam-info.c:211
-#, c-format
-msgid "Getting information for file '%s' in '%s'..."
-msgstr ""
+#: src/gtkam-info.c:200
+#, fuzzy, c-format
+msgid "Setting information for file '%s' in '%s'..."
+msgstr "Kunde inte få tag på förhandsgranskning"
 
-#: src/gtkam-info.c:233
-#, c-format
-msgid "Could not set file information for '%s'"
-msgstr ""
+#: src/gtkam-info.c:227
+#, fuzzy, c-format
+msgid "Could not set file information for '%s' in folder '%s'"
+msgstr "Kunde inte få tag på förhandsgranskning"
 
-#: src/gtkam-info.c:373
+#. Get file info
+#: src/gtkam-info.c:356
 #, fuzzy, c-format
 msgid "Getting information about file '%s' in folder '%s'..."
 msgstr "Kunde inte få tag på förhandsgranskning"
 
-#: src/gtkam-info.c:386
+#: src/gtkam-info.c:368
 #, fuzzy, c-format
-msgid "Could not get information about file '%s' in folder '%s'."
+msgid "Could not get information about file '%s' in '%s' in folder '%s'."
 msgstr "Kunde inte få tag på förhandsgranskning"
 
-#: src/gtkam-info.c:435
+#: src/gtkam-info.c:396
 msgid "File"
 msgstr ""
 
-#: src/gtkam-info.c:441
+#: src/gtkam-info.c:402
 msgid "Name:"
 msgstr ""
 
-#: src/gtkam-info.c:463 src/gtkam-info.c:571
+#: src/gtkam-info.c:425 src/gtkam-info.c:533
 msgid "Mime type:"
 msgstr ""
 
-#: src/gtkam-info.c:481
+#: src/gtkam-info.c:443
 msgid "Last modified:"
 msgstr ""
 
-#: src/gtkam-info.c:502 src/gtkam-info.c:588 src/gtkam-info.c:636
+#: src/gtkam-info.c:464 src/gtkam-info.c:550 src/gtkam-info.c:598
 msgid "Size:"
 msgstr ""
 
-#: src/gtkam-info.c:509
+#: src/gtkam-info.c:471
 #, c-format
 msgid "%li bytes"
 msgstr ""
 
-#: src/gtkam-info.c:523
+#: src/gtkam-info.c:485
 msgid "Permissions:"
 msgstr ""
 
-#: src/gtkam-info.c:535
+#: src/gtkam-info.c:497
 msgid "Read"
 msgstr ""
 
-#: src/gtkam-info.c:613
+#: src/gtkam-info.c:508
+msgid "Delete"
+msgstr ""
+
+#: src/gtkam-info.c:527 src/gtkam-list.c:737
+#, fuzzy
+msgid "Preview"
+msgstr "Föregående"
+
+#: src/gtkam-info.c:575
 msgid "Audio"
 msgstr ""
 
-#: src/gtkam-info.c:619
+#: src/gtkam-info.c:581
 msgid "Mime type: "
 msgstr ""
 
-#: src/gtkam-info.c:672
-msgid "Reset"
-msgstr "Nollställ"
-
-#: src/gtkam-list.c:345
+#: src/gtkam-list.c:291
 #, fuzzy, c-format
-msgid "Getting thumbnail of file '%s' in folder '%s'..."
+msgid "Downloading thumbnail of '%s' from folder '%s'..."
 msgstr "Kunde inte få tag på förhandsgranskning"
 
-#: src/gtkam-list.c:374
+#: src/gtkam-list.c:659
 #, fuzzy, c-format
-msgid "Could not get preview of file '%s' in folder '%s'"
+msgid "Changing name of '%s' to '%s'..."
 msgstr "Kunde inte få tag på förhandsgranskning"
 
-#: src/gtkam-list.c:403
-msgid "Info"
-msgstr ""
+#: src/gtkam-list.c:669
+#, fuzzy, c-format
+msgid "Could not change the name of '%s' to '%s'."
+msgstr "Kunde inte hämta #%i"
 
-#: src/gtkam-list.c:409
-msgid "Exif"
-msgstr ""
-
-#. Save
-#: src/gtkam-list.c:429
-msgid "Save"
-msgstr "Spara"
-
-#: src/gtkam-list.c:504
+#: src/gtkam-list.c:767
 #, c-format
 msgid "Listing files in folder '%s'..."
 msgstr ""
 
-#: src/gtkam-list.c:521
+#: src/gtkam-list.c:783
 #, c-format
 msgid "Could not get file list for folder '%s'"
 msgstr ""
 
-#: src/gtkam-list.c:576
-#, fuzzy, c-format
-msgid "Getting preview of file '%s' in folder '%s'..."
-msgstr "Kunde inte få tag på förhandsgranskning"
-
-#: src/gtkam-list.c:604
-#, fuzzy, c-format
-msgid "Could not get preview of file '%s' in folder '%s'."
-msgstr "Kunde inte få tag på förhandsgranskning"
-
-#: src/gtkam-main.c:435
+#: src/gtkam-main.c:385
 #, c-format
 msgid ""
 "%s %s\n"
@@ -467,366 +401,290 @@ msgid ""
 "Enjoy the wonderful world of gphoto!"
 msgstr ""
 
-#: src/gtkam-main.c:537
-#, fuzzy
-msgid "Getting information about the camera..."
-msgstr "Kunde inte få tag på förhandsgranskning"
-
-#: src/gtkam-main.c:541
-#, fuzzy
-msgid "Getting information about the driver..."
-msgstr "Kunde inte få tag på förhandsgranskning"
-
-#: src/gtkam-main.c:545
-#, fuzzy
-msgid "Getting manual..."
-msgstr "Hämtar minibild #%i..."
-
-#: src/gtkam-main.c:576
-#, fuzzy
-msgid "Could not retrieve information."
-msgstr "Kunde inte hämta #%i"
-
-#: src/gtkam-main.c:632
-msgid "_File"
-msgstr ""
-
-#: src/gtkam-main.c:645
-msgid "_Save Selected Photos..."
-msgstr ""
-
-#: src/gtkam-main.c:657
-#, fuzzy
-msgid "_Delete Photos"
-msgstr "Ta bort markerade bilder"
-
-#: src/gtkam-main.c:670
-#, fuzzy
-msgid "_Selected"
-msgstr "Direktsänd kamera!"
-
-#: src/gtkam-main.c:681 src/gtkam-main.c:722
-msgid "_All"
-msgstr ""
-
-#: src/gtkam-main.c:697
-msgid "_Exit"
-msgstr ""
-
-#: src/gtkam-main.c:709
-msgid "_Select"
-msgstr ""
-
-#: src/gtkam-main.c:733
-msgid "_Inverse"
-msgstr ""
-
-#: src/gtkam-main.c:744
-#, fuzzy
-msgid "_None"
-msgstr "Klar."
-
-#: src/gtkam-main.c:757
-#, fuzzy
-msgid "_Camera"
-msgstr "Direktsänd kamera!"
-
-#: src/gtkam-main.c:769
-#, fuzzy
-msgid "_Add Camera..."
-msgstr "Välj modell/port..."
-
-#. Summary
-#: src/gtkam-main.c:781
-msgid "Summary"
-msgstr ""
-
-#. Manual
-#: src/gtkam-main.c:791
-#, fuzzy
-msgid "Manual"
-msgstr "Användarmanual"
-
-#. About
-#: src/gtkam-main.c:801
-msgid "About the driver"
-msgstr ""
-
-#. Preferences
-#: src/gtkam-main.c:812
-msgid "Preferences"
-msgstr ""
-
-#: src/gtkam-main.c:825
+#: src/gtkam-main.c:505
 #, fuzzy
 msgid "_Help"
 msgstr "Hjälp"
 
-#: src/gtkam-main.c:837
+#: src/gtkam-main.c:517
 msgid "_Debug..."
 msgstr ""
 
-#: src/gtkam-main.c:846
+#: src/gtkam-main.c:526
 msgid "_About..."
 msgstr ""
 
-#: src/gtkam-main.c:865
-#, fuzzy
-msgid "Save selected photos..."
-msgstr "Spara bild(er)..."
-
-#: src/gtkam-main.c:875
-#, fuzzy
-msgid "Delete selected photos"
-msgstr "Ta bort markerade bilder"
-
-#: src/gtkam-main.c:893
-msgid "Exit"
-msgstr ""
-
-#: src/gtkam-main.c:921
+#: src/gtkam-main.c:558
 #, fuzzy
 msgid "Index Settings"
 msgstr "Färginställningar"
 
-#: src/gtkam-main.c:925
+#: src/gtkam-main.c:562
 msgid "View Thumbnails"
 msgstr ""
 
-#: src/gtkam-mkdir.c:163
+#: src/gtkam-mkdir.c:170
 #, fuzzy, c-format
 msgid "Creating folder '%s' in folder '%s'..."
 msgstr "Kunde inte få tag på förhandsgranskning"
 
-#: src/gtkam-mkdir.c:188
+#: src/gtkam-mkdir.c:204
 #, fuzzy, c-format
 msgid "Could not create folder '%s' in folder '%s'."
 msgstr "Kunde inte få tag på förhandsgranskning"
 
-#: src/gtkam-mkdir.c:247
+#: src/gtkam-mkdir.c:230
 #, c-format
 msgid "Please choose a name for the directory that should be created in '%s':"
 msgstr ""
 
-#: src/gtkam-mkdir.c:263
+#: src/gtkam-mkdir.c:246
 #, fuzzy
 msgid "New directory"
 msgstr "Utdata-katalog:"
 
-#: src/gtkam-port.c:155
+#: src/gtkam-port.c:163
 #, fuzzy, c-format
 msgid "Could not find and io-driver for port '%s' ('%s')."
 msgstr "Kunde inte hämta #%i"
 
-#: src/gtkam-port.c:210
+#: src/gtkam-port.c:198
 msgid "Please specify the (extended) path to the port you would like to use:"
 msgstr ""
 
-#: src/gtkam-preview.c:185
+#. The camera doesn't support previews. Capture an image.
+#: src/gtkam-preview.c:205 src/gtkam-tree.c:781
 #, fuzzy
 msgid "Capturing image..."
 msgstr "Skriv ut bild..."
 
-#: src/gtkam-preview.c:202
+#: src/gtkam-preview.c:227
 #, fuzzy
 msgid "Could not capture image."
 msgstr "Kunde inte ta bild."
 
-#: src/gtkam-preview.c:380 src/gtkam-preview.c:508
+#: src/gtkam-preview.c:362 src/gtkam-preview.c:425
 #, fuzzy
 msgid "Capture"
 msgstr "Skapa"
 
-#: src/gtkam-preview.c:429
+#: src/gtkam-preview.c:388
 msgid "0 degrees"
 msgstr ""
 
-#: src/gtkam-preview.c:437
+#: src/gtkam-preview.c:396
 #, fuzzy
 msgid "Don't rotate thumbnail"
 msgstr "Ladda ner minibild index"
 
-#: src/gtkam-preview.c:439
+#: src/gtkam-preview.c:398
 msgid "-90 degrees"
 msgstr ""
 
-#: src/gtkam-preview.c:446
+#: src/gtkam-preview.c:405
 msgid "Rotate thumbnail by -90 degrees"
 msgstr ""
 
-#: src/gtkam-preview.c:448
+#: src/gtkam-preview.c:407
 msgid "+90 degrees"
 msgstr ""
 
-#: src/gtkam-preview.c:455
+#: src/gtkam-preview.c:414
 msgid "Rotate thumbnail by 90 degrees"
 msgstr ""
 
-#: src/gtkam-preview.c:457
+#: src/gtkam-preview.c:416
 msgid "180 degrees"
 msgstr ""
 
-#: src/gtkam-preview.c:464
+#: src/gtkam-preview.c:423
 msgid "Rotate thumbnail by 180 degrees"
 msgstr ""
 
-#: src/gtkam-preview.c:472
-#, c-format
-msgid "100%"
-msgstr ""
-
-#: src/gtkam-preview.c:479
-msgid "Don't enlarge thumbnail"
-msgstr ""
-
-#: src/gtkam-preview.c:481
-#, c-format
-msgid "150%"
-msgstr ""
-
-#: src/gtkam-preview.c:488
-#, c-format
-msgid "Enlarge thumbnail by 50%"
-msgstr ""
-
-#: src/gtkam-preview.c:490
-#, c-format
-msgid "200%"
-msgstr ""
-
-#: src/gtkam-preview.c:497
-#, c-format
-msgid "Enlarge thumbnail by 100%"
-msgstr ""
-
-#: src/gtkam-preview.c:499
-#, c-format
-msgid "250%"
-msgstr ""
-
-#: src/gtkam-preview.c:506
-#, c-format
-msgid "Enlarge thumbnail by 150%"
-msgstr ""
-
-#: src/gtkam-preview.c:519
-#, fuzzy
-msgid "Configure"
-msgstr "Bekräfta"
-
-#: src/gtkam-save.c:326
+#: src/gtkam-save.c:335
 #, c-format
 msgid "'%s' already exists."
 msgstr ""
 
-#: src/gtkam-save.c:338
+#: src/gtkam-save.c:349
 #, fuzzy, c-format
 msgid "Could not save file to '%s'."
 msgstr "Kunde inte spara #%i"
 
-#: src/gtkam-save.c:374
+#: src/gtkam-save.c:385
 #, fuzzy, c-format
 msgid "Could not get '%s' from folder '%s'."
 msgstr "Kunde inte få tag på förhandsgranskning"
 
-#: src/gtkam-save.c:395 src/gtkam-save.c:400
+#: src/gtkam-save.c:406 src/gtkam-save.c:411
 #, fuzzy, c-format
 msgid "Downloading %i files..."
 msgstr "Nerladdningen klar."
 
-#: src/gtkam-save.c:478
+#: src/gtkam-save.c:479
 msgid "What to save:"
 msgstr ""
 
-#: src/gtkam-save.c:487
+#: src/gtkam-save.c:488
 msgid "Save photos"
 msgstr ""
 
-#: src/gtkam-save.c:491
+#: src/gtkam-save.c:492
 msgid "Photos will be saved if this is checked"
 msgstr ""
 
 #. 	gp_camera_get_abilities (camera, &a);
 #. 	if (a.file_operations & GP_FILE_OPERATION_RAW) {
-#: src/gtkam-save.c:497
+#: src/gtkam-save.c:498
 msgid "Save raw data"
 msgstr ""
 
-#: src/gtkam-save.c:500
+#: src/gtkam-save.c:501
 msgid "Raw data will be saved if this is checked"
 msgstr ""
 
 #. 	}
 #. 	if (a.file_operations & GP_FILE_OPERATION_AUDIO) {
-#: src/gtkam-save.c:506
+#: src/gtkam-save.c:507
 msgid "Save audio data"
 msgstr ""
 
-#: src/gtkam-save.c:509
+#: src/gtkam-save.c:510
 msgid "Audio data will be saved if this is checked"
 msgstr ""
 
 #. 	}
 #. 	if (a.file_operations & GP_FILE_OPERATION_PREVIEW) {
-#: src/gtkam-save.c:515
+#: src/gtkam-save.c:516
 #, fuzzy
 msgid "Save thumbnails"
 msgstr "minibild-%03i.%s"
 
-#: src/gtkam-save.c:518
+#: src/gtkam-save.c:519
 msgid "Thumbnails will be saved if this is checked"
 msgstr ""
 
 #. 	}
 #. 	if (a.file_operations & GP_FILE_OPERATION_EXIF) {
-#: src/gtkam-save.c:524
+#: src/gtkam-save.c:525
 msgid "Save EXIF data"
 msgstr ""
 
-#: src/gtkam-save.c:527
+#: src/gtkam-save.c:528
 msgid "EXIF data will be saved if this is checked"
 msgstr ""
 
-#: src/gtkam-save.c:537
+#: src/gtkam-save.c:538
 #, fuzzy
 msgid "Open image(s) with: "
 msgstr "Öppna bild"
 
-#: src/gtkam-save.c:544
+#: src/gtkam-save.c:545
 msgid "Type in the name of the program you want to run, leave blank for none"
 msgstr ""
 
 #. Filenames provided by camera
-#: src/gtkam-save.c:550
+#: src/gtkam-save.c:551
 msgid "Use filename(s) provided by the camera"
 msgstr ""
 
-#: src/gtkam-save.c:555
+#: src/gtkam-save.c:556
 msgid "Choose whether to use the filename provided by the camera"
 msgstr ""
 
-#: src/gtkam-save.c:575
+#: src/gtkam-save.c:571
 #, fuzzy
 msgid "Filename prefix: "
 msgstr "Filnamn prefix:"
 
-#: src/gtkam-save.c:584
+#: src/gtkam-save.c:580
 msgid "Start numbering with: "
 msgstr ""
 
 #. First case: We have only one file.
-#: src/gtkam-save.c:622
+#: src/gtkam-save.c:619
 #, fuzzy, c-format
 msgid "Save '%s'..."
 msgstr "Spara bild(er)..."
 
 #. Second case: We have multiple files to save.
-#: src/gtkam-save.c:644
+#: src/gtkam-save.c:641
 #, fuzzy
 msgid "Save photos..."
 msgstr "Spara bild(er)..."
 
-#: src/gtkam-tree.c:384
+#: src/gtkam-tree.c:299
+#, fuzzy, c-format
+msgid "Listing folders in '%s'..."
+msgstr "Kunde inte få tag på förhandsgranskning"
+
+#: src/gtkam-tree.c:320
+#, fuzzy, c-format
+msgid "Could not list folders in '%s'."
+msgstr "Kunde inte hämta #%i"
+
+#: src/gtkam-tree.c:417
+#, fuzzy, c-format
+msgid "Could not open '%s'."
+msgstr ""
+"Kunde inte öppna:\n"
+"%s"
+
+#: src/gtkam-tree.c:424
+#, fuzzy, c-format
+msgid "Uploading '%s' into folder '%s'..."
+msgstr "Kunde inte få tag på förhandsgranskning"
+
+#: src/gtkam-tree.c:444
+#, fuzzy, c-format
+msgid "Could not upload '%s' into '%s'."
+msgstr "Kunde inte få tag på förhandsgranskning"
+
+#: src/gtkam-tree.c:468
+#, fuzzy, c-format
+msgid "Upload into '%s'..."
+msgstr "Nerladdningen klar."
+
+#: src/gtkam-tree.c:544
+#, fuzzy, c-format
+msgid "Removing directory '%s'..."
+msgstr "Kunde inte hämta #%i"
+
+#: src/gtkam-tree.c:561
+#, fuzzy, c-format
+msgid "Could not remove directory '%s'."
+msgstr "Kunde inte hämta #%i"
+
+#: src/gtkam-tree.c:590
+#, fuzzy
+msgid "Getting information about the camera..."
+msgstr "Kunde inte få tag på förhandsgranskning"
+
+#: src/gtkam-tree.c:594
+#, fuzzy
+msgid "Getting information about the driver..."
+msgstr "Kunde inte få tag på förhandsgranskning"
+
+#: src/gtkam-tree.c:598
+#, fuzzy
+msgid "Getting manual..."
+msgstr "Hämtar minibild #%i..."
+
+#: src/gtkam-tree.c:629
+#, fuzzy
+msgid "Could not retrieve information."
+msgstr "Kunde inte hämta #%i"
+
+#: src/gtkam-tree.c:799
+#, fuzzy
+msgid "Could not capture."
+msgstr "Kunde inte ta bild."
+
+#: src/gtkam-tree.c:959
+msgid "Folder"
+msgstr ""
+
+#: src/gtkam-tree.c:1052
 #, fuzzy
 msgid "Loading cameras..."
 msgstr "Välj modell/port..."
@@ -838,53 +696,110 @@ msgid ""
 "or the file itself is corrupt."
 msgstr ""
 
-#: src/support.c:100
+#: src/support.c:68
 #, fuzzy, c-format
 msgid "Couldn't find pixmap file: %s"
 msgstr "Kunde inte få tag på förhandsgranskning"
 
-#: src/support.c:109
+#: src/support.c:77
 #, fuzzy, c-format
 msgid "Error loading pixmap file: %s"
 msgstr "Nerladdningen klar."
 
+#~ msgid "Cancel"
+#~ msgstr "Avbryt"
+
+#~ msgid "Apply"
+#~ msgstr "Verktställ"
+
 #, fuzzy
-#~ msgid "Removing '%s' from '%s'..."
+#~ msgid "Filename"
+#~ msgstr "Filnamn prefix:"
+
+#, fuzzy
+#~ msgid "Getting file '%s' from folder '%s'..."
+#~ msgstr "Hämtar minibild  %i..."
+
+#, fuzzy
+#~ msgid "Could not get file '%s'."
+#~ msgstr "Kunde inte få tag på förhandsgranskning"
+
+#, fuzzy
+#~ msgid "Getting list of files in folder '%s'..."
+#~ msgstr "Kunde inte få tag på förhandsgranskning"
+
+#, fuzzy
+#~ msgid "Could not get file list for folder '%s'."
 #~ msgstr "Kunde inte hämta #%i"
+
+#~ msgid "Close"
+#~ msgstr "Stäng"
+
+#~ msgid "Reset"
+#~ msgstr "Nollställ"
+
+#, fuzzy
+#~ msgid "Could not get preview of file '%s' in folder '%s'"
+#~ msgstr "Kunde inte få tag på förhandsgranskning"
+
+#~ msgid "Save"
+#~ msgstr "Spara"
+
+#, fuzzy
+#~ msgid "Getting preview of file '%s' in folder '%s'..."
+#~ msgstr "Kunde inte få tag på förhandsgranskning"
+
+#, fuzzy
+#~ msgid "Could not get preview of file '%s' in folder '%s'."
+#~ msgstr "Kunde inte få tag på förhandsgranskning"
+
+#, fuzzy
+#~ msgid "_Delete Photos"
+#~ msgstr "Ta bort markerade bilder"
+
+#, fuzzy
+#~ msgid "_Selected"
+#~ msgstr "Direktsänd kamera!"
+
+#, fuzzy
+#~ msgid "_None"
+#~ msgstr "Klar."
+
+#, fuzzy
+#~ msgid "_Camera"
+#~ msgstr "Direktsänd kamera!"
+
+#, fuzzy
+#~ msgid "_Add Camera..."
+#~ msgstr "Välj modell/port..."
+
+#, fuzzy
+#~ msgid "Manual"
+#~ msgstr "Användarmanual"
+
+#, fuzzy
+#~ msgid "Save selected photos..."
+#~ msgstr "Spara bild(er)..."
+
+#, fuzzy
+#~ msgid "Delete selected photos"
+#~ msgstr "Ta bort markerade bilder"
+
+#, fuzzy
+#~ msgid "Configure"
+#~ msgstr "Bekräfta"
 
 #, fuzzy
 #~ msgid "Could not remove '%s' from '%s'"
 #~ msgstr "Kunde inte hämta #%i"
 
 #, fuzzy
-#~ msgid "Could not capture."
-#~ msgstr "Kunde inte ta bild."
-
-#, fuzzy
 #~ msgid "Could not retrieve manual."
 #~ msgstr "Kunde inte hämta #%i"
 
 #, fuzzy
-#~ msgid "Could not remove '%s' from '%s'."
-#~ msgstr "Kunde inte hämta #%i"
-
-#, fuzzy
-#~ msgid "Could not open '%s'."
-#~ msgstr ""
-#~ "Kunde inte öppna:\n"
-#~ "%s"
-
-#, fuzzy
-#~ msgid "Coult not upload '%s' into folder '%s'."
-#~ msgstr "Kunde inte få tag på förhandsgranskning"
-
-#, fuzzy
 #~ msgid "_Create..."
 #~ msgstr "Skapa"
-
-#, fuzzy
-#~ msgid "_Upload file..."
-#~ msgstr "Nerladdningen klar."
 
 #, fuzzy
 #~ msgid "Ca_pture..."
@@ -1387,9 +1302,6 @@ msgstr "Nerladdningen klar."
 
 #~ msgid "gPhoto %s - the GNU digital camera application"
 #~ msgstr "gPhoto %s - GNU's digitala kamera-applikation"
-
-#~ msgid "Image Index"
-#~ msgstr "Bildindex"
 
 #~ msgid "Save Opened Image(s)"
 #~ msgstr "Spara öppnade bild(s)"

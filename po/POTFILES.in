@@ -3,7 +3,6 @@
 src/main.c
 src/gtkam-cancel.c
 src/gtkam-chooser.c
-src/gtkam-clist.c
 src/gtkam-close.c
 src/gtkam-config.c
 src/gtkam-context.c

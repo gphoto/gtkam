@@ -764,7 +764,8 @@ void camera_select() {
 	GtkWidget *window, *ok, *cancel, *camera, *port, *speed;
 	GList *camera_list;
 	int num_cameras, x;
-	char buf[1024];
+	char buf[128];
+	const char *name;
 	char *camera_name, *port_name, *port_path, *speed_name;
 	
 	debug_print("camera select");
@@ -788,8 +789,8 @@ void camera_select() {
 	/* populate the camera list */
 	camera_list = g_list_alloc();
 	for (x=0; x<num_cameras; x++) {
-		if (gp_camera_name(x, buf)==GP_OK)
-			camera_list = g_list_append(camera_list, strdup(buf));
+		if (gp_camera_name(x, &name)==GP_OK)
+			camera_list = g_list_append(camera_list, strdup(name));
 		   else
 			camera_list = g_list_append(camera_list, "ERROR");
 	}

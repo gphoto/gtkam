@@ -92,7 +92,7 @@ main (int argc, char *argv[])
 	    (gp_setting_get ("gtkam", "speed", speed) == GP_OK)) {
 		gp_camera_new (&camera);
 		gp_camera_set_model (camera, model);
-		if (strcmp (port, "None"))
+		if (strcmp (port, "None") && strcmp (model, "Directory Browse"))
 			gp_camera_set_port_name (camera, port);
 		if (atoi (speed))
 			gp_camera_set_port_speed (camera, atoi (speed));

@@ -180,7 +180,7 @@ on_save_selected_photos_clicked (GtkMenuItem *item, GtkamMain *m)
 static void
 on_exit_activate (GtkMenuItem *item, GtkamMain *m)
 {
-	gtk_main_quit ();
+	gtk_object_destroy (GTK_OBJECT (m));
 }
 
 static void

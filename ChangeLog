@@ -1,4 +1,11 @@
-2001-11-17  Lutz Müller <urc8@rz.uni-karlsruhe.de;
+2001-11-19  Lutz Müller <urc8@rz.uni-karlsruhe.de>
+
+	Bug reported by Mariusz Woloszyn:
+
+	* src/gtkam-main.c
+	* src/main.c: Correctly clean up on exit
+
+2001-11-17  Lutz Müller <urc8@rz.uni-karlsruhe.de>
 
 	* Fix translation.
 

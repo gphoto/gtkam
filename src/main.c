@@ -110,6 +110,7 @@ main (int argc, char *argv[])
 	bindtextdomain (PACKAGE, GTKAM_LOCALEDIR);
 	textdomain (PACKAGE);
 
+//	g_log_set_always_fatal (G_LOG_LEVEL_CRITICAL);
 	gtk_init (&argc, &argv);
 
 	add_pixmap_directory (PACKAGE_DATA_DIR "/pixmaps");
@@ -131,6 +132,7 @@ main (int argc, char *argv[])
 
 	gtk_main ();
 
+	/* Destroy the main window, but remember the size */
 	sprintf (buf, "%i", m->allocation.width);
 	gp_setting_set ("gtkam", "width", buf);
 	sprintf (buf, "%i", m->allocation.height);

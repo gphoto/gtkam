@@ -2,7 +2,7 @@
 
 EXTRA_DIST = config.rpath 
 
-SUBDIRS = m4 intl po src test art pixmaps packaging
+SUBDIRS = m4 po src test art pixmaps packaging
 
 gtkamdocdir = $(datadir)/doc/gtkam
 gtkamdoc_DATA = AUTHORS COPYING

@@ -1,5 +1,13 @@
 2002-08-31  gettextize  <bug-gnu-gettext@gnu.org>
 
+	Somehow, I got errors with the --intl option. Don't know if it's 
+	needed. Let's try without.
+
+	* Makefile.am (SUBDIRS): Remove intl.
+	* configure.in (AC_OUTPUT): Remove intl/Makefile.
+
+2002-08-31  gettextize  <bug-gnu-gettext@gnu.org>
+
 	* configure.in (AC_OUTPUT): Add intl/Makefile.
 
 2002-08-31  Lutz Müller <lutz@users.sourceforge.net>

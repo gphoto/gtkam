@@ -1,7 +1,7 @@
 dnl Process this file with autoconf to produce a configure script.
 AC_PREREQ(2.50)
 AC_INIT(configure.in)
-AM_INIT_AUTOMAKE(gtkam, 0.1.10)
+AM_INIT_AUTOMAKE(gtkam, 0.1.11dev1)
 AM_CONFIG_HEADER(config.h)
 AM_MAINTAINER_MODE
 
@@ -12,6 +12,8 @@ AC_HEADER_STDC
 
 CFLAGS="$CFLAGS -g -Wall -Wmissing-declarations -Wmissing-prototypes"
 LDFLAGS="$LDFLAGS -g -Wall"
+
+AC_DEFINE_UNQUOTED(HAVE_CC,"$CC",[The C compiler we're using])
 
 dnl Add the languages which your application supports here.
 ALL_LINGUAS="da de es fr hu it ja no pt_BR pt_PT ru sl sv uk"
@@ -28,7 +30,7 @@ fi
 dnl ---------------------------------------------------------------------------
 dnl Libraries we need for gtkam
 dnl ---------------------------------------------------------------------------
-PKG_CHECK_MODULES(GTKAM, gtk+-2.0 libgphoto2 >= 2.1)
+PKG_CHECK_MODULES(GTKAM, gtk+-2.0 libgphoto2 >= 2.1.1)
 AC_SUBST(GTKAM_CFLAGS)
 AC_SUBST(GTKAM_LIBS)
 

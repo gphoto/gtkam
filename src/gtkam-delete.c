@@ -30,7 +30,6 @@
 #include <gtk/gtkhbox.h>
 #include <gtk/gtkvbox.h>
 #include <gtk/gtkpixmap.h>
-#include <gtk/gtkscrolledwindow.h>
 #include <gtk/gtkimage.h>
 #include <gtk/gtkstock.h>
 
@@ -42,7 +41,6 @@ struct _GtkamDeleteData {
 	GtkamCamera *camera;
 	gchar *folder;
 	gchar *name;
-	GtkWidget *check;
 };
 
 struct _GtkamDeletePrivate
@@ -53,8 +51,8 @@ struct _GtkamDeletePrivate
 	GtkWidget *msg;
 };
 
-#define PARENT_TYPE GTKAM_TYPE_DIALOG
-static GtkamDialogClass *parent_class;
+#define PARENT_TYPE GTK_TYPE_DIALOG
+static GtkDialogClass *parent_class;
 
 enum {
 	ALL_DELETED,
@@ -268,8 +266,6 @@ on_delete_clicked (GtkButton *button, GtkamDelete *delete)
 
 	for (i = g_slist_length (delete->priv->data) - 1; i >= 0; i--) {
 		data = g_slist_nth_data (delete->priv->data, i);
-		if (!GTK_TOGGLE_BUTTON (data->check)->active)
-			continue;
 		if (data->name) {
 			if (delete_one (delete, data->camera,
 					data->folder, data->name)) {
@@ -278,9 +274,6 @@ on_delete_clicked (GtkButton *button, GtkamDelete *delete)
 				g_free (data->folder);
 				delete->priv->data = g_slist_remove (
 					delete->priv->data, data);
-				gtk_container_remove (
-					GTK_CONTAINER (delete->priv->vbox),
-					GTK_WIDGET (data->check));
 				g_free (data);
 			} else
 				success = FALSE;
@@ -303,30 +296,31 @@ GtkWidget *
 gtkam_delete_new (void)
 {
 	GtkamDelete *delete;
-	GtkWidget *button, *scrolled;
+	GtkWidget *button, *hbox, *image;
 
 	delete = g_object_new (GTKAM_TYPE_DELETE, NULL);
 
-	/* Message */
-	delete->priv->msg = gtk_label_new ("");
-	gtk_widget_show (delete->priv->msg);
-	gtk_label_set_justify (GTK_LABEL (delete->priv->msg), GTK_JUSTIFY_LEFT);
-	gtk_label_set_line_wrap (GTK_LABEL (delete->priv->msg), TRUE);
-	gtk_box_pack_start (GTK_BOX (GTKAM_DIALOG (delete)->vbox),
-			    delete->priv->msg, FALSE, FALSE, 0);
+	gtk_dialog_set_has_separator (GTK_DIALOG (delete), FALSE);
+	gtk_window_set_resizable (GTK_WINDOW (delete), FALSE);
+	gtk_window_set_title (GTK_WINDOW (delete), "");
+	gtk_container_set_border_width (GTK_CONTAINER (delete), 6);
 
-	/* Scrolled window */
-	scrolled = gtk_scrolled_window_new (NULL, NULL);
-	gtk_widget_show (scrolled);
-	gtk_box_pack_start (GTK_BOX (GTKAM_DIALOG (delete)->vbox),
-			    scrolled, TRUE, TRUE, 0);
-	gtk_scrolled_window_set_policy (
-				GTK_SCROLLED_WINDOW (scrolled),
-				GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
-	delete->priv->vbox = gtk_vbox_new (FALSE, 0);
-	gtk_widget_show (delete->priv->vbox);
-	gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (scrolled),
-					       delete->priv->vbox);
+	hbox = gtk_hbox_new (FALSE, 0);
+	gtk_widget_show (hbox);
+	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (delete)->vbox), hbox, TRUE, TRUE, 0);
+	gtk_container_set_border_width (GTK_CONTAINER (hbox), 6);
+	gtk_box_set_spacing (GTK_BOX (hbox), 12);
+
+	image = gtk_image_new_from_stock (GTK_STOCK_DIALOG_WARNING, GTK_ICON_SIZE_DIALOG);
+	gtk_widget_show (image);
+	gtk_box_pack_start (GTK_BOX (hbox), image, TRUE, TRUE, 0);
+
+	delete->priv->msg = gtk_label_new("");
+	gtk_widget_show (delete->priv->msg);
+	gtk_label_set_line_wrap (GTK_LABEL (delete->priv->msg), TRUE);
+	gtk_label_set_use_markup (GTK_LABEL (delete->priv->msg), TRUE);
+	gtk_label_set_selectable (GTK_LABEL (delete->priv->msg), TRUE);
+	gtk_box_pack_start (GTK_BOX (hbox), delete->priv->msg, FALSE, FALSE, 0);
 
 	button = gtk_button_new_from_stock (GTK_STOCK_CANCEL);
 	gtk_widget_show (button);
@@ -334,7 +328,6 @@ gtkam_delete_new (void)
 			    GTK_SIGNAL_FUNC (on_cancel_clicked), delete);
 	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (delete)->action_area),
 			   button);
-	gtk_widget_grab_focus (button);
 
 	button = gtk_button_new_from_stock (GTK_STOCK_DELETE);
 	gtk_widget_show (button);
@@ -342,6 +335,7 @@ gtkam_delete_new (void)
 			    GTK_SIGNAL_FUNC (on_delete_clicked), delete);
 	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (delete)->action_area),
 			   button);
+	gtk_widget_grab_focus (button);
 
 	return (GTK_WIDGET (delete));
 }
@@ -351,7 +345,7 @@ gtkam_delete_add (GtkamDelete *delete, GtkamCamera *camera,
 		  const gchar *folder, const gchar *name)
 {
 	GtkamDeleteData *data;
-	gchar *label, *msg;
+	gchar *msg;
 
 	g_return_if_fail (GTKAM_IS_DELETE (delete));
 	g_return_if_fail (GTKAM_IS_CAMERA (camera));
@@ -366,24 +360,17 @@ gtkam_delete_add (GtkamDelete *delete, GtkamCamera *camera,
 
 	if (g_slist_length (delete->priv->data) == 1)
 		msg = g_strdup_printf (_("Do you really want to "
-					 "delete the following file?"));
+					 "delete %s?"), data->name);
 	else
 		msg = g_strdup_printf (_("Do you really want to "
-					 "delete the following %i files?"),
+					"delete the selected %i files?"),
 					g_slist_length (delete->priv->data));
-	gtk_label_set_text (GTK_LABEL (delete->priv->msg), msg);
+	gtk_label_set_markup (GTK_LABEL (delete->priv->msg),
+					g_strdup_printf("%s%s%s%s%s",
+		            				"<span weight=\"bold\" size=\"larger\">",
+									_("Delete these files?"),
+									"</span>\n\n", 
+									msg,
+									" Deleted files cannot be undeleted."));
 	g_free (msg);
-
-	if (name)
-		label = g_strdup_printf (_("'%s' in folder '%s'"), name,
-					 folder);
-	else
-		label = g_strdup_printf (_("All files in folder '%s'"),
-					 folder);
-	data->check = gtk_check_button_new_with_label (label);
-	g_free (label);
-	gtk_widget_show (data->check);
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (data->check), TRUE);
-	gtk_box_pack_start (GTK_BOX (delete->priv->vbox), data->check,
-			    FALSE, FALSE, 0);
 }

@@ -22,7 +22,7 @@
 #define __GTKAM_DELETE_H__
 
 #include <gtkam-camera.h>
-#include <gtkam-dialog.h>
+#include <gtk/gtkdialog.h>
 
 #define GTKAM_TYPE_DELETE  (gtkam_delete_get_type ())
 #define GTKAM_DELETE(o)    (GTK_CHECK_CAST((o),GTKAM_TYPE_DELETE,GtkamDelete))
@@ -34,7 +34,7 @@ typedef struct _GtkamDeleteClass   GtkamDeleteClass;
 
 struct _GtkamDelete
 {
-	GtkamDialog parent;
+	GtkDialog parent;
 
 	GtkamDeletePrivate *priv;
 };
@@ -54,7 +54,7 @@ struct _GtkamDeleteAllDeletedData {
 
 struct _GtkamDeleteClass
 {
-	GtkamDialogClass parent_class;
+	GtkDialogClass parent_class;
 
 	/* Signals */
 	void (* all_deleted)  (GtkamDelete *, GtkamDeleteAllDeletedData *);

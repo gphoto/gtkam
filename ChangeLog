@@ -1,3 +1,8 @@
+2004-04-13  Andrew Burton <adburton@users.sourceforge.net>
+
+	* src/gtkam-delete.c, src/gtkam-delete.h: Change to use
+	GtkDialog layout, to fit with Gnome HIG.
+	
 2004-02-15  Andrew Burton <adburton@users.sourceforge.net>
 
 	* src/gtkam-save.c: Fix compile errors.

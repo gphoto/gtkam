@@ -31,6 +31,8 @@
 #include <libgimp/gimpui.h>
 
 #include "gtkam-preview.h"
+#include "gtkam-chooser.h"
+#include "gtkam-error.h"
 
 #ifdef ENABLE_NLS
 #  include <libintl.h>
@@ -85,6 +87,14 @@ on_captured (GtkamPreview *preview, const gchar *path, gchar **rpath)
 	gtk_main_quit ();
 }
 
+static void
+on_camera_selected (GtkamChooser *chooser, Camera *camera, Camera **gimp_camera)
+{
+	*gimp_camera = camera;
+	gp_camera_ref (camera);
+	gtk_main_quit ();
+}
+
 typedef struct {
 	guint angle;
 	gfloat zoom;
@@ -102,15 +112,11 @@ run (gchar *name, gint nparams, GimpParam *param, gint *nreturn_vals,
 {
 	Camera *camera = NULL;
 	CameraFilePath path;
-	CameraAbilitiesList *al;
 	CameraAbilities a;
 	CameraFile *file;
-	GPPortInfo info;
-	GPPortInfoList *il;
-	int n, p, result;
-	GtkWidget *preview;
+	int result;
+	GtkWidget *preview, *chooser, *dialog;
 	gchar *rpath = NULL, *dir;
-	char port[1024], speed[1024], model[1024];
 	static GimpParam values[2];
 	static PreviewParams preview_params = {0, 1.};
 	GimpDrawable *drawable;
@@ -123,6 +129,7 @@ run (gchar *name, gint nparams, GimpParam *param, gint *nreturn_vals,
 	guchar *pixels;
 	int r;
 	guint w, h;
+	GimpRunModeType run_mode = param[0].data.d_int32;
 
 	values[0].type = GIMP_PDB_STATUS;
 	values[0].data.d_status = GIMP_PDB_SUCCESS;
@@ -133,41 +140,46 @@ run (gchar *name, gint nparams, GimpParam *param, gint *nreturn_vals,
 	values[1].data.d_int32 = 0;
 
 	/* Create the camera */
-	if (((gp_setting_get ("gtkam", "camera", model) == GP_OK) ||
-            (gp_setting_get ("gtkam", "model", model) == GP_OK) ||
-            (gp_setting_get ("gphoto2", "model", model) == GP_OK)) &&
-            ((gp_setting_get ("gtkam", "port", port) == GP_OK) ||
-             (gp_setting_get ("gtkam", "port name", port) == GP_OK)) &&
-            (gp_setting_get ("gtkam", "speed", speed) == GP_OK)) {
-		gp_camera_new (&camera);
+	switch (run_mode) {
+	case GIMP_RUN_INTERACTIVE:
 
-		gp_abilities_list_new (&al);
-		gp_abilities_list_load (al);
-		gp_port_info_list_new (&il);
-		gp_port_info_list_load (il);
+		/* Initialize gtk through gimp */
+		gimp_ui_init ("gtkam-gimp", TRUE);
 
-		n = gp_abilities_list_lookup_model (al, model);
-		gp_abilities_list_get_abilities (al, n, &a);
-		gp_abilities_list_free (al);
+		/* Let the use choose a camera */
+		chooser = gtkam_chooser_new ();
+		gtk_widget_show (chooser);
+		gtk_widget_hide (GTKAM_CHOOSER (chooser)->apply_button);
+		gtkam_chooser_set_camera_mask (GTKAM_CHOOSER (chooser),
+					       GP_OPERATION_CAPTURE_IMAGE |
+					       GP_OPERATION_CAPTURE_PREVIEW);
+		gtk_signal_connect (GTK_OBJECT (chooser), "camera_selected",
+				    GTK_SIGNAL_FUNC (on_camera_selected),
+				    &camera);
+		gtk_signal_connect (GTK_OBJECT (chooser), "delete_event",
+				    GTK_SIGNAL_FUNC (gtk_main_quit), NULL);
+		gtk_main ();
 
-		p = gp_port_info_list_lookup_name (il, port);
-		gp_port_info_list_get_info (il, p, &info);
-		gp_port_info_list_free (il);
+		/* Check if the user cancelled */
+		if (!camera) {
+			values[0].data.d_status = GIMP_PDB_CANCEL;
+			return;
+		}
 
-		gp_camera_set_abilities (camera, a);
-		if (strcmp (port, "None") && strcmp (model, "Directory Browse"))
-			gp_camera_set_port_info (camera, info);
-		if (atoi (speed))
-			gp_camera_set_port_speed (camera, atoi (speed));
-	} else {
+		break;
+	case GIMP_RUN_NONINTERACTIVE:
+	case GIMP_RUN_WITH_LAST_VALS:
+
 		g_warning ("Implement!");
 		values[0].data.d_status = GIMP_PDB_EXECUTION_ERROR;
 		return;
+
+		break;
 	}
 
 	g_assert (camera);
 
-	switch (param[0].data.d_int32) {
+	switch (run_mode) {
 	case GIMP_RUN_INTERACTIVE:
 
 		/*
@@ -176,9 +188,6 @@ run (gchar *name, gint nparams, GimpParam *param, gint *nreturn_vals,
 		 */
 		gp_camera_get_abilities (camera, &a);
 		if (a.operations & GP_OPERATION_CAPTURE_PREVIEW) {
-
-			/* Initialize gtk through gimp */
-			gimp_ui_init ("gtkam-gimp", TRUE);
 
 			/* Get settings from a previous run (if any) */
 			gimp_get_data (PLUG_IN_NAME, &preview_params);
@@ -226,17 +235,26 @@ run (gchar *name, gint nparams, GimpParam *param, gint *nreturn_vals,
 			result = gp_camera_file_get (camera, dir,
 				g_basename (rpath), GP_FILE_TYPE_NORMAL, file);
 			gp_camera_set_progress_func (camera, NULL, NULL);
-			gp_camera_unref (camera);
 			g_free (dir);
 			g_free (rpath);
 			if (result < 0) {
 				gp_file_unref (file);
-				g_warning ("Some more error messages would "
-					   "be fine...");
+				dialog = gtkam_error_new (_("Could not "
+					"download file"), result, camera, NULL);
+				gtk_widget_show (dialog);
+				gp_camera_unref (camera);
+
+				/* Wait until the user closes the dialog */
+				gtk_signal_connect (GTK_OBJECT (dialog),
+					"delete_event",
+					GTK_SIGNAL_FUNC (gtk_main_quit), NULL);
+				gtk_main ();
+
 				values[0].data.d_status =
 						GIMP_PDB_EXECUTION_ERROR;
 				return;
 			}
+			gp_camera_unref (camera);
 
 			break;
 		}
@@ -245,8 +263,16 @@ run (gchar *name, gint nparams, GimpParam *param, gint *nreturn_vals,
 	case GIMP_RUN_WITH_LAST_VALS:
 		result = gp_camera_capture (camera, GP_CAPTURE_IMAGE, &path);
 		if (result < 0) {
-			g_warning ("Could not capture: %s",
-				   gp_result_as_string (result));
+			dialog = gtkam_error_new (_("Could not capture"),
+				result, camera, NULL);
+			gtk_widget_show (dialog);
+			gp_camera_unref (camera);
+
+			/* Wait until the user closes the dialog */
+			gtk_signal_connect (GTK_OBJECT (dialog), "delete_event",
+				GTK_SIGNAL_FUNC (gtk_main_quit), NULL);
+			gtk_main ();
+
 			values[0].data.d_status = GIMP_PDB_EXECUTION_ERROR;
 			return;
 		}
@@ -256,13 +282,22 @@ run (gchar *name, gint nparams, GimpParam *param, gint *nreturn_vals,
 		result = gp_camera_file_get (camera, path.folder, path.name,
 					     GP_FILE_TYPE_NORMAL, file);
 		gp_camera_set_progress_func (camera, NULL, NULL);
-		gp_camera_unref (camera);
 		if (result < 0) {
 			gp_file_unref (file);
-			g_warning ("Error: %s", gp_result_as_string (result));
+			dialog = gtkam_error_new (_("Could not "
+				"download file"), result, camera, NULL);
+			gtk_widget_show (dialog); 
+			gp_camera_unref (camera);
+
+			/* Wait until the user closes the dialog */
+			gtk_signal_connect (GTK_OBJECT (dialog), "delete_event",
+					GTK_SIGNAL_FUNC (gtk_main_quit), NULL);
+			gtk_main ();
+
 			values[0].data.d_status = GIMP_PDB_EXECUTION_ERROR;
 			return;
 		}
+		gp_camera_unref (camera);
 
 		break;
 	default:

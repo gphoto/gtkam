@@ -245,7 +245,7 @@ on_select_camera_activate (GtkMenuItem *item, GtkamMain *m)
 {
 	GtkWidget *dialog;
 
-	dialog = gtkam_chooser_new (m->priv->camera);
+	dialog = gtkam_chooser_new ();
 	gtk_window_set_transient_for (GTK_WINDOW (dialog), GTK_WINDOW (m));
 	gtk_widget_show (dialog);
 	gtk_signal_connect (GTK_OBJECT (dialog), "camera_selected",

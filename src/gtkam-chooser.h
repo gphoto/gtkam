@@ -36,6 +36,8 @@ struct _GtkamChooser
 {
 	GtkDialog parent;
 
+	GtkWidget *apply_button;
+
 	GtkamChooserPrivate *priv;
 };
 
@@ -48,6 +50,11 @@ struct _GtkamChooserClass
 };
 
 GtkType    gtkam_chooser_get_type (void);
-GtkWidget *gtkam_chooser_new      (Camera *opt_camera);
+GtkWidget *gtkam_chooser_new      (void);
+
+void       gtkam_chooser_set_camera_mask (GtkamChooser *chooser, 
+					  CameraOperation operations);
+void       gtkam_chooser_set_port_mask   (GtkamChooser *chooser,
+					  GPPortType types);
 
 #endif /* __GTKAM_CHOOSER_H__ */

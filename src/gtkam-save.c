@@ -324,8 +324,9 @@ save_file (GtkamSave *save, CameraFile *file, guint n)
 		} else {
 
 			/* Use filename in prefix */
-			prefix = gtk_entry_get_text (
-					GTK_ENTRY (save->priv->prefix_entry));
+			prefix = g_locale_from_utf8 (gtk_entry_get_text
+					(GTK_ENTRY (save->priv->prefix_entry)), -1,
+					NULL, NULL, NULL);
 			if (!g_strcasecmp (prefix, "")) prefix = _("photo");
 
 			suffix = strrchr (mime_type, '/');
@@ -493,7 +494,7 @@ static void
 on_ok_clicked (GtkButton *button, GtkamSave *save)
 {
 	guint i, count, j = 1;
-	int result;
+	int result = -1;
 	GtkWidget *s, *dialog;
 	unsigned int id = 0;
 	GtkamSaveData *data;

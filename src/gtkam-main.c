@@ -786,6 +786,16 @@ status_func (Camera *camera, const char *status, void *data)
 }
 
 static void
+message_func (Camera *camera, const char *message, void *data)
+{
+	GtkamMain *m = GTKAM_MAIN (data);
+	GtkWidget *dialog;
+
+	dialog = gtkam_close_new (message, GTK_WIDGET (m));
+	gtk_widget_show (dialog);
+}
+
+static void
 progress_func (Camera *camera, float progress, void *data)
 {
 	GtkamMain *m = GTKAM_MAIN (data);
@@ -866,5 +876,6 @@ gtkam_main_set_camera (GtkamMain *m, Camera *camera)
 	if (camera) {
 		gp_camera_set_progress_func (camera, progress_func, m);
 		gp_camera_set_status_func (camera, status_func, m);
+		gp_camera_set_message_func (camera, message_func, m);
 	}
 }

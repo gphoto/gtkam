@@ -46,11 +46,15 @@
 #include "gtk-exif-entry-version.h"
 #include "gtk-exif-entry-ycbcrpos.h"
 
+static void gtk_exif_browser_show_entry (GtkExifBrowser *, ExifEntry *);
+
 struct _GtkExifBrowserPrivate {
 	ExifData *data;
 
 	GtkExifContentList *list;
 	GtkWidget *empty, *current, *info;
+
+	GtkWidget *up, *down;
 
 	GtkExifTagMenu *tag_menu;
 };
@@ -139,11 +143,63 @@ gtk_exif_browser_set_widget (GtkExifBrowser *browser, GtkWidget *w)
 				      browser->priv->current);
 	gtk_box_pack_start (GTK_BOX (browser->priv->info), w, TRUE, FALSE, 0);
 	browser->priv->current = w;
+
+	gtk_widget_set_sensitive (browser->priv->down,
+				  GTK_EXIF_IS_CONTENT_LIST (w));
+}
+
+static void
+gtk_exif_browser_update_tag_menu (GtkExifBrowser *browser)
+{
+	GtkOptions *options;
+	guint i;
+
+	options = GTK_OPTIONS (browser->priv->tag_menu);
+	gtk_options_set_sensitive_all (options, TRUE);
+	for (i = 0; i < browser->priv->list->content->count; i++)
+		gtk_options_set_sensitive (options,
+			browser->priv->list->content->entries[i]->tag, FALSE);
+}
+
+static void
+on_entry_removed (GtkExifEntry *entry, ExifEntry *e, GtkExifBrowser *browser)
+{
+        GtkCList *list = GTK_CLIST (browser->priv->list);
+        gint row;
+
+        row = gtk_clist_find_row_from_data (list, e);
+        gtk_clist_remove (list, row);
+	gtk_exif_browser_update_tag_menu (browser);
+}
+
+static void
+on_entry_changed (GtkExifEntry *entry, ExifEntry *e, GtkExifBrowser *browser)
+{
+        GtkCList *list = GTK_CLIST (browser->priv->list);
+	gint row;
+
+        row = gtk_clist_find_row_from_data (list, e);
+        gtk_clist_set_text (list, row, 1, exif_entry_get_value (e));
+}
+
+static void
+on_entry_added (GtkExifEntry *entry, ExifEntry *e, GtkExifBrowser *browser)
+{
+        GtkExifContentList *list = GTK_EXIF_CONTENT_LIST (browser->priv->list);
+
+        gtk_exif_content_list_add_entry (list, e);
+	gtk_exif_browser_show_entry (browser, e);
 }
 
 static void
 on_entry_selected (GtkExifContentList *list, ExifEntry *entry,
 		   GtkExifBrowser *browser)
+{
+	gtk_exif_browser_show_entry (browser, entry);
+}
+
+static void
+gtk_exif_browser_show_entry (GtkExifBrowser *browser, ExifEntry *entry)
 {
 	GtkWidget *w;
 
@@ -208,6 +264,55 @@ on_entry_selected (GtkExifContentList *list, ExifEntry *entry,
 	}
 	gtk_widget_show (w);
 	gtk_exif_browser_set_widget (browser, w);
+	if (GTK_EXIF_IS_ENTRY (w)) {
+		gtk_signal_connect (GTK_OBJECT (w), "entry_added",
+			GTK_SIGNAL_FUNC (on_entry_added), browser);
+		gtk_signal_connect (GTK_OBJECT (w), "entry_removed",
+			GTK_SIGNAL_FUNC (on_entry_removed), browser);
+		gtk_signal_connect (GTK_OBJECT (w), "entry_changed",
+			GTK_SIGNAL_FUNC (on_entry_changed), browser);
+	}
+}
+
+static void
+on_up_clicked (GtkButton *button, GtkExifBrowser *browser)
+{
+	gtk_exif_content_list_set_content (browser->priv->list,
+				browser->priv->list->content->parent->parent);
+}
+
+static void
+on_down_clicked (GtkButton *button, GtkExifBrowser *browser)
+{
+	gint row;
+	GtkCList *list = GTK_CLIST (browser->priv->list);
+	ExifEntry *entry;
+
+	row = GPOINTER_TO_INT (list->selection->data);
+	entry = gtk_clist_get_row_data (list, row);
+	gtk_exif_content_list_set_content (browser->priv->list, entry->content);
+}
+
+static void
+on_tag_selected (GtkExifTagMenu *menu, ExifTag tag, GtkExifBrowser *browser)
+{
+	ExifEntry *entry;
+
+	entry = exif_entry_new ();
+	exif_entry_initialize (entry, tag);
+	exif_content_add_entry (browser->priv->list->content, entry);
+	exif_entry_unref (entry);
+	gtk_exif_content_list_add_entry (browser->priv->list, entry);
+	gtk_exif_browser_show_entry (browser, entry);
+}
+
+static void
+on_content_changed (GtkExifContentList *list, ExifContent *content,
+		    GtkExifBrowser *browser)
+{
+	gtk_widget_set_sensitive (browser->priv->up, content->parent != NULL);
+	gtk_exif_browser_set_widget (browser, browser->priv->empty);
+	gtk_exif_browser_update_tag_menu (browser);
 }
 
 GtkWidget *
@@ -218,10 +323,31 @@ gtk_exif_browser_new (void)
 
 	browser = gtk_type_new (GTK_EXIF_TYPE_BROWSER);
 
-	/* Tree */
 	vbox = gtk_vbox_new (FALSE, 0);
 	gtk_widget_show (vbox);
 	gtk_paned_pack1 (GTK_PANED (browser), vbox, TRUE, TRUE);
+
+	/* Up/Down */
+	hbox = gtk_hbox_new (FALSE, 5);
+	gtk_container_set_border_width (GTK_CONTAINER (hbox), 5);
+	gtk_widget_show (hbox);
+	gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
+	button = gtk_button_new_with_label (_("Up"));
+	gtk_widget_show (button);
+	gtk_widget_set_sensitive (button, FALSE);
+	gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 0);
+	browser->priv->up = button;
+	gtk_signal_connect (GTK_OBJECT (button), "clicked",
+			    GTK_SIGNAL_FUNC (on_up_clicked), browser);
+	button = gtk_button_new_with_label (_("Down"));
+	gtk_widget_show (button);
+	gtk_widget_set_sensitive (button, FALSE);
+	gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 0);
+	browser->priv->down = button;
+	gtk_signal_connect (GTK_OBJECT (button), "clicked",
+			    GTK_SIGNAL_FUNC (on_down_clicked), browser);
+
+	/* List */
 	swin = gtk_scrolled_window_new (NULL, NULL);
 	gtk_widget_show (swin);
 	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (swin),
@@ -233,8 +359,11 @@ gtk_exif_browser_new (void)
 	browser->priv->list = GTK_EXIF_CONTENT_LIST (et);
 	gtk_signal_connect (GTK_OBJECT (et), "entry_selected",
 			    GTK_SIGNAL_FUNC (on_entry_selected), browser);
+	gtk_signal_connect (GTK_OBJECT (et), "content_changed",
+			    GTK_SIGNAL_FUNC (on_content_changed), browser);
+
+	/* Tag menu */
 	hbox = gtk_hbox_new (FALSE, 5);
-	gtk_widget_set_sensitive (hbox, FALSE);
 	gtk_container_set_border_width (GTK_CONTAINER (hbox), 2);
 	gtk_widget_show (hbox);
 	gtk_box_pack_end (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
@@ -242,9 +371,8 @@ gtk_exif_browser_new (void)
 	gtk_widget_show (menu);
 	gtk_box_pack_start (GTK_BOX (hbox), menu, FALSE, FALSE, 0);
 	browser->priv->tag_menu = GTK_EXIF_TAG_MENU (menu);
-	button = gtk_button_new_with_label (_("Add"));
-	gtk_widget_show (button);
-	gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 0);
+	gtk_signal_connect (GTK_OBJECT (menu), "tag_selected",
+			    GTK_SIGNAL_FUNC (on_tag_selected), browser);
 
 	/* Info */
 	browser->priv->info = gtk_vbox_new (FALSE, 0);

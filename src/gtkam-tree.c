@@ -58,6 +58,8 @@
 #include <gtk/gtkcellrenderertext.h>
 #include <gtk/gtktreeselection.h>
 #include <gtk/gtkstock.h>
+#include <gtk/gtktooltips.h>
+#include <gtk/gtkmenuitem.h>
 
 #include <gdk-pixbuf/gdk-pixbuf.h>
 
@@ -80,6 +82,7 @@ struct _GtkamTreePrivate
 	GtkTreeStore *store;
 
 	GtkItemFactory *factory;
+	GtkTooltips *tooltips;
 
 	GtkTreeIter iter;
 };
@@ -113,6 +116,11 @@ gtkam_tree_destroy (GtkObject *object)
 	if (tree->priv->store) {
 		g_object_unref (G_OBJECT (tree->priv->store));
 		tree->priv->store = NULL;
+	}
+
+	if (tree->priv->tooltips) {
+		g_object_unref (G_OBJECT (tree->priv->tooltips));
+		tree->priv->tooltips = NULL;
 	}
 
 	GTK_OBJECT_CLASS (parent_class)->destroy (object);
@@ -180,6 +188,10 @@ gtkam_tree_init (GTypeInstance *instance, gpointer g_class)
 	GtkamTree *tree = GTKAM_TREE (instance);
 
 	tree->priv = g_new0 (GtkamTreePrivate, 1);
+
+	tree->priv->tooltips = gtk_tooltips_new ();
+	g_object_ref (G_OBJECT (tree->priv->tooltips));
+	gtk_object_sink (GTK_OBJECT (tree->priv->tooltips));
 }
 
 GType
@@ -813,6 +825,26 @@ action_manual (gpointer callback_data, guint callback_action,
 	action_text (tree, CAMERA_TEXT_MANUAL);
 }
 
+static void
+on_new_camera_selected (GtkamChooser *chooser, GtkamCamera *camera,
+			GtkamTree *tree)
+{
+	gtkam_tree_add_camera (tree, camera);
+}
+
+static void
+on_add_camera_activate (GtkMenuItem *item, GtkamTree *tree)
+{
+	GtkWidget *d, *w;
+
+	w = gtk_widget_get_ancestor (GTK_WIDGET (tree), GTK_TYPE_WINDOW);
+	d = gtkam_chooser_new ();
+	gtk_window_set_transient_for (GTK_WINDOW (d), GTK_WINDOW (w));
+	gtk_widget_show (d);
+	g_signal_connect (G_OBJECT (d), "camera_selected",
+			  G_CALLBACK (on_new_camera_selected), tree);
+}
+
 static GtkItemFactoryEntry mi[] =
 {
 	{"/Upload file", NULL, action_upload, 0, NULL},
@@ -836,14 +868,27 @@ on_button_press_event (GtkWidget *widget, GdkEventButton *event,
 {
 	GtkTreePath *path = NULL;
 	GtkamCamera *camera;
-	GtkWidget *w;
+	GtkWidget *w, *m, *i;
 	CameraAbilities a;
 
 	switch (event->button) {
 	case 3:
+
+		/* Right-click on a tree item? */
 		if (!gtk_tree_view_get_path_at_pos (GTK_TREE_VIEW (tree),
-			event->x, event->y, &path, NULL, NULL, NULL))
-			return (FALSE);
+			event->x, event->y, &path, NULL, NULL, NULL)) {
+			m = gtk_menu_new ();
+			i = gtk_menu_item_new_with_mnemonic (
+							_("_Add Camera..."));
+			gtk_widget_show (i);
+			gtk_container_add (GTK_CONTAINER (m), i);
+			g_signal_connect (G_OBJECT (i), "activate",
+				G_CALLBACK (on_add_camera_activate), tree);
+			gtk_menu_popup (GTK_MENU (m), NULL, NULL, NULL, NULL,
+					event->button, event->time);
+			return (TRUE);
+		}
+
 		gtk_tree_model_get_iter (GTK_TREE_MODEL (tree->priv->store),
 					 &tree->priv->iter, path);
 		camera = gtkam_tree_get_camera_from_iter (tree,
@@ -932,6 +977,9 @@ gtkam_tree_new (void)
 			  G_CALLBACK (on_drag_data_received), tree);
 	g_signal_connect (G_OBJECT (tree), "button_press_event",
 			  G_CALLBACK (on_button_press_event), tree);
+
+	gtk_tooltips_set_tip (tree->priv->tooltips, GTK_WIDGET (tree),
+		_("Please right-click to access additional menus"), NULL);
 
 	ag = gtk_accel_group_new ();
 	tree->priv->factory = gtk_item_factory_new (GTK_TYPE_MENU,

@@ -1,5 +1,10 @@
 2002-07-22  Lutz Müller <lutz@users.sourceforge.net>
 
+	* src/gtkam-tree.c: Tell people in a tooltip that a right-click
+	  menu exists.
+
+2002-07-22  Lutz Müller <lutz@users.sourceforge.net>
+
 	* src/main.c: Remember the window's size.
 	* src/gtkam-save.c: Update the progress bars.
 

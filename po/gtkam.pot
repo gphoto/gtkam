@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2002-01-19 16:32+0100\n"
-"PO-Revision-Date: 2002-01-20 18:56+0100\n"
+"POT-Creation-Date: 2002-01-29 11:33+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -161,23 +161,23 @@ msgstr ""
 msgid "Could not execute command."
 msgstr ""
 
-#: src/gtkam-config.c:451
+#: src/gtkam-config.c:452
 msgid "No additional information available. (2)"
 msgstr ""
 
-#: src/gtkam-config.c:511
+#: src/gtkam-config.c:512
 msgid "No additional information available. (3)"
 msgstr ""
 
-#: src/gtkam-config.c:532
+#: src/gtkam-config.c:533
 msgid "No additional information available. (4)"
 msgstr ""
 
-#: src/gtkam-config.c:579
+#: src/gtkam-config.c:580
 msgid "No additional information available. (5)"
 msgstr ""
 
-#: src/gtkam-config.c:600
+#: src/gtkam-config.c:601
 msgid "No additional information available. (6)"
 msgstr ""
 
@@ -253,7 +253,7 @@ msgid "Do you really want to delete ALL files in '%s'?"
 msgstr ""
 
 #. Delete
-#: src/gtkam-delete.c:404 src/gtkam-info.c:523 src/gtkam-list.c:412
+#: src/gtkam-delete.c:404 src/gtkam-info.c:523 src/gtkam-list.c:413
 msgid "Delete"
 msgstr ""
 
@@ -283,24 +283,14 @@ msgstr ""
 msgid "Captures images from digital camera"
 msgstr ""
 
-# Translators: make sure you use the exact translations from The Gimp
-# here (for "File/Acquire").  If the menu translations don't match
-# exactly, you'll get two menu items, not one as intended.  
-#
-# If in doubt, leave it fuzzy.
 #: src/gtkam-gimp.c:84
 msgid "<Toolbox>/File/Acquire/Capture from Camera..."
-msgstr "<Toolbox>/File/Acquire/Capture from Camera..."
+msgstr ""
 
 #: src/gtkam-gimp.c:88
 msgid "Loads files from digital cameras"
 msgstr ""
 
-# Translators: make sure you use the exact translations from The Gimp
-# here (for "File/Acquire").  If the menu translations don't match
-# exactly, you'll get two menu items, not one as intended.  
-#
-# If in doubt, leave it fuzzy.
 #: src/gtkam-gimp.c:92
 msgid "<Toolbox>/File/Acquire/Load from Camera..."
 msgstr ""
@@ -389,40 +379,40 @@ msgstr ""
 msgid "Getting thumbnail of file '%s' in folder '%s'..."
 msgstr ""
 
-#: src/gtkam-list.c:352
+#: src/gtkam-list.c:353
 #, c-format
 msgid "Could not get preview of file '%s' in folder '%s'"
 msgstr ""
 
-#: src/gtkam-list.c:381
+#: src/gtkam-list.c:382
 msgid "Info"
 msgstr ""
 
-#: src/gtkam-list.c:387
+#: src/gtkam-list.c:388
 msgid "Exif"
 msgstr ""
 
 #. Save
-#: src/gtkam-list.c:405
+#: src/gtkam-list.c:406
 msgid "Save"
 msgstr ""
 
-#: src/gtkam-list.c:499
+#: src/gtkam-list.c:500
 #, c-format
 msgid "Listing files in folder '%s'..."
 msgstr ""
 
-#: src/gtkam-list.c:516
+#: src/gtkam-list.c:517
 #, c-format
 msgid "Could not get file list for folder '%s'"
 msgstr ""
 
-#: src/gtkam-list.c:560
+#: src/gtkam-list.c:561
 #, c-format
 msgid "Getting preview of file '%s' in folder '%s'..."
 msgstr ""
 
-#: src/gtkam-list.c:587
+#: src/gtkam-list.c:589
 #, c-format
 msgid "Could not get preview of file '%s' in folder '%s'."
 msgstr ""
@@ -735,87 +725,87 @@ msgstr ""
 msgid "Could not save file to '%s'."
 msgstr ""
 
-#: src/gtkam-save.c:333
+#: src/gtkam-save.c:334
 #, c-format
 msgid "Could not get '%s' from folder '%s'."
 msgstr ""
 
-#: src/gtkam-save.c:351 src/gtkam-save.c:356
+#: src/gtkam-save.c:355 src/gtkam-save.c:360
 #, c-format
 msgid "Downloading %i files..."
 msgstr ""
 
-#: src/gtkam-save.c:429
+#: src/gtkam-save.c:433
 #, c-format
 msgid "Save '%s'..."
 msgstr ""
 
-#: src/gtkam-save.c:432
+#: src/gtkam-save.c:436
 msgid "Save photos..."
 msgstr ""
 
-#: src/gtkam-save.c:442
+#: src/gtkam-save.c:446
 msgid "What to save:"
 msgstr ""
 
-#: src/gtkam-save.c:451
+#: src/gtkam-save.c:455
 msgid "Save photos"
 msgstr ""
 
-#: src/gtkam-save.c:455
+#: src/gtkam-save.c:459
 msgid "Photos will be saved if this is checked"
 msgstr ""
 
-#: src/gtkam-save.c:461
+#: src/gtkam-save.c:465
 msgid "Save raw data"
 msgstr ""
 
-#: src/gtkam-save.c:464
+#: src/gtkam-save.c:468
 msgid "Raw data will be saved if this is checked"
 msgstr ""
 
-#: src/gtkam-save.c:470
+#: src/gtkam-save.c:474
 msgid "Save audio data"
 msgstr ""
 
-#: src/gtkam-save.c:473
+#: src/gtkam-save.c:477
 msgid "Audio data will be saved if this is checked"
 msgstr ""
 
-#: src/gtkam-save.c:479
+#: src/gtkam-save.c:483
 msgid "Save thumbnails"
 msgstr ""
 
-#: src/gtkam-save.c:482
+#: src/gtkam-save.c:486
 msgid "Thumbnails will be saved if this is checked"
 msgstr ""
 
-#: src/gtkam-save.c:488
+#: src/gtkam-save.c:492
 msgid "Save EXIF data"
 msgstr ""
 
-#: src/gtkam-save.c:491
+#: src/gtkam-save.c:495
 msgid "EXIF data will be saved if this is checked"
 msgstr ""
 
-#: src/gtkam-save.c:501
+#: src/gtkam-save.c:505
 msgid "Open image(s) with: "
 msgstr ""
 
-#: src/gtkam-save.c:508
+#: src/gtkam-save.c:512
 msgid "Type in the name of the program you want to run, leave blank for none"
 msgstr ""
 
 #. Filenames provided by camera
-#: src/gtkam-save.c:514
+#: src/gtkam-save.c:518
 msgid "Use filenames provided by the camera"
 msgstr ""
 
-#: src/gtkam-save.c:519
+#: src/gtkam-save.c:523
 msgid "Choose whether to use the filename provided by the camera"
 msgstr ""
 
-#: src/gtkam-save.c:546
+#: src/gtkam-save.c:550
 msgid "Filename prefix: "
 msgstr ""
 

@@ -1,8 +1,0 @@
-Makefile
-Makefile.in
-.libs
-.deps
-test-tree
-test-browser
-*.o
-*.lo

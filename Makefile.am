@@ -2,7 +2,7 @@
 
 EXTRA_DIST = autogen.sh acconfig.h gphoto2-gtk.glade MANUAL
 
-SUBDIRS = libexif po src intl art pixmaps packaging
+SUBDIRS = po src intl art pixmaps packaging
 
 gtkamdocdir = $(prefix)/doc/gtkam
 gtkamdoc_DATA = AUTHORS COPYING MANUAL

@@ -46,7 +46,9 @@
 #include <gtk/gtksignal.h>
 #include <gtk/gtkbox.h>
 
-#include <libexif-gtk/gtk-exif-browser.h>
+#ifdef HAVE_EXIF
+#  include <libexif-gtk/gtk-exif-browser.h>
+#endif
 
 #include "gtkam-cancel.h"
 #include "gtkam-error.h"
@@ -126,15 +128,21 @@ gtkam_exif_new (Camera *camera, gboolean multi,
 		const gchar *folder, const gchar *file, GtkWidget *opt_window)
 {
 	GtkamExif *exif;
-	GtkWidget *button, *dialog, *browser, *c;
+	GtkWidget *button;
+#ifdef HAVE_EXIF
+	GtkWidget *dialog, *browser, *c;
 	CameraFile *cfile;
 	int result;
 	const char *data;
 	long int size;
 	ExifData *edata;
+#else
+	GtkWidget *label;
+#endif
 
 	g_return_val_if_fail (camera != NULL, NULL);
 
+#ifdef HAVE_EXIF
 	/* Get exif data */
 	gp_file_new (&cfile);
 	c = gtkam_cancel_new (opt_window,
@@ -183,6 +191,14 @@ gtkam_exif_new (Camera *camera, gboolean multi,
 	gtk_container_set_border_width (GTK_CONTAINER (browser), 5);
 	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (exif)->vbox), browser,
 			    TRUE, TRUE, 0);
+#else
+	label = gtk_label_new (_("Gtkam has been compiled without exif "
+		"support."));
+	gtk_widget_show (label);
+	gtk_container_set_border_width (GTK_CONTAINER (label), 5);
+	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (exif)->vbox), label,
+			    TURE, TRUE, 0);
+#endif
 
 	button = gtk_button_new_with_label (_("Close"));
 	gtk_widget_show (button);

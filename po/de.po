@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gtKam\n"
-"POT-Creation-Date: 2002-01-19 16:32+0100\n"
+"POT-Creation-Date: 2002-01-29 11:33+0100\n"
 "PO-Revision-Date: 2002-01-19 17:08+0100\n"
 "Last-Translator: Colin Marquardt <colin@marquardt-home.de>\n"
 "Language-Team: German <de@li.org>\n"
@@ -163,23 +163,23 @@ msgstr "Allgemeine Einstellungen"
 msgid "Could not execute command."
 msgstr "Konnte den Befehl nicht ausführen."
 
-#: src/gtkam-config.c:451
+#: src/gtkam-config.c:452
 msgid "No additional information available. (2)"
 msgstr "Keine zusätzlichen Informationen verfügbar. (2)"
 
-#: src/gtkam-config.c:511
+#: src/gtkam-config.c:512
 msgid "No additional information available. (3)"
 msgstr "Keine zusätzlichen Informationen verfügbar. (3)"
 
-#: src/gtkam-config.c:532
+#: src/gtkam-config.c:533
 msgid "No additional information available. (4)"
 msgstr "Keine zusätzlichen Informationen verfügbar. (4)"
 
-#: src/gtkam-config.c:579
+#: src/gtkam-config.c:580
 msgid "No additional information available. (5)"
 msgstr "Keine zusätzlichen Informationen verfügbar. (5)"
 
-#: src/gtkam-config.c:600
+#: src/gtkam-config.c:601
 msgid "No additional information available. (6)"
 msgstr "Keine zusätzlichen Informationen verfügbar. (6)"
 
@@ -255,7 +255,7 @@ msgid "Do you really want to delete ALL files in '%s'?"
 msgstr "Möchten Sie wirklich ALLE Dateien in »%s« löschen?"
 
 #. Delete
-#: src/gtkam-delete.c:404 src/gtkam-info.c:523 src/gtkam-list.c:412
+#: src/gtkam-delete.c:404 src/gtkam-info.c:523 src/gtkam-list.c:413
 msgid "Delete"
 msgstr "Löschen"
 
@@ -382,41 +382,41 @@ msgstr "Zurücksetzen"
 msgid "Getting thumbnail of file '%s' in folder '%s'..."
 msgstr "Hole Vorschaubild der Datei »%s« im Verzeichnis »%s«..."
 
-#: src/gtkam-list.c:352
+#: src/gtkam-list.c:353
 #, c-format
 msgid "Could not get preview of file '%s' in folder '%s'"
 msgstr ""
 "Konnte Vorschaubild der Datei »%s« im Verzeichnis »%s« nicht herunterladen"
 
-#: src/gtkam-list.c:381
+#: src/gtkam-list.c:382
 msgid "Info"
 msgstr "Info"
 
-#: src/gtkam-list.c:387
+#: src/gtkam-list.c:388
 msgid "Exif"
 msgstr "Exif"
 
 #. Save
-#: src/gtkam-list.c:405
+#: src/gtkam-list.c:406
 msgid "Save"
 msgstr "Speichern"
 
-#: src/gtkam-list.c:499
+#: src/gtkam-list.c:500
 #, c-format
 msgid "Listing files in folder '%s'..."
 msgstr "Hole Dateiliste des Verzeichnisses »%s«..."
 
-#: src/gtkam-list.c:516
+#: src/gtkam-list.c:517
 #, c-format
 msgid "Could not get file list for folder '%s'"
 msgstr "Fehler beim Herunterladen der Dateiliste des Verzeichnisses »%s«"
 
-#: src/gtkam-list.c:560
+#: src/gtkam-list.c:561
 #, c-format
 msgid "Getting preview of file '%s' in folder '%s'..."
 msgstr "Hole Vorschau der Datei »%s« im Verzeichnis »%s«..."
 
-#: src/gtkam-list.c:587
+#: src/gtkam-list.c:589
 #, c-format
 msgid "Could not get preview of file '%s' in folder '%s'."
 msgstr "Konnte Vorschau der Datei »%s« im Verzeichnis »%s« nicht holen."
@@ -744,89 +744,89 @@ msgstr "»%s« existiert bereits."
 msgid "Could not save file to '%s'."
 msgstr "Konnte Datei nicht unter »%s« speichern."
 
-#: src/gtkam-save.c:333
+#: src/gtkam-save.c:334
 #, c-format
 msgid "Could not get '%s' from folder '%s'."
 msgstr "Konnte Datei »%s« nicht aus Verzeichnis »%s« holen."
 
-#: src/gtkam-save.c:351 src/gtkam-save.c:356
+#: src/gtkam-save.c:355 src/gtkam-save.c:360
 #, c-format
 msgid "Downloading %i files..."
 msgstr "Lade %i Dateien herunter..."
 
-#: src/gtkam-save.c:429
+#: src/gtkam-save.c:433
 #, c-format
 msgid "Save '%s'..."
 msgstr "Speichere »%s«..."
 
-#: src/gtkam-save.c:432
+#: src/gtkam-save.c:436
 msgid "Save photos..."
 msgstr "Speichere Photos..."
 
-#: src/gtkam-save.c:442
+#: src/gtkam-save.c:446
 msgid "What to save:"
 msgstr "Was soll gespeichert werden:"
 
-#: src/gtkam-save.c:451
+#: src/gtkam-save.c:455
 msgid "Save photos"
 msgstr "Speichere Photos"
 
-#: src/gtkam-save.c:455
+#: src/gtkam-save.c:459
 msgid "Photos will be saved if this is checked"
 msgstr "Photos werden gespeichert, wenn dies angekreuzt ist."
 
-#: src/gtkam-save.c:461
+#: src/gtkam-save.c:465
 msgid "Save raw data"
 msgstr "Speichere Originaldaten"
 
-#: src/gtkam-save.c:464
+#: src/gtkam-save.c:468
 msgid "Raw data will be saved if this is checked"
 msgstr "Originaldaten werden gespeichert, wenn dies angekreuzt ist"
 
-#: src/gtkam-save.c:470
+#: src/gtkam-save.c:474
 msgid "Save audio data"
 msgstr "Speichere Audiodaten"
 
-#: src/gtkam-save.c:473
+#: src/gtkam-save.c:477
 msgid "Audio data will be saved if this is checked"
 msgstr "Audiodaten werden gespeichert, wenn dies angekreuzt ist"
 
-#: src/gtkam-save.c:479
+#: src/gtkam-save.c:483
 msgid "Save thumbnails"
 msgstr "Speichere Vorschaubilder"
 
-#: src/gtkam-save.c:482
+#: src/gtkam-save.c:486
 msgid "Thumbnails will be saved if this is checked"
 msgstr "Vorschaubilder werden gespeichert, wenn dies angekreuzt ist"
 
-#: src/gtkam-save.c:488
+#: src/gtkam-save.c:492
 msgid "Save EXIF data"
 msgstr "Speichere EXIF-Daten"
 
-#: src/gtkam-save.c:491
+#: src/gtkam-save.c:495
 msgid "EXIF data will be saved if this is checked"
 msgstr "EXIF-Daten werden gespeichert, wenn dies angekreuzt ist"
 
-#: src/gtkam-save.c:501
+#: src/gtkam-save.c:505
 msgid "Open image(s) with: "
 msgstr "Öffne Bild(er) mit: "
 
-#: src/gtkam-save.c:508
+#: src/gtkam-save.c:512
 msgid "Type in the name of the program you want to run, leave blank for none"
 msgstr ""
 "Name des Programmes, welches gestartet werden soll (leer: kein Programm "
 "starten)"
 
 #. Filenames provided by camera
-#: src/gtkam-save.c:514
+#: src/gtkam-save.c:518
 msgid "Use filenames provided by the camera"
 msgstr "Verwende die Dateinamen der Kamera"
 
-#: src/gtkam-save.c:519
+#: src/gtkam-save.c:523
 msgid "Choose whether to use the filename provided by the camera"
 msgstr "Auswählen, ob die Dateinamen der Kamera verwendet werden sollen"
 
-#: src/gtkam-save.c:546
+#: src/gtkam-save.c:550
 msgid "Filename prefix: "
 msgstr "Dateinamen-Präfix"
 

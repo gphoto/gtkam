@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gtKam\n"
-"POT-Creation-Date: 2002-01-26 20:39+0100\n"
+"POT-Creation-Date: 2002-01-29 11:33+0100\n"
 "PO-Revision-Date: 2002-01-26 21:30MET\n"
 "Last-Translator: Jérôme Fenal <jerome@fenal.org>\n"
 "Language-Team: Français <traduc@traduc.org>\n"
@@ -161,23 +161,23 @@ msgstr "Configuration générale"
 msgid "Could not execute command."
 msgstr "Impossible d'exécuter la commande."
 
-#: src/gtkam-config.c:451
+#: src/gtkam-config.c:452
 msgid "No additional information available. (2)"
 msgstr "Pas d'informations supplémentaires disponibles. (2)"
 
-#: src/gtkam-config.c:511
+#: src/gtkam-config.c:512
 msgid "No additional information available. (3)"
 msgstr "Pas d'informations supplémentaires disponibles. (3)"
 
-#: src/gtkam-config.c:532
+#: src/gtkam-config.c:533
 msgid "No additional information available. (4)"
 msgstr "Pas d'informations supplémentaires disponibles. (4)"
 
-#: src/gtkam-config.c:579
+#: src/gtkam-config.c:580
 msgid "No additional information available. (5)"
 msgstr "Pas d'informations supplémentaires disponibles. (5)"
 
-#: src/gtkam-config.c:600
+#: src/gtkam-config.c:601
 msgid "No additional information available. (6)"
 msgstr "Pas d'informations supplémentaires disponibles. (6)"
 
@@ -328,7 +328,8 @@ msgstr "Récupération des informations sur le fichier '%s' du dossier '%s'..."
 #: src/gtkam-info.c:363
 #, c-format
 msgid "Could not get information about file '%s' in folder '%s'."
-msgstr "Impossible de récupérer les informations du fichier '%s' du dossier '%s'."
+msgstr ""
+"Impossible de récupérer les informations du fichier '%s' du dossier '%s'."
 
 #: src/gtkam-info.c:412
 msgid "File"
@@ -383,7 +384,8 @@ msgstr "Récupération de la vignette du fichier '%s' du dossier '%s'..."
 #: src/gtkam-list.c:353
 #, c-format
 msgid "Could not get preview of file '%s' in folder '%s'"
-msgstr "Impossible de récupérer la prévisualisation du fichier '%s' du dossier '%s'"
+msgstr ""
+"Impossible de récupérer la prévisualisation du fichier '%s' du dossier '%s'"
 
 #: src/gtkam-list.c:382
 msgid "Info"
@@ -416,7 +418,8 @@ msgstr "Récupération de la prévisualisation du fichier '%s' du dossier '%s'..."
 #: src/gtkam-list.c:589
 #, c-format
 msgid "Could not get preview of file '%s' in folder '%s'."
-msgstr "Impossible de récupérer la prévisualisation du fichier '%s' du dossier '%s'."
+msgstr ""
+"Impossible de récupérer la prévisualisation du fichier '%s' du dossier '%s'."
 
 #. The camera doesn't support previews. Capture an image.
 #: src/gtkam-main.c:349 src/gtkam-preview.c:187
@@ -638,7 +641,8 @@ msgstr "Impossible de créer le dossier '%s' dans le dossier '%s'."
 #: src/gtkam-mkdir.c:247
 #, c-format
 msgid "Please choose a name for the directory that should be created in '%s':"
-msgstr "Merci de choisir un nom pour le répertoire qui doit être créé dans '%s' :"
+msgstr ""
+"Merci de choisir un nom pour le répertoire qui doit être créé dans '%s' :"
 
 #: src/gtkam-mkdir.c:263
 msgid "New directory"
@@ -811,11 +815,13 @@ msgstr "Entrer le nom du programme à lancer, laisser vide si aucun"
 #. Filenames provided by camera
 #: src/gtkam-save.c:518
 msgid "Use filenames provided by the camera"
-msgstr "Voulez-vous utiliser les noms de fichiers fournis par l'appareil photo ?"
+msgstr ""
+"Voulez-vous utiliser les noms de fichiers fournis par l'appareil photo ?"
 
 #: src/gtkam-save.c:523
 msgid "Choose whether to use the filename provided by the camera"
-msgstr "Voulez-vous utiliser les noms de fichiers fournis par l'appareil photo ?"
+msgstr ""
+"Voulez-vous utiliser les noms de fichiers fournis par l'appareil photo ?"
 
 #: src/gtkam-save.c:550
 msgid "Filename prefix: "
@@ -853,4 +859,3 @@ msgid ""
 msgstr ""
 "Impossible d'afficher '%s'. Soit le type d'image ('%s') n'est pas supporté "
 "par GTK, soit le fichier lui-même est corrompu."
-

@@ -386,7 +386,9 @@ on_select_icon (GtkIconList *ilist, GtkIconListItem *item,
 				GTK_SIGNAL_FUNC (on_info_activate), data);
 
 			i = gtk_menu_item_new_with_label (_("Exif"));
+#ifdef HAVE_EXIF
 			gtk_widget_show (i);
+#endif
 			gtk_container_add (GTK_CONTAINER (data->menu), i);
 			gtk_signal_connect (GTK_OBJECT (i), "activate",
 				GTK_SIGNAL_FUNC (on_exif_activate), data);

@@ -228,6 +228,7 @@ on_preview_capture_clicked (GtkButton *button, GtkamPreview *preview)
 		gtk_widget_show (dialog);
 		break;
 	}
+	gtk_object_destroy (GTK_OBJECT (s));
 }
 
 static gboolean

@@ -82,14 +82,14 @@ gtkam_preview_destroy (GtkObject *object)
 {
 	GtkamPreview *preview = GTKAM_PREVIEW (object);
 
-	if (preview->priv->camera) {
-		gp_camera_unref (preview->priv->camera);
-		preview->priv->camera = NULL;
-	}
-
 	if (preview->priv->timeout_id) {
 		gtk_timeout_remove (preview->priv->timeout_id);
 		preview->priv->timeout_id = 0;
+	}
+
+	if (preview->priv->camera) {
+		gp_camera_unref (preview->priv->camera);
+		preview->priv->camera = NULL;
 	}
 
 	GTK_OBJECT_CLASS (parent_class)->destroy (object);
@@ -153,6 +153,11 @@ gtkam_preview_get_type (void)
 static void
 on_preview_close_clicked (GtkButton *button, GtkamPreview *preview)
 {
+	if (preview->priv->timeout_id) {
+		gtk_timeout_remove (preview->priv->timeout_id);
+		preview->priv->timeout_id = 0;
+	}
+
 	gtk_object_destroy (GTK_OBJECT (preview));
 }
 

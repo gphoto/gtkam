@@ -206,7 +206,8 @@ get_file (Camera *camera, CameraFilePath path, gint nparams, GimpParam *param,
 	gchar *msg;
 
 	gp_file_new (&file);
-	msg = g_strdup_printf (_("Downloading '%s'..."), path.name);
+	msg = g_strdup_printf (_("Downloading '%s' from '%s'..."),
+			       path.name, path.folder);
         gimp_progress_init (msg);
 	g_free (msg);
         gp_camera_set_progress_func (camera, progress_func, NULL);
@@ -219,7 +220,6 @@ get_file (Camera *camera, CameraFilePath path, gint nparams, GimpParam *param,
                 dialog = gtkam_error_new (_("Could not "
                         "download file"), result, camera, NULL);
                 gtk_widget_show (dialog);
-                gp_camera_unref (camera);
 
                 /* Wait until the user closes the dialog */
                 gtk_signal_connect (GTK_OBJECT (dialog), "destroy",
@@ -391,8 +391,6 @@ run_load (gchar *name, gint nparams, GimpParam *param, gint *nreturn_vals,
 	gint32 image_id;
 	static GimpParam values[2];
 	guint i;
-	const gchar *full_path;
-	gchar *dir;
 	gboolean selected = FALSE;
 	gboolean multi;
 
@@ -427,10 +425,9 @@ run_load (gchar *name, gint nparams, GimpParam *param, gint *nreturn_vals,
 
 	/* Get the file(s) and display it */
 	for (i = 0; i < g_list_length (GTKAM_FSEL (fsel)->selection); i++) {
-		full_path = g_list_nth_data (GTKAM_FSEL (fsel)->selection, i);
-		dir = g_dirname (full_path);
-		strcpy (path.folder, dir);
-		strcpy (path.name, g_basename (full_path));
+		strcpy (path.folder, gtkam_fsel_get_path (GTKAM_FSEL (fsel)));
+		strcpy (path.name,
+			g_list_nth_data (GTKAM_FSEL (fsel)->selection, i));
 		image_id = get_file (camera, path,
 				     nparams, param, nreturn_vals, return_vals);
 	}

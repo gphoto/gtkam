@@ -49,6 +49,7 @@
 #include <gtk/gtkhbbox.h>
 #include <gtk/gtkscrolledwindow.h>
 #include <gtk/gtkpixmap.h>
+#include <gtk/gtkhpaned.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 
 #include "gtkam-clist.h"
@@ -170,14 +171,17 @@ static void
 on_file_selected (GtkamCList *clist, const gchar *path, GtkamFSel *fsel)
 {
 	gtk_widget_set_sensitive (fsel->ok_button, TRUE);
-	fsel->selection = g_list_append (fsel->selection, (gchar *) path);
+	fsel->selection = g_list_append (fsel->selection,
+					 (gchar *) g_basename (path));
 }
 
 static void
 on_file_unselected (GtkamCList *clist, const gchar *path, GtkamFSel *fsel)
 {
-	gtk_widget_set_sensitive (fsel->ok_button, FALSE);
-	fsel->selection = g_list_remove (fsel->selection, (gchar *) path);
+	fsel->selection = g_list_remove (fsel->selection,
+					 (gchar *) g_basename (path));
+	if (!g_list_length (fsel->selection))
+		gtk_widget_set_sensitive (fsel->ok_button, FALSE);
 }
 
 static void
@@ -230,6 +234,7 @@ gtkam_fsel_new (Camera *camera, gboolean multi, GtkWidget *opt_window)
 {
 	GtkamFSel *fsel;
 	GtkWidget *tree, *button, *image, *hbox, *scrolled, *bbox, *clist;
+	GtkWidget *hpaned;
 	GdkPixmap *pixmap;
 	GdkBitmap *bitmap;
 	GdkPixbuf *pixbuf;
@@ -292,15 +297,15 @@ gtkam_fsel_new (Camera *camera, gboolean multi, GtkWidget *opt_window)
 		gtk_box_pack_end (GTK_BOX (hbox), image, FALSE, FALSE, 0);
 	}
 
-	hbox = gtk_hbox_new (TRUE, 5);
-	gtk_widget_show (hbox);
-	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (fsel)->vbox), hbox,
+	hpaned = gtk_hpaned_new ();
+	gtk_widget_show (hpaned);
+	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (fsel)->vbox), hpaned,
 			    TRUE, TRUE, 0);
 
 	/* Tree */
 	scrolled = gtk_scrolled_window_new (NULL, NULL);
 	gtk_widget_show (scrolled);
-	gtk_box_pack_start (GTK_BOX (hbox), scrolled, TRUE, TRUE, 0);
+	gtk_paned_pack1 (GTK_PANED (hpaned), scrolled, TRUE, TRUE);
 	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled),
 				GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 
@@ -318,7 +323,7 @@ gtkam_fsel_new (Camera *camera, gboolean multi, GtkWidget *opt_window)
 	/* CList */
 	scrolled = gtk_scrolled_window_new (NULL, NULL);
 	gtk_widget_show (scrolled);
-	gtk_box_pack_start (GTK_BOX (hbox), scrolled, TRUE, TRUE, 0);
+	gtk_paned_pack2 (GTK_PANED (hpaned), scrolled, TRUE, TRUE);
 	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled),
 				GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 	clist = gtkam_clist_new ();
@@ -352,4 +357,12 @@ gtkam_fsel_new (Camera *camera, gboolean multi, GtkWidget *opt_window)
 					      GTK_WINDOW (opt_window));
 
 	return (GTK_WIDGET (fsel));
+}
+
+const gchar *
+gtkam_fsel_get_path (GtkamFSel *fsel)
+{
+	g_return_val_if_fail (GTKAM_IS_FSEL (fsel), NULL);
+
+	return (gtkam_tree_get_path (fsel->priv->tree));
 }

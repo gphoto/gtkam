@@ -52,4 +52,6 @@ GtkType    gtkam_fsel_get_type (void);
 GtkWidget *gtkam_fsel_new      (Camera *camera, gboolean multi,
 				GtkWidget *opt_window);
 
+const gchar *gtkam_fsel_get_path (GtkamFSel *fsel);
+
 #endif /* __GTKAM_FSEL_H__ */

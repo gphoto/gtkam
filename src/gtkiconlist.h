@@ -21,8 +21,6 @@
 #define __GTK_ICON_LIST_H__
 
 #include <gtk/gtkfixed.h>
-#include <gtk/gtklist.h>
-#include <gtkitementry.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -57,7 +55,6 @@ struct _GtkIconListItem
  
   GtkWidget *pixmap;
   GtkWidget *entry;
-  GtkWidget *eventbox;
 
   gpointer link;
 };
@@ -79,7 +76,7 @@ struct _GtkIconList
   guint row_spacing;  /* space between rows */ 
   guint col_spacing;  /* space between columns */
   guint icon_border;  /* space between icon and entry */
-
+  
   gboolean is_editable;
 
   GtkIconListItem *active_icon;
@@ -118,14 +115,41 @@ struct _GtkIconListClass
 
 GtkType		gtk_icon_list_get_type	(void);
 GtkType		gtk_icon_list_item_get_type	(void);
-void            gtk_icon_list_construct         (GtkIconList *,
-						 guint icon_width, guint mode);
 GtkWidget*	gtk_icon_list_new		(guint icon_width,
 						 guint mode);
+void		gtk_icon_list_construct		(GtkIconList *icon_list,
+       						 guint icon_width,
+						 guint mode);
+void		gtk_icon_list_set_mode		(GtkIconList *iconlist,
+						 guint mode);
+guint		gtk_icon_list_get_mode		(GtkIconList *iconlist);
+void		gtk_icon_list_set_editable	(GtkIconList *iconlist,
+						 gboolean editable);
+gboolean	gtk_icon_list_is_editable	(GtkIconList *iconlist);
+void		gtk_icon_list_set_row_spacing	(GtkIconList *iconlist,
+						 guint spacing);
+guint		gtk_icon_list_get_row_spacing	(GtkIconList *iconlist);
+void		gtk_icon_list_set_col_spacing	(GtkIconList *iconlist,
+						 guint spacing);
+guint		gtk_icon_list_get_col_spacing	(GtkIconList *iconlist);
+void		gtk_icon_list_set_text_space	(GtkIconList *iconlist,
+						 guint space);
+guint		gtk_icon_list_get_text_space	(GtkIconList *iconlist);
+void		gtk_icon_list_set_icon_border	(GtkIconList *iconlist,
+						 guint space);
+guint		gtk_icon_list_get_icon_border	(GtkIconList *iconlist);
+void		gtk_icon_list_set_icon_width	(GtkIconList *iconlist,
+						 guint space);
+guint		gtk_icon_list_get_icon_width	(GtkIconList *iconlist);
 void		gtk_icon_list_freeze		(GtkIconList *icon_list);
 void		gtk_icon_list_thaw		(GtkIconList *icon_list);
 void		gtk_icon_list_set_background	(GtkIconList *icon_list,
 						 GdkColor *color);
+GtkIconListItem *gtk_icon_list_add_from_pixmap	(GtkIconList *icon_list,
+						 GdkPixmap *pixmap,
+						 GdkBitmap *bitmap,
+						 const gchar *label,
+                                                 gpointer link);
 GtkIconListItem *gtk_icon_list_add_from_data	(GtkIconList *icon_list,
 						 gchar **data,
 						 const gchar *label,
@@ -144,6 +168,7 @@ void		gtk_icon_list_set_active_icon	(GtkIconList *iconlist,
 						 GtkIconListItem *icon);
 void		gtk_icon_list_remove_nth	(GtkIconList *iconlist,
 						 guint n);
+void		gtk_icon_list_update		(GtkIconList *iconlist);
 void		gtk_icon_list_clear		(GtkIconList *iconlist);
 void		gtk_icon_list_link		(GtkIconListItem *item,
 						 gpointer data);
@@ -156,11 +181,8 @@ GtkIconListItem *gtk_icon_list_get_active_icon  (GtkIconList *iconlist);
 GtkWidget 	*gtk_icon_list_get_entry	(GtkIconListItem *item);
 GtkWidget 	*gtk_icon_list_get_pixmap	(GtkIconListItem *item);
 void		gtk_icon_list_set_pixmap	(GtkIconListItem *item,
-						 GtkWidget *pixmap);
-/*
 						 GdkPixmap *pixmap,
 						 GdkBitmap *bitmap);
-*/
 void 		gtk_icon_list_set_label		(GtkIconList *iconlist,
                                                  GtkIconListItem *item, 
 						 const gchar *label);
@@ -168,7 +190,6 @@ void 		gtk_icon_list_set_selection_mode(GtkIconList *iconlist,
 						 gint mode);
 void		gtk_icon_list_select_icon	(GtkIconList *iconlist, 
 						 GtkIconListItem *item);
-void		gtk_icon_list_select_all	(GtkIconList *iconlist);
 void		gtk_icon_list_unselect_icon	(GtkIconList *iconlist, 
 						 GtkIconListItem *item);
 void		gtk_icon_list_unselect_all	(GtkIconList *iconlist);

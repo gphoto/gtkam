@@ -174,7 +174,7 @@ on_button_press_event (GtkWidget *widget, GdkEventButton *event,
 	glist = GTK_ICON_LIST (list)->icons;
 	for (item = NULL, i = 0; i < g_list_length (glist); i++) {
 		item = g_list_nth_data (glist, i);
-		if ((item->entry == widget) || (item->eventbox == widget))
+		if ((item->entry == widget) || (item->pixmap == widget))
 			break;
 	}
 	g_return_val_if_fail (i != g_list_length (glist), TRUE);
@@ -289,7 +289,7 @@ gtkam_list_set_path (GtkamList *list, const gchar *path)
 						pixmap, bitmap);
 			}
 		}
-		gtk_signal_connect (GTK_OBJECT (item->eventbox),
+		gtk_signal_connect (GTK_OBJECT (item->pixmap),
 				    "button_press_event",
 				    GTK_SIGNAL_FUNC (on_button_press_event),
 				    list);

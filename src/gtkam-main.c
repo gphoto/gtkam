@@ -180,7 +180,12 @@ on_delete_all_photos_activate (GtkMenuItem *item, GtkamMain *m)
 static void
 on_select_all_activate (GtkMenuItem *item, GtkamMain *m)
 {
-	gtk_icon_list_select_all (GTK_ICON_LIST (m->priv->list));
+	GtkIconList *ilist = GTK_ICON_LIST (m->priv->list);
+	guint i;
+
+	for (i = 0; i < g_list_length (ilist->icons); i++)
+		gtk_icon_list_select_icon (ilist,
+				g_list_nth_data (ilist->icons, i));
 }
 
 static void
@@ -269,10 +274,9 @@ on_configure_camera_clicked (GtkButton *button, GtkamMain *m)
 }
 
 static void
-on_check_resize (GtkWindow *window, GtkamMain *m)
+on_size_allocate (GtkWidget *widget, GtkAllocation *allocation, GtkamMain *m)
 {
-	gtk_icon_list_freeze (GTK_ICON_LIST (m->priv->list));
-	gtk_icon_list_thaw   (GTK_ICON_LIST (m->priv->list));
+	gtk_icon_list_update (GTK_ICON_LIST (m->priv->list));
 }
 
 static void
@@ -764,9 +768,8 @@ gtkam_main_new (void)
 	gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (scrolled),
 					       list);
 	m->priv->list = GTKAM_LIST (list);
-
-	gtk_signal_connect (GTK_OBJECT (m), "check_resize",
-			    GTK_SIGNAL_FUNC (on_check_resize), m);
+	gtk_signal_connect (GTK_OBJECT (scrolled), "size_allocate",
+			    GTK_SIGNAL_FUNC (on_size_allocate), m);
 
 	return (GTK_WIDGET (m));
 }

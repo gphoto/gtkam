@@ -28,12 +28,12 @@
 
 #define DEFAULT_ROW_SPACING 	4
 #define DEFAULT_COL_SPACING 	10	
-#define DEFAULT_TEXT_SPACE 	100
+#define DEFAULT_TEXT_SPACE 	60
 #define DEFAULT_ICON_BORDER 	2
 #define DEFAULT_WIDTH 150
 #define DEFAULT_HEIGHT 120
 
-#define GRAPH_MASK    (GDK_EXPOSURE_MASK |		\
+#define EVENTS_MASK    (GDK_EXPOSURE_MASK |		\
                        GDK_POINTER_MOTION_MASK |	\
                        GDK_POINTER_MOTION_HINT_MASK |	\
                        GDK_BUTTON_PRESS_MASK |		\
@@ -67,6 +67,10 @@ static void gtk_icon_list_class_init 		(GtkIconListClass *class);
 static void gtk_icon_list_init 			(GtkIconList *icon_list);
 static void gtk_icon_list_finalize 		(GtkObject *object);
 static void gtk_icon_list_destroy 		(GtkObject *object);
+/*
+static void gtk_icon_list_size_allocate		(GtkWidget *widget,
+                                                 GtkAllocation *allocation);
+*/
 static void gtk_icon_list_realize		(GtkWidget *widget);
 static void gtk_icon_list_map			(GtkWidget *widget); 
 static void gtk_icon_list_draw 			(GtkWidget *widget, 
@@ -117,9 +121,7 @@ static gint icon_key_press			(GtkWidget *widget,
 						 GdkEventKey *key, 
 						 gpointer data);
 static gint sort_list				(gpointer a, gpointer b);
-/*
-static void my_strconcat			(gchar **str, const gchar *add);
-*/
+static void pixmap_destroy			(GtkPixmap* pixmap);
 
 static GtkFixedClass *parent_class = NULL;
 
@@ -188,6 +190,9 @@ gtk_icon_list_class_init (GtkIconListClass *klass)
   object_class->destroy = gtk_icon_list_destroy;
 
   widget_class->realize = gtk_icon_list_realize;
+/*
+  widget_class->size_allocate = gtk_icon_list_size_allocate;
+*/
   widget_class->draw = gtk_icon_list_draw;
   widget_class->map = gtk_icon_list_map;
   widget_class->expose_event = gtk_icon_list_expose;
@@ -287,6 +292,12 @@ gtk_icon_list_thaw(GtkIconList *iconlist)
                reorder_icons(iconlist);
 }
 
+void
+gtk_icon_list_update(GtkIconList *iconlist)
+{
+  reorder_icons(iconlist);
+}
+
 static void
 reorder_icons(GtkIconList *iconlist)
 {
@@ -303,6 +314,8 @@ reorder_icons(GtkIconList *iconlist)
   widget = GTK_WIDGET(iconlist);
 
   if(iconlist->freeze_count > 0) return;
+
+  gdk_threads_enter();
 
   old_width = widget->allocation.width;
   old_height = widget->allocation.height;
@@ -324,7 +337,7 @@ reorder_icons(GtkIconList *iconlist)
     switch(iconlist->mode){
       case GTK_ICON_LIST_TEXT_RIGHT:
         y += vspace;
-        if(y + vspace > old_height){
+        if(y + vspace >= old_height){
                 x += hspace;
                 y = iconlist->row_spacing;
         }
@@ -333,7 +346,7 @@ reorder_icons(GtkIconList *iconlist)
       case GTK_ICON_LIST_ICON:
       default:
         x += hspace;
-        if(x + hspace > old_width){
+        if(x + hspace >= old_width){
                 x = iconlist->col_spacing;
                 y += vspace;
         }
@@ -344,6 +357,7 @@ reorder_icons(GtkIconList *iconlist)
 
    }
 
+  gdk_threads_leave();
 }
 
 
@@ -353,8 +367,11 @@ gtk_icon_list_move(GtkIconList *iconlist, GtkIconListItem *icon,
 {
   GtkRequisition req1, req2;
   GtkRequisition req;
+  GtkAllocation a;
+  gchar *text;
   gint old_width, old_height, width, height;
   gint old_x, old_y;
+  gint size;
 
   old_x = icon->x;
   old_y = icon->y;
@@ -363,16 +380,15 @@ gtk_icon_list_move(GtkIconList *iconlist, GtkIconListItem *icon,
   icon->y = y;
 
   item_size_request(iconlist, icon, &req);
-//  req1 = icon->pixmap->requisition;
-  req1 = icon->eventbox->requisition;
+  req1 = icon->pixmap->requisition;
   req2 = icon->entry->requisition;
+  req2.width = iconlist->text_space;
 
-  req1.width = MAX(iconlist->icon_width, req1.width);
-  if(iconlist->mode == GTK_ICON_LIST_TEXT_BELOW){
-     req1.width = MAX(req2.width, req1.width);
-  }
   req1.width += 2*iconlist->icon_border;
   req1.height += 2*iconlist->icon_border;
+  if(iconlist->mode == GTK_ICON_LIST_TEXT_BELOW){
+     req1.width = MAX(req1.width, req.width);
+  }
 
   if(iconlist->mode == GTK_ICON_LIST_ICON) 
           req2.width = req2.height = 0;
@@ -380,26 +396,27 @@ gtk_icon_list_move(GtkIconList *iconlist, GtkIconListItem *icon,
   old_width = width = GTK_WIDGET(iconlist)->allocation.width;
   old_height = height = GTK_WIDGET(iconlist)->allocation.height;
 
-  gtk_fixed_move(GTK_FIXED(iconlist), icon->eventbox, 
-                  x + req1.width/2 - icon->eventbox->requisition.width/2, 
-                  y + iconlist->icon_border);
-  icon->eventbox->allocation.x += (x - old_x);
-  icon->eventbox->allocation.y += (y - old_y);
-/*
   gtk_fixed_move(GTK_FIXED(iconlist), icon->pixmap, 
-                  x + req1.width/2 - icon->pixmap->requisition.width/2, 
-                  y + iconlist->icon_border);
+                 x + req1.width/2 - icon->pixmap->requisition.width/2, 
+                 y + iconlist->icon_border);
+
   icon->pixmap->allocation.x += (x - old_x);
   icon->pixmap->allocation.y += (y - old_y);
-*/
   icon->entry->allocation.x += (x - old_x);
   icon->entry->allocation.y += (y - old_y);
+  icon->entry->allocation.width = req2.width;
+
 
   switch(iconlist->mode){
    case GTK_ICON_LIST_TEXT_BELOW:
+        text = gtk_entry_get_text(GTK_ENTRY(icon->entry));
+        size = gdk_string_width(icon->entry->style->font, text);
+        size = MIN(size, req2.width);
+
   	gtk_fixed_move(GTK_FIXED(iconlist), icon->entry, 
         	        x - req2.width/2 + req1.width/2, 
                         y + req1.height + iconlist->icon_border);
+
         if(y + req.height > height) 
            height += req.height;
         break;
@@ -407,6 +424,7 @@ gtk_icon_list_move(GtkIconList *iconlist, GtkIconListItem *icon,
   	gtk_fixed_move(GTK_FIXED(iconlist), icon->entry, 
         	        x + req1.width + iconlist->icon_border, 
                         y + req1.height/2 - req2.height/2); 
+
         if(x + req.width > width) 
             width += req.width;
 	break;
@@ -414,14 +432,23 @@ gtk_icon_list_move(GtkIconList *iconlist, GtkIconListItem *icon,
    default: ;
   }
 
-//  gtk_widget_size_allocate(icon->pixmap, &icon->pixmap->allocation);
-  gtk_widget_size_allocate(icon->eventbox, &icon->eventbox->allocation);
+  a = icon->entry->allocation;
+
+  gtk_widget_size_allocate(icon->pixmap, &icon->pixmap->allocation);
   if(icon->entry){
-    gtk_widget_size_allocate(icon->entry, &icon->entry->allocation);
+    gtk_widget_size_allocate(icon->entry, &a);
     gtk_widget_draw(icon->entry, NULL);
   }
 
 }
+
+/*
+static void
+gtk_icon_list_size_allocate(GtkWidget *widget, GtkAllocation *allocation)
+{
+  GTK_WIDGET_CLASS(parent_class)->size_allocate(widget, allocation);
+}
+*/
 
 static void
 gtk_icon_list_realize(GtkWidget *widget)
@@ -446,7 +473,6 @@ gtk_icon_list_realize(GtkWidget *widget)
   icons = iconlist->icons;
   while(icons){
     item = (GtkIconListItem *) icons->data;
-    gtk_widget_show(item->eventbox);
     gtk_widget_draw(item->pixmap, NULL);
     if(iconlist->mode != GTK_ICON_LIST_ICON){
       gtk_widget_realize(item->entry);
@@ -475,7 +501,7 @@ gtk_icon_list_init (GtkIconList *icon_list)
   gdk_color_white(gtk_widget_get_colormap(widget), &widget->style->white);
 
   gtk_widget_set_events (widget, gtk_widget_get_events(widget)|
-                         GRAPH_MASK);
+                         EVENTS_MASK);
 
   icon_list->selection = NULL;
   icon_list->is_editable = TRUE;
@@ -597,7 +623,7 @@ gtk_icon_list_button_press(GtkWidget *widget, GdkEventButton *event)
        y <= allocation->y + allocation->height) return FALSE;
   }
 
-  if(item) {
+  if(item)
    switch(iconlist->selection_mode){
      case GTK_SELECTION_SINGLE:
      case GTK_SELECTION_BROWSE:
@@ -606,8 +632,7 @@ gtk_icon_list_button_press(GtkWidget *widget, GdkEventButton *event)
      case GTK_SELECTION_EXTENDED:
         select_icon(iconlist, item, (GdkEvent *)event);
    }
-  }
-  deactivate_entry(iconlist);
+
   return FALSE;
 }
 
@@ -625,6 +650,9 @@ deactivate_entry(GtkIconList *iconlist)
      if(!veto) return FALSE;
 
      entry = GTK_ENTRY(iconlist->active_icon->entry);
+
+     if(!entry || !GTK_WIDGET_REALIZED(entry)) return FALSE;
+
      gtk_entry_set_editable(entry, FALSE);    
      gtk_entry_set_text(entry, iconlist->active_icon->entry_label);
      gtk_entry_select_region(entry, 0, 0);
@@ -657,27 +685,26 @@ select_icon(GtkIconList *iconlist, GtkIconListItem *item, GdkEvent *event)
 {
   gboolean veto = TRUE;
 
-  if(iconlist->mode != GTK_ICON_LIST_ICON){ 
-    if(!deactivate_entry(iconlist)) return;
-
-    if(GTK_WIDGET_REALIZED(item->entry)){
-      gdk_gc_set_foreground(GTK_ITEM_ENTRY(item->entry)->fg_gc,
-                            &item->entry->style->fg[GTK_STATE_SELECTED]);
-      gdk_gc_set_foreground(GTK_ITEM_ENTRY(item->entry)->bg_gc,
-                            &item->entry->style->bg[GTK_STATE_SELECTED]);
-    }
-    gtk_entry_set_text(GTK_ENTRY(item->entry), item->label);
-    gtk_entry_set_position(GTK_ENTRY(item->entry), 0);
-    gtk_widget_draw(item->entry, NULL);
-  }
-
   gtk_signal_emit(GTK_OBJECT(iconlist), signals[SELECT_ICON], item, 
                   event, &veto);                        
 
   if(!veto) return;
 
-  if(item->state == GTK_STATE_SELECTED) return;
+  if(iconlist->mode != GTK_ICON_LIST_ICON){ 
+    if(!deactivate_entry(iconlist)) return;
 
+    if(item->entry && GTK_WIDGET_REALIZED(item->entry)){
+      gdk_gc_set_foreground(GTK_ITEM_ENTRY(item->entry)->fg_gc,
+                            &item->entry->style->fg[GTK_STATE_SELECTED]);
+      gdk_gc_set_foreground(GTK_ITEM_ENTRY(item->entry)->bg_gc,
+                            &item->entry->style->bg[GTK_STATE_SELECTED]);
+      gtk_entry_set_text(GTK_ENTRY(item->entry), item->label);
+      gtk_entry_set_position(GTK_ENTRY(item->entry), 0);
+      gtk_widget_draw(item->entry, NULL);
+    }
+  }
+
+  if(item->state == GTK_STATE_SELECTED) return;
   iconlist->selection = g_list_append(iconlist->selection, item);
 
   item->state = GTK_STATE_SELECTED;  
@@ -690,6 +717,9 @@ unselect_icon(GtkIconList *iconlist, GtkIconListItem *item, GdkEvent *event)
 {
   GList *selection;
   GtkIconListItem *icon;
+
+  if(!item) return;
+
   if(item->state == GTK_STATE_NORMAL) return;
 
   selection = iconlist->selection;
@@ -700,23 +730,22 @@ unselect_icon(GtkIconList *iconlist, GtkIconListItem *item, GdkEvent *event)
   }
 
   if(selection){
-       selection = g_list_remove_link(iconlist->selection, selection);
-       g_list_free_1(selection);
+       iconlist->selection = g_list_remove_link(iconlist->selection, selection);
   }
  
   item->state = GTK_STATE_NORMAL;
 
   if(iconlist->mode != GTK_ICON_LIST_ICON){
-   if(GTK_WIDGET_REALIZED(item->entry)){
+   if(item->entry && GTK_WIDGET_REALIZED(item->entry)){
      gdk_gc_set_foreground(GTK_ITEM_ENTRY(item->entry)->bg_gc, 
                            &iconlist->background);
      gdk_gc_set_foreground(GTK_ITEM_ENTRY(item->entry)->fg_gc,
                            &item->entry->style->fg[GTK_STATE_NORMAL]);
+     gtk_entry_select_region(GTK_ENTRY(item->entry), 0, 0);
+     gtk_entry_set_text(GTK_ENTRY(item->entry), item->entry_label);
+     gtk_entry_set_editable(GTK_ENTRY(item->entry), FALSE);
+     gtk_widget_draw(item->entry, NULL);
    }
-   gtk_entry_select_region(GTK_ENTRY(item->entry), 0, 0);
-   gtk_entry_set_text(GTK_ENTRY(item->entry), item->entry_label);
-   gtk_entry_set_editable(GTK_ENTRY(item->entry), FALSE);
-   gtk_widget_draw(item->entry, NULL);
   }
 
   gtk_signal_emit(GTK_OBJECT(iconlist), signals[UNSELECT_ICON], item, event);                        
@@ -739,42 +768,83 @@ unselect_all(GtkIconList *iconlist)
   iconlist->selection = NULL;
 }
 
-static void
-select_all(GtkIconList *iconlist)
-{
-  GList *icons;
-  GtkIconListItem *item;
-
-  if (iconlist->selection){
-    g_list_free(iconlist->selection);
-    iconlist->selection = NULL;
-  }
-  icons = iconlist->icons;
-  while(icons){
-    item = (GtkIconListItem *)icons->data;
-    select_icon(iconlist, item, NULL);
-    iconlist->selection = g_list_append(iconlist->selection, item);
-    icons = icons->next;
-  }
-}
-
-void
-gtk_icon_list_construct (GtkIconList *icon_list, guint icon_width, guint mode)
-{
-	icon_list->icon_width = icon_width;
-	icon_list->mode = mode;
-	icon_list->selection_mode = GTK_SELECTION_SINGLE;
-}
-
 GtkWidget*
 gtk_icon_list_new (guint icon_width, guint mode)
 {
   GtkIconList *icon_list;
 
   icon_list = gtk_type_new (gtk_icon_list_get_type ());
-  gtk_icon_list_construct (icon_list, icon_width, mode);
+
+  gtk_icon_list_construct(icon_list, icon_width, mode);
 
   return GTK_WIDGET (icon_list);
+}
+
+void
+gtk_icon_list_construct (GtkIconList *icon_list, guint icon_width, guint mode)
+{
+  icon_list->icon_width = icon_width;
+  icon_list->mode = mode;
+  icon_list->icons = NULL;
+  icon_list->selection = NULL;
+  icon_list->selection_mode = GTK_SELECTION_SINGLE;
+}
+
+void
+gtk_icon_list_set_mode (GtkIconList *iconlist, guint mode)
+{
+  GList *icons;
+
+  iconlist->mode = mode;
+
+  icons = iconlist->icons;
+  while(icons){
+    GtkIconListItem *item;
+
+    item = (GtkIconListItem *)icons->data;
+    
+    switch(mode){
+      case GTK_ICON_LIST_TEXT_RIGHT:
+        gtk_item_entry_set_justification(GTK_ITEM_ENTRY(item->entry), 
+                                         GTK_JUSTIFY_LEFT);
+        break;
+      case GTK_ICON_LIST_TEXT_BELOW:
+        gtk_item_entry_set_justification(GTK_ITEM_ENTRY(item->entry), 
+                                         GTK_JUSTIFY_CENTER);
+        break;
+    }
+    
+    icons = icons->next;
+  }
+ 
+  reorder_icons(iconlist); 
+}
+
+guint
+gtk_icon_list_get_mode (GtkIconList *iconlist)
+{
+  return(iconlist->mode);
+}
+
+void
+gtk_icon_list_set_text_space (GtkIconList *iconlist, guint text_space)
+{
+  GList *icons;
+
+  iconlist->text_space = text_space;
+
+  icons = iconlist->icons;
+  while(icons){
+    GtkIconListItem *item;
+
+    item = (GtkIconListItem *)icons->data;
+    
+    GTK_ITEM_ENTRY(item->entry)->text_max_size = text_space;
+    
+    icons = icons->next;
+  }
+ 
+  reorder_icons(iconlist); 
 }
 
 
@@ -846,7 +916,7 @@ entry_changed (GtkWidget *widget, gpointer data)
 
   if(!veto) return veto; 
 
-  if(GTK_EDITABLE(item->entry)->editable){
+  if(item->entry && GTK_EDITABLE(item->entry)->editable){
     g_free(item->label);
     item->label = g_strdup(text); 
     g_free(item->entry_label);
@@ -863,10 +933,10 @@ entry_in (GtkWidget *widget, GdkEventButton *event, gpointer data)
   GtkIconListItem *item;
   gboolean veto = TRUE;
 
+  if(!GTK_IS_ENTRY(widget)) return FALSE;
   iconlist = GTK_ICON_LIST(data);
 
   item = get_icon_from_entry(iconlist, widget);
-
   if(iconlist->active_icon && iconlist->active_icon->entry == widget) 
           return FALSE;
 
@@ -891,6 +961,12 @@ entry_in (GtkWidget *widget, GdkEventButton *event, gpointer data)
                           iconlist->active_icon->entry->allocation.y+2,
                           iconlist->active_icon->entry->allocation.width-4,
                           iconlist->active_icon->entry->allocation.height-4);
+   }else{
+     gtk_signal_emit_stop_by_name(GTK_OBJECT(widget), "button_press_event"); 
+     if(iconlist->selection_mode == GTK_SELECTION_SINGLE ||
+        iconlist->selection_mode == GTK_SELECTION_BROWSE) 
+          unselect_all(iconlist);
+     select_icon(iconlist, item, (GdkEvent *)event);
    }
   }else{
      if(iconlist->selection_mode == GTK_SELECTION_SINGLE ||
@@ -979,6 +1055,20 @@ gtk_icon_list_add_from_data (GtkIconList *iconlist,
   return item;
 }
 
+GtkIconListItem *
+gtk_icon_list_add_from_pixmap (GtkIconList *iconlist, 
+                               GdkPixmap *pixmap,
+                               GdkBitmap *mask,
+                               const gchar *label,
+                               gpointer link)
+{
+  GtkIconListItem *item;
+
+  item = gtk_icon_list_real_add(iconlist, pixmap, mask, label, link);
+  return item;
+}
+
+
 static GtkIconListItem*
 gtk_icon_list_real_add (GtkIconList *iconlist, 
                         GdkPixmap *pixmap,
@@ -1044,7 +1134,7 @@ gtk_icon_list_put (GtkIconList *iconlist,
   GtkIconListItem *icon;
   GtkIconListItem *active_icon;
   GtkWidget *widget;
-  GtkRequisition req1, req2;
+  GtkRequisition req, req1, req2;
   gint text_width;
   gint width, height, old_width, old_height;
   GtkAllocation alloc;
@@ -1066,28 +1156,20 @@ gtk_icon_list_put (GtkIconList *iconlist,
   if(label) icon->label = g_strdup(label);
   icon->entry = gtk_item_entry_new();
   icon->pixmap = gtk_pixmap_new(pixmap, mask);
-  icon->eventbox = gtk_event_box_new();
   icon->link = data;
 
-  GTK_ITEM_ENTRY(icon->entry)->text_max_size = DEFAULT_TEXT_SPACE; 
-  gtk_widget_size_request(icon->entry, &req2);
-  if(iconlist->mode == GTK_ICON_LIST_TEXT_RIGHT){
-     req2.width = MAX(iconlist->text_space, req2.width); 
-     gtk_widget_set_usize(icon->entry, req2.width, req2.height); 
-  }
+  GTK_ITEM_ENTRY(icon->entry)->text_max_size = iconlist->text_space; 
+  item_size_request(iconlist, icon, &req);
+  req1 = icon->pixmap->requisition;
+  req2 = icon->entry->requisition;
+  req2.width = iconlist->text_space; 
 
-  gtk_container_add(GTK_CONTAINER(icon->eventbox), icon->pixmap);
-  gtk_container_set_border_width(GTK_CONTAINER(icon->eventbox), 5);  
-
-  gtk_widget_size_request(icon->eventbox, &req1);
-//  gtk_widget_size_request(icon->pixmap, &req1);
-
-  req1.width = MAX(iconlist->icon_width, req1.width);
-  if(iconlist->mode == GTK_ICON_LIST_TEXT_BELOW){
-     req1.width = MAX(req2.width, req1.width);
-  }
   req1.width += 2*iconlist->icon_border;
   req1.height += 2*iconlist->icon_border;
+  if(iconlist->mode == GTK_ICON_LIST_TEXT_BELOW){
+     req1.width = MAX(req1.width, req.width);
+  }
+
 
   if(iconlist->mode == GTK_ICON_LIST_ICON) 
           req2.width = req2.height = 0;
@@ -1095,22 +1177,16 @@ gtk_icon_list_put (GtkIconList *iconlist,
           set_labels(iconlist, icon, label);
 
   text_width = gdk_string_width(icon->entry->style->font, label);
-/*
+
   gtk_fixed_put(GTK_FIXED(iconlist), icon->pixmap, 
                  x + req1.width/2 - icon->pixmap->requisition.width/2, 
                  y + iconlist->icon_border);
-*/
-  gtk_fixed_put(GTK_FIXED(iconlist), icon->eventbox, 
-                 x + req1.width/2 - icon->eventbox->requisition.width/2, 
-                 y + iconlist->icon_border);
 
-//  alloc.x = x + req1.width/2 - icon->pixmap->requisition.width/2; 
-  alloc.x = x + req1.width/2 - icon->eventbox->requisition.width/2; 
+  alloc.x = x + req1.width/2 - icon->pixmap->requisition.width/2; 
   alloc.y = y + iconlist->icon_border; 
   alloc.width =  req1.width;
   alloc.height =  req1.height;
-//  gtk_widget_size_allocate(icon->pixmap, &alloc);
-  gtk_widget_size_allocate(icon->eventbox, &alloc);
+  gtk_widget_size_allocate(icon->pixmap, &alloc);
 
   switch(iconlist->mode){
    case GTK_ICON_LIST_TEXT_BELOW:
@@ -1157,7 +1233,6 @@ gtk_icon_list_put (GtkIconList *iconlist,
     }
 
   gtk_widget_show(icon->pixmap);
-  gtk_widget_show(icon->eventbox);
 
   iconlist->icons = g_list_insert_sorted(iconlist->icons, icon, iconlist->compare_func);
   iconlist->num_icons++;
@@ -1183,18 +1258,17 @@ set_labels(GtkIconList *iconlist, GtkIconListItem *icon, const gchar *label)
   gint text_width;
   gint point_width;
   gint max_width;
-  gchar letter[2];
-  gchar *entry_label;
+  gchar *entry_label = NULL;
   gint n, space;
 
-  text_width = gdk_string_width(icon->entry->style->font, label);
+  entry_label = (gchar *)g_malloc(strlen(label) + 5);
+  entry_label[0] = label[0];
+  entry_label[1] = '\0';
 
+  text_width = gdk_string_width(icon->entry->style->font, label);
   point_width = gdk_string_width(icon->entry->style->font, "X");
 
-  max_width = icon->entry->requisition.width;
-  max_width = MAX(max_width, iconlist->text_space);
-
-  entry_label = g_strdup("");
+  max_width = iconlist->text_space;
 
   for(n = 0; n < strlen(label); n++){
      space = strlen(label) - n + 1;
@@ -1202,36 +1276,18 @@ set_labels(GtkIconList *iconlist, GtkIconListItem *icon, const gchar *label)
         gdk_string_width(icon->entry->style->font, entry_label) + 
         3 * point_width > max_width) 
                                                    break;
-     letter[0] = label[n];
-     letter[1] = '\0';
-     entry_label = g_strconcat(entry_label, letter, NULL);
+     entry_label[n] = label[n];
+     entry_label[n + 1] = '\0';
   }
 
+
   if(strlen(entry_label) < strlen(label))
-             entry_label = g_strconcat(entry_label, "...", NULL);  
-  else
-             entry_label = g_strdup(entry_label);
+      sprintf(entry_label,"%s...", entry_label);
 
-  icon->entry_label = entry_label;
+  icon->entry_label = g_strdup(entry_label);
+
+  g_free(entry_label);
 }
-
-/*
-static void 
-my_strconcat(gchar **str, const gchar *add)
-{
-  gint n, m;
-
-  if(!*str || !add) return;
-  m = strlen(add);
-  n = strlen(*str);
-  *str = g_realloc(*str, n+m+1);
-  if(!str) 
-     strcat(*str, add);
-  else
-     g_warning("Couldn't reallocate label string");
-
-}
-*/
 
 static gint
 icon_key_press(GtkWidget *widget, GdkEventKey *key, gpointer data)
@@ -1255,10 +1311,9 @@ item_size_request(GtkIconList *iconlist,
   GtkRequisition req2;
 
   gtk_widget_size_request(item->entry, &req2);
-  req2.width = MAX(req2.width, iconlist->text_space);
+  req2.width = iconlist->text_space;
 
-//  gtk_widget_size_request(item->pixmap, requisition);
-  gtk_widget_size_request(item->eventbox, requisition);
+  gtk_widget_size_request(item->pixmap, requisition);
   requisition->width = MAX(iconlist->icon_width, requisition->width);
   requisition->width += 2*iconlist->icon_border;
   requisition->height += 2*iconlist->icon_border;
@@ -1277,7 +1332,7 @@ item_size_request(GtkIconList *iconlist,
 
 }
 
-#if 0   		  
+   		  
 void
 gtk_icon_list_set_editable (GtkIconList *iconlist, gboolean editable)
 {
@@ -1292,8 +1347,7 @@ gtk_icon_list_set_editable (GtkIconList *iconlist, gboolean editable)
   }
 
   iconlist->is_editable = editable;
-}
-#endif
+} 
 
 GtkIconListItem *
 gtk_icon_list_get_nth(GtkIconList *iconlist, guint n)
@@ -1323,12 +1377,29 @@ gtk_icon_list_get_index(GtkIconList *iconlist, GtkIconListItem *item)
   return -1;
 }
 
+static void
+pixmap_destroy(GtkPixmap* pixmap)
+{
+  /* release pixmap */
+  if (pixmap){
+    GdkPixmap* pm = NULL;
+    GdkBitmap* bm = NULL;
+
+    gtk_pixmap_get(pixmap, &pm, &bm);
+
+    /* HB: i don't know enough about Gtk+ to call this a design flaw, but it
+     * appears the pixmaps need to be destroyed by hand ...
+     */
+    if (pm) gdk_pixmap_unref(pm);
+    if (bm) gdk_pixmap_unref(bm);
+  }
+}
 
 void
 gtk_icon_list_remove (GtkIconList *iconlist, GtkIconListItem *item)
 {
   GList *icons;
-  GtkIconListItem *icon;
+  GtkIconListItem *icon = 0;
 
   if(item == NULL) return;
  
@@ -1341,9 +1412,11 @@ gtk_icon_list_remove (GtkIconList *iconlist, GtkIconListItem *item)
 
   if(icons){
      if(icon->state == GTK_STATE_SELECTED) unselect_icon(iconlist, icon, NULL);
-     gtk_container_remove(GTK_CONTAINER(iconlist), icon->entry);
-//     gtk_container_remove(GTK_CONTAINER(iconlist), icon->pixmap);
-     gtk_container_remove(GTK_CONTAINER(iconlist), icon->eventbox);
+     pixmap_destroy(GTK_PIXMAP(icon->pixmap));
+     if(icon->entry)
+       gtk_container_remove(GTK_CONTAINER(iconlist), icon->entry);
+     if(icon->pixmap)
+       gtk_container_remove(GTK_CONTAINER(iconlist), icon->pixmap);
      if(icon->label){
         g_free(icon->label);
         icon->label = NULL;
@@ -1385,11 +1458,15 @@ gtk_icon_list_clear(GtkIconList *iconlist)
 
   icons = iconlist->icons;
 
+  gdk_threads_enter();
+
   while(icons){
     icon = (GtkIconListItem *) icons->data;
-    gtk_container_remove(GTK_CONTAINER(iconlist), icon->entry);
-//    gtk_container_remove(GTK_CONTAINER(iconlist), icon->pixmap);
-    gtk_container_remove(GTK_CONTAINER(iconlist), icon->eventbox);
+    pixmap_destroy(GTK_PIXMAP(icon->pixmap));
+    if(icon->entry)
+      gtk_container_remove(GTK_CONTAINER(iconlist), icon->entry);
+    if(icon->pixmap)
+      gtk_container_remove(GTK_CONTAINER(iconlist), icon->pixmap);
     if(icon->label){
         g_free(icon->label);
         icon->label = NULL;
@@ -1400,14 +1477,16 @@ gtk_icon_list_clear(GtkIconList *iconlist)
     }
 
     g_free(icon);
+
     iconlist->icons = g_list_remove_link(iconlist->icons, icons);
     g_list_free_1(icons);
     icons = iconlist->icons;
   }
 
+  gdk_threads_leave();
+
   iconlist->icons = NULL;
   iconlist->num_icons = 0;
-
 }    
 
 void
@@ -1452,18 +1531,12 @@ gtk_icon_list_get_pixmap(GtkIconListItem *item)
 
 void
 gtk_icon_list_set_pixmap(GtkIconListItem *item, 
-			 GtkWidget *pixmap)
-/*
 			 GdkPixmap *pixmap, 
 			 GdkBitmap *mask)
-*/
 {
 
-  if(item->pixmap) gtk_widget_destroy(item->pixmap);
-  item->pixmap = pixmap;
-/*
+  if(item->pixmap) gtk_widget_destroy(item->pixmap);  
   item->pixmap = gtk_pixmap_new(pixmap, mask);
-*/
 
 }
 
@@ -1482,8 +1555,7 @@ gtk_icon_list_set_label(GtkIconList *iconlist, GtkIconListItem *item, const gcha
   gtk_entry_set_text(GTK_ENTRY(item->entry), label);
   set_labels(iconlist, item, label);
 }
-
-#if 0
+ 
 /**********************************
  * gtk_icon_list_set_icon_width
  * gtk_icon_list_set_row_spacing
@@ -1520,13 +1592,6 @@ gtk_icon_list_set_col_spacing(GtkIconList *iconlist, guint spacing)
   reorder_icons(iconlist);
 }
 
-void
-gtk_icon_list_set_text_space(GtkIconList *iconlist, guint spacing)
-{
-  iconlist->text_space = spacing;
-  reorder_icons(iconlist);
-}
-#endif
 
 /**********************************
  * gtk_icon_list_set_selection_mode
@@ -1545,12 +1610,6 @@ void
 gtk_icon_list_select_icon(GtkIconList *iconlist, GtkIconListItem *item)
 {
   select_icon(iconlist, item, NULL);
-}
-
-void
-gtk_icon_list_select_all (GtkIconList *iconlist)
-{
-  select_all(iconlist);
 }
 
 void
@@ -1579,4 +1638,41 @@ gtk_icon_list_set_active_icon(GtkIconList *iconlist, GtkIconListItem *icon)
     entry_in(icon->entry, NULL, iconlist);
     gtk_widget_grab_focus(icon->entry);
   }
+}
+
+
+gboolean
+gtk_icon_list_is_editable       (GtkIconList *iconlist)
+{
+  return (iconlist->is_editable);
+}
+
+guint
+gtk_icon_list_get_row_spacing       (GtkIconList *iconlist)
+{
+  return(iconlist->row_spacing);
+}
+
+guint
+gtk_icon_list_get_col_spacing       (GtkIconList *iconlist)
+{
+  return(iconlist->col_spacing);
+}
+
+guint
+gtk_icon_list_get_text_space       (GtkIconList *iconlist)
+{
+  return(iconlist->text_space);
+}
+
+guint
+gtk_icon_list_get_icon_border       (GtkIconList *iconlist)
+{
+  return(iconlist->icon_border);
+}
+
+guint
+gtk_icon_list_get_icon_width       (GtkIconList *iconlist)
+{
+  return(iconlist->icon_width);
 }

@@ -50,6 +50,9 @@
 #include <gtk/gtkentry.h>
 #include <gtk/gtkwindow.h>
 #include <gtk/gtkspinbutton.h>
+#include <gtk/gtktooltips.h>
+#include <gtk/gtkcheckbutton.h>
+#include <gtk/gtklabel.h>
 
 #include <gphoto2/gphoto2-setting.h>
 
@@ -76,7 +79,7 @@ struct _GtkamSavePrivate
 	GtkToggleButton *toggle_filename_camera;
 	GtkEntry *program;
 
-	GtkWidget *spin_entry, *prefix_entry, *file_list, *hbox_prefix;
+	GtkWidget *spin_entry, *prefix_entry, *hbox_prefix;
 
 	gboolean quiet, err_shown;
 
@@ -92,11 +95,6 @@ gtkam_save_destroy (GtkObject *object)
 	GtkamSave *save = GTKAM_SAVE (object);
 	gint i;
 	GtkamSaveData *data;
-
-	if (save->priv->status) {
-		g_object_unref (G_OBJECT (save->priv->status));
-		save->priv->status = NULL;
-	}
 
 	if (save->priv->data) {
 		for (i = g_slist_length (save->priv->data) - 1; i >= 0; i--) {
@@ -149,18 +147,24 @@ gtkam_save_init (GTypeInstance *instance, gpointer g_class)
 GType
 gtkam_save_get_type (void)
 {
-	GTypeInfo tinfo;
+	static GType type = 0;
 
-        memset (&tinfo, 0, sizeof (GTypeInfo));
-        tinfo.class_size     = sizeof (GtkamSaveClass);
-        tinfo.class_init     = gtkam_save_class_init;
-        tinfo.instance_size  = sizeof (GtkamSave);
-        tinfo.instance_init  = gtkam_save_init;
+	if (!type) {
+		GTypeInfo ti;
 
-        return (g_type_register_static (PARENT_TYPE, "GtkamSave", &tinfo, 0));
+        	memset (&ti, 0, sizeof (GTypeInfo));
+	        ti.class_size     = sizeof (GtkamSaveClass);
+	        ti.class_init     = gtkam_save_class_init;
+	        ti.instance_size  = sizeof (GtkamSave);
+	        ti.instance_init  = gtkam_save_init;
+
+        	type = g_type_register_static (PARENT_TYPE, "GtkamSave",
+					       &ti, 0);
+	}
+
+	return (type);
 }
 
-#if 0
 static void
 on_cancel_clicked (GtkButton *button, GtkamSave *save)
 {
@@ -182,8 +186,8 @@ on_filename_camera_toggled (GtkToggleButton *toggle, GtkamSave *save)
 		gtk_widget_set_sensitive (save->priv->prefix_entry, FALSE);
 		gtk_widget_set_sensitive (save->priv->spin_entry, FALSE);
 
-		gtk_widget_show (save->priv->file_list);
-		gtk_widget_set_sensitive (save->priv->file_list,
+		gtk_widget_show (GTK_FILE_SELECTION (save)->file_list);
+		gtk_widget_set_sensitive (GTK_FILE_SELECTION (save)->file_list,
 					  !toggle->active);
 
 		gtk_widget_show (GTK_FILE_SELECTION (save)->selection_entry);
@@ -208,8 +212,9 @@ on_filename_camera_toggled (GtkToggleButton *toggle, GtkamSave *save)
 		gtk_widget_set_sensitive (GTK_WIDGET (save->priv->spin_entry),
 			!toggle->active);
 
-		gtk_widget_hide (save->priv->file_list);
-		gtk_widget_set_sensitive (save->priv->file_list, FALSE);
+		gtk_widget_hide (GTK_FILE_SELECTION (save)->file_list);
+		gtk_widget_set_sensitive (GTK_FILE_SELECTION (save)->file_list,
+					  FALSE);
 
 		gtk_widget_hide (GTK_FILE_SELECTION (save)->selection_entry);
 		gtk_widget_set_sensitive (
@@ -383,9 +388,7 @@ get_file (GtkamSave *save, Camera *camera, gboolean multi,
 	}
 	gp_file_unref (file);
 }
-#endif
 
-#if 0
 static void
 on_ok_clicked (GtkButton *button, GtkamSave *save)
 {
@@ -399,7 +402,7 @@ on_ok_clicked (GtkButton *button, GtkamSave *save)
 	count = g_slist_length (save->priv->data);
 	s = gtkam_status_new (_("Downloading %i files..."), count);
 	gtk_widget_show (s);
-	gtk_box_pack_start (GTK_BOX (save->priv->status), s, FALSE, FALSE, 0);
+	g_warning ("Fixme: on_ok_clicked");
 
 	id = gp_context_progress_start (GTKAM_STATUS (s)->context->context,
 		count, _("Downloading %i files..."), count);
@@ -451,36 +454,22 @@ on_ok_clicked (GtkButton *button, GtkamSave *save)
 
 	gtk_object_destroy (GTK_OBJECT (save));
 }
-#endif
 
 GtkWidget *
-gtkam_save_new (GtkWidget *vbox)
+gtkam_save_new (void)
 {
 	GtkamSave *save;
-#if 0
-	GtkWidget *hbox, *frame, *check, *label, *entry, *w;
+	GtkWidget *hbox, *frame, *check, *label, *entry;
 	GtkObject *a;
 	GtkTooltips *tooltips;
-	GList *child;
 //	CameraAbilities a;
-#endif
-
-	g_return_val_if_fail (GTK_IS_VBOX (vbox), NULL);
 
 	save = g_object_new (GTKAM_TYPE_SAVE, NULL);
 
-#if 0
-	child = gtk_container_children (
-			GTK_CONTAINER (GTK_FILE_SELECTION (save)->main_vbox));
-	child = gtk_container_children (
-			GTK_CONTAINER (child->next->next->data));
-	save->priv->file_list = GTK_WIDGET (child->next->data);
-
-	gtk_signal_connect (GTK_OBJECT (GTK_FILE_SELECTION (save)->ok_button),
-			    "clicked", GTK_SIGNAL_FUNC (on_ok_clicked), save);
-	gtk_signal_connect (
-			GTK_OBJECT (GTK_FILE_SELECTION (save)->cancel_button),
-			"clicked", GTK_SIGNAL_FUNC (on_cancel_clicked), save);
+	g_signal_connect (G_OBJECT (GTK_FILE_SELECTION (save)->ok_button),
+			    "clicked", G_CALLBACK (on_ok_clicked), save);
+	g_signal_connect (G_OBJECT (GTK_FILE_SELECTION (save)->cancel_button),
+			  "clicked", G_CALLBACK (on_cancel_clicked), save);
 	
 	tooltips = gtk_tooltips_new ();
 
@@ -565,13 +554,8 @@ gtkam_save_new (GtkWidget *vbox)
 			      "filename provided by the camera"), NULL);
 	save->priv->toggle_filename_camera = GTK_TOGGLE_BUTTON (check);
 	gtk_toggle_button_set_active (save->priv->toggle_filename_camera, TRUE);
-	gtk_signal_connect (GTK_OBJECT (check), "toggled",
-			    GTK_SIGNAL_FUNC (on_filename_camera_toggled), save);
-
-	w = gtk_widget_get_ancestor (vbox, GTK_TYPE_WINDOW);
-	gtk_window_set_transient_for (GTK_WINDOW (save), GTK_WINDOW (w));
-	save->priv->status = vbox;
-	gtk_object_ref (GTK_OBJECT (vbox));
+	g_signal_connect (G_OBJECT (check), "toggled",
+			  G_CALLBACK (on_filename_camera_toggled), save);
 
 	hbox = gtk_hbox_new (FALSE, 5);
         gtk_widget_show (hbox);
@@ -600,7 +584,6 @@ gtkam_save_new (GtkWidget *vbox)
         gtk_widget_show (save->priv->spin_entry);
         gtk_box_pack_start (GTK_BOX (hbox), save->priv->spin_entry,
 			    FALSE, FALSE, 0);
-#endif
 
 	return (GTK_WIDGET (save));
 }
@@ -637,8 +620,8 @@ gtkam_save_add (GtkamSave *save, Camera *camera, gboolean multi,
 		gtk_widget_set_sensitive (save->priv->spin_entry, FALSE);
 		gtk_widget_set_sensitive (save->priv->prefix_entry, FALSE);
 
-		gtk_widget_show (save->priv->file_list);
-		gtk_widget_set_sensitive (save->priv->file_list,
+		gtk_widget_show (GTK_FILE_SELECTION (save)->file_list);
+		gtk_widget_set_sensitive (GTK_FILE_SELECTION (save)->file_list,
 				!save->priv->toggle_filename_camera->active);
 
 		gtk_widget_show (GTK_FILE_SELECTION (save)->selection_entry);
@@ -659,8 +642,9 @@ gtkam_save_add (GtkamSave *save, Camera *camera, gboolean multi,
 		gtk_widget_set_sensitive (save->priv->prefix_entry,
 				!save->priv->toggle_filename_camera->active);
 
-		gtk_widget_hide (save->priv->file_list);
-		gtk_widget_set_sensitive (save->priv->file_list, FALSE);
+		gtk_widget_hide (GTK_FILE_SELECTION (save)->file_list);
+		gtk_widget_set_sensitive (GTK_FILE_SELECTION (save)->file_list,
+					  FALSE);
 
 		gtk_widget_hide (GTK_FILE_SELECTION (save)->selection_entry);
 	        gtk_widget_set_sensitive (

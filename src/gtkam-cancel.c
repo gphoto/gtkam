@@ -51,6 +51,7 @@
 #include <gtk/gtkpixmap.h>
 #include <gtk/gtkmarshal.h>
 #include <gtk/gtkimage.h>
+#include <gtk/gtkstock.h>
 
 #include <gphoto2/gphoto2-result.h>
 
@@ -299,7 +300,7 @@ gtkam_cancel_new (GtkWidget *opt_window, const gchar *format, ...)
 	g_free (msg);
 	gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
 
-	button = gtk_button_new_with_label (_("Cancel"));
+	button = gtk_button_new_from_stock (GTK_STOCK_CANCEL);
 	gtk_widget_show (button);
 	g_signal_connect (GTK_OBJECT (button), "clicked",
 			    GTK_SIGNAL_FUNC (on_cancel_clicked), cancel);

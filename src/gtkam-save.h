@@ -45,7 +45,7 @@ struct _GtkamSaveClass
 };
 
 GtkType    gtkam_save_get_type (void);
-GtkWidget *gtkam_save_new      (GtkWidget *vbox);
+GtkWidget *gtkam_save_new      (void);
 
 void       gtkam_save_add      (GtkamSave *save, Camera *camera, gboolean multi,
 				const gchar *folder, const gchar *name);

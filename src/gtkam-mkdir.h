@@ -22,7 +22,8 @@
 #define __GTKAM_MKDIR_H__
 
 #include <gphoto2/gphoto2-camera.h>
-#include <gtk/gtkdialog.h>
+
+#include <gtkam-dialog.h>
 
 #define GTKAM_TYPE_MKDIR  (gtkam_mkdir_get_type ())
 #define GTKAM_MKDIR(o)    (GTK_CHECK_CAST((o),GTKAM_TYPE_MKDIR,GtkamMkdir))
@@ -34,7 +35,7 @@ typedef struct _GtkamMkdirClass   GtkamMkdirClass;
 
 struct _GtkamMkdir
 {
-	GtkDialog parent;
+	GtkamDialog parent;
 
 	GtkamMkdirPrivate *priv;
 };
@@ -48,12 +49,12 @@ struct _GtkamMkdirDirCreatedData {
 
 struct _GtkamMkdirClass
 {
-	GtkDialogClass parent_class;
+	GtkamDialogClass parent_class;
 
 	void (* dir_created) (GtkamMkdir *mkdir, GtkamMkdirDirCreatedData *);
 };
 
-GtkType    gtkam_mkdir_get_type (void);
+GType      gtkam_mkdir_get_type (void);
 GtkWidget *gtkam_mkdir_new      (Camera *, gboolean multi, const gchar *path);
 
 #endif /* __GTKAM_MKDIR_H__ */

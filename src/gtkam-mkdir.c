@@ -31,6 +31,7 @@
 #include <gtk/gtkvbox.h>
 #include <gtk/gtkpixmap.h>
 #include <gtk/gtkimage.h>
+#include <gtk/gtkstock.h>
 
 #include "gtkam-error.h"
 #include "gtkam-status.h"
@@ -71,8 +72,8 @@ enum {
 
 static guint signals[LAST_SIGNAL] = {0};
 
-#define PARENT_TYPE GTK_TYPE_DIALOG
-static GtkDialogClass *parent_class;
+#define PARENT_TYPE GTKAM_TYPE_DIALOG
+static GtkamDialogClass *parent_class;
 
 static void
 gtkam_mkdir_destroy (GtkObject *object)
@@ -214,32 +215,20 @@ GtkWidget *
 gtkam_mkdir_new (Camera *camera, gboolean multi, const gchar *path)
 {
 	GtkamMkdir *mkdir;
-	GtkWidget *label, *entry, *button, *hbox, *vbox, *image;
+	GtkWidget *label, *entry, *button;
 	gchar *msg;
 
 	g_return_val_if_fail (camera != NULL, NULL);
 	g_return_val_if_fail (path != NULL, NULL);
 
 	mkdir = g_object_new (GTKAM_TYPE_MKDIR, NULL);
+	gtk_image_set_from_file (GTK_IMAGE (GTKAM_DIALOG (mkdir)->image),
+				 IMAGE_DIR "/gtkam-folder.png");
 
 	mkdir->priv->path = g_strdup (path);
 	mkdir->priv->camera = camera;
 	gp_camera_ref (camera);
 	mkdir->priv->multi = multi;
-
-	hbox = gtk_hbox_new (FALSE, 10);
-	gtk_widget_show (hbox);
-	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (mkdir)->vbox), hbox,
-			    TRUE, TRUE, 0);
-	gtk_container_set_border_width (GTK_CONTAINER (hbox), 10);
-
-	image = gtk_image_new_from_file (IMAGE_DIR "/gtkam-folder.png");
-	gtk_widget_show (image);
-	gtk_box_pack_start (GTK_BOX (hbox), image, FALSE, FALSE, 0);
-
-	vbox = gtk_vbox_new (FALSE, 0);
-	gtk_widget_show (vbox);
-	gtk_box_pack_start (GTK_BOX (hbox), vbox, TRUE, TRUE, 0);
 
 	msg = g_strdup_printf (_("Please choose a name "
 				 "for the directory that "
@@ -250,17 +239,17 @@ gtkam_mkdir_new (Camera *camera, gboolean multi, const gchar *path)
 	gtk_widget_show (label);
 	gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
 	gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
-	gtk_box_pack_start (GTK_BOX (vbox), label,
+	gtk_box_pack_start (GTK_BOX (GTKAM_DIALOG (mkdir)->vbox), label,
 			    TRUE, TRUE, 0);
 
 	entry = gtk_entry_new ();
 	gtk_widget_show (entry);
-	gtk_box_pack_start (GTK_BOX (vbox), entry,
+	gtk_box_pack_start (GTK_BOX (GTKAM_DIALOG (mkdir)->vbox), entry,
 			    TRUE, TRUE, 0);
 	gtk_entry_set_text (GTK_ENTRY (entry), _("New directory"));
 	mkdir->priv->entry = GTK_ENTRY (entry);
 
-	button = gtk_button_new_with_label (_("Ok"));
+	button = gtk_button_new_from_stock (GTK_STOCK_OK);
 	gtk_widget_show (button);
 	g_signal_connect (GTK_OBJECT (button), "clicked",
 			    GTK_SIGNAL_FUNC (on_ok_clicked), mkdir);
@@ -268,7 +257,7 @@ gtkam_mkdir_new (Camera *camera, gboolean multi, const gchar *path)
 			   button);
 	gtk_widget_grab_focus (button);
 
-	button = gtk_button_new_with_label (_("Cancel"));
+	button = gtk_button_new_from_stock (GTK_STOCK_CANCEL);
 	gtk_widget_show (button);
 	g_signal_connect (GTK_OBJECT (button), "clicked",
 			    GTK_SIGNAL_FUNC (on_cancel_clicked), mkdir);

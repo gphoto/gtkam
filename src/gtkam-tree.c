@@ -57,6 +57,7 @@
 #include <gtk/gtkmenu.h>
 #include <gtk/gtkcellrenderertext.h>
 #include <gtk/gtktreeselection.h>
+#include <gtk/gtkstock.h>
 
 #include <gdk-pixbuf/gdk-pixbuf.h>
 
@@ -854,7 +855,8 @@ static GtkItemFactoryEntry mi[] =
 	{"/Remove directory", NULL, action_rmdir, 0, NULL},
 	{"/sep1", NULL, NULL, 0, "<Separator>"},
 	{"/Capture", NULL, action_capture, 0, NULL},
-	{"/Preferences", NULL, action_preferences, 0, NULL},
+	{"/Preferences", NULL, action_preferences, 0,
+	 "<StockItem>", GTK_STOCK_PREFERENCES},
 	{"/Summary", NULL, action_summary, 0, NULL},
 	{"/Manual", NULL, action_manual, 0, NULL},
 	{"/About", NULL, action_about, 0, NULL},
@@ -870,13 +872,11 @@ on_button_press_event (GtkWidget *widget, GdkEventButton *event,
 		       GtkamTree *tree)
 {
 	GtkTreePath *path = NULL;
-	GtkTreeViewColumn *column;
-	gint cell_x, cell_y;
 
 	switch (event->button) {
 	case 3:
 		gtk_tree_view_get_path_at_pos (GTK_TREE_VIEW (tree),
-			event->x, event->y, &path, &column, &cell_x, &cell_y);
+			event->x, event->y, &path, NULL, NULL, NULL);
 		gtk_tree_model_get_iter (GTK_TREE_MODEL (tree->priv->store),
 					 &tree->priv->iter, path);
 		gtk_tree_path_free (path);
@@ -906,6 +906,8 @@ gtkam_tree_new (void)
 	tree->priv->factory = gtk_item_factory_new (GTK_TYPE_MENU,
 						    "<popup>", ag);
 	gtk_item_factory_create_items (tree->priv->factory, nmi, mi, tree);
+	g_object_ref (G_OBJECT (tree->priv->factory));
+	gtk_object_sink (GTK_OBJECT (tree->priv->factory));
 
 	selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (tree));
 	gtk_tree_selection_set_mode (selection, GTK_SELECTION_MULTIPLE);

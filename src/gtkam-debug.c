@@ -53,6 +53,7 @@
 #include <gtk/gtkfilesel.h>
 #include <gtk/gtkbutton.h>
 #include <gtk/gtkcheckbutton.h>
+#include <gtk/gtkstock.h>
 
 #include <gphoto2/gphoto2-port-log.h>
 
@@ -326,14 +327,14 @@ gtkam_debug_new (void)
 	gtk_widget_show (vscrollbar);
 	gtk_box_pack_end (GTK_BOX (hbox), vscrollbar, FALSE, FALSE, 0);
 
-	button = gtk_button_new_with_label (_("Save As..."));
+	button = gtk_button_new_from_stock (GTK_STOCK_SAVE_AS);
 	gtk_widget_show (button);
 	g_signal_connect (GTK_OBJECT (button), "clicked",
 			    GTK_SIGNAL_FUNC (on_debug_save_as_clicked), debug);
 	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (debug)->action_area),
 			   button);
 
-	button = gtk_button_new_with_label (_("Close"));
+	button = gtk_button_new_from_stock (GTK_STOCK_CLOSE);
 	gtk_widget_show (button);
 	g_signal_connect (GTK_OBJECT (button), "clicked",
 			    GTK_SIGNAL_FUNC (on_debug_close_clicked), debug);

@@ -53,6 +53,7 @@
 #include <gtk/gtkscrolledwindow.h>
 #include <gtk/gtkpixmap.h>
 #include <gtk/gtkimage.h>
+#include <gtk/gtkstock.h>
 
 #include "gtkam-cancel.h"
 #include "gtkam-error.h"
@@ -631,7 +632,7 @@ gtkam_info_new (Camera *camera, const gchar *path, GtkWidget *opt_window)
                 }
 	}
 
-	button = gtk_button_new_with_label (_("Ok"));
+	button = gtk_button_new_from_stock (GTK_STOCK_OK);
 	gtk_widget_show (button);
 	g_signal_connect (GTK_OBJECT (button), "clicked",
 			    GTK_SIGNAL_FUNC (on_ok_clicked), info);
@@ -639,7 +640,7 @@ gtkam_info_new (Camera *camera, const gchar *path, GtkWidget *opt_window)
 			   button);
 	gtk_widget_grab_focus (button);
 
-	button = gtk_button_new_with_label (_("Apply"));
+	button = gtk_button_new_from_stock (GTK_STOCK_APPLY);
 	gtk_widget_show (button);
 	gtk_widget_set_sensitive (button, FALSE);
 	g_signal_connect (GTK_OBJECT (button), "clicked",
@@ -648,7 +649,7 @@ gtkam_info_new (Camera *camera, const gchar *path, GtkWidget *opt_window)
 			   button);
 	info->priv->button_apply = button;
 
-	button = gtk_button_new_with_label (_("Reset"));
+	button = gtk_button_new_from_stock (GTK_STOCK_REVERT_TO_SAVED);
 	gtk_widget_show (button);
 	gtk_widget_set_sensitive (button, FALSE);
 	g_signal_connect (GTK_OBJECT (button), "clicked",
@@ -657,7 +658,7 @@ gtkam_info_new (Camera *camera, const gchar *path, GtkWidget *opt_window)
 			   button);
 	info->priv->button_reset = button;
 
-	button = gtk_button_new_with_label (_("Cancel"));
+	button = gtk_button_new_from_stock (GTK_STOCK_CANCEL);
 	gtk_widget_show (button);
 	g_signal_connect (GTK_OBJECT (button), "clicked",
 			    GTK_SIGNAL_FUNC (on_cancel_clicked), info);

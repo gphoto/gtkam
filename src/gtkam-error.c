@@ -55,6 +55,7 @@
 #include <gtk/gtksignal.h>
 #include <gtk/gtkbutton.h>
 #include <gtk/gtktogglebutton.h>
+#include <gtk/gtkstock.h>
 
 #include <gphoto2/gphoto2-result.h>
 #include <gphoto2/gphoto2-port-log.h>
@@ -218,7 +219,7 @@ gtkam_error_new (int result, GtkamContext *context, GtkWidget *opt_window,
 	g_signal_connect (GTK_OBJECT (button), "toggled",
 			    GTK_SIGNAL_FUNC (on_debug_toggled), error); 
 
-	button = gtk_button_new_with_label (_("Close"));
+	button = gtk_button_new_from_stock (GTK_STOCK_CLOSE);
 	gtk_widget_show (button);
 	g_signal_connect (GTK_OBJECT (button), "clicked",
 			    GTK_SIGNAL_FUNC (on_error_close_clicked), error);

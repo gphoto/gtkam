@@ -48,6 +48,7 @@
 #include <gtk/gtkhbox.h>
 #include <gtk/gtkscrolledwindow.h>
 #include <gtk/gtkimage.h>
+#include <gtk/gtkstock.h>
 
 struct _GtkamClosePrivate
 {
@@ -163,7 +164,7 @@ gtkam_close_new (const gchar *msg, GtkWidget *opt_window)
 	} else
 		gtk_box_pack_start (GTK_BOX (hbox), label, TRUE, TRUE, 0);
 
-	button = gtk_button_new_with_label (_("Close"));
+	button = gtk_button_new_from_stock (GTK_STOCK_CLOSE);
 	gtk_widget_show (button);
 	g_signal_connect (GTK_OBJECT (button), "clicked",
 			    GTK_SIGNAL_FUNC (on_close_close_clicked), close);

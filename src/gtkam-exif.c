@@ -46,6 +46,7 @@
 #include <gtk/gtksignal.h>
 #include <gtk/gtkbox.h>
 #include <gtk/gtklabel.h>
+#include <gtk/gtkstock.h>
 
 #ifdef HAVE_EXIF
 #  include <libexif-gtk/gtk-exif-browser.h>
@@ -201,7 +202,7 @@ gtkam_exif_new (Camera *camera, gboolean multi,
 			    TRUE, TRUE, 0);
 #endif
 
-	button = gtk_button_new_with_label (_("Close"));
+	button = gtk_button_new_from_stock (GTK_STOCK_CLOSE);
 	gtk_widget_show (button);
 	g_signal_connect (GTK_OBJECT (button), "clicked",
 			    GTK_SIGNAL_FUNC (on_exif_close_clicked), exif);

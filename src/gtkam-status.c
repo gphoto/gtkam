@@ -30,6 +30,7 @@
 #include <gtk/gtkbutton.h>
 #include <gtk/gtksignal.h>
 #include <gtk/gtkvbox.h>
+#include <gtk/gtkstock.h>
 
 #ifdef ENABLE_NLS
 #  include <libintl.h>
@@ -293,7 +294,7 @@ gtkam_status_new (const gchar *format, ...)
 	gtk_box_pack_start (GTK_BOX (status), label, FALSE, FALSE, 0);
 
 	/* Cancellation */
-	button = gtk_button_new_with_label (_("Cancel"));
+	button = gtk_button_new_from_stock (GTK_STOCK_CANCEL);
 	gtk_widget_show (button);
 	gtk_box_pack_end (GTK_BOX (status), button, FALSE, FALSE, 0);
 	g_signal_connect (GTK_OBJECT (button), "clicked",

@@ -58,6 +58,7 @@
 #include <gtk/gtkcombo.h>
 #include <gtk/gtkimage.h>
 #include <gtk/gtktooltips.h>
+#include <gtk/gtkstock.h>
 
 #include <gphoto2/gphoto2-abilities-list.h>
 #include <gphoto2/gphoto2-setting.h>
@@ -667,7 +668,7 @@ gtkam_chooser_new (void)
 	gtk_entry_set_editable (chooser->priv->entry_port, FALSE);
 #endif
 
-	button = gtk_button_new_with_label (_("Add"));
+	button = gtk_button_new_from_stock (GTK_STOCK_ADD);
 	gtk_widget_set_sensitive (button, FALSE);
 	gtk_table_attach_defaults (GTK_TABLE (table), button, 2, 3, 1, 2);
 	g_signal_connect (GTK_OBJECT (button), "clicked",
@@ -702,7 +703,7 @@ gtkam_chooser_new (void)
 	g_signal_connect (GTK_OBJECT (button), "toggled",
 			    GTK_SIGNAL_FUNC (on_more_options_toggled), chooser);
 
-	button = gtk_button_new_with_label (_("Ok"));
+	button = gtk_button_new_from_stock (GTK_STOCK_OK);
 	gtk_widget_show (button);
 	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (chooser)->action_area),
 			   button);
@@ -711,7 +712,7 @@ gtkam_chooser_new (void)
 	gtk_widget_grab_focus (button);
 	chooser->priv->ok = button;
 
-	chooser->apply_button = gtk_button_new_with_label (_("Apply"));
+	chooser->apply_button = gtk_button_new_from_stock (GTK_STOCK_APPLY);
 	gtk_widget_show (chooser->apply_button);
 	gtk_widget_set_sensitive (chooser->apply_button, FALSE);
 	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (chooser)->action_area),
@@ -719,7 +720,7 @@ gtkam_chooser_new (void)
 	g_signal_connect (GTK_OBJECT (chooser->apply_button), "clicked",
 			    GTK_SIGNAL_FUNC (on_apply_clicked), chooser);
 
-	button = gtk_button_new_with_label (_("Cancel"));
+	button = gtk_button_new_from_stock (GTK_STOCK_CANCEL);
 	gtk_widget_show (button);
 	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (chooser)->action_area),
 			   button);

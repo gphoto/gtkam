@@ -13,8 +13,8 @@ INCLUDES =					\
  $(GP_CFLAGS)
 
 noinst_LIBRARIES = libgtkam.a
-libgtkam_a_SOURCES =				\
-	gdk-pixbuf-hacks.c 	gdk-pixbuf-hacks.h   \
+libgtkam_a_SOURCES =					\
+	gdk-pixbuf-hacks.c 	gdk-pixbuf-hacks.h  	\
 	gtkam-cancel.c  	gtkam-cancel.h		\
 	gtkam-chooser.c 	gtkam-chooser.h 	\
 	gtkam-clock.c   	gtkam-clock.h     	\
@@ -22,6 +22,7 @@ libgtkam_a_SOURCES =				\
 	gtkam-config.c  	gtkam-config.h   	\
 	gtkam-context.c 	gtkam-context.h		\
 	gtkam-delete.c  	gtkam-delete.h		\
+	gtkam-dialog.c          gtkam-dialog.h		\
 	gtkam-error.c   	gtkam-error.h     	\
 	gtkam-fsel.c    	gtkam-fsel.h		\
 	gtkam-info.c    	gtkam-info.h		\

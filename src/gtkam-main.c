@@ -63,6 +63,7 @@
 #include <gtk/gtkcheckbutton.h>
 #include <gtk/gtkfilesel.h>
 #include <gtk/gtktreeselection.h>
+#include <gtk/gtkstock.h>
 
 #include <gphoto2/gphoto2-camera.h>
 
@@ -247,89 +248,22 @@ action_quit (gpointer callback_data, guint callback_action,
 	gtk_main_quit ();
 }
 
-#if 0
-static void
-on_file_deleted (GtkamDelete *delete, Camera *camera, gboolean multi,
-		 const gchar *folder, const gchar *name, GtkamMain *m)
-{
-	gtkam_list_update_folder (m->priv->list, camera, multi, folder);
-}
-#endif
-
 static void
 action_delete_sel (gpointer callback_data, guint callback_action,
 		   GtkWidget *widget)
 {
-#if 0
-	GtkIconListItem *item;
-	GtkamList *list = m->priv->list;
-	guint i;
-	GtkWidget *delete;
+	GtkamMain *m = GTKAM_MAIN (callback_data);
 
-	if (!g_list_length (GTK_ICON_LIST (list)->selection))
-		return;
-
-	delete = gtkam_delete_new (m->priv->status);
-	gtk_window_set_transient_for (GTK_WINDOW (delete), GTK_WINDOW (m));
-	gtk_signal_connect (GTK_OBJECT (delete), "file_deleted",
-			    GTK_SIGNAL_FUNC (on_file_deleted), m);
-	for (i = 0; i < g_list_length (GTK_ICON_LIST (list)->selection); i++) {
-		item = g_list_nth_data (GTK_ICON_LIST (list)->selection, i);
-		gtkam_delete_add (GTKAM_DELETE (delete),
-			gtk_object_get_data (GTK_OBJECT (item->entry),
-				"camera"),
-			GPOINTER_TO_INT (
-				gtk_object_get_data (GTK_OBJECT (item->entry),
-					"multi")),
-			gtk_object_get_data (GTK_OBJECT (item->entry),
-				"folder"),
-			item->label);
-	}
-	gtk_widget_show (delete);
-#endif
+	gtkam_list_delete_selected (GTKAM_LIST (m->priv->list));
 }
-
-#if 0
-static void
-on_all_deleted (GtkamDelete *delete, Camera *camera, gboolean multi,
-		const gchar *folder, GtkamMain *m)
-{
-	g_return_if_fail (GTKAM_IS_MAIN (m));
-
-	gtkam_list_update_folder (m->priv->list, camera, multi, folder);
-}
-#endif
 
 static void
 action_delete_all (gpointer callback_data, guint callback_action,
 		   GtkWidget *widget)
 {
-#if 0
-	GtkWidget *delete;
-	GtkamTreeItem *item;
-	GList *selection;
-	gint i;
+	GtkamMain *m = GTKAM_MAIN (callback_data);
 
-	selection = GTK_TREE (m->priv->tree)->selection;
-	if (!g_list_length (selection))
-		return;
-
-	delete = gtkam_delete_new (m->priv->status);
-	for (i = 0; i < g_list_length (selection); i++) {
-		item = g_list_nth_data (selection, i);
-		gtkam_delete_add (GTKAM_DELETE (delete),
-			gtkam_tree_item_get_camera (item),
-			gtkam_tree_item_get_multi (item),
-			gtkam_tree_item_get_folder (item), NULL);
-	}
-	gtk_signal_connect (GTK_OBJECT (delete), "file_deleted",
-			    GTK_SIGNAL_FUNC (on_file_deleted), m);
-	gtk_signal_connect (GTK_OBJECT (delete), "all_deleted",
-			    GTK_SIGNAL_FUNC (on_all_deleted), m);
-
-	gtk_window_set_transient_for (GTK_WINDOW (delete), GTK_WINDOW (m));
-	gtk_widget_show (delete);
-#endif
+	gtkam_list_delete_all (GTKAM_LIST (m->priv->list));
 }
 
 static void
@@ -360,14 +294,16 @@ static gboolean
 select_inverse_foreach_func (GtkTreeModel *model, GtkTreePath *path,
 			     GtkTreeIter *iter, gpointer data)
 {
-	GtkTreeSelection *s = GTK_TREE_SELECTION (data);
+	GtkamMain *m = GTKAM_MAIN (data);
+	GtkTreeSelection *s;
 
+	s = gtk_tree_view_get_selection (GTK_TREE_VIEW (m->priv->list));
 	if (gtk_tree_selection_path_is_selected (s, path))
 		gtk_tree_selection_unselect_path (s, path);
 	else
 		gtk_tree_selection_select_path (s, path);
 
-	return (TRUE);
+	return (FALSE);
 }
 
 static void
@@ -375,12 +311,10 @@ action_select_inverse (gpointer callback_data, guint callback_action,
 		       GtkWidget *widget)
 {
 	GtkTreeModel *model;
-	GtkTreeSelection *s;
 	GtkamMain *m = GTKAM_MAIN (callback_data);
 
 	model = gtk_tree_view_get_model (GTK_TREE_VIEW (m->priv->list));
-	s = gtk_tree_view_get_selection (GTK_TREE_VIEW (m->priv->list));
-	gtk_tree_model_foreach (model, select_inverse_foreach_func, s);
+	gtk_tree_model_foreach (model, select_inverse_foreach_func, m);
 	gtkam_main_update_sensitivity (m);
 }
 
@@ -433,7 +367,7 @@ on_tree_file_added (GtkamTree *tree, GtkamTreeFileAddedData *data,
 		       GtkamMain *m)
 {
 	if (gtkam_list_has_folder (GTKAM_LIST (m->priv->list), data->camera,
-				   data->folder))
+				   data->multi, data->folder))
 		gtkam_list_add_file (GTKAM_LIST (m->priv->list),
 			data->camera, data->multi, data->folder, data->name);
 }
@@ -449,7 +383,7 @@ on_tree_new_error (GtkamTree *tree, GtkamTreeErrorData *e, GtkamMain *m)
 }
 
 static void
-on_tree_new_dialog (GtkamTree *tree, GtkWidget *dialog, GtkamMain *m)
+on_new_dialog (GtkObject *object, GtkWidget *dialog, GtkamMain *m)
 {
 	gtk_window_set_transient_for (GTK_WINDOW (dialog), GTK_WINDOW (m));
 	gtk_widget_show (dialog);
@@ -491,18 +425,25 @@ on_about_activate (GtkMenuItem *item, GtkamMain *m)
 }
 #endif
 
+static gboolean
+selection_changed_idle (gpointer data)
+{
+	gtkam_main_update_sensitivity (GTKAM_MAIN (data));
+	return (FALSE);
+}
+
 static void
 on_file_selected (GtkamList *list, GtkamListFileSelectedData *data,
 		  GtkamMain *m)
 {
-	gtkam_main_update_sensitivity (m);
+	gtk_idle_add (selection_changed_idle, m);
 }
 
 static void
 on_file_unselected (GtkamList *list, GtkamListFileUnselectedData *data,
 		    GtkamMain *m)
 {
-	gtkam_main_update_sensitivity (m);
+	gtk_idle_add (selection_changed_idle, m);
 }
 
 static void
@@ -623,7 +564,7 @@ static GtkItemFactoryEntry mi[] =
 	{"/File/Delete Photos/_Selected", NULL, action_delete_sel, 0, NULL},
 	{"/File/Delete Photos/_All", NULL, action_delete_all, 0, NULL},
 	{"/File/sep1", NULL, 0, 0, "<Separator>"},
-	{"/File/_Quit", NULL, action_quit, 0, NULL},
+	{"/File/_Quit", NULL, action_quit, 0, "<StockItem>", GTK_STOCK_QUIT},
 	{"/_Select", NULL, 0, 0, "<Branch>"},
 	{"/Select/_All", NULL, action_select_all, 0, NULL},
 	{"/Select/_Inverse", NULL, action_select_inverse, 0, NULL},
@@ -808,7 +749,7 @@ gtkam_main_new (void)
 	g_signal_connect (G_OBJECT (m->priv->tree), "file_added",
 			  G_CALLBACK (on_tree_file_added), m);
 	g_signal_connect (G_OBJECT (m->priv->tree), "new_dialog",
-			  G_CALLBACK (on_tree_new_dialog), m);
+			  G_CALLBACK (on_new_dialog), m);
 
 	/*
 	 * Right
@@ -829,6 +770,8 @@ gtkam_main_new (void)
 			  G_CALLBACK (on_file_unselected), m);
 	g_signal_connect (G_OBJECT (m->priv->list), "new_status",
 			  G_CALLBACK (on_new_status), m);
+	g_signal_connect (G_OBJECT (m->priv->list), "new_dialog",
+			  G_CALLBACK (on_new_dialog), m);
 
 	return (GTK_WIDGET (m));
 }

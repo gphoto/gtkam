@@ -56,6 +56,7 @@
 #include <gtk/gtkpixmap.h>
 #include <gtk/gtkhscale.h>
 #include <gtk/gtkimage.h>
+#include <gtk/gtkstock.h>
 
 #include <gdk-pixbuf/gdk-pixbuf-loader.h>
 
@@ -82,8 +83,8 @@ struct _GtkamPreviewPrivate
 	GtkTooltips *tooltips;
 };
 
-#define PARENT_TYPE GTK_TYPE_DIALOG
-static GtkDialogClass *parent_class;
+#define PARENT_TYPE GTKAM_TYPE_DIALOG
+static GtkamDialogClass *parent_class;
 
 enum {
 	CAPTURED,
@@ -374,7 +375,7 @@ gtkam_preview_new (Camera *camera, gboolean multi)
 {
 	CameraAbilities abilities;
 	GtkamPreview *preview;
-	GtkWidget *button, *hbox, *image, *vbox, *radio;
+	GtkWidget *button, *hbox, *vbox, *radio;
 	GSList *group;
 
 	g_return_val_if_fail (camera != NULL, NULL);
@@ -390,15 +391,10 @@ gtkam_preview_new (Camera *camera, gboolean multi)
 	g_object_ref (G_OBJECT (preview->priv->tooltips));
 	gtk_object_sink (GTK_OBJECT (preview->priv->tooltips));
 
-	hbox = gtk_hbox_new (FALSE, 5);
-	gtk_container_set_border_width (GTK_CONTAINER (hbox), 5);
+	hbox = gtk_hbox_new (FALSE, 10);
 	gtk_widget_show (hbox);
-	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (preview)->vbox),
-			    hbox, TRUE, TRUE, 0);
-
-	image = gtk_image_new_from_file (IMAGE_DIR "/gtkam-camera.png");
-	gtk_widget_show (image);
-	gtk_box_pack_start (GTK_BOX (hbox), image, FALSE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX (GTKAM_DIALOG (preview)->vbox), hbox,
+			    TRUE, TRUE, 0);
 
 	/* Empty image (for preview) */
 	preview->priv->image = gtk_image_new ();
@@ -460,7 +456,7 @@ gtkam_preview_new (Camera *camera, gboolean multi)
 
 	gp_camera_get_abilities (camera, &abilities);
 	if (abilities.operations & GP_OPERATION_CONFIG) {
-		button = gtk_button_new_with_label (_("Configure"));
+		button = gtk_button_new_from_stock (GTK_STOCK_PREFERENCES);
 		gtk_widget_show (button);
 		g_signal_connect (GTK_OBJECT (button), "clicked",
 			GTK_SIGNAL_FUNC (on_configure_clicked), preview);
@@ -469,7 +465,7 @@ gtkam_preview_new (Camera *camera, gboolean multi)
 			button);
 	}
 
-	button = gtk_button_new_with_label (_("Close"));
+	button = gtk_button_new_from_stock (GTK_STOCK_CLOSE);
 	gtk_widget_show (button);
 	g_signal_connect (GTK_OBJECT (button), "clicked",
 		GTK_SIGNAL_FUNC (on_preview_close_clicked), preview);

@@ -22,7 +22,8 @@
 #define __GTKAM_DELETE_H__
 
 #include <gphoto2/gphoto2-camera.h>
-#include <gtk/gtkdialog.h>
+
+#include <gtkam-dialog.h>
 
 #define GTKAM_TYPE_DELETE  (gtkam_delete_get_type ())
 #define GTKAM_DELETE(o)    (GTK_CHECK_CAST((o),GTKAM_TYPE_DELETE,GtkamDelete))
@@ -34,25 +35,37 @@ typedef struct _GtkamDeleteClass   GtkamDeleteClass;
 
 struct _GtkamDelete
 {
-	GtkDialog parent;
+	GtkamDialog parent;
 
 	GtkamDeletePrivate *priv;
 };
 
+typedef struct _GtkamDeleteFileDeletedData GtkamDeleteFileDeletedData;
+struct _GtkamDeleteFileDeletedData {
+	Camera *camera;
+	gboolean multi;
+	const gchar *folder;
+	const gchar *name;
+};
+
+typedef struct _GtkamDeleteAllDeletedData GtkamDeleteAllDeletedData;
+struct _GtkamDeleteAllDeletedData {
+	Camera *camera;
+	gboolean multi;
+	const gchar *folder;
+};
+
 struct _GtkamDeleteClass
 {
-	GtkDialogClass parent_class;
+	GtkamDialogClass parent_class;
 
 	/* Signals */
-	void (* all_deleted)  (GtkamDelete *delete, Camera *camera,
-			       gboolean multi, const gchar *folder);
-	void (* file_deleted) (GtkamDelete *delete, Camera *camera,
-			       gboolean multi, const gchar *folder,
-			       const gchar *name);
+	void (* all_deleted)  (GtkamDelete *, GtkamDeleteAllDeletedData *);
+	void (* file_deleted) (GtkamDelete *, GtkamDeleteFileDeletedData *);
 };
 
 GtkType    gtkam_delete_get_type (void);
-GtkWidget *gtkam_delete_new      (GtkWidget *vbox);
+GtkWidget *gtkam_delete_new      (void);
 
 void       gtkam_delete_add      (GtkamDelete *delete, Camera *camera,
 				  gboolean multi, const gchar *folder,

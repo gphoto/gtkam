@@ -54,6 +54,7 @@
 #include <gtk/gtkscrolledwindow.h>
 #include <gtk/gtkpixmap.h>
 #include <gtk/gtktable.h>
+#include <gtk/gtkstock.h>
 
 #include <gphoto2/gphoto2-result.h>
 
@@ -201,14 +202,14 @@ gtkam_port_new (GtkWidget *opt_window)
 	gtk_table_attach_defaults (GTK_TABLE (table), entry, 1, 2, 1, 2);
 	port->priv->entry_path = entry;
 
-	button = gtk_button_new_with_label (_("Ok"));
+	button = gtk_button_new_from_stock (GTK_STOCK_OK);
 	gtk_widget_show (button);
 	g_signal_connect (GTK_OBJECT (button), "clicked",
 			    GTK_SIGNAL_FUNC (on_ok_clicked), port);
 	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (port)->action_area),
 			   button);
 
-	button = gtk_button_new_with_label (_("Cancel"));
+	button = gtk_button_new_from_stock (GTK_STOCK_CANCEL);
 	gtk_widget_show (button);
 	g_signal_connect (GTK_OBJECT (button), "clicked",
 			    GTK_SIGNAL_FUNC (on_cancel_clicked), port);

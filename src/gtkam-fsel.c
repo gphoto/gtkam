@@ -56,6 +56,7 @@
 #include <gtk/gtkcellrenderertext.h>
 #include <gtk/gtkimage.h>
 #include <gtk/gtktreeselection.h>
+#include <gtk/gtkstock.h>
 
 #include <gdk-pixbuf/gdk-pixbuf.h>
 
@@ -262,7 +263,7 @@ gtkam_fsel_new (GtkWidget *opt_window)
 	gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (scrolled),
 					       list);
 
-	button = gtk_button_new_with_label (_("Ok"));
+	button = gtk_button_new_from_stock (GTK_STOCK_OK);
 	gtk_widget_show (button);
 	gtk_widget_set_sensitive (button, FALSE);
 	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (fsel)->action_area),
@@ -270,7 +271,7 @@ gtkam_fsel_new (GtkWidget *opt_window)
 	gtk_widget_grab_focus (button);
 	fsel->ok_button = button;
 
-	button = gtk_button_new_with_label (_("Cancel"));
+	button = gtk_button_new_from_stock (GTK_STOCK_CANCEL);
 	gtk_widget_show (button);
 	g_signal_connect (GTK_OBJECT (button), "clicked",
 			    GTK_SIGNAL_FUNC (on_fsel_cancel_clicked), fsel);

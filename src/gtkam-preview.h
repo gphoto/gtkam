@@ -22,7 +22,8 @@
 #define __GTKAM_PREVIEW_H__
 
 #include <gphoto2/gphoto2-camera.h>
-#include <gtk/gtkdialog.h>
+
+#include <gtkam-dialog.h>
 
 #define GTKAM_TYPE_PREVIEW  (gtkam_preview_get_type ())
 #define GTKAM_PREVIEW(o)    (GTK_CHECK_CAST((o),GTKAM_TYPE_PREVIEW,GtkamPreview))
@@ -34,7 +35,7 @@ typedef struct _GtkamPreviewClass   GtkamPreviewClass;
 
 struct _GtkamPreview
 {
-	GtkDialog parent;
+	GtkamDialog parent;
 
 	GtkamPreviewPrivate *priv;
 };
@@ -49,7 +50,7 @@ struct _GtkamPreviewCapturedData {
 
 struct _GtkamPreviewClass
 {
-	GtkDialogClass parent_class;
+	GtkamDialogClass parent_class;
 
 	/* Signals */
 	void (* captured) (GtkamPreview *preview, GtkamPreviewCapturedData *);

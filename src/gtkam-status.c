@@ -278,8 +278,7 @@ gtkam_status_new (const gchar *format, ...)
 	/* Cancellation */
 	button = gtk_button_new_with_label (_("Cancel"));
 	gtk_widget_show (button);
-	gtk_box_pack_start (GTK_BOX (status), button,
-			    FALSE, FALSE, 0);
+	gtk_box_pack_end (GTK_BOX (status), button, FALSE, FALSE, 0);
 	gtk_signal_connect (GTK_OBJECT (button), "clicked",
 			    GTK_SIGNAL_FUNC (on_cancel_clicked), status);
 	gp_context_set_cancel_func (status->context->context,

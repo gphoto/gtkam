@@ -265,27 +265,18 @@ save_file (GtkamSave *save, CameraFile *file, guint n)
 
 		/* Use filename provided by the CameraFile */
 		full_filename = create_full_filename (filename, type);
-
-		if (g_slist_length (save->priv->data) > 1) {
-			dirname = g_dirname (fsel_path);
-			full_path = concat_dir_and_file (dirname,
-							 full_filename);
-			g_free (dirname);
-		} else {
-			full_path = concat_dir_and_file (fsel_path,
-							 full_filename);
-		}
+		full_path = concat_dir_and_file (fsel_path, full_filename);
 		g_free (full_filename);
 
 	} else {
 		if (g_slist_length (save->priv->data) == 1) {
 
 			/* Use filename provided by the GtkFileSelection */
-			fsel_filename = g_basename (fsel_path);
+			fsel_filename = g_path_get_basename (fsel_path);
 
 			full_filename = create_full_filename (fsel_filename,
 							      type);
-			dirname = g_dirname (fsel_path);
+			dirname = g_path_get_dirname (fsel_path);
 			full_path = concat_dir_and_file (dirname,
 							 full_filename);
 			g_free (dirname);
@@ -294,12 +285,9 @@ save_file (GtkamSave *save, CameraFile *file, guint n)
 		} else {
 
 			/* Use filename in prefix */
-			prefix = g_locale_from_utf8 (gtk_entry_get_text 
-				(GTK_ENTRY (save->priv->prefix_entry)), -1, 
-				    NULL, NULL, NULL);
-					
-			if (!prefix)
-				prefix = _("photo");
+			prefix = gtk_entry_get_text (
+					GTK_ENTRY (save->priv->prefix_entry));
+			if (!g_strcasecmp (prefix, "")) prefix = _("photo");
 
 			suffix = strrchr (mime_type, '/');
 			suffix++;

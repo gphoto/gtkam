@@ -1,3 +1,11 @@
+2003-12-09  Lutz Mueller <lutz@users.sourceforge.net>
+
+	Fix by Andrew Burton <adb@iinet.net.au> for:
+
+	* src/gtkam-save.c: When choosing Save All with Use Camera Filenames
+	on, it doesn't save tothe chosen folder - it saves one folder higher
+	in the folder hierarchy.
+
 2003-12-07  Lutz Mueller <lutz@users.sourceforge.net>
 
 	More GUI improvements by Andrew Burton <adb@iinet.net.au>:

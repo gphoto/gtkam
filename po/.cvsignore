@@ -1,5 +1,7 @@
+Makevars
+remove-potcdate.sed
 cat-id-tbl.c
-gphoto2-gtk.pot
+gtkam.pot
 stamp-cat-id
 ChangeLog
 Makefile
@@ -7,6 +9,7 @@ Makefile.in
 POTFILES
 Makefile.in.in
 *.gmo
+*.mo
 Makevars.template
 Rules-quot
 boldquot.sed

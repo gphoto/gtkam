@@ -494,29 +494,29 @@ action_about (gpointer callback_data, guint callback_action,
 	int n;
 
 	for (n = 0; module_versions[n].name != NULL; n++) {
-	  int i;
-	  gchar *features;
-	  const char **v = NULL;
-	  char *name = module_versions[n].name;
-	  GPVersionFunc func = module_versions[n].version_func;
-	  CHECK_NULL (name);
-	  CHECK_NULL (func);
-	  v = func(GP_VERSION_VERBOSE);
-	  CHECK_NULL (v);
-	  CHECK_NULL (v[0]);
-	  
-	  /* FIXME: implicit conversion from gchar* to char* */
-	  features = g_strjoinv("\n - ", v);
-	  if (gcomments == NULL) {
-	    gcomments = g_strdup_printf("%s %s has been compiled with the following options:\n - %s\n", 
-					name, v[0], features);
-	  } else {
-	    gchar *old = gcomments;
-	    gcomments = g_strdup_printf("%s%s %s has been compiled with the following options:\n - %s\n", 
-					gcomments, name, v[0], features);
-	    free(old)
-	  }
-	  free(features);
+		int i;
+		gchar *features;
+		const char **v = NULL;
+		char *name = module_versions[n].name;
+		GPVersionFunc func = module_versions[n].version_func;
+		CHECK_NULL (name);
+		CHECK_NULL (func);
+		v = func(GP_VERSION_VERBOSE);
+		CHECK_NULL (v);
+		CHECK_NULL (v[0]);
+		
+		/* FIXME: implicit conversion from gchar* to char* */
+		features = g_strjoinv("\n - ", v);
+		if (gcomments == NULL) {
+			gcomments = g_strdup_printf("%s %s has been compiled with the following options:\n - %s\n", 
+						    name, v[0], features);
+		} else {
+			gchar *old = gcomments;
+			gcomments = g_strdup_printf("%s\n%s %s has been compiled with the following options:\n - %s\n", 
+						    gcomments, name, v[0], features);
+			free(old)
+				}
+		free(features);
 	}
 
 #ifdef HAVE_GNOME
@@ -823,3 +823,10 @@ gtkam_main_new (void)
 
 	return (GTK_WIDGET (m));
 }
+
+/*
+ * Local Variables:
+ * c-file-style:"linux"
+ * indent-tabs-mode:t
+ * End:
+ */

@@ -275,6 +275,7 @@ gtkam_list_set_path (GtkamList *list, const gchar *path)
 	GdkPixmap *pixmap;
 	GdkBitmap *bitmap;
 	gint i;
+	guint w, h;
 
 	g_return_if_fail (GTKAM_IS_LIST (list));
 
@@ -384,12 +385,29 @@ gtkam_list_set_path (GtkamList *list, const gchar *path)
 				gdk_pixbuf_unref (tmp);
 			}
 
+			/* Check for read-only flag */
+			if ((info.file.fields & GP_FILE_INFO_PERMISSIONS) &&
+			    !(info.file.permissions & GP_FILE_PERM_DELETE)) {
+				tmp = gdk_pixbuf_new_from_file (
+					IMAGE_DIR "/gtkam-lock.png");
+				w = gdk_pixbuf_get_width (tmp);
+				h = gdk_pixbuf_get_height (tmp);
+				gdk_pixbuf_add (pixbuf,
+					gdk_pixbuf_get_width (pixbuf) - w,
+					gdk_pixbuf_get_height (pixbuf) - h,
+					tmp);
+				gdk_pixbuf_unref (tmp);
+			}
+
 			/* Check for downloaded flag */
 			if ((info.file.fields & GP_FILE_INFO_STATUS) &&
 			    (info.file.status & GP_FILE_STATUS_NOT_DOWNLOADED)){
 				tmp = gdk_pixbuf_new_from_file (
 					IMAGE_DIR "/gtkam-new.png");
-				gdk_pixbuf_add (pixbuf, 20, 0, tmp);
+				w = gdk_pixbuf_get_width (tmp);
+				gdk_pixbuf_add (pixbuf,
+					gdk_pixbuf_get_width (pixbuf) - w,
+					0, tmp);
 				gdk_pixbuf_unref (tmp);
 			}
 

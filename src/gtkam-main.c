@@ -366,7 +366,7 @@ on_configure_activate (GtkMenuItem *item, GtkamMain *m)
 	if (!m->priv->camera)
 		return;
 
-	dialog = gtkam_config_new (m->priv->camera);
+	dialog = gtkam_config_new (m->priv->camera, m->priv->multi);
 	if (!dialog) {
 
 		/* The error has already been reported */

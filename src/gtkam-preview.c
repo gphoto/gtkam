@@ -352,7 +352,7 @@ on_configure_clicked (GtkButton *button, GtkamPreview *preview)
 {
 	GtkWidget *dialog;
 
-	dialog = gtkam_config_new (preview->priv->camera);
+	dialog = gtkam_config_new (preview->priv->camera, preview->priv->multi);
 	gtk_widget_show (dialog);
 }
 

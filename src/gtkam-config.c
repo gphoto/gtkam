@@ -74,6 +74,8 @@ struct _GtkamConfigPrivate
 
 	Camera       *camera;
 	CameraWidget *config;
+
+	gboolean multi;
 };
 
 #define PARENT_TYPE GTK_TYPE_DIALOG
@@ -164,7 +166,8 @@ gtkam_config_apply (GtkamConfig *config)
 
 	result = gp_camera_set_config (config->priv->camera,
 				       config->priv->config);
-	gp_camera_exit (config->priv->camera);
+	if (config->priv->multi)
+		gp_camera_exit (config->priv->camera);
 	if (result != GP_OK) {
 		dialog = gtkam_error_new (_("Could not apply configuration"),
 					  result, config->priv->camera,
@@ -581,7 +584,7 @@ create_widgets (GtkamConfig *config, CameraWidget *widget)
 }
 
 GtkWidget *
-gtkam_config_new (Camera *camera)
+gtkam_config_new (Camera *camera, gboolean multi)
 {
 	GtkamConfig *config;
 	GtkWidget *button, *dialog;
@@ -591,7 +594,8 @@ gtkam_config_new (Camera *camera)
 	g_return_val_if_fail (camera != NULL, NULL);
 
 	result = gp_camera_get_config (camera, &config_widget);
-	gp_camera_exit (camera);
+	if (multi)
+		gp_camera_exit (camera);
 	if (result != GP_OK) {
 		dialog = gtkam_error_new (_("Could not get configuration"),
 					  result, camera, NULL);
@@ -606,6 +610,7 @@ gtkam_config_new (Camera *camera)
 	config->priv->camera = camera;
 	config->priv->config = config_widget;
 	gp_camera_ref (camera);
+	config->priv->multi = multi;
 
 	config->priv->notebook = gtk_notebook_new ();
 	gtk_container_set_border_width (GTK_CONTAINER (config->priv->notebook),

@@ -23,8 +23,14 @@
 
 #include <gtk/gtksignal.h>
 #include <gtk/gtklabel.h>
+#include <gtk/gtkhbox.h>
+#include <gtk/gtkvbox.h>
+#include <gtk/gtkbutton.h>
 #include <gtk/gtkscrolledwindow.h>
 
+#include <libexif/exif-i18n.h>
+
+#include "gtk-exif-tag-menu.h"
 #include "gtk-exif-tree.h"
 #include "gtk-exif-content-list.h"
 #include "gtk-exif-entry-ascii.h"
@@ -45,6 +51,8 @@ struct _GtkExifBrowserPrivate {
 
 	GtkExifContentList *list;
 	GtkWidget *empty, *current, *info;
+
+	GtkExifTagMenu *tag_menu;
 };
 
 #define PARENT_TYPE gtk_hpaned_get_type()
@@ -140,8 +148,9 @@ on_entry_selected (GtkExifContentList *list, ExifEntry *entry,
 	GtkWidget *w;
 
 	switch (entry->tag) {
-	case EXIF_TAG_EXIF_OFFSET:
-	case EXIF_TAG_INTEROPERABILITY_OFFSET:
+	case EXIF_TAG_EXIF_IFD_POINTER:
+	case EXIF_TAG_INTEROPERABILITY_IFD_POINTER:
+	case EXIF_TAG_GPS_INFO_IFD_POINTER:
 		w = gtk_exif_content_list_new ();
 		gtk_exif_content_list_set_content (GTK_EXIF_CONTENT_LIST (w),
 						   entry->content);
@@ -204,23 +213,38 @@ on_entry_selected (GtkExifContentList *list, ExifEntry *entry,
 GtkWidget *
 gtk_exif_browser_new (void)
 {
-	GtkWidget *et, *swin;
+	GtkWidget *et, *swin, *vbox, *menu, *hbox, *button;
 	GtkExifBrowser *browser;
 
 	browser = gtk_type_new (GTK_EXIF_TYPE_BROWSER);
 
 	/* Tree */
+	vbox = gtk_vbox_new (FALSE, 0);
+	gtk_widget_show (vbox);
+	gtk_paned_pack1 (GTK_PANED (browser), vbox, TRUE, TRUE);
 	swin = gtk_scrolled_window_new (NULL, NULL);
 	gtk_widget_show (swin);
 	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (swin),
 				GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
-	gtk_paned_pack1 (GTK_PANED (browser), swin, TRUE, TRUE);
+	gtk_box_pack_start (GTK_BOX (vbox), swin, TRUE, TRUE, 0);
 	et = gtk_exif_content_list_new ();
 	gtk_widget_show (et);
 	gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (swin), et);
 	browser->priv->list = GTK_EXIF_CONTENT_LIST (et);
 	gtk_signal_connect (GTK_OBJECT (et), "entry_selected",
 			    GTK_SIGNAL_FUNC (on_entry_selected), browser);
+	hbox = gtk_hbox_new (FALSE, 5);
+	gtk_widget_set_sensitive (hbox, FALSE);
+	gtk_container_set_border_width (GTK_CONTAINER (hbox), 2);
+	gtk_widget_show (hbox);
+	gtk_box_pack_end (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
+	menu = gtk_exif_tag_menu_new ();
+	gtk_widget_show (menu);
+	gtk_box_pack_start (GTK_BOX (hbox), menu, FALSE, FALSE, 0);
+	browser->priv->tag_menu = GTK_EXIF_TAG_MENU (menu);
+	button = gtk_button_new_with_label (_("Add"));
+	gtk_widget_show (button);
+	gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 0);
 
 	/* Info */
 	browser->priv->info = gtk_vbox_new (FALSE, 0);

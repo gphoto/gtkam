@@ -28,23 +28,24 @@ libexif_gtkinclude_HEADERS =		\
 	gtk-exif-tree.h			\
 	gtk-exif-tree-item.h
 
-libexif_gtk_la_SOURCES =		\
-	gtk-exif-browser.c		\
-	gtk-exif-content-list.c		\
-	gtk-exif-entry.c		\
-	gtk-exif-entry-ascii.c		\
-	gtk-exif-entry-date.c		\
-	gtk-exif-entry-generic.c	\
-	gtk-exif-entry-exposure.c	\
-	gtk-exif-entry-flash.c		\
-	gtk-exif-entry-light.c		\
-	gtk-exif-entry-meter.c		\
-	gtk-exif-entry-orientation.c	\
-	gtk-exif-entry-resolution.c	\
-	gtk-exif-entry-sensing.c	\
-	gtk-exif-entry-version.c	\
-	gtk-exif-entry-ycbcrpos.c	\
-	gtk-exif-tree.c			\
+libexif_gtk_la_SOURCES =			\
+	gtk-exif-browser.c			\
+	gtk-exif-content-list.c			\
+	gtk-exif-entry.c			\
+	gtk-exif-entry-ascii.c			\
+	gtk-exif-entry-date.c			\
+	gtk-exif-entry-generic.c		\
+	gtk-exif-entry-exposure.c		\
+	gtk-exif-entry-flash.c			\
+	gtk-exif-entry-light.c			\
+	gtk-exif-entry-meter.c			\
+	gtk-exif-entry-orientation.c		\
+	gtk-exif-entry-resolution.c		\
+	gtk-exif-entry-sensing.c		\
+	gtk-exif-entry-version.c		\
+	gtk-exif-entry-ycbcrpos.c		\
+	gtk-exif-tag-menu.c gtk-exif-tag-menu.h	\
+	gtk-exif-tree.c				\
 	gtk-exif-tree-item.c
 libexif_gtk_la_LDFLAGS = -version-info @LIBEXIF_VERSION_INFO@
 libexif_gtk_la_LIBADD =				\

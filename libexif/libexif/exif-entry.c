@@ -188,8 +188,9 @@ exif_entry_parse (ExifEntry *entry, const unsigned char *data,
 		}
 	if (!s)
 		return;
-	if ((s > 4) || (entry->tag == EXIF_TAG_EXIF_OFFSET) ||
-		       (entry->tag == EXIF_TAG_INTEROPERABILITY_OFFSET))
+	if ((s > 4) || (entry->tag == EXIF_TAG_EXIF_IFD_POINTER) ||
+		       (entry->tag == EXIF_TAG_GPS_INFO_IFD_POINTER) ||
+		       (entry->tag == EXIF_TAG_INTEROPERABILITY_IFD_POINTER))
 		doff = exif_get_long (data + offset + 8, order);
 	else
 		doff = offset + 8;
@@ -204,8 +205,9 @@ exif_entry_parse (ExifEntry *entry, const unsigned char *data,
 	entry->size = s;
 	memcpy (entry->data, data + doff, s);
 
-	if ((entry->tag == EXIF_TAG_EXIF_OFFSET) ||
-	    (entry->tag == EXIF_TAG_INTEROPERABILITY_OFFSET))
+	if ((entry->tag == EXIF_TAG_EXIF_IFD_POINTER) ||
+	    (entry->tag == EXIF_TAG_GPS_INFO_IFD_POINTER) ||
+	    (entry->tag == EXIF_TAG_INTEROPERABILITY_IFD_POINTER))
 		exif_content_parse (entry->content, data, size, doff, order);
 }
 

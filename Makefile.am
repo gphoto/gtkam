@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in
 
-SUBDIRS = intl art doc help omf-install packaging pixmaps po src test
+SUBDIRS = art doc help omf-install packaging pixmaps po src test
 
 gtkamdocdir = $(datadir)/doc/gtkam
 gtkamdoc_DATA = AUTHORS COPYING

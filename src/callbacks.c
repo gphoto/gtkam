@@ -148,12 +148,10 @@ int camera_set() {
 	}
 
 	/* Set up the camera initialization */
-	strcpy(new_camera->model, camera);
-	strcpy(new_camera->port->path, port);
+	gp_camera_set_model (new_camera, camera);
+	gp_camera_set_port_path (new_camera, port);
 	if (strlen(speed)>0)
-		new_camera->port->speed = atoi(speed);
-	else
-		new_camera->port->speed = 0; /* use the default speed */
+		gp_camera_set_port_speed (new_camera, atoi (speed));
 	gtk_widget_show(message);
 	idle();
 

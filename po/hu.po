@@ -1,5 +1,5 @@
 # Hungarian message catalog for gtkam, a GTK+ front end for gphoto2
-# Copyright (C) YEAR Free Software Foundation, Inc.
+# Copyright © YEAR Free Software Foundation, Inc.
 #
 msgid ""
 msgstr ""

@@ -1,6 +1,6 @@
 /* gtkam-info.c
  *
- * Copyright (C) 2001 Lutz Müller <urc8@rz.uni-karlsruhe.de>
+ * Copyright © 2001 Lutz Müller <urc8@rz.uni-karlsruhe.de>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -338,22 +338,22 @@ gtkam_info_new (GtkamCamera *camera, const gchar *folder, const gchar *name)
 	c = gtkam_cancel_new (_("Getting information about file '%s' in "
 		"folder '%s'..."), name, folder);
 	result = gp_camera_file_get_info (camera->camera, folder, name,
-		&i, GTKAM_CANCEL (c)->context->context);
+		&i, GTKAM_CANCEL ©->context->context);
 	switch (result) {
 	case GP_OK:
 		break;
 	case GP_ERROR_CANCEL:
-		gtk_object_destroy (GTK_OBJECT (c));
+		gtk_object_destroy (GTK_OBJECT ©);
 		return (NULL);
 	default:
-		dialog = gtkam_error_new (result, GTKAM_CANCEL (c)->context,
+		dialog = gtkam_error_new (result, GTKAM_CANCEL ©->context,
 			NULL, _("Could not get information about file '%s' "
 			"in folder '%s'."), name, folder);
 		gtk_widget_show (dialog);
-		gtk_object_destroy (GTK_OBJECT (c));
+		gtk_object_destroy (GTK_OBJECT ©);
 		return (NULL);
 	}
-	gtk_object_destroy (GTK_OBJECT (c));
+	gtk_object_destroy (GTK_OBJECT ©);
 
 	info = g_object_new (GTKAM_TYPE_INFO, NULL);
 	gtk_window_set_title (GTK_WINDOW (info), name);

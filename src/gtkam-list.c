@@ -1,6 +1,6 @@
 /* gtkam-list.c
  *
- * Copyright (C) 2001 Lutz Müller <urc8@rz.uni-karlsruhe.de>
+ * Copyright © 2001 Lutz Müller <urc8@rz.uni-karlsruhe.de>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -480,7 +480,7 @@ on_view_as_activate (GtkMenuItem *item, ViewAsData *d)
 
 	w = bonobo_window_new (d->file, d->file);
 	c = bonobo_widget_new_control_from_objref (control, CORBA_OBJECT_NIL);
-	gtk_widget_show (c);
+	gtk_widget_show ©;
 	bonobo_window_set_contents (BONOBO_WINDOW (w), c);
 
 	gtk_widget_show (w);

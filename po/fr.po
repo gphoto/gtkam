@@ -1,5 +1,5 @@
 # French message catalog for gtKam, a GTK+ front end for gphoto2
-# Copyright (C) 2000 Scott Fritzinger <scottf@unr.edu>
+# Copyright © 2000 Scott Fritzinger <scottf@unr.edu>
 # Philippe Marzouk <philm@users.sourceforge.net>, 2000.
 #
 msgid ""

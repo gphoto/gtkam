@@ -43,7 +43,7 @@
 #include <string.h>
 
 #include <gphoto2/gphoto2-camera.h>
-#include <gphoto2/gphoto2-core.h>
+#include <gphoto2/gphoto2-abilities-list.h>
 #include <gphoto2/gphoto2-setting.h>
 #include <gphoto2/gphoto2-port-log.h>
 #include <gtk/gtkmain.h>
@@ -58,9 +58,10 @@ main (int argc, char *argv[])
 {
 	GtkWidget *m, *dialog;
 	char buf[1024], port[1024], speed[1024], model[1024];
-	int x, y, result;
+	int x, y, result, n;
 	Camera *camera;
-	CameraAbilities abilities;
+	CameraAbilitiesList *al;
+	CameraAbilities a;
 	gchar *msg;
 
 	gtk_set_locale ();
@@ -95,8 +96,12 @@ main (int argc, char *argv[])
 	     (gp_setting_get ("gtkam", "port name", port) == GP_OK)) && 
 	    (gp_setting_get ("gtkam", "speed", speed) == GP_OK)) {
 		gp_camera_new (&camera);
-		gp_camera_abilities_by_name (model, &abilities);
-		gp_camera_set_abilities (camera, abilities);
+		gp_abilities_list_new (&al);
+		gp_abilities_list_load (al);
+		n = gp_abilities_list_lookup_model (al, model);
+		gp_abilities_list_get_abilities (al, n, &a);
+		gp_abilities_list_free (al);
+		gp_camera_set_abilities (camera, a);
 		if (strcmp (port, "None") && strcmp (model, "Directory Browse"))
 			gp_camera_set_port_name (camera, port);
 		if (atoi (speed))
@@ -120,8 +125,6 @@ main (int argc, char *argv[])
 	gp_setting_set ("gtkam", "width", buf);
 	sprintf (buf, "%i", m->allocation.height);
 	gp_setting_set ("gtkam", "height", buf);
-
-	gp_exit ();
 
 	return 0;
 }

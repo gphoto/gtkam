@@ -237,6 +237,7 @@ on_debug_save_as_clicked (GtkButton *button, GtkamDebug *debug)
 	GtkWidget *fsel;
 	gboolean ok = FALSE;
 	const char *fname;
+	GtkTextIter s, e;
 
 	fsel = gtk_file_selection_new (_("Save As..."));
 	gtk_window_set_transient_for (GTK_WINDOW (fsel), GTK_WINDOW (debug));
@@ -262,8 +263,10 @@ on_debug_save_as_clicked (GtkButton *button, GtkamDebug *debug)
 		if (!file)
 			g_warning (_("Could not open '%s'!"), fname);
 		else {
+			gtk_text_buffer_get_bounds (debug->priv->buffer,
+						    &s, &e);
 			buffer = gtk_text_buffer_get_text (
-					debug->priv->buffer, NULL, NULL,
+					debug->priv->buffer, &s, &e,
 					TRUE);
 			fputs (buffer, file);
 			g_free (buffer);

@@ -1,5 +1,10 @@
 2004-02-11  Andrew Burton <adburton@users.sourceforge.net>
 
+	* src/gtkam-save.c: If an error occurs during saving,
+	abort.
+
+2004-02-11  Andrew Burton <adburton@users.sourceforge.net>
+
 	* src/gtkam-viewer.c: Fixed compiler warnings, removed
 	redundant printf()s.
 

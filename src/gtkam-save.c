@@ -282,7 +282,7 @@ concat_dir_and_file (const gchar *dirname, const gchar *filename)
 	return (full_path);
 }
 
-static void
+static int
 save_file (GtkamSave *save, CameraFile *file, guint n)
 {
 	gchar *full_path, *full_filename, *dirname, *msg, *number_filename;
@@ -343,20 +343,29 @@ save_file (GtkamSave *save, CameraFile *file, guint n)
 	if (!save->priv->quiet && file_exists (full_path)) {
 		msg = g_strdup_printf (_("The file '%s' already exists."),
 				       full_path);
-		dialog = gtkam_error_new (0, NULL, GTK_WIDGET (save), msg);
-		gtk_window_set_transient_for (GTK_WINDOW (dialog),
-					      save->priv->main_window);
-		gtk_widget_show (dialog);
-		g_free (msg);
-		g_free (full_path);
+		if (!save->priv->err_shown) {
+			dialog = gtkam_error_new (GP_ERROR_FILE_EXISTS, NULL, GTK_WIDGET (save), msg);
+			gtk_window_set_transient_for (GTK_WINDOW (dialog),
+						      save->priv->main_window);
+			gtk_widget_show (dialog);
+			g_free (msg);
+			g_free (full_path);
+			save->priv->err_shown = TRUE;
 		return;
 	}
 
+	/* FIXME Check for sufficient disk space for this file, or
+	   calculate total disk space required for all files before
+	   save process starts */
+	
 	result = gp_file_save (file, full_path);
 	if (result < 0) {
-		dialog = gtkam_error_new (result, NULL, GTK_WIDGET (save),
-				_("Could not save file to '%s'."), full_path);
-		gtk_widget_show (dialog);
+		if (!save->priv->err_shown) {
+			dialog = gtkam_error_new (result, NULL, GTK_WIDGET (save),
+					_("Could not save file to '%s'."), full_path);
+			gtk_widget_show (dialog);
+			save->priv-err_shown = TRUE;
+		}
 	} else {
 		progname = gtk_entry_get_text (save->priv->program);
 		if (progname && progname[0] != '\0' && fork ()) {
@@ -377,9 +386,10 @@ save_file (GtkamSave *save, CameraFile *file, guint n)
 	}
 
 	g_free (full_path);
+	return result;
 }
 
-static void
+static int
 get_file (GtkamSave *save, GtkamCamera *camera,
 	  const gchar *folder, const gchar *name, CameraFileType type, guint n,
 	  GtkamContext *context)
@@ -395,7 +405,7 @@ get_file (GtkamSave *save, GtkamCamera *camera,
 		gp_camera_exit (camera->camera, NULL);
 	switch (result) {
 	case GP_OK:
-		save_file (save, file, n);
+		result = save_file (save, file, n);
 		break;
 	case GP_ERROR_CANCEL:
 		break;
@@ -410,6 +420,7 @@ get_file (GtkamSave *save, GtkamCamera *camera,
 		}
 	}
 	gp_file_unref (file);
+	return result;
 }
 
 static void
@@ -489,7 +500,8 @@ static void
 on_ok_clicked (GtkButton *button, GtkamSave *save)
 {
 	guint i, count, j = 1;
-	GtkWidget *s;
+	int result;
+	GtkWidget *s, *dialog;
 	unsigned int id = 0;
 	GtkamSaveData *data;
 
@@ -522,32 +534,54 @@ on_ok_clicked (GtkButton *button, GtkamSave *save)
 
 		if (save->priv->toggle_normal &&
 		    save->priv->toggle_normal->active)
-			get_file (save, data->camera,
+			result = get_file (save, data->camera,
 				  data->folder, data->name,
 				  GP_FILE_TYPE_NORMAL, i + j,
 				  GTKAM_CANCEL (s)->context);
 		if (save->priv->toggle_preview &&
-		    save->priv->toggle_preview->active)
-			get_file (save, data->camera,
+		    save->priv->toggle_preview->active &&
+		    (!result < 0))
+			result = get_file (save, data->camera,
 				  data->folder, data->name,
 				  GP_FILE_TYPE_PREVIEW, i + j,
 				  GTKAM_CANCEL (s)->context);
 		if (save->priv->toggle_raw &&
-		    save->priv->toggle_raw->active)
-			get_file (save, data->camera,
+		    save->priv->toggle_raw->active &&
+		    (!result < 0))
+			result = get_file (save, data->camera,
 				  data->folder, data->name, GP_FILE_TYPE_RAW,
 				  i + j, GTKAM_CANCEL (s)->context);
 		if (save->priv->toggle_audio &&
-		    save->priv->toggle_audio->active)
-			get_file (save, data->camera,
+		    save->priv->toggle_audio->active &&
+		    (!result < 0))
+			result = get_file (save, data->camera,
 				  data->folder, data->name, GP_FILE_TYPE_AUDIO,
 				  i + j, GTKAM_CANCEL (s)->context);
 		if (save->priv->toggle_exif &&
-		    save->priv->toggle_exif->active)
-			get_file (save, data->camera,
+		    save->priv->toggle_exif->active &&
+		    (!result < 0))
+			result = get_file (save, data->camera,
 				  data->folder, data->name, GP_FILE_TYPE_EXIF,
 				  i + j, GTKAM_CANCEL (s)->context);
 
+		if (result < 0)
+		{
+			if (count > 1)
+				gp_context_progress_stop (GTKAM_CANCEL (s)->context->context, id);
+			if (!save->priv->err_shown) {
+				dialog = gtkam_error_new (result, GTKAM_CANCEL (s)->context,
+						GTK_WIDGET (save), _("Problem getting '%s' "
+						"from folder '%s'."),
+						data->name, data->folder);
+				gtk_widget_show (dialog);
+				save->priv->err_shown = TRUE;
+			}
+	
+			gtk_object_destroy (GTK_OBJECT (s));
+			gtk_object_destroy (GTK_OBJECT (save));
+			return;
+		}
+		
 		if (count > 1)
 			gp_context_progress_update (
 				GTKAM_CANCEL (s)->context->context, id, i + 1);

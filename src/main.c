@@ -65,11 +65,11 @@ idle_func (gpointer data)
 	int n, p;
 
 	/* Retrieve the last camera used by gtkam */
-	if (((gp_setting_get ("gtkam", "camera", model) == GP_OK) ||
-	    (gp_setting_get ("gtkam", "model", model) == GP_OK) ||
-	    (gp_setting_get ("gphoto2", "model", model) == GP_OK)) &&
-	    ((gp_setting_get ("gtkam", "port", port) == GP_OK) ||
-	     (gp_setting_get ("gtkam", "port name", port) == GP_OK)) &&
+	if (((gp_setting_get ("gtkam", "model", model) == GP_OK) ||
+	     (gp_setting_get ("gphoto2", "model", model) == GP_OK)) &&
+	    ((gp_setting_get ("gtkam", "path", port) == GP_OK) ||
+	     (gp_setting_get ("gtkam", "port", port) == GP_OK) ||
+	     (gp_setting_get ("gphoto2", "port", port) == GP_OK)) &&
 	    (gp_setting_get ("gtkam", "speed", speed) == GP_OK)) {
 		gp_camera_new (&camera);
 

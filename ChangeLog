@@ -1,3 +1,9 @@
+2005-01-24  Andrew Burton <adburton@users.sourceforge.net>
+
+	* src/gtkam-chooser.c: Use GtkExpander to hide advanced options.
+	* configure.in: Change version number to begin new release cycle
+	* src/gtkam-save.c, src/gtkam-save.h: Migrated to GtkFileChooser
+
 2005-01-22  Patrick Mansfield <patmans@users.sourceforge.net>
 
 	* src/gtkam-debug.c: Fix so you can actually save the debug

@@ -201,44 +201,52 @@ on_select_icon (GtkIconList *ilist, GtkIconListItem *item,
 	int result;
 	gchar *msg;
 
-	/* Double-click: Get thumbnail */
-	if (!event || (event->type != GDK_2BUTTON_PRESS))
+	if (!event)
 		return (TRUE);
 
-	gp_file_new (&file);
-	result = gp_camera_file_get (list->priv->camera,
-				     list->path, item->label,
-				     GP_FILE_TYPE_PREVIEW, file);
-	if (list->priv->multi)
-		gp_camera_exit (list->priv->camera);
-	if (result < 0) {
-		window = gtk_widget_get_ancestor (GTK_WIDGET (list),
+	if (event->type == GDK_2BUTTON_PRESS) {
+
+		/* Double-click: Get thumbnail */
+		gp_file_new (&file);
+		result = gp_camera_file_get (list->priv->camera,
+			list->path, item->label, GP_FILE_TYPE_PREVIEW, file);
+		if (list->priv->multi)
+			gp_camera_exit (list->priv->camera);
+		if (result < 0) {
+			window = gtk_widget_get_ancestor (GTK_WIDGET (list),
 						  GTK_TYPE_WINDOW);
-		msg = g_strdup_printf (_("Could not get preview of file "
-				       "'%s' in folder '%s'"), item->label,
-				       list->path);
-		dialog = gtkam_error_new (msg, result,
+			msg = g_strdup_printf (_("Could not get preview of "
+				"file '%s' in folder '%s'"), item->label,
+				list->path);
+			dialog = gtkam_error_new (msg, result,
 					  list->priv->camera, window);
-		g_free (msg);
-		gtk_widget_show (dialog);
-	} else {
-		pixbuf = gdk_pixbuf_new_from_camera_file (file);
-		gdk_pixbuf_render_pixmap_and_mask (pixbuf, &pixmap, &bitmap,
-						   127);
-		gdk_pixbuf_unref (pixbuf);
-		gtk_pixmap_set (GTK_PIXMAP (item->pixmap), pixmap, bitmap);
-		if (pixmap)
-			gdk_pixmap_unref (pixmap);
-		if (bitmap)
-			gdk_bitmap_unref (bitmap);
-		item->state = GTK_STATE_SELECTED;
+			g_free (msg);
+			gtk_widget_show (dialog);
+		} else {
+			pixbuf = gdk_pixbuf_new_from_camera_file (file);
+			gdk_pixbuf_render_pixmap_and_mask (pixbuf, &pixmap,
+							   &bitmap, 127);
+			gdk_pixbuf_unref (pixbuf);
+			gtk_pixmap_set (GTK_PIXMAP (item->pixmap),
+					pixmap, bitmap);
+			item->state = GTK_STATE_SELECTED;
+		}
+		gp_file_unref (file);
+
+		while (gtk_events_pending ())
+			gtk_main_iteration ();
+
+		return (FALSE);
+	} else if (event->type == GDK_BUTTON_PRESS) {
+		if (event->button == 3) {
+
+			/* Right-click: Show file info */
+			g_warning ("Not implemented!");
+			return (FALSE);
+		}
 	}
-	gp_file_unref (file);
 
-	while (gtk_events_pending ())
-		gtk_main_iteration ();
-
-	return (FALSE);
+	return (TRUE);
 }
 
 GtkWidget *

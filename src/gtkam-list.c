@@ -174,7 +174,7 @@ on_select_icon (GtkIconList *ilist, GtkIconListItem *item,
 	gchar *msg;
 
 	/* Double-click: Get thumbnail */
-	if (event->type != GDK_2BUTTON_PRESS)
+	if (!event || (event->type != GDK_2BUTTON_PRESS))
 		return (TRUE);
 
 	gp_file_new (&file);

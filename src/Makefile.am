@@ -37,6 +37,7 @@ libgtkam_a_SOURCES =					\
 	gtkam-tree.c    	gtkam-tree.h		\
 	gtkam-util.c    	gtkam-util.h		\
 	gtkam-viewer.c		gtkam-viewer.h		\
+	gtkam-version.c		gtkam-version.h		\
 	util.c util.h
 
 bin_PROGRAMS = gtkam

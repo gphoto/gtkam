@@ -549,7 +549,7 @@ gtkam_chooser_new (void)
 	gtk_entry_set_editable (chooser->priv->entry_speed, FALSE);
 
 	check = gtk_check_button_new_with_label (_("Allow multiple frontends"));
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (check), TRUE);
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (check), FALSE);
 	gtk_table_attach_defaults (GTK_TABLE (table), check, 0, 2, 3, 4);
 	gtk_signal_connect (GTK_OBJECT (check), "toggled",
 			    GTK_SIGNAL_FUNC (on_multi_toggled), chooser);

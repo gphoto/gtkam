@@ -47,7 +47,7 @@ if $try_bonobo; then
 		PKG_CHECK_MODULES(BONOBO, bonobo-activation-2.0 libbonoboui-2.0)
 		AC_SUBST(BONOBO_CFLAGS)
 		AC_SUBST(BONOBO_LIBS)
-		AC_DEFINE(HAVE_BONOBO,,[whether we use bonobo])
+		AC_DEFINE(HAVE_BONOBO,1,[whether we use bonobo])
 		bonobo_msg=yes
 		have_bonobo=true
 	fi
@@ -68,7 +68,7 @@ if $try_gnome; then
 	if ${PKG_CONFIG} --exists libgnomeui-2.0 gphoto2-manual; then
 		APP_DATADIR=`pkg-config --variable=datadir gphoto2-manual`
 		PKG_CHECK_MODULES(GNOME, libgnomeui-2.0)
-		AC_DEFINE(HAVE_GNOME,,[whether we use gnome])
+		AC_DEFINE(HAVE_GNOME,1,[whether we use gnome])
 		gnome_msg=yes
 		have_gnome=true
 	fi
@@ -118,7 +118,7 @@ if $try_exif; then
                         EXIF_LIBS=`$PKG_CONFIG --libs libexif-gtk`
                         have_exif=true
                         exif_msg=yes
-                        AC_DEFINE(HAVE_EXIF,,[Whether to use libexif])
+                        AC_DEFINE(HAVE_EXIF,1,[Whether to use libexif])
                 fi
                 AC_MSG_RESULT($exif_msg)
         fi

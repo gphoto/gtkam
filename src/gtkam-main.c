@@ -360,6 +360,7 @@ on_tree_new_error (GtkamTree *tree, GtkamTreeErrorData *e, GtkamMain *m)
 static void
 on_new_dialog (GtkObject *object, GtkWidget *dialog, GtkamMain *m)
 {
+	g_object_ref (G_OBJECT (dialog));
 	gtk_window_set_transient_for (GTK_WINDOW (dialog), GTK_WINDOW (m));
 	gtk_widget_show (dialog);
 }

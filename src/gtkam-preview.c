@@ -233,41 +233,22 @@ on_preview_capture_clicked (GtkButton *button, GtkamPreview *preview)
 static gboolean
 timeout_func (gpointer user_data)
 {
-	int result;
+	int r;
 	CameraFile *file;
 	const char *data = NULL;
 	long int size = 0;
 	GdkPixbufLoader *loader;
 	GdkPixbuf *pixbuf, *rotated;
-
-	GtkamPreview *preview = GTKAM_PREVIEW (user_data);
-
-	while (gtk_events_pending ())
-		gtk_main_iteration ();
-	if (!GTKAM_IS_PREVIEW (preview))
-		return (FALSE);
+	GtkamPreview *p = GTKAM_PREVIEW (user_data);
 
 	gp_file_new (&file);
-	result = gp_camera_capture_preview (preview->priv->camera->camera,
-					    file, NULL);
-	if (preview->priv->camera->multi)
-		gp_camera_exit (preview->priv->camera->camera, NULL);
-	if (!GTKAM_IS_PREVIEW (preview))
-		return (FALSE);
-	if (result != GP_OK) {
-		g_warning ("Could not capture: %s",
-			   gp_result_as_string (result));
+	r = gp_camera_capture_preview (p->priv->camera->camera, file, NULL);
+	if (p->priv->camera->multi)
+		gp_camera_exit (p->priv->camera->camera, NULL);
+	if (r < GP_OK) {
+		g_warning ("Could not capture: %s", gp_result_as_string (r));
 		gp_file_unref (file);
 		return (TRUE);
-	}
-
-	while (gtk_events_pending ())
-		gtk_main_iteration ();
-
-	/* Make sure we are not shutting down */
-	if (!GTKAM_IS_PREVIEW (preview)) {
-		gp_file_unref (file);
-		return (FALSE);
 	}
 
 	loader = gdk_pixbuf_loader_new ();
@@ -275,18 +256,14 @@ timeout_func (gpointer user_data)
 	gdk_pixbuf_loader_write (loader, data, size, NULL);
 	gdk_pixbuf_loader_close (loader, NULL);
 	gp_file_unref (file);
-
-	while (gtk_events_pending ())
-		gtk_main_iteration ();
-	if (!GTKAM_IS_PREVIEW (preview))
-		return (FALSE);
-
 	pixbuf = gdk_pixbuf_loader_get_pixbuf (loader);
+	rotated = gdk_pixbuf_rotate (pixbuf, p->priv->rotate);
 	g_object_unref (G_OBJECT (loader));
-	rotated = gdk_pixbuf_rotate (pixbuf, preview->priv->rotate);
-	g_object_unref (G_OBJECT (loader));
-	gtk_image_set_from_pixbuf (GTK_IMAGE (preview->priv->image), rotated);
+	gtk_image_set_from_pixbuf (GTK_IMAGE (p->priv->image), rotated);
 	gdk_pixbuf_unref (rotated);
+
+	while (g_main_pending ())
+		g_main_iteration (TRUE);
 
 	return (TRUE);
 }
@@ -337,6 +314,8 @@ on_configure_clicked (GtkButton *button, GtkamPreview *preview)
 	GtkWidget *d;
 
 	d = gtkam_config_new (preview->priv->camera);
+	if (!d)
+		return;
 	gtk_window_set_transient_for (GTK_WINDOW (d), GTK_WINDOW (preview));
 	gtk_widget_show (d);
 }

@@ -21,8 +21,8 @@
 #ifndef __GTKAM_INFO_H__
 #define __GTKAM_INFO_H__
 
-#include <gphoto2/gphoto2-camera.h>
-#include <gtk/gtkdialog.h>
+#include <gtkam-camera.h>
+#include <gtkam-dialog.h>
 
 #define GTKAM_TYPE_INFO  (gtkam_info_get_type ())
 #define GTKAM_INFO(o)    (GTK_CHECK_CAST((o),GTKAM_TYPE_INFO,GtkamInfo))
@@ -34,29 +34,28 @@ typedef struct _GtkamInfoClass   GtkamInfoClass;
 
 struct _GtkamInfo
 {
-	GtkDialog parent;
+	GtkamDialog parent;
 
 	GtkamInfoPrivate *priv;
 };
 
 typedef struct _GtkamInfoInfoUpdatedData GtkamInfoInfoUpdatedData;
 struct _GtkamInfoInfoUpdatedData {
-	Camera *camera;
-	gboolean multi;
+	GtkamCamera *camera;
 	const gchar *folder;
-	const gchar *name;
+	CameraFileInfo info;
 };
 
 struct _GtkamInfoClass
 {
-	GtkDialogClass parent_class;
+	GtkamDialogClass parent_class;
 
 	/* Signals */
 	void (* info_updated) (GtkamInfo *info, GtkamInfoInfoUpdatedData *);
 };
 
 GtkType    gtkam_info_get_type (void);
-GtkWidget *gtkam_info_new      (Camera *camera, const gchar *path,
-				GtkWidget *opt_window);
+GtkWidget *gtkam_info_new      (GtkamCamera *camera, const gchar *folder,
+				const gchar *name);
 
 #endif /* __GTKAM_INFO_H__ */

@@ -470,6 +470,7 @@ action_upload (gpointer callback_data, guint callback_action,
 	fsel = gtk_file_selection_new (title);
 	g_free (title);
 	g_signal_emit (G_OBJECT (tree), signals[NEW_DIALOG], 0, fsel);
+	g_object_unref (G_OBJECT (fsel));
 	ud = g_new0 (GtkamTreeUploadData, 1);
 	ud->fsel = fsel;
 	ud->tree = tree;
@@ -516,6 +517,7 @@ action_mkdir (gpointer callback_data, guint callback_action,
 	folder = gtkam_tree_get_path_from_iter (tree, &tree->priv->iter);
 	d = gtkam_mkdir_new (camera, folder);
 	g_signal_emit (GTK_OBJECT (tree), signals[NEW_DIALOG], 0, d);
+	g_object_unref (G_OBJECT (d));
 	g_free (folder);
 	data = g_new0 (DirCreatedData, 1);
 	data->tree = tree;
@@ -618,6 +620,7 @@ action_text (GtkamTree *tree, CameraTextType type)
 	case GP_OK:
 		d = gtkam_close_new (text.text);
 		g_signal_emit (G_OBJECT (tree), signals[NEW_DIALOG], 0, d);
+		g_object_unref (G_OBJECT (d));
 		break;
 	case GP_ERROR_CANCEL:
 		break;
@@ -625,6 +628,7 @@ action_text (GtkamTree *tree, CameraTextType type)
 		d = gtkam_error_new (r, GTKAM_STATUS (s)->context, NULL,
 			_("Could not retrieve information."));
 		g_signal_emit (G_OBJECT (tree), signals[NEW_DIALOG], 0, d);
+		g_object_unref (G_OBJECT (d));
 	}
 	gtk_object_destroy (GTK_OBJECT (s));
 }
@@ -648,7 +652,10 @@ action_preferences (gpointer callback_data, guint callback_action,
 
 	camera = gtkam_tree_get_camera_from_iter (tree, &tree->priv->iter);
 	d = gtkam_config_new (camera);
+	if (!d)
+		return;
 	g_signal_emit (G_OBJECT (tree), signals[NEW_DIALOG], 0, d);
+	g_object_unref (G_OBJECT (d));
 }
 
 static void
@@ -671,6 +678,16 @@ on_camera_selected (GtkamChooser *chooser, GtkamCamera *camera,
 		    CameraSelectedData *data)
 {
 	CameraAbilities a;
+	GtkTreeSelection *s;
+	GtkamTreeFolderUnselectedData fud;
+
+	s = gtk_tree_view_get_selection (GTK_TREE_VIEW (data->tree));
+	if (gtk_tree_selection_iter_is_selected (s, data->iter)) {
+		fud.camera = camera;
+		fud.folder = "/";
+		g_signal_emit (G_OBJECT (data->tree),
+			       signals[FOLDER_UNSELECTED], 0, &fud);
+	}
 
 	gp_camera_get_abilities (camera->camera, &a);
 	gtk_tree_store_set (data->tree->priv->store, data->iter, 
@@ -709,6 +726,7 @@ action_select_camera (gpointer callback_data, guint callback_action,
 
 	d = gtkam_chooser_new ();
 	g_signal_emit (G_OBJECT (tree), signals[NEW_DIALOG], 0, d);
+	g_object_unref (G_OBJECT (d));
 	gtkam_chooser_set_camera (GTKAM_CHOOSER (d),
 		gtkam_tree_get_camera_from_iter (tree, &tree->priv->iter));
 	data = g_new0 (CameraSelectedData, 1);
@@ -753,6 +771,7 @@ action_capture (gpointer callback_data, guint callback_action,
 	if (a.operations & GP_OPERATION_CAPTURE_PREVIEW) {
 		d = gtkam_preview_new (camera);
 		g_signal_emit (G_OBJECT (tree), signals[NEW_DIALOG], 0, d);
+		g_object_unref (G_OBJECT (d));
 		g_signal_connect (G_OBJECT (d), "captured",
 				  G_CALLBACK (on_captured), tree);
 		return;

@@ -61,14 +61,13 @@
 
 struct _GtkamInfoPrivate
 {
-	Camera *camera;
-	gboolean multi;
+	GtkamCamera *camera;
 
 	CameraFileInfo info;
 	CameraFileInfo info_new;
 
-	gchar *path;
-	gchar *new_path;
+	gchar *folder;
+	gchar *name, *new_name;
 
 	GtkWidget *button_apply, *button_reset;
 	gboolean needs_update;
@@ -77,8 +76,8 @@ struct _GtkamInfoPrivate
 	GtkWidget *entry_name;
 };
 
-#define PARENT_TYPE GTK_TYPE_DIALOG
-static GtkDialogClass *parent_class;
+#define PARENT_TYPE GTKAM_TYPE_DIALOG
+static GtkamDialogClass *parent_class;
 
 enum {
 	INFO_UPDATED,
@@ -93,18 +92,23 @@ gtkam_info_destroy (GtkObject *object)
 	GtkamInfo *info = GTKAM_INFO (object);
 
 	if (info->priv->camera) {
-		gp_camera_unref (info->priv->camera);
+		g_object_unref (G_OBJECT (info->priv->camera));
 		info->priv->camera = NULL;
 	}
 
-	if (info->priv->path) {
-		g_free (info->priv->path);
-		info->priv->path = NULL;
+	if (info->priv->folder) {
+		g_free (info->priv->folder);
+		info->priv->folder = NULL;
 	}
 
-	if (info->priv->new_path) {
-		g_free (info->priv->new_path);
-		info->priv->new_path = NULL;
+	if (info->priv->new_name) {
+		g_free (info->priv->new_name);
+		info->priv->new_name = NULL;
+	}
+
+	if (info->priv->name) {
+		g_free (info->priv->name);
+		info->priv->name = NULL;
 	}
 
 	GTK_OBJECT_CLASS (parent_class)->destroy (object);
@@ -188,33 +192,28 @@ static gboolean
 gtkam_info_update (GtkamInfo *info)
 {
 	int result;
-	gchar *dir;
 	GtkWidget *dialog, *s;
 	GtkamInfoInfoUpdatedData data;
 
 	g_return_val_if_fail (GTKAM_IS_INFO (info), FALSE);
 
-	dir = g_dirname (info->priv->path);
-
-	s = gtkam_status_new (_("Getting information for file '%s' in "
-			      "'%s'..."), dir, g_basename (info->priv->path));
+	s = gtkam_status_new (_("Setting information for file '%s' in "
+			"'%s'..."), info->priv->info, info->priv->folder);
 	gtk_widget_show (s);
-	result = gp_camera_file_set_info (info->priv->camera, dir,
-		g_basename (info->priv->path), info->priv->info_new,
+	result = gp_camera_file_set_info (info->priv->camera->camera,
+		info->priv->folder, info->priv->name, info->priv->info_new,
 		GTKAM_STATUS (s)->context->context);
-	gp_camera_file_get_info (info->priv->camera, dir,
-			g_basename (info->priv->path), &info->priv->info,
-			NULL);
+	gp_camera_file_get_info (info->priv->camera->camera, 
+		info->priv->folder,
+		info->priv->new_name ? info->priv->new_name : info->priv->name,
+		&info->priv->info, NULL);
 
 	/* Emit the signal */
 	memset (&data, 0, sizeof (GtkamInfoInfoUpdatedData));
 	data.camera = info->priv->camera;
-	data.multi  = info->priv->multi;
-	data.folder = dir;
-	data.name = g_basename (info->priv->path);
+	data.folder = info->priv->folder;
+	memcpy (&data.info, &info->priv->info, sizeof (CameraFileInfo));
 	g_signal_emit (GTK_OBJECT (info), signals[INFO_UPDATED], 0, &data);
-
-	g_free (dir);
 
 	switch (result) {
 	case GP_OK:
@@ -226,7 +225,8 @@ gtkam_info_update (GtkamInfo *info)
 		dialog = gtkam_error_new (result, GTKAM_STATUS (s)->context,
 			GTK_WIDGET (info),
 			_("Could not set file information for "
-			"'%s'"), info->priv->path);
+			"'%s' in folder '%s'"), info->priv->name,
+			info->priv->folder);
 		gtk_widget_show (dialog);
 		gtk_object_destroy (GTK_OBJECT (s));
 		return (FALSE);
@@ -238,12 +238,11 @@ gtkam_info_update (GtkamInfo *info)
 	memset (&info->priv->info_new, 0, sizeof (CameraFileInfo));
 
 	/* Check for name change */
-	if (info->priv->new_path) {
-		g_free (info->priv->path);
-		info->priv->path = info->priv->new_path;
-		info->priv->new_path = NULL;
-		gtk_window_set_title (GTK_WINDOW (info),
-				      g_basename (info->priv->path));
+	if (info->priv->new_name) {
+		g_free (info->priv->name);
+		info->priv->name = info->priv->new_name;
+		info->priv->new_name = NULL;
+		gtk_window_set_title (GTK_WINDOW (info), info->priv->name);
 	}
 
 	return (TRUE);
@@ -273,9 +272,9 @@ on_reset_clicked (GtkButton *button, GtkamInfo *info)
 	}
 
 	memset (&info->priv->info_new, 0, sizeof (CameraFileInfo));
-	if (info->priv->new_path) {
-		g_free (info->priv->new_path);
-		info->priv->new_path = NULL;
+	if (info->priv->new_name) {
+		g_free (info->priv->new_name);
+		info->priv->new_name = NULL;
 	}
 	info->priv->needs_update = FALSE;
 	gtkam_info_update_sensitivity (info);
@@ -327,45 +326,37 @@ static void
 on_name_changed (GtkEditable *editable, GtkamInfo *info)
 {
 	const gchar *name;
-	gchar *dir;
 
 	info->priv->info_new.file.fields |= GP_FILE_INFO_NAME;
 	name = gtk_entry_get_text (GTK_ENTRY (editable));
 	strncpy (info->priv->info_new.file.name, name,
-		 sizeof (info->priv->info_new.file.name));
+		 sizeof (info->priv->info_new.file.name) - 1);
 	info->priv->needs_update = TRUE;
 	gtkam_info_update_sensitivity (info);
-
-	dir = g_dirname (info->priv->path);
-	if (info->priv->new_path)
-		g_free (info->priv->new_path);
-	if (strlen (dir) == 1)
-		info->priv->new_path = g_strdup_printf ("/%s", name);
-	else
-		info->priv->new_path = g_strdup_printf ("%s/%s", dir, name);
-	g_free (dir);
+	if (info->priv->new_name)
+		g_free (info->priv->new_name);
+	info->priv->new_name = g_strdup (name);
 }
 
 GtkWidget *
-gtkam_info_new (Camera *camera, const gchar *path, GtkWidget *opt_window)
+gtkam_info_new (GtkamCamera *camera, const gchar *folder, const gchar *name)
 {
 	GtkamInfo *info;
-	GtkWidget *button, *image, *hbox, *dialog, *notebook, *page, *label;
+	GtkWidget *button, *dialog, *notebook, *page, *label, *hbox;
 	GtkWidget *check, *entry, *c;
-	gchar *dir, *msg;
+	gchar *msg;
 	int result;
 	CameraFileInfo i;
 
-	g_return_val_if_fail (camera != NULL, NULL);
-	g_return_val_if_fail (path != NULL, NULL);
+	g_return_val_if_fail (GTKAM_IS_CAMERA (camera), NULL);
+	g_return_val_if_fail (folder != NULL, NULL);
+	g_return_val_if_fail (name != NULL, NULL);
 
 	/* Get file info */
-	dir = g_dirname (path);
 	c = gtkam_cancel_new (_("Getting information about file '%s' in "
-		"folder '%s'..."), g_basename (path), dir);
-	result = gp_camera_file_get_info (camera, dir, g_basename (path),
+		"folder '%s'..."), name, folder);
+	result = gp_camera_file_get_info (camera->camera, folder, name,
 		&i, GTKAM_CANCEL (c)->context->context);
-	g_free (dir);
 	switch (result) {
 	case GP_OK:
 		break;
@@ -374,8 +365,8 @@ gtkam_info_new (Camera *camera, const gchar *path, GtkWidget *opt_window)
 		return (NULL);
 	default:
 		dialog = gtkam_error_new (result, GTKAM_CANCEL (c)->context,
-			opt_window, _("Could not get information about file "
-			"'%s' in folder '%s'."), path);
+			NULL, _("Could not get information about file '%s' in "
+			"'%s' in folder '%s'."), name, folder);
 		gtk_widget_show (dialog);
 		gtk_object_destroy (GTK_OBJECT (c));
 		return (NULL);
@@ -383,26 +374,18 @@ gtkam_info_new (Camera *camera, const gchar *path, GtkWidget *opt_window)
 	gtk_object_destroy (GTK_OBJECT (c));
 
 	info = g_object_new (GTKAM_TYPE_INFO, NULL);
-	gtk_window_set_title (GTK_WINDOW (info), g_basename (path));
+	gtk_window_set_title (GTK_WINDOW (info), name);
 
 	info->priv->camera = camera;
-	gp_camera_ref (camera);
-	info->priv->path = g_strdup (path);
+	g_object_ref (camera);
+	info->priv->folder = g_strdup (folder);
+	info->priv->name = g_strdup (name);
 	memcpy (&info->priv->info, &i, sizeof (CameraFileInfo));
-
-	hbox = gtk_hbox_new (FALSE, 10);
-	gtk_widget_show (hbox);
-	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (info)->vbox), hbox,
-			    TRUE, TRUE, 0);
-	gtk_container_set_border_width (GTK_CONTAINER (hbox), 10);
-
-	image = gtk_image_new_from_file (IMAGE_DIR "/gtkam-camera.png");
-	gtk_widget_show (image);
-	gtk_box_pack_start (GTK_BOX (hbox), image, FALSE, FALSE, 0);
 
 	notebook = gtk_notebook_new ();
 	gtk_widget_show (notebook);
-	gtk_box_pack_start (GTK_BOX (hbox), notebook, TRUE, TRUE, 0);
+	gtk_box_pack_start (GTK_BOX (GTKAM_DIALOG (info)->vbox),
+			    notebook, TRUE, TRUE, 0);
 
 	if (info->priv->info.file.fields) {
 		page = gtk_table_new (5, 2, FALSE);
@@ -663,10 +646,6 @@ gtkam_info_new (Camera *camera, const gchar *path, GtkWidget *opt_window)
 			    GTK_SIGNAL_FUNC (on_cancel_clicked), info);
 	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (info)->action_area),
 			   button);
-
-	if (opt_window)
-		gtk_window_set_transient_for (GTK_WINDOW (info),
-					      GTK_WINDOW (opt_window));
 
 	return (GTK_WIDGET (info));
 }

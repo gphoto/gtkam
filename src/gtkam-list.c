@@ -373,52 +373,6 @@ gtkam_list_hide_thumbnails (GtkamList *list)
 }
 
 #if 0
-
-static void
-on_info_updated (GtkamInfo *info, Camera *camera, gboolean multi,
-		 const gchar *folder, const gchar *name, GtkamList *list)
-{
-	gtkam_list_update_folder (list, camera, multi, folder);
-}
-
-typedef struct {
-	GtkWidget *menu;
-	GtkamList *list;
-	GtkIconListItem *item;
-} PopupData;
-
-static void
-on_info_activate (GtkMenuItem *i, PopupData *data)
-{
-	GtkamList *list = data->list;
-	GtkIconListItem *item = data->item;
-	GtkWidget *w, *info;
-	gchar *path;
-	const gchar *folder;
-	Camera *camera;
-	gboolean multi;
-
-	folder = gtk_object_get_data (GTK_OBJECT (item->entry), "folder");
-	camera = gtk_object_get_data (GTK_OBJECT (item->entry), "camera");
-	multi = GPOINTER_TO_INT (gtk_object_get_data (GTK_OBJECT (item->entry),
-						      "multi"));
-	g_return_if_fail (folder && camera);
-
-	w = gtk_widget_get_ancestor (GTK_WIDGET (list), GTK_TYPE_WINDOW);
-	if (strlen (folder) == 1)
-		path = g_strdup_printf ("/%s", item->label);
-	else
-		path = g_strdup_printf ("%s/%s", folder, item->label);
-	info = gtkam_info_new (camera, path, w);
-	g_free (path);
-	if (info) {
-		gtk_widget_show (info);
-		gtk_signal_connect_while_alive (GTK_OBJECT (info),
-			"info_updated", GTK_SIGNAL_FUNC (on_info_updated),
-			list, GTK_OBJECT (list));
-	}
-}
-
 static void
 on_exif_activate (GtkMenuItem *menu_item, PopupData *data)
 {
@@ -512,10 +466,52 @@ on_button_press_event (GtkWidget *widget, GdkEventButton *event,
 	}
 }
 
+typedef struct _GtkamListInfoUpdatedData GtkamListInfoUpdatedData;
+struct _GtkamListInfoUpdatedData {
+        GtkamList *list;
+        GtkTreeIter *iter;
+};
+
+static void
+on_info_updated (GtkamInfo *info, GtkamInfoInfoUpdatedData *d,
+		 GtkamListInfoUpdatedData *data)
+{
+        gtk_list_store_set (data->list->priv->store, data->iter,
+                            NAME_COLUMN, d->info.file.name, -1);
+}
+
+static void
+on_info_destroy (GtkObject *object, GtkamListInfoUpdatedData *data)
+{
+        gtk_tree_iter_free (data->iter);
+        g_free (data);
+}
+
 static void
 action_info (gpointer callback_data, guint callback_action, GtkWidget *widget)
 {
-	g_warning ("Fixme: action_info");
+	GtkamList *list = GTKAM_LIST (callback_data);
+	GtkWidget *d;
+	GtkamCamera *camera;
+	gchar *folder;
+	gchar *name;
+	GtkamListInfoUpdatedData *data;
+	
+	camera = gtkam_list_get_camera_from_iter (list, &list->priv->iter);
+	folder = gtkam_list_get_folder_from_iter (list, &list->priv->iter);
+	name   = gtkam_list_get_name_from_iter   (list, &list->priv->iter);
+	d = gtkam_info_new (camera, folder, name);
+	g_signal_emit (G_OBJECT (list), signals[NEW_DIALOG], 0, d);
+	g_object_unref (G_OBJECT (d));
+	g_free (folder);
+	g_free (name);
+	data = g_new0 (GtkamListInfoUpdatedData, 1);
+	data->list = list;
+	data->iter = gtk_tree_iter_copy (&list->priv->iter);
+	g_signal_connect (G_OBJECT (d), "info_updated",
+			  G_CALLBACK (on_info_updated), data);
+	g_signal_connect (G_OBJECT (d), "destroy",
+			  G_CALLBACK (on_info_destroy), data);
 }
 
 #ifdef HAVE_EXIF
@@ -544,6 +540,7 @@ action_save (gpointer callback_data, guint callback_action, GtkWidget *widget)
         g_free (folder);
         g_free (name);
         g_signal_emit (G_OBJECT (list), signals[NEW_DIALOG], 0, s);
+	g_object_unref (G_OBJECT (s));
 }
 
 static void
@@ -621,6 +618,7 @@ action_delete (gpointer callback_data, guint callback_action,
 	g_signal_connect (G_OBJECT (d), "all_deleted",
 			  G_CALLBACK (on_all_deleted), list);
 	g_signal_emit (G_OBJECT (list), signals[NEW_DIALOG], 0, d);
+	g_object_unref (G_OBJECT (d));
 }
 
 static void
@@ -901,6 +899,7 @@ gtkam_list_save_common (GtkamList *list, gboolean all)
         gtk_tree_model_foreach (GTK_TREE_MODEL (list->priv->store),
                                 save_foreach_func, &sad);
         g_signal_emit (G_OBJECT (list), signals[NEW_DIALOG], 0, sad.save);
+	g_object_unref (G_OBJECT (sad.save));
 }
 
 void
@@ -972,6 +971,7 @@ gtkam_list_delete_common (GtkamList *list, gboolean all)
 	g_signal_connect (G_OBJECT (dad.delete), "all_deleted",
 			  G_CALLBACK (on_all_deleted), list);
 	g_signal_emit (G_OBJECT (list), signals[NEW_DIALOG], 0, dad.delete);
+	g_object_unref (G_OBJECT (dad.delete));
 }
 
 void

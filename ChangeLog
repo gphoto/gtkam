@@ -1,7 +1,8 @@
 2004-04-18  Andrew Burton <adburton@users.sourceforge.net>
 
 	* src/Makefile.am: Removed DEPRECATED flags.
-	* src/gtkam-save.c: Fixed memory leak.
+	* src/gtkam-save.c: Patch to fix memory leak from Shotaro
+	Kamio (skamio6@users.sourceforge.net).
 
 2004-04-16  Andrew Burton <adburton@users.sourceforge.net>
 

@@ -224,7 +224,7 @@ on_data_toggled (GtkToggleButton *toggle, GtkamDebug *debug)
 	if (toggle->active && !debug->priv->data_id)
 		debug->priv->data_id = gp_log_add_func (GP_LOG_DATA,
 						       gp_log_func, debug);
-	else if (!toggle->active && debug->priv->data_id)
+	else if (!toggle->active && debug->priv->data_id) {
 		gp_log_remove_func (debug->priv->data_id);
 		debug->priv->data_id = 0;
 	}

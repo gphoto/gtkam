@@ -501,6 +501,7 @@ on_configure_clicked (GtkButton *button, GtkamPreview *preview)
 GtkWidget *
 gtkam_preview_new (Camera *camera)
 {
+	CameraAbilities abilities;
 	GtkamPreview *preview;
 	GtkWidget *button, *hbox, *image, *vbox, *radio;
 	GdkPixbuf *pixbuf;
@@ -630,12 +631,16 @@ gtkam_preview_new (Camera *camera)
 			   button);
 	gtk_widget_grab_focus (button);
 
-	button = gtk_button_new_with_label (_("Configure"));
-	gtk_widget_show (button);
-	gtk_signal_connect (GTK_OBJECT (button), "clicked",
-			    GTK_SIGNAL_FUNC (on_configure_clicked), preview);
-	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (preview)->action_area),
-			   button);
+	gp_camera_get_abilities (camera, &abilities);
+	if (abilities.operations & GP_OPERATION_CONFIG) {
+		button = gtk_button_new_with_label (_("Configure"));
+		gtk_widget_show (button);
+		gtk_signal_connect (GTK_OBJECT (button), "clicked",
+			GTK_SIGNAL_FUNC (on_configure_clicked), preview);
+		gtk_container_add (
+			GTK_CONTAINER (GTK_DIALOG (preview)->action_area),
+			button);
+	}
 
 	button = gtk_button_new_with_label (_("Close"));
 	gtk_widget_show (button);

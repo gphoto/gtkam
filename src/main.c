@@ -14,7 +14,6 @@
 #include <unistd.h>
 #include <gtk/gtk.h>
 
-#include "frontend.h"
 #include "interface.h"
 #include "support.h"
 
@@ -49,10 +48,6 @@ main (int argc, char *argv[])
 		   else
 			gp_gtk_debug = GP_DEBUG_NONE;
 	}
-
-	/* Register my callbacks for interaction */
-	gp_frontend_register (NULL, NULL,
-			      frontend_message, frontend_confirm, NULL);
 
 	add_pixmap_directory (PACKAGE_DATA_DIR "/pixmaps");
 	add_pixmap_directory (PACKAGE_SOURCE_DIR "/pixmaps");

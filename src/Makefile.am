@@ -19,8 +19,6 @@ gtkam_SOURCES = \
 	gtkam-tree.c gtkam-tree.h \
 	main.c \
 	support.c support.h \
-	frontend.c frontend.h \
-	interface.c interface.h \
 	util.c util.h \
 	gtkiconlist.c gtkiconlist.h \
 	gtkitementry.c gtkitementry.h

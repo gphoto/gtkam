@@ -30,7 +30,6 @@
 #include <gtk/gtkentry.h>
 
 #include <gphoto2/gphoto2-setting.h>
-#include <gphoto2/gphoto2-frontend.h>
 
 #include "frontend.h"
 #include "util.h"
@@ -251,25 +250,13 @@ save_file (GtkamSave *save, CameraFile *file, guint n)
 
 	/* Check for existing file */
 	if (!save->priv->quiet && file_exists (full_path)) {
-		msg = g_strdup_printf ("'%s' already exists. Overwrite?",
+		msg = g_strdup_printf ("'%s' already exists.",
 				       full_path);
-		switch (gp_frontend_confirm (save->priv->camera, msg)) {
-		case GP_CONFIRM_YES:
-			break;
-		case GP_CONFIRM_YESTOALL:
-			save->priv->quiet = TRUE;
-			break;
-		case GP_CONFIRM_NO:
-			g_free (msg);
-			g_free (full_path);
-			return;
-		case GP_CONFIRM_NOTOALL:
-			save->priv->quiet = TRUE;
-			g_free (msg);
-			g_free (full_path);
-			return;
-		}
+		dialog = gtkam_close_new (msg, GTK_WIDGET (save));
+		gtk_widget_show (dialog);
 		g_free (msg);
+		g_free (full_path);
+		return;
 	}
 
 	result = gp_file_save (file, full_path);

@@ -85,3 +85,4 @@ void on_manual_activate (GtkMenuItem *menuitem, gpointer user_data);
 void on_authors_activate (GtkMenuItem *menuitem, gpointer user_data);
 void on_license_activate (GtkMenuItem *menuitem, gpointer user_data);
 void on_about_activate (GtkMenuItem *menuitem, gpointer user_data);
+void on_debug_activate (GtkMenuItem *menuitem, gpointer user_data);

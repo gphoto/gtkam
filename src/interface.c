@@ -237,7 +237,7 @@ create_main_window (void)
   GtkWidget *help1_menu;
   GtkAccelGroup *help1_menu_accels;
   GtkWidget *user_s_manual1;
-  GtkWidget *authors1;
+  GtkWidget *authors1, *debug1;
   GtkWidget *license1;
   GtkWidget *about_gphoto1;
   GtkWidget *toolbar1;
@@ -695,6 +695,17 @@ create_main_window (void)
                             (GtkDestroyNotify) gtk_widget_unref);
   gtk_widget_show (user_s_manual1);
   gtk_container_add (GTK_CONTAINER (help1_menu), user_s_manual1);
+
+  debug1 = gtk_menu_item_new_with_label ("");
+  tmp_key = gtk_label_parse_uline (GTK_LABEL (GTK_BIN (debug1)->child),
+		  		   _("_Debug"));
+  gtk_widget_add_accelerator (debug1, "activate_item", help1_menu_accels,
+		  	      tmp_key, 0, 0);
+  gtk_widget_ref (debug1);
+  gtk_object_set_data_full (GTK_OBJECT (main_window), "debug1", debug1,
+		  	    (GtkDestroyNotify) gtk_widget_unref);
+  gtk_widget_show (debug1);
+  gtk_container_add (GTK_CONTAINER (help1_menu), debug1);
 /*
   gtk_widget_add_accelerator (user_s_manual1, "activate", accel_group,
                               GDK_m, GDK_CONTROL_MASK,
@@ -1055,6 +1066,8 @@ create_main_window (void)
   gtk_signal_connect (GTK_OBJECT (user_s_manual1), "activate",
                       GTK_SIGNAL_FUNC (on_manual_activate),
                       NULL);
+  gtk_signal_connect (GTK_OBJECT (debug1), "activate",
+		      GTK_SIGNAL_FUNC (on_debug_activate), NULL);
   gtk_signal_connect (GTK_OBJECT (authors1), "activate",
                       GTK_SIGNAL_FUNC (on_authors_activate),
                       NULL);

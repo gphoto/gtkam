@@ -1334,3 +1334,49 @@ void on_license_activate (GtkMenuItem *menuitem, gpointer user_data) {
 void on_about_activate (GtkMenuItem *menuitem, gpointer user_data) {
 	help_about();
 }
+
+static void
+on_debug_ok_clicked (GtkButton *button, GtkDialog *dialog)
+{
+	gp_debug_set_func (NULL, NULL);
+	gtk_object_destroy (GTK_OBJECT (dialog));
+}
+
+static void
+debug_func (const char *id, const char *msg, void *data)
+{
+	GtkText *text = data;
+
+	gtk_text_insert (text, NULL, NULL, NULL, msg, strlen (msg));
+	gtk_text_insert (text, NULL, NULL, NULL, "\n", 1);
+}
+
+void on_debug_activate (GtkMenuItem *menuitem, gpointer user_data) {
+	GtkWidget *dialog, *vscrollbar, *text, *button, *hbox;
+
+	dialog = gtk_dialog_new ();
+	gtk_widget_show (dialog);
+
+	hbox = gtk_hbox_new (FALSE, 0);
+	gtk_widget_show (hbox);
+	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), hbox);
+
+	text = gtk_text_new (NULL, NULL);
+	gtk_widget_show (text);
+	gtk_text_set_editable (GTK_TEXT (text), FALSE);
+	gtk_box_pack_start (GTK_BOX (hbox), text, TRUE, TRUE, 0);
+
+	vscrollbar = gtk_vscrollbar_new (GTK_TEXT (text)->vadj);
+	gtk_widget_show (vscrollbar);
+	gtk_box_pack_end (GTK_BOX (hbox), vscrollbar, FALSE, FALSE, 0);
+
+	button = gtk_button_new_with_label ("OK");
+	gtk_widget_show (button);
+	gtk_signal_connect (GTK_OBJECT (button), "clicked",
+			    on_debug_ok_clicked, dialog);
+	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->action_area),
+			   button);
+
+	gp_debug_set_func (debug_func, text);
+	gp_debug_set_level (GP_DEBUG_HIGH);
+}

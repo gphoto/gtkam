@@ -1,5 +1,7 @@
 2002-02-02  Colin Marquardt  <colin@marquardt-home.de>
 
+	* configure.in: Added ja to ALL_LINGUAS.
+
 	* src/gtkam-preview.c: Don't use degree signs in the source.
 
 2002-01-29  Lutz Müller <lutz@users.sourceforge.net>

@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gtKam\n"
-"POT-Creation-Date: 2001-11-05 22:50+0100\n"
-"PO-Revision-Date: 2001-11-05 23:22+01:00\n"
+"POT-Creation-Date: 2001-11-11 18:53+0100\n"
+"PO-Revision-Date: 2001-11-11 18:55+0100\n"
 "Last-Translator: Colin Marquardt <colin@marquardt-home.de>\n"
 "Language-Team: German <de@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -80,7 +80,7 @@ msgid "Apply"
 msgstr "Anwenden"
 
 #: src/gtkam-chooser.c:498 src/gtkam-close.c:174 src/gtkam-config.c:510
-#: src/gtkam-debug.c:328 src/gtkam-error.c:220
+#: src/gtkam-debug.c:328 src/gtkam-error.c:220 src/gtkam-preview.c:577
 msgid "Close"
 msgstr "Schließen"
 
@@ -144,7 +144,8 @@ msgstr "Mehr"
 #: src/gtkam-list.c:188
 #, c-format
 msgid "Could not get preview of file '%s' in folder '%s'"
-msgstr "Konnte Vorschaubild der Datei »%s« im Verzeichnis »%s« nicht herunterladen"
+msgstr ""
+"Konnte Vorschaubild der Datei »%s« im Verzeichnis »%s« nicht herunterladen"
 
 #: src/gtkam-list.c:272
 #, c-format
@@ -355,114 +356,136 @@ msgstr "Konnte neues Verzeichnis »%s« nicht in »%s« anlegen"
 #: src/gtkam-mkdir.c:226
 #, c-format
 msgid "Please choose a name for the directory that should be created in '%s':"
-msgstr "Bitte wählen Sie einen Namen für das Verzeichnis, welches in »%s« angelegt werden soll:"
+msgstr ""
+"Bitte wählen Sie einen Namen für das Verzeichnis, welches in »%s« angelegt "
+"werden soll:"
 
 #: src/gtkam-mkdir.c:242
 msgid "New directory"
 msgstr "Neues Verzeichnis"
 
-#: src/gtkam-mkdir.c:253 src/gtkam-preview.c:316
+#: src/gtkam-mkdir.c:253
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: src/gtkam-preview.c:171
+#: src/gtkam-preview.c:176
 msgid "Could not capture"
 msgstr "Konnte keine Aufnahme machen"
 
-#: src/gtkam-preview.c:284
-msgid "Refresh every "
-msgstr "Vorschau jede "
+#: src/gtkam-preview.c:524
+msgid "0°"
+msgstr "0°"
 
-#: src/gtkam-preview.c:303
-msgid " second(s)"
-msgstr "Sekunde(n)"
+#: src/gtkam-preview.c:531
+msgid "-90°"
+msgstr "-90°"
 
-#: src/gtkam-preview.c:307
+#: src/gtkam-preview.c:537
+msgid "+90°"
+msgstr "+90°"
+
+#: src/gtkam-preview.c:543
+msgid "180°"
+msgstr "180°"
+
+#: src/gtkam-preview.c:555
+msgid "Zoom: "
+msgstr "Zoom: "
+
+#: src/gtkam-preview.c:568
 msgid "Capture"
 msgstr "Aufnahme machen"
 
-#: src/gtkam-save.c:272
+#: src/gtkam-save.c:276
 #, c-format
 msgid "'%s' already exists."
 msgstr "»%s« existiert bereits."
 
-#: src/gtkam-save.c:283
+#: src/gtkam-save.c:287
 #, c-format
 msgid "Could not save file to '%s'"
 msgstr "Konnte Datei nicht unter »%s« speichern"
 
-#: src/gtkam-save.c:308
+#: src/gtkam-save.c:312
 #, c-format
 msgid "Could not get '%s' from folder '%s'"
 msgstr "Konnte Datei »%s« nicht aus Verzeichnis »%s« holen"
 
-#: src/gtkam-save.c:388
+#: src/gtkam-save.c:396
 msgid "Save selected photos..."
 msgstr "Speichere ausgewählte Photos..."
 
-#: src/gtkam-save.c:401
+#: src/gtkam-save.c:409
 msgid "What to save:"
 msgstr "Was soll gespeichert werden:"
 
-#: src/gtkam-save.c:410
+#: src/gtkam-save.c:418
 msgid "Save photos"
 msgstr "Speichere Photos"
 
-#: src/gtkam-save.c:414
+#: src/gtkam-save.c:422
 msgid "Photos will be saved if this is checked"
 msgstr "Photos werden gespeichert, wenn dies angekreuzt ist."
 
-#: src/gtkam-save.c:420
+#: src/gtkam-save.c:428
 msgid "Save raw data"
 msgstr "Speichere Originaldaten"
 
-#: src/gtkam-save.c:423
+#: src/gtkam-save.c:431
 msgid "Raw data will be saved if this is checked"
 msgstr "Originaldaten werden gespeichert, wenn dies angekreuzt ist"
 
-#: src/gtkam-save.c:429
+#: src/gtkam-save.c:437
+msgid "Save audio data"
+msgstr "Speichere Audiodaten"
+
+#: src/gtkam-save.c:440
+msgid "Audio data will be saved if this is checked"
+msgstr "Audiodaten werden gespeichert, wenn dies angekreuzt ist"
+
+#: src/gtkam-save.c:446
 msgid "Save thumbnails"
 msgstr "Speichere Vorschaubilder"
 
-#: src/gtkam-save.c:432
+#: src/gtkam-save.c:449
 msgid "Thumbnails will be saved if this is checked"
 msgstr "Vorschaubilder werden gespeichert, wenn dies angekreuzt ist"
 
-#: src/gtkam-save.c:442
+#: src/gtkam-save.c:459
 msgid "Open image(s) with:"
 msgstr "Öffne Bild(er) mit:"
 
-#: src/gtkam-save.c:449
+#: src/gtkam-save.c:466
 msgid "Type in the name of the program you want to run, leave blank for none"
 msgstr ""
 "Name des Programmes, welches gestartet werden soll (leer: kein Programm "
 "starten)"
 
-#: src/gtkam-save.c:454
+#: src/gtkam-save.c:471
 msgid "Use filenames provided by the camera"
 msgstr "Nehme die Dateinamen der Kamera"
 
-#: src/gtkam-save.c:459
+#: src/gtkam-save.c:476
 msgid "Choose whether to use the filename provided by the camera"
 msgstr "Auswählen, ob die Dateinamen der Kamera verwendet werden sollen"
 
-#: src/gtkam-save.c:481
+#: src/gtkam-save.c:498
 msgid "Filename prefix: "
 msgstr "Dateinamen-Präfix"
 
-#: src/gtkam-tree.c:201
+#: src/gtkam-tree.c:203
 msgid "No camera set"
 msgstr "Keine Kamera ausgewählt"
 
-#: src/gtkam-tree.c:209
+#: src/gtkam-tree.c:226
 #, c-format
 msgid "Could not retrieve file list for folder '%s'"
 msgstr "Konnte Dateiliste des Verzeichnisses »%s« nicht herunterladen"
 
-#: src/gtkam-tree.c:240 src/gtkam-tree.c:283
+#: src/gtkam-tree.c:246 src/gtkam-tree.c:289
 #, c-format
 msgid "Could not get list of folders for folder '%s'."
-msgstr "Konnte Verzeichnisliste des Verzeichnisses »%s« nicht herunterladen"
+msgstr "Konnte Verzeichnisliste des Verzeichnisses »%s« nicht herunterladen."
 
 #~ msgid "Could not initialize '%s' on port '%s'"
 #~ msgstr "Konnte »%s« am Anschluss »%s« nicht initialisieren"
@@ -481,3 +504,13 @@ msgstr "Konnte Verzeichnisliste des Verzeichnisses »%s« nicht herunterladen"
 
 #~ msgid "Show debugging messages"
 #~ msgstr "Zeige Debugging-Nachrichten"
+
+#, fuzzy
+#~ msgid "Could not capture: %s"
+#~ msgstr "Konnte keine Aufnahme machen"
+
+#~ msgid "Refresh every "
+#~ msgstr "Vorschau jede "
+
+#~ msgid " second(s)"
+#~ msgstr "Sekunde(n)"

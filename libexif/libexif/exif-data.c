@@ -151,12 +151,18 @@ exif_data_new_from_file (const char *path)
 void
 exif_data_ref (ExifData *data)
 {
+	if (!data)
+		return;
+
 	data->priv->ref_count++;
 }
 
 void
 exif_data_unref (ExifData *data)
 {
+	if (!data)
+		return;
+
 	data->priv->ref_count--;
 	if (!data->priv->ref_count)
 		exif_data_free (data);

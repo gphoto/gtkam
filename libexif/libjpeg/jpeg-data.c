@@ -245,12 +245,18 @@ jpeg_data_new_from_file (const char *path)
 void
 jpeg_data_ref (JPEGData *data)
 {
+	if (!data)
+		return;
+
 	data->priv->ref_count++;
 }
 
 void
 jpeg_data_unref (JPEGData *data)
 {
+	if (!data)
+		return;
+
 	data->priv->ref_count--;
 	if (!data->priv->ref_count)
 		jpeg_data_free (data);
@@ -261,6 +267,9 @@ jpeg_data_free (JPEGData *data)
 {
 	unsigned int i;
 	JPEGSection s;
+
+	if (!data)
+		return;
 
 	if (data->count) {
 		for (i = 0; i < data->count; i++) {
@@ -306,6 +315,9 @@ jpeg_data_dump (JPEGData *data)
 	unsigned int i;
 	JPEGContent content;
 	JPEGMarker marker;
+
+	if (!data)
+		return;
 
 	printf ("Dumping JPEG data...\n");
 	for (i = 0; i < data->count; i++) {
@@ -356,6 +368,9 @@ ExifData *
 jpeg_data_get_exif_data (JPEGData *data)
 {
 	unsigned int i;
+
+	if (!data)
+		return;
 
 	for (i = 0; i < data->count; i++)
 		if (data->sections[i].marker == JPEG_MARKER_EXIF) {

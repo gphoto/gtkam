@@ -22,7 +22,10 @@
 #define __GTKAM_CHOOSER_H__
 
 #include <gphoto2/gphoto2-camera.h>
+
 #include <gtk/gtkdialog.h>
+
+#include <gtkam-camera.h>
 
 #define GTKAM_TYPE_CHOOSER  (gtkam_chooser_get_type ())
 #define GTKAM_CHOOSER(o)    (GTK_CHECK_CAST((o),GTKAM_TYPE_CHOOSER,GtkamChooser))
@@ -41,26 +44,18 @@ struct _GtkamChooser
 	GtkamChooserPrivate *priv;
 };
 
-typedef struct _GtkamChooserCameraSelectedData GtkamChooserCameraSelectedData;
-struct _GtkamChooserCameraSelectedData {
-	Camera *camera;
-	gboolean multi;
-};
-
 struct _GtkamChooserClass
 {
 	GtkDialogClass parent_class;
 
 	/* Signals */
-	void (* camera_selected) (GtkamChooser *,
-				  GtkamChooserCameraSelectedData *);
+	void (* camera_selected) (GtkamChooser *, GtkamCamera *);
 };
 
 GtkType    gtkam_chooser_get_type (void);
 GtkWidget *gtkam_chooser_new      (void);
 
-void       gtkam_chooser_set_camera (GtkamChooser *chooser, Camera *camera);
-void       gtkam_chooser_set_multi  (GtkamChooser *chooser, gboolean multi);
+void       gtkam_chooser_set_camera (GtkamChooser *chooser, GtkamCamera *);
 
 void       gtkam_chooser_set_camera_mask (GtkamChooser *chooser, 
 					  CameraOperation operations);

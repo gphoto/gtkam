@@ -61,12 +61,13 @@ struct _GtkamCancelPrivate
 {
 	GPtrArray *array_hbox, *array_progress;
 	GArray *array_target;
+	GArray *last;
 
 	gboolean cancelled;
 };
 
-#define PARENT_TYPE GTK_TYPE_DIALOG
-static GtkDialogClass *parent_class;
+#define PARENT_TYPE GTKAM_TYPE_DIALOG
+static GtkamDialogClass *parent_class;
 
 enum {
 	CANCEL,
@@ -88,6 +89,7 @@ gtkam_cancel_destroy (GtkObject *object)
 	g_ptr_array_set_size (cancel->priv->array_hbox, 0);
 	g_ptr_array_set_size (cancel->priv->array_progress, 0);
 	g_array_set_size (cancel->priv->array_target, 0);
+	g_array_set_size (cancel->priv->last, 0);
 
 	GTK_OBJECT_CLASS (parent_class)->destroy (object);
 }
@@ -100,6 +102,7 @@ gtkam_cancel_finalize (GObject *object)
 	g_array_free (cancel->priv->array_target, TRUE);
 	g_ptr_array_free (cancel->priv->array_hbox, TRUE);
 	g_ptr_array_free (cancel->priv->array_progress, TRUE);
+	g_array_free (cancel->priv->last, TRUE);
 	g_free (cancel->priv);
 
 	G_OBJECT_CLASS (parent_class)->finalize (object);
@@ -135,7 +138,8 @@ gtkam_cancel_init (GTypeInstance *instance, gpointer g_class)
 	cancel->priv = g_new0 (GtkamCancelPrivate, 1);
 	cancel->priv->array_hbox = g_ptr_array_new ();
 	cancel->priv->array_progress = g_ptr_array_new ();
-	cancel->priv->array_target = g_array_new (FALSE, TRUE, sizeof (gfloat));
+	cancel->priv->array_target = g_array_new (FALSE, TRUE, sizeof (float));
+	cancel->priv->last = g_array_new (FALSE, TRUE, sizeof (float));
 }
 
 GType
@@ -186,8 +190,9 @@ message_func (GPContext *context, const char *format, va_list args,
         gchar *msg;
         GtkWidget *d;
 
+	cancel = NULL;
         msg = g_strdup_vprintf (format, args);
-        d = gtkam_close_new (msg, GTK_WIDGET (cancel));
+        d = gtkam_close_new (msg);
         g_free (msg);
         gtk_widget_show (d);
 }
@@ -200,6 +205,7 @@ start_func (GPContext *c, float target, const char *format,
 	GtkWidget *progress, *label, *hbox;
 	gchar *msg;
 	unsigned int i;
+	float last = 0.;
 
 	hbox = gtk_hbox_new (FALSE, 5);
 	gtk_widget_show (hbox);
@@ -213,6 +219,8 @@ start_func (GPContext *c, float target, const char *format,
 	gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
 
 	progress = gtk_progress_bar_new ();
+	gtk_progress_bar_set_pulse_step (GTK_PROGRESS_BAR (progress),
+					 1. / target);
 	gtk_widget_show (progress);
 	gtk_box_pack_start (GTK_BOX (hbox), progress, TRUE, TRUE, 0);
 
@@ -223,10 +231,12 @@ start_func (GPContext *c, float target, const char *format,
 		g_ptr_array_add (cancel->priv->array_hbox, hbox);
 		g_ptr_array_add (cancel->priv->array_progress, progress);
 		g_array_append_val (cancel->priv->array_target, target);
+		g_array_append_val (cancel->priv->last, last);
 	} else {
 		cancel->priv->array_hbox->pdata[i] = hbox;
 		cancel->priv->array_progress->pdata[i] = progress;
 		g_array_index (cancel->priv->array_target, gfloat, i) = target;
+		g_array_index (cancel->priv->last, gfloat, i) = 0.;
 	}
 
 	while (gtk_events_pending ())
@@ -239,19 +249,15 @@ static void
 update_func (GPContext *c, unsigned int id, float current, void *data)
 {
 	GtkamCancel *cancel = GTKAM_CANCEL (data);
-	GtkProgress *progress;
+	GtkProgressBar *progress;
 
 	g_return_if_fail (id < cancel->priv->array_progress->len);
 
 	progress = cancel->priv->array_progress->pdata[id];
-#if 0
-	gtk_progress_set_percentage (progress,
-		current / g_array_index (cancel->priv->array_target,
-					 gfloat, id));
-#endif
-
-	while (gtk_events_pending ())
-		gtk_main_iteration ();
+	while (current > g_array_index (cancel->priv->last, float, id)) {
+		g_array_index (cancel->priv->last, float, id)++;
+		gtk_progress_bar_pulse (progress);
+	}
 }
 
 static void
@@ -269,28 +275,14 @@ stop_func (GPContext *c, unsigned int id, void *data)
 }
 
 GtkWidget *
-gtkam_cancel_new (GtkWidget *opt_window, const gchar *format, ...)
+gtkam_cancel_new (const gchar *format, ...)
 {
 	GtkamCancel *cancel;
-	GtkWidget *label, *button, *image, *hbox;
+	GtkWidget *label, *button;
 	va_list args;
 	gchar *msg;
 
 	cancel = g_object_new (GTKAM_TYPE_CANCEL, NULL);
-
-	gtk_container_set_border_width (
-			GTK_CONTAINER (GTK_DIALOG (cancel)->vbox), 5);
-	gtk_box_set_spacing (GTK_BOX (GTK_DIALOG (cancel)->vbox), 5);
-
-	hbox = gtk_hbox_new (FALSE, 5);
-	gtk_widget_show (hbox);
-	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (cancel)->vbox), hbox,
-			    TRUE, TRUE, 0);
-	gtk_container_set_border_width (GTK_CONTAINER (hbox), 5);
-
-	image = gtk_image_new_from_file (IMAGE_DIR "/gtkam-camera.png");
-	gtk_widget_show (image);
-	gtk_box_pack_start (GTK_BOX (hbox), image, FALSE, FALSE, 0);
 
 	va_start (args, format);
 	msg = g_strdup_vprintf (format, args);
@@ -298,7 +290,8 @@ gtkam_cancel_new (GtkWidget *opt_window, const gchar *format, ...)
 	label = gtk_label_new (msg);
 	gtk_widget_show (label);
 	g_free (msg);
-	gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX (GTKAM_DIALOG (cancel)->vbox),
+			    label, FALSE, FALSE, 0);
 
 	button = gtk_button_new_from_stock (GTK_STOCK_CANCEL);
 	gtk_widget_show (button);
@@ -307,10 +300,6 @@ gtkam_cancel_new (GtkWidget *opt_window, const gchar *format, ...)
 	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (cancel)->action_area),
 			   button);
 	gtk_widget_grab_focus (button);
-
-	if (opt_window)
-		gtk_window_set_transient_for (GTK_WINDOW (cancel),
-					      GTK_WINDOW (opt_window));
 
 	gp_context_set_progress_funcs (cancel->context->context, start_func,
 				       update_func, stop_func, cancel);

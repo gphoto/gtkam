@@ -147,7 +147,7 @@ gtkam_exif_new (Camera *camera, gboolean multi,
 #ifdef HAVE_EXIF
 	/* Get exif data */
 	gp_file_new (&cfile);
-	c = gtkam_cancel_new (opt_window,
+	c = gtkam_cancel_new (
 		_("Getting EXIF information for file '%s' in "
 		"folder '%s'..."), file, folder);
 	gtk_widget_show (c);

@@ -64,7 +64,7 @@ gdk_pixbuf_new_from_camera_file (CameraFile *file, guint max_dim,
                 msg = g_strdup_printf (_("Could not display '%s'. Either "
                         "the image type ('%s') is not supported by gtk or "
                         "the file itself is corrupt."), name, type);
-                dialog = gtkam_close_new (msg, opt_window);
+                dialog = gtkam_close_new (msg);
                 g_free (msg);
                 gtk_widget_show (dialog);
                 gtk_object_destroy (GTK_OBJECT (loader));

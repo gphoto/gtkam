@@ -68,20 +68,12 @@
 #include "gtkam-status.h"
 #include "gtkam-util.h"
 
-typedef struct _GtkamListCameraData GtkamListCameraData;
-struct _GtkamListCameraData {
-	Camera *camera;
-	gboolean multi;
-	GtkTreePath *path;
-};
-
 struct _GtkamListPrivate
 {
 	GtkListStore *store;
 
-	GPtrArray *cameras;
-
 	gboolean thumbnails;
+	GtkTreeViewColumn *col_previews;
 
 	GtkItemFactory *factory;
 	GtkTreeIter iter;
@@ -104,6 +96,7 @@ enum {
 	PREVIEW_COLUMN = 0,
 	NAME_COLUMN,
 	FOLDER_COLUMN,
+	CAMERA_COLUMN,
 	NUM_COLUMNS
 };
 
@@ -111,19 +104,6 @@ static void
 gtkam_list_destroy (GtkObject *object)
 {
 	GtkamList *list = GTKAM_LIST (object);
-	guint i;
-	GtkamListCameraData *data;
-
-	if (list->priv->cameras) {
-		for (i = 0; i < list->priv->cameras->len; i++) {
-			data = list->priv->cameras->pdata[i];
-			gp_camera_unref (data->camera);
-			gtk_tree_path_free (data->path);
-			g_free (data);
-		}
-		g_ptr_array_free (list->priv->cameras, TRUE);
-		list->priv->cameras = NULL;
-	}
 
 	if (list->priv->factory) {
 		g_object_unref (G_OBJECT (list->priv->factory));
@@ -186,7 +166,6 @@ gtkam_list_init (GTypeInstance *instance, gpointer g_class)
 
 	list->priv = g_new0 (GtkamListPrivate, 1);
 	list->priv->thumbnails = TRUE;
-	list->priv->cameras = g_ptr_array_new ();
 }
 
 GType
@@ -210,50 +189,21 @@ gtkam_list_get_type (void)
 	return (type);
 }
 
-static GtkamListCameraData *
-gtkam_list_get_camera_data (GtkamList *list, GtkTreeIter *iter)
-{
-	guint i;
-	GtkTreePath *path;
-	GtkamListCameraData *data = NULL;
-
-	g_return_val_if_fail (GTKAM_IS_LIST (list), NULL);
-
-	path = gtk_tree_model_get_path (
-			GTK_TREE_MODEL (list->priv->store), iter);
-	for (i = 0; i < list->priv->cameras->len; i++) {
-		data = list->priv->cameras->pdata[i];
-		if (!gtk_tree_path_compare (path, data->path))
-			break;
-	}
-	g_assert (i != list->priv->cameras->len);
-	gtk_tree_path_free (path);
-
-	return (data);
-}
-
-static Camera *
+static GtkamCamera *
 gtkam_list_get_camera_from_iter (GtkamList *list, GtkTreeIter *iter)
 {
-	GtkamListCameraData *data;
+	GValue value = {0};
+	GtkamCamera *camera;
 
 	g_return_val_if_fail (GTKAM_IS_LIST (list), NULL);
 
-	data = gtkam_list_get_camera_data (list, iter);
+	gtk_tree_model_get_value (GTK_TREE_MODEL (list->priv->store), iter,
+				  CAMERA_COLUMN, &value);
+	g_assert (G_VALUE_HOLDS (&value, GTKAM_TYPE_CAMERA));
+	camera = GTKAM_CAMERA (g_value_peek_pointer (&value));
+	g_value_unset (&value);
 
-	return (data->camera);
-}
-
-static gboolean
-gtkam_list_get_multi_from_iter (GtkamList *list, GtkTreeIter *iter)
-{
-	GtkamListCameraData *data;
-
-	g_return_val_if_fail (GTKAM_IS_LIST (list), FALSE);
-
-	data = gtkam_list_get_camera_data (list, iter);
-
-	return (data->multi);
+	return (camera);
 }
 
 static gchar *
@@ -289,8 +239,8 @@ gtkam_list_get_name_from_iter (GtkamList *list, GtkTreeIter *iter)
 }
 
 static gboolean
-gtkam_list_get_iter (GtkamList *list, GtkTreeIter *iter, Camera *camera,
-                     gboolean multi, const gchar *folder, const gchar *name)
+gtkam_list_get_iter (GtkamList *list, GtkTreeIter *iter, GtkamCamera *camera,
+		     const gchar *folder, const gchar *name)
 {
         gint n, i;
         gchar *f, *na;
@@ -301,8 +251,6 @@ gtkam_list_get_iter (GtkamList *list, GtkTreeIter *iter, Camera *camera,
                 gtk_tree_model_iter_nth_child (
                         GTK_TREE_MODEL (list->priv->store), iter, NULL, i);
                 if (camera != gtkam_list_get_camera_from_iter (list, iter))
-                        continue;
-                if (multi != gtkam_list_get_multi_from_iter (list, iter))
                         continue;
                 f = gtkam_list_get_folder_from_iter (list, iter);
                 if (strcmp (folder, f)) {
@@ -323,8 +271,7 @@ gtkam_list_get_iter (GtkamList *list, GtkTreeIter *iter, Camera *camera,
 
 typedef struct _GetThumbnailData GetThumbnailData;
 struct _GetThumbnailData {
-	Camera *camera;
-	gboolean multi;
+	GtkamCamera *camera;
 	gchar *folder;
 	gchar *name;
 	GtkamList *list;
@@ -344,9 +291,11 @@ get_thumbnail_idle (gpointer data)
 		"folder '%s'..."), d->name, d->folder);
 	g_signal_emit (G_OBJECT (d->list), signals[NEW_STATUS], 0, s);
 	gp_file_new (&file);
-	result = gp_camera_file_get (d->camera, d->folder, d->name,
+	result = gp_camera_file_get (d->camera->camera, d->folder, d->name,
 			GP_FILE_TYPE_PREVIEW, file,
 			GTKAM_STATUS (s)->context->context);
+	if (d->camera->multi)
+		gp_camera_exit (d->camera->camera, NULL);
 	if (result >= 0) {
 		pixbuf = gdk_pixbuf_new_from_camera_file (file, 50, NULL);
 		gtk_list_store_set (d->list->priv->store, d->iter,
@@ -357,7 +306,7 @@ get_thumbnail_idle (gpointer data)
 	gp_file_unref (file);
 	gtk_object_destroy (GTK_OBJECT (s));
 
-	gp_camera_unref (d->camera);
+	g_object_unref (G_OBJECT (d->camera));
 	g_free (d->name);
 	g_free (d->folder);
 	gtk_tree_iter_free (d->iter);
@@ -371,26 +320,23 @@ show_thumbnails_foreach_func (GtkTreeModel *model, GtkTreePath *path,
                               GtkTreeIter *iter, gpointer data)
 {
         GtkamList *list = GTKAM_LIST (data);
-        Camera *camera;
-        gboolean multi;
+        GtkamCamera *camera;
         gchar *folder, *name;
         CameraAbilities a;
 	GetThumbnailData *d;
 	CameraFileInfo info;
 
         camera = gtkam_list_get_camera_from_iter (list, iter);
-        multi = gtkam_list_get_multi_from_iter (list, iter);
         folder = gtkam_list_get_folder_from_iter (list, iter);
         name = gtkam_list_get_name_from_iter (list, iter);
 
-        gp_camera_get_abilities (camera, &a);
-	gp_camera_file_get_info (camera, folder, name, &info, NULL);
+        gp_camera_get_abilities (camera->camera, &a);
+	gp_camera_file_get_info (camera->camera, folder, name, &info, NULL);
 	if ((a.file_operations & GP_FILE_OPERATION_PREVIEW) &&
 	    info.preview.fields) {
 		d = g_new0 (GetThumbnailData, 1);
 		d->camera = camera;
-		gp_camera_ref (camera);
-		d->multi = multi;
+		g_object_ref (G_OBJECT (camera));
 		d->folder = g_strdup (folder);
 		d->name = g_strdup (name);
 		d->iter = gtk_tree_iter_copy (iter);
@@ -399,8 +345,8 @@ show_thumbnails_foreach_func (GtkTreeModel *model, GtkTreePath *path,
 	}
 	g_free (folder);
 	g_free (name);
-	if (multi)
-		gp_camera_exit (camera, NULL);
+	if (camera->multi)
+		gp_camera_exit (camera->camera, NULL);
 
         return (FALSE);
 }
@@ -411,6 +357,7 @@ gtkam_list_show_thumbnails (GtkamList *list)
         g_return_if_fail (GTKAM_IS_LIST (list));
 
 	list->priv->thumbnails = TRUE;
+	gtk_tree_view_column_set_visible (list->priv->col_previews, TRUE);
 
         gtk_tree_model_foreach (GTK_TREE_MODEL (list->priv->store),
                                 show_thumbnails_foreach_func, list);
@@ -422,8 +369,7 @@ gtkam_list_hide_thumbnails (GtkamList *list)
 	g_return_if_fail (GTKAM_IS_LIST (list));
 
 	list->priv->thumbnails = FALSE;
-
-	g_warning ("Fixme: gtkam_list_hide_thumbnails");
+	gtk_tree_view_column_set_visible (list->priv->col_previews, FALSE);
 }
 
 #if 0
@@ -474,28 +420,6 @@ on_info_activate (GtkMenuItem *i, PopupData *data)
 }
 
 static void
-on_delete_activate (GtkMenuItem *menu_item, PopupData *data)
-{
-	GtkamList *list = data->list;
-	GtkIconListItem *item = data->item;
-	GtkWidget *delete, *w;
-
-	delete = gtkam_delete_new (list->priv->status);
-	gtkam_delete_add (GTKAM_DELETE (delete), 
-		gtk_object_get_data (GTK_OBJECT (item->entry), "camera"),
-		GPOINTER_TO_INT (gtk_object_get_data (GTK_OBJECT (item->entry),
-						"multi")),
-		gtk_object_get_data (GTK_OBJECT (item->entry), "folder"),
-		item->label);
-	gtk_signal_connect_while_alive (GTK_OBJECT (delete), "file_deleted",
-		GTK_SIGNAL_FUNC (on_file_deleted), list, GTK_OBJECT (list));
-
-	w = gtk_widget_get_ancestor (GTK_WIDGET (list), GTK_TYPE_WINDOW);
-	gtk_window_set_transient_for (GTK_WINDOW (delete), GTK_WINDOW (w));
-	gtk_widget_show (delete);
-}
-
-static void
 on_exif_activate (GtkMenuItem *menu_item, PopupData *data)
 {
 	GtkamList *list = data->list;
@@ -517,188 +441,6 @@ on_exif_activate (GtkMenuItem *menu_item, PopupData *data)
 	if (dialog)
 		gtk_widget_show (dialog);
 }
-
-static void
-on_save_activate (GtkMenuItem *menu_item, PopupData *data)
-{
-	GtkamList *list = data->list;
-	GtkIconListItem *item = data->item;
-	GtkWidget *save;
-
-	save = gtkam_save_new (list->priv->status);
-	gtkam_save_add (GTKAM_SAVE (save),
-		gtk_object_get_data (GTK_OBJECT (item->entry), "camera"),
-		GPOINTER_TO_INT (gtk_object_get_data (GTK_OBJECT (item->entry),
-						      "multi")),
-		gtk_object_get_data (GTK_OBJECT (item->entry), "folder"),
-		item->label);
-	gtk_widget_show (save);
-}
-
-static gboolean
-kill_idle (gpointer user_data)
-{
-	PopupData *data = user_data;
-
-	gtk_object_unref (GTK_OBJECT (data->menu));
-	g_free (data);
-
-	return (FALSE);
-}
-
-static void
-kill_popup_menu (GtkWidget *widget, PopupData *data)
-{
-	gtk_idle_add (kill_idle, data);
-}
-
-static gboolean
-on_select_icon (GtkIconList *ilist, GtkIconListItem *item,
-		GdkEventButton *event, GtkamList *list)
-{
-	CameraAbilities a;
-	CameraFile *file;
-	GtkWidget *dialog, *w, *s;
-	int result;
-	GdkPixbuf *pixbuf;
-	GdkPixmap *pixmap;
-	GdkBitmap *bitmap;
-	Camera *camera;
-	const gchar *folder;
-	gboolean multi;
-
-	folder = gtk_object_get_data (GTK_OBJECT (item->entry), "folder");
-	camera = gtk_object_get_data (GTK_OBJECT (item->entry), "camera");
-	multi = GPOINTER_TO_INT (gtk_object_get_data (GTK_OBJECT (item->entry),
-						      "multi")); 
-
-	if (!event)
-		return (TRUE);
-
-	w = gtk_widget_get_ancestor (GTK_WIDGET (list), GTK_TYPE_WINDOW);
-
-	gp_camera_get_abilities (camera, &a);
-	if ((event->type == GDK_2BUTTON_PRESS) &&
-	    (a.file_operations & GP_FILE_OPERATION_PREVIEW)) {
-		CameraFile *file;
-
-		/* Double-click: Get thumbnail */
-		gp_file_new (&file);
-		s = gtkam_status_new (_("Getting thumbnail of file '%s' in "
-			"folder '%s'..."), item->label, folder);
-		gtk_widget_show (s);
-		gtk_box_pack_start (GTK_BOX (list->priv->status), s,
-				    FALSE, FALSE, 0);
-		result = gp_camera_file_get (camera, folder,
-			item->label, GP_FILE_TYPE_PREVIEW, file,
-			GTKAM_STATUS (s)->context->context);
-		if (multi)
-			gp_camera_exit (camera, NULL);
-		switch (result) {
-		case GP_OK:
-			pixbuf = gdk_pixbuf_new_from_camera_file (file,
-					ICON_WIDTH, w);
-			if (pixbuf) {
-				gdk_pixbuf_render_pixmap_and_mask (pixbuf,
-						&pixmap, &bitmap, 127);
-				gdk_pixbuf_unref (pixbuf);
-				gtk_pixmap_set (GTK_PIXMAP (item->pixmap),
-						pixmap, bitmap);
-				item->state = GTK_STATE_SELECTED;
-			}
-			break;
-		case GP_ERROR_NOT_SUPPORTED:
-		case GP_ERROR_CANCEL:
-			break;
-		default:
-			dialog = gtkam_error_new (result,
-				GTKAM_STATUS (s)->context, w,
-				_("Could not get preview of "
-				"file '%s' in folder '%s'"),
-				item->label, folder);
-			gtk_widget_show (dialog);
-			break;
-		}
-		gtk_object_destroy (GTK_OBJECT (s));
-		gp_file_unref (file);
-
-		while (gtk_events_pending ())
-			gtk_main_iteration ();
-
-		return (FALSE);
-	} else if (event->type == GDK_BUTTON_PRESS) {
-		if (event->button == 3) {
-			CameraFileInfo info;
-			PopupData *data;
-			GtkWidget *i;
-
-			while (gtk_events_pending ())
-				gtk_main_iteration ();
-
-			data = g_new0 (PopupData, 1);
-			data->list = list;
-			data->item = item;
-
-			/* Right-click: Show popup menu */
-			data->menu = gtk_menu_new ();
-			gtk_widget_show (data->menu);
-			i = gtk_menu_item_new_with_label (_("Info"));
-			gtk_widget_show (i);
-			gtk_container_add (GTK_CONTAINER (data->menu), i);
-			gtk_signal_connect (GTK_OBJECT (i), "activate",
-				GTK_SIGNAL_FUNC (on_info_activate), data);
-
-			i = gtk_menu_item_new_with_label (_("Exif"));
-#ifdef HAVE_EXIF
-			gtk_widget_show (i);
-#endif
-			gtk_container_add (GTK_CONTAINER (data->menu), i);
-			gtk_signal_connect (GTK_OBJECT (i), "activate",
-				GTK_SIGNAL_FUNC (on_exif_activate), data);
-			gp_file_new (&file);
-			if (gp_camera_file_get (camera, folder,
-				item->label, GP_FILE_TYPE_EXIF,
-				file, NULL) < 0)
-				gtk_widget_set_sensitive (i, FALSE);
-			gp_file_unref (file);
-
-			i = gtk_menu_item_new ();
-			gtk_widget_show (i);
-			gtk_container_add (GTK_CONTAINER (data->menu), i);
-			gtk_widget_set_sensitive (i, FALSE);
-
-			/* Save */
-			i = gtk_menu_item_new_with_label (_("Save"));
-			gtk_widget_show (i);
-			gtk_container_add (GTK_CONTAINER (data->menu), i);
-			gtk_signal_connect (GTK_OBJECT (i), "activate",
-				GTK_SIGNAL_FUNC (on_save_activate), data);
-
-			/* Delete */
-			i = gtk_menu_item_new_with_label (_("Delete"));
-			gtk_widget_show (i);
-			if (!(a.file_operations & GP_FILE_OPERATION_DELETE) ||
-			    (!gp_camera_file_get_info (camera, folder,
-					item->label, &info, NULL) &&
-			     (info.file.fields & GP_FILE_INFO_PERMISSIONS) && 
-			     (!(info.file.permissions & GP_FILE_PERM_DELETE))))
-				gtk_widget_set_sensitive (i, FALSE);
-			gtk_container_add (GTK_CONTAINER (data->menu), i);
-			gtk_signal_connect (GTK_OBJECT (i), "activate",
-				GTK_SIGNAL_FUNC (on_delete_activate), data);
-
-			gtk_signal_connect (GTK_OBJECT (data->menu), "hide",
-					    GTK_SIGNAL_FUNC (kill_popup_menu),
-					    data);
-			gtk_menu_popup (GTK_MENU (data->menu), NULL, NULL,
-					NULL, NULL, event->button, event->time);
-
-			return (FALSE);
-		}
-	}
-
-	return (TRUE);
-}
 #endif
 
 static gboolean
@@ -717,14 +459,12 @@ selection_func (GtkTreeSelection *selection, GtkTreeModel *model,
 	name = gtkam_list_get_name_from_iter (list, &iter);
 	if (path_currently_selected) {
 		ud.camera = gtkam_list_get_camera_from_iter (list, &iter);
-		ud.multi = gtkam_list_get_multi_from_iter (list, &iter);
 		ud.folder = folder;
 		ud.name = name;
 		g_signal_emit (G_OBJECT (list), signals[FILE_UNSELECTED],
 			       0, &ud);
 	} else {
 		sd.camera = gtkam_list_get_camera_from_iter (list, &iter);
-		sd.multi = gtkam_list_get_multi_from_iter (list, &iter);
 		sd.folder = folder;
 		sd.name = name;
 		g_signal_emit (G_OBJECT (list), signals[FILE_SELECTED],
@@ -741,14 +481,29 @@ on_button_press_event (GtkWidget *widget, GdkEventButton *event,
 		       GtkamList *list)
 {
 	GtkTreePath *path = NULL;
+	GtkWidget *w;
+	GtkamCamera *camera;
+	CameraAbilities a;
 
 	switch (event->button) {
 	case 3:
-		gtk_tree_view_get_path_at_pos (GTK_TREE_VIEW (list),
-			event->x, event->y, &path, NULL, NULL, NULL);
+		if (!gtk_tree_view_get_path_at_pos (GTK_TREE_VIEW (list),
+				event->x, event->y, &path, NULL, NULL, NULL))
+			return (FALSE);
 		gtk_tree_model_get_iter (GTK_TREE_MODEL (list->priv->store),
 					 &list->priv->iter, path);
 		gtk_tree_path_free (path);
+		camera = gtkam_list_get_camera_from_iter (list,
+							  &list->priv->iter);
+		gp_camera_get_abilities (camera->camera, &a);
+
+		/* What operations does the camera support? */
+		w = gtk_item_factory_get_widget (list->priv->factory,
+						 "/Save");
+		gtk_widget_set_sensitive (w,
+			(a.file_operations & GP_FILE_OPERATION_DELETE) ||
+			(a.folder_operations & GP_FOLDER_OPERATION_DELETE_ALL));
+
 		gtk_item_factory_popup (list->priv->factory, event->x_root,
 				event->y_root, event->button, event->time);
 		return (TRUE);
@@ -776,18 +531,16 @@ action_save (gpointer callback_data, guint callback_action, GtkWidget *widget)
 {
         GtkWidget *s;
         GtkamList *list = GTKAM_LIST (callback_data);
-        Camera *camera;
-        gboolean multi;
+        GtkamCamera *camera;
         gchar *folder;
         gchar *name;
 
         camera = gtkam_list_get_camera_from_iter (list, &list->priv->iter);
-        multi  = gtkam_list_get_multi_from_iter  (list, &list->priv->iter);
         folder = gtkam_list_get_folder_from_iter (list, &list->priv->iter);
         name   = gtkam_list_get_name_from_iter   (list, &list->priv->iter);
 
         s = gtkam_save_new ();
-        gtkam_save_add (GTKAM_SAVE (s), camera, multi, folder, name);
+        gtkam_save_add (GTKAM_SAVE (s), camera, folder, name);
         g_free (folder);
         g_free (name);
         g_signal_emit (G_OBJECT (list), signals[NEW_DIALOG], 0, s);
@@ -804,14 +557,13 @@ on_file_deleted (GtkamDelete *delete, GtkamDeleteFileDeletedData *data,
 
 	g_return_if_fail (GTKAM_IS_LIST (list));
 
-	gtkam_list_get_iter (list, &iter, data->camera, data->multi,
+	gtkam_list_get_iter (list, &iter, data->camera,
 			     data->folder, data->name);
 	sel = gtk_tree_view_get_selection (GTK_TREE_VIEW (list));
 	s = gtk_tree_selection_iter_is_selected (sel, &iter);
 	gtk_list_store_remove (list->priv->store, &iter);
 	if (s) {
 		fud.camera = data->camera;
-		fud.multi = data->multi;
 		fud.folder = data->folder;
 		fud.name = data->name;
 		g_signal_emit (G_OBJECT (list), signals[FILE_UNSELECTED], 0,
@@ -830,13 +582,12 @@ on_all_deleted (GtkamDelete *delete, GtkamDeleteAllDeletedData *data,
 	gchar *name;
 
 	sel = gtk_tree_view_get_selection (GTK_TREE_VIEW (list));
-	while (gtkam_list_get_iter (list, &iter, data->camera, data->multi,
+	while (gtkam_list_get_iter (list, &iter, data->camera,
 				    data->folder, NULL)) {
 		s = gtk_tree_selection_iter_is_selected (sel, &iter);
 		gtk_list_store_remove (list->priv->store, &iter);
 		if (s) {
 			fud.camera = data->camera;
-			fud.multi = data->multi;
 			fud.folder = data->folder;
 			fud.name = name = gtkam_list_get_name_from_iter (
 								list, &iter);
@@ -853,18 +604,16 @@ action_delete (gpointer callback_data, guint callback_action,
 {
 	GtkWidget *d;
 	GtkamList *list = GTKAM_LIST (callback_data);
-	Camera *camera;
-	gboolean multi;
+	GtkamCamera *camera;
 	gchar *folder;
 	gchar *name;
 
 	camera = gtkam_list_get_camera_from_iter (list, &list->priv->iter);
-	multi  = gtkam_list_get_multi_from_iter  (list, &list->priv->iter);
 	folder = gtkam_list_get_folder_from_iter (list, &list->priv->iter);
 	name   = gtkam_list_get_name_from_iter   (list, &list->priv->iter);
 
 	d = gtkam_delete_new ();
-	gtkam_delete_add (GTKAM_DELETE (d), camera, multi, folder, name);
+	gtkam_delete_add (GTKAM_DELETE (d), camera, folder, name);
 	g_free (folder);
 	g_free (name);
 	g_signal_connect (G_OBJECT (d), "file_deleted",
@@ -872,6 +621,14 @@ action_delete (gpointer callback_data, guint callback_action,
 	g_signal_connect (G_OBJECT (d), "all_deleted",
 			  G_CALLBACK (on_all_deleted), list);
 	g_signal_emit (G_OBJECT (list), signals[NEW_DIALOG], 0, d);
+}
+
+static void
+on_drag_data_get (GtkWidget *widget, GdkDragContext *context,
+		  GtkSelectionData *selection_data, guint info, guint time,
+		  GtkamList *list)
+{
+	g_message ("Fixme: on_drag_data_get");
 }
 
 static GtkItemFactoryEntry mi[] =
@@ -884,7 +641,10 @@ static GtkItemFactoryEntry mi[] =
 	{"/_Save", NULL, action_save, 0, "<StockItem>", GTK_STOCK_SAVE},
 	{"/_Delete", NULL, action_delete, 0, "<StockItem>", GTK_STOCK_DELETE}
 };
-static int nmi = sizeof (mi) / sizeof (mi[0]);
+
+static GtkTargetEntry targets[] = {
+	{"image/x-unknown", 0, 0}
+};
 
 GtkWidget *
 gtkam_list_new (void)
@@ -896,13 +656,19 @@ gtkam_list_new (void)
 
         list = g_object_new (GTKAM_TYPE_LIST, NULL);
 	gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (list), FALSE);
+	gtk_tree_view_enable_model_drag_source (GTK_TREE_VIEW (list),
+		GDK_BUTTON1_MASK, targets, G_N_ELEMENTS (targets),
+		GDK_ACTION_COPY);
 	g_signal_connect (G_OBJECT (list), "button_press_event",
 			  G_CALLBACK (on_button_press_event), list);
+	g_signal_connect (G_OBJECT (list), "drag_data_get",
+			  G_CALLBACK (on_drag_data_get), list);
 
 	ag = gtk_accel_group_new ();
 	list->priv->factory = gtk_item_factory_new (GTK_TYPE_MENU, "<popup>",
 						    ag);
-	gtk_item_factory_create_items (list->priv->factory, nmi, mi, list);
+	gtk_item_factory_create_items (list->priv->factory,
+				       G_N_ELEMENTS (mi), mi, list);
 	g_object_ref (G_OBJECT (list->priv->factory));
 	gtk_object_sink (GTK_OBJECT (list->priv->factory));
 
@@ -912,14 +678,17 @@ gtkam_list_new (void)
 						list, NULL);
 
 	list->priv->store = gtk_list_store_new (NUM_COLUMNS,
-				GDK_TYPE_PIXBUF, G_TYPE_STRING, G_TYPE_STRING);
+				GDK_TYPE_PIXBUF, G_TYPE_STRING, G_TYPE_STRING,
+				GTKAM_TYPE_CAMERA);
 	gtk_tree_view_set_model (GTK_TREE_VIEW (list),
 				 GTK_TREE_MODEL (list->priv->store));
 
 	/* Column for previews */
 	renderer = gtk_cell_renderer_pixbuf_new ();
-	gtk_tree_view_insert_column_with_attributes (GTK_TREE_VIEW (list),
-		-1, _("Preview"), renderer, "pixbuf", PREVIEW_COLUMN, NULL);
+	list->priv->col_previews = gtk_tree_view_column_new_with_attributes (
+		_("Preview"), renderer, "pixbuf", PREVIEW_COLUMN, NULL);
+	gtk_tree_view_append_column (GTK_TREE_VIEW (list),
+				     list->priv->col_previews);
 
 	/* Column for file names */
 	renderer = gtk_cell_renderer_text_new ();
@@ -930,7 +699,7 @@ gtkam_list_new (void)
 }
 
 void
-gtkam_list_add_folder (GtkamList *list, Camera *camera, gboolean multi,
+gtkam_list_add_folder (GtkamList *list, GtkamCamera *camera,
 		       const gchar *folder)
 {
 	GtkWidget *dialog, *s;
@@ -939,25 +708,24 @@ gtkam_list_add_folder (GtkamList *list, Camera *camera, gboolean multi,
 	const char *name;
 	gint i;
 	GtkTreeIter iter;
-	GtkamListCameraData *data;
 
 	g_return_if_fail (GTKAM_IS_LIST (list));
 
 	s = gtkam_status_new (_("Listing files in folder '%s'..."), folder);
 	g_signal_emit (G_OBJECT (list), signals[NEW_STATUS], 0, s);
-	result = gp_camera_folder_list_files (camera, folder, &flist,
+	result = gp_camera_folder_list_files (camera->camera, folder, &flist,
 					GTKAM_STATUS (s)->context->context);
 	switch (result) {
 	case GP_OK:
 		break;
 	case GP_ERROR_CANCEL:
-		if (multi)
-			gp_camera_exit (camera, NULL);
+		if (camera->multi)
+			gp_camera_exit (camera->camera, NULL);
 		gtk_object_destroy (GTK_OBJECT (s));
 		return;
 	default:
-		if (multi)
-			gp_camera_exit (camera, NULL);
+		if (camera->multi)
+			gp_camera_exit (camera->camera, NULL);
 		dialog = gtkam_error_new (result, GTKAM_STATUS (s)->context,
 			NULL, _("Could not get file list for folder "
 			"'%s'"), folder);
@@ -970,16 +738,13 @@ gtkam_list_add_folder (GtkamList *list, Camera *camera, gboolean multi,
 	for (i = 0; i < gp_list_count (&flist); i++) {
 		gp_list_get_name (&flist, i, &name);
 		gtk_list_store_append (list->priv->store, &iter);
-		gtk_list_store_set (list->priv->store, &iter, NAME_COLUMN,
-				    name, FOLDER_COLUMN, folder, -1);
-		data = g_new0 (GtkamListCameraData, 1);
-		data->camera = camera;
-		gp_camera_ref (camera);
-		data->multi = multi;
-		data->path = gtk_tree_model_get_path (
-				GTK_TREE_MODEL (list->priv->store), &iter);
-		g_ptr_array_add (list->priv->cameras, data);
+		gtk_list_store_set (list->priv->store, &iter,
+			NAME_COLUMN, name, FOLDER_COLUMN, folder,
+			CAMERA_COLUMN, camera, -1);
 	}
+
+	if (camera->multi)
+		gp_camera_exit (camera->camera, NULL);
 
 	if (list->priv->thumbnails)
 		gtkam_list_show_thumbnails (list);
@@ -1037,8 +802,7 @@ gtkam_list_add_folder (GtkamList *list, Camera *camera, gboolean multi,
 typedef struct _GtkamListRemoveData GtkamListRemoveData;
 struct _GtkamListRemoveData {
 	GtkamList *list;
-	Camera *camera;
-	gboolean multi;
+	GtkamCamera *camera;
 	const gchar *folder;
 	GtkTreeIter *iter;
 };
@@ -1048,7 +812,7 @@ remove_foreach_func (GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter,
 		     gpointer data)
 {
 	GtkamListRemoveData *rd = data;
-	Camera *camera;
+	GtkamCamera *camera;
 	gchar *folder;
 
 	camera = gtkam_list_get_camera_from_iter (rd->list, iter);
@@ -1066,15 +830,14 @@ remove_foreach_func (GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter,
 }
 
 void
-gtkam_list_remove_folder (GtkamList *list, Camera *camera,
-			  gboolean multi, const gchar *folder)
+gtkam_list_remove_folder (GtkamList *list, GtkamCamera *camera,
+			  const gchar *folder)
 {
 	GtkamListRemoveData rd;
 
 	g_return_if_fail (GTKAM_IS_LIST (list));
 
 	rd.camera = camera;
-	rd.multi = multi;
 	rd.folder = folder;
 	rd.list = list;
 	rd.iter = NULL;
@@ -1101,8 +864,7 @@ save_foreach_func (GtkTreeModel *model, GtkTreePath *path,
                          GtkTreeIter *iter, gpointer data)
 {
         SaveAllData *sad = data;
-        Camera *camera;
-        gboolean multi;
+        GtkamCamera *camera;
         gchar *folder;
         gchar *name;
         GtkTreeSelection *s;
@@ -1112,10 +874,9 @@ save_foreach_func (GtkTreeModel *model, GtkTreePath *path,
                 return (FALSE);
 
         camera = gtkam_list_get_camera_from_iter (sad->list, iter);
-        multi  = gtkam_list_get_multi_from_iter (sad->list, iter);
         folder = gtkam_list_get_folder_from_iter (sad->list, iter);
         name   = gtkam_list_get_name_from_iter (sad->list, iter);
-        gtkam_save_add (GTKAM_SAVE (sad->save), camera, multi, folder, name);
+        gtkam_save_add (GTKAM_SAVE (sad->save), camera, folder, name);
         g_free (folder);
         g_free (name);
 
@@ -1170,8 +931,7 @@ delete_foreach_func (GtkTreeModel *model, GtkTreePath *path,
 			 GtkTreeIter *iter, gpointer data)
 {
 	DeleteAllData *dad = data;
-	Camera *camera;
-	gboolean multi;
+	GtkamCamera *camera;
 	gchar *folder;
 	gchar *name;
 	GtkTreeSelection *s;
@@ -1181,10 +941,9 @@ delete_foreach_func (GtkTreeModel *model, GtkTreePath *path,
 		return (FALSE);
 
 	camera = gtkam_list_get_camera_from_iter (dad->list, iter);
-	multi  = gtkam_list_get_multi_from_iter (dad->list, iter);
 	folder = gtkam_list_get_folder_from_iter (dad->list, iter);
 	name   = gtkam_list_get_name_from_iter (dad->list, iter);
-	gtkam_delete_add (GTKAM_DELETE (dad->delete), camera, multi, folder,
+	gtkam_delete_add (GTKAM_DELETE (dad->delete), camera, folder,
 			  name);
 	g_free (folder);
 	g_free (name);
@@ -1264,22 +1023,27 @@ gtkam_list_count_selected (GtkamList *list)
 }
 
 gboolean
-gtkam_list_has_folder (GtkamList *list, Camera *camera, gboolean multi,
+gtkam_list_has_folder (GtkamList *list, GtkamCamera *camera,
 		       const gchar *folder)
 {
 	GtkTreeIter iter;
 
 	g_return_val_if_fail (GTKAM_IS_LIST (list), FALSE);
 
-	return (gtkam_list_get_iter (list, &iter,
-				     camera, multi, folder, NULL));
+	return (gtkam_list_get_iter (list, &iter, camera, folder, NULL));
 }
 
 void
-gtkam_list_add_file (GtkamList *list, Camera *camera, gboolean multi,
+gtkam_list_add_file (GtkamList *list, GtkamCamera *camera,
 		     const gchar *folder, const gchar *name)
 {
-	g_return_if_fail (GTKAM_IS_LIST (list));
+	GtkTreeIter iter;
 
-	g_warning ("Fixme: gtkam_list_add_file");
+	g_return_if_fail (GTKAM_IS_LIST (list));
+	g_return_if_fail (GTKAM_IS_CAMERA (camera));
+
+	gtk_list_store_append (list->priv->store, &iter);
+	gtk_list_store_set (list->priv->store, &iter,
+			    NAME_COLUMN, name, FOLDER_COLUMN, folder,
+			    CAMERA_COLUMN, camera, -1); 
 }

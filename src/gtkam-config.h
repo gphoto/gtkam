@@ -21,8 +21,8 @@
 #ifndef __GTKAM_CONFIG_H__
 #define __GTKAM_CONFIG_H__
 
-#include <gphoto2/gphoto2-camera.h>
-#include <gtk/gtkdialog.h>
+#include <gtkam-camera.h>
+#include <gtkam-dialog.h>
 
 #define GTKAM_TYPE_CONFIG  (gtkam_config_get_type ())
 #define GTKAM_CONFIG(o)    (GTK_CHECK_CAST((o),GTKAM_TYPE_CONFIG,GtkamConfig))
@@ -34,17 +34,17 @@ typedef struct _GtkamConfigClass   GtkamConfigClass;
 
 struct _GtkamConfig
 {
-	GtkDialog parent;
+	GtkamDialog parent;
 
 	GtkamConfigPrivate *priv;
 };
 
 struct _GtkamConfigClass
 {
-	GtkDialogClass parent_class;
+	GtkamDialogClass parent_class;
 };
 
 GtkType    gtkam_config_get_type (void);
-GtkWidget *gtkam_config_new      (Camera *camera, gboolean multi);
+GtkWidget *gtkam_config_new      (GtkamCamera *camera);
 
 #endif /* __GTKAM_CONFIG_H__ */

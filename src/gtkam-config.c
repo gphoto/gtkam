@@ -77,14 +77,12 @@ struct _GtkamConfigPrivate
 
 	GHashTable *hash;
 
-	Camera       *camera;
+	GtkamCamera  *camera;
 	CameraWidget *config;
-
-	gboolean multi;
 };
 
-#define PARENT_TYPE GTK_TYPE_DIALOG
-static GtkDialogClass *parent_class;
+#define PARENT_TYPE GTKAM_TYPE_DIALOG
+static GtkamDialogClass *parent_class;
 
 static void
 gtkam_config_destroy (GtkObject *object)
@@ -92,7 +90,7 @@ gtkam_config_destroy (GtkObject *object)
 	GtkamConfig *config = GTKAM_CONFIG (object);
 
 	if (config->priv->camera) {
-		gp_camera_unref (config->priv->camera);
+		g_object_unref (config->priv->camera);
 		config->priv->camera = NULL;
 	}
 
@@ -182,10 +180,10 @@ gtkam_config_apply (GtkamConfig *config)
 	gtk_widget_show (status);
 	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (config)->vbox), status,
 			    FALSE, FALSE, 0);
-	result = gp_camera_set_config (config->priv->camera,
+	result = gp_camera_set_config (config->priv->camera->camera,
 		config->priv->config, GTKAM_STATUS (status)->context->context);
-	if (config->priv->multi)
-		gp_camera_exit (config->priv->camera, NULL);
+	if (config->priv->camera->multi)
+		gp_camera_exit (config->priv->camera->camera, NULL);
 	switch (result) {
 	case GP_OK:
 		break;
@@ -249,23 +247,28 @@ create_page (GtkamConfig *config, CameraWidget *widget)
 		label = gtk_label_new (_("General Settings"));
 	gtk_widget_show (label);
 
-	/* VBox */
-	scrolled = gtk_scrolled_window_new (NULL, NULL);
-	gtk_widget_show (scrolled);
-	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled),
+	if (gp_widget_count_children (widget) > 4) {
+		scrolled = gtk_scrolled_window_new (NULL, NULL);
+		gtk_widget_show (scrolled);
+		gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled),
 				GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
-	gtk_container_set_border_width (GTK_CONTAINER (scrolled), 5);
-	gtk_notebook_append_page (GTK_NOTEBOOK (config->priv->notebook),
-				  scrolled, label);
-	vbox = gtk_vbox_new (FALSE, 10);
-	gtk_widget_show (vbox);
-	gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (scrolled),
-					       vbox);
-	gtk_container_set_border_width (GTK_CONTAINER (vbox), 2);
-#if 0
-	gtk_viewport_set_shadow_type (
-		GTK_VIEWPORT (GTK_BIN (scrolled)->child), GTK_SHADOW_NONE);
-#endif
+		gtk_container_set_border_width (GTK_CONTAINER (scrolled), 5);
+		gtk_notebook_append_page (
+			GTK_NOTEBOOK (config->priv->notebook),
+			scrolled, label);
+		vbox = gtk_vbox_new (FALSE, 10);
+		gtk_widget_show (vbox);
+		gtk_scrolled_window_add_with_viewport (
+				GTK_SCROLLED_WINDOW (scrolled), vbox);
+		gtk_container_set_border_width (GTK_CONTAINER (vbox), 2);
+	} else {
+		vbox = gtk_vbox_new (FALSE, 10);
+		gtk_widget_show (vbox);
+		gtk_container_set_border_width (GTK_CONTAINER (vbox), 5);
+		gtk_notebook_append_page (
+			GTK_NOTEBOOK (config->priv->notebook), 
+			vbox, label);
+	}
 
 	if (widget) {
 		gp_widget_get_id (widget, &id);
@@ -313,7 +316,7 @@ on_button_clicked (GtkButton *button, CameraWidget *widget)
 	config = GTKAM_CONFIG (gtk_widget_get_ancestor (GTK_WIDGET (button),
 							GTKAM_TYPE_CONFIG));
 	gp_widget_get_value (widget, &callback);
-	result = callback (config->priv->camera, widget, NULL);
+	result = callback (config->priv->camera->camera, widget, NULL);
 	if (result != GP_OK) {
 		dialog = gtkam_error_new (result, NULL, GTK_WIDGET (config),
 			_("Could not execute command."));
@@ -690,7 +693,7 @@ create_widgets (GtkamConfig *config, CameraWidget *widget)
 }
 
 GtkWidget *
-gtkam_config_new (Camera *camera, gboolean multi)
+gtkam_config_new (GtkamCamera *camera)
 {
 	GtkamConfig *config;
 	GtkWidget *button, *dialog, *cancel;
@@ -701,10 +704,10 @@ gtkam_config_new (Camera *camera, gboolean multi)
 
 	cancel = gtkam_cancel_new (NULL, _("Getting configuration..."));
 	gtk_widget_show (cancel);
-	result = gp_camera_get_config (camera, &config_widget,
+	result = gp_camera_get_config (camera->camera, &config_widget,
 		GTKAM_CANCEL (cancel)->context->context);
-	if (multi)
-		gp_camera_exit (camera, NULL);
+	if (camera->multi)
+		gp_camera_exit (camera->camera, NULL);
 	switch (result) {
 	case GP_OK:
 		break;
@@ -724,15 +727,14 @@ gtkam_config_new (Camera *camera, gboolean multi)
 	config = g_object_new (GTKAM_TYPE_CONFIG, NULL);
 
 	config->priv->camera = camera;
+	g_object_ref (G_OBJECT (camera));
 	config->priv->config = config_widget;
-	gp_camera_ref (camera);
-	config->priv->multi = multi;
 
 	config->priv->notebook = gtk_notebook_new ();
 	gtk_container_set_border_width (GTK_CONTAINER (config->priv->notebook),
 					5);
 	gtk_widget_show (config->priv->notebook);
-	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (config)->vbox),
+	gtk_box_pack_start (GTK_BOX (GTKAM_DIALOG (config)->vbox),
 			    config->priv->notebook, TRUE, TRUE, 0);
 	create_widgets (config, config_widget);
 

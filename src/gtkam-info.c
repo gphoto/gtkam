@@ -361,8 +361,7 @@ gtkam_info_new (Camera *camera, const gchar *path, GtkWidget *opt_window)
 
 	/* Get file info */
 	dir = g_dirname (path);
-	c = gtkam_cancel_new (opt_window,
-		_("Getting information about file '%s' in "
+	c = gtkam_cancel_new (_("Getting information about file '%s' in "
 		"folder '%s'..."), g_basename (path), dir);
 	result = gp_camera_file_get_info (camera, dir, g_basename (path),
 		&i, GTKAM_CANCEL (c)->context->context);

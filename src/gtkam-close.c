@@ -45,17 +45,16 @@
 #include <gtk/gtkbutton.h>
 #include <gtk/gtklabel.h>
 #include <gtk/gtksignal.h>
-#include <gtk/gtkhbox.h>
 #include <gtk/gtkscrolledwindow.h>
-#include <gtk/gtkimage.h>
 #include <gtk/gtkstock.h>
+#include <gtk/gtkbox.h>
 
 struct _GtkamClosePrivate
 {
 };
 
-#define PARENT_TYPE GTK_TYPE_DIALOG
-static GtkDialogClass *parent_class;
+#define PARENT_TYPE GTKAM_TYPE_DIALOG
+static GtkamDialogClass *parent_class;
 
 static void
 gtkam_close_destroy (GtkObject *object)
@@ -128,24 +127,14 @@ on_close_close_clicked (GtkButton *button, GtkamClose *close)
 }
 
 GtkWidget *
-gtkam_close_new (const gchar *msg, GtkWidget *opt_window)
+gtkam_close_new (const gchar *msg)
 {
 	GtkamClose *close;
-	GtkWidget *label, *button, *scrolled, *image, *hbox;
+	GtkWidget *label, *button, *scrolled;
 
 	g_return_val_if_fail (msg != NULL, NULL);
 
 	close = g_object_new (GTKAM_TYPE_CLOSE, NULL);
-
-	hbox = gtk_hbox_new (FALSE, 10);
-	gtk_widget_show (hbox);
-	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (close)->vbox), hbox,
-			    TRUE, TRUE, 0);
-	gtk_container_set_border_width (GTK_CONTAINER (hbox), 10);
-
-	image = gtk_image_new_from_file (IMAGE_DIR "/gtkam-camera.png");
-	gtk_widget_show (image);
-	gtk_box_pack_start (GTK_BOX (hbox), image, FALSE, FALSE, 0);
 
 	label = gtk_label_new (msg);
 	gtk_widget_show (label);
@@ -157,12 +146,13 @@ gtkam_close_new (const gchar *msg, GtkWidget *opt_window)
 		gtk_widget_show (scrolled);
 		gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled),
 				GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
-		gtk_box_pack_start (GTK_BOX (hbox),
+		gtk_box_pack_start (GTK_BOX (GTKAM_DIALOG (close)->vbox),
 				    scrolled, TRUE, TRUE, 0);
 		gtk_scrolled_window_add_with_viewport (
 				GTK_SCROLLED_WINDOW (scrolled), label);
 	} else
-		gtk_box_pack_start (GTK_BOX (hbox), label, TRUE, TRUE, 0);
+		gtk_box_pack_start (GTK_BOX (GTKAM_DIALOG (close)->vbox),
+				    label, TRUE, TRUE, 0);
 
 	button = gtk_button_new_from_stock (GTK_STOCK_CLOSE);
 	gtk_widget_show (button);
@@ -171,10 +161,6 @@ gtkam_close_new (const gchar *msg, GtkWidget *opt_window)
 	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (close)->action_area),
 			   button);
 	gtk_widget_grab_focus (button);
-
-	if (opt_window)
-		gtk_window_set_transient_for (GTK_WINDOW (close),
-					      GTK_WINDOW (opt_window));
 
 	return (GTK_WIDGET (close));
 }

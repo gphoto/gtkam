@@ -121,8 +121,8 @@ gtkam_status_init (GTypeInstance *instance, gpointer g_class)
 
 	status->priv = g_new0 (GtkamStatusPrivate, 1);
 	status->priv->progress = g_ptr_array_new ();
-	status->priv->target = g_array_new (FALSE, TRUE, sizeof (gfloat));
-	status->priv->last   = g_array_new (FALSE, TRUE, sizeof (gfloat));
+	status->priv->target = g_array_new (FALSE, TRUE, sizeof (float));
+	status->priv->last   = g_array_new (FALSE, TRUE, sizeof (float));
 }
 
 GType
@@ -174,11 +174,12 @@ message_func (GPContext *context, const char *format, va_list args,
 {
 	GtkamStatus *status = GTKAM_STATUS (data);
 	gchar *msg;
-	GtkWidget *d, *w;
+	GtkWidget *d;
 
-	w = gtk_widget_get_ancestor (GTK_WIDGET (status), GTK_TYPE_WINDOW);
+	status = NULL;
+
 	msg = g_strdup_vprintf (format, args);
-	d = gtkam_close_new (msg, w);
+	d = gtkam_close_new (msg);
 	g_free (msg);
 	gtk_widget_show (d);
 }
@@ -196,8 +197,6 @@ start_func (GPContext *c, float target, const char *format,
         progress = gtk_progress_bar_new ();
         gtk_box_pack_start (GTK_BOX (status), progress, FALSE, FALSE, 0);
 	gtk_widget_show_now (progress);
-	gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR (progress),
-				       1 / target);
 	gtk_progress_bar_set_pulse_step (GTK_PROGRESS_BAR (progress),
 					 1 / target);
 
@@ -238,8 +237,8 @@ update_func (GPContext *c, unsigned int id, float current, void *data)
 	}
 
         progress = status->priv->progress->pdata[id];
-	while (current > g_array_index (status->priv->last, gfloat, id)) {
-		g_array_index (status->priv->last, gfloat, id)++;
+	while (current > g_array_index (status->priv->last, float, id)) {
+		g_array_index (status->priv->last, float, id)++;
 		gtk_progress_bar_pulse (progress);
 	}
 }

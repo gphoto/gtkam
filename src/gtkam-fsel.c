@@ -145,17 +145,17 @@ on_fsel_cancel_clicked (GtkButton *button, GtkamFSel *fsel)
 }
 
 static void
-on_folder_selected (GtkamTree *tree, Camera *camera, gboolean multi,
-		    const gchar *folder, GtkamFSel *fsel)
+on_folder_selected (GtkamTree *tree, GtkamTreeFolderSelectedData *data,
+		    GtkamFSel *fsel)
 {
-	g_warning ("Fixme!");
+	g_warning ("Fixme: on_folder_selected");
 }
 
 static void
-on_folder_unselected (GtkamTree *tree, Camera *camera, gboolean multi,
-		      const gchar *folder, GtkamFSel *fsel)
+on_folder_unselected (GtkamTree *tree, GtkamTreeFolderUnselectedData *data,
+		      GtkamFSel *fsel)
 {
-	g_warning ("Fixme!");
+	g_warning ("Fixme: on_folder_unselected");
 }
 
 #if 0

@@ -15,6 +15,7 @@ INCLUDES =					\
 noinst_LIBRARIES = libgtkam.a
 libgtkam_a_SOURCES =					\
 	gdk-pixbuf-hacks.c 	gdk-pixbuf-hacks.h  	\
+	gtkam-camera.c		gtkam-camera.h		\
 	gtkam-cancel.c  	gtkam-cancel.h		\
 	gtkam-chooser.c 	gtkam-chooser.h 	\
 	gtkam-clock.c   	gtkam-clock.h     	\

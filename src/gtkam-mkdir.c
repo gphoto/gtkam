@@ -57,10 +57,8 @@
 
 struct _GtkamMkdirPrivate
 {
-	Camera *camera;
+	GtkamCamera *camera;
 	gchar *path;
-
-	gboolean multi;
 
 	GtkEntry *entry;
 };
@@ -81,7 +79,7 @@ gtkam_mkdir_destroy (GtkObject *object)
 	GtkamMkdir *mkdir = GTKAM_MKDIR (object);
 
 	if (mkdir->priv->camera) {
-		gp_camera_unref (mkdir->priv->camera);
+		g_object_unref (G_OBJECT (mkdir->priv->camera));
 		mkdir->priv->camera = NULL;
 	}
 
@@ -174,10 +172,11 @@ on_ok_clicked (GtkButton *button, GtkamMkdir *mkdir)
 	gtk_widget_show (s);
 	gtk_box_pack_end (GTK_BOX (GTK_DIALOG (mkdir)->vbox), s,
 			  FALSE, FALSE, 0);
-	r = gp_camera_folder_make_dir (mkdir->priv->camera, mkdir->priv->path,
-			g_basename (path), GTKAM_STATUS (s)->context->context);
-	if (mkdir->priv->multi)
-		gp_camera_exit (mkdir->priv->camera, NULL);
+	r = gp_camera_folder_make_dir (mkdir->priv->camera->camera,
+		mkdir->priv->path,
+		g_basename (path), GTKAM_STATUS (s)->context->context);
+	if (mkdir->priv->camera->multi)
+		gp_camera_exit (mkdir->priv->camera->camera, NULL);
 	switch (r) {
 	case GP_OK:
 
@@ -189,7 +188,6 @@ on_ok_clicked (GtkButton *button, GtkamMkdir *mkdir)
 		else
 			full_path = g_strdup_printf ("/%s", path);
 		data.camera = mkdir->priv->camera;
-		data.multi  = mkdir->priv->multi;
 		data.path   = full_path;
 		g_signal_emit (GTK_OBJECT (mkdir), signals[DIR_CREATED], 0, 
 			       &data);
@@ -212,13 +210,13 @@ on_ok_clicked (GtkButton *button, GtkamMkdir *mkdir)
 }
 
 GtkWidget *
-gtkam_mkdir_new (Camera *camera, gboolean multi, const gchar *path)
+gtkam_mkdir_new (GtkamCamera *camera, const gchar *path)
 {
 	GtkamMkdir *mkdir;
 	GtkWidget *label, *entry, *button;
 	gchar *msg;
 
-	g_return_val_if_fail (camera != NULL, NULL);
+	g_return_val_if_fail (GTKAM_IS_CAMERA (camera), NULL);
 	g_return_val_if_fail (path != NULL, NULL);
 
 	mkdir = g_object_new (GTKAM_TYPE_MKDIR, NULL);
@@ -227,8 +225,7 @@ gtkam_mkdir_new (Camera *camera, gboolean multi, const gchar *path)
 
 	mkdir->priv->path = g_strdup (path);
 	mkdir->priv->camera = camera;
-	gp_camera_ref (camera);
-	mkdir->priv->multi = multi;
+	g_object_ref (G_OBJECT (camera));
 
 	msg = g_strdup_printf (_("Please choose a name "
 				 "for the directory that "

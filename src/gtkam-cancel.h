@@ -22,7 +22,7 @@
 #define __GTKAM_CANCEL_H__
 
 #include <gtkam-context.h>
-#include <gtk/gtkdialog.h>
+#include <gtkam-dialog.h>
 
 #define GTKAM_TYPE_CANCEL  (gtkam_cancel_get_type ())
 #define GTKAM_CANCEL(o)    (GTK_CHECK_CAST((o),GTKAM_TYPE_CANCEL,GtkamCancel))
@@ -34,7 +34,7 @@ typedef struct _GtkamCancelClass   GtkamCancelClass;
 
 struct _GtkamCancel
 {
-	GtkDialog parent;
+	GtkamDialog parent;
 
 	GtkamContext *context;
 
@@ -43,13 +43,12 @@ struct _GtkamCancel
 
 struct _GtkamCancelClass
 {
-	GtkDialogClass parent_class;
+	GtkamDialogClass parent_class;
 
 	void (* cancel) (GtkamCancel *);
 };
 
 GtkType      gtkam_cancel_get_type (void);
-GtkWidget   *gtkam_cancel_new      (GtkWidget *opt_window, const gchar *format,
-				    ...);
+GtkWidget   *gtkam_cancel_new      (const gchar *format, ...);
 
 #endif /* __GTKAM_CANCEL_H__ */

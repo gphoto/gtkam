@@ -25,6 +25,7 @@
 
 #include <gtk/gtktreeview.h>
 
+#include <gtkam-camera.h>
 #include <gtkam-context.h>
 
 #define GTKAM_TYPE_TREE  (gtkam_tree_get_type ())
@@ -44,21 +45,18 @@ struct _GtkamTree
 
 typedef struct _GtkamTreeFolderSelectedData GtkamTreeFolderSelectedData;
 struct _GtkamTreeFolderSelectedData {
-	Camera *camera;
-	gboolean multi;
+	GtkamCamera *camera;
 	const gchar *folder;
 };
 typedef struct _GtkamTreeFolderUnselectedData GtkamTreeFolderUnselectedData;
 struct _GtkamTreeFolderUnselectedData {
-	Camera *camera;
-	gboolean multi;
+	GtkamCamera *camera;
 	const gchar *folder;
 };
 
 typedef struct _GtkamTreeFileAddedData GtkamTreeFileAddedData;
 struct _GtkamTreeFileAddedData {
-	Camera *camera;
-	gboolean multi;
+	GtkamCamera *camera;
 	const gchar *folder;
 	const gchar *name;
 };
@@ -88,10 +86,7 @@ struct _GtkamTreeClass
 GType      gtkam_tree_get_type (void);
 GtkWidget *gtkam_tree_new      (void);
 
-void         gtkam_tree_add_camera (GtkamTree *tree, Camera *camera,
-				    gboolean multi);
-void         gtkam_tree_update     (GtkamTree *tree, Camera *camera,
-				    gboolean multi, const gchar *path);
+void         gtkam_tree_add_camera (GtkamTree *tree, GtkamCamera *camera);
 
 void         gtkam_tree_load       (GtkamTree *tree);
 void         gtkam_tree_save       (GtkamTree *tree);

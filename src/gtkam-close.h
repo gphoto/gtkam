@@ -21,7 +21,7 @@
 #ifndef __GTKAM_CLOSE_H__
 #define __GTKAM_CLOSE_H__
 
-#include <gtk/gtkdialog.h>
+#include <gtkam-dialog.h>
 
 #define GTKAM_TYPE_CLOSE  (gtkam_close_get_type ())
 #define GTKAM_CLOSE(o)    (GTK_CHECK_CAST((o),GTKAM_TYPE_CLOSE,GtkamClose))
@@ -33,17 +33,17 @@ typedef struct _GtkamCloseClass   GtkamCloseClass;
 
 struct _GtkamClose
 {
-	GtkDialog parent;
+	GtkamDialog parent;
 
 	GtkamClosePrivate *priv;
 };
 
 struct _GtkamCloseClass
 {
-	GtkDialogClass parent_class;
+	GtkamDialogClass parent_class;
 };
 
 GtkType    gtkam_close_get_type (void);
-GtkWidget *gtkam_close_new      (const gchar *msg, GtkWidget *opt_window);
+GtkWidget *gtkam_close_new      (const gchar *msg);
 
 #endif /* __GTKAM_CLOSE_H__ */

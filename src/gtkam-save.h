@@ -21,7 +21,7 @@
 #ifndef __GTKAM_SAVE_H__
 #define __GTKAM_SAVE_H__
 
-#include <gphoto2/gphoto2-camera.h>
+#include <gtkam-camera.h>
 #include <gtk/gtkfilesel.h>
 
 #define GTKAM_TYPE_SAVE  (gtkam_save_get_type ())
@@ -47,7 +47,7 @@ struct _GtkamSaveClass
 GtkType    gtkam_save_get_type (void);
 GtkWidget *gtkam_save_new      (void);
 
-void       gtkam_save_add      (GtkamSave *save, Camera *camera, gboolean multi,
+void       gtkam_save_add      (GtkamSave *save, GtkamCamera *,
 				const gchar *folder, const gchar *name);
 
 #endif /* __GTKAM_SAVE_H__ */

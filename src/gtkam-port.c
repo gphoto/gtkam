@@ -152,7 +152,7 @@ on_ok_clicked (GtkButton *button, GtkamPort *port)
 	int index;
 	const gchar *path;
 	gchar *msg;
-	GtkWidget *dialog;
+	GtkWidget *d;
 
 	gp_port_info_list_new (&list);
 	gp_port_info_list_load (list);
@@ -163,9 +163,11 @@ on_ok_clicked (GtkButton *button, GtkamPort *port)
 		msg = g_strdup_printf (_("Could not find and io-driver for "
 			"port '%s' ('%s')."), path,
 			gp_result_as_string (index));
-		dialog = gtkam_close_new (msg, GTK_WIDGET (port));
+		d = gtkam_close_new (msg);
 		g_free (msg);
-		gtk_widget_show (dialog);
+		gtk_window_set_transient_for (GTK_WINDOW (d),
+					      GTK_WINDOW (port));
+		gtk_widget_show (d);
 	} else {
 		g_signal_emit (GTK_OBJECT (port), signals[PORT_ADDED], 0, path);
 		gtk_object_destroy (GTK_OBJECT (port));

@@ -71,8 +71,7 @@ struct _GtkamPreviewPrivate
 	GtkWidget *spin;
 	GtkWidget *image;
 
-	Camera *camera;
-	gboolean multi;
+	GtkamCamera *camera;
 
 	guint rotate;
 
@@ -109,7 +108,7 @@ gtkam_preview_destroy (GtkObject *object)
 	}
 
 	if (preview->priv->camera) {
-		gp_camera_unref (preview->priv->camera);
+		g_object_unref (G_OBJECT (preview->priv->camera));
 		preview->priv->camera = NULL;
 	}
 
@@ -208,15 +207,14 @@ on_preview_capture_clicked (GtkButton *button, GtkamPreview *preview)
 			    FALSE, FALSE, 0);
 	gtk_widget_show_now (s);
 	
-	result = gp_camera_capture (preview->priv->camera,
+	result = gp_camera_capture (preview->priv->camera->camera,
 		GP_CAPTURE_IMAGE, &path, GTKAM_STATUS (s)->context->context);
-	if (preview->priv->multi)
-		gp_camera_exit (preview->priv->camera, NULL);
+	if (preview->priv->camera->multi)
+		gp_camera_exit (preview->priv->camera->camera, NULL);
 	switch (result) {
 	case GP_OK:
 		memset (&data, 0, sizeof (GtkamPreviewCapturedData));
 		data.camera = preview->priv->camera;
-		data.multi = preview->priv->multi;
 		data.folder = path.folder;
 		data.name = path.name;
 		g_signal_emit (GTK_OBJECT (preview), signals[CAPTURED], 0,
@@ -250,9 +248,10 @@ timeout_func (gpointer user_data)
 		return (FALSE);
 
 	gp_file_new (&file);
-	result = gp_camera_capture_preview (preview->priv->camera, file, NULL);
-	if (preview->priv->multi)
-		gp_camera_exit (preview->priv->camera, NULL);
+	result = gp_camera_capture_preview (preview->priv->camera->camera,
+					    file, NULL);
+	if (preview->priv->camera->multi)
+		gp_camera_exit (preview->priv->camera->camera, NULL);
 	if (!GTKAM_IS_PREVIEW (preview))
 		return (FALSE);
 	if (result != GP_OK) {
@@ -337,7 +336,7 @@ on_configure_clicked (GtkButton *button, GtkamPreview *preview)
 {
 	GtkWidget *d;
 
-	d = gtkam_config_new (preview->priv->camera, preview->priv->multi);
+	d = gtkam_config_new (preview->priv->camera);
 	gtk_window_set_transient_for (GTK_WINDOW (d), GTK_WINDOW (preview));
 	gtk_widget_show (d);
 }
@@ -371,22 +370,21 @@ on_size_allocate (GtkWidget *widget, GtkAllocation *allocation,
 }
 
 GtkWidget *
-gtkam_preview_new (Camera *camera, gboolean multi)
+gtkam_preview_new (GtkamCamera *camera)
 {
 	CameraAbilities abilities;
 	GtkamPreview *preview;
 	GtkWidget *button, *hbox, *vbox, *radio;
 	GSList *group;
 
-	g_return_val_if_fail (camera != NULL, NULL);
+	g_return_val_if_fail (GTKAM_IS_CAMERA (camera), NULL);
 
 	preview = g_object_new (GTKAM_TYPE_PREVIEW, NULL);
 	gtk_window_set_title (GTK_WINDOW (preview), _("Capture"));
 	gtk_container_set_border_width (GTK_CONTAINER (preview), 5);
 
 	preview->priv->camera = camera;
-	gp_camera_ref (camera);
-	preview->priv->multi = multi;
+	g_object_ref (G_OBJECT (camera));
 	preview->priv->tooltips = gtk_tooltips_new ();
 	g_object_ref (G_OBJECT (preview->priv->tooltips));
 	gtk_object_sink (GTK_OBJECT (preview->priv->tooltips));
@@ -454,7 +452,7 @@ gtkam_preview_new (Camera *camera, gboolean multi)
 			   button);
 	gtk_widget_grab_focus (button);
 
-	gp_camera_get_abilities (camera, &abilities);
+	gp_camera_get_abilities (camera->camera, &abilities);
 	if (abilities.operations & GP_OPERATION_CONFIG) {
 		button = gtk_button_new_from_stock (GTK_STOCK_PREFERENCES);
 		gtk_widget_show (button);
@@ -508,20 +506,4 @@ gtkam_preview_get_angle (GtkamPreview *preview)
 	g_return_val_if_fail (GTKAM_IS_PREVIEW (preview), 0);
 
 	return (preview->priv->rotate);
-}
-
-Camera *
-gtkam_preview_get_camera (GtkamPreview *preview)
-{
-	g_return_val_if_fail (GTKAM_IS_PREVIEW (preview), NULL);
-
-	return (preview->priv->camera);
-}
-
-gboolean
-gtkam_preview_get_multi (GtkamPreview *preview)
-{
-	g_return_val_if_fail (GTKAM_IS_PREVIEW (preview), FALSE);
-
-	return (preview->priv->multi);
 }

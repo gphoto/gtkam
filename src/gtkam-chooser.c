@@ -228,7 +228,7 @@ stop_timeout_func (Camera *camera, unsigned int id, void *data)
 
 #endif
 
-static Camera *
+static GtkamCamera *
 gtkam_chooser_get_camera (GtkamChooser *chooser)
 {
 	GtkWidget *dialog, *status;
@@ -239,6 +239,7 @@ gtkam_chooser_get_camera (GtkamChooser *chooser)
 	gchar *port_path, *right, *tmp;
 	int m, p, r;
 	gboolean multi;
+	GtkamCamera *c;
 
 	model = gtk_entry_get_text (chooser->priv->entry_model);
 	port  = gtk_entry_get_text (chooser->priv->entry_port);
@@ -310,26 +311,25 @@ gtkam_chooser_get_camera (GtkamChooser *chooser)
 	}
 	gtk_object_destroy (GTK_OBJECT (status));
 
-	return (camera);
+	c = gtkam_camera_new (camera, multi);
+	gp_camera_unref (camera);
+
+	return (c);
 }
 
 static void
 on_apply_clicked (GtkButton *button, GtkamChooser *chooser)
 {
-	Camera *camera;
-	GtkamChooserCameraSelectedData data;
+	GtkamCamera *camera;
 
 	if (!chooser->priv->needs_update)
 		return;
 
 	camera = gtkam_chooser_get_camera (chooser);
 	if (camera) {
-		memset (&data, 0, sizeof (GtkamChooserCameraSelectedData));
-		data.camera = camera;
-		data.multi = GTK_TOGGLE_BUTTON (chooser->priv->check_multi)->active;
 		g_signal_emit (G_OBJECT (chooser), signals[CAMERA_SELECTED],
-			       0, &data);
-		gp_camera_unref (camera);
+			       0, camera);
+		g_object_unref (G_OBJECT (camera));
 
 		chooser->priv->needs_update = FALSE;
 		gtk_widget_set_sensitive (chooser->apply_button, FALSE);
@@ -346,18 +346,14 @@ on_cancel_clicked (GtkButton *button, GtkamChooser *chooser)
 static void
 on_ok_clicked (GtkButton *button, GtkamChooser *chooser)
 {
-	Camera *camera;
-	GtkamChooserCameraSelectedData data;
+	GtkamCamera *camera;
 
 	if (chooser->priv->needs_update) {
 		camera = gtkam_chooser_get_camera (chooser);
 		if (camera) {
-			memset (&data, 0, sizeof (GtkamChooserCameraSelectedData));
-			data.camera = camera;
-			data.multi = GTK_TOGGLE_BUTTON (chooser->priv->check_multi)->active;
 			g_signal_emit (G_OBJECT (chooser),
-				       signals[CAMERA_SELECTED], 0, &data);
-			gp_camera_unref (camera);
+				       signals[CAMERA_SELECTED], 0, camera);
+			g_object_unref (G_OBJECT (camera));
 			gtk_object_destroy (GTK_OBJECT (chooser));
 		}
 	} else
@@ -452,7 +448,7 @@ on_speed_changed (GtkEntry *entry, GtkamChooser *chooser)
 static void
 on_detect_clicked (GtkButton *button, GtkamChooser *chooser)
 {
-	GtkWidget *dialog, *status;
+	GtkWidget *d, *status;
 	CameraList list;
 	int result;
 	const char *name;
@@ -467,9 +463,10 @@ on_detect_clicked (GtkButton *button, GtkamChooser *chooser)
 	switch (result) {
 	case GP_OK:
 		if (!gp_list_count (&list)) {
-			dialog = gtkam_close_new (_("No cameras detected."),
-						  GTK_WIDGET (chooser));
-			gtk_widget_show (dialog);
+			d = gtkam_close_new (_("No cameras detected."));
+			gtk_window_set_transient_for (GTK_WINDOW (d),
+						      GTK_WINDOW (chooser));
+			gtk_widget_show (d);
 		} else {
 			//FIXME: Let user choose from the list
 			gp_list_get_name (&list, 0, &name);
@@ -481,10 +478,10 @@ on_detect_clicked (GtkButton *button, GtkamChooser *chooser)
 	case GP_ERROR_CANCEL:
 		break;
 	default:
-		dialog = gtkam_error_new (result,
+		d = gtkam_error_new (result,
 			GTKAM_STATUS (status)->context, GTK_WIDGET (chooser),
 			_("Could not detect any cameras."));
-		gtk_widget_show (dialog);
+		gtk_widget_show (d);
 		break;
 	}
 	gtk_object_destroy (GTK_OBJECT (status));
@@ -807,33 +804,26 @@ gtkam_chooser_set_port_mask (GtkamChooser *chooser, GPPortType types)
 }
 
 void
-gtkam_chooser_set_camera (GtkamChooser *chooser, Camera *camera)
+gtkam_chooser_set_camera (GtkamChooser *chooser, GtkamCamera *camera)
 {
 	CameraAbilities a;
 	GPPortInfo info;
 	gchar *full_info;
 
 	g_return_if_fail (GTKAM_IS_CHOOSER (chooser));
-	g_return_if_fail (camera != NULL);
+	g_return_if_fail (GTKAM_IS_CAMERA (camera));
 
-	gp_camera_get_abilities (camera, &a);
-	gp_camera_get_port_info (camera, &info);
+	gp_camera_get_abilities (camera->camera, &a);
+	gp_camera_get_port_info (camera->camera, &info);
 
 	full_info = g_strdup_printf ("%s (%s)", info.name, info.path);
 	gtk_entry_set_text (chooser->priv->entry_port, full_info);
 	g_free (full_info);
 
 	gtk_entry_set_text (chooser->priv->entry_model, a.model);
+	gtk_toggle_button_set_active (
+		GTK_TOGGLE_BUTTON (chooser->priv->check_multi), camera->multi);
 
 	chooser->priv->needs_update = FALSE;
 	gtk_widget_set_sensitive (chooser->apply_button, FALSE);
-}
-
-void
-gtkam_chooser_set_multi (GtkamChooser *chooser, gboolean multi)
-{
-	g_return_if_fail (GTKAM_IS_CHOOSER (chooser));
-
-	gtk_toggle_button_set_active (
-			GTK_TOGGLE_BUTTON (chooser->priv->check_multi), multi);
 }

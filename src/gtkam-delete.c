@@ -57,8 +57,7 @@
 
 typedef struct _GtkamDeleteData GtkamDeleteData;
 struct _GtkamDeleteData {
-	Camera *camera;
-	gboolean multi;
+	GtkamCamera *camera;
 	gchar *folder;
 	gchar *name;
 	GtkWidget *check;
@@ -66,9 +65,6 @@ struct _GtkamDeleteData {
 
 struct _GtkamDeletePrivate
 {
-	Camera *camera;
-	gboolean multi;
-
 	GSList *data;
 	GtkWidget *vbox;
 
@@ -96,7 +92,7 @@ gtkam_delete_destroy (GtkObject *object)
 	if (delete->priv->data) {
 		for (i = g_slist_length (delete->priv->data) - 1; i >= 0; i--) {
 			data = g_slist_nth_data (delete->priv->data, i);
-			gp_camera_unref (data->camera);
+			g_object_unref (G_OBJECT (data->camera));
 			g_free (data->folder);
 			g_free (data->name);
 			g_free (data);
@@ -189,7 +185,7 @@ gp_list_lookup_name (CameraList *list, const char *name)
 }
 
 static gboolean
-delete_all (GtkamDelete *delete, Camera *camera, gboolean multi,
+delete_all (GtkamDelete *delete, GtkamCamera *camera,
 	    const gchar *folder)
 {
 	GtkWidget *d, *s;
@@ -203,13 +199,12 @@ delete_all (GtkamDelete *delete, Camera *camera, gboolean multi,
 	gtk_widget_show (s);
 	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (delete)->vbox), s,
 			    FALSE, FALSE, 0);
-	r1 = gp_camera_folder_list_files (camera, folder, &l1, NULL);
-	result = gp_camera_folder_delete_all (camera, folder,
+	r1 = gp_camera_folder_list_files (camera->camera, folder, &l1, NULL);
+	result = gp_camera_folder_delete_all (camera->camera, folder,
 					GTKAM_STATUS (s)->context->context);
 	switch (result) {
 	case GP_OK:
 		add.camera = camera;
-		add.multi = multi;
 		add.folder = folder;
 		g_signal_emit (G_OBJECT (delete),
 			signals[ALL_DELETED], 0, &add);
@@ -226,13 +221,13 @@ delete_all (GtkamDelete *delete, Camera *camera, gboolean multi,
 		gtk_object_destroy (GTK_OBJECT (s));
 
 		/* See what files have been deleted */
-		r2 = gp_camera_folder_list_files (camera, folder, &l2, NULL);
+		r2 = gp_camera_folder_list_files (camera->camera, folder,
+						  &l2, NULL);
 		if ((r1 == GP_OK) && (r2 == GP_OK)) {
 			for (r1 = 0; r1 < gp_list_count (&l1); r1++) {
 				gp_list_get_name (&l1, r1, &name);
 				if (gp_list_lookup_name (&l2, name) >= 0) {
 					fdd.camera = camera;
-					fdd.multi = multi;
 					fdd.folder = folder;
 					fdd.name = name;
 					g_signal_emit (GTK_OBJECT (delete),
@@ -246,7 +241,7 @@ delete_all (GtkamDelete *delete, Camera *camera, gboolean multi,
 }
 
 static gboolean
-delete_one (GtkamDelete *delete, Camera *camera, gboolean multi,
+delete_one (GtkamDelete *delete, GtkamCamera *camera,
 	    const gchar *folder, const gchar *name)
 {
 	GtkWidget *d, *s;
@@ -258,13 +253,12 @@ delete_one (GtkamDelete *delete, Camera *camera, gboolean multi,
 	gtk_widget_show (s);
 	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (delete)->vbox), s,
 			    FALSE, FALSE, 0);
-	result = gp_camera_file_delete (camera, folder, name,
+	result = gp_camera_file_delete (camera->camera, folder, name,
 				        GTKAM_STATUS (s)->context->context);
 	switch (result) {
 	case GP_OK:
 		gtk_object_destroy (GTK_OBJECT (s));
 		fdd.camera = camera;
-		fdd.multi = multi;
 		fdd.folder = folder;
 		fdd.name = name;
 		g_signal_emit (GTK_OBJECT (delete), signals[FILE_DELETED], 0,
@@ -295,9 +289,9 @@ on_delete_clicked (GtkButton *button, GtkamDelete *delete)
 		if (!GTK_TOGGLE_BUTTON (data->check)->active)
 			continue;
 		if (data->name) {
-			if (delete_one (delete, data->camera, data->multi,
+			if (delete_one (delete, data->camera,
 					data->folder, data->name)) {
-				gp_camera_unref (data->camera);
+				g_object_unref (data->camera);
 				g_free (data->name);
 				g_free (data->folder);
 				delete->priv->data = g_slist_remove (
@@ -308,7 +302,7 @@ on_delete_clicked (GtkButton *button, GtkamDelete *delete)
 				g_free (data);
 			} else
 				success = FALSE;
-		} else if (!delete_all (delete, data->camera, data->multi,
+		} else if (!delete_all (delete, data->camera,
 					data->folder))
 			success = FALSE;
 	}
@@ -371,16 +365,19 @@ gtkam_delete_new (void)
 }
 
 void
-gtkam_delete_add (GtkamDelete *delete, Camera *camera, gboolean multi,
+gtkam_delete_add (GtkamDelete *delete, GtkamCamera *camera,
 		  const gchar *folder, const gchar *name)
 {
 	GtkamDeleteData *data;
 	gchar *label, *msg;
 
+	g_return_if_fail (GTKAM_IS_DELETE (delete));
+	g_return_if_fail (GTKAM_IS_CAMERA (camera));
+	g_return_if_fail (folder != NULL);
+
 	data = g_new0 (GtkamDeleteData, 1);
 	data->camera = camera;
-	gp_camera_ref (camera);
-	data->multi = multi;
+	g_object_ref (G_OBJECT (camera));
 	data->folder = g_strdup (folder);
 	data->name = g_strdup (name);
 	delete->priv->data = g_slist_append (delete->priv->data, data);

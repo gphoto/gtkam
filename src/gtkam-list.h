@@ -22,7 +22,10 @@
 #define __GTKAM_LIST_H__
 
 #include <gphoto2/gphoto2-camera.h>
+
 #include <gtk/gtktreeview.h>
+
+#include <gtkam-camera.h>
 
 #define GTKAM_TYPE_LIST  (gtkam_list_get_type ())
 #define GTKAM_LIST(o)    (GTK_CHECK_CAST((o),GTKAM_TYPE_LIST,GtkamList))
@@ -41,16 +44,14 @@ struct _GtkamList
 
 typedef struct _GtkamListFileSelectedData GtkamListFileSelectedData;
 struct _GtkamListFileSelectedData {
-	Camera *camera;
-	gboolean multi;
+	GtkamCamera *camera;
 	const char *folder;
 	const char *name;
 };
 
 typedef struct _GtkamListFileUnselectedData GtkamListFileUnselectedData;
 struct _GtkamListFileUnselectedData {
-	Camera *camera;
-	gboolean multi;
+	GtkamCamera *camera;
 	const char *folder;
 	const char *name;
 };
@@ -70,15 +71,14 @@ struct _GtkamListClass
 GtkType    gtkam_list_get_type (void);
 GtkWidget *gtkam_list_new      (void);
 
-void       gtkam_list_add_folder     (GtkamList *list, Camera *camera,
-				      gboolean multi, const gchar *folder);
-void       gtkam_list_remove_folder  (GtkamList *list, Camera *camera,
-				      gboolean multi, const gchar *folder);
-gboolean   gtkam_list_has_folder     (GtkamList *list, Camera *camera,
-				      gboolean multi, const gchar *folder);
-void       gtkam_list_add_file       (GtkamList *list, Camera *camera,
-				      gboolean multi, const gchar *folder,
-				      const gchar *name);
+void       gtkam_list_add_folder     (GtkamList *list, GtkamCamera *camera,
+				      const gchar *folder);
+void       gtkam_list_remove_folder  (GtkamList *list, GtkamCamera *camera,
+				      const gchar *folder);
+gboolean   gtkam_list_has_folder     (GtkamList *list, GtkamCamera *camera,
+				      const gchar *folder);
+void       gtkam_list_add_file       (GtkamList *list, GtkamCamera *camera,
+				      const gchar *folder, const gchar *name);
 
 void       gtkam_list_show_thumbnails (GtkamList *list);
 void       gtkam_list_hide_thumbnails (GtkamList *list);

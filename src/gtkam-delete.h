@@ -21,8 +21,7 @@
 #ifndef __GTKAM_DELETE_H__
 #define __GTKAM_DELETE_H__
 
-#include <gphoto2/gphoto2-camera.h>
-
+#include <gtkam-camera.h>
 #include <gtkam-dialog.h>
 
 #define GTKAM_TYPE_DELETE  (gtkam_delete_get_type ())
@@ -42,16 +41,14 @@ struct _GtkamDelete
 
 typedef struct _GtkamDeleteFileDeletedData GtkamDeleteFileDeletedData;
 struct _GtkamDeleteFileDeletedData {
-	Camera *camera;
-	gboolean multi;
+	GtkamCamera *camera;
 	const gchar *folder;
 	const gchar *name;
 };
 
 typedef struct _GtkamDeleteAllDeletedData GtkamDeleteAllDeletedData;
 struct _GtkamDeleteAllDeletedData {
-	Camera *camera;
-	gboolean multi;
+	GtkamCamera *camera;
 	const gchar *folder;
 };
 
@@ -67,8 +64,7 @@ struct _GtkamDeleteClass
 GtkType    gtkam_delete_get_type (void);
 GtkWidget *gtkam_delete_new      (void);
 
-void       gtkam_delete_add      (GtkamDelete *delete, Camera *camera,
-				  gboolean multi, const gchar *folder,
-				  const gchar *name);
+void       gtkam_delete_add      (GtkamDelete *delete, GtkamCamera *camera,
+				  const gchar *folder, const gchar *name);
 
 #endif /* __GTKAM_DELETE_H__ */

@@ -21,8 +21,7 @@
 #ifndef __GTKAM_PREVIEW_H__
 #define __GTKAM_PREVIEW_H__
 
-#include <gphoto2/gphoto2-camera.h>
-
+#include <gtkam-camera.h>
 #include <gtkam-dialog.h>
 
 #define GTKAM_TYPE_PREVIEW  (gtkam_preview_get_type ())
@@ -42,8 +41,7 @@ struct _GtkamPreview
 
 typedef struct _GtkamPreviewCapturedData GtkamPreviewCapturedData;
 struct _GtkamPreviewCapturedData {
-	Camera *camera;
-	gboolean multi;
+	GtkamCamera *camera;
 	const gchar *folder;
 	const gchar *name;
 };
@@ -57,10 +55,7 @@ struct _GtkamPreviewClass
 };
 
 GtkType    gtkam_preview_get_type (void);
-GtkWidget *gtkam_preview_new      (Camera *camera, gboolean multi);
-
-Camera  *gtkam_preview_get_camera (GtkamPreview *preview);
-gboolean gtkam_preview_get_multi  (GtkamPreview *preview);
+GtkWidget *gtkam_preview_new      (GtkamCamera *camera);
 
 void  gtkam_preview_set_angle  (GtkamPreview *preview, guint angle);
 guint gtkam_preview_get_angle  (GtkamPreview *preview);

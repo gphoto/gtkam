@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gphoto\n"
-"POT-Creation-Date: 2003-03-23 22:06+0300\n"
+"POT-Creation-Date: 2003-07-27 13:17+0200\n"
 "PO-Revision-Date: 2000-05-23 22:02+00:00\n"
 "Last-Translator: Вячеслав Диконов (Vyacheslav Dikonov) <sdiconov@mail.ru>\n"
 "Language-Team: Russian <ru@li.org>\n"
@@ -12,386 +12,374 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8-bit\n"
 
-#: src/main.c:129
-msgid "Image Download Program"
-msgstr "Программа копирования изображений"
-
-#. Port?
-#: src/gtkam-chooser.c:249 src/gtkam-chooser.c:271
+#: src/gtkam-chooser.c:231 src/gtkam-chooser.c:253
 msgid "None"
 msgstr "Отсутствует"
 
-#. Speed?
-#: src/gtkam-chooser.c:279 src/gtkam-chooser.c:412 src/gtkam-chooser.c:665
+#: src/gtkam-chooser.c:261 src/gtkam-chooser.c:394 src/gtkam-chooser.c:647
 msgid "Best"
 msgstr "Лучшая"
 
-#.
-#. * Initialize the camera to check if it is really there. Exit
-#. * afterwards because other applications could need the camera, too.
-#.
-#: src/gtkam-chooser.c:286
+#: src/gtkam-chooser.c:268
 msgid "Initializing camera..."
 msgstr "Инициализация..."
 
-#: src/gtkam-chooser.c:300
+#: src/gtkam-chooser.c:282
 msgid "Could not initialize camera."
 msgstr "Ошибка инициализации."
 
-#: src/gtkam-chooser.c:403
+#: src/gtkam-chooser.c:385
 #, c-format
 msgid "Could not get abilities of model '%s'."
 msgstr "Невозможно получить список возможностей '%s'."
 
-#: src/gtkam-chooser.c:451
+#: src/gtkam-chooser.c:433
 msgid "Detecting cameras..."
 msgstr "Поиск фотоаппаратов..."
 
-#: src/gtkam-chooser.c:459
+#: src/gtkam-chooser.c:441
 msgid "No cameras detected."
 msgstr "Фотоаппарат не найден."
 
-#: src/gtkam-chooser.c:476
+#: src/gtkam-chooser.c:458
 msgid "Could not detect any cameras."
 msgstr "Не было найдено ни одного фотоаппарата."
 
-#: src/gtkam-chooser.c:601
+#: src/gtkam-chooser.c:583
 msgid "Select Camera"
 msgstr "Выбор модели"
 
-#: src/gtkam-chooser.c:616
+#: src/gtkam-chooser.c:598
 msgid "Model:"
 msgstr "Модель:"
 
-#: src/gtkam-chooser.c:628
+#: src/gtkam-chooser.c:610
 msgid "Detect"
 msgstr "Автоопределение"
 
-#: src/gtkam-chooser.c:634
+#: src/gtkam-chooser.c:616
 msgid "Detect USB camera"
 msgstr "Определить модель USB устройства"
 
-#: src/gtkam-chooser.c:636
+#: src/gtkam-chooser.c:618
 msgid "Port:"
 msgstr "Порт:"
 
-#: src/gtkam-chooser.c:657
+#: src/gtkam-chooser.c:639
 msgid "Speed:"
 msgstr "Скорость:"
 
-#: src/gtkam-chooser.c:670
+#: src/gtkam-chooser.c:652
 msgid "Allow multiple frontends"
 msgstr "Не блокировать устройство"
 
-#: src/gtkam-chooser.c:677
+#: src/gtkam-chooser.c:659
 msgid "Enhanced"
 msgstr "Подробнее"
 
-#: src/gtkam-chooser.c:741
+#: src/gtkam-chooser.c:723
 msgid "Could not get number of supported camera models"
 msgstr "Невозможно определить число поддерживаемых моделей"
 
-#: src/gtkam-chooser.c:771
+#: src/gtkam-chooser.c:753
 msgid "Could not get number of ports."
 msgstr "Невозможно определить количество портов."
 
-#: src/gtkam-config.c:179
+#: src/gtkam-config.c:161
 msgid "Applying configuration..."
 msgstr "Активация настроек..."
 
-#: src/gtkam-config.c:195
+#: src/gtkam-config.c:177
 msgid "Could not apply configuration."
 msgstr "Невозможно активировать настройки."
 
-#: src/gtkam-config.c:243
+#: src/gtkam-config.c:225
 msgid "No additional information available. (1)"
 msgstr "Дополнительных сведений нет. (1)"
 
-#: src/gtkam-config.c:248
+#: src/gtkam-config.c:230
 msgid "General Settings"
 msgstr "Общие настройки"
 
-#: src/gtkam-config.c:323
+#: src/gtkam-config.c:305
 msgid "Could not execute command."
 msgstr "Невозможно выполнить команду."
 
-#: src/gtkam-config.c:527
+#: src/gtkam-config.c:509
 msgid "No additional information available. (2)"
 msgstr "Дополнительных сведений нет. (2)"
 
-#. Make it easy for users to select the system's time
-#: src/gtkam-config.c:563
+#: src/gtkam-config.c:545
 msgid "Set to system's time"
 msgstr "Установить системные часы"
 
-#: src/gtkam-config.c:597
+#: src/gtkam-config.c:579
 msgid "No additional information available. (3)"
 msgstr "Дополнительных сведений нет. (3)"
 
-#: src/gtkam-config.c:622
+#: src/gtkam-config.c:604
 msgid "No additional information available. (4)"
 msgstr "Дополнительных сведений нет. (4)"
 
-#: src/gtkam-config.c:669
+#: src/gtkam-config.c:651
 msgid "No additional information available. (5)"
 msgstr "Дополнительных сведений нет. (6)"
 
-#: src/gtkam-config.c:689
+#: src/gtkam-config.c:671
 msgid "No additional information available. (6)"
 msgstr "Дополнительных сведений нет. (6)"
 
-#: src/gtkam-config.c:729
+#: src/gtkam-config.c:711
 msgid "Getting configuration..."
 msgstr "Извлечение настроек..."
 
-#: src/gtkam-config.c:744
+#: src/gtkam-config.c:726
 msgid "Could not get configuration."
 msgstr "Невозможно узнать текущие настройки."
 
-#: src/gtkam-debug.c:259
+#: src/gtkam-debug.c:241
 msgid "Save As..."
 msgstr "Сохранить как..."
 
-#: src/gtkam-debug.c:281
+#: src/gtkam-debug.c:263
 #, c-format
 msgid "Could not open '%s'!"
 msgstr "Невозможно открыть '%s'!"
 
-#: src/gtkam-debug.c:326
+#: src/gtkam-debug.c:308
 msgid "Type of messages to log:"
 msgstr "Тип сообщений для занесения в журнал:"
 
-#: src/gtkam-debug.c:330
+#: src/gtkam-debug.c:312
 msgid "Error"
 msgstr "Ошибка"
 
-#: src/gtkam-debug.c:337
+#: src/gtkam-debug.c:319
 msgid "Verbose"
 msgstr "Дополнительно"
 
-#: src/gtkam-debug.c:344
+#: src/gtkam-debug.c:326
 msgid "Debug"
 msgstr "Отладка"
 
-#: src/gtkam-debug.c:351
+#: src/gtkam-debug.c:333
 msgid "Data"
 msgstr "Данные"
 
-#: src/gtkam-delete.c:198
+#: src/gtkam-delete.c:180
 #, c-format
 msgid "Deleting all files in '%s'..."
 msgstr "Выполняется удаление всех файлов в '%s'..."
 
-#: src/gtkam-delete.c:218
+#: src/gtkam-delete.c:200
 #, c-format
 msgid "Could not delete all files in '%s'."
 msgstr "Невозможно удалить все файлы в '%s'."
 
-#: src/gtkam-delete.c:251
+#: src/gtkam-delete.c:233
 #, c-format
 msgid "Deleting file '%s' from folder '%s'..."
 msgstr "Выполняется удаление файла '%s' из каталога '%s'..."
 
-#: src/gtkam-delete.c:272
+#: src/gtkam-delete.c:254
 #, c-format
 msgid "Could not delete file '%s' in folder '%s'."
 msgstr "Невозможно удалить файл '%s' в каталоге '%s'."
 
-#: src/gtkam-delete.c:386
+#: src/gtkam-delete.c:368
 msgid "Do you really want to delete the following file?"
 msgstr "Вы действительно хотите удалить следующий файл?"
 
-#: src/gtkam-delete.c:389
+#: src/gtkam-delete.c:371
 #, c-format
 msgid "Do you really want to delete the following %i files?"
 msgstr "Вы действительно хотите удалить следующие %i файла(ов)?"
 
-#: src/gtkam-delete.c:396
+#: src/gtkam-delete.c:378
 #, c-format
 msgid "'%s' in folder '%s'"
 msgstr "'%s' в каталоге '%s'"
 
-#: src/gtkam-delete.c:399
+#: src/gtkam-delete.c:381
 #, c-format
 msgid "All files in folder '%s'"
 msgstr "Все файлы в каталоге '%s'"
 
-#: src/gtkam-error.c:214
+#: src/gtkam-error.c:196
 msgid "More"
 msgstr "Подробнее"
 
-#: src/gtkam-exif.c:155
+#: src/gtkam-exif.c:137
 #, c-format
 msgid "Getting EXIF information for file '%s' in folder '%s'..."
 msgstr "Получение EXIF-данных из файла '%s' в каталоге '%s'..."
 
-#: src/gtkam-exif.c:171
+#: src/gtkam-exif.c:153
 #, c-format
 msgid "Could not get exif information for '%s' in folder '%s'"
 msgstr "Невозможно получить EXIF-данные из '%s' в каталоге '%s'."
 
-#: src/gtkam-exif.c:184
+#: src/gtkam-exif.c:166
 msgid "Could not interpret EXIF data."
 msgstr "Ошибка интерпретации EXIF-данных."
 
-#: src/gtkam-exif.c:201
+#: src/gtkam-exif.c:183
 msgid "Gtkam has been compiled without exif support."
 msgstr "Поддержка EXIF была отключена во время компиляции."
 
-#: src/gtkam-gimp.c:85
+#: src/gtkam-gimp.c:67
 msgid "Captures images from digital camera"
 msgstr "Сделать снимок цифровым фотоаппаратом"
 
-#: src/gtkam-gimp.c:88
+#: src/gtkam-gimp.c:70
 msgid "<Toolbox>/File/Acquire/Capture from Camera..."
 msgstr "/Файл/Захватить/Изображение через фотоаппарат..."
 
-#: src/gtkam-gimp.c:92
+#: src/gtkam-gimp.c:74
 msgid "Loads files from digital cameras"
 msgstr "Скопировать файлы из памяти цифрового фотоаппарата"
 
-#: src/gtkam-gimp.c:96
+#: src/gtkam-gimp.c:78
 msgid "<Toolbox>/File/Acquire/Load from Camera..."
 msgstr "/Файл/Захватить/Загрузить снимок из фотоаппарата.."
 
-#: src/gtkam-gimp.c:209 src/gtkam-list.c:506
+#: src/gtkam-gimp.c:191 src/gtkam-list.c:488
 #, c-format
 msgid "Downloading '%s' from '%s'..."
 msgstr "Идёт копирование '%s' из '%s'..."
 
-#: src/gtkam-gimp.c:227
+#: src/gtkam-gimp.c:209
 #, c-format
 msgid "Could not download file '%s' from folder '%s'."
 msgstr "Невозможно скопировать файл '%s' из каталога '%s'."
 
-#: src/gtkam-gimp.c:260
+#: src/gtkam-gimp.c:242
 msgid "Image"
 msgstr "Снимок"
 
-#: src/gtkam-info.c:200
+#: src/gtkam-info.c:182
 #, c-format
 msgid "Setting information for file '%s' in '%s'..."
 msgstr "Запись данных о файле '%s' в '%s'..."
 
-#: src/gtkam-info.c:227
+#: src/gtkam-info.c:209
 #, c-format
 msgid "Could not set file information for '%s' in folder '%s'"
 msgstr "Невозможно записать данные о '%s' в каталоге '%s'"
 
-#. Get file info
-#: src/gtkam-info.c:356
+#: src/gtkam-info.c:338
 #, c-format
 msgid "Getting information about file '%s' in folder '%s'..."
 msgstr "Получение данных о файле '%s' в каталоге '%s'..."
 
-#: src/gtkam-info.c:368
+#: src/gtkam-info.c:350
 #, c-format
 msgid "Could not get information about file '%s' in folder '%s'."
 msgstr "Невозможно получить данные о файле '%s' в каталоге '%s'."
 
-#: src/gtkam-info.c:396
+#: src/gtkam-info.c:378
 msgid "File"
 msgstr "Файл"
 
-#: src/gtkam-info.c:402
+#: src/gtkam-info.c:384
 msgid "Name:"
 msgstr "Имя:"
 
-#: src/gtkam-info.c:425 src/gtkam-info.c:533
+#: src/gtkam-info.c:407 src/gtkam-info.c:515
 msgid "Mime type:"
 msgstr "MIME-тип:"
 
-#: src/gtkam-info.c:443
+#: src/gtkam-info.c:425
 msgid "Last modified:"
 msgstr "Последнее изменение:"
 
-#: src/gtkam-info.c:464 src/gtkam-info.c:550 src/gtkam-info.c:598
+#: src/gtkam-info.c:446 src/gtkam-info.c:532 src/gtkam-info.c:580
 msgid "Size:"
 msgstr "Размер:"
 
-#: src/gtkam-info.c:471
+#: src/gtkam-info.c:453
 #, c-format
 msgid "%li bytes"
 msgstr "%li байт"
 
-#: src/gtkam-info.c:485
+#: src/gtkam-info.c:467
 msgid "Permissions:"
 msgstr "Права доступа: "
 
-#: src/gtkam-info.c:497
+#: src/gtkam-info.c:479
 msgid "Read"
 msgstr "Прочитать"
 
-#: src/gtkam-info.c:508
+#: src/gtkam-info.c:490
 msgid "Delete"
 msgstr "Удалить"
 
-#: src/gtkam-info.c:527 src/gtkam-list.c:961
+#: src/gtkam-info.c:509 src/gtkam-list.c:943
 msgid "Preview"
 msgstr "Просмотр"
 
-#: src/gtkam-info.c:575
+#: src/gtkam-info.c:557
 msgid "Audio"
 msgstr "Звук"
 
-#: src/gtkam-info.c:581
+#: src/gtkam-info.c:563
 msgid "Mime type: "
 msgstr "MIME-тип: "
 
-#: src/gtkam-list.c:334
+#: src/gtkam-list.c:316
 #, c-format
 msgid "Downloading thumbnail of '%s' from folder '%s'..."
 msgstr "Копирование миниатюрной копии '%s' из каталога '%s'..."
 
-#: src/gtkam-list.c:872
+#: src/gtkam-list.c:854
 #, c-format
 msgid "Changing name of '%s' to '%s'..."
 msgstr "'%s' переименовывается в '%s'..."
 
-#: src/gtkam-list.c:882
+#: src/gtkam-list.c:864
 #, c-format
 msgid "Could not change the name of '%s' to '%s'."
 msgstr "Невозможно переименовать '%s' в '%s'."
 
-#: src/gtkam-list.c:896
+#: src/gtkam-list.c:878
 msgid "/_View with..."
 msgstr "/_Просмотр"
 
-#: src/gtkam-list.c:897
+#: src/gtkam-list.c:879
 msgid "/View with.../Built-in viewer"
 msgstr "/Показать/Встроенный просмотрщик"
 
-#: src/gtkam-list.c:899
+#: src/gtkam-list.c:881
 msgid "/_Info"
 msgstr "/_Свойства"
 
-#: src/gtkam-list.c:901
+#: src/gtkam-list.c:883
 msgid "/_Exif"
 msgstr "EXIF-_данные"
 
-#: src/gtkam-list.c:904
+#: src/gtkam-list.c:886
 msgid "/_Save"
 msgstr "/_Копировать"
 
-#: src/gtkam-list.c:905
+#: src/gtkam-list.c:887
 msgid "/_Delete"
 msgstr "/_Удалить"
 
-#: src/gtkam-list.c:967
+#: src/gtkam-list.c:949
 msgid "Name"
 msgstr "Имя"
 
-#: src/gtkam-list.c:989
+#: src/gtkam-list.c:971
 #, c-format
 msgid "Listing files in folder '%s'..."
 msgstr "Получение списка файлов в каталоге '%s'..."
 
-#: src/gtkam-list.c:1005
+#: src/gtkam-list.c:987
 #, c-format
 msgid "Could not get file list for folder '%s'"
 msgstr "Невозможно получить список файлов в каталоге '%s'"
 
-#: src/gtkam-main.c:470
+#: src/gtkam-main.c:452
 msgid ""
 "gtkam is a program that lets you download\n"
 "images from many digital cameras. It uses\n"
@@ -407,11 +395,11 @@ msgstr ""
 "можно получить по адресу: \n"
 "http://www.gphoto.net."
 
-#: src/gtkam-main.c:481
+#: src/gtkam-main.c:463
 msgid "Many others"
 msgstr "Много других"
 
-#: src/gtkam-main.c:515
+#: src/gtkam-main.c:496
 #, c-format
 msgid ""
 "%s\n"
@@ -424,7 +412,7 @@ msgstr ""
 "%s %s с флагами:\n"
 "    %s\n"
 
-#: src/gtkam-main.c:519
+#: src/gtkam-main.c:500
 #, c-format
 msgid ""
 "%s\n"
@@ -435,420 +423,416 @@ msgstr ""
 "%s %s с флагами:\n"
 "    %s\n"
 
-#: src/gtkam-main.c:612
+#: src/gtkam-main.c:593
 msgid "/_File"
 msgstr "/_Файл"
 
-#: src/gtkam-main.c:613
+#: src/gtkam-main.c:594
 msgid "/File/_Save Photos"
 msgstr "/Файл/_Копировать снимки"
 
-#: src/gtkam-main.c:614
+#: src/gtkam-main.c:595
 msgid "/File/Save Photos/_Selected"
 msgstr "/Файл/Копировать снимки/Вы_бранные"
 
-#: src/gtkam-main.c:616
+#: src/gtkam-main.c:597
 msgid "/File/Save Photos/_All"
 msgstr "/Файл/Копировать снимки/_Все"
 
-#: src/gtkam-main.c:618
+#: src/gtkam-main.c:599
 msgid "/File/_Delete Photos"
 msgstr "/Файл/_Удалить снимки"
 
-#: src/gtkam-main.c:619
+#: src/gtkam-main.c:600
 msgid "/File/Delete Photos/_Selected"
 msgstr "/Файл/Удалить снимки/Вы_бранные"
 
-#: src/gtkam-main.c:621
+#: src/gtkam-main.c:602
 msgid "/File/Delete Photos/_All"
 msgstr "/Файл/Удалить снимки/_Все"
 
-#: src/gtkam-main.c:624
+#: src/gtkam-main.c:605
 msgid "/File/_Quit"
 msgstr "/Файл/_Выход"
 
-#: src/gtkam-main.c:626
+#: src/gtkam-main.c:607
 msgid "/_View"
 msgstr "/_Просмотр"
 
-#: src/gtkam-main.c:627
+#: src/gtkam-main.c:608
 msgid "/View/_View Thumbnails"
 msgstr "/Просмотр/Ми_ниатюры"
 
-#: src/gtkam-main.c:630
+#: src/gtkam-main.c:611
 msgid "/View/Zoom _In"
 msgstr "/Просмотр/_Крупнее"
 
-#: src/gtkam-main.c:632
+#: src/gtkam-main.c:613
 msgid "/View/Zoom _100"
 msgstr "/Просмотр/_Истинный размер"
 
-#: src/gtkam-main.c:634
+#: src/gtkam-main.c:615
 msgid "/View/Zoom _Out"
 msgstr "/Просмотр/_Мельче"
 
-#: src/gtkam-main.c:636
+#: src/gtkam-main.c:617
 msgid "/_Select"
 msgstr "/_Выбор"
 
-#: src/gtkam-main.c:637
+#: src/gtkam-main.c:618
 msgid "/Select/_All"
 msgstr "/Выбор/_Все"
 
-#: src/gtkam-main.c:638
+#: src/gtkam-main.c:619
 msgid "/Select/_Inverse"
 msgstr "/Выбор/_Инвертировать"
 
-#: src/gtkam-main.c:639
+#: src/gtkam-main.c:620
 msgid "/Select/_None"
 msgstr "/Выбор/_Ничего"
 
-#: src/gtkam-main.c:640
+#: src/gtkam-main.c:621
 msgid "/_Camera"
 msgstr "/_Фотоаппарат"
 
-#: src/gtkam-main.c:641
+#: src/gtkam-main.c:622
 msgid "/Camera/_Add Camera..."
 msgstr "/Фотоаппарат/_Добавить"
 
-#: src/gtkam-main.c:642
+#: src/gtkam-main.c:623
 msgid "/_Help"
 msgstr "/_Справка"
 
-#: src/gtkam-main.c:644
+#: src/gtkam-main.c:625
 msgid "/Help/_Contents"
 msgstr "/Справка/_Содержание"
 
-#: src/gtkam-main.c:647
+#: src/gtkam-main.c:628
 msgid "/Help/_Debug"
 msgstr "/Справка/От_ладка"
 
-#: src/gtkam-main.c:648
+#: src/gtkam-main.c:629
 msgid "/Help/_About"
 msgstr "/Справка/_О программе"
 
-#: src/gtkam-main.c:706
+#: src/gtkam-main.c:687
 msgid "View Thumbnails"
 msgstr "Показывать миниатюры"
 
-#: src/gtkam-main.c:727
+#: src/gtkam-main.c:708
 msgid "_Help"
 msgstr "_Справка"
 
-#: src/gtkam-main.c:739
+#: src/gtkam-main.c:720
 msgid "_Debug..."
 msgstr "От_ладка"
 
-#: src/gtkam-main.c:748
+#: src/gtkam-main.c:729
 msgid "_About..."
 msgstr "_О программе"
 
-#: src/gtkam-mkdir.c:170
+#: src/gtkam-mkdir.c:152
 #, c-format
 msgid "Creating folder '%s' in folder '%s'..."
 msgstr "Создаётся каталог '%s' внутри '%s'..."
 
-#: src/gtkam-mkdir.c:204
+#: src/gtkam-mkdir.c:186
 #, c-format
 msgid "Could not create folder '%s' in folder '%s'."
 msgstr "Невозможно создать каталог '%s' в '%s'."
 
-#: src/gtkam-mkdir.c:230
+#: src/gtkam-mkdir.c:212
 #, c-format
 msgid "Please choose a name for the directory that should be created in '%s':"
 msgstr "Введите, пожалуйста, имя создаваемого в '%s' каталога:"
 
-#: src/gtkam-mkdir.c:246
+#: src/gtkam-mkdir.c:228
 msgid "New directory"
 msgstr "Новый каталог"
 
-#: src/gtkam-port.c:163
+#: src/gtkam-port.c:145
 #, c-format
 msgid "Could not find an io-driver for port '%s' ('%s')."
 msgstr "Не найден соответствующий драйвер для порта '%s' ('%s')."
 
-#: src/gtkam-port.c:198
+#: src/gtkam-port.c:180
 msgid "Please specify the (extended) path to the port you would like to use:"
 msgstr "Укажите, пожалуйста, полный путь к выбранному порту:"
 
-#. The camera doesn't support previews. Capture an image.
-#: src/gtkam-preview.c:205 src/gtkam-tree.c:791
+#: src/gtkam-preview.c:187 src/gtkam-tree.c:773
 msgid "Capturing image..."
 msgstr "Делается снимок..."
 
-#: src/gtkam-preview.c:227
+#: src/gtkam-preview.c:209
 msgid "Could not capture image."
 msgstr "Сделать снимок невозможно."
 
-#: src/gtkam-preview.c:363 src/gtkam-preview.c:426
+#: src/gtkam-preview.c:345 src/gtkam-preview.c:408
 msgid "Capture"
 msgstr "Сделать снимок"
 
-#: src/gtkam-preview.c:389
+#: src/gtkam-preview.c:371
 msgid "0 degrees"
 msgstr "0 градусов"
 
-#: src/gtkam-preview.c:397
+#: src/gtkam-preview.c:379
 msgid "Don't rotate thumbnail"
 msgstr "Не поворачивать миниатюру"
 
-#: src/gtkam-preview.c:399
+#: src/gtkam-preview.c:381
 msgid "-90 degrees"
 msgstr "-90 градусов"
 
-#: src/gtkam-preview.c:406
+#: src/gtkam-preview.c:388
 msgid "Rotate thumbnail by -90 degrees"
 msgstr "Повернуть миниатюру на 90 градусов влево"
 
-#: src/gtkam-preview.c:408
+#: src/gtkam-preview.c:390
 msgid "+90 degrees"
 msgstr "+90 градусов"
 
-#: src/gtkam-preview.c:415
+#: src/gtkam-preview.c:397
 msgid "Rotate thumbnail by 90 degrees"
 msgstr "Повернуть миниатюру на 90 градусов вправо"
 
-#: src/gtkam-preview.c:417
+#: src/gtkam-preview.c:399
 msgid "180 degrees"
 msgstr "180 градусов"
 
-#: src/gtkam-preview.c:424
+#: src/gtkam-preview.c:406
 msgid "Rotate thumbnail by 180 degrees"
 msgstr "Повернуть миниатюру на 180 градусов"
 
-#: src/gtkam-save.c:320
+#: src/gtkam-save.c:302
 msgid "photo"
 msgstr "снимок"
 
-#: src/gtkam-save.c:337
+#: src/gtkam-save.c:319
 #, c-format
 msgid "'%s' already exists."
 msgstr "'%s' уже существует."
 
-#: src/gtkam-save.c:351
+#: src/gtkam-save.c:333
 #, c-format
 msgid "Could not save file to '%s'."
 msgstr "Невозможно скопировать файл в '%s'."
 
-#: src/gtkam-save.c:387
+#: src/gtkam-save.c:369
 #, c-format
 msgid "Could not get '%s' from folder '%s'."
 msgstr "Невозможно получить '%s' из каталога '%s'."
 
-#: src/gtkam-save.c:409
+#: src/gtkam-save.c:391
 msgid "Downloading file"
 msgstr "Копирование файла"
 
-#: src/gtkam-save.c:411
+#: src/gtkam-save.c:393
 #, c-format
 msgid "Downloading %i files"
 msgstr "Копирование %i файла(ов)"
 
-#: src/gtkam-save.c:418
+#: src/gtkam-save.c:400
 #, c-format
 msgid "Downloading %i files..."
 msgstr "Идёт копирование %i файла(ов)..."
 
-#: src/gtkam-save.c:493
+#: src/gtkam-save.c:475
 msgid "What to save:"
 msgstr "Копировать:"
 
-#: src/gtkam-save.c:502
+#: src/gtkam-save.c:484
 msgid "Save photos"
 msgstr "Cнимки"
 
-#: src/gtkam-save.c:506
+#: src/gtkam-save.c:488
 msgid "Photos will be saved if this is checked"
 msgstr "Если флажок включён, то программа будет копировать снимки"
 
-#: src/gtkam-save.c:510
+#: src/gtkam-save.c:492
 msgid "Save raw data"
 msgstr "Исходные данные"
 
-#: src/gtkam-save.c:513
+#: src/gtkam-save.c:495
 msgid "Raw data will be saved if this is checked"
 msgstr "Если флажок включён, то программа будет копировать исходные данные."
 
-#: src/gtkam-save.c:517
+#: src/gtkam-save.c:499
 msgid "Save audio data"
 msgstr "Звукозаписи"
 
-#: src/gtkam-save.c:520
+#: src/gtkam-save.c:502
 msgid "Audio data will be saved if this is checked"
 msgstr "Если флажок включён, то программа будет копировать звукозаписи."
 
-#: src/gtkam-save.c:524
+#: src/gtkam-save.c:506
 msgid "Save thumbnails"
 msgstr "Миниатюры"
 
-#: src/gtkam-save.c:527
+#: src/gtkam-save.c:509
 msgid "Thumbnails will be saved if this is checked"
 msgstr ""
 "Если флажок включён, то программа будет сохранять миниатюрные копии "
 "изображений для ускорения просмотра."
 
-#: src/gtkam-save.c:531
+#: src/gtkam-save.c:513
 msgid "Save EXIF data"
 msgstr "EXIF-данные"
 
-#: src/gtkam-save.c:534
+#: src/gtkam-save.c:516
 msgid "EXIF data will be saved if this is checked"
 msgstr "Если флажок включён, то программа будет копировать EXIF-данные."
 
-#: src/gtkam-save.c:543
+#: src/gtkam-save.c:525
 msgid "Open image(s) with: "
 msgstr "Открыть изображение(я) с помощью: "
 
-#: src/gtkam-save.c:550
+#: src/gtkam-save.c:532
 msgid "Type in the name of the program you want to run, leave blank for none"
 msgstr ""
 "Введите имя программы, которую хотите запустить, или оставьте поле пустым."
 
-#. Filenames provided by camera
-#: src/gtkam-save.c:556
+#: src/gtkam-save.c:538
 msgid "Use filename(s) provided by the camera"
 msgstr "Использовать присвоенные фотоаппаратом имена файлов"
 
-#: src/gtkam-save.c:560
+#: src/gtkam-save.c:542
 msgid "Choose whether to use the filename provided by the camera"
 msgstr "Использовать ли имена файлов автоматически присвоенные фотоаппаратом."
 
-#: src/gtkam-save.c:575
+#: src/gtkam-save.c:557
 msgid "Filename prefix: "
 msgstr "Префикс имени файла:"
 
-#: src/gtkam-save.c:584
+#: src/gtkam-save.c:566
 msgid "Start numbering with: "
 msgstr "Начало нумерации:"
 
-#. First case: We have only one file.
-#: src/gtkam-save.c:623
+#: src/gtkam-save.c:605
 #, c-format
 msgid "Save '%s'..."
 msgstr "Копировать '%s'..."
 
-#. Second case: We have multiple files to save.
-#: src/gtkam-save.c:645
+#: src/gtkam-save.c:627
 msgid "Save photos..."
 msgstr "Копировать снимки..."
 
-#: src/gtkam-tree.c:309
+#: src/gtkam-tree.c:291
 #, c-format
 msgid "Listing folders in '%s'..."
 msgstr "Получение списка каталогов в '%s'..."
 
-#: src/gtkam-tree.c:330
+#: src/gtkam-tree.c:312
 #, c-format
 msgid "Could not list folders in '%s'."
 msgstr "Невозможно получить список каталогов в '%s'."
 
-#: src/gtkam-tree.c:427
+#: src/gtkam-tree.c:409
 #, c-format
 msgid "Could not open '%s'."
 msgstr "Невозможно открыть '%s'."
 
-#: src/gtkam-tree.c:434
+#: src/gtkam-tree.c:416
 #, c-format
 msgid "Uploading '%s' into folder '%s'..."
 msgstr "Запись '%s' в каталог '%s'..."
 
-#: src/gtkam-tree.c:454
+#: src/gtkam-tree.c:436
 #, c-format
 msgid "Could not upload '%s' into '%s'."
 msgstr "Невозможно записать '%s' в '%s'."
 
-#: src/gtkam-tree.c:478
+#: src/gtkam-tree.c:460
 #, c-format
 msgid "Upload into '%s'..."
 msgstr "Загрузить в '%s'..."
 
-#: src/gtkam-tree.c:554
+#: src/gtkam-tree.c:536
 #, c-format
 msgid "Removing directory '%s'..."
 msgstr "Удаление каталога '%s'..."
 
-#: src/gtkam-tree.c:571
+#: src/gtkam-tree.c:553
 #, c-format
 msgid "Could not remove directory '%s'."
 msgstr "Невозможно удалить каталог '%s'."
 
-#: src/gtkam-tree.c:600
+#: src/gtkam-tree.c:582
 msgid "Getting information about the camera..."
 msgstr "Получение сведений о фотоаппарате..."
 
-#: src/gtkam-tree.c:604
+#: src/gtkam-tree.c:586
 msgid "Getting information about the driver..."
 msgstr "Получение сведений о драйвере..."
 
-#: src/gtkam-tree.c:608
+#: src/gtkam-tree.c:590
 msgid "Getting manual..."
 msgstr "Получение справки..."
 
-#: src/gtkam-tree.c:639
+#: src/gtkam-tree.c:621
 msgid "Could not retrieve information."
 msgstr "Невозможно извлечь данные."
 
-#: src/gtkam-tree.c:809
+#: src/gtkam-tree.c:791
 msgid "Could not capture."
 msgstr "Невозможно сделать снимок."
 
-#: src/gtkam-tree.c:848
+#: src/gtkam-tree.c:830
 msgid "/Upload file"
 msgstr "/Записать файл в память"
 
-#: src/gtkam-tree.c:849
+#: src/gtkam-tree.c:831
 msgid "/Make directory"
 msgstr "/Создать каталог"
 
-#: src/gtkam-tree.c:850
+#: src/gtkam-tree.c:832
 msgid "/Remove directory"
 msgstr "/Удалить каталог"
 
-#: src/gtkam-tree.c:852
+#: src/gtkam-tree.c:834
 msgid "/Capture"
 msgstr "/Сделать снимок"
 
-#: src/gtkam-tree.c:853
+#: src/gtkam-tree.c:835
 msgid "/Preferences"
 msgstr "/Настройки"
 
-#: src/gtkam-tree.c:855
+#: src/gtkam-tree.c:837
 msgid "/Summary"
 msgstr "/О фотоаппарате"
 
-#: src/gtkam-tree.c:856
+#: src/gtkam-tree.c:838
 msgid "/Manual"
 msgstr "/Встроенная справка"
 
-#: src/gtkam-tree.c:857
+#: src/gtkam-tree.c:839
 msgid "/About"
 msgstr "/О драйвере"
 
-#: src/gtkam-tree.c:859
+#: src/gtkam-tree.c:841
 msgid "/Select Camera"
 msgstr "/Сменить модель"
 
-#: src/gtkam-tree.c:860
+#: src/gtkam-tree.c:842
 msgid "/Remove Camera"
 msgstr "/Удалить фотоаппарат"
 
-#: src/gtkam-tree.c:890
+#: src/gtkam-tree.c:872
 msgid "_Add Camera..."
 msgstr "_Добавить фотоаппарат..."
 
-#: src/gtkam-tree.c:990
+#: src/gtkam-tree.c:972
 msgid "Please right-click to access additional menus"
 msgstr "Нажмите правую кнопку мыши чтобы открыть дополнительное меню."
 
-#: src/gtkam-tree.c:1019
+#: src/gtkam-tree.c:1001
 msgid "Folder"
 msgstr "Каталог"
 
-#: src/gtkam-tree.c:1112
+#: src/gtkam-tree.c:1094
 msgid "Loading cameras..."
 msgstr "Чтение списка моделей..."
 
-#: src/gtkam-util.c:64
+#: src/gtkam-util.c:46
 #, c-format
 msgid ""
 "Could not display '%s'. Either the image type ('%s') is not supported by gtk "
@@ -856,15 +840,25 @@ msgid ""
 msgstr ""
 "Невозможно показать '%s'. Неизвестный формат файла ('%s') или файл повреждён."
 
-#: src/gtkam-viewer.c:256
+#: src/gtkam-version.c:102
+msgid ""
+"ALWAYS INCLUDE THE FOLLOWING LINES WHEN SENDING DEBUG MESSAGES TO THE "
+"MAILING LIST:"
+msgstr ""
+
+#: src/gtkam-viewer.c:238
 #, c-format
 msgid "Downloading '%s' from folder '%s'..."
 msgstr "Идёт копирование '%s' из каталога '%s'..."
 
-#: src/gtkam-viewer.c:307
+#: src/gtkam-viewer.c:289
 #, c-format
 msgid "Could not download '%s' from folder '%s'."
 msgstr "Невозможно скопировать '%s' из каталога '%s'."
+
+#: src/main.c:111
+msgid "Image Download Program"
+msgstr "Программа копирования изображений"
 
 #~ msgid "/View with..."
 #~ msgstr "/Показать"

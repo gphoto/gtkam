@@ -1,20 +1,10 @@
+2001-10-10  Lutz Müller <urc8@rz.uni-karlsruhe.de>
+
+	Colin Marquardt <colin@marquardt-home.de> contributed a new
+
+	* de.po: Updated.
+
 2001-10-09  gettextize  <bug-gnu-utils@gnu.org>
 
 	* Makefile.in.in: Upgrade to gettext-0.10.40.
-
-2001-10-09  gettextize  <bug-gnu-utils@gnu.org>
-
-	* Makefile.in.in: Upgrade to gettext-0.10.40.
-
-2001-10-08  gettextize  <bug-gnu-utils@gnu.org>
-
-	* Makefile.in.in: Upgrade to gettext-0.10.40.
-
-2001-10-05  gettextize  <bug-gnu-utils@gnu.org>
-
-	* Makefile.in.in: Upgrade to gettext-0.10.40.
-
-2001-08-18  gettextize  <bug-gnu-utils@gnu.org>
-
-	* Makefile.in.in: Upgrade to gettext-0.10.39.
 

@@ -1,17 +1,16 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR Free Software Foundation, Inc.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# German message catalog for gtKam, a GTK+ front end for gphoto2
+# Copyright (C) 2000, 2001 Scott Fritzinger <scottf@unr.edu>
+# Colin Marquardt <colin@marquardt-home.de>, 2000, 2001.
 #
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2001-10-09 20:22+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"Project-Id-Version: gtKam\n"
+"POT-Creation-Date: 2001-03-17 13:19-0800\n"
+"PO-Revision-Date: 2001-10-11 23:14+02:00\n"
+"Last-Translator: Colin Marquardt <colin@marquardt-home.de>\n"
+"Language-Team: German <de@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: src/gtkam-chooser.c:182 src/main.c:102
@@ -92,7 +91,7 @@ msgstr "Datum und Uhrzeit sind noch nicht implementiert!"
 
 #: src/gtkam-config.c:469
 msgid "Could not get configuration"
-msgstr "Konnte die Konfiguration nicht bekommen"
+msgstr "Konnte die Konfiguration nicht abfragen"
 
 #: src/gtkam-debug.c:164
 msgid "Save As..."
@@ -125,27 +124,27 @@ msgstr "Speichere unter"
 
 #: src/gtkam-error.c:187
 msgid "Show debugging messages"
-msgstr "Zeige Debugging Nachrichten"
+msgstr "Zeige Debugging-Nachrichten"
 
 #: src/gtkam-list.c:187
 #, c-format
 msgid "Could not get preview of file '%s' in folder '%s'"
-msgstr "Konnte die Vorschau von der Datei '%s' im Ordner '%s' nicht bekommen"
+msgstr "Vorschau der Datei '%s' im Verzeichnis '%s' nicht möglich"
 
 #: src/gtkam-list.c:257
 #, c-format
 msgid "Could not get file list for folder '%s'"
-msgstr "Konnte die Dateiliste des Ordners '%s' nicht bekommen"
+msgstr "Fehler beim Herunterladen der Dateiliste des Verzeichnisses '%s'"
 
 #: src/gtkam-list.c:281
 #, c-format
 msgid "Could not get file '%s'"
-msgstr "Konnte die Datei '%s' nicht bekommen"
+msgstr "Fehler beim Herunterladen der Datei '%s'"
 
 #: src/gtkam-list.c:363
 #, c-format
 msgid "Could not delete '%s' in folder '%s'"
-msgstr "Konnte die Datei '%s' aus dem Ordner '%s' nicht löschen"
+msgstr "Konnte Datei '%s' im Verzeichnis '%s' nicht löschen"
 
 #: src/gtkam-list.c:397
 msgid "Could not delete all photos"
@@ -167,7 +166,7 @@ msgstr "Konnte die Treiberinformationen nicht abfragen"
 msgid ""
 "gtKam was written by:\n"
 " - Scott Fritzinger <scottf@unr.edu>,\n"
-" - Lutz Mueller <urc8@rz.uni-karlsruhe.de>,\n"
+" - Lutz Müller <urc8@rz.uni-karlsruhe.de>,\n"
 " - and many others.\n"
 "\n"
 "gtKam uses libgphoto2, a library to access a\n"
@@ -179,7 +178,7 @@ msgid ""
 msgstr ""
 "gtKam wurde geschrieben von:\n"
 " - Scott Fritzinger <scottf@unr.edu>,\n"
-" - Lutz Mueller <urc8@rz.uni-karlsruhe.de>,\n"
+" - Lutz Müller <urc8@rz.uni-karlsruhe.de>,\n"
 " - und vielen anderen.\n"
 "\n"
 "gtKam verwendet libgphoto2, eine Bibliothek, um\n"
@@ -187,7 +186,7 @@ msgstr ""
 "Informationen sind unter\n"
 "http://www.gphoto.net erhältlich.\n"
 "\n"
-"Genieße gphoto!"
+"Viel Spaß mit gphoto!"
 
 #: src/gtkam-main.c:438
 msgid "_File"
@@ -211,7 +210,7 @@ msgstr "_Alle Photos"
 
 #: src/gtkam-main.c:503
 msgid "_Exit"
-msgstr "Beenden"
+msgstr "_Beenden"
 
 #: src/gtkam-main.c:515
 msgid "_Select"
@@ -239,11 +238,11 @@ msgstr "_Wähle Kamera..."
 
 #: src/gtkam-main.c:584
 msgid "Ca_pture"
-msgstr "Mache ein Bild"
+msgstr "Bild machen"
 
 #: src/gtkam-main.c:595
 msgid "_Configure"
-msgstr "_Konfiguriere"
+msgstr "_Konfigurieren"
 
 #: src/gtkam-main.c:606
 msgid "_Information"
@@ -263,7 +262,7 @@ msgstr "_Hilfe"
 
 #: src/gtkam-main.c:653
 msgid "_Debug"
-msgstr "_Analysiere"
+msgstr "_Meldungen"
 
 #: src/gtkam-main.c:662
 msgid "_About"
@@ -287,7 +286,7 @@ msgstr "Beenden"
 
 #: src/gtkam-main.c:757
 msgid "Index Settings"
-msgstr "Index Einstellungen"
+msgstr "Indexeinstellungen"
 
 #: src/gtkam-main.c:761
 msgid "View Thumbnails"
@@ -299,7 +298,7 @@ msgstr "Konnte kein Bild machen"
 
 #: src/gtkam-preview.c:281
 msgid "Refresh every "
-msgstr "Erneuere jede "
+msgstr "Vorschau jede "
 
 #: src/gtkam-preview.c:300
 msgid " second(s)"
@@ -307,7 +306,7 @@ msgstr "Sekunde(n)"
 
 #: src/gtkam-preview.c:304
 msgid "Capture"
-msgstr "Mache ein Bild"
+msgstr "Bild machen"
 
 #: src/gtkam-preview.c:313
 msgid "Cancel"
@@ -316,17 +315,17 @@ msgstr "Abbrechen"
 #: src/gtkam-save.c:272
 #, c-format
 msgid "'%s' already exists."
-msgstr "'%s' existiert schon."
+msgstr "'%s' existiert bereits."
 
 #: src/gtkam-save.c:283
 #, c-format
 msgid "Could not save file to '%s'"
-msgstr "Konnte die Datei nicht unter '%s' speichern"
+msgstr "Konnte Datei nicht unter '%s' speichern"
 
 #: src/gtkam-save.c:308
 #, c-format
 msgid "Could not get '%s' from folder '%s'"
-msgstr "Konnte die Datei '%s' nicht vom Ordner '%s' bekommen"
+msgstr "Konnte Datei '%s' nicht aus Verzeichnis '%s' holen"
 
 #: src/gtkam-save.c:387
 msgid "Save selected photos..."
@@ -387,4 +386,4 @@ msgstr "Keine Kamera ausgewählt"
 #: src/gtkam-tree.c:201
 #, c-format
 msgid "Could not get list of folders for folder '%s'."
-msgstr "Konnte keine Liste der Order im Ordner '%s' bekommen"
+msgstr "Konnte Verzeichnisliste im Verzeichnis '%s' nicht bekommen"

@@ -1277,7 +1277,7 @@ item_size_request(GtkIconList *iconlist,
 
 }
 
-   		  
+#if 0   		  
 void
 gtk_icon_list_set_editable (GtkIconList *iconlist, gboolean editable)
 {
@@ -1292,7 +1292,8 @@ gtk_icon_list_set_editable (GtkIconList *iconlist, gboolean editable)
   }
 
   iconlist->is_editable = editable;
-} 
+}
+#endif
 
 GtkIconListItem *
 gtk_icon_list_get_nth(GtkIconList *iconlist, guint n)
@@ -1481,7 +1482,8 @@ gtk_icon_list_set_label(GtkIconList *iconlist, GtkIconListItem *item, const gcha
   gtk_entry_set_text(GTK_ENTRY(item->entry), label);
   set_labels(iconlist, item, label);
 }
- 
+
+#if 0
 /**********************************
  * gtk_icon_list_set_icon_width
  * gtk_icon_list_set_row_spacing
@@ -1524,6 +1526,7 @@ gtk_icon_list_set_text_space(GtkIconList *iconlist, guint spacing)
   iconlist->text_space = spacing;
   reorder_icons(iconlist);
 }
+#endif
 
 /**********************************
  * gtk_icon_list_set_selection_mode

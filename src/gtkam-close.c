@@ -25,6 +25,7 @@
 #include <gtk/gtklabel.h>
 #include <gtk/gtksignal.h>
 #include <gtk/gtkbox.h>
+#include <gtk/gtkscrolledwindow.h>
 
 struct _GtkamClosePrivate
 {
@@ -100,14 +101,30 @@ GtkWidget *
 gtkam_close_new (const gchar *msg, GtkWidget *opt_window)
 {
 	GtkamClose *close;
-	GtkWidget *label, *button;
+	GtkWidget *label, *button, *scrolled;
+
+	g_return_val_if_fail (msg != NULL, NULL);
 
 	close = gtk_type_new (GTKAM_TYPE_CLOSE);
 
 	label = gtk_label_new (msg);
 	gtk_widget_show (label);
-	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (close)->vbox), label,
-			    FALSE, FALSE, 0);
+
+	if (strlen (msg) > 1024) {
+		gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
+
+		scrolled = gtk_scrolled_window_new (NULL, NULL);
+		gtk_widget_show (scrolled);
+		gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled),
+				GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
+		gtk_box_pack_start (GTK_BOX (GTK_DIALOG (close)->vbox),
+				    scrolled, TRUE, TRUE, 0);
+
+		gtk_scrolled_window_add_with_viewport (
+				GTK_SCROLLED_WINDOW (scrolled), label);
+	} else
+		gtk_box_pack_start (GTK_BOX (GTK_DIALOG (close)->vbox), label,
+				    FALSE, FALSE, 0);
 
 	button = gtk_button_new_with_label ("Close");
 	gtk_widget_show (button);

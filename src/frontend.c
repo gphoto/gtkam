@@ -14,48 +14,14 @@
 #include "frontend.h"
 #include "support.h"
 #include "util.h"
+#include "gtkam-close.h"
 
-int frontend_message_long(Camera *camera, char *message) {
-        GtkWidget *window, *ok, *text;
+int
+frontend_message (Camera *camera, char *message)
+{
+	GtkWidget *dialog;
 
-        window = create_message_window_long();
-        text = (GtkWidget*) lookup_widget(window, "message");
-        ok   = (GtkWidget*) lookup_widget(window, "close");
-	gtk_label_set_text (GTK_LABEL(text), message);
-
-        wait_for_hide(window, ok, NULL);
-
-	gtk_widget_destroy(window);
-
-	return (GP_OK);
-}
-
-int frontend_message(Camera *camera, char *message) {
-
-	GtkWidget *window, *label, *ok;
-
-	if (strlen(message) > 1024) {
-		frontend_message_long(camera, message);
-		return (GP_OK);
-	}
-
-	if (GTK_WIDGET_VISIBLE(gp_gtk_progress_window)) {
-		label  = (GtkWidget*) lookup_widget(gp_gtk_progress_window, "message");
-		gtk_label_set_text(GTK_LABEL(label), message);
-		while (gtk_events_pending ())
-			gtk_main_iteration ();
-		return (GP_OK);
-	}
-	
-	window = create_message_window();
-	label  = (GtkWidget*) lookup_widget(window, "message");
-        ok     = (GtkWidget*) lookup_widget(window, "close");
-
-	gtk_label_set_text(GTK_LABEL(label), message);
-
-	wait_for_hide(window, ok, NULL);
-
-	gtk_widget_destroy(window);
+	dialog = gtkam_close_new (message, NULL);
 
 	return (GP_OK);
 }
@@ -103,7 +69,8 @@ int frontend_confirm(Camera *camera, char *message) {
 	return (ret);
 }
 
-void frontend_prompt_build (CameraWidget *w, GtkWidget *box, GtkWidget **window) {
+static void
+frontend_prompt_build (CameraWidget *w, GtkWidget *box, GtkWidget **window) {
 
 	GtkWidget *win, *ok, *cancel; 
 	GtkWidget *gtklabel, *vbox, *notebook, *entry, *hscale, *button, *frame, *menu;
@@ -322,7 +289,8 @@ void frontend_prompt_build (CameraWidget *w, GtkWidget *box, GtkWidget **window)
 
 }
 
-void frontend_prompt_retrieve (CameraWidget *w, GtkWidget *window) {
+static void
+frontend_prompt_retrieve (CameraWidget *w, GtkWidget *window) {
 
 	GtkWidget *widget;
 	GtkAdjustment *adj;

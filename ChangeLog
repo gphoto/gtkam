@@ -1,5 +1,9 @@
 2002-07-26  Lutz Müller <lutz@users.sourceforge.net>
 
+	* src/gtkam-main.c: Move the zoom items into a toolbar.
+
+2002-07-26  Lutz Müller <lutz@users.sourceforge.net>
+
 	* src/gtkam-list.c: Give users the possibility to zoom into the
 	  previews.
 

@@ -47,7 +47,7 @@
 #include <gdk-pixbuf/gdk-pixbuf.h>
 
 #include <gtk/gtkitemfactory.h>
-#include <gtk/gtksignal.h>
+#include <gtk/gtkcheckmenuitem.h>
 #include <gtk/gtkprogressbar.h>
 #include <gtk/gtkstatusbar.h>
 #include <gtk/gtktoolbar.h>
@@ -55,7 +55,6 @@
 #include <gtk/gtklabel.h>
 #include <gtk/gtkmenu.h>
 #include <gtk/gtkvbox.h>
-#include <gtk/gtkframe.h>
 #include <gtk/gtkhpaned.h>
 #include <gtk/gtkmain.h>
 #include <gtk/gtkmenubar.h>
@@ -86,7 +85,7 @@ struct _GtkamMainPrivate
 	GtkWidget *tree, *list;
 	GtkItemFactory *factory;
 
-	GtkWidget *item_summary, *item_about, *item_manual, *item_config;
+	GtkWidget *menu_view_thumbnails, *toolbar_button_thumbnails;
 
 	GtkWidget *item_delete, *item_delete_all;
 
@@ -193,10 +192,17 @@ gtkam_main_update_sensitivity (GtkamMain *m)
 static void
 on_thumbnails_toggled (GtkToggleButton *toggle, GtkamMain *m)
 {
-	if (toggle->active)
+	if (toggle->active) {
+		gtk_check_menu_item_set_active (
+			GTK_CHECK_MENU_ITEM (m->priv->menu_view_thumbnails),
+			TRUE);
 		gtkam_list_show_thumbnails (GTKAM_LIST (m->priv->list));
-	else
+	} else {
+		gtk_check_menu_item_set_active (
+			GTK_CHECK_MENU_ITEM (m->priv->menu_view_thumbnails),
+			FALSE);
 		gtkam_list_hide_thumbnails (GTKAM_LIST (m->priv->list));
+	}
 }
 
 static void
@@ -316,6 +322,28 @@ action_add_camera (gpointer callback_data, guint callback_action,
 	gtk_widget_show (dialog);
 	g_signal_connect (GTK_OBJECT (dialog), "camera_selected",
 			G_CALLBACK (on_camera_selected), m);
+}
+
+static void
+action_view_thumbnails (gpointer callback_data, guint callback_action,
+			GtkWidget *widget)
+{
+	GtkamMain *m = GTKAM_MAIN (callback_data);
+
+	if (!m->priv->list)
+		return;
+
+	if (gtk_check_menu_item_get_active (GTK_CHECK_MENU_ITEM (widget))) {
+		gtk_toggle_button_set_active (
+			GTK_TOGGLE_BUTTON (m->priv->toolbar_button_thumbnails),
+			TRUE);
+		gtkam_list_show_thumbnails (GTKAM_LIST (m->priv->list));
+	} else {
+		gtk_toggle_button_set_active (
+			GTK_TOGGLE_BUTTON (m->priv->toolbar_button_thumbnails),
+			FALSE);
+		gtkam_list_hide_thumbnails (GTKAM_LIST (m->priv->list));
+	}
 }
 
 static void
@@ -502,6 +530,9 @@ static GtkItemFactoryEntry mi[] =
 	{"/File/sep1", NULL, 0, 0, "<Separator>"},
 	{"/File/_Quit", NULL, action_quit, 0, "<StockItem>", GTK_STOCK_QUIT},
 	{"/_View", NULL, 0, 0, "<Branch>"},
+	{"/View/_View Thumbnails", NULL, action_view_thumbnails, 0,
+						"<ToggleItem>", NULL},
+	{"/View/sep2", NULL, 0, 0, "<Separator>"},
 	{"/View/Zoom _In", NULL, action_zoom_in, 0, "<StockItem>",
 							GTK_STOCK_ZOOM_IN},
 	{"/View/Zoom _100", NULL, action_zoom_100, 0, "<StockItem>",
@@ -523,8 +554,7 @@ gtkam_main_new (void)
 	GdkPixbuf *pixbuf;
 	GtkAccelGroup *ag;
 	GtkItemFactory *item_factory;
-	GtkWidget *widget, *vbox, *frame, *scrolled, *hpaned, *check;
-	GtkWidget *hbox, *i, *b;
+	GtkWidget *widget, *vbox, *scrolled, *hpaned, *i, *t;
 
 	m = g_object_new (GTKAM_TYPE_MAIN, NULL);
 	gtk_window_set_title (GTK_WINDOW (m), PACKAGE);
@@ -536,16 +566,41 @@ gtkam_main_new (void)
 	gtk_widget_show (vbox);
 	gtk_container_add (GTK_CONTAINER (m), vbox);
 
+	/* Menu */
 	ag = gtk_accel_group_new ();
 	item_factory = gtk_item_factory_new (GTK_TYPE_MENU_BAR, "<main>", ag);
 	g_object_set_data_full (G_OBJECT (m), "<main>", item_factory,
 				(GDestroyNotify) g_object_unref);
 	gtk_window_add_accel_group (GTK_WINDOW (m), ag);
 	gtk_item_factory_create_items (item_factory, G_N_ELEMENTS (mi), mi, m);
+	m->priv->menu_view_thumbnails = gtk_item_factory_get_widget (
+			item_factory, "/View/View Thumbnails");
+	gtk_check_menu_item_set_active (
+		GTK_CHECK_MENU_ITEM (m->priv->menu_view_thumbnails), TRUE);
 	widget = gtk_item_factory_get_widget (item_factory, "<main>");
 	gtk_widget_show (widget);
 	gtk_box_pack_start (GTK_BOX (vbox), widget, FALSE, FALSE, 0);
 	m->priv->factory = GTK_ITEM_FACTORY (item_factory);
+
+	/* Toolbar */
+	t = gtk_toolbar_new ();
+	gtk_widget_show (t);
+	gtk_toolbar_set_icon_size (GTK_TOOLBAR (t),
+				   GTK_ICON_SIZE_SMALL_TOOLBAR);
+	gtk_box_pack_start (GTK_BOX (vbox), t, FALSE, FALSE, 0);
+	i = gtk_check_button_new_with_label (_("View Thumbnails"));
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (i), TRUE);
+	gtk_widget_show (i);
+	m->priv->toolbar_button_thumbnails = i;
+	gtk_toolbar_append_widget (GTK_TOOLBAR (t), i, NULL, NULL);
+	g_signal_connect (G_OBJECT (i), "toggled",
+			  G_CALLBACK (on_thumbnails_toggled), m);
+	gtk_toolbar_insert_stock (GTK_TOOLBAR (t), GTK_STOCK_ZOOM_IN,
+		NULL, NULL, G_CALLBACK (on_zoom_in_clicked), m, -1);
+	gtk_toolbar_insert_stock (GTK_TOOLBAR (t), GTK_STOCK_ZOOM_100,
+		NULL, NULL, G_CALLBACK (on_zoom_100_clicked), m, -1);
+	gtk_toolbar_insert_stock (GTK_TOOLBAR (t), GTK_STOCK_ZOOM_OUT,
+		NULL, NULL, G_CALLBACK (on_zoom_out_clicked), m, -1);
 
 #if 0
 	/*
@@ -602,56 +657,9 @@ gtkam_main_new (void)
 	/*
 	 * Left
 	 */
-	vbox = gtk_vbox_new (FALSE, 5);
-	gtk_widget_show (vbox);
-	gtk_paned_pack1 (GTK_PANED (hpaned), vbox, FALSE, TRUE);
-	m->priv->vbox = vbox;
-
-	frame = gtk_frame_new (_("Index Settings"));
-	gtk_widget_show (frame);
-	gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, FALSE, 0);
-
-	hbox = gtk_hbox_new (FALSE, 5);
-	gtk_widget_show (hbox);
-	gtk_container_add (GTK_CONTAINER (frame), hbox);
-	gtk_container_set_border_width (GTK_CONTAINER (hbox), 2);
-
-	check = gtk_check_button_new_with_label (_("View Thumbnails"));
-	gtk_widget_show (check);
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (check), TRUE);
-	gtk_box_pack_start (GTK_BOX (hbox), check, FALSE, FALSE, 0);
-	g_signal_connect (G_OBJECT (check), "toggled",
-			  G_CALLBACK (on_thumbnails_toggled), m);
-
-	/* Zoom buttons */
-	b = gtk_button_new ();
-	gtk_widget_show (b);
-	gtk_box_pack_end (GTK_BOX (hbox), b, FALSE, FALSE, 0);
-	i = gtk_image_new_from_stock (GTK_STOCK_ZOOM_OUT, GTK_ICON_SIZE_BUTTON);
-	gtk_widget_show (i);
-	gtk_container_add (GTK_CONTAINER (b), i);
-	g_signal_connect (G_OBJECT (b), "clicked",
-			  G_CALLBACK (on_zoom_out_clicked), m);
-	b = gtk_button_new ();
-	gtk_widget_show (b);
-	gtk_box_pack_end (GTK_BOX (hbox), b, FALSE, FALSE, 0);
-	i = gtk_image_new_from_stock (GTK_STOCK_ZOOM_100, GTK_ICON_SIZE_BUTTON);
-	gtk_widget_show (i);
-	gtk_container_add (GTK_CONTAINER (b), i);
-	g_signal_connect (G_OBJECT (b), "clicked",
-			  G_CALLBACK (on_zoom_100_clicked), m);
-	b = gtk_button_new ();
-	gtk_widget_show (b);
-	gtk_box_pack_end (GTK_BOX (hbox), b, FALSE, FALSE, 0);
-	i = gtk_image_new_from_stock (GTK_STOCK_ZOOM_IN, GTK_ICON_SIZE_BUTTON);
-	gtk_widget_show (i);
-	gtk_container_add (GTK_CONTAINER (b), i);
-	g_signal_connect (G_OBJECT (b), "clicked",
-			  G_CALLBACK (on_zoom_in_clicked), m);
-
 	scrolled = gtk_scrolled_window_new (NULL, NULL);
 	gtk_widget_show (scrolled);
-	gtk_box_pack_start (GTK_BOX (vbox), scrolled, TRUE, TRUE, 0);
+	gtk_paned_pack1 (GTK_PANED (hpaned), scrolled, TRUE, TRUE);
 	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled),
 				GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 

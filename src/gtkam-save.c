@@ -483,7 +483,7 @@ gtkam_save_new (Camera *camera, const gchar *path, GSList *filenames,
 	gtk_widget_set_sensitive (save->priv->file_list, FALSE);
 
 	if (opt_window)
-		gtk_window_set_transient_for (GTK_WINDOW (close),
+		gtk_window_set_transient_for (GTK_WINDOW (save),
 					      GTK_WINDOW (opt_window));
 
 	return (GTK_WIDGET (save));

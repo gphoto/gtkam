@@ -754,18 +754,12 @@ unselect_icon(GtkIconList *iconlist, GtkIconListItem *item, GdkEvent *event)
 static void
 unselect_all(GtkIconList *iconlist)
 {
-  GList *selection;
   GtkIconListItem *item;
 
-  selection = iconlist->selection;
-  while(selection){
-    item = (GtkIconListItem *)selection->data;
+  while(iconlist->selection){
+    item = (GtkIconListItem *)iconlist->selection->data;
     unselect_icon(iconlist, item, NULL);
-    selection = selection->next;
   }
-
-  g_list_free(iconlist->selection);
-  iconlist->selection = NULL;
 }
 
 GtkWidget*

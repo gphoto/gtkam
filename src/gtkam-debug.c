@@ -60,9 +60,7 @@ struct _GtkamDebugPrivate
 {
 	GtkText *text;
 
-	guint error_id, debug_id, data_id;
-
-	GPLogLevel level;
+	guint error_id, debug_id, data_id, verbose_id;
 };
 
 #define PARENT_TYPE GTK_TYPE_DIALOG
@@ -139,7 +137,7 @@ gtkam_debug_get_type (void)
 }
 
 static void
-gp_log_func (GPLogLevel level, const char *domain, const char *format,
+gp_log_func (int level, const char *domain, const char *format,
 	     va_list args, void *data)
 {
 	GtkamDebug *debug;
@@ -153,59 +151,82 @@ gp_log_func (GPLogLevel level, const char *domain, const char *format,
 	while (gtk_events_pending ())
 		gtk_main_iteration ();
 
-	if (level <= debug->priv->level) {
-
-		/* Show the message */
-		if (level == GP_LOG_ERROR)
-			gtk_text_insert (debug->priv->text, NULL, NULL, NULL,
-					 err, strlen (err));
-		message = g_strdup_vprintf (format, args);
-        	gtk_text_insert (debug->priv->text, NULL, NULL, NULL,
-        	                 message, strlen (message));
-		g_free (message);
-		gtk_text_insert (debug->priv->text, NULL, NULL, NULL, "\n", 1);
+	switch (level) {
+	case GP_LOG_ERROR:
+		if (!debug->priv->error_id)
+			return;
+		gtk_text_insert (debug->priv->text, NULL, NULL, NULL,
+				 err, strlen (err));
+		break;
+	case GP_LOG_VERBOSE:
+		if (!debug->priv->verbose_id)
+			return;
+		break;
+	case GP_LOG_DEBUG:
+		if (!debug->priv->debug_id)
+			return;
+		break;
+	case GP_LOG_DATA:
+		if (!debug->priv->data_id)
+			return;
+		break;
+	default:
+		break;
 	}
+
+	/* Show the message */
+	message = g_strdup_vprintf (format, args);
+       	gtk_text_insert (debug->priv->text, NULL, NULL, NULL,
+       	                 message, strlen (message));
+	g_free (message);
+	gtk_text_insert (debug->priv->text, NULL, NULL, NULL, "\n", 1);
 }
 
 static void
 on_debug_toggled (GtkToggleButton *toggle, GtkamDebug *debug)
 {
-	if (toggle->active && !debug->priv->debug_id) {
+	if (toggle->active && !debug->priv->debug_id)
 		debug->priv->debug_id = gp_log_add_func (GP_LOG_DEBUG,
 							 gp_log_func, debug);
-		debug->priv->level = GP_LOG_DEBUG;
-	} else if (!toggle->active && debug->priv->debug_id) {
+	else if (!toggle->active && debug->priv->debug_id) {
 		gp_log_remove_func (debug->priv->debug_id);
 		debug->priv->debug_id = 0;
-		debug->priv->level = GP_LOG_VERBOSE;
+	}
+}
+
+static void
+on_verbose_toggled (GtkToggleButton *toggle, GtkamDebug *debug)
+{
+	if (toggle->active && !debug->priv->verbose_id)
+		debug->priv->verbose_id = gp_log_add_func (GP_LOG_VERBOSE,
+							   gp_log_func, debug);
+	else if (!toggle->active && debug->priv->verbose_id) {
+		gp_log_remove_func (debug->priv->verbose_id);
+		debug->priv->verbose_id = 0;
 	}
 }
 
 static void
 on_error_toggled (GtkToggleButton *toggle, GtkamDebug *debug)
 {
-	if (toggle->active && !debug->priv->error_id) {
+	if (toggle->active && !debug->priv->error_id)
 		debug->priv->error_id = gp_log_add_func (GP_LOG_ERROR,
 							 gp_log_func, debug);
-		debug->priv->level = GP_LOG_ERROR;
-	} else if (!toggle->active && debug->priv->error_id) {
+	else if (!toggle->active && debug->priv->error_id) {
 		gp_log_remove_func (debug->priv->error_id);
 		debug->priv->error_id = 0;
-		debug->priv->level = -1;
 	}
 }
 
 static void
 on_data_toggled (GtkToggleButton *toggle, GtkamDebug *debug)
 {
-	if (toggle->active && !debug->priv->data_id) {
+	if (toggle->active && !debug->priv->data_id)
 		debug->priv->data_id = gp_log_add_func (GP_LOG_DATA,
 						       gp_log_func, debug);
-		debug->priv->level = GP_LOG_DATA;
-	} else if (!toggle->active && debug->priv->data_id) {
+	else if (!toggle->active && debug->priv->data_id)
 		gp_log_remove_func (debug->priv->data_id);
 		debug->priv->data_id = 0;
-		debug->priv->level = GP_LOG_DEBUG;
 	}
 }
 
@@ -283,18 +304,25 @@ gtkam_debug_new (void)
 	gtk_widget_show (label);
 	gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
 
-	check = gtk_check_button_new_with_label (_("Debug"));
-	gtk_widget_show (check);
-	gtk_box_pack_start (GTK_BOX (hbox), check, FALSE, FALSE, 0);
-	gtk_signal_connect (GTK_OBJECT (check), "toggled",
-			    GTK_SIGNAL_FUNC (on_debug_toggled), debug);
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (check), TRUE);
-
 	check = gtk_check_button_new_with_label (_("Error"));
 	gtk_widget_show (check);
 	gtk_box_pack_start (GTK_BOX (hbox), check, FALSE, FALSE, 0);
 	gtk_signal_connect (GTK_OBJECT (check), "toggled",
 			    GTK_SIGNAL_FUNC (on_error_toggled), debug);
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (check), TRUE);
+
+	check = gtk_check_button_new_with_label (_("Verbose"));
+	gtk_widget_show (check);
+	gtk_box_pack_start (GTK_BOX (hbox), check, FALSE, FALSE, 0);
+	gtk_signal_connect (GTK_OBJECT (check), "toggled",
+			    GTK_SIGNAL_FUNC (on_verbose_toggled), debug);
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (check), TRUE);
+
+	check = gtk_check_button_new_with_label (_("Debug"));
+	gtk_widget_show (check);
+	gtk_box_pack_start (GTK_BOX (hbox), check, FALSE, FALSE, 0);
+	gtk_signal_connect (GTK_OBJECT (check), "toggled",
+			    GTK_SIGNAL_FUNC (on_debug_toggled), debug);
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (check), TRUE);
 
 	check = gtk_check_button_new_with_label (_("Data"));

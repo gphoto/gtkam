@@ -55,7 +55,8 @@ struct _GtkamCListClass
 GtkType    gtkam_clist_get_type (void);
 GtkWidget *gtkam_clist_new      (void);
 
-void       gtkam_clist_set_camera     (GtkamCList *list, Camera *camera);
+void       gtkam_clist_set_camera     (GtkamCList *list, Camera *camera,
+				       gboolean multi);
 void       gtkam_clist_set_path       (GtkamCList *list, const gchar *path);
 void       gtkam_clist_set_thumbnails (GtkamCList *list, gboolean thumbnails);
 

@@ -46,7 +46,8 @@ struct _GtkamChooserClass
 	GtkDialogClass parent_class;
 
 	/* Signals */
-	void (* camera_selected) (GtkamChooser *chooser, Camera *camera);
+	void (* camera_selected) (GtkamChooser *chooser, Camera *camera,
+				  gboolean multi);
 };
 
 GtkType    gtkam_chooser_get_type (void);

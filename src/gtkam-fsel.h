@@ -49,6 +49,7 @@ struct _GtkamFSelClass
 };
 
 GtkType    gtkam_fsel_get_type (void);
-GtkWidget *gtkam_fsel_new      (Camera *camera, GtkWidget *opt_window);
+GtkWidget *gtkam_fsel_new      (Camera *camera, gboolean multi,
+				GtkWidget *opt_window);
 
 #endif /* __GTKAM_FSEL_H__ */

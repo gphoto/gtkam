@@ -90,6 +90,8 @@ enum {
 
 static guint signals[LAST_SIGNAL] = {0};
 
+#define gtk_marshal_NONE__POINTER_BOOL gtk_marshal_NONE__POINTER_INT
+
 static void
 gtkam_chooser_destroy (GtkObject *object)
 {
@@ -130,7 +132,8 @@ gtkam_chooser_class_init (GtkamChooserClass *klass)
 	signals[CAMERA_SELECTED] = gtk_signal_new ("camera_selected",
 		GTK_RUN_LAST, object_class->type,
 		GTK_SIGNAL_OFFSET (GtkamChooserClass, camera_selected),
-		gtk_marshal_NONE__POINTER, GTK_TYPE_NONE, 1, GTK_TYPE_POINTER);
+		gtk_marshal_NONE__POINTER_BOOL, GTK_TYPE_NONE, 2,
+		GTK_TYPE_POINTER, GTK_TYPE_BOOL);
 	gtk_object_class_add_signals (object_class, signals, LAST_SIGNAL);
 
 	parent_class = gtk_type_class (PARENT_TYPE);
@@ -252,7 +255,8 @@ on_apply_clicked (GtkButton *button, GtkamChooser *chooser)
 	camera = gtkam_chooser_get_camera (chooser);
 	if (camera) {
 		gtk_signal_emit (GTK_OBJECT (chooser),
-				 signals[CAMERA_SELECTED], camera);
+			signals[CAMERA_SELECTED], camera,
+			GTK_TOGGLE_BUTTON (chooser->priv->check_multi)->active);
 		gp_camera_unref (camera);
 
 		chooser->priv->needs_update = FALSE;
@@ -279,7 +283,8 @@ on_ok_clicked (GtkButton *button, GtkamChooser *chooser)
 		camera = gtkam_chooser_get_camera (chooser);
 		if (camera) {
 			gtk_signal_emit (GTK_OBJECT (chooser),
-					 signals[CAMERA_SELECTED], camera);
+				signals[CAMERA_SELECTED], camera,
+				GTK_TOGGLE_BUTTON (chooser->priv->check_multi)->active);
 			gp_camera_unref (camera);
 			gtk_object_destroy (GTK_OBJECT (chooser));
 		} else

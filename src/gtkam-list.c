@@ -57,6 +57,7 @@ struct _GtkamListPrivate
 	Camera *camera;
 
 	gboolean thumbnails;
+	gboolean multi;
 };
 
 #define PARENT_TYPE GTK_TYPE_ICON_LIST
@@ -143,15 +144,19 @@ gtkam_list_get_type (void)
 }
 
 void
-gtkam_list_set_camera (GtkamList *list, Camera *camera)
+gtkam_list_set_camera (GtkamList *list, Camera *camera, gboolean multi)
 {
 	g_return_if_fail (GTKAM_IS_LIST (list));
 
-	if (list->priv->camera)
+	if (list->priv->camera) {
 		gp_camera_unref (list->priv->camera);
-	list->priv->camera = camera;
-	if (camera)
+		list->priv->camera = NULL;
+	}
+	if (camera) {
+		list->priv->camera = camera;
 		gp_camera_ref (camera);
+		list->priv->multi = multi;
+	}
 
 	if (list->path) {
 		g_free (list->path);
@@ -182,7 +187,8 @@ on_select_icon (GtkIconList *ilist, GtkIconListItem *item,
 	result = gp_camera_file_get (list->priv->camera,
 				     list->path, item->label,
 				     GP_FILE_TYPE_PREVIEW, file);
-	gp_camera_exit (list->priv->camera);
+	if (list->priv->multi)
+		gp_camera_exit (list->priv->camera);
 	if (result < 0) {
 		window = gtk_widget_get_ancestor (GTK_WIDGET (list),
 						  GTK_TYPE_WINDOW);
@@ -271,7 +277,8 @@ gtkam_list_set_path (GtkamList *list, const gchar *path)
 
 	result = gp_camera_folder_list_files (list->priv->camera, path, &flist);
 	if (result < 0) {
-		gp_camera_exit (list->priv->camera);
+		if (list->priv->multi)
+			gp_camera_exit (list->priv->camera);
 		msg = g_strdup_printf (_("Could not get file list for folder "
 				       "'%s'"), path);
 		dialog = gtkam_error_new (msg, result, list->priv->camera,
@@ -314,7 +321,8 @@ gtkam_list_set_path (GtkamList *list, const gchar *path)
 	}
 	gp_file_unref (file);
 
-	gp_camera_exit (list->priv->camera);
+	if (list->priv->multi)
+		gp_camera_exit (list->priv->camera);
 }
 
 void

@@ -73,6 +73,8 @@ struct _GtkamPreviewPrivate
 	GtkToggleButton *angle_0, *angle_90, *angle_180, *angle_270;
 
 	guint32 idle_id;
+
+	gboolean multi;
 };
 
 #define PARENT_TYPE GTK_TYPE_DIALOG
@@ -174,7 +176,8 @@ on_preview_capture_clicked (GtkButton *button, GtkamPreview *preview)
 
 	result = gp_camera_capture (preview->priv->camera,
 				    GP_CAPTURE_IMAGE, &path);
-	gp_camera_exit (preview->priv->camera);
+	if (preview->priv->multi)
+		gp_camera_exit (preview->priv->camera);
 	if (result != GP_OK) {
 		dialog = gtkam_error_new (_("Could not capture"),
 			result, preview->priv->camera, GTK_WIDGET (preview));
@@ -372,7 +375,8 @@ idle_func (gpointer user_data)
 
 	gp_file_new (&file);
 	result = gp_camera_capture_preview (preview->priv->camera, file);
-	gp_camera_exit (preview->priv->camera);
+	if (preview->priv->multi)
+		gp_camera_exit (preview->priv->camera);
 	if (result != GP_OK) {
 		g_warning ("Could not capture: %s",
 			   gp_result_as_string (result));
@@ -501,7 +505,7 @@ on_configure_clicked (GtkButton *button, GtkamPreview *preview)
 }
 
 GtkWidget *
-gtkam_preview_new (Camera *camera)
+gtkam_preview_new (Camera *camera, gboolean multi)
 {
 	CameraAbilities abilities;
 	GtkamPreview *preview;
@@ -522,6 +526,7 @@ gtkam_preview_new (Camera *camera)
 
 	preview->priv->camera = camera;
 	gp_camera_ref (camera);
+	preview->priv->multi = multi;
 
 	hbox = gtk_hbox_new (FALSE, 5);
 	gtk_container_set_border_width (GTK_CONTAINER (hbox), 5);

@@ -56,7 +56,7 @@ static gboolean
 idle_func (gpointer data)
 {
 	GtkamMain *m = GTKAM_MAIN (data);
-	char port[1024], speed[1024], model[1024];
+	char port[1024], speed[1024], model[1024], multi[1024];
 	Camera *camera;
 	CameraAbilitiesList *al;
 	GPPortInfoList *il;
@@ -92,7 +92,10 @@ idle_func (gpointer data)
 		if (atoi (speed))
 			gp_camera_set_port_speed (camera, atoi (speed));
 
-		gtkam_main_set_camera (m, camera);
+		if (gp_setting_get ("gtkam", "multi", multi) == GP_OK)
+			gtkam_main_set_camera (m, camera, atoi (multi));
+		else
+			gtkam_main_set_camera (m, camera, FALSE);
 		gp_camera_unref (camera);
 	}
 

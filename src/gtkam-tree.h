@@ -51,7 +51,8 @@ struct _GtkamTreeClass
 GtkType    gtkam_tree_get_type (void);
 GtkWidget *gtkam_tree_new      (void);
 
-void         gtkam_tree_set_camera (GtkamTree *tree, Camera *camera);
+void         gtkam_tree_set_camera (GtkamTree *tree, Camera *camera,
+				    gboolean multi);
 const gchar *gtkam_tree_get_path   (GtkamTree *tree);
 void         gtkam_tree_remove_dir (GtkamTree *tree, const gchar *path);
 void         gtkam_tree_make_dir   (GtkamTree *tree, const gchar *path);

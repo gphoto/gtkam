@@ -105,11 +105,18 @@ on_captured (GtkamPreview *preview, const gchar *path, CameraFilePath *fpath)
 	gtk_main_quit ();
 }
 
+typedef struct {
+	Camera *camera;
+	gboolean multi;
+} CameraSelectionParams;
+
 static void
-on_camera_selected (GtkamChooser *chooser, Camera *camera, Camera **gimp_camera)
+on_camera_selected (GtkamChooser *chooser, Camera *camera, gboolean multi,
+		    CameraSelectionParams *params)
 {
-	*gimp_camera = camera;
+	params->camera = camera;
 	gp_camera_ref (camera);
+	params->multi = multi;
 }
 
 typedef struct {
@@ -124,14 +131,14 @@ progress_func (Camera *camera, float progress, void *data)
 }
 
 static Camera *
-create_camera (CameraOperation operations, 
+create_camera (CameraOperation operations, gboolean *multi,
 	       gint nparams, GimpParam *param, gint *nreturn_vals,
 	       GimpParam **return_vals)
 {
 	GimpRunModeType run_mode = param[0].data.d_int32;
-	Camera *camera = NULL;
 	GtkWidget *chooser;
 	static GimpParam values[1];
+	CameraSelectionParams cparams = {NULL, FALSE};
 
         switch (run_mode) {
         case GIMP_RUN_INTERACTIVE:
@@ -147,13 +154,13 @@ create_camera (CameraOperation operations,
 					       operations);
                 gtk_signal_connect (GTK_OBJECT (chooser), "camera_selected",
                                     GTK_SIGNAL_FUNC (on_camera_selected),
-                                    &camera);
+                                    &cparams);
                 gtk_signal_connect (GTK_OBJECT (chooser), "destroy",
                                     GTK_SIGNAL_FUNC (gtk_main_quit), NULL);
                 gtk_main ();
 
                 /* Check if the user cancelled */
-		if (!camera) {
+		if (!cparams.camera) {
 			*nreturn_vals = 1;
 			*return_vals = values;
 			values[0].type = GIMP_PDB_STATUS;
@@ -175,7 +182,8 @@ create_camera (CameraOperation operations,
                 break;
         }
 
-	return (camera);
+	*multi = cparams.multi;
+	return (cparams.camera);
 }
 
 static gint32
@@ -267,8 +275,9 @@ run_capture (gchar *name, gint nparams, GimpParam *param, gint *nreturn_vals,
 	static PreviewParams preview_params = {0, 1.};
 	GimpRunModeType run_mode = param[0].data.d_int32;
 	gint32 image_id;
+	gboolean multi;
 
-	camera = create_camera (GP_OPERATION_CAPTURE_IMAGE,
+	camera = create_camera (GP_OPERATION_CAPTURE_IMAGE, &multi,
 				nparams, param, nreturn_vals, return_vals);
 	if (!camera)
 		return;
@@ -287,7 +296,7 @@ run_capture (gchar *name, gint nparams, GimpParam *param, gint *nreturn_vals,
 			gimp_get_data (name, &preview_params);
 
 			/* Create the preview window */
-			preview = gtkam_preview_new (camera);
+			preview = gtkam_preview_new (camera, multi);
 			gtkam_preview_set_angle (GTKAM_PREVIEW (preview),
 						 preview_params.angle);
 			gtkam_preview_set_zoom (GTKAM_PREVIEW (preview),
@@ -385,15 +394,16 @@ run_load (gchar *name, gint nparams, GimpParam *param, gint *nreturn_vals,
 	const gchar *full_path;
 	gchar *dir;
 	gboolean selected = FALSE;
+	gboolean multi;
 
 	/* Create the camera */
-	camera = create_camera (GP_OPERATION_NONE, 
+	camera = create_camera (GP_OPERATION_NONE, &multi,
 				nparams, param, nreturn_vals, return_vals);
         if (!camera)
                 return;
 
 	/* Show the file selection dialog */
-	fsel = gtkam_fsel_new (camera, NULL);
+	fsel = gtkam_fsel_new (camera, multi, NULL);
 	gtk_widget_show (fsel);
 	gtk_signal_connect (GTK_OBJECT (GTKAM_FSEL (fsel)->ok_button),
 		"clicked", GTK_SIGNAL_FUNC (on_fsel_ok_clicked), &selected);

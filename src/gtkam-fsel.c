@@ -64,6 +64,8 @@ struct _GtkamFSelPrivate
 	GtkamCList *clist;
 
 	GtkWidget *mkdir, *rmdir;
+
+	gboolean multi;
 };
 
 #define PARENT_TYPE GTK_TYPE_DIALOG
@@ -209,7 +211,8 @@ on_rmdir_clicked (GtkButton *button, GtkamFSel *fsel)
         dirname = g_dirname (path);
 	result = gp_camera_folder_remove_dir (fsel->priv->camera, dirname,
 					      g_basename (path));
-	gp_camera_exit (fsel->priv->camera);
+	if (fsel->priv->multi)
+		gp_camera_exit (fsel->priv->camera);
         if (result < 0) {
                 msg = g_strdup_printf (_("Could not remove '%s' from '%s'"),
                                        g_basename (path), dirname);
@@ -223,7 +226,7 @@ on_rmdir_clicked (GtkButton *button, GtkamFSel *fsel)
 }
 
 GtkWidget *
-gtkam_fsel_new (Camera *camera, GtkWidget *opt_window)
+gtkam_fsel_new (Camera *camera, gboolean multi, GtkWidget *opt_window)
 {
 	GtkamFSel *fsel;
 	GtkWidget *tree, *button, *image, *hbox, *scrolled, *bbox, *clist;
@@ -244,6 +247,7 @@ gtkam_fsel_new (Camera *camera, GtkWidget *opt_window)
 
 	fsel->priv->camera = camera;
 	gp_camera_ref (camera);
+	fsel->priv->multi = multi;
 
 	hbox = gtk_hbox_new (FALSE, 5);
 	gtk_widget_show (hbox);
@@ -304,7 +308,7 @@ gtkam_fsel_new (Camera *camera, GtkWidget *opt_window)
 	gtk_widget_show (tree);
 	gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (scrolled),
 					       tree);
-	gtkam_tree_set_camera (GTKAM_TREE (tree), camera);
+	gtkam_tree_set_camera (GTKAM_TREE (tree), camera, multi);
 	fsel->priv->tree = GTKAM_TREE (tree);
 	gtk_signal_connect (GTK_OBJECT (tree), "folder_selected",
 			    GTK_SIGNAL_FUNC (on_folder_selected), fsel);
@@ -321,7 +325,7 @@ gtkam_fsel_new (Camera *camera, GtkWidget *opt_window)
 	gtk_widget_show (clist);
 	gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (scrolled),
 					       clist);
-	gtkam_clist_set_camera (GTKAM_CLIST (clist), camera);
+	gtkam_clist_set_camera (GTKAM_CLIST (clist), camera, multi);
 	fsel->priv->clist = GTKAM_CLIST (clist);
 	gtk_signal_connect (GTK_OBJECT (clist), "file_selected",
 			    GTK_SIGNAL_FUNC (on_file_selected), fsel);

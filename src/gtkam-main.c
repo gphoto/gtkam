@@ -94,6 +94,8 @@ struct _GtkamMainPrivate
 	GtkWidget *make_dir, *remove_dir, *upload;
 
 	GtkWidget *debug;
+
+	gboolean multi;
 };
 
 #define PARENT_TYPE GTK_TYPE_WINDOW
@@ -235,9 +237,10 @@ on_select_inverse_activate (GtkMenuItem *menu_item, GtkamMain *m)
 }
 
 static void
-on_camera_selected (GtkamChooser *chooser, Camera *camera, GtkamMain *m)
+on_camera_selected (GtkamChooser *chooser, Camera *camera,
+		    gboolean multi, GtkamMain *m)
 {
-	gtkam_main_set_camera (m, camera);
+	gtkam_main_set_camera (m, camera, multi);
 }
 
 static void
@@ -277,7 +280,7 @@ on_capture_activate (GtkMenuItem *item, GtkamMain *m)
 	/* Let's first check if the camera supports previews */
 	gp_camera_get_abilities (m->priv->camera, &a);
 	if (a.operations & GP_OPERATION_CAPTURE_PREVIEW) {
-		dialog = gtkam_preview_new (m->priv->camera);
+		dialog = gtkam_preview_new (m->priv->camera, m->priv->multi);
 		gtk_window_set_transient_for (GTK_WINDOW (dialog),
 					      GTK_WINDOW (m));
 		gtk_widget_show (dialog);
@@ -288,7 +291,8 @@ on_capture_activate (GtkMenuItem *item, GtkamMain *m)
 
 	/* The camera doesn't support previews. Capture an image */
 	result = gp_camera_capture (m->priv->camera, GP_CAPTURE_IMAGE, &path);
-	gp_camera_exit (m->priv->camera);
+	if (m->priv->multi)
+		gp_camera_exit (m->priv->camera);
 	if (result < 0) {
 		dialog = gtkam_error_new (_("Could not capture"), result,
 					  m->priv->camera, GTK_WIDGET (m));
@@ -387,7 +391,8 @@ on_information_activate (GtkMenuItem *item, GtkamMain *m)
 		return;
 
 	result = gp_camera_get_summary (m->priv->camera, &text);
-	gp_camera_exit (m->priv->camera);
+	if (m->priv->multi)
+		gp_camera_exit (m->priv->camera);
 	if (result < 0)
 		dialog = gtkam_error_new (_("Could not retrieve information"),
 					  result, m->priv->camera,
@@ -408,7 +413,8 @@ on_manual_activate (GtkMenuItem *item, GtkamMain *m)
 		return;
 
 	result = gp_camera_get_manual (m->priv->camera, &text);
-	gp_camera_exit (m->priv->camera);
+	if (m->priv->multi)
+		gp_camera_exit (m->priv->camera);
 	if (result < 0)
 		dialog = gtkam_error_new (_("Could not retrieve manual"),
 					  result, m->priv->camera,
@@ -429,7 +435,8 @@ on_about_driver_activate (GtkMenuItem *item, GtkamMain *m)
 		return;
 
 	result = gp_camera_get_about (m->priv->camera, &text);
-	gp_camera_exit (m->priv->camera);
+	if (m->priv->multi)
+		gp_camera_exit (m->priv->camera);
 	if (result < 0)
 		dialog = gtkam_error_new (_("Could not get information "
 					  "about the driver"), result, 
@@ -512,7 +519,8 @@ on_remove_dir_activate (GtkMenuItem *item, GtkamMain *m)
 	dirname = g_dirname (path);
 	result = gp_camera_folder_remove_dir (m->priv->camera, dirname,
 					      g_basename (path));
-	gp_camera_exit (m->priv->camera);
+	if (m->priv->multi)
+		gp_camera_exit (m->priv->camera);
 	if (result < 0) {
 		msg = g_strdup_printf (_("Could not remove '%s' from '%s'"),
 				       g_basename (path), dirname);
@@ -568,7 +576,8 @@ on_upload_activate (GtkMenuItem *item, GtkamMain *m)
 		} else {
 			r = gp_camera_folder_put_file (m->priv->camera,
 						       folder, file);
-			gp_camera_exit (m->priv->camera);
+			if (m->priv->multi)
+				gp_camera_exit (m->priv->camera);
 			if (r < 0) {
 				msg = g_strdup_printf (_("Coult not upload "
 					"'%s' into folder '%s'"), path, folder);
@@ -1085,7 +1094,7 @@ progress_func (Camera *camera, float progress, void *data)
 }
 
 void
-gtkam_main_set_camera (GtkamMain *m, Camera *camera)
+gtkam_main_set_camera (GtkamMain *m, Camera *camera, gboolean multi)
 {
 	CameraAbilities a;
 
@@ -1103,6 +1112,7 @@ gtkam_main_set_camera (GtkamMain *m, Camera *camera)
 	m->priv->camera = camera;
 	if (camera)
 		gp_camera_ref (camera);
+	m->priv->multi = multi;
 
 	gp_camera_get_abilities (camera, &a);
 
@@ -1163,8 +1173,8 @@ gtkam_main_set_camera (GtkamMain *m, Camera *camera)
 		gtk_widget_set_sensitive (m->priv->item_about_driver, FALSE);
 	}
 
-	gtkam_tree_set_camera (m->priv->tree, camera);
-	gtkam_list_set_camera (m->priv->list, camera);
+	gtkam_tree_set_camera (m->priv->tree, camera, multi);
+	gtkam_list_set_camera (m->priv->list, camera, multi);
 }
 
 void

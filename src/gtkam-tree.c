@@ -62,6 +62,8 @@ struct _GtkamTreePrivate
 	GtkWidget *root;
 
 	const gchar *folder;
+
+	gboolean multi;
 };
 
 #define PARENT_TYPE GTK_TYPE_TREE
@@ -240,7 +242,8 @@ create_item (GtkamTree *tree, GtkTree *tree_to_add_to, const gchar *path)
 	/* Subdirectories? */
 	gp_list_new (&list);
 	result = gp_camera_folder_list_folders (tree->priv->camera, path, list);
-	gp_camera_exit (tree->priv->camera);
+	if (tree->priv->multi)
+		gp_camera_exit (tree->priv->camera);
 	if (result < 0) {
 		window = gtk_widget_get_ancestor (GTK_WIDGET (tree),
 						  GTK_TYPE_WINDOW);
@@ -336,7 +339,7 @@ gtkam_tree_new (void)
 }
 
 void
-gtkam_tree_set_camera (GtkamTree *tree, Camera *camera)
+gtkam_tree_set_camera (GtkamTree *tree, Camera *camera, gboolean multi)
 {
 	g_return_if_fail (GTKAM_IS_TREE (tree));
 	g_return_if_fail (camera != NULL);
@@ -345,6 +348,7 @@ gtkam_tree_set_camera (GtkamTree *tree, Camera *camera)
 		gp_camera_unref (tree->priv->camera);
 	tree->priv->camera = camera;
 	gp_camera_ref (camera);
+	tree->priv->multi = multi;
 
 	gtk_container_remove (GTK_CONTAINER (tree), tree->priv->root);
 	create_item (tree, GTK_TREE (tree), "/");

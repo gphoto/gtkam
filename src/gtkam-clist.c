@@ -51,6 +51,7 @@ struct _GtkamCListPrivate
 	GPtrArray *idle;
 
 	gboolean thumbnails;
+	gboolean multi;
 };
 
 #define PARENT_TYPE GTK_TYPE_CLIST
@@ -164,7 +165,7 @@ gtkam_clist_get_type (void)
 }
 
 void
-gtkam_clist_set_camera (GtkamCList *list, Camera *camera)
+gtkam_clist_set_camera (GtkamCList *list, Camera *camera, gboolean multi)
 {
 	g_return_if_fail (GTKAM_IS_CLIST (list));
 
@@ -176,6 +177,7 @@ gtkam_clist_set_camera (GtkamCList *list, Camera *camera)
 	if (camera) {
 		list->priv->camera = camera;
 		gp_camera_ref (camera);
+		list->priv->multi = multi;
 	}
 
 	if (list->path) {
@@ -262,7 +264,8 @@ idle_func (gpointer idle_data)
 	gp_file_new (&file);
 	result = gp_camera_file_get (id->clist->priv->camera, id->clist->path,
 				     id->file, GP_FILE_TYPE_PREVIEW, file);
-	gp_camera_exit (id->clist->priv->camera);
+	if (id->clist->priv->multi)
+		gp_camera_exit (id->clist->priv->camera);
 	if (result < 0) {
 		msg = g_strdup_printf (_("Could not get file '%s'"),
 			id->file);
@@ -334,7 +337,8 @@ gtkam_clist_set_path (GtkamCList *list, const gchar *path)
 	window = gtk_widget_get_ancestor (GTK_WIDGET (list), GTK_TYPE_WINDOW);
 
 	result = gp_camera_folder_list_files (list->priv->camera, path, &flist);
-	gp_camera_exit (list->priv->camera);
+	if (list->priv->multi)
+		gp_camera_exit (list->priv->camera);
 	if (result < 0) {
 		msg = g_strdup_printf (_("Could not get file list for folder "
 				       "'%s'"), path);

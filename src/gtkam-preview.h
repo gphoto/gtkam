@@ -48,12 +48,12 @@ struct _GtkamPreviewClass
 };
 
 GtkType    gtkam_preview_get_type (void);
-GtkWidget *gtkam_preview_new      (Camera *camera);
+GtkWidget *gtkam_preview_new      (Camera *camera, gboolean multi);
 
-void   gtkam_preview_set_zoom (GtkamPreview *preview, gfloat zoom);
-gfloat gtkam_preview_get_zoom (GtkamPreview *preview);
+void   gtkam_preview_set_zoom  (GtkamPreview *preview, gfloat zoom);
+gfloat gtkam_preview_get_zoom  (GtkamPreview *preview);
 
-void  gtkam_preview_set_angle (GtkamPreview *preview, guint angle);
-guint gtkam_preview_get_angle (GtkamPreview *preview);
+void  gtkam_preview_set_angle  (GtkamPreview *preview, guint angle);
+guint gtkam_preview_get_angle  (GtkamPreview *preview);
 
 #endif /* __GTKAM_PREVIEW_H__ */

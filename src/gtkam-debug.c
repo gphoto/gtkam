@@ -129,7 +129,7 @@ gtkam_debug_get_type (void)
 }
 
 static void
-log_func (int level, const char *domain, const char *format,
+log_func (GPLogLevel level, const char *domain, const char *format,
 	  va_list args, void *data)
 {
 	GtkamDebug *debug;

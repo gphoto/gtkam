@@ -258,7 +258,7 @@ on_captured (GtkamPreview *preview, const gchar *path, GtkamMain *m)
 	gchar *dirname;
 
 	dirname = g_dirname (path);
-	if (!strcmp (dirname, m->priv->list->path))
+	if (m->priv->list->path && !strcmp (dirname, m->priv->list->path))
 		gtkam_list_refresh (m->priv->list);
 	g_free (dirname);
 }

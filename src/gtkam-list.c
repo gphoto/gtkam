@@ -138,6 +138,11 @@ gtkam_list_set_camera (GtkamList *list, Camera *camera)
 	if (camera)
 		gp_camera_ref (camera);
 
+	if (list->priv->path) {
+		g_free (list->priv->path);
+		list->priv->path = NULL;
+	}
+
 	gtkam_list_refresh (list);
 }
 

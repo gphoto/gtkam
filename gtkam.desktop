@@ -1,8 +1,11 @@
 [Desktop Entry]
 Encoding=UTF-8
 Name=gtkam
+Name[ru]=Цифровой фотоаппарат
 Comment=Transfer pictures from your digital camera
+Comment[ru]=Программа для получения снимков из цифрового фотоаппарата
 Exec=gtkam
+Icon=gtkam.png
 StartupNotify=true
 Terminal=false
 Type=Application

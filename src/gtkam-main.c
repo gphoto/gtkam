@@ -428,7 +428,7 @@ action_help (gpointer callback_data, guint callback_action,
 {
 	GError *e = NULL;
 
-	gnome_help_display ("gtkam.xml", NULL, &e);
+	gnome_help_display (MANUAL_DIR "/gphoto2.xml", NULL, &e);
 	if (e) {
 		g_warning (e->message);
 		g_error_free (e);

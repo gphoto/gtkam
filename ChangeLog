@@ -1,5 +1,10 @@
 2002-08-29  Lutz Müller <lutz@users.sourceforge.net>
 
+	* configure.in: Check for gphoto2-manual
+	* src/gtkam-main.c: Make /Help/Contents work.
+
+2002-08-29  Lutz Müller <lutz@users.sourceforge.net>
+
 	* configure.in: Check for libgnome-availablilty
 	* src/gtkam-main.c: Add a /Help/Contents menu if libgnome is
 	  available.

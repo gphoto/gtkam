@@ -111,8 +111,12 @@ const module_version module_versions[] = {
 	{ NULL, NULL }
 };
 
+#define CHECK_NULL(x) { if (x == NULL) { return; } }
+
 void log_version(GPLogLevel level, const char *domain)
 {
+	int n;
+
 	gp_log (level, domain, _("ALWAYS INCLUDE THE FOLLOWING LINES "
 				 "WHEN SENDING DEBUG MESSAGES TO THE "
 				 "MAILING LIST:"));

@@ -2,12 +2,12 @@
 
 INCLUDES =					\
  -I$(top_srcdir)/intl				\
+ -W -Wall -Wno-unused -pedantic			\
  -DIMAGE_DIR=\"$(datadir)/images/gtkam\" 	\
  -DGTKAM_LOCALEDIR=\"$(datadir)/locale\"	\
  -DPACKAGE_DATA_DIR=\"$(datadir)/gtkam\"	\
  -DPACKAGE_SOURCE_DIR=\"$(top_srcdir)\"		\
  -DAPP_DATADIR=\"$(datadir)/\"		\
- -DGTK_DISABLE_DEPRECATED			\
  $(EXIF_CFLAGS) $(GNOME_CFLAGS) $(GTKAM_CFLAGS)	\
  $(BONOBO_CFLAGS)				\
  $(GTKAM_GIMP_CFLAGS)

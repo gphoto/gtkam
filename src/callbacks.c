@@ -26,7 +26,7 @@ void debug_print (char *message) {
 		printf("%s\n", message);
 }
 
-gboolean get_thumbnail (GtkWidget *widget, CameraListEntry *entry, GtkIconListItem *item)
+gboolean get_thumbnail (GtkWidget *widget, const char *name, GtkIconListItem *item)
 {
 	CameraFile *f;
 	char *folder;
@@ -36,7 +36,7 @@ gboolean get_thumbnail (GtkWidget *widget, CameraListEntry *entry, GtkIconListIt
 	/* Get the thumbnail */
 	f = gp_file_new();
 	folder = current_folder();
-	if (gp_camera_file_get_preview(gp_gtk_camera, folder, entry->name, f) == GP_OK) {
+	if (gp_camera_file_get_preview(gp_gtk_camera, folder, name, f) == GP_OK) {
 		gdk_image_new_from_data(f->data,f->size,1,&pixmap,&bitmap);
 		gtk_pixmap_set(GTK_PIXMAP(item->pixmap), pixmap, bitmap);
 	}
@@ -51,7 +51,7 @@ gboolean toggle_icon (GtkWidget *widget, GdkEventButton *event, gpointer data) {
 	GtkIconListItem *item;
 	GList *child = GTK_ICON_LIST(icon_list)->icons;
 	CameraList list;
-	CameraListEntry *entry;
+	const char *name;
 	int x,count=0;
 
 	while (child) {
@@ -65,9 +65,9 @@ gboolean toggle_icon (GtkWidget *widget, GdkEventButton *event, gpointer data) {
 				}
 				count = gp_list_count(&list);
 				for (x=0;x<count;x++) {
-					entry = gp_list_entry(&list,x);
-					if(strcmp(entry->name,item->label)==0) {
-						get_thumbnail(widget, entry, item);
+					gp_list_get_name (&list, x, &name);
+					if(strcmp(name,item->label)==0) {
+						get_thumbnail(widget, name, item);
 						item->state = GTK_STATE_SELECTED;
 					}
 				}
@@ -573,10 +573,10 @@ void folder_expand (GtkWidget *tree_item, gpointer data) {
 
 	GtkWidget *tree, *item;
 	CameraList list;
-	CameraListEntry *entry;
 	char *path = (char*)gtk_object_get_data(GTK_OBJECT(tree_item), "path");
 	char buf[1024];
 	int x, count=0;
+	const char *name;
 
 	debug_print("folder_expand");
 
@@ -608,12 +608,12 @@ void folder_expand (GtkWidget *tree_item, gpointer data) {
 
 	/* Append the new folders to the new subtree */
 	for (x=0; x<count; x++) {
-		entry = gp_list_entry(&list, x);
+		gp_list_get_name (&list, x, &name);
 		if (strcmp(path, "/")==0)
-			sprintf(buf, "/%s", entry->name);
+			sprintf(buf, "/%s", name);
 		   else
-			sprintf(buf, "%s/%s", path, entry->name);
-		item = folder_item(tree, entry->name);
+			sprintf(buf, "%s/%s", path, name);
+		item = folder_item(tree, name);
 		gtk_object_set_data(GTK_OBJECT(item), "path", strdup(buf));
 	}
 
@@ -861,7 +861,6 @@ void camera_index () {
 	CameraFile *f;
 	CameraAbilities a;
 	CameraList list;
-	CameraListEntry *entry;
 	GtkWidget *icon_list, *camera_tree, *use_thumbs;
 	GtkIconListItem *item;
 	GdkPixmap *pixmap;
@@ -869,6 +868,7 @@ void camera_index () {
 	char buf[1024];
 	char *folder;
 	int x, count=0, get_thumbnails = 1;
+	const char *name;
 
 	debug_print("camera index");
 	
@@ -905,9 +905,9 @@ void camera_index () {
 	gtk_widget_show(gp_gtk_progress_window);
 	x=0;
 	while ((x<count)&&(GTK_WIDGET_VISIBLE(gp_gtk_progress_window))) {
-		entry = gp_list_entry(&list, x);
+		gp_list_get_name (&list, x, &name);
 		sprintf(buf,_("Getting Thumbnail #%04i of %04i\n%s"), x+1, count,
-			entry->name);
+			name);
 		frontend_message(NULL, buf);
 		idle();
 		if ((get_thumbnails)&&
@@ -917,22 +917,22 @@ void camera_index () {
 			f = gp_file_new();
 			folder = current_folder();
 			if (gp_camera_file_get_preview(gp_gtk_camera, 
-			    folder, entry->name, f) == GP_OK) {
+			    folder, name, f) == GP_OK) {
 				gdk_image_new_from_data(f->data,f->size,1,&pixmap,&bitmap);
 				item = gtk_icon_list_add_from_data(GTK_ICON_LIST(icon_list),
-					no_thumbnail_xpm,entry->name,NULL);
+					no_thumbnail_xpm,name,NULL);
 				gtk_pixmap_set(GTK_PIXMAP(item->pixmap), pixmap, bitmap);
 			} else {
 				item = gtk_icon_list_add_from_data(GTK_ICON_LIST(icon_list),
-					no_thumbnail_xpm,entry->name,NULL);
+					no_thumbnail_xpm,name,NULL);
 			}
 			gp_file_free(f);
 		} else {
 			/* Use a dummy icon */
 			item = gtk_icon_list_add_from_data(GTK_ICON_LIST(icon_list),
-				no_thumbnail_xpm,entry->name,NULL);
+				no_thumbnail_xpm,name,NULL);
 		}
-		gtk_object_set_data(GTK_OBJECT(item->pixmap), "name", strdup(entry->name));
+		gtk_object_set_data(GTK_OBJECT(item->pixmap), "name", strdup(name));
 		gtk_signal_connect(GTK_OBJECT(item->eventbox), "button_press_event",
 			GTK_SIGNAL_FUNC(toggle_icon), NULL);
 		gtk_signal_connect(GTK_OBJECT(item->entry), "button_press_event",

@@ -48,6 +48,7 @@ AC_SUBST(LDFLAGS)
 
 AC_OUTPUT([
 Makefile
+gexif/Makefile
 libexif/Makefile
 libexif-gtk/Makefile
 libexif-gtk/gtk-extensions/Makefile

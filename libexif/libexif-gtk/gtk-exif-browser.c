@@ -342,6 +342,7 @@ gtk_exif_browser_new (void)
 	GtkExifBrowser *browser;
 
 	browser = gtk_type_new (GTK_EXIF_TYPE_BROWSER);
+	gtk_widget_set_sensitive (GTK_WIDGET (browser), FALSE);
 
 	vbox = gtk_vbox_new (FALSE, 0);
 	gtk_widget_show (vbox);
@@ -421,4 +422,6 @@ gtk_exif_browser_set_data (GtkExifBrowser *browser, ExifData *data)
 
 	gtk_exif_content_list_set_content (browser->priv->list, data->content);
 	gtk_exif_browser_set_widget (browser, browser->priv->empty);
+
+	gtk_widget_set_sensitive (GTK_WIDGET (browser), TRUE);
 }

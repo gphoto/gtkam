@@ -257,11 +257,15 @@ static void
 on_thumbnail_activate (GtkMenuItem *item, GExifMain *m)
 {
 	GtkWidget *dialog;
+	ExifData *edata;
 
-	dialog = gexif_thumbnail_new (m->priv->data->data,
-				      m->priv->data->size);
-	gtk_window_set_transient_for (GTK_WINDOW (dialog), GTK_WINDOW (m));
-	gtk_widget_show (dialog);
+	edata = jpeg_data_get_exif_data (m->priv->data);
+	if (edata && edata->size) {
+		dialog = gexif_thumbnail_new (edata->data, edata->size);
+		gtk_window_set_transient_for (GTK_WINDOW (dialog),
+					      GTK_WINDOW (m));
+		gtk_widget_show (dialog);
+	}
 }
 
 GtkWidget *

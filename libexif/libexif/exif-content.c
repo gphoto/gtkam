@@ -48,6 +48,7 @@ exif_content_new (void)
 		return (NULL);
 	}
 	memset (content->priv, 0, sizeof (ExifContentPrivate));
+
 	content->priv->ref_count = 1;
 
 	return (content);

@@ -34,8 +34,6 @@ struct _ExifContent {
         ExifEntry **entries;
         unsigned int count;
 
-	ExifEntry *parent;
-
 	ExifContentPrivate *priv;
 };
 

@@ -8,6 +8,8 @@ int
 main (int argc, char **argv)
 {
 	JPEGData *data;
+	ExifData *edata;
+	FILE *f;
 
 	if (argc <= 1) {
 		printf ("You need to specify a file!\n");
@@ -20,6 +22,15 @@ main (int argc, char **argv)
 		return (1);
 	}
 	jpeg_data_dump (data);
+	edata = jpeg_data_get_exif_data (data);
+	if (edata && edata->data) {
+		f = fopen ("test.jpeg", "w");
+		if (f) {
+			fwrite (edata->data, 1, edata->size, f);
+			fclose (f);
+		}
+	}
+
 	jpeg_data_free (data);
 
 	return (0);

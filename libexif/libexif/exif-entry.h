@@ -38,8 +38,6 @@ struct _ExifEntry {
         unsigned char *data;
         unsigned int size;
 
-        ExifContent *content;
-
 	/* Content containing this entry */
 	ExifContent *parent;
 

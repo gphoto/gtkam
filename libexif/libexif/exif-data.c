@@ -36,8 +36,6 @@ struct _ExifDataPrivate
 {
 	ExifByteOrder order;
 
-	ExifLong max_offset;
-
 	unsigned int ref_count;
 };
 
@@ -115,8 +113,24 @@ exif_data_load_data_entry (ExifData *data, ExifEntry *entry,
 		return;
 	entry->size = s;
 	memcpy (entry->data, d + doff, s);
+}
 
-	data->priv->max_offset = MAX (data->priv->max_offset, doff + s);
+static void
+exif_data_load_data_thumbnail (ExifData *data, const unsigned char *d,
+			       unsigned int ds, ExifLong offset, ExifLong size)
+{
+	if (ds < offset + size) {
+#ifdef DEBUG
+		printf ("Bogus thumbnail offset and size: %i < %i + %i.\n",
+			(int) ds, (int) offset, (int) size);
+#endif
+		return;
+	}
+	if (data->data)
+		free (data->data);
+	data->size = size;
+	data->data = malloc (sizeof (char) * data->size);
+	memcpy (data->data, d + offset, data->size);
 }
 
 static void
@@ -124,7 +138,7 @@ exif_data_load_data_content (ExifData *data, ExifContent *ifd,
 			     const unsigned char *d,
 			     unsigned int ds, unsigned int offset)
 {
-	ExifLong o;
+	ExifLong o, thumbnail_offset = 0, thumbnail_length = 0;
 	ExifShort n;
 	ExifEntry *entry;
 	unsigned int i;
@@ -142,6 +156,8 @@ exif_data_load_data_content (ExifData *data, ExifContent *ifd,
 		case EXIF_TAG_EXIF_IFD_POINTER:
 		case EXIF_TAG_GPS_INFO_IFD_POINTER:
 		case EXIF_TAG_INTEROPERABILITY_IFD_POINTER:
+		case EXIF_TAG_JPEG_INTERCHANGE_FORMAT_LENGTH:
+		case EXIF_TAG_JPEG_INTERCHANGE_FORMAT:
 			o = exif_get_long (d + offset + 12 * i + 8,
 					   data->priv->order);
 			switch (tag) {
@@ -156,6 +172,25 @@ exif_data_load_data_content (ExifData *data, ExifContent *ifd,
 			case EXIF_TAG_INTEROPERABILITY_IFD_POINTER:
 				exif_data_load_data_content (data,
 					data->ifd_interoperability, d, ds, o);
+			case EXIF_TAG_JPEG_INTERCHANGE_FORMAT:
+#ifdef DEBUG
+				printf ("Thumbnail at %i.\n", (int) o);
+#endif
+				thumbnail_offset = o;
+				if (thumbnail_offset && thumbnail_length)
+					exif_data_load_data_thumbnail (data, d,
+						ds, thumbnail_offset,
+						thumbnail_length);
+				break;
+			case EXIF_TAG_JPEG_INTERCHANGE_FORMAT_LENGTH:
+#ifdef DEBUG
+				printf ("Thumbnail size: %i.\n", (int) o);
+#endif
+				thumbnail_length = o;
+				if (thumbnail_offset && thumbnail_length)
+					exif_data_load_data_thumbnail (data, d,
+						ds, thumbnail_offset,
+						thumbnail_length);
 				break;
 			default:
 				return;
@@ -182,8 +217,6 @@ exif_data_load_data (ExifData *data, const unsigned char *d, unsigned int size)
 		return;
 	if (!d)
 		return;
-
-	data->priv->max_offset = 0;
 
 	/* Search the exif marker */
 	for (o = 0; o < size; o++)
@@ -231,7 +264,7 @@ exif_data_load_data (ExifData *data, const unsigned char *d, unsigned int size)
 
 	/* Parse the actual exif data (offset 16) */
 	exif_data_load_data_content (data, data->ifd0, d + 8,
-				     size - offset, offset);
+				     size - 8, offset);
 
 	/* IFD 1 offset */
 	n = exif_get_short (d + 8 + offset, data->priv->order);
@@ -241,14 +274,8 @@ exif_data_load_data (ExifData *data, const unsigned char *d, unsigned int size)
 		printf ("IFD 1 at %i.\n", (int) offset);
 #endif
 		exif_data_load_data_content (data, data->ifd1, d + 8,
-					     size - offset, offset);
+					     size - 8, offset);
 	}
-
-	/* Thumbnail */
-	offset = data->priv->max_offset;
-	data->size = len - 8 - offset;
-	data->data = malloc (sizeof (char) * data->size);
-	memcpy (data->data, d + 8 + offset, data->size);
 }
 
 void

@@ -1,5 +1,10 @@
 2002-01-29  Lutz Müller <lutz@users.sourceforge.net>
 
+	* libexif: Doesn't exist any more. Users should get it from 
+	  http://www.sourceforge.net/projects/libexif.
+
+2002-01-29  Lutz Müller <lutz@users.sourceforge.net>
+
 	* configure.in: Version 0.1.3
 
 2002-01-27  Lutz Müller <lutz@users.sourceforge.net>

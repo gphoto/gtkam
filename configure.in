@@ -158,4 +158,5 @@ Configuration
 	Compiler:             ${CC}
 
 	GIMP plugin:          $gimp_msg
+	EXIF support:         $exif_msg
 "

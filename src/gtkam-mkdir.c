@@ -213,8 +213,6 @@ gtkam_mkdir_new (Camera *camera, gboolean multi,
 	g_return_val_if_fail (path != NULL, NULL);
 
 	mkdir = g_object_new (GTKAM_TYPE_MKDIR, NULL);
-	g_signal_connect (GTK_OBJECT (mkdir), "delete_event",
-			    GTK_SIGNAL_FUNC (gtk_object_destroy), NULL);
 
 	mkdir->priv->path = g_strdup (path);
 	mkdir->priv->camera = camera;

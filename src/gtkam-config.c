@@ -712,8 +712,6 @@ gtkam_config_new (Camera *camera, gboolean multi, GtkWidget *opt_window)
 	gtk_object_destroy (GTK_OBJECT (cancel));
 
 	config = g_object_new (GTKAM_TYPE_CONFIG, NULL);
-	g_signal_connect (GTK_OBJECT (config), "delete_event",
-			    GTK_SIGNAL_FUNC (gtk_object_destroy), NULL);
 	if (opt_window)
 		gtk_window_set_transient_for (GTK_WINDOW (config), 
 					      GTK_WINDOW (opt_window));

@@ -183,8 +183,6 @@ gtkam_exif_new (Camera *camera, gboolean multi,
 #endif
 
 	exif = g_object_new (GTKAM_TYPE_EXIF, NULL);
-	g_signal_connect (GTK_OBJECT (exif), "delete_event",
-			    GTK_SIGNAL_FUNC (gtk_object_destroy), NULL);
 
 #ifdef HAVE_EXIF
 	browser = gtk_exif_browser_new ();

@@ -312,8 +312,6 @@ on_upload_activate (GtkMenuItem *menu_item, PopupData *data)
                 "clicked", GTK_SIGNAL_FUNC (on_upload_ok_clicked), &ok);
         gtk_signal_connect (GTK_OBJECT (GTK_FILE_SELECTION (fsel)->cancel_button),
                 "clicked", GTK_SIGNAL_FUNC (gtk_main_quit), NULL);
-        gtk_signal_connect (GTK_OBJECT (fsel), "delete_event",
-                            GTK_SIGNAL_FUNC (gtk_main_quit), NULL);
         gtk_main ();
 
         if (ok) {

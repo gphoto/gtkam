@@ -41,13 +41,19 @@ struct _GtkamChooser
 	GtkamChooserPrivate *priv;
 };
 
+typedef struct _GtkamChooserCameraSelectedData GtkamChooserCameraSelectedData;
+struct _GtkamChooserCameraSelectedData {
+	Camera *camera;
+	gboolean multi;
+};
+
 struct _GtkamChooserClass
 {
 	GtkDialogClass parent_class;
 
 	/* Signals */
-	void (* camera_selected) (GtkamChooser *chooser, Camera *camera,
-				  gboolean multi);
+	void (* camera_selected) (GtkamChooser *,
+				  GtkamChooserCameraSelectedData *);
 };
 
 GtkType    gtkam_chooser_get_type (void);

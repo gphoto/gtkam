@@ -102,15 +102,22 @@ gtkam_close_init (GTypeInstance *instance, gpointer g_class)
 GType
 gtkam_close_get_type (void)
 {
-	GTypeInfo ti;
+	static GType type = 0;
 
-	memset (&ti, 0, sizeof (GTypeInfo));
-	ti.class_size     = sizeof (GtkamCloseClass);
-	ti.class_init     = gtkam_close_class_init;
-	ti.instance_size  = sizeof (GtkamClose);
-	ti.instance_init  = gtkam_close_init;
+	if (!type) {
+		GTypeInfo ti;
 
-	return (g_type_register_static (PARENT_TYPE, "GtkamClose", &ti, 0));
+		memset (&ti, 0, sizeof (GTypeInfo));
+		ti.class_size     = sizeof (GtkamCloseClass);
+		ti.class_init     = gtkam_close_class_init;
+		ti.instance_size  = sizeof (GtkamClose);
+		ti.instance_init  = gtkam_close_init;
+
+		type = g_type_register_static (PARENT_TYPE, "GtkamClose",
+					       &ti, 0);
+	}
+
+	return (type);
 }
 
 static void
@@ -128,8 +135,6 @@ gtkam_close_new (const gchar *msg, GtkWidget *opt_window)
 	g_return_val_if_fail (msg != NULL, NULL);
 
 	close = g_object_new (GTKAM_TYPE_CLOSE, NULL);
-	g_signal_connect (GTK_OBJECT (close), "delete_event",
-			    GTK_SIGNAL_FUNC (gtk_object_destroy), NULL);
 
 	hbox = gtk_hbox_new (FALSE, 10);
 	gtk_widget_show (hbox);

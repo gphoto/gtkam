@@ -45,6 +45,8 @@
 
 #include <gdk/gdkkeysyms.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
+
+#include <gtk/gtkitemfactory.h>
 #include <gtk/gtksignal.h>
 #include <gtk/gtkprogressbar.h>
 #include <gtk/gtkstatusbar.h>
@@ -172,35 +174,37 @@ on_thumbnails_toggled (GtkToggleButton *toggle, GtkamMain *m)
 {
 	gtkam_list_set_thumbnails (m->priv->list, toggle->active);
 }
+#endif
 
 static void
-on_save_selected_photos_activate (GtkMenuItem *item, GtkamMain *m)
+action_save (gpointer callback_data, guint callback_action, GtkWidget *widget)
 {
+	GtkamMain *m = GTKAM_MAIN (callback_data);
+	
 	gtkam_list_save_selected (m->priv->list);
 }
 
 static void
-on_save_selected_photos_clicked (GtkMenuItem *item, GtkamMain *m)
+action_quit (gpointer callback_data, guint callback_action,
+	     GtkWidget *widget)
 {
-	gtkam_list_save_selected (m->priv->list);
+	gtk_main_quit ();
 }
 
-static void
-on_exit_activate (GtkMenuItem *item, GtkamMain *m)
-{
-	gtk_object_destroy (GTK_OBJECT (m));
-}
-
+#if 0
 static void
 on_file_deleted (GtkamDelete *delete, Camera *camera, gboolean multi,
 		 const gchar *folder, const gchar *name, GtkamMain *m)
 {
 	gtkam_list_update_folder (m->priv->list, camera, multi, folder);
 }
+#endif
 
 static void
-delete_selected (GtkamMain *m)
+action_delete_sel (gpointer callback_data, guint callback_action,
+		   GtkWidget *widget)
 {
+#if 0
 	GtkIconListItem *item;
 	GtkamList *list = m->priv->list;
 	guint i;
@@ -226,14 +230,10 @@ delete_selected (GtkamMain *m)
 			item->label);
 	}
 	gtk_widget_show (delete);
+#endif
 }
 
-static void
-on_delete_selected_photos_activate (GtkMenuItem *item, GtkamMain *m)
-{
-	delete_selected (m);
-}
-
+#if 0
 static void
 on_all_deleted (GtkamDelete *delete, Camera *camera, gboolean multi,
 		const gchar *folder, GtkamMain *m)
@@ -242,15 +242,11 @@ on_all_deleted (GtkamDelete *delete, Camera *camera, gboolean multi,
 
 	gtkam_list_update_folder (m->priv->list, camera, multi, folder);
 }
+#endif
 
 static void
-on_delete_selected_photos_clicked (GtkButton *button, GtkamMain *m)
-{
-	delete_selected (m);
-}
-
-static void
-on_delete_all_photos_activate (GtkMenuItem *menu_item, GtkamMain *m)
+action_delete_all (gpointer callback_data, guint callback_action,
+		   GtkWidget *widget)
 {
 #if 0
 	GtkWidget *delete;
@@ -281,7 +277,8 @@ on_delete_all_photos_activate (GtkMenuItem *menu_item, GtkamMain *m)
 }
 
 static void
-on_select_all_activate (GtkMenuItem *item, GtkamMain *m)
+action_select_all (gpointer callback_data, guint callback_action,
+		   GtkWidget *widget)
 {
 #if 0
 	GtkIconList *ilist = GTK_ICON_LIST (m->priv->list);
@@ -294,14 +291,17 @@ on_select_all_activate (GtkMenuItem *item, GtkamMain *m)
 }
 
 static void
-on_select_none_activate (GtkMenuItem *item, GtkamMain *m)
+action_select_none (gpointer callback_data, guint callback_action,
+		    GtkWidget *widget)
 {
-	gtk_icon_list_unselect_all (GTK_ICON_LIST (m->priv->list));
+//	gtk_icon_list_unselect_all (GTK_ICON_LIST (m->priv->list));
 }
 
 static void
-on_select_inverse_activate (GtkMenuItem *menu_item, GtkamMain *m)
+action_select_inverse (gpointer callback_data, guint callback_action,
+		       GtkWidget *widget)
 {
+#if 0
 	GtkIconList *ilist = GTK_ICON_LIST (m->priv->list);
 	GtkIconListItem *item;
 	guint i;
@@ -313,34 +313,31 @@ on_select_inverse_activate (GtkMenuItem *menu_item, GtkamMain *m)
 		else
 			gtk_icon_list_select_icon (ilist, item);
 	}
+#endif
 }
 
 static void
-on_camera_selected (GtkamChooser *chooser, Camera *camera,
-		    gboolean multi, GtkamMain *m)
+on_camera_selected (GtkamChooser *chooser,
+		    GtkamChooserCameraSelectedData *data)
 {
-	GtkWidget *item;
-
-	item = gtkam_tree_item_cam_new ();
-	gtk_widget_show (item);
-	gtk_tree_append (GTK_TREE (m->priv->tree), item);
-	gtkam_tree_item_set_camera (GTKAM_TREE_ITEM (item), camera);
-	gtkam_tree_item_set_multi (GTKAM_TREE_ITEM (item), multi);
-	gtkam_tree_save (GTKAM_TREE (m->priv->tree));
+	g_warning ("Fixme!");
 }
 
 static void
-on_add_camera_activate (GtkMenuItem *item, GtkamMain *m)
+action_add_camera (gpointer callback_data, guint callback_action,
+		   GtkWidget *widget)
 {
 	GtkWidget *dialog;
+	GtkamMain *m = GTKAM_MAIN (callback_data);
 
 	dialog = gtkam_chooser_new ();
 	gtk_window_set_transient_for (GTK_WINDOW (dialog), GTK_WINDOW (m));
 	gtk_widget_show (dialog);
-	gtk_signal_connect (GTK_OBJECT (dialog), "camera_selected",
-			    GTK_SIGNAL_FUNC (on_camera_selected), m);
+	g_signal_connect (GTK_OBJECT (dialog), "camera_selected",
+			  G_CALLBACK (on_camera_selected), m);
 }
 
+#if 0
 static void
 on_size_allocate (GtkWidget *widget, GtkAllocation *allocation, GtkamMain *m)
 {
@@ -604,12 +601,34 @@ on_preferences_activate (GtkMenuItem *i, GtkamMain *m)
 }
 #endif
 
+static GtkItemFactoryEntry mi[] =
+{
+	{"/_File", NULL, 0, 0, "<Branch>"},
+	{"/File/_Save Selected Photos...", NULL, action_save, 0, NULL},
+	{"/File/_Delete Photos", NULL, 0, 0, "<Branch>"},
+	{"/File/Delete Photos/_Selected", NULL, action_delete_sel, 0, NULL},
+	{"/File/Delete Photos/_All", NULL, action_delete_all, 0, NULL},
+	{"/File/sep1", NULL, 0, 0, "<Separator>"},
+	{"/File/_Quit", NULL, action_quit, 0, NULL},
+	{"/_Select", NULL, 0, 0, "<Branch>"},
+	{"/Select/_All", NULL, action_select_all, 0, NULL},
+	{"/Select/_Inverse", NULL, action_select_inverse, 0, NULL},
+	{"/Select/_None", NULL, action_select_none, 0, NULL},
+	{"/_Camera", NULL, 0, 0, "<Branch>"},
+	{"/Camera/_Add Camera...", NULL, action_add_camera, 0, NULL},
+};
+static int nmi = sizeof (mi) / sizeof (mi[0]);
+
 GtkWidget *
 gtkam_main_new (void)
 {
 	GtkamMain *m;
+	GdkPixbuf *pixbuf;
+	GtkAccelGroup *ag;
+	GtkItemFactory *item_factory;
+	GtkWidget *widget, *vbox;
 #if 0
-	GtkWidget *vbox, *menubar, *menu, *item, *separator, *submenu;
+	GtkWidget *menubar, *menu, *item, *separator, *submenu;
 	GtkWidget *frame, *scrolled, *check, *tree, *list, *label;
 	GtkWidget *button, *hpaned, *toolbar, *icon;
 	GtkAccelGroup *accel_group, *accels, *subaccels;
@@ -618,13 +637,28 @@ gtkam_main_new (void)
 #endif
 
 	m = g_object_new (GTKAM_TYPE_MAIN, NULL);
+	gtk_window_set_title (GTK_WINDOW (m), PACKAGE);
+	pixbuf = gdk_pixbuf_new_from_file (IMAGE_DIR "/gtkam-camera.png", NULL);
+	gtk_window_set_icon (GTK_WINDOW (m), pixbuf);
+	gdk_pixbuf_unref (pixbuf);
+
+	vbox = gtk_vbox_new (FALSE, 1);
+	gtk_widget_show (vbox);
+	gtk_container_add (GTK_CONTAINER (m), vbox);
+
+	ag = gtk_accel_group_new ();
+	item_factory = gtk_item_factory_new (GTK_TYPE_MENU_BAR, "<main>", ag);
+	g_object_set_data_full (G_OBJECT (m), "<main>", item_factory,
+				(GDestroyNotify) g_object_unref);
+	gtk_window_add_accel_group (GTK_WINDOW (m), ag);
+	gtk_item_factory_create_items (item_factory, nmi, mi, m);
+	widget = gtk_item_factory_get_widget (item_factory, "<main>");
+	gtk_widget_show (widget);
+	gtk_box_pack_start (GTK_BOX (vbox), widget, FALSE, FALSE, 0);
 
 #if 0
-	gtk_window_set_title (GTK_WINDOW (m), PACKAGE);
 	gtk_window_set_default_size (GTK_WINDOW (m), 640, 480);
 	gtk_window_set_policy (GTK_WINDOW (m), TRUE, TRUE, TRUE);
-	gtk_signal_connect (GTK_OBJECT (m), "delete_event",
-			    GTK_SIGNAL_FUNC (gtk_object_destroy), NULL);
 
 	vbox = gtk_vbox_new (FALSE, 1);
 	gtk_widget_show (vbox);

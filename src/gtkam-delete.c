@@ -371,8 +371,6 @@ gtkam_delete_new (GtkWidget *status)
 	g_return_val_if_fail (status != NULL, NULL);
 
 	delete = g_object_new (GTKAM_TYPE_DELETE, NULL);
-	g_signal_connect (GTK_OBJECT (delete), "delete_event",
-			    GTK_SIGNAL_FUNC (gtk_object_destroy), NULL);
 	delete->priv->status = status;
 
 	hbox = gtk_hbox_new (FALSE, 10);

@@ -383,8 +383,6 @@ gtkam_info_new (Camera *camera, const gchar *path, GtkWidget *opt_window)
 	gtk_object_destroy (GTK_OBJECT (c));
 
 	info = g_object_new (GTKAM_TYPE_INFO, NULL);
-	g_signal_connect (GTK_OBJECT (info), "delete_event",
-			    GTK_SIGNAL_FUNC (gtk_object_destroy), NULL);
 	gtk_window_set_title (GTK_WINDOW (info), g_basename (path));
 
 	info->priv->camera = camera;

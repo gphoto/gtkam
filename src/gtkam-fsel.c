@@ -202,9 +202,6 @@ gtkam_fsel_new (GtkWidget *opt_window)
 	gtk_container_set_border_width (
 			GTK_CONTAINER (GTK_DIALOG (fsel)->vbox), 5);
 
-	g_signal_connect (GTK_OBJECT (fsel), "delete_event",
-			    GTK_SIGNAL_FUNC (gtk_object_destroy), NULL);
-
 	fsel->priv->status = gtk_vbox_new (FALSE, 0);
 	gtk_widget_show (fsel->priv->status);
 	gtk_box_pack_end (GTK_BOX (GTK_DIALOG (fsel)->vbox),

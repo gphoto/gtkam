@@ -58,7 +58,7 @@ struct _GtkamContextPrivate {
 };
 
 static void
-gtkam_context_destroy (GtkObject *object)
+gtkam_context_finalize (GObject *object)
 {
 	GtkamContext *context = GTKAM_CONTEXT (object);
 	guint i;
@@ -68,19 +68,9 @@ gtkam_context_destroy (GtkObject *object)
 		context->context = NULL;
 	}
 
-	for (i = 0; i < context->errors->len; i++)
-		g_free (context->errors->pdata[i]);
-	g_ptr_array_set_size (context->errors, 0);
-
-	GTK_OBJECT_CLASS (parent_class)->destroy (object);
-}
-
-static void
-gtkam_context_finalize (GObject *object)
-{
-	GtkamContext *context = GTKAM_CONTEXT (object);
-
 	if (context->errors) {
+		for (i = 0; i < context->errors->len; i++)
+			g_free (context->errors->pdata[i]);
 		g_ptr_array_free (context->errors, TRUE);
 		context->errors = NULL;
 	}
@@ -93,11 +83,7 @@ gtkam_context_finalize (GObject *object)
 static void
 gtkam_context_class_init (gpointer g_class, gpointer class_data)
 {
-	GtkObjectClass *object_class;
 	GObjectClass *gobject_class;
-
-	object_class = GTK_OBJECT_CLASS (g_class);
-	object_class->destroy  = gtkam_context_destroy;
 
 	gobject_class = G_OBJECT_CLASS (g_class);
 	gobject_class->finalize = gtkam_context_finalize;
@@ -119,15 +105,22 @@ gtkam_context_init (GTypeInstance *instance, gpointer g_class)
 GType
 gtkam_context_get_type (void)
 {
-	GTypeInfo ti;
+	static GType type = 0;
 
-	memset (&ti, 0, sizeof (GTypeInfo)); 
-	ti.class_size     = sizeof (GtkamContextClass);
-	ti.class_init     = gtkam_context_class_init;
-	ti.instance_size  = sizeof (GtkamContext);
-	ti.instance_init  = gtkam_context_init;
+	if (!type) {
+		GTypeInfo ti;
 
-	return (g_type_register_static (PARENT_TYPE, "GtkamContext", &ti, 0));
+		memset (&ti, 0, sizeof (GTypeInfo)); 
+		ti.class_size     = sizeof (GtkamContextClass);
+		ti.class_init     = gtkam_context_class_init;
+		ti.instance_size  = sizeof (GtkamContext);
+		ti.instance_init  = gtkam_context_init;
+
+		type = g_type_register_static (PARENT_TYPE, "GtkamContext",
+					       &ti, 0);
+	}
+
+	return (type);
 }
 
 static void

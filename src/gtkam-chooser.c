@@ -96,34 +96,6 @@ enum {
 static guint signals[LAST_SIGNAL] = {0};
 
 static void
-gtk_marshal_VOID__POINTER_BOOL (GClosure *closure, GValue *return_value,
-				guint n_param_values,
-				const GValue *param_values,
-				gpointer invocation_hint,
-				gpointer marshal_data)
-{
-	typedef void (*GMarshalFunc_VOID__POINTER_BOOL) (gpointer,
-						gpointer, gboolean, gpointer);
-	register GMarshalFunc_VOID__POINTER_BOOL callback;
-	register GCClosure *cc = (GCClosure*) closure;
-	register gpointer data1, data2;
-
-	g_return_if_fail (n_param_values == 2);
-
-	if (G_CCLOSURE_SWAP_DATA (closure)) {
-		data1 = closure->data;
-		data2 = g_value_peek_pointer (param_values + 0);
-	} else {
-		data1 = g_value_peek_pointer (param_values + 0);
-		data2 = closure->data;
-	}
-	callback = (GMarshalFunc_VOID__POINTER_BOOL) (marshal_data ?
-			marshal_data : cc->callback);
-	callback (data1, g_value_get_pointer (param_values + 1),
-			 g_value_get_boolean (param_values + 2), data2);
-}
-
-static void
 gtkam_chooser_destroy (GtkObject *object)
 {
 	GtkamChooser *chooser = GTKAM_CHOOSER (object);
@@ -171,8 +143,8 @@ gtkam_chooser_class_init (gpointer g_class, gpointer class_data)
 	signals[CAMERA_SELECTED] = g_signal_new ("camera_selected",
 		G_TYPE_FROM_CLASS (g_class), G_SIGNAL_RUN_LAST,
 		G_STRUCT_OFFSET (GtkamChooserClass, camera_selected),
-		NULL, NULL, gtk_marshal_VOID__POINTER_BOOL, G_TYPE_NONE, 2,
-		G_TYPE_POINTER, G_TYPE_BOOLEAN);
+		NULL, NULL, g_cclosure_marshal_VOID__POINTER, G_TYPE_NONE,
+		1, G_TYPE_POINTER);
 
 	parent_class = g_type_class_peek_parent (g_class);
 }
@@ -188,15 +160,22 @@ gtkam_chooser_init (GTypeInstance *instance, gpointer g_class)
 GType
 gtkam_chooser_get_type (void)
 {
-	GTypeInfo ti;
+	static GType type = 0;
 
-	memset (&ti, 0, sizeof (GTypeInfo));
-	ti.class_size     = sizeof (GtkamChooserClass);
-	ti.class_init     = gtkam_chooser_class_init;
-	ti.instance_size  = sizeof (GtkamChooser);
-	ti.instance_init  = gtkam_chooser_init;
+	if (!type) {
+		GTypeInfo ti;
 
-	return (g_type_register_static (PARENT_TYPE, "GtkamChooser", &ti, 0));
+		memset (&ti, 0, sizeof (GTypeInfo));
+		ti.class_size     = sizeof (GtkamChooserClass);
+		ti.class_init     = gtkam_chooser_class_init;
+		ti.instance_size  = sizeof (GtkamChooser);
+		ti.instance_init  = gtkam_chooser_init;
+
+		type = g_type_register_static (PARENT_TYPE, "GtkamChooser",
+					       &ti, 0);
+	}
+
+	return (type);
 }
 
 #ifdef HAVE_GP_CAMERA_SET_TIMEOUT_FUNCS
@@ -326,8 +305,7 @@ gtkam_chooser_get_camera (GtkamChooser *chooser)
 					      GTK_WINDOW (chooser));
 		gtk_widget_show (dialog);
 		gp_camera_unref (camera);
-		gtk_object_destroy (GTK_OBJECT (status));
-		return (NULL);
+		camera = NULL;
 	}
 	gtk_object_destroy (GTK_OBJECT (status));
 
@@ -338,15 +316,18 @@ static void
 on_apply_clicked (GtkButton *button, GtkamChooser *chooser)
 {
 	Camera *camera;
+	GtkamChooserCameraSelectedData data;
 
 	if (!chooser->priv->needs_update)
 		return;
 
 	camera = gtkam_chooser_get_camera (chooser);
 	if (camera) {
-		g_signal_emit (GTK_OBJECT (chooser),
-			signals[CAMERA_SELECTED], 0, camera,
-			GTK_TOGGLE_BUTTON (chooser->priv->check_multi)->active);
+		memset (&data, 0, sizeof (GtkamChooserCameraSelectedData));
+		data.camera = camera;
+		data.multi = GTK_TOGGLE_BUTTON (chooser->priv->check_multi)->active;
+		g_signal_emit (G_OBJECT (chooser), signals[CAMERA_SELECTED],
+			       0, &data);
 		gp_camera_unref (camera);
 
 		chooser->priv->needs_update = FALSE;
@@ -365,15 +346,16 @@ static void
 on_ok_clicked (GtkButton *button, GtkamChooser *chooser)
 {
 	Camera *camera;
+	GtkamChooserCameraSelectedData data;
 
 	if (chooser->priv->needs_update) {
-		while (gtk_events_pending ())
-			gtk_main_iteration ();
 		camera = gtkam_chooser_get_camera (chooser);
 		if (camera) {
-			g_signal_emit (GTK_OBJECT (chooser),
-				signals[CAMERA_SELECTED], 0, camera,
-				GTK_TOGGLE_BUTTON (chooser->priv->check_multi)->active);
+			memset (&data, 0, sizeof (GtkamChooserCameraSelectedData));
+			data.camera = camera;
+			data.multi = GTK_TOGGLE_BUTTON (chooser->priv->check_multi)->active;
+			g_signal_emit (G_OBJECT (chooser),
+				       signals[CAMERA_SELECTED], 0, &data);
 			gp_camera_unref (camera);
 			gtk_object_destroy (GTK_OBJECT (chooser));
 		}
@@ -613,7 +595,10 @@ gtkam_chooser_new (void)
 	GtkWidget *image;
 
 	chooser = g_object_new (GTKAM_TYPE_CHOOSER, NULL);
+
 	chooser->priv->tooltips = gtk_tooltips_new ();
+	g_object_ref (G_OBJECT (chooser->priv->tooltips));
+	gtk_object_sink (GTK_OBJECT (chooser->priv->tooltips));
 
 	gp_abilities_list_new (&(chooser->priv->al));
 	gp_abilities_list_load (chooser->priv->al, NULL);
@@ -623,8 +608,6 @@ gtkam_chooser_new (void)
 
 	gtk_window_set_title (GTK_WINDOW (chooser), _("Select Camera"));
 	gtk_container_set_border_width (GTK_CONTAINER (chooser), 5);
-	g_signal_connect (GTK_OBJECT (chooser), "delete_event",
-			    GTK_SIGNAL_FUNC (gtk_object_destroy), NULL);
 
 	hbox = gtk_hbox_new (FALSE, 10);
 	gtk_widget_show (hbox);

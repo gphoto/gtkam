@@ -231,8 +231,6 @@ on_debug_save_as_clicked (GtkButton *button, GtkamDebug *debug)
 	g_signal_connect (GTK_OBJECT (
 				GTK_FILE_SELECTION (fsel)->cancel_button),
 			    "clicked", GTK_SIGNAL_FUNC (gtk_main_quit), NULL);
-	g_signal_connect (GTK_OBJECT (fsel), "delete_event",
-			    GTK_SIGNAL_FUNC (gtk_main_quit), NULL);
 
 	gtk_main ();
 
@@ -271,8 +269,6 @@ gtkam_debug_new (void)
 	GtkWidget *button, *text, *vscrollbar, *hbox, *check, *label;
 
 	debug = g_object_new (GTKAM_TYPE_DEBUG, NULL);
-	g_signal_connect (GTK_OBJECT (debug), "delete_event",
-			    GTK_SIGNAL_FUNC (gtk_object_destroy), NULL);
 
 	debug->priv->log_func_id = gp_log_add_func (GP_LOG_ALL,
 						    log_func, debug);

@@ -177,8 +177,6 @@ gtkam_port_new (GtkWidget *opt_window)
 	GtkWidget *label, *button, *entry, *image, *table;
 
 	port = g_object_new (GTKAM_TYPE_PORT, NULL);
-	g_signal_connect (GTK_OBJECT (port), "delete_event",
-			    GTK_SIGNAL_FUNC (gtk_object_destroy), NULL);
 
 	table = gtk_table_new (2, 2, FALSE);
 	gtk_widget_show (table);

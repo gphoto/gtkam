@@ -162,8 +162,6 @@ gtkam_error_new (int result, GtkamContext *context, GtkWidget *opt_window,
 	g_return_val_if_fail (result < 0, NULL);
 
 	error = g_object_new (GTKAM_TYPE_ERROR, NULL);
-	g_signal_connect (GTK_OBJECT (error), "delete_event",
-			    GTK_SIGNAL_FUNC (gtk_object_destroy), NULL);
 	gtk_window_set_title (GTK_WINDOW (error),
 			      gp_result_as_string (result));
 

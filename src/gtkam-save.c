@@ -69,8 +69,8 @@ struct _GtkamSavePrivate
 	GtkToggleButton *toggle_filename_camera;
 	GtkEntry *program, *prefix_entry;
 
-	gboolean cancelled;
 	GtkamCancel *cancel;
+	gboolean cancelled;
 
 	gboolean quiet;
 };
@@ -310,28 +310,6 @@ save_file (GtkamSave *save, CameraFile *file, guint n)
 	g_free (full_path);
 }
 
-#ifndef OLD_PROGRESS
-static int
-progress_func (CameraFile *file, float percentage, void *data)
-{
-	GtkamSave *save;
-
-	while (gtk_events_pending ())
-		gtk_main_iteration ();
-
-	if (!GTKAM_IS_SAVE (data))
-		return (GP_ERROR_CANCEL);
-	save = GTKAM_SAVE (data);
-
-	gtkam_cancel_set_percentage (save->priv->cancel, percentage);
-
-	if (save->priv->cancelled)
-		return (GP_ERROR_CANCEL);
-
-	return (GP_OK);
-}
-#endif
-
 static void
 get_file (GtkamSave *save, const gchar *filename, CameraFileType type, guint n)
 {
@@ -341,14 +319,10 @@ get_file (GtkamSave *save, const gchar *filename, CameraFileType type, guint n)
 	CameraFile *file;
 
 	gp_file_new (&file);
-#ifndef OLD_PROGRESS
-	gp_file_set_progress_func (file, progress_func, save);
-#endif
+	gtkam_cancel_start_monitoring (save->priv->cancel, file);
 	result = gp_camera_file_get (save->priv->camera,
 				     save->priv->path, filename, type, file);
-#ifndef OLD_PROGRESS
-	gp_file_set_progress_func (file, NULL, NULL);
-#endif
+	gtkam_cancel_stop_monitoring (save->priv->cancel, file);
 	if (save->priv->multi)
 		gp_camera_exit (save->priv->camera);
 	if (result < 0) {

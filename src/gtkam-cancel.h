@@ -21,6 +21,7 @@
 #ifndef __GTKAM_CANCEL_H__
 #define __GTKAM_CANCEL_H__
 
+#include <gphoto2/gphoto2-file.h>
 #include <gtk/gtkdialog.h>
 
 #define GTKAM_TYPE_CANCEL  (gtkam_cancel_get_type ())
@@ -48,7 +49,10 @@ struct _GtkamCancelClass
 GtkType    gtkam_cancel_get_type (void);
 GtkWidget *gtkam_cancel_new      (GtkWidget *opt_window);
 
-void       gtkam_cancel_set_percentage (GtkamCancel *cancel, gfloat percentage);
-void       gtkam_cancel_set_message    (GtkamCancel *cancel, const gchar *msg);
+void    gtkam_cancel_set_percentage (GtkamCancel *cancel, gfloat percentage);
+void    gtkam_cancel_set_message    (GtkamCancel *cancel, const gchar *msg);
+
+void    gtkam_cancel_start_monitoring (GtkamCancel *cancel, CameraFile *file);
+void    gtkam_cancel_stop_monitoring  (GtkamCancel *cancel, CameraFile *file);
 
 #endif /* __GTKAM_CANCEL_H__ */

@@ -43,6 +43,7 @@
 #include <string.h>
 
 #include <gtk/gtkbutton.h>
+#include <gtk/gtkmain.h>
 #include <gtk/gtklabel.h>
 #include <gtk/gtksignal.h>
 #include <gtk/gtkhbox.h>
@@ -50,10 +51,14 @@
 #include <gtk/gtkpixmap.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 
+#include <gphoto2/gphoto2-result.h>
+
 struct _GtkamCancelPrivate
 {
 	GtkProgress *progress;
 	GtkLabel *label;
+
+	gboolean cancelled;
 };
 
 #define PARENT_TYPE GTK_TYPE_DIALOG
@@ -132,6 +137,7 @@ gtkam_cancel_get_type (void)
 static void
 on_cancel_clicked (GtkButton *button, GtkamCancel *cancel)
 {
+	cancel->priv->cancelled = TRUE;
 	gtk_signal_emit (GTK_OBJECT (cancel), signals[CANCEL]);
 }
 
@@ -200,17 +206,57 @@ gtkam_cancel_new (GtkWidget *opt_window)
 }
 
 void
-gtkam_cancel_set_percentage (GtkamCancel *progress, gfloat percentage)
+gtkam_cancel_set_percentage (GtkamCancel *cancel, gfloat percentage)
 {
-	g_return_if_fail (GTKAM_IS_CANCEL (progress));
+	g_return_if_fail (GTKAM_IS_CANCEL (cancel));
 
-	gtk_progress_set_percentage (progress->priv->progress, percentage);
+	gtk_progress_set_percentage (cancel->priv->progress, percentage);
 }
 
 void
-gtkam_cancel_set_message (GtkamCancel *progress, const gchar *msg)
+gtkam_cancel_set_message (GtkamCancel *cancel, const gchar *msg)
 {
-	g_return_if_fail (GTKAM_IS_CANCEL (progress));
+	g_return_if_fail (GTKAM_IS_CANCEL (cancel));
 
-	gtk_label_set_text (progress->priv->label, msg);
+	gtk_label_set_text (cancel->priv->label, msg);
+}
+
+static int
+progress_func (CameraFile *file, float percentage, void *data)
+{
+	GtkamCancel *cancel;
+
+	while (gtk_events_pending ())
+		gtk_main_iteration ();
+
+	if (!GTKAM_IS_CANCEL (data))
+		return (GP_ERROR_CANCEL);
+	cancel = GTKAM_CANCEL (data);
+
+	gtkam_cancel_set_percentage (cancel, percentage);
+
+	if (cancel->priv->cancelled) {
+		cancel->priv->cancelled = FALSE;
+		return (GP_ERROR_CANCEL);
+	}
+
+	return (GP_OK);
+}
+
+void
+gtkam_cancel_start_monitoring (GtkamCancel *cancel, CameraFile *file)
+{
+	g_return_if_fail (GTKAM_IS_CANCEL (cancel));
+	g_return_if_fail (file != NULL);
+
+	gp_file_set_progress_func (file, progress_func, cancel);
+}
+
+void
+gtkam_cancel_stop_monitoring (GtkamCancel *cancel, CameraFile *file)
+{
+	g_return_if_fail (GTKAM_IS_CANCEL (cancel));
+	g_return_if_fail (file != NULL);
+
+	gp_file_set_progress_func (file, NULL, NULL);
 }

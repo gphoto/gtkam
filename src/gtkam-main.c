@@ -62,16 +62,17 @@
 
 #include <gphoto2/gphoto2-camera.h>
 
-#include "gtkam-list.h"
+#include "gtkam-cancel.h"
 #include "gtkam-chooser.h"
+#include "gtkam-close.h"
 #include "gtkam-config.h"
+#include "gtkam-debug.h"
+#include "gtkam-delete.h"
+#include "gtkam-error.h"
+#include "gtkam-list.h"
+#include "gtkam-mkdir.h"
 #include "gtkam-preview.h"
 #include "gtkam-tree.h"
-#include "gtkam-error.h"
-#include "gtkam-close.h"
-#include "gtkam-debug.h"
-#include "gtkam-mkdir.h"
-#include "gtkam-delete.h"
 
 #include "support.h"
 
@@ -625,7 +626,7 @@ static void
 on_upload_activate (GtkMenuItem *item, GtkamMain *m)
 {
 	CameraFile *file;
-	GtkWidget *fsel, *dialog;
+	GtkWidget *fsel, *dialog, *cancel;
 	gboolean ok = FALSE;
 	const char *path;
 	int r;
@@ -655,17 +656,35 @@ on_upload_activate (GtkMenuItem *item, GtkamMain *m)
 			g_free (msg);
 			gtk_widget_show (dialog);
 		} else {
+			gtk_widget_hide (fsel);
+			cancel = gtkam_cancel_new (GTK_WIDGET (m));
+			gtk_widget_show (cancel);
+			msg = g_strdup_printf (_("Uploading '%s'..."), path);
+			gtkam_cancel_set_message (GTKAM_CANCEL (cancel), msg);
+			g_free (msg);
+			gtkam_cancel_start_monitoring (GTKAM_CANCEL (cancel),
+						       file);
 			r = gp_camera_folder_put_file (m->priv->camera,
 						       folder, file);
+			gtkam_cancel_stop_monitoring (GTKAM_CANCEL (cancel),
+						      file);
+			gtk_widget_destroy (cancel);
 			if (m->priv->multi)
 				gp_camera_exit (m->priv->camera);
 			if (r < 0) {
-				msg = g_strdup_printf (_("Coult not upload "
-					"'%s' into folder '%s'"), path, folder);
-				dialog = gtkam_error_new (msg, r,
-					m->priv->camera, GTK_WIDGET (m));
-				g_free (msg);
-				gtk_widget_show (dialog);
+				switch (r) {
+				case GP_ERROR_CANCEL:
+					break;
+				default:
+					msg = g_strdup_printf (_("Coult not "
+						"upload '%s' into folder "
+						"'%s'"), path, folder);
+					dialog = gtkam_error_new (msg, r,
+						m->priv->camera,
+						GTK_WIDGET (m));
+					g_free (msg);
+					gtk_widget_show (dialog);
+				}
 			} else
 				gtkam_list_refresh (m->priv->list);
 		}

@@ -1,3 +1,9 @@
+2002-05-21  Lutz Müller <lutz@users.sourceforge.net>
+
+	Fix the patch by Alvaro <psst@euskalnet.net> (2002-04-04):
+
+	* src/gtkam-save.c: Cleanup.
+
 2002-05-13  Lutz Müller <lutz@users.sourceforge.net>
 
 	* src/gtkam-main.c: Put some menu items back into the Camera menu.

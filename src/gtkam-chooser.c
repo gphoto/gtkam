@@ -582,7 +582,7 @@ gtkam_chooser_new (void)
 	gp_port_info_list_new (&(chooser->priv->il));
 	gp_port_info_list_load (chooser->priv->il);
 
-	gtk_window_set_title (GTK_WINDOW (chooser), _("Select Camera"));
+	gtk_window_set_title (GTK_WINDOW (chooser), _("Add Camera"));
 	gtk_container_set_border_width (GTK_CONTAINER (chooser), 5);
 
 	vbox = gtk_vbox_new (FALSE, 0);

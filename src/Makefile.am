@@ -14,30 +14,31 @@ INCLUDES =					\
 
 noinst_LIBRARIES = libgtkam.a
 libgtkam_a_SOURCES =					\
-	gdk-pixbuf-hacks.c 	gdk-pixbuf-hacks.h  	\
+	gdk-pixbuf-hacks.c	gdk-pixbuf-hacks.h  	\
 	gtkam-camera.c		gtkam-camera.h		\
-	gtkam-cancel.c  	gtkam-cancel.h		\
-	gtkam-chooser.c 	gtkam-chooser.h 	\
-	gtkam-clock.c   	gtkam-clock.h     	\
-	gtkam-close.c   	gtkam-close.h     	\
-	gtkam-config.c  	gtkam-config.h   	\
-	gtkam-context.c 	gtkam-context.h		\
-	gtkam-delete.c  	gtkam-delete.h		\
-	gtkam-dialog.c          gtkam-dialog.h		\
-	gtkam-error.c   	gtkam-error.h     	\
+	gtkam-cancel.c		gtkam-cancel.h		\
+	gtkam-chooser.c		gtkam-chooser.h 	\
+	gtkam-clock.c		gtkam-clock.h     	\
+	gtkam-close.c		gtkam-close.h     	\
+	gtkam-config.c		gtkam-config.h   	\
+	gtkam-context.c		gtkam-context.h		\
+	gtkam-delete.c		gtkam-delete.h		\
+	gtkam-dialog.c		gtkam-dialog.h		\
+	gtkam-error.c		gtkam-error.h     	\
 	gtkam-exif.c		gtkam-exif.h		\
-	gtkam-fsel.c    	gtkam-fsel.h		\
-	gtkam-info.c    	gtkam-info.h		\
+	gtkam-fsel.c		gtkam-fsel.h		\
+	gtkam-info.c		gtkam-info.h		\
 	gtkam-list.c		gtkam-list.h		\
-	gtkam-mkdir.c   	gtkam-mkdir.h		\
-	gtkam-port.c    	gtkam-port.h		\
-	gtkam-preview.c 	gtkam-preview.h		\
+	gtkam-mkdir.c		gtkam-mkdir.h		\
+	gtkam-port.c		gtkam-port.h		\
+	gtkam-preview.c		gtkam-preview.h		\
 	gtkam-save.c		gtkam-save.h		\
-	gtkam-status.c  	gtkam-status.h		\
-	gtkam-tree.c    	gtkam-tree.h		\
-	gtkam-util.c    	gtkam-util.h		\
+	gtkam-status.c		gtkam-status.h		\
+	gtkam-tree.c		gtkam-tree.h		\
+	gtkam-util.c		gtkam-util.h		\
 	gtkam-viewer.c		gtkam-viewer.h		\
-	util.c util.h
+	gtkam-version.c		gtkam-version.h		\
+	util.c			util.h
 
 bin_PROGRAMS = gtkam
 gtkam_SOURCES = 				\

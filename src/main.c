@@ -18,6 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 #include <config.h>
+#include "gtkam-version.h"
 
 #ifdef ENABLE_NLS
 #  include <libintl.h>
@@ -102,6 +103,7 @@ main (int argc, char *argv[])
 	for (x = 1; x < argc; x++) {
 		if (!strcmp (argv[x], "--debug") || !strcmp (argv[x], "-d")) {
 			log = gp_log_add_func (GP_LOG_DATA, log_func, NULL);
+			log_version(GP_LOG_DEBUG, "gtkam-debug");
 		} else if (!strcmp (argv[x], "--fatal") ||
 			   !strcmp (argv[x], "-f")) {
 			g_log_set_always_fatal (G_LOG_LEVEL_CRITICAL);

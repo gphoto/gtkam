@@ -20,6 +20,7 @@
 
 #include <config.h>
 #include "gtkam-debug.h"
+#include "gtkam-version.h"
 
 #ifdef ENABLE_NLS
 #  include <libintl.h>
@@ -393,6 +394,8 @@ gtkam_debug_new (void)
 	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (debug)->action_area),
 			   button);
 	gtk_widget_grab_focus (button);
+
+	log_version(GP_LOG_DEBUG, "gtkam-debug");
 
 	return (GTK_WIDGET (debug));
 }

@@ -215,6 +215,7 @@ gtkam_list_new (void)
         list = gtk_type_new (GTKAM_TYPE_LIST);
         gtk_icon_list_construct (GTK_ICON_LIST (list), 80,
                                  GTK_ICON_LIST_TEXT_BELOW);
+	gtk_icon_list_set_text_space (GTK_ICON_LIST (list), 80);
         gtk_icon_list_set_selection_mode (GTK_ICON_LIST (list),
                                           GTK_SELECTION_MULTIPLE);
         gtk_icon_list_set_editable (GTK_ICON_LIST (list), FALSE);

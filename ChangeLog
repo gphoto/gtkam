@@ -1,3 +1,7 @@
+2001-11-11  Lutz Müller <urc8@rz.uni-karlsruhe.de>
+
+	* src/gtkam-list.c: Call gtk_icon_list_set_text_space here.
+
 2001-11-08  Lutz Müller <urc8@rz.uni-karlsruhe.de>
 
 	* src/gtkam-save.c: Support GP_FILE_TYPE_AUDIO

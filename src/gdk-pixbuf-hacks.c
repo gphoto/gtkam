@@ -20,43 +20,28 @@
 #include <config.h>
 #include "gdk-pixbuf-hacks.h"
 
-struct _GdkPixbuf {
-        int ref_count;
-        GdkColorspace colorspace;
-        int n_channels;
-        int bits_per_sample;
-        int width, height;
-        int rowstride;
-        guchar *pixels;
-        GdkPixbufDestroyNotify destroy_fn;
-        gpointer destroy_fn_data;
-        GdkPixbufLastUnref last_unref_fn;
-        gpointer last_unref_fn_data;
-        guint has_alpha : 1;
-};
-
 #define COPY90                                                          \
         if ((r2 < h1) && (c2 < w1)) {                                   \
           if ((w1 <= h1) && (r1 < h2))                                  \
             for (i = 0; i < c; i++)                                     \
-              new->pixels[r1 * rs2 + c1 * c + i] =                      \
-                pixbuf->pixels[r2 * rs1 + c2 * c + i];                  \
+              new_pixels[r1 * rs2 + c1 * c + i] =                      	\
+                pixels[r2 * rs1 + c2 * c + i];                  	\
           if ((w1 > h1) && (c1 > (w1 - h2)))                            \
             for (i = 0; i < c; i++)                                     \
-              new->pixels[r1 * rs2 + (c1 - (w1 - h1)) * c + i] =        \
-                pixbuf->pixels[r2 * rs1 + c2 * c + i];                  \
+              new_pixels[r1 * rs2 + (c1 - (w1 - h1)) * c + i] =        	\
+                pixels[r2 * rs1 + c2 * c + i];                  	\
         }
 
 #define COPY270                                                         \
         if ((r2 < h1) && (c2 < w1)) {                                   \
           if ((h1 > w1) && (r1 > (h1 - w1)))                            \
             for (i = 0; i < c; i++)                                     \
-              new->pixels[(r1 - (h1 - w1)) * rs2 + c1 * c + i] =        \
-                pixbuf->pixels[r2 * rs1 + c2 * c + i];                  \
+              new_pixels[(r1 - (h1 - w1)) * rs2 + c1 * c + i] =        	\
+                pixels[r2 * rs1 + c2 * c + i];                  	\
           if ((h1 <= w1) && (c1 < w2))                                  \
             for (i = 0; i < c; i++)                                     \
-              new->pixels[r1 * rs2 + c1 * c + i] =                      \
-                pixbuf->pixels[r2 * rs1 + c2 * c + i];                  \
+              new_pixels[r1 * rs2 + c1 * c + i] =               	\
+                pixels[r2 * rs1 + c2 * c + i];                  	\
         }
 
 GdkPixbuf *
@@ -68,37 +53,47 @@ gdk_pixbuf_rotate (GdkPixbuf *pixbuf, guint angle)
         guint rs1, rs2;
         guint c;
         guint i;
+	guchar *pixels, *new_pixels;
 
-        g_return_val_if_fail (pixbuf != NULL, NULL);
+        g_return_val_if_fail (GDK_IS_PIXBUF (pixbuf), NULL);
 
         switch (angle) {
         case 0:
                 return (gdk_pixbuf_copy (pixbuf));
         case 180:
-                new = gdk_pixbuf_new (pixbuf->colorspace, pixbuf->has_alpha,
-                                      pixbuf->bits_per_sample,
-                                      pixbuf->width, pixbuf->height);
+                new = gdk_pixbuf_new (
+			gdk_pixbuf_get_colorspace (pixbuf),
+			gdk_pixbuf_get_has_alpha (pixbuf),
+			gdk_pixbuf_get_bits_per_sample (pixbuf),
+			gdk_pixbuf_get_width (pixbuf),
+			gdk_pixbuf_get_height (pixbuf));
                 break;
         case 90:
         case 270:
-                new = gdk_pixbuf_new (pixbuf->colorspace, pixbuf->has_alpha,
-                                      pixbuf->bits_per_sample,
-                                      pixbuf->height, pixbuf->width);
+                new = gdk_pixbuf_new (
+			gdk_pixbuf_get_colorspace (pixbuf),
+			gdk_pixbuf_get_has_alpha (pixbuf),
+			gdk_pixbuf_get_bits_per_sample (pixbuf),
+			gdk_pixbuf_get_height (pixbuf),
+			gdk_pixbuf_get_width (pixbuf));
                 break;
         default:
                 g_warning ("Rotation by %i not implemented.", angle);
                 break;
         }
 
-        rs1 = pixbuf->rowstride;
-        rs2 = new->rowstride;
+        rs1 = gdk_pixbuf_get_rowstride (pixbuf);
+        rs2 = gdk_pixbuf_get_rowstride (new);
 
-        c = pixbuf->has_alpha ? 4 : 3;
+        c = gdk_pixbuf_get_has_alpha (pixbuf) ? 4 : 3;
 
-        w1 = pixbuf->width;
-        h1 = pixbuf->height;
-        w2 = new->width;
-        h2 = new->height;
+        w1 = gdk_pixbuf_get_width (pixbuf);
+        h1 = gdk_pixbuf_get_height (pixbuf);
+        w2 = gdk_pixbuf_get_width (new);
+        h2 = gdk_pixbuf_get_height (new);
+
+	pixels = gdk_pixbuf_get_pixels (pixbuf);
+	new_pixels = gdk_pixbuf_get_pixels (new);
 
         /*
          * For rotation by 90 or 270, we assume the pixbuf to be a
@@ -165,8 +160,8 @@ gdk_pixbuf_rotate (GdkPixbuf *pixbuf, guint angle)
                                 r2 = h1 - row - 1;
                                 c2 = w1 - col - 1;
                                 for (i = 0; i < c; i++) {
-                                  new->pixels[r2 * rs2 + c2 * c + i] =
-                                    pixbuf->pixels[r1 * rs1 + c1 * c + i];
+                                  new_pixels[r2 * rs2 + c2 * c + i] =
+                                    pixels[r1 * rs1 + c1 * c + i];
                                 }
                         }
                 }

@@ -57,10 +57,11 @@
 #include <gtk/gtkhscale.h>
 #include <gdk-pixbuf/gdk-pixbuf-loader.h>
 
+#include "gdk-pixbuf-hacks.h"
+
 #include "gtkam-config.h"
 #include "gtkam-error.h"
 #include "gtkam-status.h"
-#include "gdk-pixbuf-hacks.h"
 
 struct _GtkamPreviewPrivate
 {

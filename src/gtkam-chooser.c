@@ -97,7 +97,33 @@ enum {
 
 static guint signals[LAST_SIGNAL] = {0};
 
-#define gtk_marshal_NONE__POINTER_BOOL gtk_marshal_NONE__POINTER_INT
+static void
+gtk_marshal_VOID__POINTER_BOOL (GClosure *closure, GValue *return_value,
+				guint n_param_values,
+				const GValue *param_values,
+				gpointer invocation_hint,
+				gpointer marshal_data)
+{
+	typedef void (*GMarshalFunc_VOID__POINTER_BOOL) (gpointer,
+						gpointer, gboolean, gpointer);
+	register GMarshalFunc_VOID__POINTER_BOOL callback;
+	register GCClosure *cc = (GCClosure*) closure;
+	register gpointer data1, data2;
+
+	g_return_if_fail (n_param_values == 2);
+
+	if (G_CCLOSURE_SWAP_DATA (closure)) {
+		data1 = closure->data;
+		data2 = g_value_peek_pointer (param_values + 0);
+	} else {
+		data1 = g_value_peek_pointer (param_values + 0);
+		data2 = closure->data;
+	}
+	callback = (GMarshalFunc_VOID__POINTER_BOOL) (marshal_data ?
+			marshal_data : cc->callback);
+	callback (data1, g_value_get_pointer (param_values + 1),
+			 g_value_get_boolean (param_values + 2), data2);
+}
 
 static void
 gtkam_chooser_destroy (GtkObject *object)
@@ -123,32 +149,34 @@ gtkam_chooser_destroy (GtkObject *object)
 }
 
 static void
-gtkam_chooser_finalize (GtkObject *object)
+gtkam_chooser_finalize (GObject *object)
 {
 	GtkamChooser *chooser = GTKAM_CHOOSER (object);
 
 	g_free (chooser->priv);
 
-	GTK_OBJECT_CLASS (parent_class)->finalize (object);
+	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 static void
 gtkam_chooser_class_init (GtkamChooserClass *klass)
 {
 	GtkObjectClass *object_class;
+	GObjectClass *gobject_class;
 
 	object_class = GTK_OBJECT_CLASS (klass);
 	object_class->destroy  = gtkam_chooser_destroy;
-	object_class->finalize = gtkam_chooser_finalize;
 
-	signals[CAMERA_SELECTED] = gtk_signal_new ("camera_selected",
-		GTK_RUN_LAST, object_class->type,
-		GTK_SIGNAL_OFFSET (GtkamChooserClass, camera_selected),
-		gtk_marshal_NONE__POINTER_BOOL, GTK_TYPE_NONE, 2,
-		GTK_TYPE_POINTER, GTK_TYPE_BOOL);
-	gtk_object_class_add_signals (object_class, signals, LAST_SIGNAL);
+	gobject_class = G_OBJECT_CLASS (klass);
+	gobject_class->finalize = gtkam_chooser_finalize;
 
-	parent_class = gtk_type_class (PARENT_TYPE);
+	signals[CAMERA_SELECTED] = g_signal_new ("camera_selected",
+		G_TYPE_FROM_CLASS (object_class), G_SIGNAL_RUN_LAST,
+		G_STRUCT_OFFSET (GtkamChooserClass, camera_selected),
+		NULL, NULL, gtk_marshal_VOID__POINTER_BOOL, G_TYPE_NONE, 2,
+		G_TYPE_POINTER, G_TYPE_BOOLEAN);
+
+	parent_class = g_type_class_peek_parent (klass);
 }
 
 static void
@@ -591,6 +619,7 @@ gtkam_chooser_new (void)
 	GdkPixmap *pixmap;
 	GdkBitmap *bitmap;
 	GdkPixbuf *pixbuf;
+	GError *e = NULL;
 
 	chooser = gtk_type_new (GTKAM_TYPE_CHOOSER);
 	chooser->priv->tooltips = gtk_tooltips_new ();
@@ -613,10 +642,13 @@ gtkam_chooser_new (void)
 			    TRUE, TRUE, 0);
 	gtk_container_set_border_width (GTK_CONTAINER (hbox), 10);
 
-	pixbuf = gdk_pixbuf_new_from_file (IMAGE_DIR "/gtkam-camera.png");
-	if (!pixbuf)
-		g_warning ("Could not load " IMAGE_DIR "/gtkam-camera.png");
-	else {
+	pixbuf = gdk_pixbuf_new_from_file (IMAGE_DIR "/gtkam-camera.png", &e);
+	if (!pixbuf) {
+		g_assert (e != NULL);
+		g_warning ("Could not load " IMAGE_DIR "/gtkam-camera.png: "
+			   "'%s'.", e->message);
+		g_error_free (e);
+	} else {
 		gdk_pixbuf_render_pixmap_and_mask (pixbuf, &pixmap, &bitmap, 127);
 		gdk_pixbuf_unref (pixbuf);
 		image = gtk_pixmap_new (pixmap, bitmap);

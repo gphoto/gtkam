@@ -1,5 +1,9 @@
 2002-06-28  Lutz Müller <lutz@users.sourceforge.net>
 
+	* src: Start porting.
+
+2002-06-28  Lutz Müller <lutz@users.sourceforge.net>
+
 	* configure.in: Require gtk-2.0
 	* README: Add a note that this is work in progress and that people
 	  should check out the gtkam-gtk-1 branch.

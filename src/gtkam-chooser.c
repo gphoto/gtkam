@@ -303,14 +303,15 @@ on_apply_clicked (GtkButton *button, GtkamChooser *chooser)
 		return;
 
 	camera = gtkam_chooser_get_camera (chooser);
-	if (camera) {
+	if (camera && camera->camera) {
 		g_signal_emit (G_OBJECT (chooser), signals[CAMERA_SELECTED],
 			       0, camera);
 		g_object_unref (G_OBJECT (camera));
 
 		chooser->priv->needs_update = FALSE;
 		gtk_widget_set_sensitive (chooser->apply_button, FALSE);
-	}
+	} else if (camera)
+		g_object_unref (G_OBJECT (camera));
 }
 
 static void
@@ -327,12 +328,13 @@ on_ok_clicked (GtkButton *button, GtkamChooser *chooser)
 
 	if (chooser->priv->needs_update) {
 		camera = gtkam_chooser_get_camera (chooser);
-		if (camera) {
+		if (camera && camera->camera) {
 			g_signal_emit (G_OBJECT (chooser),
 				       signals[CAMERA_SELECTED], 0, camera);
 			g_object_unref (G_OBJECT (camera));
 			gtk_object_destroy (GTK_OBJECT (chooser));
-		}
+		} else if (camera)
+			g_object_unref (G_OBJECT (camera));
 	} else
 		gtk_object_destroy (GTK_OBJECT (chooser));
 }

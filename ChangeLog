@@ -1,3 +1,10 @@
+2003-12-02  Lutz Mueller <lutz@users.sourceforge.net>
+
+	Patch originally by Andrew Burton <adb@iinet.net.au>, modified:
+
+	* src/gtkam-chooser.c: Don't add the camera to the tree if something
+	  goes wrong.
+
 2002-11-16  Patrick Mansfield <patmans@users.sourceforge.net>
 
 	* gtkam-list.c, gtkam-preview.c: Add checks for GP_ERROR_CAMERA_BUSY.

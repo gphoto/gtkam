@@ -122,7 +122,7 @@ gtkam_preview_class_init (GtkamPreviewClass *klass)
 	object_class->destroy  = gtkam_preview_destroy;
 	object_class->finalize = gtkam_preview_finalize;
 
-	signals[CAPTURED] = gtk_signal_new ("captured", GTK_RUN_LAST,
+	signals[CAPTURED] = gtk_signal_new ("captured", GTK_RUN_FIRST,
 		object_class->type,
 		GTK_SIGNAL_OFFSET (GtkamPreviewClass, captured),
 		gtk_marshal_NONE__POINTER, GTK_TYPE_NONE, 1,

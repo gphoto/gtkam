@@ -195,9 +195,12 @@ get_file (Camera *camera, CameraFilePath path, gint nparams, GimpParam *param,
 	guchar *pixels;
 	int r, result;
 	guint w, h;
+	gchar *msg;
 
 	gp_file_new (&file);
-        gimp_progress_init (_("Downloading file"));
+	msg = g_strdup_printf (_("Downloading '%s'..."), path.name);
+        gimp_progress_init (msg);
+	g_free (msg);
         gp_camera_set_progress_func (camera, progress_func, NULL);
         result = gp_camera_file_get (camera, path.folder, path.name,
                                      GP_FILE_TYPE_NORMAL, file);
@@ -307,6 +310,8 @@ run_capture (gchar *name, gint nparams, GimpParam *param, gint *nreturn_vals,
 			}
 
 			gtk_widget_hide (preview);
+			while (gtk_events_pending ())
+				gtk_main_iteration ();
 
 			/* Store the settings for later runs */
 			preview_params.zoom =
@@ -359,14 +364,10 @@ run_capture (gchar *name, gint nparams, GimpParam *param, gint *nreturn_vals,
 }
 
 static void
-on_selected (GtkamFSel *fsel, const gchar *path, CameraFilePath *fpath)
+on_fsel_ok_clicked (GtkButton *button, gboolean *selected)
 {
-	gchar *dirname;
-
-	dirname = g_dirname (path);
-	strncpy (fpath->folder, dirname, sizeof (fpath->folder));
-	g_free (dirname);
-	strncpy (fpath->name, g_basename (path), sizeof (fpath->name));
+	*selected = TRUE;
+	gtk_main_quit ();
 }
 
 static void
@@ -378,6 +379,10 @@ run_load (gchar *name, gint nparams, GimpParam *param, gint *nreturn_vals,
 	GtkWidget *fsel;
 	gint32 image_id;
 	static GimpParam values[2];
+	guint i;
+	const gchar *full_path;
+	gchar *dir;
+	gboolean selected = FALSE;
 
 	/* Create the camera */
 	camera = create_camera (GP_OPERATION_NONE, 
@@ -388,14 +393,14 @@ run_load (gchar *name, gint nparams, GimpParam *param, gint *nreturn_vals,
 	/* Show the file selection dialog */
 	fsel = gtkam_fsel_new (camera, NULL);
 	gtk_widget_show (fsel);
-	gtk_signal_connect (GTK_OBJECT (fsel), "selected",
-			    GTK_SIGNAL_FUNC (on_selected), &path);
+	gtk_signal_connect (GTK_OBJECT (GTKAM_FSEL (fsel)->ok_button),
+		"clicked", GTK_SIGNAL_FUNC (on_fsel_ok_clicked), &selected);
 	gtk_signal_connect (GTK_OBJECT (fsel), "destroy",
 			    GTK_SIGNAL_FUNC (gtk_main_quit), NULL);
 	gtk_main ();
 
 	/* Check if the user cancelled */
-	if (!strlen (path.folder)) {
+	if (!selected) {
 		gp_camera_unref (camera);
 		*nreturn_vals = 1;
 		*return_vals = values;
@@ -404,17 +409,34 @@ run_load (gchar *name, gint nparams, GimpParam *param, gint *nreturn_vals,
 		return;
 	}
 
-	/* Get the file and display it */
-	image_id = get_file (camera, path,
-			     nparams, param, nreturn_vals, return_vals);
+	gtk_widget_hide (fsel);
+	while (gtk_events_pending ())
+		gtk_main_iteration ();
+
+	/* Get the file(s) and display it */
+	for (i = 0; i < g_list_length (GTKAM_FSEL (fsel)->selection); i++) {
+		full_path = g_list_nth_data (GTKAM_FSEL (fsel)->selection, i);
+		dir = g_dirname (full_path);
+		strcpy (path.folder, dir);
+		strcpy (path.name, g_basename (full_path));
+		image_id = get_file (camera, path,
+				     nparams, param, nreturn_vals, return_vals);
+	}
+	gtk_object_destroy (GTK_OBJECT (fsel));
 	gp_camera_unref (camera);
+#if 0
 	if (image_id < 0)
 		return;
+#endif
 
-	*nreturn_vals = 2;
+	*nreturn_vals = 1;
 	*return_vals = values;
+	values[0].type = GIMP_PDB_STATUS;
+	values[0].data.d_status = GIMP_PDB_SUCCESS;
+#if 0
 	values[1].type = GIMP_PDB_IMAGE;
 	values[1].data.d_image = image_id;
+#endif
 }
 
 static void

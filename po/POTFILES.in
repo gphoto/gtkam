@@ -2,10 +2,12 @@
 
 src/main.c
 src/gtkam-chooser.c
+src/gtkam-clist.c
 src/gtkam-close.c
 src/gtkam-config.c
 src/gtkam-debug.c
 src/gtkam-error.c
+src/gtkam-fsel.c
 src/gtkam-gimp.c
 src/gtkam-list.c
 src/gtkam-main.c

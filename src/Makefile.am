@@ -9,6 +9,7 @@ INCLUDES =						\
 noinst_LIBRARIES = libgtkam.a
 libgtkam_a_SOURCES =			\
 	gtkam-chooser.c gtkam-chooser.h \
+	gtkam-clist.c gtkam-clist.h	\
 	gtkam-clock.c gtkam-clock.h     \
 	gtkam-close.c gtkam-close.h     \
 	gtkam-config.c gtkam-config.h   \

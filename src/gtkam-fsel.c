@@ -51,6 +51,7 @@
 #include <gtk/gtkpixmap.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 
+#include "gtkam-clist.h"
 #include "gtkam-tree.h"
 #include "gtkam-mkdir.h"
 #include "gtkam-error.h"
@@ -60,6 +61,7 @@ struct _GtkamFSelPrivate
 	Camera *camera;
 
 	GtkamTree *tree;
+	GtkamCList *clist;
 
 	GtkWidget *mkdir, *rmdir;
 };
@@ -68,7 +70,6 @@ struct _GtkamFSelPrivate
 static GtkDialogClass *parent_class;
 
 enum {
-	SELECTED,
 	LAST_SIGNAL
 };
 
@@ -82,6 +83,11 @@ gtkam_fsel_destroy (GtkObject *object)
 	if (fsel->priv->camera) {
 		gp_camera_unref (fsel->priv->camera);
 		fsel->priv->camera = NULL;
+	}
+
+	if (fsel->selection) {
+		g_list_free (fsel->selection);
+		fsel->selection = NULL;
 	}
 
 	GTK_OBJECT_CLASS (parent_class)->destroy (object);
@@ -106,10 +112,6 @@ gtkam_fsel_class_init (GtkamFSelClass *klass)
 	object_class->destroy  = gtkam_fsel_destroy;
 	object_class->finalize = gtkam_fsel_finalize;
 
-	signals[SELECTED] = gtk_signal_new ("selected", GTK_RUN_LAST,
-		object_class->type, 
-		GTK_SIGNAL_OFFSET (GtkamFSelClass, selected),
-		gtk_marshal_NONE__POINTER, GTK_TYPE_NONE, 1, GTK_TYPE_POINTER);
 	gtk_object_class_add_signals (object_class, signals, LAST_SIGNAL);
 
 	parent_class = gtk_type_class (PARENT_TYPE);
@@ -140,26 +142,6 @@ gtkam_fsel_get_type (void)
 	return (fsel_type);
 }
 
-static gchar *
-gtkam_fsel_get_path (GtkamFSel *fsel)
-{
-	g_return_val_if_fail (GTKAM_IS_FSEL (fsel), NULL);
-
-	return (NULL);
-}
-
-static void
-on_fsel_ok_clicked (GtkButton *button, GtkamFSel *fsel)
-{
-	gchar *path;
-
-	path = gtkam_fsel_get_path (fsel);
-	gtk_signal_emit (GTK_OBJECT (fsel), signals[SELECTED], path);
-	g_free (path);
-
-	gtk_object_destroy (GTK_OBJECT (fsel));
-}
-
 static void
 on_fsel_cancel_clicked (GtkButton *button, GtkamFSel *fsel)
 {
@@ -171,7 +153,7 @@ on_folder_selected (GtkamTree *tree, const gchar *path, GtkamFSel *fsel)
 {
 	gtk_widget_set_sensitive (fsel->priv->mkdir, TRUE);
 	gtk_widget_set_sensitive (fsel->priv->rmdir, TRUE);
-	return;
+	gtkam_clist_set_path (fsel->priv->clist, path);
 }
 
 static void
@@ -179,7 +161,21 @@ on_folder_unselected (GtkamTree *tree, const gchar *path, GtkamFSel *fsel)
 {
 	gtk_widget_set_sensitive (fsel->priv->mkdir, FALSE);
 	gtk_widget_set_sensitive (fsel->priv->rmdir, FALSE);
-	return;
+	gtkam_clist_set_path (fsel->priv->clist, NULL);
+}
+
+static void
+on_file_selected (GtkamCList *clist, const gchar *path, GtkamFSel *fsel)
+{
+	gtk_widget_set_sensitive (fsel->ok_button, TRUE);
+	fsel->selection = g_list_append (fsel->selection, (gchar *) path);
+}
+
+static void
+on_file_unselected (GtkamCList *clist, const gchar *path, GtkamFSel *fsel)
+{
+	gtk_widget_set_sensitive (fsel->ok_button, FALSE);
+	fsel->selection = g_list_remove (fsel->selection, (gchar *) path);
 }
 
 static void
@@ -229,7 +225,7 @@ GtkWidget *
 gtkam_fsel_new (Camera *camera, GtkWidget *opt_window)
 {
 	GtkamFSel *fsel;
-	GtkWidget *tree, *button, *image, *hbox, *scrolled, *bbox;
+	GtkWidget *tree, *button, *image, *hbox, *scrolled, *bbox, *clist;
 	GdkPixmap *pixmap;
 	GdkBitmap *bitmap;
 	GdkPixbuf *pixbuf;
@@ -240,7 +236,7 @@ gtkam_fsel_new (Camera *camera, GtkWidget *opt_window)
 	fsel = gtk_type_new (GTKAM_TYPE_FSEL);
 	gtk_container_set_border_width (
 			GTK_CONTAINER (GTK_DIALOG (fsel)->vbox), 5);
-	gtk_widget_set_usize (GTK_WIDGET (fsel), 300, 300);
+	gtk_widget_set_usize (GTK_WIDGET (fsel), 400, 400);
 
 	gtk_signal_connect (GTK_OBJECT (fsel), "delete_event",
 			    GTK_SIGNAL_FUNC (gtk_object_destroy), NULL);
@@ -264,7 +260,6 @@ gtkam_fsel_new (Camera *camera, GtkWidget *opt_window)
 			    GTK_SIGNAL_FUNC (on_mkdir_clicked), fsel);
 	fsel->priv->mkdir = button;
 	button = gtk_button_new_with_label (_("Remove"));
-	gtk_widget_show (button);
 	gtk_widget_set_sensitive (button, FALSE);
 	gtk_container_add (GTK_CONTAINER (bbox), button);
 	gtk_signal_connect (GTK_OBJECT (button), "clicked",
@@ -297,6 +292,7 @@ gtkam_fsel_new (Camera *camera, GtkWidget *opt_window)
 	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (fsel)->vbox), hbox,
 			    TRUE, TRUE, 0);
 
+	/* Tree */
 	scrolled = gtk_scrolled_window_new (NULL, NULL);
 	gtk_widget_show (scrolled);
 	gtk_box_pack_start (GTK_BOX (hbox), scrolled, TRUE, TRUE, 0);
@@ -314,14 +310,24 @@ gtkam_fsel_new (Camera *camera, GtkWidget *opt_window)
 	gtk_signal_connect (GTK_OBJECT (tree), "folder_unselected",
 			    GTK_SIGNAL_FUNC (on_folder_unselected), fsel);
 
+	/* CList */
+	clist = gtkam_clist_new ();
+	gtk_widget_show (clist);
+	gtk_box_pack_start (GTK_BOX (hbox), clist, TRUE, TRUE, 0);
+	gtkam_clist_set_camera (GTKAM_CLIST (clist), camera);
+	fsel->priv->clist = GTKAM_CLIST (clist);
+	gtk_signal_connect (GTK_OBJECT (clist), "file_selected",
+			    GTK_SIGNAL_FUNC (on_file_selected), fsel);
+	gtk_signal_connect (GTK_OBJECT (clist), "file_unselected",
+			    GTK_SIGNAL_FUNC (on_file_unselected), fsel);
+
 	button = gtk_button_new_with_label (_("Ok"));
 	gtk_widget_show (button);
 	gtk_widget_set_sensitive (button, FALSE);
-	gtk_signal_connect (GTK_OBJECT (button), "clicked",
-			    GTK_SIGNAL_FUNC (on_fsel_ok_clicked), fsel);
 	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (fsel)->action_area),
 			   button);
 	gtk_widget_grab_focus (button);
+	fsel->ok_button = button;
 
 	button = gtk_button_new_with_label (_("Cancel"));
 	gtk_widget_show (button);

@@ -36,15 +36,16 @@ struct _GtkamFSel
 {
 	GtkDialog parent;
 
+	GList *selection;
+
+	GtkWidget *ok_button;
+
 	GtkamFSelPrivate *priv;
 };
 
 struct _GtkamFSelClass
 {
 	GtkDialogClass parent_class;
-
-	/* Signals */
-	void (* selected) (GtkamFSel *fsel, const gchar *path);
 };
 
 GtkType    gtkam_fsel_get_type (void);

@@ -1,3 +1,15 @@
+2003-01-10  Andrew Burton <adburton@users.sourceforge.net>
+
+	Modify Save and Delete menu option sensitivity handling:
+
+	* src/gtkam-main.c
+
+	Added gtkam-specific Help and .desktop entry for Gnome menu
+
+	* src/main.c: Add APP_DATADIR clause to gnome_program_init
+	* Makefile.am: Add help omf-install to SUBDIRS
+	  Add gtkamdoc_DATA, desktop_DATA and icon_DATA handling
+
 2003-01-10  Lutz Mueller <lutz@users.sourceforge.net>
 
 	* src/gtkam-save.c: Fix my latest commit.

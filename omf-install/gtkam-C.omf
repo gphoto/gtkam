@@ -1,0 +1,19 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE omf PUBLIC "-//OMF//DTD Scrollkeeper OMF Variant V1.0//EN" "/usr/share/xml/scrollkeeper/dtds/scrollkeeper-omf.dtd">
+<omf>
+  <resource>
+    <creator>
+      adb@iinet.net.au (Andrew Burton)
+    </creator>
+    <title>
+      gtkam
+    </title>
+    <date>
+      2003-12-04
+    </date>
+    <subject category="GNOME|Applications|Graphics"/>
+    <format mime="text/xml"/>
+    <identifier url="file:/usr/local/share/gnome/help/gtkam/C/gtkam.xml"/>
+    <language code="C"/>
+  </resource>
+</omf>

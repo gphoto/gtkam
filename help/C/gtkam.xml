@@ -1,0 +1,546 @@
+<?xml version="1.0"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
+"http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
+  <!ENTITY legal SYSTEM "legal.xml">
+  <!ENTITY appversion "0.1.10">
+  <!ENTITY manrevision "0.1.10">
+  <!ENTITY date "December 2003">
+  <!ENTITY app "<application>gtkam</application>">
+  <!-- Information about the entities
+       The legal.xml file contains legal information, there is no need to edit the file. 
+       Use the appversion entity to specify the version of the application.
+       Use the manrevision entity to specify the revision number of this manual.
+       Use the date entity to specify the release date of this manual.
+       Use the app entity to specify the name of the application. -->
+]>
+<!-- 
+      (Do not remove this comment block.)
+  Maintained by the GNOME Documentation Project
+  http://developer.gnome.org/projects/gdp
+  Template version: 2.0 beta
+  Template last modified Apr 11, 2002
+-->
+<!-- =============Document Header ============================= -->
+<article id="index" lang="en">
+<!-- please do not change the id; for translations, change lang to -->
+<!-- appropriate code -->
+  <articleinfo> 
+    <title>&app; Manual V&manrevision;</title>       
+
+    <copyright> 
+      <year>2003</year> 
+      <holder>Andrew Burton</holder> 
+    </copyright> 
+<!-- translators: uncomment this:
+
+  <copyright>
+   <year>2002</year>
+   <holder>ME-THE-TRANSLATOR (Latin translation)</holder>
+  </copyright>
+
+   -->
+<!-- An address can be added to the publisher information.  If a role is 
+     not specified, the publisher/author is the same for all versions of the 
+     document.  -->
+    <publisher> 
+      <publishername>gPhoto Project</publishername> 
+    </publisher> 
+
+   <!-- This file  contains link to license for the documentation (GNU FDL), and 
+        other legal stuff such as "NO WARRANTY" statement. Please do not change 
+	any of this. -->
+
+    <authorgroup> 
+      <author> 
+		<firstname>Andrew</firstname> 
+		<surname>Burton</surname> 
+		<affiliation> 
+	  		<orgname>gPhoto Project</orgname> 
+	  		<address> <email>adb@iinet.net.au</email> </address> 
+		</affiliation> 
+      </author> 
+      
+<!-- This is appropriate place for other contributors: translators,
+     maintainers,  etc. Commented out by default.
+     
+      <othercredit role="translator">
+		<firstname>Latin</firstname> 
+		<surname>Translator 1</surname> 
+		<affiliation> 
+	  		<orgname>Latin Translation Team</orgname> 
+	  		<address> <email>translator@gnome.org</email> </address> 
+		</affiliation>
+		<contrib>Latin translation</contrib>
+      </othercredit>
+-->
+    </authorgroup>
+
+
+<!-- According to GNU FDL, revision history is mandatory if you are -->
+<!-- modifying/reusing someone else's document.  If not, you can omit it. -->
+<!-- Remember to remove the &manrevision; entity from the revision entries other
+-->
+<!-- than the current revision. -->
+<!-- The revision numbering system for GNOME manuals is as follows: -->
+<!-- * the revision number consists of two components -->
+<!-- * the first component of the revision number reflects the release version of the GNOME desktop. -->
+<!-- * the second component of the revision number is a decimal unit that is incremented with each revision of the manual. -->
+<!-- For example, if the GNOME desktop release is V2.x, the first version of the manual that -->
+<!-- is written in that desktop timeframe is V2.0, the second version of the manual is V2.1, etc. -->
+<!-- When the desktop release version changes to V3.x, the revision number of the manual changes -->
+<!-- to V3.0, and so on. -->  
+    <revhistory>
+      <revision> 
+		<revnumber>Gtkam Manual V&manrevision;</revnumber> 
+		<date>&date;</date> 
+		<revdescription> 
+	  		<para role="author">Andrew Burton
+	    	<email>adburton@users.sourceforge.net</email>
+	  		</para>
+	  		<para role="publisher">gPhoto Project</para>
+		</revdescription> 
+      </revision> 
+    </revhistory> 
+
+    <releaseinfo>This manual describes version &appversion; of Gtkam.
+    </releaseinfo> 
+    <legalnotice> 
+      <title>Feedback</title> 
+      <para>To report a bug or make a suggestion regarding the &app; application or
+      this manual, follow the directions in the <ulink url="ghelp:gnome-feedback"
+	  type="help">GNOME Feedback Page</ulink>. 
+      </para>
+<!-- Translators may also add here feedback address for translations -->
+    </legalnotice> 
+  </articleinfo> 
+
+  <indexterm zone="index"> 
+    <primary>Gtkam</primary> 
+  </indexterm> 
+  <indexterm zone="index"> 
+    <primary>gtkam</primary> 
+  </indexterm>
+
+<!-- ============= Document Body ============================= -->
+<!-- ============= Introduction ============================== -->
+<!-- Use the Introduction section to give a brief overview of what
+     the application is and what it does. -->
+  <sect1 id="myapp-introduction"> 
+    <title>Introduction</title> 
+    <para>&app; is a convenient and easy-to-use program that lets you view photos on your digital camera.
+    &app; supports almost 400 cameras.</para>
+    <para>&app; has the following features:</para>
+    <itemizedlist> 
+      <listitem> 
+	  <para>Support for both serial and USB cameras.</para> 
+      </listitem> 
+      <listitem> 
+	  <para>Easy access to photos and movies on the camera.</para> 
+      </listitem> 
+      <listitem> 
+	  <para>Support for downloading photos from, and uploading files to, the camera. </para> 
+      </listitem>
+      <listitem> 
+	  <para>Support for interrogating, and modifying, camera settings. </para> 
+      </listitem>
+    </itemizedlist> 
+    <note>
+      <para>Some cameras are not supported. You should check the gPhoto website to see whether your camera is supported. Not all features are available on all cameras.</para>
+    </note>
+  </sect1>
+
+<!-- =========== Getting Started ============================== -->
+<!-- Use the Getting Started section to describe the steps required
+     to start the application and to describe the user interface components
+     of the application. If there is other information that it is important
+     for readers to know before they start using the application, you should
+     also include this information here. 
+     If the information about how to get started is very short, you can 
+     include it in the Introduction and omit this section. -->
+
+  <sect1 id="myapp-getting-started"> 
+    <title>Getting Started</title> 
+
+    <sect2 id="myapp-start">
+    <title>To Start &app;</title>
+    <para>You can start <application>&app;</application> in the following ways:
+    </para> 
+    <variablelist>
+    	<varlistentry>
+    		<term><guimenu>Applications</guimenu> menu</term>
+    		<listitem>
+    		<para>Choose 
+    		<menuchoice>
+    		<guisubmenu>Graphics </guisubmenu>
+    		<guimenuitem>Gtkam</guimenuitem>
+    		</menuchoice>. </para>
+    		</listitem>
+    	</varlistentry>
+    	<varlistentry>
+    		<term>Command line</term>
+    		<listitem>
+    		<para>To start <application>&app;</application> from a command line, type the following command, 
+    		then press <keycap>Return</keycap>:</para>
+    		<para> 
+			<command>gtkam</command> 
+    		</para> 
+    		</listitem>
+    	</varlistentry>
+    </variablelist>
+    </sect2>
+
+    <sect2 id="myapp-when-start">
+    <title>When You Start &app;</title>
+    <para>When you start <application>&app;</application>, the following window is displayed.</para>
+
+    <!-- ==== Figure ==== -->
+      <figure id="mainwindow-fig"> 
+	<title>&app; Start Up Window</title> 
+	<screenshot> 
+	  <mediaobject> 
+	    <imageobject><imagedata
+		fileref="figures/gtkam_start_window.png" format="PNG"/> 
+	    </imageobject>
+	    <textobject> 
+	      <phrase>Shows &app; main window. Contains titlebar, menubar, toolbar, display area, and
+	      scrollbars. Menubar contains File, View, Select, Camera, and Help menus. </phrase> 
+	    </textobject> 
+	  </mediaobject> 
+	</screenshot> 
+      </figure>
+    <!-- ==== End of Figure ==== -->
+
+    <!-- Include any descriptions of the GUI immediately after the screenshot of the main UI, -->
+    <!-- for example, the items on the menubar and on the toolbar. This section is optional. -->
+
+    <para>The &app; window contains the following elements:
+    </para>
+      <variablelist>
+	<varlistentry>
+	<term>Menubar. </term>
+	<listitem>
+	<para>The menus on the menubar contain all of the commands you need to use your camera in 
+	<application>&app;</application>.</para>
+	</listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>Toolbar. </term>
+	<listitem>
+	<para> The toolbar contains buttons allowing you to control the zoom of the thumbnails. You can also choose whether or not to show the thumbnails using the thumbnail toggle.</para>
+	</listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>Camera tree pane. </term>
+	<listitem>
+	<para>The camera tree contains a list of all cameras that have been added (TODO - Refer to sec xxx). If a camera is available, an arrow appears to the left of it's name in the camera tree, and you can click on the arrow to list the folders.</para>
+	</listitem>
+	</varlistentry>
+	<varlistentry>
+	<term>Folder contents pane. </term>
+	<listitem>
+	<para>The right pane lists the contents of the currently-selected folder from the camera tree. You can choose whether thumbnails are shown for each photo by toggling the View Thumbnails checkbox..</para>
+	</listitem>
+	</varlistentry>
+	</variablelist>
+    </sect2>
+  </sect1>
+<!-- ================ Usage ================================ -->
+<!-- Use this section to describe how to use the application to perform the tasks for 
+  which the application is designed. -->
+  <sect1 id="gtkam-usage"> 
+    <title>Usage</title> 
+    <para>You can use &app; to perform the following tasks: 
+      <itemizedlist> 
+	<listitem> 
+	  <para> 
+	    <xref linkend="gtkam-add-remove-cameras"/></para> 
+	</listitem> 
+	<listitem> 
+	  <para> 
+	    <xref linkend="gtkam-zoom-view-image"/></para> 
+	</listitem> 
+	<listitem> 
+	  <para> 
+	    <xref linkend="gtkam-save-images"/></para>
+	</listitem> 
+	<listitem> 
+	  <para> 
+	    <xref linkend="gtkam-delete-images"/></para>
+	</listitem> 
+	<listitem> 
+	  <para> 
+	    <xref linkend="gtkam-camera-operations"/></para>
+	</listitem> 
+      </itemizedlist> </para>
+    <!-- ================ Usage Subsection ================================ -->
+    <sect2 id="gtkam-add-remove-cameras"> 
+      <title>Adding and Removing Cameras</title> 
+      <para>Before you can start viewing and copying photos on your camera, you will need to add a camera. To add a camera, choose 
+	<menuchoice> 
+	  <guimenu>Camera</guimenu> 
+	  <guimenuitem>Add Camera</guimenuitem> 
+	</menuchoice> or right-click anywhere on the camera tree pane.
+        The <guilabel>Add Camera</guilabel> dialog is displayed.</para>
+
+    <!-- ==== Figure ==== -->
+      <figure id="addcamera-fig"> 
+	<title>&app; Add Camera Window</title> 
+	<screenshot> 
+	  <mediaobject> 
+	    <imageobject><imagedata
+		fileref="figures/gtkam_add_camera_window.png" format="PNG"/> 
+	    </imageobject>
+	    <textobject> 
+	      <phrase>Shows &app; Add Camera window. Allows user to add a new camera. </phrase> 
+	    </textobject> 
+	  </mediaobject> 
+	</screenshot> 
+      </figure>
+    <!-- ==== End of Figure ==== -->
+
+<para>To add a camera, make sure the camera is plugged in and turned on, and click the Detect button. This should automatically detect your camera.</para>
+
+<note>
+  <para>Some cameras can only be detected by &app; in their Playback mode.</para>
+</note>
+
+<para>Alternatively, you can choose the camera yourself. Click the <guilabel>Model:</guilabel> drop-down list and scroll down to find your camera. The <guilabel>Port:</guilabel> drop-down list will change to only list ports applicable to the camera that you have access to.</para>
+
+<note>
+  <para>If you do not have read access to the port your camera is plugged in to, you will not be able to use &app; with that camera. Also, some features require write access to the port.</para>
+</note>
+
+<para>You can choose the Advanced button for additional settings.</para>
+
+<itemizedlist>
+  <listitem>
+    <para>
+      <guilabel>Multiple front-ends</guilabel> &mdash; This option allows different programs to access the camera while &app; is running.
+    </para>
+  </listitem>
+  <listitem>
+    <para>
+      <guilabel>Add</guilabel> &mdash; You can type in the location of the port where your camera is located.
+    </para>
+  </listitem>
+ <listitem>
+    <para>
+      <guilabel>Speed</guilabel> &mdash; You can specify the transfer speed used to retrieve photos from your camera.
+    </para>
+  </listitem>
+</itemizedlist>
+
+        <para>When you are happy with your choices, click OK to close the window and return to the main window. Alternatively, click Apply to add the camera and stay in this window to make further changes.</para>
+	<para>Your camera will be remembered, so the next time you use &app;, the camera you chose will be available in the main window.
+<!--	    <keycap>Esc</keycap> key or 
+	    <keycombo>
+              <keycap>Ctrl</keycap>
+	      <keycap>W</keycap>
+	    </keycombo>.-->
+</para>
+</sect2>
+
+
+
+    <!-- ================ Usage Subsection ================================ -->
+    <sect2 id="gtkam-zoom-view-image"> 
+      <title>Viewing Your Photos</title>
+<para>When you select a folder on the left side of the main window by clicking on it with the left mouse button, a list of the files in that folder is displayed on the right. If the file is a photo, gtkam displays a thumbnail. You can zoom in and out on these thumbnails by clicking on the Zoom buttons.</para>
+
+<itemizedlist>
+  <listitem>
+    <para>
+      <guilabel>View Thumbnails</guilabel> &mdash; This toggle box turns the thumbnails on and off when viewing photos.
+    </para>
+  </listitem>
+  <listitem>
+    <para>
+      <guilabel>Zoom In</guilabel> &mdash; Enlarges the thumbnails.
+    </para>
+  </listitem>
+  <listitem>
+    <para>
+      <guilabel>Zoom 100</guilabel> &mdash; Resizes the thumbnail to their default size.
+    </para>
+  </listitem>
+  <listitem>
+    <para>
+      <guilabel>Zoom Out</guilabel> &mdash; Shrinks the thumbnails.
+    </para>
+  </listitem>
+</itemizedlist>
+<para>If you have installed other image viewing applications, you can use these to view photos from within &app;.</para>
+<!-- TODO Right-click on RHS, gtkam_fileinfo.png -->
+    </sect2>
+
+    <!-- ================ Usage Subsection ================================ -->
+    <sect2 id="gtkam-save-images"> 
+      <title>Saving Your Photos</title> 
+<para>You can save files from your camera to your computer using the gtkam's Save feature. To save, choose
+	<menuchoice> 
+	  <guimenu>File</guimenu> 
+	  <guimenuitem>Save Selected</guimenuitem> 
+	</menuchoice> to save the selected file, or
+	<menuchoice> 
+	  <guimenu>File</guimenu> 
+	  <guimenuitem>Save All</guimenuitem> 
+	</menuchoice> to save all the photos in the selected folder.
+</para>
+    <!-- ==== Figure ==== -->
+      <figure id="save-fig"> 
+	<title>&app; Save Window</title> 
+	<screenshot> 
+	  <mediaobject> 
+	    <imageobject><imagedata
+		fileref="figures/gtkam_save.png" format="PNG"/> 
+	    </imageobject>
+	    <textobject> 
+	      <phrase>Shows &app; Save window. Allows user to save their photos to their computer. </phrase> 
+	    </textobject> 
+	  </mediaobject> 
+	</screenshot> 
+      </figure>
+    <!-- ==== End of Figure ==== -->
+
+<para>
+By default, only the photo is saved. You can specify additional data to save by checking the appropriate checkbox.
+</para>
+<para>If you want to use your own filenames, rather than those used by the camera, you need to toggle the <guilabel>Use filename(s) provided by the camera</guilabel> off. This allows you to enter your own <guilabel>filename prefix</guilabel>. For example, if you enter 'photo' as the prefix, the photos will be saved as 'photo0001.jpg', 'photo0002.jpg' and so on. If you want to start the numbering scheme higher, change the <guilabel>Start numbering with</guilabel> number to a different value.</para>
+<para>
+If you save all the photos, you can change some additional options in the file selection window:
+</para>
+
+    <!-- ==== Figure ==== -->
+      <figure id="saveall-fig"> 
+	<title>&app; Save All Window</title> 
+	<screenshot> 
+	  <mediaobject> 
+	    <imageobject><imagedata
+		fileref="figures/gtkam_save_all.png" format="PNG"/> 
+	    </imageobject>
+	    <textobject> 
+	      <phrase>Shows &app; Save All window. Allows user to save their photos to their computer. </phrase> 
+	    </textobject> 
+	  </mediaobject> 
+	</screenshot> 
+      </figure>
+    <!-- ==== End of Figure ==== -->
+<para>The Save All window allows you to specify the Start Number.</para>
+    </sect2>
+
+    <sect2 id="gtkam-delete-images"> 
+      <title>Deleting Photos</title> 
+<para>To delete photos, select the file or files to delete and choose
+<menuchoice>
+<guimenu>File</guimenu>
+<guimenuitem>Delete Selected</guimenuitem>
+</menuchoice>. To delete all the files in the directory, choose <menuchoice><guimenu>File</guimenu><guimenuitem>Delete All</guimenuitem></menuchoice>. A confirmation window will appear, asking you to confirm the files to be deleted. TODO - SHOW WINDOW. If you don't want to delete a file, click the checkbox next to the filename so that no tick is present.</para>
+
+      <warning>
+        <para>If you delete a file from the camera, it is not possible to undelete it. Please be sure you want to delete the file before you click <guibutton>OK</guibutton>.</para>
+      </warning>
+    </sect2>
+
+    <sect2 id="gtkam-camera-operations"> 
+      <title>Camera Operations</title> 
+<para>You can perform a number of operations on your camera by right-clicking on the camera name in the camera tree pane. A pop-up menu will appear with the following options:</para>
+<itemizedlist>
+  <listitem>
+    <para>
+      <guilabel>Make directory</guilabel> &mdash; This option prompts you to enter a filename for a new directory to be created in the current directory on the camera.
+<!-- ==== Figure ==== -->
+      <figure id="makedir-fig"> 
+	<title>&app; Make Directory Window</title> 
+	<screenshot> 
+	  <mediaobject> 
+	    <imageobject><imagedata
+		fileref="figures/gtkam_makedir.png" format="PNG"/> 
+	    </imageobject>
+	    <textobject> 
+	      <phrase>Shows &app; Make Directory window. Allows user to create a new directory on the camera. </phrase> 
+	    </textobject> 
+	  </mediaobject> 
+	</screenshot> 
+      </figure>
+    <!-- ==== End of Figure ==== -->
+    </para>
+  </listitem>
+  <listitem>
+    <para>
+      <guilabel>Remove directory</guilabel> &mdash; This option removes the folder selected in the camera tree pane.
+    </para>
+  </listitem>
+  <listitem>
+    <para>
+      <guilabel>Capture</guilabel> &mdash; This option opens a window to allow the user to trigger the camera to acquire an image.
+    </para>
+  </listitem>
+  <listitem>
+    <para>
+      <guilabel>Preferences</guilabel> &mdash; This option opens a window containing information about the camera and its driver.
+    </para>
+  </listitem>
+  <listitem>
+    <para>
+      <guilabel>Summary</guilabel> &mdash; This option opens a window containing information about the camera's available memory.
+    </para>
+  </listitem>
+  <listitem>
+    <para>
+      <guilabel>Manual</guilabel>
+    </para>
+  </listitem>
+  <listitem>
+    <para>
+      <guilabel>About</guilabel> &mdash; This option displays information about the camera driver and its authors.
+    </para>
+  </listitem>
+  <listitem>
+    <para>
+      <guilabel>Select Camera (REMOVE)</guilabel>
+    </para>
+  </listitem>
+  <listitem>
+    <para>
+      <guilabel>Remove Camera</guilabel> &mdash; If you don't want this camera to appear in the camera tree pane when &app; starts, choose <guilabel>Remove Camera</guilabel>
+    </para>
+  </listitem>
+</itemizedlist>
+    </sect2>
+
+  </sect1>
+
+<!-- ============= Bugs ================================== -->
+  <sect1 id="mayapp-bugs">
+  <title>Known Bugs and Limitations</title>
+  <para>&app; attempts to interact with all digital cameras on the market. Unfortunately, not every camera manufacturer provides details on how their cameras work. Some features may not be available for your camera.</para>
+  <para>The gPhoto website maintains a <ulink url="http://www.gphoto.org/bugs/" type="http">list of known bugs</ulink>. If you find a bug, please let us know.</para>
+
+ </sect1>
+<!-- ============= About ================================== -->
+<!-- This section contains info about the program (not docs), such as
+      author's name(s), web page, license, feedback address. This
+      section is optional: primary place for this info is "About.." box of
+      the program. However, if you do wish to include this info in the
+      manual, this is the place to put it. Alternatively, you can put this information in the title page.-->
+  <sect1 id="myapp-about"> 
+    <title>About &app;</title> 
+    <para> &app; was written by the gPhoto team. To find more information about
+      &app;, please visit the 
+      <ulink url="http://www.gphoto.org" type="http">gPhoto Web
+	page</ulink>. </para>
+    <para>
+      To report a bug or make a suggestion regarding this application or
+      this manual, follow the directions in this 
+      <ulink url="ghelp:gnome-feedback" type="help">document</ulink>.
+    </para>
+
+    <para> This program is distributed under the terms of the GNU
+      General Public license as published by the Free Software
+      Foundation; either version 2 of the License, or (at your option)
+      any later version. A copy of this license can be found at this
+      <ulink url="ghelp:gpl" type="help">link</ulink>, or in the file
+      COPYING included with the source code of this program. </para>
+
+  </sect1> 
+</article>

@@ -1,5 +1,12 @@
 2002-03-28  Lutz Müller <lutz@users.sourceforge.net>
 
+	In direct response to #536011:
+
+	* src/gtkam-chooser.c: Add a tooltip to make clear that only USB 
+	  cameras can be detected.
+
+2002-03-28  Lutz Müller <lutz@users.sourceforge.net>
+
 	Fixes #536016:
 
 	* src/main.c: Set an icon for the application.

@@ -57,6 +57,8 @@
 #include <gtk/gtkentry.h>
 #include <gtk/gtkcombo.h>
 #include <gtk/gtkpixmap.h>
+#include <gtk/gtktooltips.h>
+
 #include <gdk-pixbuf/gdk-pixbuf.h>
 
 #include <gphoto2/gphoto2-abilities-list.h>
@@ -78,6 +80,8 @@ struct _GtkamChooserPrivate
 	GtkCombo *combo_model, *combo_port, *combo_speed;
 
 	GtkWidget *ok;
+
+	GtkTooltips *tooltips;
 
 	gboolean needs_update;
 };
@@ -107,6 +111,11 @@ gtkam_chooser_destroy (GtkObject *object)
 	if (chooser->priv->il) {
 		gp_port_info_list_free (chooser->priv->il);
 		chooser->priv->il = NULL;
+	}
+
+	if (chooser->priv->tooltips) {
+		gtk_object_unref (GTK_OBJECT (chooser->priv->tooltips));
+		chooser->priv->tooltips = NULL;
 	}
 
 	GTK_OBJECT_CLASS (parent_class)->destroy (object);
@@ -546,6 +555,7 @@ gtkam_chooser_new (void)
 	gboolean p, s, m, mult;
 
 	chooser = gtk_type_new (GTKAM_TYPE_CHOOSER);
+	chooser->priv->tooltips = gtk_tooltips_new ();
 
 	gp_abilities_list_new (&(chooser->priv->al));
 	gp_abilities_list_load (chooser->priv->al, NULL);
@@ -607,6 +617,8 @@ gtkam_chooser_new (void)
 	gtk_table_attach_defaults (GTK_TABLE (table), button, 2, 3, 0, 1);
 	gtk_signal_connect (GTK_OBJECT (button), "clicked",
 			    GTK_SIGNAL_FUNC (on_detect_clicked), chooser);
+	gtk_tooltips_set_tip (chooser->priv->tooltips, button,
+			      _("Detect USB camera"), NULL);
 
 	label = gtk_label_new (_("Port:"));
 	gtk_widget_show (label);

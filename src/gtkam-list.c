@@ -321,6 +321,7 @@ get_thumbnail_idle (gpointer data)
 		return (FALSE);
 	s = gtkam_status_new (_("Downloading thumbnail of '%s' from "
 		"folder '%s'..."), d->name, d->folder);
+
 	g_signal_emit (G_OBJECT (list), signals[NEW_STATUS], 0, s);
 	gp_file_new (&file);
 	result = gp_camera_file_get (d->camera->camera, d->folder, d->name,
@@ -330,6 +331,7 @@ get_thumbnail_idle (gpointer data)
 		gp_camera_exit (d->camera->camera, NULL);
 	if (result >= 0) {
 		gp_file_get_data_and_size (file, &fd, &fs);
+
 		loader = gdk_pixbuf_loader_new ();
 		gdk_pixbuf_loader_write (loader, fd, fs, NULL);
 		gdk_pixbuf_loader_close (loader, NULL);
@@ -342,6 +344,7 @@ get_thumbnail_idle (gpointer data)
 			gdk_pixbuf_get_height (pixbuf) * factor,
 			GDK_INTERP_BILINEAR);
 		g_object_unref (G_OBJECT (loader));
+		
 		gtk_list_store_set (list->priv->store, d->iter,
 				    PREVIEW_COLUMN, pixbuf, -1);
 		gdk_pixbuf_unref (pixbuf);
@@ -360,6 +363,8 @@ get_thumbnail_idle (gpointer data)
 	list->priv->head = d->next;
 	g_free (d);
 
+	gtk_widget_destroy (s);
+	
 	if (list->priv->head == NULL)
 		return (FALSE);
 	else
@@ -370,21 +375,21 @@ static gboolean
 show_thumbnails_foreach_func (GtkTreeModel *model, GtkTreePath *path,
                               GtkTreeIter *iter, gpointer data)
 {
-        GtkamList *list = GTKAM_LIST (data);
-        GtkamCamera *camera;
-        gchar *folder, *name;
-        CameraAbilities a;
+	GtkamList *list = GTKAM_LIST (data);
+	GtkamCamera *camera;
+	gchar *folder, *name;
+	CameraAbilities a;
 	GetThumbnailData *d;
 	CameraFileInfo info;
 
-        camera = gtkam_list_get_camera_from_iter (list, iter);
-        folder = gtkam_list_get_folder_from_iter (list, iter);
-        name = gtkam_list_get_name_from_iter (list, iter);
+	camera = gtkam_list_get_camera_from_iter (list, iter);
+	folder = gtkam_list_get_folder_from_iter (list, iter);
+	name = gtkam_list_get_name_from_iter (list, iter);
 
-        gp_camera_get_abilities (camera->camera, &a);
+	gp_camera_get_abilities (camera->camera, &a);
 	gp_camera_file_get_info (camera->camera, folder, name, &info, NULL);
-	if ((a.file_operations & GP_FILE_OPERATION_PREVIEW) &&
-	    info.preview.fields) {
+
+	if (a.file_operations & GP_FILE_OPERATION_PREVIEW) {
 		d = g_new0 (GetThumbnailData, 1);
 		d->camera = camera;
 		g_object_ref (G_OBJECT (camera));
@@ -397,12 +402,13 @@ show_thumbnails_foreach_func (GtkTreeModel *model, GtkTreePath *path,
 		if (list->priv->head == NULL)
 			list->priv->head = d;
 	}
+
 	g_free (folder);
 	g_free (name);
 	if (camera->multi)
 		gp_camera_exit (camera->camera, NULL);
 
-        return (FALSE);
+	return (FALSE);
 }
 
 void
@@ -900,8 +906,8 @@ static GtkItemFactoryEntry mi[] =
 	{N_("/_Exif"), NULL, action_exif, 0, NULL},
 #endif
 	{"/sep1", NULL, NULL, 0, "<Separator>"},
-	{N_("/_Save"), NULL, action_save, 0, "<StockItem>", GTK_STOCK_SAVE},
-	{N_("/_Delete"), NULL, action_delete, 0, "<StockItem>", GTK_STOCK_DELETE}
+	{N_("/_Save"), NULL, gtkam_list_save_selected, 0, "<StockItem>", GTK_STOCK_SAVE},
+	{N_("/_Delete"), NULL, gtkam_list_delete_selected, 0, "<StockItem>", GTK_STOCK_DELETE}
 };
 
 #ifdef ENABLE_NLS

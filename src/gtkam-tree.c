@@ -1100,6 +1100,8 @@ gtkam_tree_load (GtkamTree *tree)
 	gp_port_info_list_new (&il);
 	gp_port_info_list_load (il);
 
+	gtk_object_destroy (GTK_OBJECT (s));
+
 	/* Load settings */
 	for (i = 1; ; i++) {
 		ms = g_strdup_printf ("model-%i", i);
@@ -1167,7 +1169,6 @@ gtkam_tree_load (GtkamTree *tree)
 
 	gp_abilities_list_free (al);
 	gp_port_info_list_free (il);
-	gtk_object_destroy (GTK_OBJECT (s));
 }
 
 void

@@ -1,5 +1,16 @@
 2003-01-14  Andrew Burton <adburton@users.sourceforge.net>
 
+	* src/gtkam-tree.c: When loading cameras, destroy status widget
+	when finished to prevent duplicate status lines appearing.
+	* src/gtkam-list.c: When saving and deleting files from the
+	context menu, allow for more than one file to be processed (fixes
+	Debian bug #205460); destroy status widget when finished loading
+	thumbnail (fixes Debian bug #198335); modify check for thumbnail
+	loading so thumbnails for all possible files are shown, not just
+	pictures (fixes Debian bug #198335, SF feature request #358874).
+
+2003-01-14  Andrew Burton <adburton@users.sourceforge.net>
+
 	* src/gtkam-tree.c: Set window title to Select Camera 
 	when right-clicking on camera name
 

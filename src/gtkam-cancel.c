@@ -191,12 +191,12 @@ start_func (GPContext *c, float target, const char *format,
 	GtkamCancel *cancel = GTKAM_CANCEL (data);
 	GtkWidget *progress, *label, *hbox;
 	gchar *msg;
+	unsigned int i;
 
 	hbox = gtk_hbox_new (FALSE, 5);
 	gtk_widget_show (hbox);
 	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (cancel)->vbox), hbox,
 			    TRUE, TRUE, 0);
-	g_ptr_array_add (cancel->priv->array_hbox, hbox);
 
 	msg = g_strdup_vprintf (format, args);
 	label = gtk_label_new (msg);
@@ -207,8 +207,19 @@ start_func (GPContext *c, float target, const char *format,
 	progress = gtk_progress_bar_new ();
 	gtk_widget_show (progress);
 	gtk_box_pack_start (GTK_BOX (hbox), progress, TRUE, TRUE, 0);
-	g_ptr_array_add (cancel->priv->array_progress, progress);
-	g_array_append_val (cancel->priv->array_target, target);
+
+	for (i = 0; i < cancel->priv->array_progress->len; i++)
+		if (!cancel->priv->array_progress->pdata[i])
+			break;
+	if (i == cancel->priv->array_progress->len) {
+		g_ptr_array_add (cancel->priv->array_hbox, hbox);
+		g_ptr_array_add (cancel->priv->array_progress, progress);
+		g_array_append_val (cancel->priv->array_target, target);
+	} else {
+		cancel->priv->array_hbox->pdata[i] = hbox;
+		cancel->priv->array_progress->pdata[i] = progress;
+		g_array_index (cancel->priv->array_target, gfloat, i) = target;
+	}
 
 	while (gtk_events_pending ())
 		gtk_main_iteration ();
@@ -237,16 +248,14 @@ static void
 stop_func (GPContext *c, unsigned int id, void *data)
 {
 	GtkamCancel *cancel = GTKAM_CANCEL (data);
-	GtkObject *hbox;
 
 	g_return_if_fail (id < cancel->priv->array_progress->len);
 
-	hbox = cancel->priv->array_hbox->pdata[id];
-	g_ptr_array_remove_index (cancel->priv->array_hbox, id);
-	g_ptr_array_remove_index (cancel->priv->array_progress, id);
-	g_array_remove_index (cancel->priv->array_target, id);
+	gtk_object_destroy (GTK_OBJECT (cancel->priv->array_hbox->pdata[id]));
 
-	gtk_object_destroy (GTK_OBJECT (hbox));
+	cancel->priv->array_hbox->pdata[id] = NULL;
+	cancel->priv->array_progress->pdata[id] = NULL;
+	g_array_index (cancel->priv->array_target, gfloat, id) = 0.;
 }
 
 GtkWidget *

@@ -1,5 +1,9 @@
 2001-12-19  Lutz Müller <urc8@rz.uni-karlsruhe.de>
 
+	* src/exif.[c,h]: No longer needed.
+
+2001-12-19  Lutz Müller <urc8@rz.uni-karlsruhe.de>
+
 	* libexif: Hook it up.
 
 2001-12-14  Lutz Müller <urc8@rz.uni-karlsruhe.de>

@@ -672,7 +672,6 @@ gtkam_chooser_new (void)
 
 	/* Do we have a port? */
 	if ((gp_setting_get ("gtkam", "path", port) == GP_OK) ||
-	    (gp_setting_get ("gtkam", "port", port) == GP_OK) ||
 	    (gp_setting_get ("gphoto2", "port", port) == GP_OK)) {
 		int n, r;
 		GPPortInfo info;

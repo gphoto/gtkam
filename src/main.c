@@ -45,6 +45,7 @@
 #include <gphoto2/gphoto2-camera.h>
 #include <gphoto2/gphoto2-abilities-list.h>
 #include <gphoto2/gphoto2-setting.h>
+#include <gphoto2/gphoto2-port-log.h>
 #include <gtk/gtkmain.h>
 
 #include "gtkam-main.h"
@@ -68,7 +69,6 @@ idle_func (gpointer data)
 	if (((gp_setting_get ("gtkam", "model", model) == GP_OK) ||
 	     (gp_setting_get ("gphoto2", "model", model) == GP_OK)) &&
 	    ((gp_setting_get ("gtkam", "path", port) == GP_OK) ||
-	     (gp_setting_get ("gtkam", "port", port) == GP_OK) ||
 	     (gp_setting_get ("gphoto2", "port", port) == GP_OK)) &&
 	    (gp_setting_get ("gtkam", "speed", speed) == GP_OK)) {
 		gp_camera_new (&camera);
@@ -82,7 +82,12 @@ idle_func (gpointer data)
 		gp_abilities_list_get_abilities (al, n, &a);
 		gp_abilities_list_free (al);
 
-		p = gp_port_info_list_lookup_name (il, port);
+		p = gp_port_info_list_lookup_path (il, port);
+		if (p < 0) {
+			g_warning ("Could not find '%s' in port info list "
+				"(%s)!", port, gp_result_as_string (p));
+			return (FALSE);
+		}
 		gp_port_info_list_get_info (il, p, &info);
 		gp_port_info_list_free (il);
 		
@@ -102,18 +107,35 @@ idle_func (gpointer data)
 	return (FALSE);
 }
 
+static void
+log_func (GPLogLevel level, const char *domain, const char *format,
+	  va_list args, void *data)
+{
+	fprintf (stderr, domain);
+	fprintf (stderr, ": ");
+	vfprintf (stderr, format, args);
+	fprintf (stderr, "\n");
+}
+
 int
 main (int argc, char *argv[])
 {
 	GtkWidget *m;
 	char buf[1024];
-	int x, y;
+	int x, y, log;
 
 	gtk_set_locale ();
 	bindtextdomain (PACKAGE, GTKAM_LOCALEDIR);
 	textdomain (PACKAGE);
 
-//	g_log_set_always_fatal (G_LOG_LEVEL_CRITICAL);
+	/* Debugging? */
+	for (log = -1, x = 0; x < argc; x++)
+		if (!strcmp (argv[x], "--debug") || !strcmp (argv[x], "-d")) {
+			log = gp_log_add_func (GP_LOG_DEBUG, log_func, NULL);
+			g_log_set_always_fatal (G_LOG_LEVEL_CRITICAL);
+			break;
+		}
+
 	gtk_init (&argc, &argv);
 
 	/* Create the main window */
@@ -137,6 +159,9 @@ main (int argc, char *argv[])
 	gp_setting_set ("gtkam", "width", buf);
 	sprintf (buf, "%i", m->allocation.height);
 	gp_setting_set ("gtkam", "height", buf);
+
+	if (log < 0)
+		gp_log_remove_func (log);
 
 	return 0;
 }

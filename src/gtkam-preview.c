@@ -153,11 +153,6 @@ gtkam_preview_get_type (void)
 static void
 on_preview_close_clicked (GtkButton *button, GtkamPreview *preview)
 {
-	if (preview->priv->timeout_id) {
-		gtk_timeout_remove (preview->priv->timeout_id);
-		preview->priv->timeout_id = 0;
-	}
-
 	gtk_object_destroy (GTK_OBJECT (preview));
 }
 
@@ -221,6 +216,9 @@ timeout_func (gpointer user_data)
 	pixbuf = gdk_pixbuf_loader_get_pixbuf (loader);
 	gdk_pixbuf_render_pixmap_and_mask (pixbuf, &pixmap, &bitmap, 1);
 	gtk_object_unref (GTK_OBJECT (loader));
+
+	if (!GTKAM_IS_PREVIEW (preview))
+		return (FALSE);
 
 	/* Destroy old preview */
 	if (preview->priv->preview)

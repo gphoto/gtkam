@@ -44,6 +44,9 @@ struct _GtkamList
 struct _GtkamListClass
 {
 	GtkIconListClass parent_class;
+
+	/* Signals */
+	void (* changed) (GtkamList *list);
 };
 
 GtkType    gtkam_list_get_type (void);

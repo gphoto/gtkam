@@ -368,10 +368,10 @@ gtkam_save_new (Camera *camera, const gchar *path, GSList *filenames,
 	GtkamSave *save;
 	GtkWidget *hbox, *frame, *check, *label, *entry;
 	GtkTooltips *tooltips;
-	char buf[1024];
 	GList *child;
 	guint i;
 	CameraAbilities a;
+	gchar *title;
 
 	g_return_val_if_fail (camera != NULL, NULL);
 	g_return_val_if_fail (path != NULL, NULL);
@@ -393,17 +393,18 @@ gtkam_save_new (Camera *camera, const gchar *path, GSList *filenames,
 			GTK_CONTAINER (child->next->next->data));
 	save->priv->file_list = GTK_WIDGET (child->next->data);
 
-	gtk_window_set_title (GTK_WINDOW (save), _("Save selected photos..."));
+	if (g_slist_length (filenames) == 1)
+		title = g_strdup_printf (_("Save '%s'..."),
+					 (gchar*) filenames->data);
+	else
+		title = g_strdup (_("Save photos..."));
+	gtk_window_set_title (GTK_WINDOW (save), title);
 	gtk_signal_connect (GTK_OBJECT (GTK_FILE_SELECTION (save)->ok_button),
 			    "clicked", GTK_SIGNAL_FUNC (on_ok_clicked), save);
 	gtk_signal_connect (
 			GTK_OBJECT (GTK_FILE_SELECTION (save)->cancel_button),
 			"clicked", GTK_SIGNAL_FUNC (on_cancel_clicked), save);
 	
-	if (gp_setting_get ("gtkam", "cwd", buf) == GP_OK)
-		gtk_file_selection_set_filename (GTK_FILE_SELECTION (save),
-						 buf);
-
 	tooltips = gtk_tooltips_new ();
 
 	frame = gtk_frame_new (_("What to save:"));
@@ -468,6 +469,7 @@ gtkam_save_new (Camera *camera, const gchar *path, GSList *filenames,
 			      "for none"), NULL);
 	save->priv->program = GTK_ENTRY (entry);
 
+	/* Filenames provided by camera */
 	check = gtk_check_button_new_with_label (_("Use filenames provided "
 						 "by the camera"));
 	gtk_widget_show (check);

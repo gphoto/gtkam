@@ -113,13 +113,13 @@ gtkam_delete_class_init (GtkamDeleteClass *klass)
 	signals[FILE_DELETED] = gtk_signal_new ("file_deleted",
 		GTK_RUN_FIRST, object_class->type,
 		GTK_SIGNAL_OFFSET (GtkamDeleteClass, file_deleted),
-		gtk_marshal_NONE__POINTER_POINTER, GTK_TYPE_NONE, 2,
-		GTK_TYPE_POINTER, GTK_TYPE_POINTER);
+		gtk_marshal_NONE__POINTER, GTK_TYPE_NONE, 1,
+		GTK_TYPE_POINTER);
 	signals[ALL_DELETED] = gtk_signal_new ("all_deleted",
 		GTK_RUN_FIRST, object_class->type,
 		GTK_SIGNAL_OFFSET (GtkamDeleteClass, all_deleted),
-		gtk_marshal_NONE__POINTER_POINTER, GTK_TYPE_NONE, 2,
-		GTK_TYPE_POINTER, GTK_TYPE_POINTER);
+		gtk_marshal_NONE__POINTER, GTK_TYPE_NONE, 1,
+		GTK_TYPE_POINTER);
 	gtk_object_class_add_signals (object_class, signals, LAST_SIGNAL);
 
 	parent_class = gtk_type_class (PARENT_TYPE);

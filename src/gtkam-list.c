@@ -55,7 +55,6 @@
 #include "gtkam-error.h"
 #include "../pixmaps/no_thumbnail.xpm"
 #include "gtkam-save.h"
-#include "gtkam-main.h"
 #include "gdk-pixbuf-hacks.h"
 #include "gtkam-info.h"
 #include "gtkam-delete.h"
@@ -75,6 +74,7 @@ struct _GtkamListPrivate
 static GtkIconListClass *parent_class;
 
 enum {
+	CHANGED,
 	LAST_SIGNAL
 };
 
@@ -117,6 +117,10 @@ gtkam_list_class_init (GtkamListClass *klass)
 	object_class->destroy  = gtkam_list_destroy;
 	object_class->finalize = gtkam_list_finalize;
 
+	signals[CHANGED] = gtk_signal_new ("changed", GTK_RUN_LAST,
+		object_class->type,
+		GTK_SIGNAL_OFFSET (GtkamListClass, changed),
+		gtk_marshal_NONE__NONE, GTK_TYPE_NONE, 0);
 	gtk_object_class_add_signals (object_class, signals, LAST_SIGNAL);
 
 	parent_class = gtk_type_class (PARENT_TYPE);
@@ -263,6 +267,21 @@ on_delete_activate (GtkMenuItem *menu_item, PopupData *data)
 		GTK_SIGNAL_FUNC (on_file_deleted), list, GTK_OBJECT (list));
 }
 
+static void
+on_save_activate (GtkMenuItem *menu_item, PopupData *data)
+{
+	GtkamList *list = data->list;
+	GtkIconListItem *item = data->item;
+	GtkWidget *save, *w;
+	GSList *files;
+
+	w = gtk_widget_get_ancestor (GTK_WIDGET (list), GTK_TYPE_WINDOW);
+	files = g_slist_append (NULL, item->label);
+	save = gtkam_save_new (list->priv->camera, list->path, files, w);
+	g_slist_free (files);
+	gtk_widget_show (save);
+}
+
 static gboolean
 kill_idle (gpointer user_data)
 {
@@ -338,6 +357,9 @@ on_select_icon (GtkIconList *ilist, GtkIconListItem *item,
 			PopupData *data;
 			GtkWidget *i;
 
+			while (gtk_events_pending ())
+				gtk_main_iteration ();
+
 			data = g_new0 (PopupData, 1);
 			data->list = list;
 			data->item = item;
@@ -350,11 +372,20 @@ on_select_icon (GtkIconList *ilist, GtkIconListItem *item,
 			gtk_container_add (GTK_CONTAINER (data->menu), i);
 			gtk_signal_connect (GTK_OBJECT (i), "activate",
 				GTK_SIGNAL_FUNC (on_info_activate), data);
+
 			i = gtk_menu_item_new ();
 			gtk_widget_show (i);
 			gtk_container_add (GTK_CONTAINER (data->menu), i);
 			gtk_widget_set_sensitive (i, FALSE);
 
+			/* Save */
+			i = gtk_menu_item_new_with_label (_("Save"));
+			gtk_widget_show (i);
+			gtk_container_add (GTK_CONTAINER (data->menu), i);
+			gtk_signal_connect (GTK_OBJECT (i), "activate",
+				GTK_SIGNAL_FUNC (on_save_activate), data);
+
+			/* Delete */
 			i = gtk_menu_item_new_with_label (_("Delete"));
 			gtk_widget_show (i);
 			if (!(a.file_operations & GP_FILE_OPERATION_DELETE) ||
@@ -366,6 +397,7 @@ on_select_icon (GtkIconList *ilist, GtkIconListItem *item,
 			gtk_container_add (GTK_CONTAINER (data->menu), i);
 			gtk_signal_connect (GTK_OBJECT (i), "activate",
 				GTK_SIGNAL_FUNC (on_delete_activate), data);
+
 			gtk_signal_connect (GTK_OBJECT (data->menu), "hide",
 					    GTK_SIGNAL_FUNC (kill_popup_menu),
 					    data);
@@ -400,7 +432,7 @@ gtkam_list_new (void)
 void
 gtkam_list_set_path (GtkamList *list, const gchar *path)
 {
-	GtkWidget *dialog, *window, *m;
+	GtkWidget *dialog, *window;
 	GtkIconListItem *item;
 	gchar *msg;
 	CameraList flist;
@@ -421,6 +453,7 @@ gtkam_list_set_path (GtkamList *list, const gchar *path)
 	gtk_icon_list_freeze (GTK_ICON_LIST (list));
 	gtk_icon_list_clear (GTK_ICON_LIST (list));
 	gtk_icon_list_thaw (GTK_ICON_LIST (list));
+	gtk_signal_emit (GTK_OBJECT (list), signals[CHANGED]);
 
 	/* If we don't have a path, that's it */
 	if (list->path) {
@@ -433,10 +466,6 @@ gtkam_list_set_path (GtkamList *list, const gchar *path)
 		list->path = g_strdup (path);
 
 	window = gtk_widget_get_ancestor (GTK_WIDGET (list), GTK_TYPE_WINDOW);
-	m = gtk_widget_get_ancestor (GTK_WIDGET (list), GTKAM_TYPE_MAIN);
-
-	if (m)
-		gtkam_main_select_set_sensitive (GTKAM_MAIN (m), FALSE);
 
 	/* If we don't have a camera, we can't do anything */
 	if (!list->priv->camera)
@@ -557,12 +586,14 @@ gtkam_list_set_path (GtkamList *list, const gchar *path)
 			gtk_pixmap_set (GTK_PIXMAP (item->pixmap),
 					pixmap, bitmap);
 		}
-
-		gtkam_main_select_set_sensitive (GTKAM_MAIN (m), TRUE);
 	}
 
-	if (GTKAM_IS_LIST (list) && list->priv->multi)
+	if (!GTKAM_IS_LIST (list))
+		return;
+	
+	if (list->priv->multi)
 		gp_camera_exit (list->priv->camera);
+	gtk_signal_emit (GTK_OBJECT (list), signals[CHANGED]);
 }
 
 void
@@ -606,16 +637,11 @@ gtkam_list_save_selected (GtkamList *list)
 void
 gtkam_list_refresh (GtkamList *list)
 {
-	GtkWidget *m;
 	gchar *path = NULL;
 
 	g_return_if_fail (GTKAM_IS_LIST (list));
 
-	m = gtk_widget_get_ancestor (GTK_WIDGET (list), GTKAM_TYPE_MAIN);
-
 	gtk_icon_list_clear (GTK_ICON_LIST (list));
-	if (m)
-		gtkam_main_select_set_sensitive (GTKAM_MAIN (m), FALSE);
 
 	if (list->path && list->priv->camera) {
 		path = g_strdup (list->path);

@@ -94,7 +94,7 @@ struct _GtkamMainPrivate
 	GtkWidget *select_all, *select_none, *select_inverse;
 	GtkWidget *make_dir, *remove_dir, *upload;
 
-	GtkWidget *debug;
+	GtkWidget *vbox;
 
 	gboolean multi;
 };
@@ -229,6 +229,8 @@ on_delete_selected_photos_activate (GtkMenuItem *item, GtkamMain *m)
 static void
 on_all_deleted (GtkamDelete *delete, const gchar *path, GtkamMain *m)
 {
+	g_return_if_fail (GTKAM_IS_MAIN (m));
+
 	if (m->priv->list->path && !strcmp (path, m->priv->list->path))
 		gtkam_list_refresh (m->priv->list);
 }
@@ -388,12 +390,15 @@ on_size_allocate (GtkWidget *widget, GtkAllocation *allocation, GtkamMain *m)
 }
 
 static void
-update_sensitivity_folder (GtkamMain *m)
+gtkam_main_update_sensitivity (GtkamMain *m)
 {
 	CameraAbilities a;
+	guint i, s;
 
 	/* Make sure we are not shutting down */
-	if (!GTKAM_IS_MAIN (m))
+	while (gtk_events_pending ())
+		gtk_main_iteration ();
+	if (!GTKAM_IS_MAIN (m) || !GTK_IS_WIDGET (m->priv->make_dir))
 		return;
 
 	if (!m->priv->camera ||
@@ -421,20 +426,35 @@ update_sensitivity_folder (GtkamMain *m)
 		gtk_widget_set_sensitive (m->priv->upload, TRUE);
 	else
 		gtk_widget_set_sensitive (m->priv->upload, FALSE);
+
+	/* Select */
+	i = g_list_length (GTK_ICON_LIST (m->priv->list)->icons);
+	s = g_list_length (GTK_ICON_LIST (m->priv->list)->selection);
+	gtk_widget_set_sensitive (m->priv->select_none, (s != 0));
+	gtk_widget_set_sensitive (m->priv->select_all, (s != i));
+	gtk_widget_set_sensitive (m->priv->select_inverse, (i != 0));
 }
 
 static void
 on_folder_selected (GtkamTree *tree, const gchar *folder, GtkamMain *m)
 {
+	/*
+	 * Don't let the user switch folders while the list is downloading
+	 * the file listing or thumbnails. If you want to give the user this
+	 * possibility, you need to fix a reentrancy issue first.
+	 */
+	gtk_widget_set_sensitive (m->priv->vbox, FALSE);
 	gtkam_list_set_path (m->priv->list, folder);
-	update_sensitivity_folder (m);
+	gtk_widget_set_sensitive (m->priv->vbox, TRUE);
+
+	gtkam_main_update_sensitivity (m);
 }
 
 static void
 on_folder_unselected (GtkamTree *tree, const gchar *folder, GtkamMain *m)
 {
 	gtkam_list_set_path (m->priv->list, NULL);
-	update_sensitivity_folder (m);
+	gtkam_main_update_sensitivity (m);
 }
 
 static void
@@ -504,20 +524,12 @@ on_about_driver_activate (GtkMenuItem *item, GtkamMain *m)
 }
 
 static void
-on_debug_destroy (GtkamDebug *debug, GtkamMain *m)
-{
-	m->priv->debug = NULL;
-}
-
-static void
 on_debug_activate (GtkMenuItem *item, GtkamMain *m)
 {
-	if (!m->priv->debug) {
-		m->priv->debug = gtkam_debug_new ();
-		gtk_widget_show (m->priv->debug);
-		gtk_signal_connect (GTK_OBJECT (m->priv->debug), "destroy",
-				    GTK_SIGNAL_FUNC (on_debug_destroy), m);
-	}
+	GtkWidget *debug;
+
+	debug = gtkam_debug_new ();
+	gtk_widget_show (debug);
 }
 
 static void
@@ -649,6 +661,40 @@ on_upload_activate (GtkMenuItem *item, GtkamMain *m)
 	}
 
 	gtk_object_destroy (GTK_OBJECT (fsel));
+}
+
+static gboolean
+on_select_icon (GtkIconList *list, GtkIconListItem *item, GdkEvent *event,
+		GtkamMain *m)
+{
+	guint i, s;
+
+	gtkam_main_update_sensitivity (m);
+
+	/*
+	 * The problem is that the icon has not yet been selected. Therefore,
+	 * we have to update the sensitivity manually.
+	 */
+	i = g_list_length (GTK_ICON_LIST (m->priv->list)->icons);
+	s = g_list_length (GTK_ICON_LIST (m->priv->list)->selection) + 1;
+	gtk_widget_set_sensitive (m->priv->select_none, (s != 0));
+	gtk_widget_set_sensitive (m->priv->select_all, (s != i));
+	gtk_widget_set_sensitive (m->priv->select_inverse, (i != 0)); 
+
+	return (TRUE);
+}
+
+static void
+on_unselect_icon (GtkIconList *list, GtkIconListItem *item, GdkEvent *event,
+		  GtkamMain *m)
+{
+	gtkam_main_update_sensitivity (m);
+}
+
+static void
+on_changed (GtkamList *list, GtkamMain *m)
+{
+	gtkam_main_update_sensitivity (m);
 }
 
 GtkWidget *
@@ -1065,6 +1111,7 @@ gtkam_main_new (void)
 	vbox = gtk_vbox_new (FALSE, 5);
 	gtk_widget_show (vbox);
 	gtk_paned_pack1 (GTK_PANED (hpaned), vbox, FALSE, TRUE);
+	m->priv->vbox = vbox;
 
 	frame = gtk_frame_new (_("Index Settings"));
 	gtk_widget_show (frame);
@@ -1109,6 +1156,12 @@ gtkam_main_new (void)
 	gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (scrolled),
 					       list);
 	m->priv->list = GTKAM_LIST (list);
+	gtk_signal_connect (GTK_OBJECT (list), "changed",
+			    GTK_SIGNAL_FUNC (on_changed), m);
+	gtk_signal_connect (GTK_OBJECT (list), "select_icon",
+			    GTK_SIGNAL_FUNC (on_select_icon), m);
+	gtk_signal_connect (GTK_OBJECT (list), "unselect_icon",
+			    GTK_SIGNAL_FUNC (on_unselect_icon), m);
 	gtk_signal_connect (GTK_OBJECT (scrolled), "size_allocate",
 			    GTK_SIGNAL_FUNC (on_size_allocate), m);
 
@@ -1219,7 +1272,7 @@ gtkam_main_set_camera (GtkamMain *m, Camera *camera, gboolean multi)
 	else
 		gtk_widget_set_sensitive (m->priv->item_config, FALSE);
 
-	update_sensitivity_folder (m);
+	gtkam_main_update_sensitivity (m);
 
 	/* The remaining */
 	if (camera) {
@@ -1234,16 +1287,6 @@ gtkam_main_set_camera (GtkamMain *m, Camera *camera, gboolean multi)
 		gtk_widget_set_sensitive (m->priv->item_about_driver, FALSE);
 	}
 
-	gtkam_tree_set_camera (m->priv->tree, camera, multi);
 	gtkam_list_set_camera (m->priv->list, camera, multi);
-}
-
-void
-gtkam_main_select_set_sensitive (GtkamMain *m, gboolean sensitive)
-{
-	g_return_if_fail (GTKAM_IS_MAIN (m));
-
-	gtk_widget_set_sensitive (m->priv->select_none, sensitive);
-	gtk_widget_set_sensitive (m->priv->select_all, sensitive);
-	gtk_widget_set_sensitive (m->priv->select_inverse, sensitive);
+	gtkam_tree_set_camera (m->priv->tree, camera, multi);
 }

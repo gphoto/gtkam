@@ -49,6 +49,5 @@ GtkWidget *gtkam_main_new      (void);
 
 void       gtkam_main_set_camera           (GtkamMain *m, Camera *camera,
 					    gboolean multi);
-void       gtkam_main_select_set_sensitive (GtkamMain *m, gboolean sensitive);
 
 #endif /* __GTKAM_MAIN_H__ */

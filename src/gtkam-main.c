@@ -44,6 +44,7 @@
 #include <string.h>
 
 #include <gdk/gdkkeysyms.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gtk/gtksignal.h>
 #include <gtk/gtkprogressbar.h>
 #include <gtk/gtkstatusbar.h>

@@ -46,6 +46,8 @@
 #include <gphoto2/gphoto2-abilities-list.h>
 #include <gphoto2/gphoto2-setting.h>
 #include <gphoto2/gphoto2-port-log.h>
+
+#include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gtk/gtkmain.h>
 
 #include "gtkam-main.h"
@@ -122,6 +124,9 @@ main (int argc, char *argv[])
 {
 	GtkWidget *m;
 	int x, log = -1, load = 1;
+	GdkPixbuf *pixbuf;
+	GdkPixmap *map;
+	GdkBitmap *mask;
 
 	gtk_set_locale ();
 	bindtextdomain (PACKAGE, GTKAM_LOCALEDIR);
@@ -161,6 +166,13 @@ main (int argc, char *argv[])
 	gtk_widget_show (m);
 	gtk_signal_connect (GTK_OBJECT (m), "destroy",
 			    GTK_SIGNAL_FUNC (gtk_main_quit), NULL);
+
+	pixbuf = gdk_pixbuf_new_from_file (IMAGE_DIR "/gtkam-camera.png");
+	if (pixbuf) {
+		gdk_pixbuf_render_pixmap_and_mask (pixbuf, &map, &mask, 127);
+		gdk_window_set_icon (GTK_WIDGET (m)->window, NULL, map, mask);
+	} else
+		g_warning ("Could not load '" IMAGE_DIR "/gtkam-camera.png'.");
 
 	/* Shall we load settings? */
 	if (load)

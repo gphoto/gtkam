@@ -1,3 +1,9 @@
+2002-03-28  Lutz Müller <lutz@users.sourceforge.net>
+
+	Fixes #536016:
+
+	* src/main.c: Set an icon for the application.
+
 2002-03-24  Lutz Müller <lutz@users.sourceforge.net>
 
 	Patch by Patrick Mansfield <patman@aracnet.com>:

@@ -902,9 +902,9 @@ static GtkItemFactoryEntry mi[] =
 	{N_("/_View with..."), NULL, NULL, 0, "<Branch>"},
 	{N_("/View with.../Built-in viewer"), NULL, action_view, 0, NULL},
 	{"/sep0", NULL, NULL, 0, "<Separator>"},
-	{N_("/_Info"), NULL, action_info, 0, NULL},
+	{N_("/View file _properties"), NULL, action_info, 0, NULL},
 #ifdef HAVE_EXIF
-	{N_("/_Exif"), NULL, action_exif, 0, NULL},
+	{N_("/View _EXIF data"), NULL, action_exif, 0, NULL},
 #endif
 	{"/sep1", NULL, NULL, 0, "<Separator>"},
 	{N_("/_Save"), NULL, gtkam_list_save_selected, 0, "<StockItem>", GTK_STOCK_SAVE},

@@ -828,19 +828,19 @@ on_add_camera_activate (GtkMenuItem *item, GtkamTree *tree)
 
 static GtkItemFactoryEntry mi[] =
 {
-	{N_("/Upload file"), NULL, action_upload, 0, NULL},
-	{N_("/Make directory"), NULL, action_mkdir, 0, NULL},
-	{N_("/Remove directory"), NULL, action_rmdir, 0, NULL},
+	{N_("/Upload file..."), NULL, action_upload, 0, NULL},
+	{N_("/Make directory..."), NULL, action_mkdir, 0, NULL},
+	{N_("/Delete directory"), NULL, action_rmdir, 0, NULL},
 	{"/sep1", NULL, NULL, 0, "<Separator>"},
-	{N_("/Capture"), NULL, action_capture, 0, NULL},
-	{N_("/Preferences"), NULL, action_preferences, 0,
+	{N_("/Capture image..."), NULL, action_capture, 0, NULL},
+	{N_("/View camera preferences"), NULL, action_preferences, 0,
 	 "<StockItem>", GTK_STOCK_PREFERENCES},
-	{N_("/Summary"), NULL, action_summary, 0, NULL},
-	{N_("/Manual"), NULL, action_manual, 0, NULL},
-	{N_("/About"), NULL, action_about, 0, NULL},
+	{N_("/View camera summary"), NULL, action_summary, 0, NULL},
+	{N_("/View camera manual"), NULL, action_manual, 0, NULL},
+	{N_("/View driver details"), NULL, action_about, 0, NULL},
 	{"/sep2", NULL, NULL, 0, "<Separator>"},
-	{N_("/Select Camera"), NULL, action_select_camera, 0, NULL},
-	{N_("/Remove Camera"), NULL, action_remove_camera, 0, NULL},
+	{N_("/Select camera..."), NULL, action_select_camera, 0, NULL},
+	{N_("/Remove camera"), NULL, action_remove_camera, 0, NULL},
 };
 
 #ifdef ENABLE_NLS
@@ -870,7 +870,7 @@ on_button_press_event (GtkWidget *widget, GdkEventButton *event,
 			event->x, event->y, &path, NULL, NULL, NULL)) {
 			m = gtk_menu_new ();
 			i = gtk_menu_item_new_with_mnemonic (
-							_("_Add Camera..."));
+							_("_Add camera..."));
 			gtk_widget_show (i);
 			gtk_container_add (GTK_CONTAINER (m), i);
 			g_signal_connect (G_OBJECT (i), "activate",
@@ -889,23 +889,23 @@ on_button_press_event (GtkWidget *widget, GdkEventButton *event,
 
 		/* What operations does the camera support? */
 		w = gtk_item_factory_get_widget (tree->priv->factory,
-						 "/Make directory");
+						 "/Make directory...");
 		gtk_widget_set_sensitive (w,
 			a.folder_operations & GP_FOLDER_OPERATION_MAKE_DIR);
 		w = gtk_item_factory_get_widget (tree->priv->factory,
-						 "/Remove directory");
+						 "/Delete directory");
 		gtk_widget_set_sensitive (w,
 			a.folder_operations & GP_FOLDER_OPERATION_REMOVE_DIR);
 		w = gtk_item_factory_get_widget (tree->priv->factory,
-						 "/Upload file");
+						 "/Upload file...");
 		gtk_widget_set_sensitive (w,
 			a.folder_operations & GP_FOLDER_OPERATION_PUT_FILE);
 		w = gtk_item_factory_get_widget (tree->priv->factory,
-						 "/Preferences");
+						 "/View camera preferences");
 		gtk_widget_set_sensitive (w,
 			a.operations & GP_OPERATION_CONFIG);
 		w = gtk_item_factory_get_widget (tree->priv->factory,
-						 "/Capture");
+						 "/Capture image...");
 		gtk_widget_set_sensitive (w,
 			a.operations & GP_OPERATION_CAPTURE_IMAGE);
 

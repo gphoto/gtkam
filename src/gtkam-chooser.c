@@ -333,8 +333,8 @@ gtkam_chooser_new (Camera *opt_camera)
 {
 	GtkamChooser *chooser;
 	GtkWidget *table, *label, *button, *combo, *dialog;
-	const char *name;
-	gint i;
+	const char *name, *port_name, *port_path;
+	gint i, s;
 	GList *list;
 	int count;
 	gchar *speed, *port;
@@ -443,19 +443,18 @@ gtkam_chooser_new (Camera *opt_camera)
 
 	if (opt_camera) {
 		gp_camera_get_abilities (opt_camera, &a);
+		gp_camera_get_port_name (opt_camera, &port_name);
+		gp_camera_get_port_path (opt_camera, &port_path);
+
 		gtk_entry_set_text (chooser->priv->entry_model, a.model);
 
-		if (*opt_camera->port_info->name) {
-			port = g_strdup_printf ("%s (%s)",
-					opt_camera->port_info->name,
-				        opt_camera->port_info->path);
-			gtk_entry_set_text (chooser->priv->entry_port, port);
-			g_free (port);
-		}
+		port = g_strdup_printf ("%s (%s)", port_name, port_path);
+		gtk_entry_set_text (chooser->priv->entry_port, port);
+		g_free (port);
 
-		if (opt_camera->port_info->speed)
-			speed = g_strdup_printf ("%i",
-					opt_camera->port_info->speed);
+		s = gp_camera_get_port_speed (opt_camera);
+		if (s)
+			speed = g_strdup_printf ("%i", s);
 		else
 			speed = g_strdup_printf (_("Best"));
 		gtk_entry_set_text (chooser->priv->entry_speed, speed);

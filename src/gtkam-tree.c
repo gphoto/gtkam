@@ -721,6 +721,7 @@ action_select_camera (gpointer callback_data, guint callback_action,
 	g_object_unref (G_OBJECT (d));
 	gtkam_chooser_set_camera (GTKAM_CHOOSER (d),
 		gtkam_tree_get_camera_from_iter (tree, &tree->priv->iter));
+	gtk_window_set_title (GTK_WINDOW (d), _("Select Camera"));
 	data = g_new0 (CameraSelectedData, 1);
 	data->tree = tree;
 	data->iter = gtk_tree_iter_copy (&tree->priv->iter);

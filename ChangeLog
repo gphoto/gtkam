@@ -1,5 +1,10 @@
 2003-01-14  Andrew Burton <adburton@users.sourceforge.net>
 
+	* src/gtkam-tree.c: Set window title to Select Camera 
+	when right-clicking on camera name
+
+2003-01-14  Andrew Burton <adburton@users.sourceforge.net>
+
 	* src/gtkam-viewer.c: Modify built-in viewer to open image at
 	  640x480 with no camera icon, set window title to be the filename.
 

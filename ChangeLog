@@ -1,5 +1,9 @@
 2002-07-23  Lutz Müller <lutz@users.sourceforge.net>
 
+	* test/Makefile.am: Add $(EXIF_[CFLAGS,LIBS]).
+
+2002-07-23  Lutz Müller <lutz@users.sourceforge.net>
+
 	Ü configure.in: Version 0.1.9
 
 2002-07-23  Lutz Müller <lutz@users.sourceforge.net>

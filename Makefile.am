@@ -4,7 +4,7 @@
 SUBDIRS = art doc help omf-install packaging pixmaps po src test
 
 gtkamdocdir = $(datadir)/doc/gtkam
-gtkamdoc_DATA = AUTHORS COPYING
+gtkamdoc_DATA = AUTHORS COPYING NEWS README TODO
 
 desktopdir = $(datadir)/applications
 desktop_DATA = gtkam.desktop

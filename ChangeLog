@@ -1,3 +1,8 @@
+2004-02-04  Andrew Burton <adburton@users.sourceforge.net>
+
+	* Makefile.am: Add files NEWS, README and TODO to
+	documentation directory.
+
 2004-02-02  Andrew Burton <adburton@users.sourceforge.net>
 
 	*src/gtkam-main.c: Add 'Refresh' button (fixes SF feature

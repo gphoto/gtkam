@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gtkam VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-09-04 10:46+0200\n"
+"POT-Creation-Date: 2005-03-22 14:40+0100\n"
 "PO-Revision-Date: 2003-07-12 15:49+0200\n"
 "Last-Translator: Miloslav Trmac <mitr@volny.cz>\n"
 "Language-Team: Czech <cs@li.org>\n"
@@ -15,192 +15,198 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/gtkam-chooser.c:231 src/gtkam-chooser.c:253
+#: src/gtkam-chooser.c:232 src/gtkam-chooser.c:254
 msgid "None"
 msgstr "Žádný"
 
-#: src/gtkam-chooser.c:261 src/gtkam-chooser.c:396 src/gtkam-chooser.c:649
+#: src/gtkam-chooser.c:262 src/gtkam-chooser.c:369 src/gtkam-chooser.c:622
+#: src/gtkam-chooser.c:656
 msgid "Best"
 msgstr "Nejlepší"
 
-#: src/gtkam-chooser.c:268
+#: src/gtkam-chooser.c:269
 msgid "Initializing camera..."
 msgstr "Inicializuji fotoaparát..."
 
-#: src/gtkam-chooser.c:282
+#: src/gtkam-chooser.c:283
 msgid "Could not initialize camera."
 msgstr "Nemohu inicializovat fotoaparát."
 
-#: src/gtkam-chooser.c:387
+#: src/gtkam-chooser.c:360
 #, c-format
 msgid "Could not get abilities of model '%s'."
 msgstr "Nemohu získat schopnosti modelu '%s'."
 
-#: src/gtkam-chooser.c:435
+#: src/gtkam-chooser.c:408
 msgid "Detecting cameras..."
 msgstr "Detekuji fotoaparáty..."
 
-#: src/gtkam-chooser.c:443
+#: src/gtkam-chooser.c:416
 msgid "No cameras detected."
 msgstr "Nedetekován žádný fotoaparát."
 
-#: src/gtkam-chooser.c:460
+#: src/gtkam-chooser.c:433
 msgid "Could not detect any cameras."
 msgstr "Nemohu detekovat žádný fotoaparát."
 
-#: src/gtkam-chooser.c:585
+#: src/gtkam-chooser.c:558
 #, fuzzy
 msgid "Add Camera"
 msgstr "_Přidat fotoaparát..."
 
-#: src/gtkam-chooser.c:600
+#: src/gtkam-chooser.c:573
 msgid "Model:"
 msgstr "Model:"
 
-#: src/gtkam-chooser.c:612
+#: src/gtkam-chooser.c:585
 msgid "Detect"
 msgstr "Detekovat"
 
-#: src/gtkam-chooser.c:618
+#: src/gtkam-chooser.c:591
 msgid "Detect USB camera"
 msgstr "Detekovat USB fotoaparát"
 
-#: src/gtkam-chooser.c:620
+#: src/gtkam-chooser.c:593
 msgid "Port:"
 msgstr "Port:"
 
-#: src/gtkam-chooser.c:641
+#: src/gtkam-chooser.c:614 src/gtkam-chooser.c:646
 msgid "Speed:"
 msgstr "Rychlost:"
 
-#: src/gtkam-chooser.c:654
+#: src/gtkam-chooser.c:627 src/gtkam-chooser.c:662
 msgid "Allow multiple frontends"
 msgstr "Povolit více rozhraní"
 
-#: src/gtkam-chooser.c:661
+#: src/gtkam-chooser.c:634
 msgid "Enhanced"
 msgstr "Vylepšené"
 
-#: src/gtkam-chooser.c:725
+#: src/gtkam-chooser.c:727
 msgid "Could not get number of supported camera models"
 msgstr "Nemohu získat počet podporovaných modelů fotoaparátů"
 
-#: src/gtkam-chooser.c:755
+#: src/gtkam-chooser.c:757
 msgid "Could not get number of ports."
 msgstr "Nemohu získat počet portů."
 
-#: src/gtkam-config.c:161
+#: src/gtkam-config.c:164
 msgid "Applying configuration..."
 msgstr "Nastavuji konfiguraci..."
 
-#: src/gtkam-config.c:177
+#: src/gtkam-config.c:180
 msgid "Could not apply configuration."
 msgstr "Nemohu nastavit konfiguraci."
 
-#: src/gtkam-config.c:225
+#: src/gtkam-config.c:241
 msgid "No additional information available. (1)"
 msgstr "Další informace nejsou k dispozici. (1)"
 
-#: src/gtkam-config.c:230
+#: src/gtkam-config.c:246
 msgid "General Settings"
 msgstr "Obecná nastavení"
 
-#: src/gtkam-config.c:305
+#: src/gtkam-config.c:321
 msgid "Could not execute command."
 msgstr "Nemohu spustit příkaz."
 
-#: src/gtkam-config.c:509
+#: src/gtkam-config.c:525
 msgid "No additional information available. (2)"
 msgstr "Další informace nejsou k dispozici. (2)"
 
-#: src/gtkam-config.c:546
+#: src/gtkam-config.c:562
 msgid "Set to system's time"
 msgstr "Nastavit na systémový čas"
 
-#: src/gtkam-config.c:580
+#: src/gtkam-config.c:596
 msgid "No additional information available. (3)"
 msgstr "Další informace nejsou k dispozici. (3)"
 
-#: src/gtkam-config.c:605
+#: src/gtkam-config.c:621
 msgid "No additional information available. (4)"
 msgstr "Další informace nejsou k dispozici. (4)"
 
-#: src/gtkam-config.c:652
+#: src/gtkam-config.c:668
 msgid "No additional information available. (5)"
 msgstr "Další informace nejsou k dispozici. (5)"
 
-#: src/gtkam-config.c:672
+#: src/gtkam-config.c:688
 msgid "No additional information available. (6)"
 msgstr "Další informace nejsou k dispozici. (6)"
 
-#: src/gtkam-config.c:712
+#: src/gtkam-config.c:729
 msgid "Getting configuration..."
 msgstr "Získávám nastavení..."
 
-#: src/gtkam-config.c:727
+#: src/gtkam-config.c:744
 msgid "Could not get configuration."
 msgstr "Nemohu získat nastavení."
 
-#: src/gtkam-debug.c:241
+#: src/gtkam-debug.c:242
 msgid "Save As..."
 msgstr "Uložit jako..."
 
-#: src/gtkam-debug.c:263
+#: src/gtkam-debug.c:264
 #, c-format
 msgid "Could not open '%s'!"
 msgstr "Nemohu otevřít '%s'!"
 
-#: src/gtkam-debug.c:308
+#: src/gtkam-debug.c:311
 msgid "Type of messages to log:"
 msgstr "Typ zpráv, které zaznamenávat"
 
-#: src/gtkam-debug.c:312
+#: src/gtkam-debug.c:315
 msgid "Error"
 msgstr "Chyba"
 
-#: src/gtkam-debug.c:319
+#: src/gtkam-debug.c:322
 msgid "Verbose"
 msgstr "Podrobné"
 
-#: src/gtkam-debug.c:326
+#: src/gtkam-debug.c:329
 msgid "Debug"
 msgstr "Ladění"
 
-#: src/gtkam-debug.c:333
+#: src/gtkam-debug.c:336
 msgid "Data"
 msgstr "Data"
 
-#: src/gtkam-delete.c:178
+#: src/gtkam-delete.c:181
 #, c-format
 msgid "Deleting all files in '%s'..."
 msgstr "Odstraňuji všechny soubory v '%s'..."
 
-#: src/gtkam-delete.c:198
+#: src/gtkam-delete.c:201
 #, c-format
 msgid "Could not delete all files in '%s'."
 msgstr "Nemohu odstranit všechny soubory v '%s'."
 
-#: src/gtkam-delete.c:231
+#: src/gtkam-delete.c:234
 #, c-format
 msgid "Deleting file '%s' from folder '%s'..."
 msgstr "Odstraňuji soubor '%s' z adresáře '%s'..."
 
-#: src/gtkam-delete.c:252
+#: src/gtkam-delete.c:255
 #, c-format
 msgid "Could not delete file '%s' in folder '%s'."
 msgstr "Nemohu odstranit soubor '%s' z adresáře '%s'."
 
-#: src/gtkam-delete.c:362
+#: src/gtkam-delete.c:384
 #, fuzzy, c-format
-msgid "Do you really want to delete %s?"
+msgid "Do you really want to delete all the files in '%s'?"
+msgstr "Opravdu chcete odstranit následující soubor?"
+
+#: src/gtkam-delete.c:387
+#, fuzzy, c-format
+msgid "Do you really want to delete '%s'?"
 msgstr "Opravdu chcete odstranit následujících %i souborů?"
 
-#: src/gtkam-delete.c:365
+#: src/gtkam-delete.c:390
 #, fuzzy, c-format
 msgid "Do you really want to delete the selected %i files?"
 msgstr "Opravdu chcete odstranit následujících %i souborů?"
 
-#: src/gtkam-delete.c:371
+#: src/gtkam-delete.c:396
 msgid "Delete these files?"
 msgstr ""
 
@@ -210,8 +216,8 @@ msgid "Getting EXIF information for file '%s' in folder '%s'..."
 msgstr "Získávám informace EXIF o souboru '%s' v adresáři '%s'..."
 
 #: src/gtkam-exif.c:153
-#, c-format
-msgid "Could not get EXIF information for '%s' in folder '%s'"
+#, fuzzy, c-format
+msgid "Could not get EXIF information for '%s' in folder '%s'."
 msgstr "Nemohu získat informace EXIF o '%s' v adresáři '%s'"
 
 #: src/gtkam-exif.c:166
@@ -256,73 +262,79 @@ msgstr "Nemohu stáhnout soubor '%s' z adresáře '%s'."
 msgid "Image"
 msgstr "Obrázek"
 
-#: src/gtkam-info.c:182
+#: src/gtkam-info.c:166
 #, c-format
 msgid "Setting information for file '%s' in '%s'..."
 msgstr "Nastavuji informace o souboru '%s' v '%s'..."
 
-#: src/gtkam-info.c:203
+#: src/gtkam-info.c:187
 #, c-format
 msgid "Could not set file information for '%s' in folder '%s'"
 msgstr "Nemohu nastavit informace o souboru '%s' v adresáři '%s'"
 
-#: src/gtkam-info.c:356
+#: src/gtkam-info.c:296
 #, c-format
 msgid "Getting information about file '%s' in folder '%s'..."
 msgstr "Získávám informace o souboru '%s' v adresáři '%s'..."
 
-#: src/gtkam-info.c:368
+#: src/gtkam-info.c:308
 #, c-format
 msgid "Could not get information about file '%s' in folder '%s'."
 msgstr "Nemohu získat informace o souboru '%s' v adresáři '%s'."
 
-#: src/gtkam-info.c:396
+#: src/gtkam-info.c:336
 msgid "File"
 msgstr "Soubor"
 
-#: src/gtkam-info.c:402
+#: src/gtkam-info.c:342
 msgid "Name:"
 msgstr "Název:"
 
-#: src/gtkam-info.c:425 src/gtkam-info.c:533
+#: src/gtkam-info.c:365
 msgid "Mime type:"
 msgstr "Typ mime:"
 
-#: src/gtkam-info.c:443
+#: src/gtkam-info.c:383
 msgid "Last modified:"
 msgstr "Naposledy změněn:"
 
-#: src/gtkam-info.c:464 src/gtkam-info.c:550 src/gtkam-info.c:598
+#: src/gtkam-info.c:404 src/gtkam-info.c:491 src/gtkam-info.c:540
 msgid "Size:"
 msgstr "Velikost:"
 
-#: src/gtkam-info.c:471
-#, c-format
-msgid "%li bytes"
+#: src/gtkam-info.c:411 src/gtkam-info.c:547
+#, fuzzy, c-format
+msgid "%iK (%li bytes)"
 msgstr "%li bajtů"
 
-#: src/gtkam-info.c:485
+#: src/gtkam-info.c:426
 msgid "Permissions:"
 msgstr "Oprávnění:"
 
-#: src/gtkam-info.c:497
+#: src/gtkam-info.c:438
 msgid "Read"
 msgstr "Čtení"
 
-#: src/gtkam-info.c:508
+#: src/gtkam-info.c:449
 msgid "Delete"
 msgstr "Odstranění"
 
-#: src/gtkam-info.c:527 src/gtkam-list.c:967
+#: src/gtkam-info.c:468 src/gtkam-list.c:941
 msgid "Preview"
 msgstr "Náhled"
 
-#: src/gtkam-info.c:575
+#: src/gtkam-info.c:474
+#, fuzzy
+msgid "MIME type:"
+msgstr "Typ mime:"
+
+#: src/gtkam-info.c:517
 msgid "Audio"
 msgstr "Zvuk"
 
-#: src/gtkam-info.c:581
-msgid "Mime type: "
+#: src/gtkam-info.c:523
+#, fuzzy
+msgid "MIME type: "
 msgstr "Typ mime: "
 
 #: src/gtkam-list.c:322
@@ -330,51 +342,51 @@ msgstr "Typ mime: "
 msgid "Downloading thumbnail of '%s' from folder '%s'..."
 msgstr "Načítám miniaturu '%s' z adresáře '%s'..."
 
-#: src/gtkam-list.c:878
+#: src/gtkam-list.c:852
 #, c-format
 msgid "Changing name of '%s' to '%s'..."
 msgstr "Měním název '%s' na '%s'..."
 
-#: src/gtkam-list.c:888
+#: src/gtkam-list.c:862
 #, c-format
 msgid "Could not change the name of '%s' to '%s'."
 msgstr "Nemohu změnit název '%s' na '%s'."
 
-#: src/gtkam-list.c:902
+#: src/gtkam-list.c:876
 msgid "/_View with..."
 msgstr "/_Zobrazit s..."
 
-#: src/gtkam-list.c:903
+#: src/gtkam-list.c:877
 msgid "/View with.../Built-in viewer"
 msgstr "/_Zobrazit s.../Vestavěným prohlížečem"
 
-#: src/gtkam-list.c:905
+#: src/gtkam-list.c:879
 msgid "/View file _properties"
 msgstr ""
 
-#: src/gtkam-list.c:907
+#: src/gtkam-list.c:881
 #, fuzzy
 msgid "/View _EXIF data"
 msgstr "Uložit data EXIF"
 
-#: src/gtkam-list.c:910
+#: src/gtkam-list.c:884
 msgid "/_Save"
 msgstr "/_Uložit"
 
-#: src/gtkam-list.c:911
+#: src/gtkam-list.c:885
 msgid "/_Delete"
 msgstr "/_Odstranit"
 
-#: src/gtkam-list.c:973
+#: src/gtkam-list.c:947
 msgid "Name"
 msgstr "Název"
 
-#: src/gtkam-list.c:995
+#: src/gtkam-list.c:969
 #, c-format
 msgid "Listing files in folder '%s'..."
 msgstr "Vypisuji soubory v adresáři '%s'..."
 
-#: src/gtkam-list.c:1011
+#: src/gtkam-list.c:985
 #, c-format
 msgid "Could not get file list for folder '%s'"
 msgstr "Nemohu získat seznam souborů v adresáři '%s'"
@@ -610,118 +622,118 @@ msgstr "180 stupňů"
 msgid "Rotate thumbnail by 180 degrees"
 msgstr "Rotovat miniaturu o 180 stupňů"
 
-#: src/gtkam-save.c:330
-msgid "photo"
-msgstr "fotografie"
-
-#: src/gtkam-save.c:347
+#: src/gtkam-save.c:301
 #, fuzzy, c-format
 msgid "The file '%s' already exists."
 msgstr "'%s' již existuje."
 
-#: src/gtkam-save.c:368
+#: src/gtkam-save.c:323
 #, c-format
 msgid "Could not save file to '%s'."
 msgstr "Nemohu uložit soubor do '%s'."
 
-#: src/gtkam-save.c:408
+#: src/gtkam-save.c:363
 #, c-format
 msgid "Could not get '%s' from folder '%s'."
 msgstr "Nemohu získat '%s' z adresáře '%s'."
 
-#: src/gtkam-save.c:509
+#: src/gtkam-save.c:494
+msgid "There is nothing to be saved."
+msgstr ""
+
+#: src/gtkam-save.c:506
 msgid "Downloading file"
 msgstr "Stahuji soubor"
 
-#: src/gtkam-save.c:511
+#: src/gtkam-save.c:508
 #, c-format
 msgid "Downloading %i files"
 msgstr "Stahuji %i souborů"
 
-#: src/gtkam-save.c:518
+#: src/gtkam-save.c:515
 #, c-format
 msgid "Downloading %i files..."
 msgstr "Stahuji %i souborů..."
 
-#: src/gtkam-save.c:569
+#: src/gtkam-save.c:566
 #, fuzzy, c-format
 msgid "Problem getting '%s' from folder '%s'."
 msgstr "Nemohu získat '%s' z adresáře '%s'."
 
-#: src/gtkam-save.c:634
+#: src/gtkam-save.c:640
 msgid "What to save:"
 msgstr "Co uložit:"
 
-#: src/gtkam-save.c:643
+#: src/gtkam-save.c:652
 msgid "Save photos"
 msgstr "Uložit fotografie"
 
-#: src/gtkam-save.c:647
+#: src/gtkam-save.c:656
 msgid "Photos will be saved if this is checked"
 msgstr "Je-li toto zaškrtnuto, budou uloženy fotografie"
 
-#: src/gtkam-save.c:651
+#: src/gtkam-save.c:660
 msgid "Save raw data"
 msgstr "Uložit původní data"
 
-#: src/gtkam-save.c:654
+#: src/gtkam-save.c:663
 msgid "Raw data will be saved if this is checked"
 msgstr "Je-li toto zaškrtnuto, budou uložena původní data"
 
-#: src/gtkam-save.c:658
+#: src/gtkam-save.c:667
 msgid "Save audio data"
 msgstr "Uložit zvuková data"
 
-#: src/gtkam-save.c:661
+#: src/gtkam-save.c:670
 msgid "Audio data will be saved if this is checked"
 msgstr "Je-li toto zaškrtnuto, budou uložena zvuková data"
 
-#: src/gtkam-save.c:665
+#: src/gtkam-save.c:674
 msgid "Save thumbnails"
 msgstr "Uložit miniatury"
 
-#: src/gtkam-save.c:668
+#: src/gtkam-save.c:677
 msgid "Thumbnails will be saved if this is checked"
 msgstr "Je-li toto zaškrtnuto, budou uloženy miniatury"
 
-#: src/gtkam-save.c:672
+#: src/gtkam-save.c:681
 msgid "Save EXIF data"
 msgstr "Uložit data EXIF"
 
-#: src/gtkam-save.c:675
+#: src/gtkam-save.c:684
 msgid "EXIF data will be saved if this is checked"
 msgstr "Je-li toto zaškrtnuto, budou uložena data EXIF"
 
-#: src/gtkam-save.c:684
+#: src/gtkam-save.c:693
 msgid "Open image(s) with: "
 msgstr "Otevřít obrázky pomocí: "
 
-#: src/gtkam-save.c:691
+#: src/gtkam-save.c:700
 msgid "Type in the name of the program you want to run, leave blank for none"
 msgstr "Napište název programu, který chcete spustit, nechte prázdné pro žádný"
 
-#: src/gtkam-save.c:697
+#: src/gtkam-save.c:706
 msgid "Use filename(s) provided by the camera"
 msgstr "Použít názvy souborů poskytnuté fotoaparátem"
 
-#: src/gtkam-save.c:701
+#: src/gtkam-save.c:710
 msgid "Choose whether to use the filename provided by the camera"
 msgstr "Vyberte, jestli používat název souboru poskytnutý fotoaparátem"
 
-#: src/gtkam-save.c:716
+#: src/gtkam-save.c:724
 msgid "Filename prefix: "
 msgstr "Předpona názvu souboru: "
 
-#: src/gtkam-save.c:725
+#: src/gtkam-save.c:733
 msgid "Start numbering with: "
 msgstr "Začít číslovat od: "
 
-#: src/gtkam-save.c:768
+#: src/gtkam-save.c:775
 #, c-format
 msgid "Save '%s'..."
 msgstr "Uložit '%s'..."
 
-#: src/gtkam-save.c:790
+#: src/gtkam-save.c:795
 msgid "Save photos..."
 msgstr "Uložit fotografie..."
 
@@ -883,8 +895,8 @@ msgstr "Nemohu stáhnout '%s' z adresáře '%s'."
 msgid "Image Download Program"
 msgstr "Program pro stažení obrázků"
 
-#~ msgid "Do you really want to delete the following file?"
-#~ msgstr "Opravdu chcete odstranit následující soubor?"
+#~ msgid "photo"
+#~ msgstr "fotografie"
 
 #~ msgid "'%s' in folder '%s'"
 #~ msgstr "'%s' v adresáři '%s'"

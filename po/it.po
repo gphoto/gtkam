@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gtkam 0.1.12\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-02-03 08:19+0100\n"
+"POT-Creation-Date: 2005-03-22 14:40+0100\n"
 "PO-Revision-Date: 2005-03-18 02:00+0000\n"
 "Last-Translator: Marco Colombo <m.colombo@ed.ac.uk>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
@@ -90,55 +90,55 @@ msgstr "Impossibile ottenere il numero di modelli di fotocamera gestiti"
 msgid "Could not get number of ports."
 msgstr "Impossibile ottenere il numero di porte."
 
-#: src/gtkam-config.c:161
+#: src/gtkam-config.c:164
 msgid "Applying configuration..."
 msgstr "Applicazione della configurazione in corso..."
 
-#: src/gtkam-config.c:177
+#: src/gtkam-config.c:180
 msgid "Could not apply configuration."
 msgstr "Impossibile applicare la configurazione."
 
-#: src/gtkam-config.c:225
+#: src/gtkam-config.c:241
 msgid "No additional information available. (1)"
 msgstr "Nessuna informazione aggiuntiva disponibile. (1)"
 
-#: src/gtkam-config.c:230
+#: src/gtkam-config.c:246
 msgid "General Settings"
 msgstr "Impostazioni generali"
 
-#: src/gtkam-config.c:305
+#: src/gtkam-config.c:321
 msgid "Could not execute command."
 msgstr "Impossibile eseguire il comando."
 
-#: src/gtkam-config.c:509
+#: src/gtkam-config.c:525
 msgid "No additional information available. (2)"
 msgstr "Nessuna informazione aggiuntiva disponibile. (2)"
 
-#: src/gtkam-config.c:546
+#: src/gtkam-config.c:562
 msgid "Set to system's time"
 msgstr "Imposta all'orario di sistema"
 
-#: src/gtkam-config.c:580
+#: src/gtkam-config.c:596
 msgid "No additional information available. (3)"
 msgstr "Nessuna informazione aggiuntiva disponibile. (3)"
 
-#: src/gtkam-config.c:605
+#: src/gtkam-config.c:621
 msgid "No additional information available. (4)"
 msgstr "Nessuna informazione aggiuntiva disponibile. (4)"
 
-#: src/gtkam-config.c:652
+#: src/gtkam-config.c:668
 msgid "No additional information available. (5)"
 msgstr "Nessuna informazione aggiuntiva disponibile. (5)"
 
-#: src/gtkam-config.c:672
+#: src/gtkam-config.c:688
 msgid "No additional information available. (6)"
 msgstr "Nessuna informazione aggiuntiva disponibile. (6)"
 
-#: src/gtkam-config.c:712
+#: src/gtkam-config.c:729
 msgid "Getting configuration..."
 msgstr "Ottenimento della configurazione..."
 
-#: src/gtkam-config.c:727
+#: src/gtkam-config.c:744
 msgid "Could not get configuration."
 msgstr "Impossibile ottenere la configurazione."
 
@@ -193,14 +193,14 @@ msgstr "Impossibile eliminare il file \"%s\" nella cartella \"%s\"."
 
 # FIXME UPSTREAM: should be '%s'
 #: src/gtkam-delete.c:384
-#, c-format
-msgid "Do you really want to delete all the files in %s?"
+#, fuzzy, c-format
+msgid "Do you really want to delete all the files in '%s'?"
 msgstr "Si vuole veramente eliminare tutti i file in \"%s\"?"
 
 # FIXME UPSTREAM: should be '%s'
 #: src/gtkam-delete.c:387
-#, c-format
-msgid "Do you really want to delete %s?"
+#, fuzzy, c-format
+msgid "Do you really want to delete '%s'?"
 msgstr "Si vuole veramente eliminare \"%s\"?"
 
 #: src/gtkam-delete.c:390
@@ -221,8 +221,8 @@ msgstr ""
 
 # FIXME UPSTREAM: final '.' and 'exif'
 #: src/gtkam-exif.c:153
-#, c-format
-msgid "Could not get EXIF information for '%s' in folder '%s'"
+#, fuzzy, c-format
+msgid "Could not get EXIF information for '%s' in folder '%s'."
 msgstr ""
 "Impossibile leggere le informazioni EXIF per \"%s\" nella cartella \"%s\"."
 

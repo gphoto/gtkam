@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gtKam\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-09-04 10:46+0200\n"
+"POT-Creation-Date: 2005-03-22 14:40+0100\n"
 "PO-Revision-Date: 2002-01-26 21:30MET\n"
 "Last-Translator: Jérôme Fenal <jerome@fenal.org>\n"
 "Language-Team: Français <traduc@traduc.org>\n"
@@ -15,192 +15,198 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 0.9.5\n"
 
-#: src/gtkam-chooser.c:231 src/gtkam-chooser.c:253
+#: src/gtkam-chooser.c:232 src/gtkam-chooser.c:254
 msgid "None"
 msgstr "Aucun"
 
-#: src/gtkam-chooser.c:261 src/gtkam-chooser.c:396 src/gtkam-chooser.c:649
+#: src/gtkam-chooser.c:262 src/gtkam-chooser.c:369 src/gtkam-chooser.c:622
+#: src/gtkam-chooser.c:656
 msgid "Best"
 msgstr "Meilleure"
 
-#: src/gtkam-chooser.c:268
+#: src/gtkam-chooser.c:269
 msgid "Initializing camera..."
 msgstr "Initialisation de l'appareil photo..."
 
-#: src/gtkam-chooser.c:282
+#: src/gtkam-chooser.c:283
 msgid "Could not initialize camera."
 msgstr "Impossible d'initialiser l'appareil."
 
-#: src/gtkam-chooser.c:387
+#: src/gtkam-chooser.c:360
 #, c-format
 msgid "Could not get abilities of model '%s'."
 msgstr "Impossible de récupérer les fonctionnalités de '%s'."
 
-#: src/gtkam-chooser.c:435
+#: src/gtkam-chooser.c:408
 msgid "Detecting cameras..."
 msgstr "Détection des appareils photos..."
 
-#: src/gtkam-chooser.c:443
+#: src/gtkam-chooser.c:416
 msgid "No cameras detected."
 msgstr "Pas d'appareil détecté."
 
-#: src/gtkam-chooser.c:460
+#: src/gtkam-chooser.c:433
 msgid "Could not detect any cameras."
 msgstr "Impossible de détecter un quelconque appareil."
 
-#: src/gtkam-chooser.c:585
+#: src/gtkam-chooser.c:558
 #, fuzzy
 msgid "Add Camera"
 msgstr "_Ajouter un appareil photo..."
 
-#: src/gtkam-chooser.c:600
+#: src/gtkam-chooser.c:573
 msgid "Model:"
 msgstr "Modèle :"
 
-#: src/gtkam-chooser.c:612
+#: src/gtkam-chooser.c:585
 msgid "Detect"
 msgstr "Détection"
 
-#: src/gtkam-chooser.c:618
+#: src/gtkam-chooser.c:591
 msgid "Detect USB camera"
 msgstr "Détection des appareils USB."
 
-#: src/gtkam-chooser.c:620
+#: src/gtkam-chooser.c:593
 msgid "Port:"
 msgstr "Port :"
 
-#: src/gtkam-chooser.c:641
+#: src/gtkam-chooser.c:614 src/gtkam-chooser.c:646
 msgid "Speed:"
 msgstr "Vitesse :"
 
-#: src/gtkam-chooser.c:654
+#: src/gtkam-chooser.c:627 src/gtkam-chooser.c:662
 msgid "Allow multiple frontends"
 msgstr "Autoriser plusieurs interfaces"
 
-#: src/gtkam-chooser.c:661
+#: src/gtkam-chooser.c:634
 msgid "Enhanced"
 msgstr "Étendue"
 
-#: src/gtkam-chooser.c:725
+#: src/gtkam-chooser.c:727
 msgid "Could not get number of supported camera models"
 msgstr "Impossible de connaître le nombre d'appareils photo supportés"
 
-#: src/gtkam-chooser.c:755
+#: src/gtkam-chooser.c:757
 msgid "Could not get number of ports."
 msgstr "Impossible de connaître le nombre de ports."
 
-#: src/gtkam-config.c:161
+#: src/gtkam-config.c:164
 msgid "Applying configuration..."
 msgstr "Application de la configuration..."
 
-#: src/gtkam-config.c:177
+#: src/gtkam-config.c:180
 msgid "Could not apply configuration."
 msgstr "Impossible d'appliquer la configuration."
 
-#: src/gtkam-config.c:225
+#: src/gtkam-config.c:241
 msgid "No additional information available. (1)"
 msgstr "Pas d'informations supplémentaires disponibles. (1)"
 
-#: src/gtkam-config.c:230
+#: src/gtkam-config.c:246
 msgid "General Settings"
 msgstr "Configuration générale"
 
-#: src/gtkam-config.c:305
+#: src/gtkam-config.c:321
 msgid "Could not execute command."
 msgstr "Impossible d'exécuter la commande."
 
-#: src/gtkam-config.c:509
+#: src/gtkam-config.c:525
 msgid "No additional information available. (2)"
 msgstr "Pas d'informations supplémentaires disponibles. (2)"
 
-#: src/gtkam-config.c:546
+#: src/gtkam-config.c:562
 msgid "Set to system's time"
 msgstr "Configure à l'heure du système"
 
-#: src/gtkam-config.c:580
+#: src/gtkam-config.c:596
 msgid "No additional information available. (3)"
 msgstr "Pas d'informations supplémentaires disponibles. (3)"
 
-#: src/gtkam-config.c:605
+#: src/gtkam-config.c:621
 msgid "No additional information available. (4)"
 msgstr "Pas d'informations supplémentaires disponibles. (4)"
 
-#: src/gtkam-config.c:652
+#: src/gtkam-config.c:668
 msgid "No additional information available. (5)"
 msgstr "Pas d'informations supplémentaires disponibles. (5)"
 
-#: src/gtkam-config.c:672
+#: src/gtkam-config.c:688
 msgid "No additional information available. (6)"
 msgstr "Pas d'informations supplémentaires disponibles. (6)"
 
-#: src/gtkam-config.c:712
+#: src/gtkam-config.c:729
 msgid "Getting configuration..."
 msgstr "Récupération de la configuration..."
 
-#: src/gtkam-config.c:727
+#: src/gtkam-config.c:744
 msgid "Could not get configuration."
 msgstr "Impossible de récupérer la configuration"
 
-#: src/gtkam-debug.c:241
+#: src/gtkam-debug.c:242
 msgid "Save As..."
 msgstr "Enregistrer sous..."
 
-#: src/gtkam-debug.c:263
+#: src/gtkam-debug.c:264
 #, c-format
 msgid "Could not open '%s'!"
 msgstr "Impossible d'ouvrir '%s' !"
 
-#: src/gtkam-debug.c:308
+#: src/gtkam-debug.c:311
 msgid "Type of messages to log:"
 msgstr "Types de messages à conserver : "
 
-#: src/gtkam-debug.c:312
+#: src/gtkam-debug.c:315
 msgid "Error"
 msgstr "Erreur"
 
-#: src/gtkam-debug.c:319
+#: src/gtkam-debug.c:322
 msgid "Verbose"
 msgstr "Verbeux"
 
-#: src/gtkam-debug.c:326
+#: src/gtkam-debug.c:329
 msgid "Debug"
 msgstr "Débogage"
 
-#: src/gtkam-debug.c:333
+#: src/gtkam-debug.c:336
 msgid "Data"
 msgstr "Données"
 
-#: src/gtkam-delete.c:178
+#: src/gtkam-delete.c:181
 #, c-format
 msgid "Deleting all files in '%s'..."
 msgstr "Effacement de tous les fichiers de '%s'..."
 
-#: src/gtkam-delete.c:198
+#: src/gtkam-delete.c:201
 #, c-format
 msgid "Could not delete all files in '%s'."
 msgstr "Impossible d'effacer tous les fichiers de '%s'."
 
-#: src/gtkam-delete.c:231
+#: src/gtkam-delete.c:234
 #, c-format
 msgid "Deleting file '%s' from folder '%s'..."
 msgstr "Effacement du fichier '%s' du dossier '%s'..."
 
-#: src/gtkam-delete.c:252
+#: src/gtkam-delete.c:255
 #, c-format
 msgid "Could not delete file '%s' in folder '%s'."
 msgstr "Impossible d'effacer le fichier '%s' du dossier '%s'."
 
-#: src/gtkam-delete.c:362
+#: src/gtkam-delete.c:384
 #, fuzzy, c-format
-msgid "Do you really want to delete %s?"
+msgid "Do you really want to delete all the files in '%s'?"
+msgstr "Êtes-vous sûr de bien vouloir effacer le fichier suivant ?"
+
+#: src/gtkam-delete.c:387
+#, fuzzy, c-format
+msgid "Do you really want to delete '%s'?"
 msgstr "Êtes-vous sûr de bien vouloir effacer les %i fichiers suivants ?"
 
-#: src/gtkam-delete.c:365
+#: src/gtkam-delete.c:390
 #, fuzzy, c-format
 msgid "Do you really want to delete the selected %i files?"
 msgstr "Êtes-vous sûr de bien vouloir effacer les %i fichiers suivants ?"
 
-#: src/gtkam-delete.c:371
+#: src/gtkam-delete.c:396
 msgid "Delete these files?"
 msgstr ""
 
@@ -211,8 +217,8 @@ msgstr ""
 "Récupération des informations EXIF pour le fichier '%s' du dossier '%s'..."
 
 #: src/gtkam-exif.c:153
-#, c-format
-msgid "Could not get EXIF information for '%s' in folder '%s'"
+#, fuzzy, c-format
+msgid "Could not get EXIF information for '%s' in folder '%s'."
 msgstr ""
 "Impossible de récupérer les informations EXIF pour '%s' du dossier '%s'."
 
@@ -258,75 +264,81 @@ msgstr "Impossible de charger '%s' depuis le dossier '%s'."
 msgid "Image"
 msgstr "Image"
 
-#: src/gtkam-info.c:182
+#: src/gtkam-info.c:166
 #, c-format
 msgid "Setting information for file '%s' in '%s'..."
 msgstr "Configuration des informations sur le fichier '%s' de '%s'..."
 
-#: src/gtkam-info.c:203
+#: src/gtkam-info.c:187
 #, c-format
 msgid "Could not set file information for '%s' in folder '%s'"
 msgstr ""
 "Impossible de configurer les informations du fichier '%s' du dossier '%s'"
 
-#: src/gtkam-info.c:356
+#: src/gtkam-info.c:296
 #, c-format
 msgid "Getting information about file '%s' in folder '%s'..."
 msgstr "Récupération des informations sur le fichier '%s' du dossier '%s'..."
 
-#: src/gtkam-info.c:368
+#: src/gtkam-info.c:308
 #, c-format
 msgid "Could not get information about file '%s' in folder '%s'."
 msgstr ""
 "Impossible de récupérer les informations du fichier '%s' du dossier '%s'."
 
-#: src/gtkam-info.c:396
+#: src/gtkam-info.c:336
 msgid "File"
 msgstr "Fichier"
 
-#: src/gtkam-info.c:402
+#: src/gtkam-info.c:342
 msgid "Name:"
 msgstr "Nom :"
 
-#: src/gtkam-info.c:425 src/gtkam-info.c:533
+#: src/gtkam-info.c:365
 msgid "Mime type:"
 msgstr "Type MIME :"
 
-#: src/gtkam-info.c:443
+#: src/gtkam-info.c:383
 msgid "Last modified:"
 msgstr "Dernière modification :"
 
-#: src/gtkam-info.c:464 src/gtkam-info.c:550 src/gtkam-info.c:598
+#: src/gtkam-info.c:404 src/gtkam-info.c:491 src/gtkam-info.c:540
 msgid "Size:"
 msgstr "Taille :"
 
-#: src/gtkam-info.c:471
-#, c-format
-msgid "%li bytes"
+#: src/gtkam-info.c:411 src/gtkam-info.c:547
+#, fuzzy, c-format
+msgid "%iK (%li bytes)"
 msgstr "%li octets"
 
-#: src/gtkam-info.c:485
+#: src/gtkam-info.c:426
 msgid "Permissions:"
 msgstr "Permissions :"
 
-#: src/gtkam-info.c:497
+#: src/gtkam-info.c:438
 msgid "Read"
 msgstr "Lecture"
 
-#: src/gtkam-info.c:508
+#: src/gtkam-info.c:449
 msgid "Delete"
 msgstr "Effacer"
 
-#: src/gtkam-info.c:527 src/gtkam-list.c:967
+#: src/gtkam-info.c:468 src/gtkam-list.c:941
 msgid "Preview"
 msgstr "Prévisualisation"
 
-#: src/gtkam-info.c:575
+#: src/gtkam-info.c:474
+#, fuzzy
+msgid "MIME type:"
+msgstr "Type MIME :"
+
+#: src/gtkam-info.c:517
 msgid "Audio"
 msgstr "Audio"
 
-#: src/gtkam-info.c:581
-msgid "Mime type: "
+#: src/gtkam-info.c:523
+#, fuzzy
+msgid "MIME type: "
 msgstr "Type MIME :"
 
 #: src/gtkam-list.c:322
@@ -334,51 +346,51 @@ msgstr "Type MIME :"
 msgid "Downloading thumbnail of '%s' from folder '%s'..."
 msgstr "Récupération de la vignette du fichier '%s' du dossier '%s'..."
 
-#: src/gtkam-list.c:878
+#: src/gtkam-list.c:852
 #, c-format
 msgid "Changing name of '%s' to '%s'..."
 msgstr "Changement du nom de '%s' vers '%s'..."
 
-#: src/gtkam-list.c:888
+#: src/gtkam-list.c:862
 #, c-format
 msgid "Could not change the name of '%s' to '%s'."
 msgstr "Impossible de changer le nom de '%s' vers '%s'."
 
-#: src/gtkam-list.c:902
+#: src/gtkam-list.c:876
 msgid "/_View with..."
 msgstr "/_Voir avec..."
 
-#: src/gtkam-list.c:903
+#: src/gtkam-list.c:877
 msgid "/View with.../Built-in viewer"
 msgstr "/Voir avec.../Lecteur intégré"
 
-#: src/gtkam-list.c:905
+#: src/gtkam-list.c:879
 msgid "/View file _properties"
 msgstr ""
 
-#: src/gtkam-list.c:907
+#: src/gtkam-list.c:881
 #, fuzzy
 msgid "/View _EXIF data"
 msgstr "Enregistrer les données EXIF"
 
-#: src/gtkam-list.c:910
+#: src/gtkam-list.c:884
 msgid "/_Save"
 msgstr "/_Save"
 
-#: src/gtkam-list.c:911
+#: src/gtkam-list.c:885
 msgid "/_Delete"
 msgstr "/_Effacer"
 
-#: src/gtkam-list.c:973
+#: src/gtkam-list.c:947
 msgid "Name"
 msgstr "Nom"
 
-#: src/gtkam-list.c:995
+#: src/gtkam-list.c:969
 #, c-format
 msgid "Listing files in folder '%s'..."
 msgstr "Récupération de la liste des fichiers du dossier '%s'..."
 
-#: src/gtkam-list.c:1011
+#: src/gtkam-list.c:985
 #, c-format
 msgid "Could not get file list for folder '%s'"
 msgstr "Impossible de récupérer la liste des fichiers du dossier '%s'"
@@ -616,118 +628,118 @@ msgstr "180 degrés"
 msgid "Rotate thumbnail by 180 degrees"
 msgstr "Tourner la vignette de 180 degrés"
 
-#: src/gtkam-save.c:330
-msgid "photo"
-msgstr "photo"
-
-#: src/gtkam-save.c:347
+#: src/gtkam-save.c:301
 #, fuzzy, c-format
 msgid "The file '%s' already exists."
 msgstr "'%s' existe déjà."
 
-#: src/gtkam-save.c:368
+#: src/gtkam-save.c:323
 #, c-format
 msgid "Could not save file to '%s'."
 msgstr "Impossible d'enregistrer le fichier sur '%s'."
 
-#: src/gtkam-save.c:408
+#: src/gtkam-save.c:363
 #, c-format
 msgid "Could not get '%s' from folder '%s'."
 msgstr "Impossible de récupérer '%s' du dossier '%s'."
 
-#: src/gtkam-save.c:509
+#: src/gtkam-save.c:494
+msgid "There is nothing to be saved."
+msgstr ""
+
+#: src/gtkam-save.c:506
 msgid "Downloading file"
 msgstr "Récupération du fichier"
 
-#: src/gtkam-save.c:511
+#: src/gtkam-save.c:508
 #, c-format
 msgid "Downloading %i files"
 msgstr "Récupération de %i images"
 
-#: src/gtkam-save.c:518
+#: src/gtkam-save.c:515
 #, c-format
 msgid "Downloading %i files..."
 msgstr "Récupération de %i images..."
 
-#: src/gtkam-save.c:569
+#: src/gtkam-save.c:566
 #, fuzzy, c-format
 msgid "Problem getting '%s' from folder '%s'."
 msgstr "Impossible de récupérer '%s' du dossier '%s'."
 
-#: src/gtkam-save.c:634
+#: src/gtkam-save.c:640
 msgid "What to save:"
 msgstr "Quoi enregistrer :"
 
-#: src/gtkam-save.c:643
+#: src/gtkam-save.c:652
 msgid "Save photos"
 msgstr "Enregistrer les photos"
 
-#: src/gtkam-save.c:647
+#: src/gtkam-save.c:656
 msgid "Photos will be saved if this is checked"
 msgstr "Cocher pour enregistrer les photos"
 
-#: src/gtkam-save.c:651
+#: src/gtkam-save.c:660
 msgid "Save raw data"
 msgstr "Enregistrer les données brutes"
 
-#: src/gtkam-save.c:654
+#: src/gtkam-save.c:663
 msgid "Raw data will be saved if this is checked"
 msgstr "Cocher pour enregistrer les images brutes"
 
-#: src/gtkam-save.c:658
+#: src/gtkam-save.c:667
 msgid "Save audio data"
 msgstr "Enregistrer les données audio"
 
-#: src/gtkam-save.c:661
+#: src/gtkam-save.c:670
 msgid "Audio data will be saved if this is checked"
 msgstr "Cocher pour enregistrer les données audio"
 
-#: src/gtkam-save.c:665
+#: src/gtkam-save.c:674
 msgid "Save thumbnails"
 msgstr "Enregistrer les vignettes"
 
-#: src/gtkam-save.c:668
+#: src/gtkam-save.c:677
 msgid "Thumbnails will be saved if this is checked"
 msgstr "Cocher pour enregistrer les vignettes"
 
-#: src/gtkam-save.c:672
+#: src/gtkam-save.c:681
 msgid "Save EXIF data"
 msgstr "Enregistrer les données EXIF"
 
-#: src/gtkam-save.c:675
+#: src/gtkam-save.c:684
 msgid "EXIF data will be saved if this is checked"
 msgstr "Cocher pour enregistrer les données EXIF"
 
-#: src/gtkam-save.c:684
+#: src/gtkam-save.c:693
 msgid "Open image(s) with: "
 msgstr "Ouvrir l'image avec :"
 
-#: src/gtkam-save.c:691
+#: src/gtkam-save.c:700
 msgid "Type in the name of the program you want to run, leave blank for none"
 msgstr "Entrer le nom du programme à lancer, laisser vide si aucun"
 
-#: src/gtkam-save.c:697
+#: src/gtkam-save.c:706
 msgid "Use filename(s) provided by the camera"
 msgstr "Utiliser les noms de fichiers fournis par l'appareil photo"
 
-#: src/gtkam-save.c:701
+#: src/gtkam-save.c:710
 msgid "Choose whether to use the filename provided by the camera"
 msgstr "Utiliser les noms de fichiers fournis par l'appareil photo"
 
-#: src/gtkam-save.c:716
+#: src/gtkam-save.c:724
 msgid "Filename prefix: "
 msgstr "Préfixe de nom de fichier :"
 
-#: src/gtkam-save.c:725
+#: src/gtkam-save.c:733
 msgid "Start numbering with: "
 msgstr "Commencer la numérotation par :"
 
-#: src/gtkam-save.c:768
+#: src/gtkam-save.c:775
 #, c-format
 msgid "Save '%s'..."
 msgstr "Enregistrement de '%s'..."
 
-#: src/gtkam-save.c:790
+#: src/gtkam-save.c:795
 msgid "Save photos..."
 msgstr "Enregistrer les photos..."
 
@@ -891,8 +903,8 @@ msgstr "Impossible de charger '%s' à partir du dossier '%s'."
 msgid "Image Download Program"
 msgstr "Programme de récupération d'images"
 
-#~ msgid "Do you really want to delete the following file?"
-#~ msgstr "Êtes-vous sûr de bien vouloir effacer le fichier suivant ?"
+#~ msgid "photo"
+#~ msgstr "photo"
 
 #~ msgid "'%s' in folder '%s'"
 #~ msgstr "'%s' dans le dossier '%s'"

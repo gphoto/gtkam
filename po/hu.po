@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gtkam\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-05-21 22:34+1000\n"
+"POT-Creation-Date: 2005-03-22 14:40+0100\n"
 "PO-Revision-Date: 2002-08-31 09:34+0200\n"
 "Last-Translator: Márton Németh <nm127@freemail.hu>\n"
 "Language-Team: unknown\n"
@@ -13,191 +13,197 @@ msgstr ""
 "Content-Type: text/plain; charset=ISO-8859-2\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/gtkam-chooser.c:231 src/gtkam-chooser.c:253
+#: src/gtkam-chooser.c:232 src/gtkam-chooser.c:254
 msgid "None"
 msgstr "Semmi"
 
-#: src/gtkam-chooser.c:261 src/gtkam-chooser.c:396 src/gtkam-chooser.c:649
+#: src/gtkam-chooser.c:262 src/gtkam-chooser.c:369 src/gtkam-chooser.c:622
+#: src/gtkam-chooser.c:656
 msgid "Best"
 msgstr "Legjobb"
 
-#: src/gtkam-chooser.c:268
+#: src/gtkam-chooser.c:269
 msgid "Initializing camera..."
 msgstr "A fényképezõgép inicializálása..."
 
-#: src/gtkam-chooser.c:282
+#: src/gtkam-chooser.c:283
 msgid "Could not initialize camera."
 msgstr "Nem tudtam inicializálni a fényképezõgépet"
 
-#: src/gtkam-chooser.c:387
+#: src/gtkam-chooser.c:360
 #, c-format
 msgid "Could not get abilities of model '%s'."
 msgstr ""
 
-#: src/gtkam-chooser.c:435
+#: src/gtkam-chooser.c:408
 msgid "Detecting cameras..."
 msgstr "Fényképezõgépek felderítése..."
 
-#: src/gtkam-chooser.c:443
+#: src/gtkam-chooser.c:416
 msgid "No cameras detected."
 msgstr "Nincs felderített fényképezõgép."
 
-#: src/gtkam-chooser.c:460
+#: src/gtkam-chooser.c:433
 msgid "Could not detect any cameras."
 msgstr "Nem találtam egy fényképezõgépet sem."
 
-#: src/gtkam-chooser.c:585
+#: src/gtkam-chooser.c:558
 msgid "Add Camera"
 msgstr "Fényképezõgép hozzáadása"
 
-#: src/gtkam-chooser.c:600
+#: src/gtkam-chooser.c:573
 msgid "Model:"
 msgstr "Modell:"
 
-#: src/gtkam-chooser.c:612
+#: src/gtkam-chooser.c:585
 msgid "Detect"
 msgstr "Felderíés"
 
-#: src/gtkam-chooser.c:618
+#: src/gtkam-chooser.c:591
 msgid "Detect USB camera"
 msgstr "USB fényképezõgép felderítése"
 
-#: src/gtkam-chooser.c:620
+#: src/gtkam-chooser.c:593
 msgid "Port:"
 msgstr "Kapu:"
 
-#: src/gtkam-chooser.c:641
+#: src/gtkam-chooser.c:614 src/gtkam-chooser.c:646
 msgid "Speed:"
 msgstr "Sebesség:"
 
-#: src/gtkam-chooser.c:654
+#: src/gtkam-chooser.c:627 src/gtkam-chooser.c:662
 msgid "Allow multiple frontends"
 msgstr ""
 
-#: src/gtkam-chooser.c:661
+#: src/gtkam-chooser.c:634
 msgid "Enhanced"
 msgstr "Továbbfejlesztett"
 
-#: src/gtkam-chooser.c:725
+#: src/gtkam-chooser.c:727
 msgid "Could not get number of supported camera models"
 msgstr "Nem tudom meghatározni a támogatott fényképezõgépek számát."
 
-#: src/gtkam-chooser.c:755
+#: src/gtkam-chooser.c:757
 msgid "Could not get number of ports."
 msgstr "Nem tudom meghatározni a kapuk számát."
 
-#: src/gtkam-config.c:161
+#: src/gtkam-config.c:164
 msgid "Applying configuration..."
 msgstr "Beállítások alkalmazása..."
 
-#: src/gtkam-config.c:177
+#: src/gtkam-config.c:180
 msgid "Could not apply configuration."
 msgstr "Nem tudtam alkalmazni a beállításokat."
 
-#: src/gtkam-config.c:225
+#: src/gtkam-config.c:241
 msgid "No additional information available. (1)"
 msgstr "Nem áll rendelkezésre több információ. (1)"
 
-#: src/gtkam-config.c:230
+#: src/gtkam-config.c:246
 msgid "General Settings"
 msgstr "Általános beállítások"
 
-#: src/gtkam-config.c:305
+#: src/gtkam-config.c:321
 msgid "Could not execute command."
 msgstr "Nem tudom futtatni a parancsot."
 
-#: src/gtkam-config.c:509
+#: src/gtkam-config.c:525
 msgid "No additional information available. (2)"
 msgstr "Nem áll rendelkezésre több információ. (2)"
 
-#: src/gtkam-config.c:546
+#: src/gtkam-config.c:562
 msgid "Set to system's time"
 msgstr "állítsuk a rendszeridõre"
 
-#: src/gtkam-config.c:580
+#: src/gtkam-config.c:596
 msgid "No additional information available. (3)"
 msgstr "Nem áll rendelkezésre több információ. (3)"
 
-#: src/gtkam-config.c:605
+#: src/gtkam-config.c:621
 msgid "No additional information available. (4)"
 msgstr "Nem áll rendelkezésre több információ. (4)"
 
-#: src/gtkam-config.c:652
+#: src/gtkam-config.c:668
 msgid "No additional information available. (5)"
 msgstr "Nem áll rendelkezésre több információ. (5)"
 
-#: src/gtkam-config.c:672
+#: src/gtkam-config.c:688
 msgid "No additional information available. (6)"
 msgstr "Nem áll rendelkezésre több információ. (6)"
 
-#: src/gtkam-config.c:712
+#: src/gtkam-config.c:729
 msgid "Getting configuration..."
 msgstr "Beállítások megszerzése..."
 
-#: src/gtkam-config.c:727
+#: src/gtkam-config.c:744
 msgid "Could not get configuration."
 msgstr "Nem tudtam megszerezni a beállításokat."
 
-#: src/gtkam-debug.c:241
+#: src/gtkam-debug.c:242
 msgid "Save As..."
 msgstr "Mentés másként..."
 
-#: src/gtkam-debug.c:263
+#: src/gtkam-debug.c:264
 #, c-format
 msgid "Could not open '%s'!"
 msgstr "Nem tudtam megnyitni a(z) '%s'-t!"
 
-#: src/gtkam-debug.c:308
+#: src/gtkam-debug.c:311
 msgid "Type of messages to log:"
 msgstr "A naplózandó üzenetek típusa:"
 
-#: src/gtkam-debug.c:312
+#: src/gtkam-debug.c:315
 msgid "Error"
 msgstr "Hiba"
 
-#: src/gtkam-debug.c:319
+#: src/gtkam-debug.c:322
 msgid "Verbose"
 msgstr "Bõbeszédû"
 
-#: src/gtkam-debug.c:326
+#: src/gtkam-debug.c:329
 msgid "Debug"
 msgstr "Nyomkövetés"
 
-#: src/gtkam-debug.c:333
+#: src/gtkam-debug.c:336
 msgid "Data"
 msgstr "Adat"
 
-#: src/gtkam-delete.c:178
+#: src/gtkam-delete.c:181
 #, c-format
 msgid "Deleting all files in '%s'..."
 msgstr "Az összes fájl törlése a(z) '%s' mappában..."
 
-#: src/gtkam-delete.c:198
+#: src/gtkam-delete.c:201
 #, c-format
 msgid "Could not delete all files in '%s'."
 msgstr "Nem tudtam törölni az összes fájlt a '%s' mappában."
 
-#: src/gtkam-delete.c:231
+#: src/gtkam-delete.c:234
 #, c-format
 msgid "Deleting file '%s' from folder '%s'..."
 msgstr "A(z) '%s' fájl törlése a(z) '%s' mappából..."
 
-#: src/gtkam-delete.c:252
+#: src/gtkam-delete.c:255
 #, c-format
 msgid "Could not delete file '%s' in folder '%s'."
 msgstr "Nem tudtam törölni a(z) '%s' fájlt a(z) '%s' mappából..."
 
-#: src/gtkam-delete.c:362
-#, c-format
-msgid "Do you really want to delete %s?"
+#: src/gtkam-delete.c:384
+#, fuzzy, c-format
+msgid "Do you really want to delete all the files in '%s'?"
+msgstr "Tényleg töröljük a kijelölt %i fájlt?"
+
+#: src/gtkam-delete.c:387
+#, fuzzy, c-format
+msgid "Do you really want to delete '%s'?"
 msgstr "Tényleg töröljük '%s'-t?"
 
-#: src/gtkam-delete.c:365
+#: src/gtkam-delete.c:390
 #, c-format
 msgid "Do you really want to delete the selected %i files?"
 msgstr "Tényleg töröljük a kijelölt %i fájlt?"
 
-#: src/gtkam-delete.c:371
+#: src/gtkam-delete.c:396
 msgid "Delete these files?"
 msgstr "Töröljük ezeket a fájlokat?"
 
@@ -207,9 +213,11 @@ msgid "Getting EXIF information for file '%s' in folder '%s'..."
 msgstr "EXIF információk kigyûjtése a(z) '%s' fájlból, a(z) '%s' mappából..."
 
 #: src/gtkam-exif.c:153
-#, c-format
-msgid "Could not get EXIF information for '%s' in folder '%s'"
-msgstr "Nem tudtam kigyûjteni az EXIF információkat a(z) '%s' fájlból, a(z) '%s' mappából..."
+#, fuzzy, c-format
+msgid "Could not get EXIF information for '%s' in folder '%s'."
+msgstr ""
+"Nem tudtam kigyûjteni az EXIF információkat a(z) '%s' fájlból, a(z) '%s' "
+"mappából..."
 
 #: src/gtkam-exif.c:166
 msgid "Could not interpret EXIF data."
@@ -223,103 +231,112 @@ msgstr "A fájlból nem nyerhetõk ki EXIF adatok."
 msgid "Gtkam has been compiled without EXIF support."
 msgstr "A Gtkam-ot EXIF támogatás nélkül fordították."
 
-#: src/gtkam-gimp.c:67
+#: src/gtkam-gimp.c:69 src/gtkam-gimp.c:70
 msgid "Captures images from digital camera"
 msgstr ""
 
-#: src/gtkam-gimp.c:70
+#: src/gtkam-gimp.c:72
 msgid "<Toolbox>/File/Acquire/Capture from Camera..."
 msgstr ""
 
-#: src/gtkam-gimp.c:74
+#: src/gtkam-gimp.c:76 src/gtkam-gimp.c:77
 msgid "Loads files from digital cameras"
 msgstr ""
 
-#: src/gtkam-gimp.c:78
+#: src/gtkam-gimp.c:81
 msgid "<Toolbox>/File/Acquire/Load from Camera..."
 msgstr ""
 
-#: src/gtkam-gimp.c:191 src/gtkam-list.c:511
+#: src/gtkam-gimp.c:194 src/gtkam-list.c:511
 #, c-format
 msgid "Downloading '%s' from '%s'..."
 msgstr ""
 
-#: src/gtkam-gimp.c:209
+#: src/gtkam-gimp.c:212
 #, c-format
 msgid "Could not download file '%s' from folder '%s'."
 msgstr ""
 
-#: src/gtkam-gimp.c:242
+#: src/gtkam-gimp.c:245
 msgid "Image"
 msgstr ""
 
-#: src/gtkam-info.c:182
+#: src/gtkam-info.c:166
 #, c-format
 msgid "Setting information for file '%s' in '%s'..."
 msgstr "Információk beállítása a(z) '%s' fájlban, a(z) '%s' mappában..."
 
-#: src/gtkam-info.c:203
+#: src/gtkam-info.c:187
 #, c-format
 msgid "Could not set file information for '%s' in folder '%s'"
-msgstr "Nem tudtam beállítani az információkat a(z) '%s' fájlban, a(z) '%s' mappában..."
+msgstr ""
+"Nem tudtam beállítani az információkat a(z) '%s' fájlban, a(z) '%s' "
+"mappában..."
 
-#: src/gtkam-info.c:356
+#: src/gtkam-info.c:296
 #, c-format
 msgid "Getting information about file '%s' in folder '%s'..."
 msgstr "Információk kinyerése a(z) '%s' fájlból, a(z) '%s' mappából..."
 
-#: src/gtkam-info.c:368
+#: src/gtkam-info.c:308
 #, c-format
 msgid "Could not get information about file '%s' in folder '%s'."
-msgstr "Nem tudtam kinyerni az információkat a(z) '%s' fájlból, a(z) '%s' mappából."
+msgstr ""
+"Nem tudtam kinyerni az információkat a(z) '%s' fájlból, a(z) '%s' mappából."
 
-#: src/gtkam-info.c:396
+#: src/gtkam-info.c:336
 msgid "File"
 msgstr "Fájl"
 
-#: src/gtkam-info.c:402
+#: src/gtkam-info.c:342
 msgid "Name:"
 msgstr "Név:"
 
-#: src/gtkam-info.c:425 src/gtkam-info.c:533
+#: src/gtkam-info.c:365
 msgid "Mime type:"
 msgstr "Mime tipus:"
 
-#: src/gtkam-info.c:443
+#: src/gtkam-info.c:383
 msgid "Last modified:"
 msgstr "Utolsó módosítás:"
 
-#: src/gtkam-info.c:464 src/gtkam-info.c:550 src/gtkam-info.c:598
+#: src/gtkam-info.c:404 src/gtkam-info.c:491 src/gtkam-info.c:540
 msgid "Size:"
 msgstr "Méret:"
 
-#: src/gtkam-info.c:471
-#, c-format
-msgid "%li bytes"
+#: src/gtkam-info.c:411 src/gtkam-info.c:547
+#, fuzzy, c-format
+msgid "%iK (%li bytes)"
 msgstr "%li bájt"
 
-#: src/gtkam-info.c:485
+#: src/gtkam-info.c:426
 msgid "Permissions:"
 msgstr "Jogok:"
 
-#: src/gtkam-info.c:497
+#: src/gtkam-info.c:438
 msgid "Read"
 msgstr "Olvasás"
 
-#: src/gtkam-info.c:508
+#: src/gtkam-info.c:449
 msgid "Delete"
 msgstr "Törlés"
 
-#: src/gtkam-info.c:527 src/gtkam-list.c:967
+#: src/gtkam-info.c:468 src/gtkam-list.c:941
 msgid "Preview"
 msgstr "Elõkép"
 
-#: src/gtkam-info.c:575
+#: src/gtkam-info.c:474
+#, fuzzy
+msgid "MIME type:"
+msgstr "Mime tipus:"
+
+#: src/gtkam-info.c:517
 msgid "Audio"
 msgstr "Hang"
 
-#: src/gtkam-info.c:581
-msgid "Mime type: "
+#: src/gtkam-info.c:523
+#, fuzzy
+msgid "MIME type: "
 msgstr "Mime tipus: "
 
 #: src/gtkam-list.c:322
@@ -327,50 +344,50 @@ msgstr "Mime tipus: "
 msgid "Downloading thumbnail of '%s' from folder '%s'..."
 msgstr "'%s' miniatûrjének letöltése a(z) '%s' mappából..."
 
-#: src/gtkam-list.c:878
+#: src/gtkam-list.c:852
 #, c-format
 msgid "Changing name of '%s' to '%s'..."
 msgstr "Név megváltoztatása: '%s' -> '%s'..."
 
-#: src/gtkam-list.c:888
+#: src/gtkam-list.c:862
 #, c-format
 msgid "Could not change the name of '%s' to '%s'."
 msgstr "Nem tudtam megváltoztatni a nevet: '%s' -> '%s'."
 
-#: src/gtkam-list.c:902
+#: src/gtkam-list.c:876
 msgid "/_View with..."
 msgstr "/_Megtekintés programmal..."
 
-#: src/gtkam-list.c:903
+#: src/gtkam-list.c:877
 msgid "/View with.../Built-in viewer"
 msgstr "/Megtekintés programmal.../Beépített nézegetõ"
 
-#: src/gtkam-list.c:905
+#: src/gtkam-list.c:879
 msgid "/View file _properties"
 msgstr "/Megtekintés _tulajdonságai"
 
-#: src/gtkam-list.c:907
+#: src/gtkam-list.c:881
 msgid "/View _EXIF data"
 msgstr "/Az _EXIF adatok megtekintése"
 
-#: src/gtkam-list.c:910
+#: src/gtkam-list.c:884
 msgid "/_Save"
 msgstr "/_Mentés"
 
-#: src/gtkam-list.c:911
+#: src/gtkam-list.c:885
 msgid "/_Delete"
 msgstr "/_Törlés"
 
-#: src/gtkam-list.c:973
+#: src/gtkam-list.c:947
 msgid "Name"
 msgstr "Név"
 
-#: src/gtkam-list.c:995
+#: src/gtkam-list.c:969
 #, c-format
 msgid "Listing files in folder '%s'..."
 msgstr "A(z) '%s' mappa tartalmának listázása..."
 
-#: src/gtkam-list.c:1011
+#: src/gtkam-list.c:985
 #, c-format
 msgid "Could not get file list for folder '%s'"
 msgstr "Nem tudtam megszerezni a '%s' mappa listáját."
@@ -390,7 +407,6 @@ msgstr ""
 "http://www.gphoto.org.\n"
 "\n"
 "Élvezd a gphoto csodálatos világát!"
-
 
 #: src/gtkam-main.c:483
 msgid "Many others"
@@ -546,7 +562,9 @@ msgstr "Nem tudtam létrehozni a(z) '%s' mappát a(z) '%s' mappán belül."
 #: src/gtkam-mkdir.c:212
 #, c-format
 msgid "Please choose a name for the directory that should be created in '%s':"
-msgstr "Kérem válasszon nevet a mappának, melyet a '%s' mappán belül fogunk létrehozni:"
+msgstr ""
+"Kérem válasszon nevet a mappának, melyet a '%s' mappán belül fogunk "
+"létrehozni:"
 
 #: src/gtkam-mkdir.c:228
 msgid "New directory"
@@ -561,7 +579,9 @@ msgstr ""
 
 #: src/gtkam-port.c:181
 msgid "Please specify the path to the port your camera is attached to:"
-msgstr "Kérem adja meg a kapu elérési útját, amihez a fényképezõgép csatlakoztatva van:"
+msgstr ""
+"Kérem adja meg a kapu elérési útját, amihez a fényképezõgép csatlakoztatva "
+"van:"
 
 #: src/gtkam-preview.c:187 src/gtkam-tree.c:774
 msgid "Capturing image..."
@@ -607,118 +627,121 @@ msgstr "180 fok"
 msgid "Rotate thumbnail by 180 degrees"
 msgstr "A miniatûr forgatása 180 fokkal"
 
-#: src/gtkam-save.c:329
-msgid "photo"
-msgstr "fénykép"
-
-#: src/gtkam-save.c:346
+#: src/gtkam-save.c:301
 #, c-format
 msgid "The file '%s' already exists."
 msgstr "A(z) '%s' fájl már létezik."
 
-#: src/gtkam-save.c:367
+#: src/gtkam-save.c:323
 #, c-format
 msgid "Could not save file to '%s'."
 msgstr "Nem tudom menteni a fájlt '%s' néven."
 
-#: src/gtkam-save.c:407
+#: src/gtkam-save.c:363
 #, c-format
 msgid "Could not get '%s' from folder '%s'."
 msgstr "Nem tudtam megszerzni a(z) '%s' fájlt a(z) '%s' mappából."
 
-#: src/gtkam-save.c:508
+#: src/gtkam-save.c:494
+msgid "There is nothing to be saved."
+msgstr ""
+
+#: src/gtkam-save.c:506
 msgid "Downloading file"
 msgstr "Fájl letöltése"
 
-#: src/gtkam-save.c:510
+#: src/gtkam-save.c:508
 #, c-format
 msgid "Downloading %i files"
 msgstr "%i fájl letöltése"
 
-#: src/gtkam-save.c:517
+#: src/gtkam-save.c:515
 #, c-format
 msgid "Downloading %i files..."
 msgstr "%i fájl letöltése..."
 
-#: src/gtkam-save.c:568
+#: src/gtkam-save.c:566
 #, c-format
 msgid "Problem getting '%s' from folder '%s'."
-msgstr "Probléma lépett fel a(z) '%s' fájl megszerzése közben a(z) '%s' mappából."
+msgstr ""
+"Probléma lépett fel a(z) '%s' fájl megszerzése közben a(z) '%s' mappából."
 
-#: src/gtkam-save.c:633
+#: src/gtkam-save.c:640
 msgid "What to save:"
 msgstr "Mit mentsünk:"
 
-#: src/gtkam-save.c:642
+#: src/gtkam-save.c:652
 msgid "Save photos"
 msgstr "Fényképek mentése"
 
-#: src/gtkam-save.c:646
+#: src/gtkam-save.c:656
 msgid "Photos will be saved if this is checked"
 msgstr "A fényképeket mentjük, ha ezt bejelöljük"
 
-#: src/gtkam-save.c:650
+#: src/gtkam-save.c:660
 msgid "Save raw data"
 msgstr "Nyers adatok mentése"
 
-#: src/gtkam-save.c:653
+#: src/gtkam-save.c:663
 msgid "Raw data will be saved if this is checked"
 msgstr "A nyers adatokat mentjük, ha ezt bejelöljük"
 
-#: src/gtkam-save.c:657
+#: src/gtkam-save.c:667
 msgid "Save audio data"
 msgstr "Hang mentése"
 
-#: src/gtkam-save.c:660
+#: src/gtkam-save.c:670
 msgid "Audio data will be saved if this is checked"
 msgstr "Hangot mentjük, ha ezt bejelöljük"
 
-#: src/gtkam-save.c:664
+#: src/gtkam-save.c:674
 msgid "Save thumbnails"
 msgstr "Miniatûrök mentése"
 
-#: src/gtkam-save.c:667
+#: src/gtkam-save.c:677
 msgid "Thumbnails will be saved if this is checked"
 msgstr "Miniatûröket mentjük, ha ezt bejelöljük"
 
-#: src/gtkam-save.c:671
+#: src/gtkam-save.c:681
 msgid "Save EXIF data"
 msgstr "EXIF adatok mentése"
 
-#: src/gtkam-save.c:674
+#: src/gtkam-save.c:684
 msgid "EXIF data will be saved if this is checked"
 msgstr "Az EXIF adatokat mentjük, ha ezt bejelöljük"
 
-#: src/gtkam-save.c:683
+#: src/gtkam-save.c:693
 msgid "Open image(s) with: "
 msgstr "Kép(ek) megnyitása a következõvel: "
 
-#: src/gtkam-save.c:690
+#: src/gtkam-save.c:700
 msgid "Type in the name of the program you want to run, leave blank for none"
-msgstr "Gépeljük be a program nevét, amit futtatni akarunk; hagyjuk üresen, ha semmit"
+msgstr ""
+"Gépeljük be a program nevét, amit futtatni akarunk; hagyjuk üresen, ha semmit"
 
-#: src/gtkam-save.c:696
+#: src/gtkam-save.c:706
 msgid "Use filename(s) provided by the camera"
 msgstr "Használjuk a fényképezõgép által megadott fájlneve(ke)t"
 
-#: src/gtkam-save.c:700
+#: src/gtkam-save.c:710
 msgid "Choose whether to use the filename provided by the camera"
-msgstr "Kiválasztjuk, hogy használjuk-e a fényképezõgép által megadott fájlnevet"
+msgstr ""
+"Kiválasztjuk, hogy használjuk-e a fényképezõgép által megadott fájlnevet"
 
-#: src/gtkam-save.c:715
+#: src/gtkam-save.c:724
 msgid "Filename prefix: "
 msgstr "Fájlnév elõtag: "
 
-#: src/gtkam-save.c:724
+#: src/gtkam-save.c:733
 msgid "Start numbering with: "
 msgstr "Kezdjük a számozást: "
 
-#: src/gtkam-save.c:767
+#: src/gtkam-save.c:775
 #, c-format
 msgid "Save '%s'..."
 msgstr "'%s' mentése..."
 
-#: src/gtkam-save.c:789
+#: src/gtkam-save.c:795
 msgid "Save photos..."
 msgstr "Képek mentése..."
 
@@ -870,3 +893,6 @@ msgstr "Nem tudtam letölteni a(z) '%s' fájlt a(z) '%s' mappából."
 #: src/main.c:111
 msgid "Image Download Program"
 msgstr "Képletöltõ program"
+
+#~ msgid "photo"
+#~ msgstr "fénykép"

@@ -1,6 +1,6 @@
 /* gtkam-gimp.c
  *
- * Copyright © 2001 Lutz Müller <urc8@rz.uni-karlsruhe.de>
+ * Copyright © 2001 Lutz Müller <lutz@users.sf.net>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -66,14 +66,14 @@ query (void)
 
 	gimp_install_procedure ("gtkam-capture", _("Captures images from "
 		"digital camera"), "Nothing here yet. Patches welcome.",
-		"Lutz Mueller <urc8@rz.uni-karlsruhe.de>", "GPL", VERSION,
+		"Lutz Mueller <lutz@users.sf.net>", "GPL", VERSION,
 		N_("<Toolbox>/File/Acquire/Capture from Camera..."),
 		NULL, GIMP_EXTENSION, ncapture_args, ncapture_return_vals,
 		capture_args, capture_return_vals);
 
 	gimp_install_procedure ("gtkam-load", _("Loads files from digital "
 		"cameras"), "Nothing here yet. Patches welcome.", 
-		"Lutz Mueller <urc8@rz.uni-karlsruhe.de>",
+		"Lutz Mueller <lutz@users.sf.net>",
 		"GPL", VERSION,
 		N_("<Toolbox>/File/Acquire/Load from Camera..."),
 		NULL, GIMP_EXTENSION, nload_args, nload_return_vals,

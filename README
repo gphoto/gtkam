@@ -22,6 +22,6 @@ Authors
 -------
 
 GTKam has originally been written by Scott Fritzinger <scottf@unr.edu>.
-Lutz Müller <urc8@rz.uni-karlsruhe.de> rewrote everything using GTK's 
+Lutz Müller <lutz@users.sf.net> rewrote everything using GTK's 
 object oriented approach. That made it possible to introduce many new
 features.

@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gphoto 0.4.3\n"
-"POT-Creation-Date: 2002-11-21 09:25+0100\n"
+"POT-Creation-Date: 2002-11-28 04:00-0800\n"
 "PO-Revision-Date: 2000-04-19 10:12+02:00\n"
 "Last-Translator: Keld Simonsen <keld@dkuug.dk>\n"
 "Language-Team: Dansk <dansk@klid.dk>\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8-bit\n"
 
-#: src/main.c:127
+#: src/main.c:129
 msgid "Image Download Program"
 msgstr ""
 
@@ -160,35 +160,35 @@ msgstr "Kunne ikke finde smugkig"
 msgid "Could not get configuration."
 msgstr "Kunne ikke finde smugkig"
 
-#: src/gtkam-debug.c:258
+#: src/gtkam-debug.c:259
 #, fuzzy
 msgid "Save As..."
 msgstr "Gem billede(r)..."
 
-#: src/gtkam-debug.c:280
+#: src/gtkam-debug.c:281
 #, fuzzy, c-format
 msgid "Could not open '%s'!"
 msgstr ""
 "Kunne ikke åbne:\n"
 "%s"
 
-#: src/gtkam-debug.c:325
+#: src/gtkam-debug.c:326
 msgid "Type of messages to log:"
 msgstr ""
 
-#: src/gtkam-debug.c:329
+#: src/gtkam-debug.c:330
 msgid "Error"
 msgstr ""
 
-#: src/gtkam-debug.c:336
+#: src/gtkam-debug.c:337
 msgid "Verbose"
 msgstr ""
 
-#: src/gtkam-debug.c:343
+#: src/gtkam-debug.c:344
 msgid "Debug"
 msgstr ""
 
-#: src/gtkam-debug.c:350
+#: src/gtkam-debug.c:351
 msgid "Data"
 msgstr ""
 
@@ -384,7 +384,7 @@ msgstr ""
 msgid "Could not get file list for folder '%s'"
 msgstr ""
 
-#: src/gtkam-main.c:465
+#: src/gtkam-main.c:470
 msgid ""
 "gtkam is a program that lets you download\n"
 "images from many digital cameras. It uses\n"
@@ -394,125 +394,125 @@ msgid ""
 "Enjoy the wonderful world of gphoto!"
 msgstr ""
 
-#: src/gtkam-main.c:476
+#: src/gtkam-main.c:481
 msgid "Many others"
 msgstr ""
 
-#: src/gtkam-main.c:572
+#: src/gtkam-main.c:612
 msgid "/_File"
 msgstr ""
 
-#: src/gtkam-main.c:573
+#: src/gtkam-main.c:613
 #, fuzzy
 msgid "/File/_Save Photos"
 msgstr "Gem billede(r)..."
 
-#: src/gtkam-main.c:574
+#: src/gtkam-main.c:614
 msgid "/File/Save Photos/_Selected"
 msgstr ""
 
-#: src/gtkam-main.c:576
+#: src/gtkam-main.c:616
 msgid "/File/Save Photos/_All"
 msgstr ""
 
-#: src/gtkam-main.c:578
+#: src/gtkam-main.c:618
 #, fuzzy
 msgid "/File/_Delete Photos"
 msgstr "Slet valgte billeder"
 
-#: src/gtkam-main.c:579
+#: src/gtkam-main.c:619
 #, fuzzy
 msgid "/File/Delete Photos/_Selected"
 msgstr "Slet valgte billeder"
 
-#: src/gtkam-main.c:581
+#: src/gtkam-main.c:621
 #, fuzzy
 msgid "/File/Delete Photos/_All"
 msgstr "Slet valgte billeder"
 
-#: src/gtkam-main.c:584
+#: src/gtkam-main.c:624
 msgid "/File/_Quit"
 msgstr ""
 
-#: src/gtkam-main.c:586
+#: src/gtkam-main.c:626
 msgid "/_View"
 msgstr ""
 
-#: src/gtkam-main.c:587
+#: src/gtkam-main.c:627
 msgid "/View/_View Thumbnails"
 msgstr ""
 
-#: src/gtkam-main.c:590
+#: src/gtkam-main.c:630
 msgid "/View/Zoom _In"
 msgstr ""
 
-#: src/gtkam-main.c:592
+#: src/gtkam-main.c:632
 msgid "/View/Zoom _100"
 msgstr ""
 
-#: src/gtkam-main.c:594
+#: src/gtkam-main.c:634
 msgid "/View/Zoom _Out"
 msgstr ""
 
-#: src/gtkam-main.c:596
+#: src/gtkam-main.c:636
 #, fuzzy
 msgid "/_Select"
 msgstr "Levende kamera!"
 
-#: src/gtkam-main.c:597
+#: src/gtkam-main.c:637
 msgid "/Select/_All"
 msgstr ""
 
-#: src/gtkam-main.c:598
+#: src/gtkam-main.c:638
 msgid "/Select/_Inverse"
 msgstr ""
 
-#: src/gtkam-main.c:599
+#: src/gtkam-main.c:639
 #, fuzzy
 msgid "/Select/_None"
 msgstr "Levende kamera!"
 
-#: src/gtkam-main.c:600
+#: src/gtkam-main.c:640
 #, fuzzy
 msgid "/_Camera"
 msgstr "Levende kamera!"
 
-#: src/gtkam-main.c:601
+#: src/gtkam-main.c:641
 #, fuzzy
 msgid "/Camera/_Add Camera..."
 msgstr "Vælg model/port..."
 
-#: src/gtkam-main.c:602
+#: src/gtkam-main.c:642
 #, fuzzy
 msgid "/_Help"
 msgstr "Hjælp"
 
-#: src/gtkam-main.c:604
+#: src/gtkam-main.c:644
 msgid "/Help/_Contents"
 msgstr ""
 
-#: src/gtkam-main.c:607
+#: src/gtkam-main.c:647
 msgid "/Help/_Debug"
 msgstr ""
 
-#: src/gtkam-main.c:608
+#: src/gtkam-main.c:648
 msgid "/Help/_About"
 msgstr ""
 
-#: src/gtkam-main.c:675
+#: src/gtkam-main.c:715
 msgid "View Thumbnails"
 msgstr ""
 
-#: src/gtkam-main.c:696
+#: src/gtkam-main.c:736
 #, fuzzy
 msgid "_Help"
 msgstr "Hjælp"
 
-#: src/gtkam-main.c:708
+#: src/gtkam-main.c:748
 msgid "_Debug..."
 msgstr ""
 
-#: src/gtkam-main.c:717
+#: src/gtkam-main.c:757
 msgid "_About..."
 msgstr ""
 

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gphoto 0.4.3\n"
-"POT-Creation-Date: 2002-11-20 20:08+0100\n"
+"POT-Creation-Date: 2002-11-28 04:00-0800\n"
 "PO-Revision-Date: 2002-11-21 00:52+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@online.no>\n"
 "Language-Team: Norwegian <no@li.org>\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8-bit\n"
 
-#: src/main.c:127
+#: src/main.c:129
 msgid "Image Download Program"
 msgstr "Program for nedlasting av bilder"
 
@@ -142,32 +142,32 @@ msgstr "Henter konfigurasjon..."
 msgid "Could not get configuration."
 msgstr "Kunne ikke hente konfigurasjon."
 
-#: src/gtkam-debug.c:258
+#: src/gtkam-debug.c:259
 msgid "Save As..."
 msgstr "Lagre som..."
 
-#: src/gtkam-debug.c:280
+#: src/gtkam-debug.c:281
 #, c-format
 msgid "Could not open '%s'!"
 msgstr "Kunne ikke åpne «%s»!"
 
-#: src/gtkam-debug.c:325
+#: src/gtkam-debug.c:326
 msgid "Type of messages to log:"
 msgstr ""
 
-#: src/gtkam-debug.c:329
+#: src/gtkam-debug.c:330
 msgid "Error"
 msgstr "Feil"
 
-#: src/gtkam-debug.c:336
+#: src/gtkam-debug.c:337
 msgid "Verbose"
 msgstr ""
 
-#: src/gtkam-debug.c:343
+#: src/gtkam-debug.c:344
 msgid "Debug"
 msgstr "Feilsøking"
 
-#: src/gtkam-debug.c:350
+#: src/gtkam-debug.c:351
 msgid "Data"
 msgstr "Data"
 
@@ -360,7 +360,7 @@ msgstr "Viser filer i mappen «%s»..."
 msgid "Could not get file list for folder '%s'"
 msgstr "Kunne ikke hente filliste for mappe «%s»"
 
-#: src/gtkam-main.c:465
+#: src/gtkam-main.c:470
 msgid ""
 "gtkam is a program that lets you download\n"
 "images from many digital cameras. It uses\n"
@@ -370,115 +370,115 @@ msgid ""
 "Enjoy the wonderful world of gphoto!"
 msgstr ""
 
-#: src/gtkam-main.c:476
+#: src/gtkam-main.c:481
 msgid "Many others"
 msgstr "Mange andre"
 
-#: src/gtkam-main.c:572
+#: src/gtkam-main.c:612
 msgid "/_File"
 msgstr "/_Fil"
 
-#: src/gtkam-main.c:573
+#: src/gtkam-main.c:613
 msgid "/File/_Save Photos"
 msgstr "/Fil/_Lagre bilder"
 
-#: src/gtkam-main.c:574
+#: src/gtkam-main.c:614
 msgid "/File/Save Photos/_Selected"
 msgstr ""
 
-#: src/gtkam-main.c:576
+#: src/gtkam-main.c:616
 msgid "/File/Save Photos/_All"
 msgstr ""
 
-#: src/gtkam-main.c:578
+#: src/gtkam-main.c:618
 msgid "/File/_Delete Photos"
 msgstr "/Fil/_Slett bilder"
 
-#: src/gtkam-main.c:579
+#: src/gtkam-main.c:619
 msgid "/File/Delete Photos/_Selected"
 msgstr "/Fil/Slett bilder/_Valgte"
 
-#: src/gtkam-main.c:581
+#: src/gtkam-main.c:621
 msgid "/File/Delete Photos/_All"
 msgstr "/Fil/Slett bilder/_Alle"
 
-#: src/gtkam-main.c:584
+#: src/gtkam-main.c:624
 msgid "/File/_Quit"
 msgstr "/Fil/_Avslutt"
 
-#: src/gtkam-main.c:586
+#: src/gtkam-main.c:626
 msgid "/_View"
 msgstr "/_Vis"
 
-#: src/gtkam-main.c:587
+#: src/gtkam-main.c:627
 msgid "/View/_View Thumbnails"
 msgstr ""
 
-#: src/gtkam-main.c:590
+#: src/gtkam-main.c:630
 msgid "/View/Zoom _In"
 msgstr ""
 
-#: src/gtkam-main.c:592
+#: src/gtkam-main.c:632
 msgid "/View/Zoom _100"
 msgstr ""
 
-#: src/gtkam-main.c:594
+#: src/gtkam-main.c:634
 msgid "/View/Zoom _Out"
 msgstr ""
 
-#: src/gtkam-main.c:596
+#: src/gtkam-main.c:636
 msgid "/_Select"
 msgstr "/_Velg"
 
-#: src/gtkam-main.c:597
+#: src/gtkam-main.c:637
 msgid "/Select/_All"
 msgstr "/Velg/_Alle"
 
-#: src/gtkam-main.c:598
+#: src/gtkam-main.c:638
 msgid "/Select/_Inverse"
 msgstr ""
 
-#: src/gtkam-main.c:599
+#: src/gtkam-main.c:639
 msgid "/Select/_None"
 msgstr "/Velg/_Ingen"
 
-#: src/gtkam-main.c:600
+#: src/gtkam-main.c:640
 msgid "/_Camera"
 msgstr "/_Kamera"
 
-#: src/gtkam-main.c:601
+#: src/gtkam-main.c:641
 msgid "/Camera/_Add Camera..."
 msgstr "/Kamera/_Legg til kamera..."
 
-#: src/gtkam-main.c:602
+#: src/gtkam-main.c:642
 msgid "/_Help"
 msgstr "/_Hjelp"
 
-#: src/gtkam-main.c:604
+#: src/gtkam-main.c:644
 msgid "/Help/_Contents"
 msgstr "/Hjelp/_Innhold"
 
-#: src/gtkam-main.c:607
+#: src/gtkam-main.c:647
 msgid "/Help/_Debug"
 msgstr "/Hjelp/_Feilsøk"
 
-#: src/gtkam-main.c:608
+#: src/gtkam-main.c:648
 msgid "/Help/_About"
 msgstr "/Hjelp/_Om"
 
-#: src/gtkam-main.c:675
+#: src/gtkam-main.c:715
 msgid "View Thumbnails"
 msgstr "Vis miniatyrer"
 
-#: src/gtkam-main.c:696
+#: src/gtkam-main.c:736
 msgid "_Help"
 msgstr "_Hjelp"
 
-#: src/gtkam-main.c:708
+#: src/gtkam-main.c:748
 msgid "_Debug..."
 msgstr "_Feilsøk..."
 
-#: src/gtkam-main.c:717
+#: src/gtkam-main.c:757
 msgid "_About..."
 msgstr "_Om..."
 
@@ -502,8 +502,8 @@ msgid "New directory"
 msgstr "Ny katalog"
 
 #: src/gtkam-port.c:163
-#, c-format
-msgid "Could not find and io-driver for port '%s' ('%s')."
+#, fuzzy, c-format
+msgid "Could not find an io-driver for port '%s' ('%s')."
 msgstr "Kunne ikke finne en io-driver for port «%s» («%s»)."
 
 #: src/gtkam-port.c:198

@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gtKam\n"
-"POT-Creation-Date: 2002-11-21 09:25+0100\n"
+"POT-Creation-Date: 2002-11-28 04:00-0800\n"
 "PO-Revision-Date: 2002-11-21 08:47-0300\n"
 "Last-Translator: Fabian Mandelbaum <fabman@mandrakesoft.com>\n"
 "Language-Team: gphoto-devel <gphoto-devel@gphoto.net>\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/main.c:127
+#: src/main.c:129
 msgid "Image Download Program"
 msgstr "Programa de descarga de imágenes"
 
@@ -143,32 +143,32 @@ msgstr "Obteniendo configuración..."
 msgid "Could not get configuration."
 msgstr "No se pudo obtener la configuración."
 
-#: src/gtkam-debug.c:258
+#: src/gtkam-debug.c:259
 msgid "Save As..."
 msgstr "Guardar como..."
 
-#: src/gtkam-debug.c:280
+#: src/gtkam-debug.c:281
 #, c-format
 msgid "Could not open '%s'!"
 msgstr "¡No se pudo abrir '%s'!"
 
-#: src/gtkam-debug.c:325
+#: src/gtkam-debug.c:326
 msgid "Type of messages to log:"
 msgstr "Tipo de mensajes a registrar:"
 
-#: src/gtkam-debug.c:329
+#: src/gtkam-debug.c:330
 msgid "Error"
 msgstr "Error"
 
-#: src/gtkam-debug.c:336
+#: src/gtkam-debug.c:337
 msgid "Verbose"
 msgstr "Verobsos"
 
-#: src/gtkam-debug.c:343
+#: src/gtkam-debug.c:344
 msgid "Debug"
 msgstr "Depuración"
 
-#: src/gtkam-debug.c:350
+#: src/gtkam-debug.c:351
 msgid "Data"
 msgstr "Datos"
 
@@ -271,7 +271,8 @@ msgstr "Ajustando información para el archivo '%s' en '%s'..."
 #: src/gtkam-info.c:227
 #, c-format
 msgid "Could not set file information for '%s' in folder '%s'"
-msgstr "No se pudo ajustar la información del archivo para '%s' en la carpeta '%s'"
+msgstr ""
+"No se pudo ajustar la información del archivo para '%s' en la carpeta '%s'"
 
 #: src/gtkam-info.c:356
 #, c-format
@@ -281,7 +282,8 @@ msgstr "Obteniendo información acerca del archivo '%s' en la carpeta '%s'..."
 #: src/gtkam-info.c:368
 #, c-format
 msgid "Could not get information about file '%s' in folder '%s'."
-msgstr "No se pudo obtener información acerca del archivo '%s' en la carpeta '%s'."
+msgstr ""
+"No se pudo obtener información acerca del archivo '%s' en la carpeta '%s'."
 
 #: src/gtkam-info.c:396
 msgid "File"
@@ -361,7 +363,7 @@ msgstr "Listando archivos en la carpeta '%s'..."
 msgid "Could not get file list for folder '%s'"
 msgstr "No se pudo obtener la lista de archivos para la carpeta '%s'"
 
-#: src/gtkam-main.c:465
+#: src/gtkam-main.c:470
 msgid ""
 "gtkam is a program that lets you download\n"
 "images from many digital cameras. It uses\n"
@@ -377,115 +379,115 @@ msgstr ""
 "\n"
 "¡Disfrute el mundo maravilloso de gphoto!"
 
-#: src/gtkam-main.c:476
+#: src/gtkam-main.c:481
 msgid "Many others"
 msgstr "Muchos otros"
 
-#: src/gtkam-main.c:572
+#: src/gtkam-main.c:612
 msgid "/_File"
 msgstr "/_Archivo"
 
-#: src/gtkam-main.c:573
+#: src/gtkam-main.c:613
 msgid "/File/_Save Photos"
 msgstr "/Archivo/_Guardar fotos"
 
-#: src/gtkam-main.c:574
+#: src/gtkam-main.c:614
 msgid "/File/Save Photos/_Selected"
 msgstr "/Archivo/Guardar fotos/_Seleccionadas"
 
-#: src/gtkam-main.c:576
+#: src/gtkam-main.c:616
 msgid "/File/Save Photos/_All"
 msgstr "/Archivo/Guardar fotos/Tod_as"
 
-#: src/gtkam-main.c:578
+#: src/gtkam-main.c:618
 msgid "/File/_Delete Photos"
 msgstr "/Archivo/_Borrar fotos"
 
-#: src/gtkam-main.c:579
+#: src/gtkam-main.c:619
 msgid "/File/Delete Photos/_Selected"
 msgstr "/Archivo/Borrar fotos/_Seleccionadas"
 
-#: src/gtkam-main.c:581
+#: src/gtkam-main.c:621
 msgid "/File/Delete Photos/_All"
 msgstr "/Archivo/Borrar fotos/Tod_as"
 
-#: src/gtkam-main.c:584
+#: src/gtkam-main.c:624
 msgid "/File/_Quit"
 msgstr "/Archivo/_Salir"
 
-#: src/gtkam-main.c:586
+#: src/gtkam-main.c:626
 msgid "/_View"
 msgstr "/_Ver"
 
-#: src/gtkam-main.c:587
+#: src/gtkam-main.c:627
 msgid "/View/_View Thumbnails"
 msgstr "/Ver/_Ver diapositivas"
 
-#: src/gtkam-main.c:590
+#: src/gtkam-main.c:630
 msgid "/View/Zoom _In"
 msgstr "/Ver/Zoom _acercar"
 
-#: src/gtkam-main.c:592
+#: src/gtkam-main.c:632
 msgid "/View/Zoom _100"
 msgstr "/Ver/Zoom _100"
 
-#: src/gtkam-main.c:594
+#: src/gtkam-main.c:634
 msgid "/View/Zoom _Out"
 msgstr "/Ver/Zoom a_lejar"
 
-#: src/gtkam-main.c:596
+#: src/gtkam-main.c:636
 msgid "/_Select"
 msgstr "/_Seleccionar"
 
-#: src/gtkam-main.c:597
+#: src/gtkam-main.c:637
 msgid "/Select/_All"
 msgstr "/Seleccionar/tod_as"
 
-#: src/gtkam-main.c:598
+#: src/gtkam-main.c:638
 msgid "/Select/_Inverse"
 msgstr "/Seleccionar/_Invertir"
 
-#: src/gtkam-main.c:599
+#: src/gtkam-main.c:639
 msgid "/Select/_None"
 msgstr "/Seleccionar/_Ninguna"
 
-#: src/gtkam-main.c:600
+#: src/gtkam-main.c:640
 msgid "/_Camera"
 msgstr "/_Cámara"
 
-#: src/gtkam-main.c:601
+#: src/gtkam-main.c:641
 msgid "/Camera/_Add Camera..."
 msgstr "/Cámara/_Añadir cámara..."
 
-#: src/gtkam-main.c:602
+#: src/gtkam-main.c:642
 msgid "/_Help"
 msgstr "/A_yuda"
 
-#: src/gtkam-main.c:604
+#: src/gtkam-main.c:644
 msgid "/Help/_Contents"
 msgstr "/Ayuda/_Contenido"
 
-#: src/gtkam-main.c:607
+#: src/gtkam-main.c:647
 msgid "/Help/_Debug"
 msgstr "/Ayuda/_Depurar"
 
-#: src/gtkam-main.c:608
+#: src/gtkam-main.c:648
 msgid "/Help/_About"
 msgstr "/Ayuda/_Acerca de"
 
-#: src/gtkam-main.c:675
+#: src/gtkam-main.c:715
 msgid "View Thumbnails"
 msgstr "Ver diapositivas"
 
-#: src/gtkam-main.c:696
+#: src/gtkam-main.c:736
 msgid "_Help"
 msgstr "A_yuda"
 
-#: src/gtkam-main.c:708
+#: src/gtkam-main.c:748
 msgid "_Debug..."
 msgstr "_Depurar..."
 
-#: src/gtkam-main.c:717
+#: src/gtkam-main.c:757
 msgid "_About..."
 msgstr "_Acerca de..."
 
@@ -502,7 +504,8 @@ msgstr "No se pudo crear la carpeta '%s' en la carpeta '%s'."
 #: src/gtkam-mkdir.c:230
 #, c-format
 msgid "Please choose a name for the directory that should be created in '%s':"
-msgstr "Por favor, elija un nombre para el directorio que se debería crear en '%s':"
+msgstr ""
+"Por favor, elija un nombre para el directorio que se debería crear en '%s':"
 
 #: src/gtkam-mkdir.c:246
 msgid "New directory"
@@ -515,7 +518,8 @@ msgstr "No se pudo encontrar un controlador-es para el puerto '%s' (%s)"
 
 #: src/gtkam-port.c:198
 msgid "Please specify the (extended) path to the port you would like to use:"
-msgstr "Por favor, especifique la ruta (extendida) al puerto que desearía utilizar:"
+msgstr ""
+"Por favor, especifique la ruta (extendida) al puerto que desearía utilizar:"
 
 #: src/gtkam-preview.c:205 src/gtkam-tree.c:791
 msgid "Capturing image..."
@@ -635,7 +639,9 @@ msgstr "Abrir imágen(es) con: "
 
 #: src/gtkam-save.c:560
 msgid "Type in the name of the program you want to run, leave blank for none"
-msgstr "Ingrese el nombre del programa que desea ejecutar, ninguno si lo deja en blanco"
+msgstr ""
+"Ingrese el nombre del programa que desea ejecutar, ninguno si lo deja en "
+"blanco"
 
 #: src/gtkam-save.c:566
 msgid "Use filename(s) provided by the camera"
@@ -743,7 +749,9 @@ msgstr "Cargando cámaras..."
 msgid ""
 "Could not display '%s'. Either the image type ('%s') is not supported by gtk "
 "or the file itself is corrupt."
-msgstr "No se pudo mostrar '%s'. O bien GTK no soporta el tipo de imagen ('%s') o el archivo está corrupto."
+msgstr ""
+"No se pudo mostrar '%s'. O bien GTK no soporta el tipo de imagen ('%s') o el "
+"archivo está corrupto."
 
 #: src/gtkam-viewer.c:256
 #, c-format

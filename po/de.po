@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gtKam\n"
-"POT-Creation-Date: 2002-11-21 09:25+0100\n"
+"POT-Creation-Date: 2002-11-28 04:00-0800\n"
 "PO-Revision-Date: 2002-03-21 16:33GMT\n"
 "Last-Translator: Marcus Meissner <marcus@jet.franken.de>\n"
 "Language-Team: Deutsch <de@li.org>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 0.9.5\n"
 
-#: src/main.c:127
+#: src/main.c:129
 msgid "Image Download Program"
 msgstr ""
 
@@ -147,32 +147,32 @@ msgstr "Frage Konfiguration ab..."
 msgid "Could not get configuration."
 msgstr "Konnte die Konfiguration nicht abfragen."
 
-#: src/gtkam-debug.c:258
+#: src/gtkam-debug.c:259
 msgid "Save As..."
 msgstr "Speichere Unter..."
 
-#: src/gtkam-debug.c:280
+#: src/gtkam-debug.c:281
 #, c-format
 msgid "Could not open '%s'!"
 msgstr "Konnte »%s« nicht öffnen!"
 
-#: src/gtkam-debug.c:325
+#: src/gtkam-debug.c:326
 msgid "Type of messages to log:"
 msgstr "Art der zu loggenden Meldungen:"
 
-#: src/gtkam-debug.c:329
+#: src/gtkam-debug.c:330
 msgid "Error"
 msgstr "Fehler"
 
-#: src/gtkam-debug.c:336
+#: src/gtkam-debug.c:337
 msgid "Verbose"
 msgstr "Gesprächig"
 
-#: src/gtkam-debug.c:343
+#: src/gtkam-debug.c:344
 msgid "Debug"
 msgstr "Debug"
 
-#: src/gtkam-debug.c:350
+#: src/gtkam-debug.c:351
 msgid "Data"
 msgstr "Daten"
 
@@ -370,7 +370,7 @@ msgstr "Hole Dateiliste des Verzeichnisses »%s«..."
 msgid "Could not get file list for folder '%s'"
 msgstr "Fehler beim Herunterladen der Dateiliste des Verzeichnisses »%s«"
 
-#: src/gtkam-main.c:465
+#: src/gtkam-main.c:470
 msgid ""
 "gtkam is a program that lets you download\n"
 "images from many digital cameras. It uses\n"
@@ -380,115 +380,115 @@ msgid ""
 "Enjoy the wonderful world of gphoto!"
 msgstr ""
 
-#: src/gtkam-main.c:476
+#: src/gtkam-main.c:481
 msgid "Many others"
 msgstr ""
 
-#: src/gtkam-main.c:572
+#: src/gtkam-main.c:612
 msgid "/_File"
 msgstr "/_Datei"
 
-#: src/gtkam-main.c:573
+#: src/gtkam-main.c:613
 msgid "/File/_Save Photos"
 msgstr "/Datei/Speichere Photos"
 
-#: src/gtkam-main.c:574
+#: src/gtkam-main.c:614
 msgid "/File/Save Photos/_Selected"
 msgstr "/Datei/Speichere Photos/Ausgewählte"
 
-#: src/gtkam-main.c:576
+#: src/gtkam-main.c:616
 msgid "/File/Save Photos/_All"
 msgstr "/Datei/Speichere Photos/Alle/Speichere Photos"
 
-#: src/gtkam-main.c:578
+#: src/gtkam-main.c:618
 msgid "/File/_Delete Photos"
 msgstr "/File/_Lösche Photos"
 
-#: src/gtkam-main.c:579
+#: src/gtkam-main.c:619
 msgid "/File/Delete Photos/_Selected"
 msgstr "/Datei/_Lösche Photos/Ausgewählte"
 
-#: src/gtkam-main.c:581
+#: src/gtkam-main.c:621
 msgid "/File/Delete Photos/_All"
 msgstr "/Datei/_Lösche Photos/Alle"
 
-#: src/gtkam-main.c:584
+#: src/gtkam-main.c:624
 msgid "/File/_Quit"
 msgstr ""
 
-#: src/gtkam-main.c:586
+#: src/gtkam-main.c:626
 msgid "/_View"
 msgstr "/Ansicht"
 
-#: src/gtkam-main.c:587
+#: src/gtkam-main.c:627
 msgid "/View/_View Thumbnails"
 msgstr "/Ansicht/Zeige Vorschaubilder"
 
-#: src/gtkam-main.c:590
+#: src/gtkam-main.c:630
 msgid "/View/Zoom _In"
 msgstr ""
 
-#: src/gtkam-main.c:592
+#: src/gtkam-main.c:632
 msgid "/View/Zoom _100"
 msgstr ""
 
-#: src/gtkam-main.c:594
+#: src/gtkam-main.c:634
 msgid "/View/Zoom _Out"
 msgstr ""
 
-#: src/gtkam-main.c:596
+#: src/gtkam-main.c:636
 msgid "/_Select"
 msgstr "/_Auswählen"
 
-#: src/gtkam-main.c:597
+#: src/gtkam-main.c:637
 msgid "/Select/_All"
 msgstr "/_Auswählen/Alle"
 
-#: src/gtkam-main.c:598
+#: src/gtkam-main.c:638
 msgid "/Select/_Inverse"
 msgstr "/_Auswählen/_Umkehren"
 
-#: src/gtkam-main.c:599
+#: src/gtkam-main.c:639
 msgid "/Select/_None"
 msgstr "/_Auswählen/Keine"
 
-#: src/gtkam-main.c:600
+#: src/gtkam-main.c:640
 msgid "/_Camera"
 msgstr "/_Kamera"
 
-#: src/gtkam-main.c:601
+#: src/gtkam-main.c:641
 msgid "/Camera/_Add Camera..."
 msgstr "/Kamera/_Wähle Kamera..."
 
-#: src/gtkam-main.c:602
+#: src/gtkam-main.c:642
 msgid "/_Help"
 msgstr "/_Hilfe"
 
-#: src/gtkam-main.c:604
+#: src/gtkam-main.c:644
 msgid "/Help/_Contents"
 msgstr "/Hilfe/Inhalt"
 
-#: src/gtkam-main.c:607
+#: src/gtkam-main.c:647
 msgid "/Help/_Debug"
 msgstr ""
 
-#: src/gtkam-main.c:608
+#: src/gtkam-main.c:648
 msgid "/Help/_About"
 msgstr "/Hilfe/Über"
 
-#: src/gtkam-main.c:675
+#: src/gtkam-main.c:715
 msgid "View Thumbnails"
 msgstr "Zeige Vorschaubilder"
 
-#: src/gtkam-main.c:696
+#: src/gtkam-main.c:736
 msgid "_Help"
 msgstr "_Hilfe"
 
-#: src/gtkam-main.c:708
+#: src/gtkam-main.c:748
 msgid "_Debug..."
 msgstr "_Debug..."
 
-#: src/gtkam-main.c:717
+#: src/gtkam-main.c:757
 msgid "_About..."
 msgstr "_Über..."
 

@@ -52,6 +52,7 @@
 
 #include "util.h"
 #include "gtkam-error.h"
+#include "gtkam-cancel.h"
 #include "gtkam-close.h"
 
 struct _GtkamSavePrivate
@@ -67,6 +68,9 @@ struct _GtkamSavePrivate
 			*toggle_audio;
 	GtkToggleButton *toggle_filename_camera;
 	GtkEntry *program, *prefix_entry;
+
+	gboolean cancelled;
+	GtkamCancel *cancel;
 
 	gboolean quiet;
 };
@@ -95,6 +99,11 @@ gtkam_save_destroy (GtkObject *object)
 			g_free (g_slist_nth_data (save->priv->filenames, i));
 		g_slist_free (save->priv->filenames);
 		save->priv->filenames = NULL;
+	}
+
+	if (save->priv->cancel) {
+		gtk_object_destroy (GTK_OBJECT (save->priv->cancel));
+		save->priv->cancel = NULL;
 	}
 
 	GTK_OBJECT_CLASS (parent_class)->destroy (object);
@@ -301,6 +310,28 @@ save_file (GtkamSave *save, CameraFile *file, guint n)
 	g_free (full_path);
 }
 
+#ifndef OLD_PROGRESS
+static int
+progress_func (CameraFile *file, float percentage, void *data)
+{
+	GtkamSave *save;
+
+	while (gtk_events_pending ())
+		gtk_main_iteration ();
+
+	if (!GTKAM_IS_SAVE (data))
+		return (GP_ERROR_CANCEL);
+	save = GTKAM_SAVE (data);
+
+	gtkam_cancel_set_percentage (save->priv->cancel, percentage);
+
+	if (save->priv->cancelled)
+		return (GP_ERROR_CANCEL);
+
+	return (GP_OK);
+}
+#endif
+
 static void
 get_file (GtkamSave *save, const gchar *filename, CameraFileType type, guint n)
 {
@@ -310,17 +341,29 @@ get_file (GtkamSave *save, const gchar *filename, CameraFileType type, guint n)
 	CameraFile *file;
 
 	gp_file_new (&file);
+#ifndef OLD_PROGRESS
+	gp_file_set_progress_func (file, progress_func, save);
+#endif
 	result = gp_camera_file_get (save->priv->camera,
 				     save->priv->path, filename, type, file);
+#ifndef OLD_PROGRESS
+	gp_file_set_progress_func (file, NULL, NULL);
+#endif
 	if (save->priv->multi)
 		gp_camera_exit (save->priv->camera);
 	if (result < 0) {
-		msg = g_strdup_printf (_("Could not get '%s' from folder '%s'"),
-				       filename, save->priv->path);
-		dialog = gtkam_error_new (msg, result, save->priv->camera,
-					  GTK_WIDGET (save));
-		g_free (msg);
-		gtk_widget_show (dialog);
+		switch (result) {
+		case GP_ERROR_CANCEL:
+			break;
+		default:
+			msg = g_strdup_printf (
+				_("Could not get '%s' from folder '%s'"),
+				filename, save->priv->path);
+			dialog = gtkam_error_new (msg, result,
+					save->priv->camera, GTK_WIDGET (save));
+			g_free (msg);
+			gtk_widget_show (dialog);
+		}
 	} else {
 		save_file (save, file, n);
 	}
@@ -328,16 +371,35 @@ get_file (GtkamSave *save, const gchar *filename, CameraFileType type, guint n)
 }
 
 static void
+on_cancel (GtkamCancel *cancel, GtkamSave *save)
+{
+	save->priv->cancelled = TRUE;
+}
+
+static void
 on_ok_clicked (GtkButton *button, GtkamSave *save)
 {
 	guint i, count;
 	const gchar *filename;
+	gchar *msg;
 
 	gtk_widget_hide (GTK_WIDGET (save));
+	gtk_widget_show (GTK_WIDGET (save->priv->cancel));
 
 	count = g_slist_length (save->priv->filenames);
 	for (i = 0; i < count; i++) {
 		filename = g_slist_nth_data (save->priv->filenames, i);
+
+		/* Check for shutdown and cancellation */
+		if (!GTKAM_IS_SAVE (save))
+			return;
+		if (save->priv->cancelled)
+			break;
+
+		msg = g_strdup_printf (_("Getting '%s' (%i of %i)..."),
+				       filename, i, count);
+		gtkam_cancel_set_message (save->priv->cancel, msg);
+		g_free (msg);
 
 		/* Normal */
 		if (save->priv->toggle_normal &&
@@ -356,7 +418,7 @@ on_ok_clicked (GtkButton *button, GtkamSave *save)
 			get_file (save, filename, GP_FILE_TYPE_AUDIO, i + 1);
 	}
 
-	gtk_widget_destroy (GTK_WIDGET (save));
+	gtk_object_destroy (GTK_OBJECT (save));
 }
 
 GtkWidget *
@@ -364,7 +426,7 @@ gtkam_save_new (Camera *camera, gboolean multi, const gchar *path,
 		GSList *filenames, GtkWidget *opt_window)
 {
 	GtkamSave *save;
-	GtkWidget *hbox, *frame, *check, *label, *entry;
+	GtkWidget *hbox, *frame, *check, *label, *entry, *cancel;
 	GtkTooltips *tooltips;
 	GList *child;
 	guint i;
@@ -511,6 +573,11 @@ gtkam_save_new (Camera *camera, gboolean multi, const gchar *path,
 	if (opt_window)
 		gtk_window_set_transient_for (GTK_WINDOW (save),
 					      GTK_WINDOW (opt_window));
+
+	cancel = gtkam_cancel_new (opt_window);
+	gtk_signal_connect (GTK_OBJECT (cancel), "cancel",
+			    GTK_SIGNAL_FUNC (on_cancel), save);
+	save->priv->cancel = GTKAM_CANCEL (cancel);
 
 	return (GTK_WIDGET (save));
 }

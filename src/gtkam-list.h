@@ -46,7 +46,9 @@ struct _GtkamListClass
 	GtkIconListClass parent_class;
 
 	/* Signals */
-	void (* changed) (GtkamList *list);
+	void (* changed)        (GtkamList *list);
+	void (* download_start) (GtkamList *list, CameraFile *file);
+	void (* download_stop)  (GtkamList *list, CameraFile *file);
 };
 
 GtkType    gtkam_list_get_type (void);

@@ -94,8 +94,11 @@ struct _GtkamMainPrivate
 	GtkWidget *select_all, *select_none, *select_inverse;
 	GtkWidget *make_dir, *remove_dir, *upload;
 
+	GtkWidget *cancel;
+
 	GtkWidget *vbox;
 
+	gboolean cancelled;
 	gboolean multi;
 };
 
@@ -706,6 +709,68 @@ on_changed (GtkamList *list, GtkamMain *m)
 	gtkam_main_update_sensitivity (m);
 }
 
+#ifndef OLD_PROGRESS
+static int
+progress_func (CameraFile *file, gfloat percentage, void *data)
+{
+	GtkamMain *m;
+	const gchar *name;
+	gchar *msg;
+
+	while (gtk_events_pending ())
+		gtk_main_iteration ();
+
+	if (!GTKAM_IS_MAIN (data))
+		return (GP_ERROR_CANCEL);
+	m = GTKAM_MAIN (data);
+
+	gtk_progress_set_percentage (GTK_PROGRESS (m->priv->progress), 
+				     percentage);
+	if (gp_file_get_name (file, &name) == GP_OK) {
+		msg = g_strdup_printf (_("Downloading '%s'..."), name);
+		gtk_progress_set_format_string (
+				GTK_PROGRESS (m->priv->progress), msg);
+		g_free (msg);
+	}
+
+	if (m->priv->cancelled) {
+		m->priv->cancelled = FALSE;
+		return (GP_ERROR_CANCEL);
+	}
+
+	return (GP_OK);
+}
+#endif
+
+static void
+on_download_start (GtkamList *list, CameraFile *file, GtkamMain *m)
+{
+	gtk_progress_set_percentage (GTK_PROGRESS (m->priv->progress), 0.);
+	gtk_progress_set_show_text (GTK_PROGRESS (m->priv->progress), TRUE);
+
+	gtk_widget_show (m->priv->cancel);
+#ifndef OLD_PROGRESS
+	gp_file_set_progress_func (file, progress_func, m);
+#endif
+}
+
+static void
+on_download_stop (GtkamList *list, CameraFile *file, GtkamMain *m)
+{
+	gtk_widget_hide (m->priv->cancel);
+#ifndef OLD_PROGRESS
+	gp_file_set_progress_func (file, NULL, NULL);
+#endif
+	gtk_progress_set_percentage (GTK_PROGRESS (m->priv->progress), 0.);
+	gtk_progress_set_show_text (GTK_PROGRESS (m->priv->progress), FALSE);
+}
+
+static void
+on_cancel_clicked (GtkButton *button, GtkamMain *m)
+{
+	m->priv->cancelled = TRUE;
+}
+
 GtkWidget *
 gtkam_main_new (void)
 {
@@ -1089,7 +1154,7 @@ gtkam_main_new (void)
 	/*
 	 * Status and progress bar
 	 */
-	hbox = gtk_hbox_new (FALSE, 0);
+	hbox = gtk_hbox_new (FALSE, 2);
 	gtk_widget_show (hbox);
 	gtk_box_pack_end (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
 
@@ -1102,8 +1167,13 @@ gtkam_main_new (void)
 
 	progress = gtk_progress_bar_new ();
 	gtk_widget_show (progress);
-	gtk_box_pack_end (GTK_BOX (hbox), progress, FALSE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX (hbox), progress, FALSE, FALSE, 0);
 	m->priv->progress = GTK_PROGRESS_BAR (progress);
+
+	m->priv->cancel = gtk_button_new_with_label (_("Cancel"));
+	gtk_box_pack_start (GTK_BOX (hbox), m->priv->cancel, FALSE, FALSE, 0);
+	gtk_signal_connect (GTK_OBJECT (m->priv->cancel), "clicked",
+			    GTK_SIGNAL_FUNC (on_cancel_clicked), m);
 
 	/*
 	 * Main content
@@ -1167,6 +1237,10 @@ gtkam_main_new (void)
 	m->priv->list = GTKAM_LIST (list);
 	gtk_signal_connect (GTK_OBJECT (list), "changed",
 			    GTK_SIGNAL_FUNC (on_changed), m);
+	gtk_signal_connect (GTK_OBJECT (list), "download_start",
+			    GTK_SIGNAL_FUNC (on_download_start), m);
+	gtk_signal_connect (GTK_OBJECT (list), "download_stop",
+			    GTK_SIGNAL_FUNC (on_download_stop), m);
 	gtk_signal_connect (GTK_OBJECT (list), "select_icon",
 			    GTK_SIGNAL_FUNC (on_select_icon), m);
 	gtk_signal_connect (GTK_OBJECT (list), "unselect_icon",
@@ -1206,6 +1280,7 @@ message_func (Camera *camera, const char *message, void *data)
 	gtk_widget_show (dialog);
 }
 
+#ifdef OLD_PROGRESS
 static void
 progress_func (Camera *camera, float progress, void *data)
 {
@@ -1219,6 +1294,7 @@ progress_func (Camera *camera, float progress, void *data)
 	while (gtk_events_pending ())
 		gtk_main_iteration ();
 }
+#endif
 
 void
 gtkam_main_set_camera (GtkamMain *m, Camera *camera, gboolean multi)
@@ -1229,7 +1305,9 @@ gtkam_main_set_camera (GtkamMain *m, Camera *camera, gboolean multi)
 	g_return_if_fail (camera != NULL);
 
 	if (camera) {
+#ifdef OLD_PROGRESS
 		gp_camera_set_progress_func (camera, progress_func, m);
+#endif
 		gp_camera_set_status_func (camera, status_func, m);
 		gp_camera_set_message_func (camera, message_func, m);
 	}

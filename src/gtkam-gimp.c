@@ -124,10 +124,13 @@ typedef struct {
 	gfloat zoom;
 } PreviewParams;
 
-static void
-progress_func (Camera *camera, float progress, void *data)
+static int
+progress_func (CameraFile *file, float progress, void *data)
 {
-	gimp_progress_update (progress);
+	if (!gimp_progress_update (progress))
+		return (GP_ERROR_CANCEL);
+
+	return (GP_OK);
 }
 
 static Camera *
@@ -210,9 +213,10 @@ get_file (Camera *camera, CameraFilePath path, gint nparams, GimpParam *param,
 			       path.name, path.folder);
         gimp_progress_init (msg);
 	g_free (msg);
-        gp_camera_set_progress_func (camera, progress_func, NULL);
+	gp_file_set_progress_func (file, progress_func, NULL);
         result = gp_camera_file_get (camera, path.folder, path.name,
                                      GP_FILE_TYPE_NORMAL, file);
+	gp_file_set_progress_func (file, NULL, NULL);
 	gp_camera_exit (camera);
         gp_camera_set_progress_func (camera, NULL, NULL);
         if (result < 0) {

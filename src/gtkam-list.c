@@ -52,6 +52,7 @@
 #include <gdk-pixbuf/gdk-pixbuf-loader.h>
 
 #include <gphoto2/gphoto2-list.h>
+#include <gphoto2/gphoto2-port-log.h>
 
 #include "gtkam-close.h"
 #include "gtkam-error.h"
@@ -79,6 +80,8 @@ static GtkIconListClass *parent_class;
 
 enum {
 	CHANGED,
+	DOWNLOAD_START,
+	DOWNLOAD_STOP,
 	LAST_SIGNAL
 };
 
@@ -121,10 +124,18 @@ gtkam_list_class_init (GtkamListClass *klass)
 	object_class->destroy  = gtkam_list_destroy;
 	object_class->finalize = gtkam_list_finalize;
 
-	signals[CHANGED] = gtk_signal_new ("changed", GTK_RUN_LAST,
-		object_class->type,
+	signals[CHANGED] = gtk_signal_new ("changed",
+		GTK_RUN_LAST, object_class->type,
 		GTK_SIGNAL_OFFSET (GtkamListClass, changed),
 		gtk_marshal_NONE__NONE, GTK_TYPE_NONE, 0);
+	signals[DOWNLOAD_START] = gtk_signal_new ("download_start",
+		GTK_RUN_FIRST, object_class->type,
+		GTK_SIGNAL_OFFSET (GtkamListClass, download_start),
+		gtk_marshal_NONE__POINTER, GTK_TYPE_NONE, 1, GTK_TYPE_POINTER);
+	signals[DOWNLOAD_STOP] = gtk_signal_new ("download_stop",
+		GTK_RUN_FIRST, object_class->type,
+		GTK_SIGNAL_OFFSET (GtkamListClass, download_stop),
+		gtk_marshal_NONE__POINTER, GTK_TYPE_NONE, 1, GTK_TYPE_POINTER);
 	gtk_object_class_add_signals (object_class, signals, LAST_SIGNAL);
 
 	parent_class = gtk_type_class (PARENT_TYPE);
@@ -310,18 +321,28 @@ on_select_icon (GtkIconList *ilist, GtkIconListItem *item,
 
 		/* Double-click: Get thumbnail */
 		gp_file_new (&file);
+		gtk_signal_emit (GTK_OBJECT (list), signals[DOWNLOAD_START],
+				 file);
 		result = gp_camera_file_get (list->priv->camera,
 			list->path, item->label, GP_FILE_TYPE_PREVIEW, file);
+		gtk_signal_emit (GTK_OBJECT (list), signals[DOWNLOAD_STOP],
+				 file);
 		if (list->priv->multi)
 			gp_camera_exit (list->priv->camera);
 		if (result < 0) {
-			msg = g_strdup_printf (_("Could not get preview of "
-				"file '%s' in folder '%s'"), item->label,
-				list->path);
-			dialog = gtkam_error_new (msg, result,
-						  list->priv->camera, w);
-			g_free (msg);
-			gtk_widget_show (dialog);
+			switch (result) {
+			case GP_ERROR_CANCEL:
+				break;
+			default:
+				msg = g_strdup_printf (
+					_("Could not get preview of "
+					"file '%s' in folder '%s'"),
+					item->label, list->path);
+				dialog = gtkam_error_new (msg, result,
+						list->priv->camera, w);
+				g_free (msg);
+				gtk_widget_show (dialog);
+			}
 		} else {
 			GdkPixbuf *pixbuf;
 			GdkPixmap *pixmap;
@@ -372,10 +393,14 @@ on_select_icon (GtkIconList *ilist, GtkIconListItem *item,
 			gtk_signal_connect (GTK_OBJECT (i), "activate",
 				GTK_SIGNAL_FUNC (on_exif_activate), data);
 			gp_file_new (&file);
+			gtk_signal_emit (GTK_OBJECT (list),
+					 signals[DOWNLOAD_START], file);
 			if (gp_camera_file_get (list->priv->camera,
 				list->path, item->label, GP_FILE_TYPE_EXIF,
 				file) < 0)
 				gtk_widget_set_sensitive (i, FALSE);
+			gtk_signal_emit (GTK_OBJECT (list), 
+					 signals[DOWNLOAD_STOP], file);
 			gp_file_unref (file);
 
 			i = gtk_menu_item_new ();
@@ -508,8 +533,12 @@ gtkam_list_set_path (GtkamList *list, const gchar *path)
 		 */
 		result = gp_camera_file_get_info (list->priv->camera, path,
 						  name, &info);
-		if (result != GP_OK)
+		if (result != GP_OK) {
+			gp_log (GP_LOG_DEBUG, PACKAGE, "Could not get "
+				"information on '%s' in '%s': %s",
+				path, name, gp_result_as_string (result));
 			continue;
+		}
 
 		/*
 		 * Third step: Show the preview if there is one and
@@ -519,6 +548,8 @@ gtkam_list_set_path (GtkamList *list, const gchar *path)
 		    (a.file_operations & GP_FILE_OPERATION_PREVIEW) &&
 		    info.preview.fields) {
 			gp_file_new (&file);
+			gtk_signal_emit (GTK_OBJECT (list),
+					 signals[DOWNLOAD_START], file);
 			result = gp_camera_file_get (list->priv->camera, path,
 					name, GP_FILE_TYPE_PREVIEW, file);
 
@@ -527,13 +558,20 @@ gtkam_list_set_path (GtkamList *list, const gchar *path)
 				gp_file_unref (file);
 				break;
 			}
+			gtk_signal_emit (GTK_OBJECT (list),
+					 signals[DOWNLOAD_STOP], file);
 
 			if (result < 0) {
-				msg = g_strdup_printf (_("Could not get file "
-						       "'%s'"), name);
-				dialog = gtkam_error_new (msg, result,
+				switch (result) {
+				case GP_ERROR_CANCEL:
+					break;
+				default:
+					msg = g_strdup_printf (_("Could not "
+						"get file '%s'"), name);
+					dialog = gtkam_error_new (msg, result,
 						list->priv->camera, win);
-				gtk_widget_show (dialog);
+					gtk_widget_show (dialog);
+				}
 			} else {
 				tmp = gdk_pixbuf_new_from_camera_file (file,
 							ICON_WIDTH, win);

@@ -229,7 +229,9 @@ timeout_func (gpointer user_data)
 	if (p->priv->camera->multi)
 		gp_camera_exit (p->priv->camera->camera, NULL);
 	if (r < GP_OK) {
-		g_warning ("Could not capture: %s", gp_result_as_string (r));
+		if (r != GP_ERROR_CAMERA_BUSY)
+			g_warning ("Could not capture: %s",
+				   gp_result_as_string (r));
 		gp_file_unref (file);
 		return (TRUE);
 	}

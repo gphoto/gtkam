@@ -69,6 +69,8 @@ struct _GtkamListPrivate
 
 	GtkItemFactory *factory;
 	GtkTreeIter iter;
+	void *head;
+	void *tail;
 };
 
 #define PARENT_TYPE GTK_TYPE_TREE_VIEW
@@ -293,16 +295,17 @@ gtkam_list_get_zoom_factor (GtkamList *list)
 
 typedef struct _GetThumbnailData GetThumbnailData;
 struct _GetThumbnailData {
+	struct _GetThumbnailData *next;
 	GtkamCamera *camera;
 	gchar *folder;
 	gchar *name;
-	GtkamList *list;
 	GtkTreeIter *iter;
 };
 
 static gboolean
 get_thumbnail_idle (gpointer data)
 {
+        GtkamList *list = GTKAM_LIST (data);
 	GetThumbnailData *d = data;
 	CameraFile *file;
 	GtkWidget *s;
@@ -313,9 +316,12 @@ get_thumbnail_idle (gpointer data)
 	unsigned long fs;
 	gfloat factor;
 
+	d = list->priv->head;
+	if (d == NULL)
+		return (FALSE);
 	s = gtkam_status_new (_("Downloading thumbnail of '%s' from "
 		"folder '%s'..."), d->name, d->folder);
-	g_signal_emit (G_OBJECT (d->list), signals[NEW_STATUS], 0, s);
+	g_signal_emit (G_OBJECT (list), signals[NEW_STATUS], 0, s);
 	gp_file_new (&file);
 	result = gp_camera_file_get (d->camera->camera, d->folder, d->name,
 			GP_FILE_TYPE_PREVIEW, file,
@@ -328,29 +334,36 @@ get_thumbnail_idle (gpointer data)
 		gdk_pixbuf_loader_write (loader, fd, fs, NULL);
 		gdk_pixbuf_loader_close (loader, NULL);
 		pixbuf = gdk_pixbuf_loader_get_pixbuf (loader);
-		gtk_list_store_set (d->list->priv->store, d->iter,
+		gtk_list_store_set (list->priv->store, d->iter,
 				    PREVIEW_ORIG_COLUMN, pixbuf, -1);
-		factor = gtkam_list_get_zoom_factor (d->list);
+		factor = gtkam_list_get_zoom_factor (list);
 		pixbuf = gdk_pixbuf_scale_simple (pixbuf,
 			gdk_pixbuf_get_width (pixbuf) * factor,
 			gdk_pixbuf_get_height (pixbuf) * factor,
 			GDK_INTERP_BILINEAR);
 		g_object_unref (G_OBJECT (loader));
-		gtk_list_store_set (d->list->priv->store, d->iter,
+		gtk_list_store_set (list->priv->store, d->iter,
 				    PREVIEW_COLUMN, pixbuf, -1);
 		gdk_pixbuf_unref (pixbuf);
-	}
-
+	} 
+	
 	gp_file_unref (file);
 	gtk_object_destroy (GTK_OBJECT (s));
+
+	if (result == GP_ERROR_CAMERA_BUSY)
+		return (TRUE);
 
 	g_object_unref (G_OBJECT (d->camera));
 	g_free (d->name);
 	g_free (d->folder);
 	gtk_tree_iter_free (d->iter);
+	list->priv->head = d->next;
 	g_free (d);
 
-	return (FALSE);
+	if (list->priv->head == NULL)
+		return (FALSE);
+	else
+		return (TRUE);
 }
 
 static gboolean
@@ -378,8 +391,11 @@ show_thumbnails_foreach_func (GtkTreeModel *model, GtkTreePath *path,
 		d->folder = g_strdup (folder);
 		d->name = g_strdup (name);
 		d->iter = gtk_tree_iter_copy (iter);
-		d->list = list;
-		g_idle_add (get_thumbnail_idle, d);
+		if (list->priv->tail)
+			((GetThumbnailData*) list->priv->tail)->next = d;
+		list->priv->tail = d;
+		if (list->priv->head == NULL)
+			list->priv->head = d;
 	}
 	g_free (folder);
 	g_free (name);
@@ -399,6 +415,7 @@ gtkam_list_show_thumbnails (GtkamList *list)
 
         gtk_tree_model_foreach (GTK_TREE_MODEL (list->priv->store),
                                 show_thumbnails_foreach_func, list);
+	g_idle_add (get_thumbnail_idle, list);
 }
 
 void

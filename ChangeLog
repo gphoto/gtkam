@@ -1,9 +1,17 @@
+2002-11-16  Patrick Mansfield <patmans@users.sourceforge.net>
+
+	* gtkam-list.c, gtkam-preview.c: Add checks for GP_ERROR_CAMERA_BUSY.
+	  And change gtkam-list.c so that only one thumbnail request is
+	  outstanding out a time (only one call to g_idle_add for a list
+	  of thumbnails, rather than a g_idle_add call for each
+	  thumbnail).
+
 2002-11-05  Patrick Mansfield <patmans@users.sourceforge.net>
 
 	* gtkam-save.c: don't try to exec a callout viewer if the program
 	  name is empty. If you specify a viewer, their is still the odd
-	  behaviour of the parent exec-ing the viewer and finishing, make
-	  it look like gtkam completed.
+	  behaviour of the parent exec-ing the viewer and finishing,
+	  making it look like gtkam completed.
 
 2002-02-02  Patrick Mansfield <patmans@users.sourceforge.net>
 

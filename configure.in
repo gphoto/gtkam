@@ -67,8 +67,7 @@ AC_ARG_WITH(gnome, [  --without-gnome         Don't compile with gnome], [
 		try_gnome=false
 	fi])
 if $try_gnome; then
-	if ${PKG_CONFIG} --exists libgnomeui-2.0 gphoto2-manual; then
-		APP_DATADIR=`pkg-config --variable=datadir gphoto2-manual`
+	if ${PKG_CONFIG} --exists libgnomeui-2.0; then
 		PKG_CHECK_MODULES(GNOME, libgnomeui-2.0)
 		AC_DEFINE(HAVE_GNOME,1,[whether we use gnome])
 		gnome_msg=yes

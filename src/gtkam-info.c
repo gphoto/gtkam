@@ -184,7 +184,7 @@ gtkam_info_update (GtkamInfo *info)
 
 	dir = g_dirname (info->priv->path);
 	result = gp_camera_file_set_info (info->priv->camera, dir,
-			g_basename (info->priv->path), &info->priv->info_new);
+			g_basename (info->priv->path), info->priv->info_new);
 	gp_camera_file_get_info (info->priv->camera, dir,
 			g_basename (info->priv->path), &info->priv->info);
 	g_free (dir);

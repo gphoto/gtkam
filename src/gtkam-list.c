@@ -269,6 +269,7 @@ static gboolean
 on_select_icon (GtkIconList *ilist, GtkIconListItem *item,
 		GdkEventButton *event, GtkamList *list)
 {
+	CameraAbilities a;
 	GtkWidget *dialog, *window;
 	int result;
 	gchar *msg;
@@ -276,7 +277,9 @@ on_select_icon (GtkIconList *ilist, GtkIconListItem *item,
 	if (!event)
 		return (TRUE);
 
-	if (event->type == GDK_2BUTTON_PRESS) {
+	gp_camera_get_abilities (list->priv->camera, &a);
+	if ((event->type == GDK_2BUTTON_PRESS) &&
+	    (a.file_operations & GP_FILE_OPERATION_PREVIEW)) {
 		CameraFile *file;
 
 		/* Double-click: Get thumbnail */
@@ -316,6 +319,7 @@ on_select_icon (GtkIconList *ilist, GtkIconListItem *item,
 		return (FALSE);
 	} else if (event->type == GDK_BUTTON_PRESS) {
 		if (event->button == 3) {
+			CameraFileInfo info;
 			PopupData *data;
 			GtkWidget *i;
 
@@ -335,8 +339,15 @@ on_select_icon (GtkIconList *ilist, GtkIconListItem *item,
 			gtk_widget_show (i);
 			gtk_container_add (GTK_CONTAINER (data->menu), i);
 			gtk_widget_set_sensitive (i, FALSE);
+
 			i = gtk_menu_item_new_with_label (_("Delete"));
 			gtk_widget_show (i);
+			if (!(a.file_operations & GP_FILE_OPERATION_DELETE) ||
+			    (!gp_camera_file_get_info (list->priv->camera,
+					list->path, item->label, &info) &&
+			     (info.file.fields & GP_FILE_INFO_PERMISSIONS) && 
+			     (!(info.file.permissions & GP_FILE_PERM_DELETE))))
+				gtk_widget_set_sensitive (i, FALSE);
 			gtk_container_add (GTK_CONTAINER (data->menu), i);
 			gtk_signal_connect (GTK_OBJECT (i), "activate",
 				GTK_SIGNAL_FUNC (on_delete_activate), data);

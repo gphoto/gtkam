@@ -41,6 +41,7 @@
 #endif
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include <gdk/gdkkeysyms.h>
@@ -518,8 +519,8 @@ action_about (gpointer callback_data, guint callback_action,
 			gchar *old = gcomments;
 			gcomments = g_strdup_printf("%s\n%s %s has been compiled with the following options:\n - %s\n", 
 						    gcomments, name, v[0], features);
-			free(old)
-				}
+			free(old);
+		}
 		free(features);
 	}
 

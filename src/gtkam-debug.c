@@ -43,9 +43,7 @@
 #include <stdio.h>
 
 #include <gtk/gtktext.h>
-#include <gtk/gtkmenuitem.h>
-#include <gtk/gtkoptionmenu.h>
-#include <gtk/gtkmenu.h>
+#include <gtk/gtklabel.h>
 #include <gtk/gtkvbox.h>
 #include <gtk/gtkvscrollbar.h>
 #include <gtk/gtkhbox.h>
@@ -53,12 +51,17 @@
 #include <gtk/gtkmain.h>
 #include <gtk/gtkfilesel.h>
 #include <gtk/gtkbutton.h>
+#include <gtk/gtkcheckbutton.h>
 
-#include <gphoto2/gphoto2-debug.h>
+#include <gphoto2/gphoto2-port-log.h>
 
 struct _GtkamDebugPrivate
 {
 	GtkText *text;
+
+	guint error_id, debug_id;
+
+	GPLogLevels levels;
 };
 
 #define PARENT_TYPE GTK_TYPE_DIALOG
@@ -69,9 +72,15 @@ gtkam_debug_destroy (GtkObject *object)
 {
 	GtkamDebug *debug = GTKAM_DEBUG (object);
 
-	debug = NULL;
+	if (debug->priv->error_id) {
+		gp_log_remove_func (debug->priv->error_id);
+		debug->priv->error_id = 0;
+	}
 
-	gp_debug_set_func (NULL, NULL);
+	if (debug->priv->debug_id) {
+		gp_log_remove_func (debug->priv->debug_id);
+		debug->priv->debug_id = 0;
+	}
 
 	GTK_OBJECT_CLASS (parent_class)->destroy (object);
 }
@@ -124,27 +133,57 @@ gtkam_debug_get_type (void)
 }
 
 static void
-on_no_debugging_activate (GtkMenuItem *item, GtkamDebug *debug)
+gp_log_func (GPLogLevels levels, const char *domain, const char *msg,
+	     void *data)
 {
-	gp_debug_set_level (GP_DEBUG_NONE);
+	GtkamDebug *debug;
+	const gchar *err = "*** ERROR *** ";
+
+        g_return_if_fail (GTKAM_IS_DEBUG (data));
+
+        debug = GTKAM_DEBUG (data);
+
+	while (gtk_events_pending ())
+		gtk_main_iteration ();
+
+	if (levels & debug->priv->levels) {
+
+		/* Show the message */
+		if (levels & GP_LOG_ERROR)
+			gtk_text_insert (debug->priv->text, NULL, NULL, NULL,
+					 err, strlen (err));
+        	gtk_text_insert (debug->priv->text, NULL, NULL, NULL,
+        	                 msg, strlen (msg));
+		gtk_text_insert (debug->priv->text, NULL, NULL, NULL, "\n", 1);
+	}
 }
 
 static void
-on_low_debugging_activate (GtkMenuItem *item, GtkamDebug *debug)
+on_debug_toggled (GtkToggleButton *toggle, GtkamDebug *debug)
 {
-	gp_debug_set_level (GP_DEBUG_LOW);
+	if (toggle->active && !debug->priv->debug_id) {
+		debug->priv->debug_id = gp_log_add_func (GP_LOG_DEBUG,
+							 gp_log_func, debug);
+		debug->priv->levels |= GP_LOG_DEBUG;
+	} else if (!toggle->active && debug->priv->debug_id) {
+		gp_log_remove_func (debug->priv->debug_id);
+		debug->priv->debug_id = 0;
+		debug->priv->levels &= ~GP_LOG_DEBUG;
+	}
 }
 
 static void
-on_medium_debugging_activate (GtkMenuItem *item, GtkamDebug *debug)
+on_error_toggled (GtkToggleButton *toggle, GtkamDebug *debug)
 {
-	gp_debug_set_level (GP_DEBUG_MEDIUM);
-}
-
-static void
-on_high_debugging_activate (GtkMenuItem *item, GtkamDebug *debug)
-{
-	gp_debug_set_level (GP_DEBUG_HIGH);
+	if (toggle->active && !debug->priv->error_id) {
+		debug->priv->error_id = gp_log_add_func (GP_LOG_ERROR,
+							 gp_log_func, debug);
+		debug->priv->levels |= GP_LOG_ERROR;
+	} else if (!toggle->active && debug->priv->error_id) {
+		gp_log_remove_func (debug->priv->error_id);
+		debug->priv->error_id = 0;
+		debug->priv->levels &= ~GP_LOG_ERROR;
+	}
 }
 
 static void
@@ -205,67 +244,36 @@ on_debug_close_clicked (GtkButton *button, GtkamDebug *debug)
 	gtk_object_destroy (GTK_OBJECT (debug));
 }
 
-static void
-debug_func (const char *id, const char *msg, void *data)
-{
-	GtkamDebug *debug;
-
-	g_return_if_fail (GTKAM_IS_DEBUG (data));
-
-	debug = GTKAM_DEBUG (data);
-
-	/* Show the message */
-	gtk_text_insert (debug->priv->text, NULL, NULL, NULL,
-			 msg, strlen (msg));
-	gtk_text_insert (debug->priv->text, NULL, NULL, NULL, "\n", 1);
-}
-
 GtkWidget *
 gtkam_debug_new (void)
 {
 	GtkamDebug *debug;
-	GtkWidget *hbox, *button, *text, *vscrollbar, *omenu, *menu, *item;
+	GtkWidget *button, *text, *vscrollbar, *hbox, *check, *label;
 
 	debug = gtk_type_new (GTKAM_TYPE_DEBUG);
 
-	omenu = gtk_option_menu_new ();
-
-	menu = gtk_menu_new ();
-	gtk_widget_show (menu);
-
-	item = gtk_menu_item_new_with_label (_("No debugging"));
-	gtk_widget_show (item);
-	gtk_signal_connect (GTK_OBJECT (item), "activate",
-			    GTK_SIGNAL_FUNC (on_no_debugging_activate),
-			    debug);
-	gtk_menu_append (GTK_MENU (menu), item);
-
-	item = gtk_menu_item_new_with_label (_("Low debugging"));
-	gtk_widget_show (item);
-	gtk_signal_connect (GTK_OBJECT (item), "activate",
-			    GTK_SIGNAL_FUNC (on_low_debugging_activate),
-			    debug);
-	gtk_menu_append (GTK_MENU (menu), item);
-
-	item = gtk_menu_item_new_with_label (_("Medium debugging"));
-	gtk_widget_show (item);
-	gtk_signal_connect (GTK_OBJECT (item), "activate",
-			    GTK_SIGNAL_FUNC (on_medium_debugging_activate),
-			    debug);
-	gtk_menu_append (GTK_MENU (menu), item);
-
-	item = gtk_menu_item_new_with_label (_("High debugging"));
-	gtk_widget_show (item);
-	gtk_signal_connect (GTK_OBJECT (item), "activate",
-			    GTK_SIGNAL_FUNC (on_high_debugging_activate),
-			    debug);
-	gtk_menu_append (GTK_MENU (menu), item);
-
-	gtk_option_menu_set_menu (GTK_OPTION_MENU (omenu), menu);
-	gtk_option_menu_set_history (GTK_OPTION_MENU (omenu), 3);
-	gtk_widget_show (omenu);
-	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (debug)->vbox), omenu,
+	hbox = gtk_hbox_new (FALSE, 5);
+	gtk_widget_show (hbox);
+	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (debug)->vbox), hbox,
 			    FALSE, FALSE, 0);
+
+	label = gtk_label_new (_("Type of messages to log:"));
+	gtk_widget_show (label);
+	gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
+
+	check = gtk_check_button_new_with_label (_("Debug"));
+	gtk_widget_show (check);
+	gtk_box_pack_start (GTK_BOX (hbox), check, FALSE, FALSE, 0);
+	gtk_signal_connect (GTK_OBJECT (check), "toggled",
+			    GTK_SIGNAL_FUNC (on_debug_toggled), debug);
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (check), TRUE);
+
+	check = gtk_check_button_new_with_label (_("Error"));
+	gtk_widget_show (check);
+	gtk_box_pack_start (GTK_BOX (hbox), check, FALSE, FALSE, 0);
+	gtk_signal_connect (GTK_OBJECT (check), "toggled",
+			    GTK_SIGNAL_FUNC (on_error_toggled), debug);
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (check), TRUE);
 
 	hbox = gtk_hbox_new (FALSE, 0);
 	gtk_widget_show (hbox);
@@ -296,9 +304,6 @@ gtkam_debug_new (void)
 	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (debug)->action_area),
 			   button);
 	gtk_widget_grab_focus (button);
-
-	gp_debug_set_func (debug_func, debug);
-	gp_debug_set_level (GP_DEBUG_HIGH);
 
 	return (GTK_WIDGET (debug));
 }

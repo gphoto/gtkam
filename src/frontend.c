@@ -115,7 +115,7 @@ void frontend_prompt_build (CameraWidget *w, GtkWidget *box, GtkWidget **window)
         int x;
         int   vali;
         float valf;
-        char  vals[256];
+        char* vals;
 	const char *label;
 	const char *choice;
 
@@ -171,7 +171,7 @@ void frontend_prompt_build (CameraWidget *w, GtkWidget *box, GtkWidget **window)
 	case GP_WIDGET_TEXT:
 		entry = gtk_entry_new();
 		gtk_widget_show(entry);
-                gp_widget_get_value (w, vals);
+                gp_widget_get_value (w, &vals);
 		gtk_entry_set_text (GTK_ENTRY(entry), vals);
 		gtk_object_set_data (GTK_OBJECT(*window), label, entry);
 
@@ -211,7 +211,7 @@ void frontend_prompt_build (CameraWidget *w, GtkWidget *box, GtkWidget **window)
 		vbox = gtk_vbox_new (FALSE, 0);
 		gtk_widget_show (vbox);
 
-		gp_widget_get_value (w, vals);
+		gp_widget_get_value (w, &vals);
 		gp_widget_get_choice (w, 0, &choice);
 
 		/* Add the first radio button */
@@ -257,7 +257,7 @@ void frontend_prompt_build (CameraWidget *w, GtkWidget *box, GtkWidget **window)
 						 strdup (choice));
 		}
                 gtk_combo_set_popdown_strings(GTK_COMBO(menu), options);
-                gp_widget_get_value (w, vals);
+                gp_widget_get_value (w, &vals);
                 gtk_entry_set_text (GTK_ENTRY(GTK_COMBO(menu)->entry), vals);
 
 		frame = gtk_frame_new (label);

@@ -1064,6 +1064,12 @@ gtkam_main_set_camera (GtkamMain *m, Camera *camera)
 	g_return_if_fail (GTKAM_IS_MAIN (m));
 	g_return_if_fail (camera != NULL);
 
+	if (camera) {
+		gp_camera_set_progress_func (camera, progress_func, m);
+		gp_camera_set_status_func (camera, status_func, m);
+		gp_camera_set_message_func (camera, message_func, m);
+	}
+
 	if (m->priv->camera)
 		gp_camera_unref (m->priv->camera);
 	m->priv->camera = camera;
@@ -1131,12 +1137,6 @@ gtkam_main_set_camera (GtkamMain *m, Camera *camera)
 
 	gtkam_tree_set_camera (m->priv->tree, camera);
 	gtkam_list_set_camera (m->priv->list, camera);
-
-	if (camera) {
-		gp_camera_set_progress_func (camera, progress_func, m);
-		gp_camera_set_status_func (camera, status_func, m);
-		gp_camera_set_message_func (camera, message_func, m);
-	}
 }
 
 void

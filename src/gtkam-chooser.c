@@ -167,9 +167,8 @@ on_apply_clicked (GtkButton *button, GtkamChooser *chooser)
 	CameraAbilities abilities;
 	const gchar *model, *port, *speed;
 	gchar *speed_number;
-	int result, m, p;
-	GtkWidget *dialog;
-	gchar *port_name, *msg;
+	int m, p;
+	gchar *port_name;
 	guint i;
 
 	if (!chooser->priv->needs_update)
@@ -208,30 +207,19 @@ on_apply_clicked (GtkButton *button, GtkamChooser *chooser)
 	if (strcmp (speed, _("Best")))
 		gp_camera_set_port_speed (camera, atoi (speed));
 
-	result = gp_camera_init (camera);
-	if (result < 0) {
-		msg = g_strdup_printf (_("Could not initialize '%s' "
-				       "on port '%s'"), model, port);
-		dialog = gtkam_error_new (msg, result, camera,
-					  GTK_WIDGET (chooser));
-		g_free (msg);
-		gtk_widget_show (dialog);
-	} else {
-		gp_setting_set ("gtkam", "model", (char*) model);
-		gp_setting_set ("gtkam", "port", port_name);
+	gp_setting_set ("gtkam", "model", (char*) model);
+	gp_setting_set ("gtkam", "port", port_name);
+	if (!strcmp (speed, _("Best")))
+		speed_number = g_strdup ("0");
+	else
+		speed_number = g_strdup (speed);
+	gp_setting_set ("gtkam", "speed", (char*) speed_number);
+	g_free (speed_number);
 
-		if (!strcmp (speed, _("Best")))
-			speed_number = g_strdup ("0");
-		else
-			speed_number = g_strdup (speed);
-		gp_setting_set ("gtkam", "speed", (char*) speed_number);
-		g_free (speed_number);
-
-		gtk_signal_emit (GTK_OBJECT (chooser),
-				 signals[CAMERA_SELECTED], camera);
-		gp_camera_unref (camera);
-		chooser->priv->needs_update = FALSE;
-	}
+	gtk_signal_emit (GTK_OBJECT (chooser),
+			 signals[CAMERA_SELECTED], camera);
+	gp_camera_unref (camera);
+	chooser->priv->needs_update = FALSE;
 
 	g_free (port_name);
 }

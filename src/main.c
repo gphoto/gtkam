@@ -56,15 +56,13 @@ static gboolean
 idle_func (gpointer data)
 {
 	GtkamMain *m = GTKAM_MAIN (data);
-	GtkWidget *dialog;
 	char port[1024], speed[1024], model[1024];
 	Camera *camera;
 	CameraAbilitiesList *al;
 	GPPortInfoList *il;
 	GPPortInfo info;
 	CameraAbilities a;
-	gchar *msg;
-	int n, p, result;
+	int n, p;
 
 	/* Retrieve the last camera used by gtkam */
 	if (((gp_setting_get ("gtkam", "camera", model) == GP_OK) ||
@@ -93,16 +91,7 @@ idle_func (gpointer data)
 		if (atoi (speed))
 			gp_camera_set_port_speed (camera, atoi (speed));
 
-		result = gp_camera_init (camera);
-		if (result < 0) {
-			msg = g_strdup_printf (_("Could not initialize '%s' "
-					       "on port '%s'"), model, port);
-			dialog = gtkam_error_new (msg, result, camera,
-						  GTK_WIDGET (m));
-			g_free (msg);
-			gtk_widget_show (dialog);
-		} else
-			gtkam_main_set_camera (m, camera);
+		gtkam_main_set_camera (m, camera);
 		gp_camera_unref (camera);
 	}
 

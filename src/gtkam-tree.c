@@ -64,7 +64,6 @@
 #include <gphoto2/gphoto2-camera.h>
 
 #include "support.h"
-#include "gtkam-error.h"
 #include "gtkam-status.h"
 #include "gtkam-chooser.h"
 
@@ -96,6 +95,7 @@ enum {
 	FOLDER_UNSELECTED,
 	FILE_UPLOADED,
 	NEW_STATUS,
+	NEW_ERROR,
 	LAST_SIGNAL
 };
 
@@ -172,6 +172,11 @@ gtkam_tree_class_init (gpointer g_class, gpointer class_data)
 	signals[NEW_STATUS] = g_signal_new ("new_status",
 		G_TYPE_FROM_CLASS (g_class), G_SIGNAL_RUN_LAST,
 		G_STRUCT_OFFSET (GtkamTreeClass, new_status), NULL, NULL,
+		g_cclosure_marshal_VOID__POINTER, G_TYPE_NONE, 1,
+		G_TYPE_POINTER);
+	signals[NEW_ERROR] = g_signal_new ("new_error",
+		G_TYPE_FROM_CLASS (g_class), G_SIGNAL_RUN_LAST,
+		G_STRUCT_OFFSET (GtkamTreeClass, new_error), NULL, NULL,
 		g_cclosure_marshal_VOID__POINTER, G_TYPE_NONE, 1,
 		G_TYPE_POINTER);
 
@@ -358,8 +363,9 @@ gtkam_tree_update_iter (GtkamTree *tree, GtkTreeIter *iter)
 	int result;
 	Camera *camera = NULL;
 	gboolean multi = FALSE;
-	GtkWidget *s, *d, *w;
-	gchar *folder = NULL;
+	GtkWidget *s;
+	gchar *folder = NULL, *msg;
+	GtkamTreeErrorData e;
 
 	g_return_if_fail (GTKAM_IS_TREE (tree));
 
@@ -397,11 +403,12 @@ gtkam_tree_update_iter (GtkamTree *tree, GtkTreeIter *iter)
 	} else if (result == GP_ERROR_NOT_SUPPORTED) {
 		/* Do nothing */
 	} else {
-		w = gtk_widget_get_ancestor (GTK_WIDGET (tree),
-					     GTK_TYPE_WINDOW);
-		d = gtkam_error_new (result, GTKAM_STATUS (s)->context, w,
-			_("Listing folders in '%s' failed."), folder);
-		gtk_widget_show (d);
+		e.context = GTKAM_STATUS (s)->context;
+		e.result = result;
+		e.msg = msg = g_strdup_printf (
+				_("Could not list folders in '%s'."), folder);
+		g_signal_emit (G_OBJECT (tree), signals[NEW_ERROR], 0, &e);
+		g_free (msg);
 	}
 	g_free (folder);
 	gp_list_unref (list);
@@ -460,11 +467,113 @@ selection_func (GtkTreeSelection *selection, GtkTreeModel *model,
 	return (TRUE);
 }
 
+typedef struct _GtkamTreeUploadData GtkamTreeUploadData;
+struct _GtkamTreeUploadData {
+	GtkWidget *fsel;
+	GtkamTree *tree;
+	GtkTreeIter *iter;
+};
+
+static void
+on_upload_destroy (GtkObject *object, GtkamTreeUploadData *ud)
+{
+	gtk_tree_iter_free (ud->iter);
+	g_free (ud);
+}
+
+static void
+on_upload_cancel_clicked (GtkButton *button, GtkFileSelection *fsel)
+{
+	gtk_object_destroy (GTK_OBJECT (fsel));
+}
+
+static void
+on_upload_ok_clicked (GtkButton *button, GtkamTreeUploadData *ud)
+{
+	const gchar *path;
+	int r;
+	CameraFile *file;
+	GtkamTreeErrorData e;
+	GtkamTreeFileUploadedData fud;
+	GtkWidget *s;
+	gchar *folder, *msg;
+	Camera *camera;
+	gboolean multi;
+
+	path = gtk_file_selection_get_filename (GTK_FILE_SELECTION (ud->fsel));
+	gp_file_new (&file);
+	r = gp_file_open (file, path);
+	if (r < 0) {
+		e.context = NULL;
+		e.result = r;
+		e.msg = msg = g_strdup_printf (_("Could not open '%s'."), path);
+		g_signal_emit (G_OBJECT (ud->tree), signals[NEW_ERROR], 0, &e);
+		g_free (msg);
+	} else {
+		gtk_widget_hide (ud->fsel);
+		folder = gtkam_tree_get_path_from_iter (ud->tree, ud->iter);
+		camera = gtkam_tree_get_camera_from_iter (ud->tree, ud->iter);
+		multi = gtkam_tree_get_multi_from_iter (ud->tree, ud->iter);
+		s = gtkam_status_new (_("Uploading '%s' into "
+			"folder '%s'..."), g_basename (path), folder);
+		g_signal_emit (G_OBJECT (ud->tree), signals[NEW_STATUS], 0, s);
+		r = gp_camera_folder_put_file (camera, folder, file,
+				GTKAM_STATUS (s)->context->context);
+		if (multi)
+			gp_camera_exit (camera, NULL);
+		switch (r) {
+		case GP_OK:
+			fud.camera = camera;
+			fud.multi = multi;
+			fud.folder = folder;
+			fud.name = g_basename (path);
+			g_signal_emit (G_OBJECT (ud->tree),
+				       signals[FILE_UPLOADED], 0, &fud);
+			break;
+		case GP_ERROR_CANCEL:
+			break;
+		default:
+			e.context = GTKAM_STATUS (s)->context;
+			e.result = r;
+			e.msg = msg = g_strdup_printf (_("Could not upload "
+				"'%s' into '%s'."), path, folder);
+			g_signal_emit (G_OBJECT (ud->tree), signals[NEW_ERROR],
+				       0, &e);
+			g_free (msg);
+			break;
+		}
+		g_free (folder);
+		gtk_object_destroy (GTK_OBJECT (s));
+	}
+	gp_file_unref (file);
+	gtk_object_destroy (GTK_OBJECT (ud->fsel));
+}
+
 static void
 action_upload (gpointer callback_data, guint callback_action,
 	       GtkWidget *widget)
 {
-	g_warning ("Fixme: action_upload");
+	GtkWidget *fsel;
+	GtkamTree *tree = GTKAM_TREE (callback_data);
+	GtkamTreeUploadData *ud;
+	gchar *title, *folder;
+
+	folder = gtkam_tree_get_path_from_iter (tree, &tree->priv->popup.iter);
+	title = g_strdup_printf (_("Upload into '%s'..."), folder);
+	g_free (folder);
+	fsel = gtk_file_selection_new (title);
+	g_free (title);
+	gtk_widget_show (fsel);
+	ud = g_new0 (GtkamTreeUploadData, 1);
+	ud->fsel = fsel;
+	ud->tree = tree;
+	ud->iter = gtk_tree_iter_copy (&tree->priv->popup.iter);
+	g_signal_connect (G_OBJECT (fsel), "destroy",
+		G_CALLBACK (on_upload_destroy), ud);
+	g_signal_connect (G_OBJECT (GTK_FILE_SELECTION (fsel)->ok_button),
+		"clicked", G_CALLBACK (on_upload_ok_clicked), ud);
+	g_signal_connect (G_OBJECT (GTK_FILE_SELECTION (fsel)->cancel_button),
+		"clicked", G_CALLBACK (on_upload_cancel_clicked), fsel);
 }
 
 static void

@@ -22,7 +22,10 @@
 #define __GTKAM_TREE_H__
 
 #include <gphoto2/gphoto2-camera.h>
+
 #include <gtk/gtktreeview.h>
+
+#include <gtkam-context.h>
 
 #define GTKAM_TYPE_TREE  (gtkam_tree_get_type ())
 #define GTKAM_TREE(o)    (GTK_CHECK_CAST((o),GTKAM_TYPE_TREE,GtkamTree))
@@ -60,6 +63,13 @@ struct _GtkamTreeFileUploadedData {
 	const gchar *name;
 };
 
+typedef struct _GtkamTreeErrorData GtkamTreeErrorData;
+struct _GtkamTreeErrorData {
+	const gchar *msg;
+	GtkamContext *context;
+	int result;
+};
+
 struct _GtkamTreeClass
 {
 	GtkTreeViewClass parent_class;
@@ -72,6 +82,7 @@ struct _GtkamTreeClass
 	void (* file_uploaded)     (GtkamTree *,
 				    GtkamTreeFileUploadedData *);
 	void (* new_status)        (GtkamTree *tree, GtkWidget *status);
+	void (* new_error)         (GtkamTree *tree, GtkamTreeErrorData *);
 };
 
 GType      gtkam_tree_get_type (void);

@@ -73,8 +73,11 @@ void       gtkam_list_add_folder     (GtkamList *list, Camera *camera,
 				      gboolean multi, const gchar *folder);
 void       gtkam_list_remove_folder  (GtkamList *list, Camera *camera,
 				      gboolean multi, const gchar *folder);
-void       gtkam_list_update_folder  (GtkamList *list, Camera *camera,
-				      gboolean multi, const gchar *folder);
+gboolean   gtkam_list_has_folder     (GtkamList *list, Camera *cmera,
+				      const gchar *folder);
+void       gtkam_list_add_file       (GtkamList *list, Camera *camera,
+				      gboolean multi, const gchar *folder,
+				      const gchar *name);
 
 void       gtkam_list_show_thumbnails (GtkamList *list);
 void       gtkam_list_hide_thumbnails (GtkamList *list);

@@ -428,6 +428,26 @@ on_folder_unselected (GtkamTree *tree, GtkamTreeFolderUnselectedData *data,
 	gtkam_main_update_sensitivity (m);
 }
 
+static void
+on_tree_file_uploaded (GtkamTree *tree, GtkamTreeFileUploadedData *data,
+		       GtkamMain *m)
+{
+	if (gtkam_list_has_folder (GTKAM_LIST (m->priv->list), data->camera,
+				   data->folder))
+		gtkam_list_add_file (GTKAM_LIST (m->priv->list),
+			data->camera, data->multi, data->folder, data->name);
+}
+
+static void
+on_tree_new_error (GtkamTree *tree, GtkamTreeErrorData *e, GtkamMain *m)
+{
+	GtkWidget *d;
+
+	d = gtkam_error_new (e->result, e->context, NULL, "%s", e->msg);
+	gtk_window_set_transient_for (GTK_WINDOW (d), GTK_WINDOW (m));
+	gtk_widget_show (d);
+}
+
 #if 0
 static void
 on_debug_activate (GtkMenuItem *item, GtkamMain *m)
@@ -778,6 +798,10 @@ gtkam_main_new (void)
 			    G_CALLBACK (on_folder_unselected), m);
 	g_signal_connect (G_OBJECT (m->priv->tree), "new_status",
 			  G_CALLBACK (on_new_status), m);
+	g_signal_connect (G_OBJECT (m->priv->tree), "new_error",
+			  G_CALLBACK (on_tree_new_error), m);
+	g_signal_connect (G_OBJECT (m->priv->tree), "file_uploaded",
+			  G_CALLBACK (on_tree_file_uploaded), m);
 
 	/*
 	 * Right

@@ -377,35 +377,6 @@ gtkam_list_hide_thumbnails (GtkamList *list)
 	g_warning ("Fixme: gtkam_list_hide_thumbnails");
 }
 
-void
-gtkam_list_update_folder (GtkamList *list, Camera *camera, gboolean multi,
-			  const gchar *folder)
-{
-#if 0
-	GtkIconListItem *item;
-	gint i;
-	Camera *c;
-	const gchar *f;
-
-	/* Check if we are displaying this folder */
-	for (i = g_list_length (GTK_ICON_LIST (list)->icons) - 1; i >= 0; i--) {
-		item = g_list_nth_data (GTK_ICON_LIST (list)->icons, i);
-		c = gtk_object_get_data (GTK_OBJECT (item->entry), "camera");
-		if (c != camera)
-			continue;
-		f = gtk_object_get_data (GTK_OBJECT (item->entry), "folder");
-		if (!f || strcmp (f, folder))
-			continue;
-		break;
-	}
-	if (i >= 0) {
-		gtkam_list_remove_folder (list, camera, multi, folder);
-		gtkam_list_add_folder (list, camera, multi, folder);
-		gtk_icon_list_update (GTK_ICON_LIST (list));
-	}
-#endif
-}
-
 #if 0
 
 static void
@@ -1074,4 +1045,23 @@ gtkam_list_count_selected (GtkamList *list)
 	gtk_tree_selection_selected_foreach (selection, count_foreach_func, &n);
 
 	return (n);
+}
+
+gboolean
+gtkam_list_has_folder (GtkamList *list, Camera *camera, const gchar *folder)
+{
+	g_return_val_if_fail (GTKAM_IS_LIST (list), FALSE);
+
+	g_warning ("Fixme: gtkam_list_has_folder");
+
+	return (FALSE);
+}
+
+void
+gtkam_list_add_file (GtkamList *list, Camera *camera, gboolean multi,
+		     const gchar *folder, const gchar *name)
+{
+	g_return_if_fail (GTKAM_IS_LIST (list));
+
+	g_warning ("Fixme: gtkam_list_add_file");
 }

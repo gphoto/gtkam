@@ -39,8 +39,6 @@
 
 struct _GtkamDebugPrivate
 {
-	gchar *buffer;
-
 	GtkText *text;
 };
 
@@ -52,10 +50,7 @@ gtkam_debug_destroy (GtkObject *object)
 {
 	GtkamDebug *debug = GTKAM_DEBUG (object);
 
-	if (debug->priv->buffer) {
-		g_free (debug->priv->buffer);
-		debug->priv->buffer = NULL;
-	}
+	debug = NULL;
 
 	gp_debug_set_func (NULL, NULL);
 
@@ -165,6 +160,7 @@ on_debug_save_as_clicked (GtkButton *button, GtkamDebug *debug)
 
 	if (ok) {
 		FILE *file;
+		gchar *buffer;
 
 		fname = gtk_file_selection_get_filename (
 						GTK_FILE_SELECTION (fsel));
@@ -172,7 +168,11 @@ on_debug_save_as_clicked (GtkButton *button, GtkamDebug *debug)
 		if (!file)
 			g_warning ("Could not open '%s'!", fname);
 		else {
-			fputs (debug->priv->buffer, file);
+			buffer = gtk_editable_get_chars (
+				GTK_EDITABLE (debug->priv->text), 0,
+				GTK_EDITABLE (debug->priv->text)->current_pos);
+			fputs (buffer, file);
+			g_free (buffer);
 			fclose (file);
 		}
 	}
@@ -190,22 +190,12 @@ static void
 debug_func (const char *id, const char *msg, void *data)
 {
 	GtkamDebug *debug;
-	gchar *new_buffer;
 
 	g_return_if_fail (GTKAM_IS_DEBUG (data));
 
 	debug = GTKAM_DEBUG (data);
 
-	/* Save the message for further use */
-	if (debug->priv->buffer) {
-		new_buffer = g_strdup_printf ("%s\n%s",
-					      debug->priv->buffer, msg);
-		g_free (debug->priv->buffer);
-	} else
-		new_buffer = g_strdup (msg);
-	debug->priv->buffer = new_buffer;
-
-	/* Show it */
+	/* Show the message */
 	gtk_text_insert (debug->priv->text, NULL, NULL, NULL,
 			 msg, strlen (msg));
 	gtk_text_insert (debug->priv->text, NULL, NULL, NULL, "\n", 1);

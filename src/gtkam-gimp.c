@@ -152,8 +152,8 @@ run (gchar *name, gint nparams, GimpParam *param, gint *nreturn_vals,
 
 		/* Let the use choose a camera */
 		chooser = gtkam_chooser_new ();
-		gtk_widget_show (chooser);
 		gtk_widget_hide (GTKAM_CHOOSER (chooser)->apply_button);
+		gtk_widget_show (chooser);
 		gtkam_chooser_set_camera_mask (GTKAM_CHOOSER (chooser),
 					       GP_OPERATION_CAPTURE_IMAGE |
 					       GP_OPERATION_CAPTURE_PREVIEW);

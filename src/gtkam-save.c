@@ -16,6 +16,7 @@
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
+ ADB WIP See if we can make this 'nicer'
  */
 
 #include "config.h"
@@ -605,7 +606,7 @@ on_ok_clicked (GtkButton *button, GtkamSave *save)
 			
 			g_free (command);
 			g_free (error);	
-			g_free (save->priv->filelist);
+			g_string_free (save->priv->filelist, TRUE);
 		} 
 	}
 	
@@ -619,7 +620,6 @@ gtkam_save_new (GtkWindow *main_window)
 	GtkWidget *hbox, *frame, *check, *label, *entry;
 	GtkObject *a;
 	GtkTooltips *tooltips;
-	/*gchar *t;*/
 
 	save = g_object_new (GTKAM_TYPE_SAVE, NULL);
 

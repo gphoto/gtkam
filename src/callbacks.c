@@ -34,7 +34,7 @@ gboolean get_thumbnail (GtkWidget *widget, const char *name, GtkIconListItem *it
 	GdkBitmap *bitmap;
 
 	/* Get the thumbnail */
-	f = gp_file_new();
+	gp_file_new(&f);
 	folder = current_folder();
 	if (gp_camera_file_get_preview(gp_gtk_camera, folder, name, f) == GP_OK) {
 		gdk_image_new_from_data(f->data,f->size,1,&pixmap,&bitmap);
@@ -314,7 +314,7 @@ void save_selected_photos() {
 				GTK_ICON_LIST(icon_list)->num_icons,
 				(char*)gtk_object_get_data(GTK_OBJECT(item->pixmap), "name"));
 			frontend_message(gp_gtk_camera, msg);
-			f = gp_file_new();
+			gp_file_new(&f);
 			folder = current_folder();
 			if (gp_camera_file_get_file(gp_gtk_camera, folder,
                                                gtk_object_get_data(GTK_OBJECT(item->pixmap),"name"), f) < 0) {
@@ -374,7 +374,7 @@ void save_selected_photos() {
 			sprintf(msg, "Saving thumbnail #%04i of %04i\n%s", x+1, num,
 				(char*)gtk_object_get_data(GTK_OBJECT(item->pixmap), "name"));
 			frontend_status(gp_gtk_camera, msg);
-			f = gp_file_new();
+			gp_file_new(&f);
 			folder = current_folder();
 			gp_camera_file_get_preview(gp_gtk_camera, folder,
 			   gtk_object_get_data(GTK_OBJECT(item->pixmap), "name"), f);
@@ -914,7 +914,7 @@ void camera_index () {
 		    (a.file_operations & GP_FILE_OPERATION_PREVIEW)&&
 		    (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(use_thumbs)))) {
 			/* Get the thumbnails */
-			f = gp_file_new();
+			gp_file_new(&f);
 			folder = current_folder();
 			if (gp_camera_file_get_preview(gp_gtk_camera, 
 			    folder, name, f) == GP_OK) {
@@ -1139,7 +1139,7 @@ void help_authors() {
 	debug_print("help authors");
 
 	sprintf(buf, "%s/AUTHORS", DOCDIR);
-	f = gp_file_new();
+	gp_file_new(&f);
 	if (gp_file_open(f, buf)!=GP_OK) {
 		frontend_message(NULL, _("Can't find gtKam AUTHORS file"));
 		return;
@@ -1147,7 +1147,7 @@ void help_authors() {
 	message_window_notebook_append(window, _("gtKam Authors"), f->data);
 
 	sprintf(buf, "%s/AUTHORS", GPDOCDIR);
-	g = gp_file_new();
+	gp_file_new(&g);
 	if (gp_file_open(g, buf)!=GP_OK) {
 		frontend_message(NULL, _("Can't find gPhoto2 AUTHORS file"));
 		return;
@@ -1174,7 +1174,7 @@ void help_license() {
 	debug_print("help license");
 
 	sprintf(buf, "%s/COPYING", DOCDIR);
-	f = gp_file_new();
+	gp_file_new(&f);
 	if (gp_file_open(f, buf)!=GP_OK) {
 		frontend_message(NULL, _("Can't find gtKam COPYING file"));
 		return;
@@ -1182,7 +1182,7 @@ void help_license() {
 	message_window_notebook_append(window, _("gtKam License"), f->data);
 
 	sprintf(buf, "%s/COPYING", GPDOCDIR);
-	g = gp_file_new();
+	gp_file_new(&g);
 	if (gp_file_open(g, buf)!=GP_OK) {
 		frontend_message(NULL, _("Can't find gPhoto2 COPYING file"));
 		return;
@@ -1206,7 +1206,7 @@ void help_manual() {
 	debug_print("help manual");
 
 	sprintf(buf, "%s/MANUAL", DOCDIR);
-	f = gp_file_new();
+	gp_file_new(&f);
 	if (gp_file_open(f, buf)!=GP_OK) {
 		frontend_message(NULL, _("Can't find gtKam MANUAL file"));
 		return;

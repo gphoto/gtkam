@@ -104,8 +104,13 @@ static void
 on_camera_selected (GtkamChooser *chooser, Camera *camera, gboolean multi,
 		    GtkamTreeItem *item)
 {
+	GtkWidget *tree;
+
 	gtkam_tree_item_set_camera (item, camera);
 	gtkam_tree_item_set_multi (item, multi);
+
+	tree = gtk_widget_get_ancestor (GTK_WIDGET (item), GTKAM_TYPE_TREE);
+	gtkam_tree_save (GTKAM_TREE (tree));
 }
 
 static void

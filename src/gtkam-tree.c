@@ -61,7 +61,6 @@
 #include <gphoto2/gphoto2-setting.h>
 
 #include "support.h"
-#include "gtkam-chooser.h"
 #include "gtkam-error.h"
 #include "gtkam-status.h"
 #include "gtkam-tree-item-cam.h"
@@ -319,6 +318,55 @@ gtkam_tree_update (GtkamTree *tree, Camera *camera, gboolean multi,
 	update_tree (GTK_TREE (tree), camera, multi, folder);
 }
 
+#ifdef HAVE_GP_CAMERA_SET_TIMEOUT_FUNCS
+
+typedef struct _TimeoutData TimeoutData;
+struct _TimeoutData {
+	Camera *camera;
+	CameraTimeoutFunc func;
+};
+
+static gboolean
+timeout_func (gpointer data)
+{
+	TimeoutData *td = data;
+
+	td->func (td->camera, NULL);
+
+	/* Repeat forever */
+	return (TRUE);
+}
+
+static void
+timeout_destroy_notify (gpointer data)
+{
+	TimeoutData *td = data;
+
+	g_free (td);
+}
+
+static unsigned int
+start_timeout_func (Camera *camera, unsigned int timeout,
+		    CameraTimeoutFunc func, void *data)
+{
+	TimeoutData *td;
+
+	td = g_new0 (TimeoutData, 1);
+	td->camera = camera;
+	td->func = func;
+
+	return (gtk_timeout_add_full (timeout * 1000, timeout_func, NULL,
+				      td, timeout_destroy_notify));
+}
+
+static void
+stop_timeout_func (Camera *camera, unsigned int id, void *data)
+{
+	gtk_timeout_remove (id);
+}
+
+#endif
+
 void
 gtkam_tree_load (GtkamTree *tree)
 {
@@ -350,6 +398,10 @@ gtkam_tree_load (GtkamTree *tree)
              (gp_setting_get ("gphoto2", "port", port) == GP_OK)) &&
             (gp_setting_get ("gtkam", "speed", speed) == GP_OK)) {
                 gp_camera_new (&camera);
+#ifdef HAVE_GP_CAMERA_SET_TIMEOUT_FUNCS
+		gp_camera_set_timeout_funcs (camera, start_timeout_func,
+					     stop_timeout_func, NULL);
+#endif
 
                 n = gp_abilities_list_lookup_model (al, model);
                 gp_abilities_list_get_abilities (al, n, &a);
@@ -415,6 +467,10 @@ gtkam_tree_load (GtkamTree *tree)
 			break;
 
 		gp_camera_new (&camera);
+#ifdef HAVE_GP_CAMERA_SET_TIMEOUT_FUNCS
+                gp_camera_set_timeout_funcs (camera, start_timeout_func,
+                                             stop_timeout_func, NULL);
+#endif
 
                 n = gp_abilities_list_lookup_model (al, model);
                 gp_abilities_list_get_abilities (al, n, &a);

@@ -19,33 +19,45 @@ dnl Add the languages which your application supports here.
 ALL_LINGUAS="da de es fr hu it ja no pt_BR pt_PT ru sl sv uk"
 AM_GNU_GETTEXT
 
-dnl Check for gPhoto2 configuration
+dnl ---------------------------------------------------------------------------
+dnl gphoto2
+dnl ---------------------------------------------------------------------------
 AC_PATH_PROG(GPHOTO_CONFIG,gphoto2-config)
 if test -n "${GPHOTO_CONFIG}"; then
-  CFLAGS="$CFLAGS `$GPHOTO_CONFIG --cflags` `gphoto2-port-config --cflags`"
-  LIBS="$LIBS `$GPHOTO_CONFIG --libs` `gphoto2-port-config --libs`"
+	GP_CFLAGS="`$GPHOTO_CONFIG --cflags` `gphoto2-port-config --cflags`"
+	GP_LIBS="`$GPHOTO_CONFIG --libs` `gphoto2-port-config --libs`"
+	LDFLAGS_save="$LDFLAGS"
+	LDFLAGS="$GP_LIBS"
+	AC_CHECK_LIB(gphoto2, gp_camera_set_timeout_funcs, [
+		AC_DEFINE(HAVE_GP_CAMERA_SET_TIMEOUT_FUNCS)])
+	LDFLAGS="$LDFLAGS_save"
 else
-  AC_MSG_ERROR([
+	AC_MSG_ERROR([
 ***
 *** gPhoto2 is required. Available from gPhoto's Sourceforge CVS.
 *** Check http://www.gphoto.net/download.html for details
 ***])
-  exit 1
 fi
+AC_SUBST(GP_CFLAGS)
+AC_SUBST(GP_LIBS)
 
+dnl ---------------------------------------------------------------------------
+dnl gdk-pixbuf
+dnl ---------------------------------------------------------------------------
 dnl Check for gdk-pixbuf configuration
 AC_PATH_PROG(GDK_PIXBUF_CONFIG,gdk-pixbuf-config)
 if test -n "${GDK_PIXBUF_CONFIG}"; then
-  CFLAGS="$CFLAGS `$GDK_PIXBUF_CONFIG --cflags`"
-  LIBS="$LIBS `$GDK_PIXBUF_CONFIG --libs`"
+	GDK_PIXBUF_CFLAGS="`$GDK_PIXBUF_CONFIG --cflags`"
+	GDK_PIXBUF_LIBS="`$GDK_PIXBUF_CONFIG --libs`"
 else
-  AC_MSG_ERROR([
+	AC_MSG_ERROR([
 ***
 *** gdk-pixbuf (and headers) is required. Available from GNOME CVS.
 *** Check http://www.gnome.org for details
 ***])
-  exit 1
 fi
+AC_SUBST(GDK_PIXBUF_CFLAGS)
+AC_SUBST(GDK_PIXBUF_LIBS)
 
 dnl Set PACKAGE_DATA_DIR in config.h.
 if test "x${datadir}" = 'x${prefix}/share'; then
@@ -58,9 +70,9 @@ else
   AC_DEFINE_UNQUOTED(PACKAGE_DATA_DIR, "${datadir}/${PACKAGE}")
 fi
 
-dnl -----------
+dnl ---------------------------------------------------------------------------
 dnl GIMP plugin
-dnl -----------
+dnl ---------------------------------------------------------------------------
 try_gimp=true
 gimp_msg=no
 have_gimp=false

@@ -69,6 +69,7 @@
 #include "gtkam-close.h"
 #include "gtkam-port.h"
 #include "gtkam-status.h"
+#include "gtkam-util.h"
 
 struct _GtkamChooserPrivate
 {
@@ -175,6 +176,55 @@ gtkam_chooser_get_type (void)
 	return (chooser_type);
 }
 
+#ifdef HAVE_GP_CAMERA_SET_TIMEOUT_FUNCS
+
+typedef struct _TimeoutData TimeoutData;
+struct _TimeoutData {
+        Camera *camera;
+        CameraTimeoutFunc func;
+};
+
+static gboolean
+timeout_func (gpointer data)
+{
+        TimeoutData *td = data;
+
+        td->func (td->camera, NULL);
+
+	/* Repeat forever */
+        return (TRUE);
+}
+
+static void
+timeout_destroy_notify (gpointer data)
+{
+        TimeoutData *td = data;
+
+        g_free (td);
+}
+
+static unsigned int
+start_timeout_func (Camera *camera, unsigned int timeout,
+                    CameraTimeoutFunc func, void *data)
+{
+        TimeoutData *td;
+
+        td = g_new0 (TimeoutData, 1);
+        td->camera = camera;
+        td->func = func;
+
+        return (gtk_timeout_add_full (timeout * 1000, timeout_func, NULL,
+                                      td, timeout_destroy_notify));
+}
+
+static void
+stop_timeout_func (Camera *camera, unsigned int id, void *data)
+{
+        gtk_timeout_remove (id);
+}
+
+#endif
+
 static Camera *
 gtkam_chooser_get_camera (GtkamChooser *chooser)
 {
@@ -204,6 +254,10 @@ gtkam_chooser_get_camera (GtkamChooser *chooser)
 	}
 
 	gp_camera_new (&camera);
+#ifdef HAVE_GP_CAMERA_SET_TIMEOUT_FUNCS
+	gp_camera_set_timeout_funcs (camera, start_timeout_func,
+				     stop_timeout_func, NULL);
+#endif
 
 	/* Model? */
 	m = gp_abilities_list_lookup_model (chooser->priv->al, model);

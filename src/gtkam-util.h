@@ -21,6 +21,7 @@
 #ifndef __GTKAM_UTIL_H__
 #define __GTKAM_UTIL_H__
 
+#include <gphoto2/gphoto2-camera.h>
 #include <gphoto2/gphoto2-file.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gtk/gtkwidget.h>

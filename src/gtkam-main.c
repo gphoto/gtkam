@@ -387,19 +387,24 @@ static void
 on_about_activate (GtkamDebug *debug, GtkamMain *m)
 {
 	GtkWidget *dialog;
+	char buf[4096];
+	
+	snprintf(buf, sizeof(buf), 
+		 N_("%s %s\n\n"
+		    "gtKam was written by:\n"
+		    " - Scott Fritzinger <scottf@unr.edu>,\n"
+		    " - Lutz Mueller <urc8@rz.uni-karlsruhe.de>,\n"
+		    " - and many others.\n"
+		    "\n"
+		    "gtKam uses libgphoto2, a library to access a\n"
+		    "multitude of digital cameras. More \n"
+		    "information is available at\n"
+		    "http://www.gphoto.net.\n"
+		    "\n"
+		    "Enjoy the wonderful world of gphoto!"),
+		 PACKAGE, VERSION);
 
-	dialog = gtkam_close_new (
-		  N_("gtKam was written by:\n"
-		  " - Scott Fritzinger <scottf@unr.edu>,\n"
-		  " - Lutz Mueller <urc8@rz.uni-karlsruhe.de>,\n"
-		  " - and many others.\n"
-		  "\n"
-		  "gtKam uses libgphoto2, a library to access a\n"
-		  "multitude of digital cameras. More \n"
-		  "information is available at\n"
-		  "http://www.gphoto.net.\n"
-		  "\n"
-		  "Enjoy the wonderful world of gphoto!"), GTK_WIDGET (m));
+	dialog = gtkam_close_new (buf, GTK_WIDGET (m));
 	gtk_widget_show (dialog);
 }
 

@@ -62,7 +62,7 @@ struct _GtkamDebugPrivate
 
 	guint error_id, debug_id, data_id;
 
-	GPLogLevels levels;
+	GPLogLevel level;
 };
 
 #define PARENT_TYPE GTK_TYPE_DIALOG
@@ -139,7 +139,7 @@ gtkam_debug_get_type (void)
 }
 
 static void
-gp_log_func (GPLogLevels levels, const char *domain, const char *format,
+gp_log_func (GPLogLevel level, const char *domain, const char *format,
 	     va_list args, void *data)
 {
 	GtkamDebug *debug;
@@ -153,10 +153,10 @@ gp_log_func (GPLogLevels levels, const char *domain, const char *format,
 	while (gtk_events_pending ())
 		gtk_main_iteration ();
 
-	if (levels & debug->priv->levels) {
+	if (level <= debug->priv->level) {
 
 		/* Show the message */
-		if (levels & GP_LOG_ERROR)
+		if (level == GP_LOG_ERROR)
 			gtk_text_insert (debug->priv->text, NULL, NULL, NULL,
 					 err, strlen (err));
 		message = g_strdup_vprintf (format, args);
@@ -173,11 +173,11 @@ on_debug_toggled (GtkToggleButton *toggle, GtkamDebug *debug)
 	if (toggle->active && !debug->priv->debug_id) {
 		debug->priv->debug_id = gp_log_add_func (GP_LOG_DEBUG,
 							 gp_log_func, debug);
-		debug->priv->levels |= GP_LOG_DEBUG;
+		debug->priv->level = GP_LOG_DEBUG;
 	} else if (!toggle->active && debug->priv->debug_id) {
 		gp_log_remove_func (debug->priv->debug_id);
 		debug->priv->debug_id = 0;
-		debug->priv->levels &= ~GP_LOG_DEBUG;
+		debug->priv->level = GP_LOG_VERBOSE;
 	}
 }
 
@@ -187,11 +187,11 @@ on_error_toggled (GtkToggleButton *toggle, GtkamDebug *debug)
 	if (toggle->active && !debug->priv->error_id) {
 		debug->priv->error_id = gp_log_add_func (GP_LOG_ERROR,
 							 gp_log_func, debug);
-		debug->priv->levels |= GP_LOG_ERROR;
+		debug->priv->level = GP_LOG_ERROR;
 	} else if (!toggle->active && debug->priv->error_id) {
 		gp_log_remove_func (debug->priv->error_id);
 		debug->priv->error_id = 0;
-		debug->priv->levels &= ~GP_LOG_ERROR;
+		debug->priv->level = -1;
 	}
 }
 
@@ -201,11 +201,11 @@ on_data_toggled (GtkToggleButton *toggle, GtkamDebug *debug)
 	if (toggle->active && !debug->priv->data_id) {
 		debug->priv->data_id = gp_log_add_func (GP_LOG_DATA,
 						       gp_log_func, debug);
-		debug->priv->levels |= GP_LOG_DATA;
+		debug->priv->level = GP_LOG_DATA;
 	} else if (!toggle->active && debug->priv->data_id) {
 		gp_log_remove_func (debug->priv->data_id);
 		debug->priv->data_id = 0;
-		debug->priv->levels &= ~GP_LOG_DATA;
+		debug->priv->level = GP_LOG_DEBUG;
 	}
 }
 

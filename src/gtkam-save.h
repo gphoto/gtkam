@@ -23,6 +23,7 @@
 
 #include <gtkam-camera.h>
 #include <gtk/gtkfilesel.h>
+#include <gtk/gtkwindow.h>
 
 #define GTKAM_TYPE_SAVE  (gtkam_save_get_type ())
 #define GTKAM_SAVE(o)    (GTK_CHECK_CAST((o),GTKAM_TYPE_SAVE,GtkamSave))
@@ -45,7 +46,7 @@ struct _GtkamSaveClass
 };
 
 GtkType    gtkam_save_get_type (void);
-GtkWidget *gtkam_save_new      (void);
+GtkWidget *gtkam_save_new      (GtkWindow *main_window);
 
 void       gtkam_save_add      (GtkamSave *save, GtkamCamera *,
 				const gchar *folder, const gchar *name);

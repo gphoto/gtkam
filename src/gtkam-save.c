@@ -67,6 +67,7 @@ struct _GtkamSavePrivate
 	gboolean quiet, err_shown;
 
 	GtkWidget *status;
+	GtkWindow *main_window;
 };
 
 #define PARENT_TYPE GTK_TYPE_FILE_SELECTION
@@ -308,7 +309,7 @@ save_file (GtkamSave *save, CameraFile *file, guint n)
 				       full_path);
 		dialog = gtkam_close_new (msg);
 		gtk_window_set_transient_for (GTK_WINDOW (dialog),
-					      GTK_WINDOW (save));
+					      save->main_window);
 		gtk_widget_show (dialog);
 		g_free (msg);
 		g_free (full_path);
@@ -390,7 +391,7 @@ on_ok_clicked (GtkButton *button, GtkamSave *save)
 		s = gtkam_cancel_new (_("Downloading file"));
 	else
 		s = gtkam_cancel_new (_("Downloading %i files"), count);
-	gtk_window_set_transient_for (GTK_WINDOW (s), GTK_WINDOW (save));
+	gtk_window_set_transient_for (GTK_WINDOW (s), save->main_window);
 	gtk_widget_show (s);
 
 	if (count > 1)
@@ -454,7 +455,7 @@ on_ok_clicked (GtkButton *button, GtkamSave *save)
 }
 
 GtkWidget *
-gtkam_save_new (void)
+gtkam_save_new (GtkWindow *main_window)
 {
 	GtkamSave *save;
 	GtkWidget *hbox, *frame, *check, *label, *entry;
@@ -574,6 +575,9 @@ gtkam_save_new (void)
 			    FALSE, FALSE, 0);
 
 	gtk_widget_grab_focus (GTK_FILE_SELECTION (save)->ok_button);
+
+	/* Remember the main window (if given) */
+	save->priv->main_window = main_window ? main_window : GTK_WINDOW (save);
 
 	return (GTK_WIDGET (save));
 }

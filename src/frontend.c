@@ -22,6 +22,7 @@ frontend_message (Camera *camera, char *message)
 	GtkWidget *dialog;
 
 	dialog = gtkam_close_new (message, NULL);
+	gtk_widget_show (dialog);
 
 	return (GP_OK);
 }

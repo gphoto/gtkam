@@ -22,13 +22,6 @@
 #include "gtkam-tree.h"
 #include "gtkam-list.h"
 
-void hide_progress_window (GtkWidget *widget, gpointer data) {
- 
-        gtk_widget_hide(gp_gtk_progress_window);
-	while (gtk_events_pending ())
-		gtk_main_iteration ();
-} 
-
 GtkWidget*
 create_confirm_window (void)
 {
@@ -94,64 +87,4 @@ create_confirm_window (void)
   gtk_box_pack_start (GTK_BOX (hbox2), button20, FALSE, TRUE, 0);
 
   return confirm_window;
-}
-
-GtkWidget*
-create_progress_window (void)
-{
-  /* widget labels:  "message" "progress_bar" "close" */
-  GtkWidget *message_window;
-  GtkWidget *progress_bar;
-  GtkWidget *vbox5;
-  GtkWidget *label8;
-  GtkWidget *button21;
-  GtkWidget *hsep;
-
-  message_window = gtk_window_new (GTK_WINDOW_DIALOG);
-  gtk_object_set_data (GTK_OBJECT (message_window), "message_window", message_window);
-  gtk_window_set_title (GTK_WINDOW (message_window), _("gtKam Progress"));
-  gtk_window_set_position (GTK_WINDOW (message_window), GTK_WIN_POS_CENTER);
-  gtk_window_set_modal (GTK_WINDOW (message_window), TRUE);
-  gtk_window_set_default_size (GTK_WINDOW (message_window), 350, 200);
-  gtk_container_set_border_width (GTK_CONTAINER (message_window), 5);
-
-  vbox5 = gtk_vbox_new (FALSE, 0);
-  gtk_widget_ref (vbox5);
-  gtk_object_set_data_full (GTK_OBJECT (message_window), "vbox5", vbox5,
-                            (GtkDestroyNotify) gtk_widget_unref);
-  gtk_widget_show (vbox5);
-  gtk_container_add (GTK_CONTAINER (message_window), vbox5);
-
-  label8 = gtk_label_new (_("No message."));
-  gtk_widget_ref (label8);
-  gtk_object_set_data_full (GTK_OBJECT (message_window), "message", label8,
-                            (GtkDestroyNotify) gtk_widget_unref);
-  gtk_widget_show (label8);
-  gtk_box_pack_start (GTK_BOX (vbox5), label8, TRUE, TRUE, 0);
-  gtk_label_set_line_wrap (GTK_LABEL (label8), TRUE);
-
-  progress_bar = gtk_progress_bar_new ();
-  gtk_widget_ref (progress_bar);
-  gtk_object_set_data_full (GTK_OBJECT (message_window), "progress_bar", progress_bar,
-                            (GtkDestroyNotify) gtk_widget_unref);
-  gtk_widget_show (progress_bar);
-  gtk_box_pack_start (GTK_BOX (vbox5), progress_bar, FALSE, FALSE, 0);
-
-  hsep = gtk_hseparator_new();
-  gtk_widget_ref (hsep);
-  gtk_object_set_data_full (GTK_OBJECT (message_window), "hsep", hsep,
-                            (GtkDestroyNotify) gtk_widget_unref);
-  gtk_widget_show (hsep);
-  gtk_box_pack_start (GTK_BOX (vbox5), hsep, FALSE, FALSE, 0);
-
-  button21 = gtk_button_new_with_label (_("    Cancel    "));
-  gtk_widget_ref (button21);
-  gtk_object_set_data_full (GTK_OBJECT (message_window), "cancel", button21,
-                            (GtkDestroyNotify) gtk_widget_unref);
-  gtk_widget_show (button21);
-  gtk_box_pack_start (GTK_BOX (vbox5), button21, FALSE, FALSE, 0);
-  gtk_signal_connect(GTK_OBJECT(button21), "clicked", 
-		GTK_SIGNAL_FUNC(hide_progress_window),NULL);
-
-  return message_window;
 }

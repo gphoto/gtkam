@@ -29,7 +29,6 @@
 
 #include "gtkam-error.h"
 #include "util.h"
-#include "frontend.h"
 #include "../pixmaps/no_thumbnail.xpm"
 #include "gtkam-save.h"
 
@@ -49,9 +48,6 @@ enum {
 };
 
 static guint signals[LAST_SIGNAL] = {0};
-
-//FIXME
-extern GtkWidget *gp_gtk_progress_window;
 
 static void
 gtkam_list_destroy (GtkObject *object)
@@ -263,18 +259,10 @@ gtkam_list_set_path (GtkamList *list, const gchar *path)
 		return;
 	}
 
-//FIXME
-	gtk_widget_show (gp_gtk_progress_window);
-
 	gp_file_new (&file);
 	for (i = 0; i < gp_list_count (&flist); i++) {
 		gp_list_get_name (&flist, i, &name);
 
-//FIXME: Write a nice dialog for this
-		msg = g_strdup_printf ("Getting Thumbnail #%04i of %04i\n%s",
-				       i + 1, gp_list_count (&flist), name);
-		frontend_message (NULL, msg);
-		g_free (msg);
 		while (gtk_events_pending ())
 			gtk_main_iteration ();
 
@@ -311,9 +299,6 @@ gtkam_list_set_path (GtkamList *list, const gchar *path)
 				    list);
 	}
 	gp_file_unref (file);
-
-//FIXME
-	gtk_widget_hide (gp_gtk_progress_window);
 }
 
 void
@@ -333,7 +318,7 @@ gtkam_list_save_selected (GtkamList *list)
 {
 	GtkIconListItem *item;
 	GSList *filenames = NULL;
-	GtkWidget *save;
+	GtkWidget *save, *window;
 	guint i;
 
 	g_return_if_fail (GTKAM_IS_LIST (list));
@@ -347,8 +332,9 @@ gtkam_list_save_selected (GtkamList *list)
 				gtk_entry_get_text (GTK_ENTRY (item->entry)));
 	}
 
+	window = gtk_widget_get_ancestor (GTK_WIDGET (list), GTK_TYPE_WINDOW);
 	save = gtkam_save_new (list->priv->camera, list->path,
-			       filenames);
+			       filenames, window);
 	g_slist_free (filenames);
 	gtk_widget_show (save);
 }

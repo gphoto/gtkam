@@ -36,9 +36,6 @@
 #include "util.h"
 #include "gtkam-error.h"
 
-//FIXME:
-extern GtkWidget *gp_gtk_progress_window;
-
 struct _GtkamSavePrivate
 {
 	GtkWidget *file_list;
@@ -256,7 +253,6 @@ save_file (GtkamSave *save, CameraFile *file, guint n)
 	if (!save->priv->quiet && file_exists (full_path)) {
 		msg = g_strdup_printf ("'%s' already exists. Overwrite?",
 				       full_path);
-		gtk_widget_hide (gp_gtk_progress_window);
 		switch (gp_frontend_confirm (save->priv->camera, msg)) {
 		case GP_CONFIRM_YES:
 			break;
@@ -320,13 +316,8 @@ on_ok_clicked (GtkButton *button, GtkamSave *save)
 	CameraFile *file;
 	guint i, count;
 	const gchar *filename;
-	char buf[1024];
 
 	gtk_widget_hide (GTK_WIDGET (save));
-
-//FIXME:
-	frontend_progress (save->priv->camera, NULL, 0.);
-	gtk_widget_show (gp_gtk_progress_window);
 
 	gp_file_new (&file);
 
@@ -336,47 +327,29 @@ on_ok_clicked (GtkButton *button, GtkamSave *save)
 
 		/* Normal */
 		if (save->priv->toggle_normal &&
-		    save->priv->toggle_normal->active) {
-			sprintf (buf, "Saving photo #%04i of %04i\n%s", i + 1,
-				 count, filename);
-			frontend_message (save->priv->camera, buf);
-
+		    save->priv->toggle_normal->active)
 			get_file (save, filename, GP_FILE_TYPE_NORMAL, file,
 				  i + 1);
-		}
 
 		if (save->priv->toggle_preview &&
-		    save->priv->toggle_preview->active) {
-			sprintf (buf, "Saving thumbnail #%04i of %04i\n%s",
-				 i + 1, count, filename);
-			frontend_message (save->priv->camera, buf);
-
+		    save->priv->toggle_preview->active)
 			get_file (save, filename, GP_FILE_TYPE_PREVIEW, file,
 				  i + 1);
-		}
 
 		if (save->priv->toggle_raw &&
-		    save->priv->toggle_raw->active) {
-			sprintf (buf, "Saving raw data #%04i of %04i\n%s",
-				 i + 1, count, filename);
-			frontend_message (save->priv->camera, buf);
-
+		    save->priv->toggle_raw->active)
 			get_file (save, filename, GP_FILE_TYPE_RAW, file,
 				  i + 1);
-		}
 	}
 
 	gp_file_unref (file);
-
-//FIXME
-	frontend_progress (save->priv->camera, NULL, 0.00);
-	gtk_widget_hide (gp_gtk_progress_window);
 
 	gtk_widget_destroy (GTK_WIDGET (save));
 }
 
 GtkWidget *
-gtkam_save_new (Camera *camera, const gchar *path, GSList *filenames)
+gtkam_save_new (Camera *camera, const gchar *path, GSList *filenames,
+		GtkWidget *opt_window)
 {
 	GtkamSave *save;
 	GtkWidget *hbox, *frame, *check, *label, *entry;
@@ -508,6 +481,10 @@ gtkam_save_new (Camera *camera, const gchar *path, GSList *filenames)
 	gtk_widget_set_sensitive (entry, FALSE);
 
 	gtk_widget_set_sensitive (save->priv->file_list, FALSE);
+
+	if (opt_window)
+		gtk_window_set_transient_for (GTK_WINDOW (close),
+					      GTK_WINDOW (opt_window));
 
 	return (GTK_WIDGET (save));
 }

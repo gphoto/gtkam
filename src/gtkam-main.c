@@ -25,6 +25,8 @@
 
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtksignal.h>
+#include <gtk/gtkprogressbar.h>
+#include <gtk/gtkstatusbar.h>
 #include <gtk/gtktoolbar.h>
 #include <gtk/gtkmenuitem.h>
 #include <gtk/gtklabel.h>
@@ -56,6 +58,10 @@ struct _GtkamMainPrivate
 
 	GtkamTree *tree;
 	GtkamList *list;
+
+	GtkStatusbar   *status;
+	GtkProgressBar *progress;
+	guint context_id, message_id;
 
 	GtkToggleButton *toggle_preview;
 
@@ -369,8 +375,8 @@ gtkam_main_new (void)
 {
 	GtkamMain *m;
 	GtkWidget *vbox, *menubar, *menu, *item, *separator, *submenu;
-	GtkWidget *frame, *scrolled, *check, *tree, *list, *bar, *label;
-	GtkWidget *button, *hpaned, *toolbar, *icon;
+	GtkWidget *frame, *scrolled, *check, *tree, *list, *label, *hbox;
+	GtkWidget *button, *hpaned, *toolbar, *icon, *status, *progress;
 	GtkAccelGroup *accel_group, *accels, *subaccels;
 	GtkTooltips *tooltips;
 	guint key;
@@ -669,11 +675,23 @@ gtkam_main_new (void)
 		GTK_SIGNAL_FUNC (on_exit_activate), m);
 
 	/*
-	 * Status bar
+	 * Status and progress bar
 	 */
-	bar = gtk_statusbar_new ();
-	gtk_widget_show (bar);
-	gtk_box_pack_end (GTK_BOX (vbox), bar, FALSE, FALSE, 0);
+	hbox = gtk_hbox_new (FALSE, 0);
+	gtk_widget_show (hbox);
+	gtk_box_pack_end (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
+
+	status = gtk_statusbar_new ();
+	gtk_widget_show (status);
+	gtk_box_pack_start (GTK_BOX (hbox), status, TRUE, TRUE, 0);
+	m->priv->status = GTK_STATUSBAR (status);
+	m->priv->context_id = gtk_statusbar_get_context_id (m->priv->status,
+							    "libgphoto2");
+
+	progress = gtk_progress_bar_new ();
+	gtk_widget_show (progress);
+	gtk_box_pack_end (GTK_BOX (hbox), progress, FALSE, FALSE, 0);
+	m->priv->progress = GTK_PROGRESS_BAR (progress);
 
 	/*
 	 * Main content
@@ -738,6 +756,30 @@ gtkam_main_new (void)
 	return (GTK_WIDGET (m));
 }
 
+static void
+status_func (Camera *camera, const char *status, void *data)
+{
+	GtkamMain *m = GTKAM_MAIN (data);
+
+	if (m->priv->message_id)
+		gtk_statusbar_remove (m->priv->status, m->priv->context_id,
+				      m->priv->message_id);
+	m->priv->message_id = gtk_statusbar_push (m->priv->status,
+						  m->priv->context_id, status);
+	while (gtk_events_pending ())
+		gtk_main_iteration ();
+}
+
+static void
+progress_func (Camera *camera, float progress, void *data)
+{
+	GtkamMain *m = GTKAM_MAIN (data);
+
+	gtk_progress_bar_update (m->priv->progress, progress);
+	while (gtk_events_pending ())
+		gtk_main_iteration ();
+}
+
 void
 gtkam_main_set_camera (GtkamMain *m, Camera *camera)
 {
@@ -786,4 +828,7 @@ gtkam_main_set_camera (GtkamMain *m, Camera *camera)
 
 	gtkam_tree_set_camera (m->priv->tree, camera);
 	gtkam_list_set_camera (m->priv->list, camera);
+
+	gp_camera_set_progress_func (camera, progress_func, m);
+	gp_camera_set_status_func (camera, status_func, m);
 }

@@ -116,7 +116,6 @@ int camera_set() {
 
 	GtkWidget *camera_tree, *message, *message_label, *camera_label, *icon_list;
 	GtkWidget *subtree, *subitem;
-	CameraPortInfo ps;
 	Camera *new_camera;
 	char camera[1024], port[1024], speed[1024];
 
@@ -140,22 +139,22 @@ int camera_set() {
 	/* Retrieve the speed to use */
 	gp_setting_get("gtkam", "speed", speed);
 
-	/* Set up the camera initialization */
-	strcpy(ps.path, port);
-	if (strlen(speed)>0)
-		ps.speed = atoi(speed);
-	   else
-		ps.speed = 0; /* use the default speed */
-	gtk_widget_show(message);
-	idle();
-
 	/* Create the new camera */
 	if (gp_camera_new_by_name(&new_camera, camera)!=GP_OK) {
 		gtk_widget_destroy(message);
 		return (GP_ERROR);
 	}
 
-	if (gp_camera_init(new_camera, &ps)!=GP_OK) {
+	/* Set up the camera initialization */
+	strcpy(new_camera->port->path, port);
+	if (strlen(speed)>0)
+		new_camera->port->speed = atoi(speed);
+	else
+		new_camera->port->speed = 0; /* use the default speed */
+	gtk_widget_show(message);
+	idle();
+
+	if (gp_camera_init(new_camera)!=GP_OK) {
 		gtk_widget_destroy(message);
 		return (GP_ERROR);
 	}		

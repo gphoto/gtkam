@@ -2,7 +2,7 @@
 
 EXTRA_DIST = config.rpath 
 
-SUBDIRS = m4 po src test art pixmaps packaging
+SUBDIRS = src test art pixmaps packaging
 
 gtkamdocdir = $(datadir)/doc/gtkam
 gtkamdoc_DATA = AUTHORS COPYING
@@ -40,5 +40,3 @@ cvs-tags: Makefile
 	@echo cvs tag "@PACKAGE@-$$(echo '@VERSION@' | sed 's/\./_/g')"
 
 endif
-
-ACLOCAL_AMFLAGS = -I m4

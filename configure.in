@@ -15,7 +15,7 @@ LDFLAGS="$LDFLAGS -g -Wall"
 
 dnl Add the languages which your application supports here.
 ALL_LINGUAS="da de es fr hu it ja no pt_BR pt_PT ru sl sv uk"
-AM_GNU_GETTEXT([external])
+AM_GNU_GETTEXT
 
 dnl ---------------------------------------------------------------------------
 dnl We need the location of pkg-config.

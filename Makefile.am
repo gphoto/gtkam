@@ -19,7 +19,7 @@ dist-hook:
 
 dist-bzip2:
 	-chmod -R a+r $(distdir)
-	-$(TAR) chojf $(distdir).tar.bz2 $(distdir)
+	-tar -c --bzip2 -h -o -f $(distdir).tar.bz2 $(distdir)
 
 if ENABLE_RPM
 

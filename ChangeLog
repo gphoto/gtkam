@@ -1,5 +1,11 @@
 2002-06-26  Lutz Müller <lutz@users.sourceforge.net>
 
+	Arnaud Launay <asl@launay.org>:
+
+	* Makefile.am: -tar instead of $(TAR).
+
+2002-06-26  Lutz Müller <lutz@users.sourceforge.net>
+
 	Patrick Mansfield <patman@aracnet.com> spotted a bug which I am 
 	trying to fix by ...
 

@@ -36,8 +36,7 @@ gboolean get_thumbnail (GtkWidget *widget, CameraListEntry *entry, GtkIconListIt
 	/* Get the thumbnail */
 	f = gp_file_new();
 	folder = current_folder();
-	if (gp_camera_file_get_preview(gp_gtk_camera, f, 
-								   folder, entry->name) == GP_OK) {
+	if (gp_camera_file_get_preview(gp_gtk_camera, folder, entry->name, f) == GP_OK) {
 		gdk_image_new_from_data(f->data,f->size,1,&pixmap,&bitmap);
 		gtk_pixmap_set(GTK_PIXMAP(item->pixmap), pixmap, bitmap);
 	}
@@ -60,7 +59,7 @@ gboolean toggle_icon (GtkWidget *widget, GdkEventButton *event, gpointer data) {
 		if ((item->eventbox == widget)||(item->entry == widget)) {
 			/* A double-click on an index icon retrieve the thumbnail */
 			if(event->type == GDK_2BUTTON_PRESS) {
-				if (gp_camera_file_list(gp_gtk_camera, &list, current_folder())!=GP_OK) {
+				if (gp_camera_folder_list_files(gp_gtk_camera, current_folder(), &list)!=GP_OK) {
 					frontend_message(NULL, _("Could not retrieve the picture list."));
 					return TRUE;
 				}
@@ -317,8 +316,8 @@ void save_selected_photos() {
 			frontend_message(gp_gtk_camera, msg);
 			f = gp_file_new();
 			folder = current_folder();
-			if (gp_camera_file_get(gp_gtk_camera, f, folder,
-                                               gtk_object_get_data(GTK_OBJECT(item->pixmap),"name")) < 0) {
+			if (gp_camera_file_get_file(gp_gtk_camera, folder,
+                                               gtk_object_get_data(GTK_OBJECT(item->pixmap),"name"), f) < 0) {
                             sprintf(fname, "An error occurred when getting %s",
                                     (char*)gtk_object_get_data(GTK_OBJECT(item->pixmap),"name"));
                             frontend_message(gp_gtk_camera, fname);
@@ -377,8 +376,8 @@ void save_selected_photos() {
 			frontend_status(gp_gtk_camera, msg);
 			f = gp_file_new();
 			folder = current_folder();
-			gp_camera_file_get_preview(gp_gtk_camera, f, folder,
-			   gtk_object_get_data(GTK_OBJECT(item->pixmap), "name"));
+			gp_camera_file_get_preview(gp_gtk_camera, folder,
+			   gtk_object_get_data(GTK_OBJECT(item->pixmap), "name"), f);
 			/* determine the name to use */
 			if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(use_camera_filename))) {
 				slash = strrchr(path, '/');
@@ -588,7 +587,7 @@ void folder_expand (GtkWidget *tree_item, gpointer data) {
 	if (gtk_object_get_data(GTK_OBJECT(tree_item), "expanded")) return;
 
 	/* Count however many folders are in this folder */
-	if (gp_camera_folder_list(gp_gtk_camera, &list, path)!=GP_OK) {
+	if (gp_camera_folder_list_folders(gp_gtk_camera, path, &list)!=GP_OK) {
 		sprintf(buf, _("Could not open folder\n%s"), path);
 		frontend_message(gp_gtk_camera, buf);
 		return;
@@ -889,7 +888,7 @@ void camera_index () {
 		return;
 	}
 
-	if (gp_camera_file_list(gp_gtk_camera, &list, current_folder())!=GP_OK) {
+	if (gp_camera_folder_list_files(gp_gtk_camera, current_folder(), &list)!=GP_OK) {
 		frontend_message(NULL, _("Could not retrieve the picture list."));
 		return;
 	}
@@ -917,8 +916,8 @@ void camera_index () {
 			/* Get the thumbnails */
 			f = gp_file_new();
 			folder = current_folder();
-			if (gp_camera_file_get_preview(gp_gtk_camera, f, 
-			    folder, entry->name) == GP_OK) {
+			if (gp_camera_file_get_preview(gp_gtk_camera, 
+			    folder, entry->name, f) == GP_OK) {
 				gdk_image_new_from_data(f->data,f->size,1,&pixmap,&bitmap);
 				item = gtk_icon_list_add_from_data(GTK_ICON_LIST(icon_list),
 					no_thumbnail_xpm,entry->name,NULL);
@@ -1061,7 +1060,7 @@ void camera_show_information() {
 
 	gtk_widget_show(message);
 	idle();
-	if (gp_camera_summary(gp_gtk_camera, &buf)!=GP_OK) {
+	if (gp_camera_get_summary(gp_gtk_camera, &buf)!=GP_OK) {
 		gtk_widget_hide(message);
 		frontend_message(gp_gtk_camera, _("Could not retrieve camera information"));
 		return;
@@ -1080,7 +1079,7 @@ void camera_show_manual() {
 	if (!gp_gtk_camera_init)
 		if (camera_set()!=GP_OK) {return;}
 
-	if (gp_camera_manual(gp_gtk_camera, &buf)!=GP_OK) {
+	if (gp_camera_get_manual(gp_gtk_camera, &buf)!=GP_OK) {
 		frontend_message(gp_gtk_camera, _("Could not retrieve the camera manual"));
 		return;
 	}
@@ -1098,7 +1097,7 @@ void camera_show_about() {
 	if (!gp_gtk_camera_init)
 		if (camera_set()!=GP_OK) {return;}
 
-	if (gp_camera_about(gp_gtk_camera, &buf)!=GP_OK) {
+	if (gp_camera_get_about(gp_gtk_camera, &buf)!=GP_OK) {
 		frontend_message(gp_gtk_camera, _("Could not retrieve library information"));
 		return;
 	}

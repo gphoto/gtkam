@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2001-01-24 12:37-0800\n"
+"POT-Creation-Date: 2001-03-10 01:12+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -234,103 +234,103 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
-#: src/callbacks.c:64 src/callbacks.c:887
+#: src/callbacks.c:63 src/callbacks.c:892
 msgid "Could not retrieve the picture list."
 msgstr ""
 
-#: src/callbacks.c:128
+#: src/callbacks.c:127
 msgid "Initializing camera..."
 msgstr ""
 
-#: src/callbacks.c:132
+#: src/callbacks.c:131
 msgid "You must choose a camera"
 msgstr ""
 
-#: src/callbacks.c:586
+#: src/callbacks.c:591
 #, c-format
 msgid ""
 "Could not open folder\n"
 "%s"
 msgstr ""
 
-#: src/callbacks.c:683
+#: src/callbacks.c:688
 #, c-format
 msgid "Could not get abilities for %s"
 msgstr ""
 
-#: src/callbacks.c:690
+#: src/callbacks.c:695
 msgid "Could not retrieve number of ports"
 msgstr ""
 
-#: src/callbacks.c:731
+#: src/callbacks.c:736
 msgid "Error retrieving the port list"
 msgstr ""
 
-#: src/callbacks.c:764
+#: src/callbacks.c:769
 msgid "Could not retrieve number of cameras"
 msgstr ""
 
-#: src/callbacks.c:815
+#: src/callbacks.c:820
 msgid "You must choose a camera model"
 msgstr ""
 
-#: src/callbacks.c:820
+#: src/callbacks.c:825
 msgid "You must choose a port"
 msgstr ""
 
-#: src/callbacks.c:825
+#: src/callbacks.c:830
 msgid "You must choose a port speed"
 msgstr ""
 
-#: src/callbacks.c:877 src/callbacks.c:953
+#: src/callbacks.c:882 src/callbacks.c:958
 msgid "ERROR: please choose your camera model again"
 msgstr ""
 
-#: src/callbacks.c:882 src/callbacks.c:959
+#: src/callbacks.c:887 src/callbacks.c:964
 msgid "Could not retrieve the camera's abilities"
 msgstr ""
 
-#: src/callbacks.c:904
+#: src/callbacks.c:909
 #, c-format
 msgid ""
 "Getting Thumbnail #%04i of %04i\n"
 "%s"
 msgstr ""
 
-#: src/callbacks.c:964
+#: src/callbacks.c:969
 msgid "This camera does not support deleting photos."
 msgstr ""
 
-#: src/callbacks.c:969
+#: src/callbacks.c:974
 msgid "Are you sure you want to DELETE ALL the photos?"
 msgstr ""
 
-#: src/callbacks.c:971
+#: src/callbacks.c:976
 msgid "Are you sure you want to DELETE the selected photos?"
 msgstr ""
 
-#: src/callbacks.c:984 src/callbacks.c:1000
+#: src/callbacks.c:989 src/callbacks.c:1005
 #, c-format
 msgid "Could not delete photo #%04i. Stopping."
 msgstr ""
 
-#: src/callbacks.c:1054
+#: src/callbacks.c:1059
 msgid "Retrieving camera information..."
 msgstr ""
 
-#: src/callbacks.c:1060
+#: src/callbacks.c:1065
 msgid "Could not retrieve camera information"
 msgstr ""
 
-#: src/callbacks.c:1078
+#: src/callbacks.c:1083
 msgid "Could not retrieve the camera manual"
 msgstr ""
 
-#: src/callbacks.c:1096
+#: src/callbacks.c:1101
 msgid "Could not retrieve library information"
 msgstr ""
 
-#: src/callbacks.c:1112
+#: src/callbacks.c:1117
 msgid ""
 "gtKam was written by:\n"
 "Scott Fritzinger <scottf@unr.edu>\n"
@@ -340,43 +340,43 @@ msgid ""
 "http://www.gphoto.net"
 msgstr ""
 
-#: src/callbacks.c:1129
+#: src/callbacks.c:1134
 msgid "Can't find gtKam AUTHORS file"
 msgstr ""
 
-#: src/callbacks.c:1132
+#: src/callbacks.c:1137
 msgid "gtKam Authors"
 msgstr ""
 
-#: src/callbacks.c:1137
+#: src/callbacks.c:1142
 msgid "Can't find gPhoto2 AUTHORS file"
 msgstr ""
 
-#: src/callbacks.c:1140
+#: src/callbacks.c:1145
 msgid "gPhoto2 Authors"
 msgstr ""
 
-#: src/callbacks.c:1164
+#: src/callbacks.c:1169
 msgid "Can't find gtKam COPYING file"
 msgstr ""
 
-#: src/callbacks.c:1167
+#: src/callbacks.c:1172
 msgid "gtKam License"
 msgstr ""
 
-#: src/callbacks.c:1172
+#: src/callbacks.c:1177
 msgid "Can't find gPhoto2 COPYING file"
 msgstr ""
 
-#: src/callbacks.c:1175
+#: src/callbacks.c:1180
 msgid "gPhoto2 License"
 msgstr ""
 
-#: src/callbacks.c:1196
+#: src/callbacks.c:1201
 msgid "Can't find gtKam MANUAL file"
 msgstr ""
 
-#: src/callbacks.c:1201
+#: src/callbacks.c:1206
 msgid "gtKam Manual"
 msgstr ""
 

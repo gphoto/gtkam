@@ -1,3 +1,10 @@
+2002-06-26  Lutz Müller <lutz@users.sourceforge.net>
+
+	Patches by Arnaud Launay <asl@launay.org>:
+
+	* configure.in
+	* Makefile.am: Check for rpm
+
 2002-06-19  Lutz Müller <lutz@users.sourceforge.net>
 
 	* src/Makefile.am: -D some variables instead of putting them 

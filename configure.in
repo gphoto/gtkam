@@ -3,6 +3,7 @@ AC_PREREQ(2.50)
 AC_INIT(configure.in)
 AM_INIT_AUTOMAKE(gtkam, 0.1.7)
 AM_CONFIG_HEADER(config.h)
+AM_MAINTAINER_MODE
 
 AC_ISC_POSIX
 AC_PROG_CC
@@ -110,6 +111,26 @@ fi
 AM_CONDITIONAL(HAVE_EXIF, $have_exif)
 AC_SUBST(EXIF_CFLAGS)
 AC_SUBST(EXIF_LIBS)
+
+dnl ---------------------------------------------------------------------------
+dnl rpm: 
+dnl
+dnl      Note that if libusb-devel is installed, the gtkam-rpm will depend
+dnl      on libusb and libusb-devel.
+dnl ---------------------------------------------------------------------------
+AC_ARG_WITH(rpmbuild, [  --with-rpmbuild=PATH      Program to use for building RPMs])
+AC_MSG_CHECKING([for rpmbuild or rpm])
+if test -x "${with_rpmbuild}"; then
+    RPMBUILD="${with_rpmbuild}"
+    AC_MSG_RESULT([${RPMBUILD} (from parameter)])
+    AC_SUBST(RPMBUILD)
+else
+    AC_MSG_RESULT([using autodetection])
+    AC_CHECK_PROGS(RPMBUILD, [rpmbuild rpm], /bin/false)
+    AC_MSG_RESULT([${RPMBUILD} (autodetect)])
+fi
+AM_CONDITIONAL(ENABLE_RPM, test "$RPMBUILD" != "/bin/false")
+AM_CONDITIONAL(RPM_LIBUSB_DEVEL, rpm -q libusb-devel > /dev/null 2>&1)
 
 dnl Use -Wall if we have gcc.
 changequote(,)dnl

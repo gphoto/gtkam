@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gtkam\n"
-"POT-Creation-Date: 2002-09-17 08:38+0200\n"
+"POT-Creation-Date: 2002-11-20 19:32+0100\n"
 "PO-Revision-Date: 2002-08-31 09:34+0200\n"
 "Last-Translator: unknown\n"
 "Language-Team: unknown\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=ISO-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/main.c:126
+#: src/main.c:127
 msgid "Image Download Program"
 msgstr ""
 
@@ -20,7 +20,7 @@ msgstr ""
 msgid "None"
 msgstr ""
 
-#: src/gtkam-chooser.c:279 src/gtkam-chooser.c:412 src/gtkam-chooser.c:666
+#: src/gtkam-chooser.c:279 src/gtkam-chooser.c:412 src/gtkam-chooser.c:671
 msgid "Best"
 msgstr ""
 
@@ -49,43 +49,43 @@ msgstr ""
 msgid "Could not detect any cameras."
 msgstr ""
 
-#: src/gtkam-chooser.c:601
+#: src/gtkam-chooser.c:602
 msgid "Select Camera"
 msgstr ""
 
-#: src/gtkam-chooser.c:616
+#: src/gtkam-chooser.c:619
 msgid "Model:"
 msgstr ""
 
-#: src/gtkam-chooser.c:629
+#: src/gtkam-chooser.c:632
 msgid "Detect"
 msgstr ""
 
-#: src/gtkam-chooser.c:635
+#: src/gtkam-chooser.c:640
 msgid "Detect USB camera"
 msgstr ""
 
-#: src/gtkam-chooser.c:637
+#: src/gtkam-chooser.c:642
 msgid "Port:"
 msgstr ""
 
-#: src/gtkam-chooser.c:658
+#: src/gtkam-chooser.c:663
 msgid "Speed:"
 msgstr ""
 
-#: src/gtkam-chooser.c:672
+#: src/gtkam-chooser.c:677
 msgid "Allow multiple frontends"
 msgstr ""
 
-#: src/gtkam-chooser.c:679
+#: src/gtkam-chooser.c:687
 msgid "Enhanced"
 msgstr ""
 
-#: src/gtkam-chooser.c:743
+#: src/gtkam-chooser.c:753
 msgid "Could not get number of supported camera models"
 msgstr ""
 
-#: src/gtkam-chooser.c:773
+#: src/gtkam-chooser.c:783
 msgid "Could not get number of ports."
 msgstr ""
 
@@ -278,7 +278,7 @@ msgstr ""
 
 #: src/gtkam-info.c:368
 #, c-format
-msgid "Could not get information about file '%s' in '%s' in folder '%s'."
+msgid "Could not get information about file '%s' in folder '%s'."
 msgstr ""
 
 #: src/gtkam-info.c:396
@@ -585,7 +585,7 @@ msgstr ""
 msgid "Save photos"
 msgstr ""
 
-#: src/gtkam-save.c:504
+#: src/gtkam-save.c:506
 msgid "Photos will be saved if this is checked"
 msgstr ""
 
@@ -593,7 +593,7 @@ msgstr ""
 msgid "Save raw data"
 msgstr ""
 
-#: src/gtkam-save.c:513
+#: src/gtkam-save.c:515
 msgid "Raw data will be saved if this is checked"
 msgstr ""
 
@@ -601,7 +601,7 @@ msgstr ""
 msgid "Save audio data"
 msgstr ""
 
-#: src/gtkam-save.c:522
+#: src/gtkam-save.c:524
 msgid "Audio data will be saved if this is checked"
 msgstr ""
 
@@ -609,7 +609,7 @@ msgstr ""
 msgid "Save thumbnails"
 msgstr ""
 
-#: src/gtkam-save.c:531
+#: src/gtkam-save.c:533
 msgid "Thumbnails will be saved if this is checked"
 msgstr ""
 
@@ -617,40 +617,40 @@ msgstr ""
 msgid "Save EXIF data"
 msgstr ""
 
-#: src/gtkam-save.c:540
+#: src/gtkam-save.c:542
 msgid "EXIF data will be saved if this is checked"
 msgstr ""
 
-#: src/gtkam-save.c:550
+#: src/gtkam-save.c:551
 msgid "Open image(s) with: "
 msgstr ""
 
-#: src/gtkam-save.c:557
+#: src/gtkam-save.c:560
 msgid "Type in the name of the program you want to run, leave blank for none"
 msgstr ""
 
-#: src/gtkam-save.c:563
+#: src/gtkam-save.c:566
 msgid "Use filename(s) provided by the camera"
 msgstr ""
 
-#: src/gtkam-save.c:568
+#: src/gtkam-save.c:573
 msgid "Choose whether to use the filename provided by the camera"
 msgstr ""
 
-#: src/gtkam-save.c:583
+#: src/gtkam-save.c:588
 msgid "Filename prefix: "
 msgstr ""
 
-#: src/gtkam-save.c:592
+#: src/gtkam-save.c:599
 msgid "Start numbering with: "
 msgstr ""
 
-#: src/gtkam-save.c:631
+#: src/gtkam-save.c:641
 #, c-format
 msgid "Save '%s'..."
 msgstr ""
 
-#: src/gtkam-save.c:653
+#: src/gtkam-save.c:663
 msgid "Save photos..."
 msgstr ""
 
@@ -735,4 +735,14 @@ msgstr ""
 msgid ""
 "Could not display '%s'. Either the image type ('%s') is not supported by gtk "
 "or the file itself is corrupt."
+msgstr ""
+
+#: src/gtkam-viewer.c:256
+#, c-format
+msgid "Downloading '%s' from folder '%s'..."
+msgstr ""
+
+#: src/gtkam-viewer.c:307
+#, c-format
+msgid "Could not download '%s' from folder '%s'."
 msgstr ""

@@ -212,9 +212,9 @@ msgstr ""
 
 #: src/gtkam-exif.c:153
 #, c-format
-msgid "Could not get exif information for '%s' in folder '%s'"
+msgid "Could not get EXIF information for '%s' in folder '%s'"
 msgstr ""
-"Impossible de récupérer les informations exif pour '%s' du dossier '%s'."
+"Impossible de récupérer les informations EXIF pour '%s' du dossier '%s'."
 
 #: src/gtkam-exif.c:166
 msgid "Could not interpret EXIF data."
@@ -225,8 +225,8 @@ msgid "The EXIF data could not be retrieved from the file."
 msgstr ""
 
 #: src/gtkam-exif.c:192
-msgid "Gtkam has been compiled without exif support."
-msgstr "Gtkam a été compilé sans support exif."
+msgid "Gtkam has been compiled without EXIF support."
+msgstr "Gtkam a été compilé sans support EXIF."
 
 #: src/gtkam-gimp.c:69 src/gtkam-gimp.c:70
 msgid "Captures images from digital camera"

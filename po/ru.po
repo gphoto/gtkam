@@ -208,7 +208,7 @@ msgstr "Получение EXIF-данных из файла '%s' в катал�
 
 #: src/gtkam-exif.c:153
 #, c-format
-msgid "Could not get exif information for '%s' in folder '%s'"
+msgid "Could not get EXIF information for '%s' in folder '%s'"
 msgstr "Невозможно получить EXIF-данные из '%s' в каталоге '%s'."
 
 #: src/gtkam-exif.c:166

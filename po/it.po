@@ -222,7 +222,7 @@ msgstr ""
 # FIXME UPSTREAM: final '.' and 'exif'
 #: src/gtkam-exif.c:153
 #, c-format
-msgid "Could not get exif information for '%s' in folder '%s'"
+msgid "Could not get EXIF information for '%s' in folder '%s'"
 msgstr ""
 "Impossibile leggere le informazioni EXIF per \"%s\" nella cartella \"%s\"."
 
@@ -237,7 +237,7 @@ msgstr "Lettura dei dati EXIF dal file non riuscita."
 
 # FIXME UPSTREAM: 'exif'
 #: src/gtkam-exif.c:192
-msgid "Gtkam has been compiled without exif support."
+msgid "Gtkam has been compiled without EXIF support."
 msgstr "Gtkam è stato compilato senza supporto per EXIF."
 
 #: src/gtkam-gimp.c:69 src/gtkam-gimp.c:70

@@ -7,13 +7,14 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gtKam\n"
-"POT-Creation-Date: 2002-01-29 11:33+0100\n"
-"PO-Revision-Date: 2002-01-19 17:08+0100\n"
-"Last-Translator: Colin Marquardt <colin@marquardt-home.de>\n"
-"Language-Team: German <de@li.org>\n"
+"POT-Creation-Date: 2002-03-21 16:29+0100\n"
+"PO-Revision-Date: 2002-03-21 16:33GMT\n"
+"Last-Translator: Marcus Meissner <marcus@jet.franken.de>\n"
+"Language-Team: Deutsch <de@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 0.9.5\n"
 
 #. Port?
 #: src/gtkam-chooser.c:187 src/gtkam-chooser.c:205
@@ -88,16 +89,16 @@ msgstr "Erlaube mehrere Frontends"
 msgid "Enhanced"
 msgstr "Erweitert"
 
-#: src/gtkam-chooser.c:656 src/gtkam-config.c:683 src/gtkam-fsel.c:357
+#: src/gtkam-chooser.c:656 src/gtkam-config.c:695 src/gtkam-fsel.c:349
 #: src/gtkam-info.c:632 src/gtkam-mkdir.c:266
 msgid "Ok"
 msgstr "Ok"
 
-#: src/gtkam-chooser.c:665 src/gtkam-config.c:690 src/gtkam-info.c:640
+#: src/gtkam-chooser.c:665 src/gtkam-config.c:702 src/gtkam-info.c:640
 msgid "Apply"
 msgstr "Anwenden"
 
-#: src/gtkam-chooser.c:673 src/gtkam-delete.c:411 src/gtkam-fsel.c:365
+#: src/gtkam-chooser.c:673 src/gtkam-delete.c:411 src/gtkam-fsel.c:357
 #: src/gtkam-info.c:658 src/gtkam-mkdir.c:274
 msgid "Cancel"
 msgstr "Abbrechen"
@@ -138,56 +139,56 @@ msgstr "Hole Dateiliste des Verzeichnisses »%s«..."
 msgid "Could not get file list for folder '%s'."
 msgstr "Konnte Dateiliste des Verzeichnisses »%s« nicht holen."
 
-#: src/gtkam-close.c:176 src/gtkam-config.c:697 src/gtkam-debug.c:330
+#: src/gtkam-close.c:176 src/gtkam-config.c:709 src/gtkam-debug.c:330
 #: src/gtkam-error.c:230 src/gtkam-preview.c:536
 msgid "Close"
 msgstr "Schließen"
 
-#: src/gtkam-config.c:169
+#: src/gtkam-config.c:170
 msgid "Applying configuration..."
 msgstr "Setze Konfiguration..."
 
-#: src/gtkam-config.c:185
+#: src/gtkam-config.c:186
 msgid "Could not apply configuration."
 msgstr "Konnte die Konfiguration nicht setzen."
 
-#: src/gtkam-config.c:232
+#: src/gtkam-config.c:233
 msgid "No additional information available. (1)"
 msgstr "Keine zusätzlichen Informationen verfügbar. (1)"
 
-#: src/gtkam-config.c:237
+#: src/gtkam-config.c:238
 msgid "General Settings"
 msgstr "Allgemeine Einstellungen"
 
-#: src/gtkam-config.c:296
+#: src/gtkam-config.c:308
 msgid "Could not execute command."
 msgstr "Konnte den Befehl nicht ausführen."
 
-#: src/gtkam-config.c:452
+#: src/gtkam-config.c:464
 msgid "No additional information available. (2)"
 msgstr "Keine zusätzlichen Informationen verfügbar. (2)"
 
-#: src/gtkam-config.c:512
+#: src/gtkam-config.c:524
 msgid "No additional information available. (3)"
 msgstr "Keine zusätzlichen Informationen verfügbar. (3)"
 
-#: src/gtkam-config.c:533
+#: src/gtkam-config.c:545
 msgid "No additional information available. (4)"
 msgstr "Keine zusätzlichen Informationen verfügbar. (4)"
 
-#: src/gtkam-config.c:580
+#: src/gtkam-config.c:592
 msgid "No additional information available. (5)"
 msgstr "Keine zusätzlichen Informationen verfügbar. (5)"
 
-#: src/gtkam-config.c:601
+#: src/gtkam-config.c:613
 msgid "No additional information available. (6)"
 msgstr "Keine zusätzlichen Informationen verfügbar. (6)"
 
-#: src/gtkam-config.c:641
+#: src/gtkam-config.c:653
 msgid "Getting configuration..."
 msgstr "Frage Konfiguration ab..."
 
-#: src/gtkam-config.c:656
+#: src/gtkam-config.c:668
 msgid "Could not get configuration."
 msgstr "Konnte die Konfiguration nicht abfragen."
 
@@ -255,7 +256,7 @@ msgid "Do you really want to delete ALL files in '%s'?"
 msgstr "Möchten Sie wirklich ALLE Dateien in »%s« löschen?"
 
 #. Delete
-#: src/gtkam-delete.c:404 src/gtkam-info.c:523 src/gtkam-list.c:413
+#: src/gtkam-delete.c:404 src/gtkam-info.c:523 src/gtkam-list.c:415
 msgid "Delete"
 msgstr "Löschen"
 
@@ -263,21 +264,21 @@ msgstr "Löschen"
 msgid "More"
 msgstr "Mehr"
 
-#: src/gtkam-fsel.c:220
+#: src/gtkam-fsel.c:212
 #, c-format
 msgid "Removing '%s' from '%s'..."
 msgstr "Entferne »%s« aus »%s«..."
 
-#: src/gtkam-fsel.c:236
+#: src/gtkam-fsel.c:228
 #, c-format
 msgid "Could not remove '%s' from '%s'"
 msgstr "Konnte Datei »%s« nicht aus Verzeichnis »%s« löschen"
 
-#: src/gtkam-fsel.c:283
+#: src/gtkam-fsel.c:275
 msgid "Make"
 msgstr "Machen"
 
-#: src/gtkam-fsel.c:289
+#: src/gtkam-fsel.c:281
 msgid "Remove"
 msgstr "Löschen"
 
@@ -329,8 +330,7 @@ msgstr "Hole Informationen über Datei »%s« im Verzeichnis »%s«..."
 #: src/gtkam-info.c:363
 #, c-format
 msgid "Could not get information about file '%s' in folder '%s'."
-msgstr ""
-"Konnte keine Informationen über Datei »%s« im Verzeichnis »%s« bekommen."
+msgstr "Konnte keine Informationen über Datei »%s« im Verzeichnis »%s« bekommen."
 
 #: src/gtkam-info.c:412
 msgid "File"
@@ -354,8 +354,8 @@ msgstr "Größe:"
 
 #: src/gtkam-info.c:486
 #, c-format
-msgid "%i bytes"
-msgstr "%i Bytes"
+msgid "%li bytes"
+msgstr "%li Bytes"
 
 #: src/gtkam-info.c:500
 msgid "Permissions:"
@@ -385,8 +385,7 @@ msgstr "Hole Vorschaubild der Datei »%s« im Verzeichnis »%s«..."
 #: src/gtkam-list.c:353
 #, c-format
 msgid "Could not get preview of file '%s' in folder '%s'"
-msgstr ""
-"Konnte Vorschaubild der Datei »%s« im Verzeichnis »%s« nicht herunterladen"
+msgstr "Konnte Vorschaubild der Datei »%s« im Verzeichnis »%s« nicht herunterladen"
 
 #: src/gtkam-list.c:382
 msgid "Info"
@@ -397,26 +396,26 @@ msgid "Exif"
 msgstr "Exif"
 
 #. Save
-#: src/gtkam-list.c:406
+#: src/gtkam-list.c:408
 msgid "Save"
 msgstr "Speichern"
 
-#: src/gtkam-list.c:500
+#: src/gtkam-list.c:502
 #, c-format
 msgid "Listing files in folder '%s'..."
 msgstr "Hole Dateiliste des Verzeichnisses »%s«..."
 
-#: src/gtkam-list.c:517
+#: src/gtkam-list.c:519
 #, c-format
 msgid "Could not get file list for folder '%s'"
 msgstr "Fehler beim Herunterladen der Dateiliste des Verzeichnisses »%s«"
 
-#: src/gtkam-list.c:561
+#: src/gtkam-list.c:563
 #, c-format
 msgid "Getting preview of file '%s' in folder '%s'..."
 msgstr "Hole Vorschau der Datei »%s« im Verzeichnis »%s«..."
 
-#: src/gtkam-list.c:589
+#: src/gtkam-list.c:591
 #, c-format
 msgid "Could not get preview of file '%s' in folder '%s'."
 msgstr "Konnte Vorschau der Datei »%s« im Verzeichnis »%s« nicht holen."
@@ -660,35 +659,36 @@ msgid "Capture"
 msgstr "Aufnahme machen"
 
 #: src/gtkam-preview.c:437
-msgid "0°"
-msgstr "0°"
+msgid "0 degrees"
+msgstr "0 Grad"
 
 #: src/gtkam-preview.c:445
 msgid "Don't rotate thumbnail"
 msgstr "Vorschaubild nicht rotieren"
 
 #: src/gtkam-preview.c:447
-msgid "-90°"
-msgstr "-90°"
+msgid "-90 degrees"
+msgstr "-90 Grad"
 
 #: src/gtkam-preview.c:454
-msgid "Rotate thumbnail by -90°"
+msgid "Rotate thumbnail by -90 degrees"
 msgstr "Vorschaubild um -90° rotieren"
 
 #: src/gtkam-preview.c:456
-msgid "+90°"
-msgstr "+90°"
+msgid "+90 degrees"
+msgstr "+90 Grad"
 
 #: src/gtkam-preview.c:463
-msgid "Rotate thumbnail by 90°"
+#, fuzzy
+msgid "Rotate thumbnail by 90 degrees"
 msgstr "Vorschaubild um 90° rotieren"
 
 #: src/gtkam-preview.c:465
-msgid "180°"
-msgstr "180°"
+msgid "180 degrees"
+msgstr "180 Grad"
 
 #: src/gtkam-preview.c:472
-msgid "Rotate thumbnail by 180°"
+msgid "Rotate thumbnail by 180 degrees"
 msgstr "Vorschaubild um 180° rotieren"
 
 #: src/gtkam-preview.c:480
@@ -863,78 +863,3 @@ msgstr ""
 "Konnte »%s« nicht anzeigen. Entweder wird der Bildtyp (»%s«) nicht von GTK "
 "unterstützt oder die Datei selbst ist nicht in Ordnung."
 
-#~ msgid "Save As"
-#~ msgstr "Speichere Unter..."
-
-#~ msgid "_Delete"
-#~ msgstr "_Lösche Photos"
-
-#~ msgid "_All Photos"
-#~ msgstr "_Alle"
-
-#~ msgid "Save selected photos"
-#~ msgstr "Speichere ausgewählte Photos"
-
-#~ msgid "Could not delete '%s' in '%s'"
-#~ msgstr "Konnte »%s« in »%s« nicht löschen"
-
-#~ msgid "Could not download file"
-#~ msgstr "Konnte Datei nicht herunterladen"
-
-#~ msgid "Could not get information about '%s'"
-#~ msgstr "Konnte Informationen über »%s« nicht abfragen"
-
-#~ msgid "Creation time:"
-#~ msgstr "Erzeugungszeit:"
-
-#~ msgid "Uploading '%s'..."
-#~ msgstr "Lade »%s« hoch..."
-
-#~ msgid "Could not create new directory '%s' in '%s'"
-#~ msgstr "Konnte neues Verzeichnis »%s« nicht in »%s« anlegen"
-
-#~ msgid "Getting '%s' (%i of %i)..."
-#~ msgstr "Hole »%s« (%i von %i)..."
-
-#~ msgid "Could not delete all photos"
-#~ msgstr "Konnte nicht alle Photos löschen"
-
-#~ msgid "Others"
-#~ msgstr "Andere"
-
-#~ msgid "Could not retrieve number of cameras"
-#~ msgstr "Konnte die Anzahl der Kameras nicht abfragen"
-
-#~ msgid "Date & Time not implemented!"
-#~ msgstr "Datum und Uhrzeit sind noch nicht implementiert!"
-
-#~ msgid "Zoom: "
-#~ msgstr "Zoom: "
-
-#~ msgid "Could not initialize '%s' on port '%s'"
-#~ msgstr "Konnte »%s« am Anschluss »%s« nicht initialisieren"
-
-#~ msgid "No debugging"
-#~ msgstr "Kein Debugging"
-
-#~ msgid "Low debugging"
-#~ msgstr "Wenig Debugging"
-
-#~ msgid "Medium debugging"
-#~ msgstr "Mittleres Debugging"
-
-#~ msgid "High debugging"
-#~ msgstr "Viel Debugging"
-
-#~ msgid "Show debugging messages"
-#~ msgstr "Zeige Debugging-Nachrichten"
-
-#, fuzzy
-#~ msgid "Could not capture: %s"
-#~ msgstr "Konnte keine Aufnahme machen"
-
-#~ msgid "Refresh every "
-#~ msgstr "Vorschau jede "
-
-#~ msgid " second(s)"
-#~ msgstr "Sekunde(n)"

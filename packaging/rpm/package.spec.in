@@ -1,26 +1,46 @@
-Summary: graphical frontend for libgphoto2
+########################################################################
+#
+# $Id$
+#
+# RPM spec file for gphoto2
+#
+# TODO list concerning packaging
+# - review and coordinate RPM packaging for gphoto2, libusb, gtkam
+#
+########################################################################
+
+####################################
+Summary: Graphical frontend for libgphoto2
 Name: @PACKAGE@
 Version: @VERSION@
-Release: 2
+Release: 3
 License: LGPL
 Group: Applications/Multimedia
 BuildRoot: %{_tmppath}/%{name}-%{version}-root
-Source: http://www.gphoto.org/dist/%{name}-%{version}.tar.gz
+Source: http://www.gphoto.org/dist/@PACKAGE@-@VERSION@.tar.gz
 Url: http://www.gphoto.org/
+Requires: libusb >= 0.0.4
 Requires: gphoto
-Requires: libusb
+PreReq: hotplug
+Provides: libgphoto2
 BuildRequires: gphoto-devel
-BuildRequires: gtk-doc
-BuildRequires: findutils
+BuildRequires: findutils perl
 
-
+####################################
 %description
 gtkam is a GUI frontend for libgphoto2
 
+
+########################################################################
+# Building and installing the beast into %{buildroot}
+########################################################################
+
+####################################
 %prep
-rm -rf $RPM_BUILD_DIR/%{name}-%{version}
+rm -rf "${RPM_BUILD_DIR}/%{name}-%{version}"
 %setup -q -n %{name}-%{version}
 
+####################################
 %build
 CFLAGS="${CFLAGS:-%optflags}" ; export CFLAGS ;
 CXXFLAGS="${CXXFLAGS:-%optflags}" ; export CXXFLAGS ;
@@ -43,8 +63,9 @@ FFLAGS="${FFLAGS:-%optflags}" ; export FFLAGS ;
         --with-html-dir=%{_docdir}/%{name}-%{version}/html
 make
 
+####################################
 %install
-rm -rf $RPM_BUILD_ROOT
+rm -rf "${RPM_BUILD_ROOT}"
 
 make DESTDIR=%{buildroot} \
         prefix=%{_prefix} \
@@ -63,17 +84,27 @@ make DESTDIR=%{buildroot} \
         infodir=%{_infodir} \
 install
 
+# build file list
 find %{buildroot} -type f | sed 's!^%{buildroot}!!' | sort | grep -v '^/usr/doc/' > %{name}-%{version}.files
 
+
+####################################
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf "${RPM_BUILD_ROOT}"
 
+########################################################################
+# file list and installation for main package
+########################################################################
 
+####################################
 %files -f %{name}-%{version}.files
 %defattr(-,root,root)
 %doc README COPYING AUTHORS NEWS MANUAL
 
-%changelog
-* Sun Oct 21 2001 Hans Ulrich Niedermann <gp@n-dimensional.de>
-- integrated spec file into source package
 
+########################################################################
+# ChangeLog
+########################################################################
+%changelog
+* Wed Oct 31 2001 Hans Ulrich Niedermann <gp@n-dimensional.de>
+- moved to new RPM build mechanism (make rpm rulez!)

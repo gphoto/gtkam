@@ -94,6 +94,10 @@ Makefile
 gtkam.spec
 intl/Makefile
 art/Makefile
+pixmaps/Makefile
+packaging/Makefile
+packaging/rpm/Makefile
+packaging/rpm/package.spec
 src/Makefile
 po/Makefile.in
 ])

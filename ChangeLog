@@ -1,3 +1,20 @@
+2001-10-31 Hans Ulrich Niedermann <gp@n-dimensional.de>
+
+	* INSTALL: copied from gphoto2 - updated install instructions
+	* Makefile.am: removed old spec files, added packaging directory
+	* Makefile.am: removed special pixmap rules, added pixmaps dir
+	* Makefile.am: added package building rules
+	* configure.in: added pixmaps/ and packaging/*
+	* gtkam.spec.in: removed, new spec file in packaging/rpm/
+	* packages/: added
+	* packages/Makefile.am: added
+	* packages/.cvsignore: added
+	* packages/rpm/Makefile.am: added (RPM build rules)
+	* packages/rpm/.cvsignore: added
+	* packages/rpm/package.spec.in: the new RPM spec file
+	* pixmaps/.cvsignore: added
+	* pixmaps/Makefile.am: added
+
 2001-10-29 Lutz Müller <urc8@rz.uni-karlsruhe.de>
 
 	* src/main.c: Look for gphoto2 settings, too.

@@ -1,40 +1,34 @@
 ## Process this file with automake to produce Makefile.in
 
-EXTRA_DIST = @PACKAGE@.spec @PACKAGE@.spec.in autogen.sh acconfig.h gphoto2-gtk.glade MANUAL
+EXTRA_DIST = autogen.sh acconfig.h gphoto2-gtk.glade MANUAL
 
-SUBDIRS = po src intl art
+SUBDIRS = po src intl art pixmaps packaging
 
 gtkamdocdir = $(prefix)/doc/gtkam
 gtkamdoc_DATA = AUTHORS COPYING MANUAL
-
-install-data-local:
-	@$(NORMAL_INSTALL)
-	if test -d $(srcdir)/pixmaps; then \
-	  $(mkinstalldirs) $(DESTDIR)$(pkgdatadir)/pixmaps; \
-	  for pixmap in $(srcdir)/pixmaps/*; do \
-	    if test -f $$pixmap; then \
-	      $(INSTALL_DATA) $$pixmap $(DESTDIR)$(pkgdatadir)/pixmaps; \
-	    fi \
-	  done \
-	fi
-
-dist-hook:
-	if test -d pixmaps; then \
-	  mkdir $(distdir)/pixmaps; \
-	  for pixmap in pixmaps/*; do \
-	    if test -f $$pixmap; then \
-	      cp -p $$pixmap $(distdir)/pixmaps; \
-	    fi \
-	  done \
-	fi
 
 ########################################################################
 # create .tar.bz2 distribution package for convenience if the
 # $(TAR) on this system supports it. else do nothing.
 
 dist-hook:
+	if [ "x${CDPATH}" != "x" ]; then \
+		echo "You have set CDPATH. If make dist fails, try to unset CDPATH."; \
+	fi
 	-$(MAKE) dist-bzip2
 
 dist-bzip2:
 	-chmod -R a+r $(distdir)
 	-$(TAR) chojf $(distdir).tar.bz2 $(distdir)
+
+# create RPM packages
+.PHONY: rpm
+rpm: Makefile
+	$(MAKE) dist
+	$(MAKE) -C packaging/rpm rpm
+
+# add CVS tags - used only by the project maintainer to tag the files of a
+# released version
+.PHONY: cvs-tags
+cvs-tags: Makefile
+	@echo cvs tag "@PACKAGE@-$$(echo '@VERSION@' | sed 's/\./_/g')"

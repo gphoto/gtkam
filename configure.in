@@ -14,7 +14,7 @@ AM_PATH_GTK(1.2.0, ,
 
 dnl Add the languages which your application supports here.
 ALL_LINGUAS="fr de"
-AM_GNU_GETTEXT
+dnl AM_GNU_GETTEXT
 
 dnl Set PACKAGE_LOCALE_DIR in config.h.
 if test "x${prefix}" = "xNONE"; then
@@ -104,6 +104,5 @@ changequote([,])dnl
 AC_OUTPUT([
 Makefile
 src/Makefile
-intl/Makefile
 po/Makefile.in
 ])

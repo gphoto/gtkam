@@ -1,5 +1,9 @@
 2002-07-22  Lutz Müller <lutz@users.sourceforge.net>
 
+	* src/gtkam-status.c: More user feedback.
+
+2002-07-22  Lutz Müller <lutz@users.sourceforge.net>
+
 	* src/gtkam-tree.c: Tell people in a tooltip that a right-click
 	  menu exists.
 

@@ -213,7 +213,6 @@ static void
 update_func (GPContext *c, unsigned int id, float current, void *data)
 {
         GtkamStatus *status = GTKAM_STATUS (data);
-	GtkWidget *w;
         GtkProgressBar *p;
 	gfloat target;
 
@@ -229,11 +228,9 @@ update_func (GPContext *c, unsigned int id, float current, void *data)
         p = status->priv->progress->pdata[id];
 	gtk_progress_bar_set_fraction (p, 
 		current / g_array_index (status->priv->target, float, id));
-	w = gtk_widget_get_ancestor (GTK_WIDGET (p), GTK_TYPE_WINDOW);
-	if (w) {
-		gtk_widget_queue_draw (w);
-		gdk_window_process_updates (w->window, TRUE);
-	}
+
+	while (gtk_events_pending ())
+		gtk_main_iteration ();
 }
 
 static void

@@ -7,10 +7,10 @@
  * License as published by the Free Software Foundation; either
  * version 2 of the License, or (at your option) any later version.
  *
- * This library is distributed in the hope that it will be useful, 
- * but WITHOUT ANY WARRANTY; without even the implied warranty of 
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details. 
+ * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the
@@ -443,7 +443,7 @@ on_detect_clicked (GtkButton *button, GtkamChooser *chooser)
 						      GTK_WINDOW (chooser));
 			gtk_widget_show (d);
 		} else {
-			//FIXME: Let user choose from the list
+			/* FIXME: Let user choose from the list */
 			gp_list_get_name (&list, 0, &name);
 			gtk_entry_set_text (chooser->priv->entry_model, name);
 			gtk_entry_set_text (chooser->priv->entry_port,
@@ -499,7 +499,7 @@ gtkam_chooser_set_port_list (GtkamChooser *chooser, GList *list)
 	g_return_if_fail (GTKAM_IS_CHOOSER (chooser));
 
         if (list) {
-		
+
 		/* Remember the old entry */
 		port = g_strdup (gtk_entry_get_text (
 						chooser->priv->entry_port));

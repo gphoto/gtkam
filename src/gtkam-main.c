@@ -7,10 +7,10 @@
  * License as published by the Free Software Foundation; either
  * version 2 of the License, or (at your option) any later version.
  *
- * This library is distributed in the hope that it will be useful, 
- * but WITHOUT ANY WARRANTY; without even the implied warranty of 
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details. 
+ * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the
@@ -348,7 +348,7 @@ action_zoom_out (gpointer callback_data, guint callback_action,
 		 GtkWidget *widget)
 {
 	GtkamMain *m = GTKAM_MAIN (callback_data);
-	
+
 	gtkam_list_zoom_out (GTKAM_LIST (m->priv->list));
 }
 
@@ -365,7 +365,7 @@ static void
 on_folder_selected (GtkamTree *tree, GtkamTreeFolderSelectedData *data,
 		    GtkamMain *m)
 {
-	gtkam_list_add_folder (GTKAM_LIST (m->priv->list), 
+	gtkam_list_add_folder (GTKAM_LIST (m->priv->list),
 			       data->camera, data->folder);
 	gtkam_main_update_sensitivity (m);
 }
@@ -452,7 +452,7 @@ action_about (gpointer callback_data, guint callback_action,
 		N_("gtkam is a program that lets you download\n"
 		   "images from many digital cameras. It uses\n"
 		   "libgphoto2. More info is available at\n"
-		   "http://www.gphoto.net.\n"
+		   "http:/* www.gphoto.net.\n" */
 		   "\n"
 		   "Enjoy the wonderful world of gphoto!");
 #ifdef HAVE_GNOME
@@ -493,11 +493,11 @@ action_about (gpointer callback_data, guint callback_action,
 		features = g_strjoinv(", ", &v[1]);
 
 		if (gcomments == NULL) {
-			gcomments = g_strdup_printf(_("%s\n\n%s %s with options:\n    %s\n"), 
+			gcomments = g_strdup_printf(_("%s\n\n%s %s with options:\n    %s\n"),
 						    _(comments), name, v[0], features);
 		} else {
 			gchar *old = gcomments;
-			gcomments = g_strdup_printf(_("%s\n%s %s with options:\n    %s\n"), 
+			gcomments = g_strdup_printf(_("%s\n%s %s with options:\n    %s\n"),
 						    gcomments, name, v[0], features);
 			free(old);
 		}
@@ -510,7 +510,7 @@ action_about (gpointer callback_data, guint callback_action,
 	d = gnome_about_new (PACKAGE, VERSION, "GPL", gcomments, authors,
 			     documenters, translator_credits, p);
 	g_object_unref (G_OBJECT (p));
-	w = gnome_href_new ("http://www.gphoto.org", "http://www.gphoto.org");
+	w = gnome_href_new ("http:/* www.gphoto.org", "http://www.gphoto.org"); */
 	gtk_widget_show (w);
 	gtk_box_pack_end (GTK_BOX (GTK_DIALOG (d)->vbox), w, FALSE, FALSE, 0);
 #else
@@ -520,7 +520,7 @@ action_about (gpointer callback_data, guint callback_action,
 #endif
 	gtk_window_set_transient_for (GTK_WINDOW (d), GTK_WINDOW (m));
 	gtk_widget_show (d);
-	// FIXME free(gcomments);
+	/* FIXME free(gcomments); */
 }
 
 #undef CHECK_NULL
@@ -566,7 +566,7 @@ void
 gtkam_main_load (GtkamMain *m)
 {
 	g_return_if_fail (GTKAM_IS_MAIN (m));
-	
+
 	gtkam_tree_load (GTKAM_TREE (m->priv->tree));
 }
 

@@ -20,15 +20,12 @@
 #include "config.h"
 #include "util.h"
 
-#include <stdio.h>    
+#include <glib.h>    
 
 int file_exists(char *filename) {
 
-        FILE *f;
-
-        if ((f = fopen(filename, "r"))) {
-                fclose(f);
-		return (1);
-        }
-	return (0);
+	if (g_file_test (filename, G_FILE_TEST_EXISTS))
+		return 1;
+	else
+		return 0;
 }

@@ -15,6 +15,8 @@ icon_DATA = gtkam.png
 INCLUDES = \
        -DDATADIR=\""$(datadir)"\"
 
+
+
 if ENABLE_RPM
 
 # create RPM packages
@@ -24,6 +26,8 @@ rpm: Makefile
 	$(MAKE) -C packaging/rpm rpm
 
 endif
+
+
 
 if MAINTAINER_MODE
 

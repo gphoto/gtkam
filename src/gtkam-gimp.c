@@ -56,7 +56,7 @@
 #define PLUG_IN_NAME "gtkam-gimp"
 #define PLUG_IN_PRINT_NAME "GtkamGimp"
 #define PLUG_IN_DESCRIPTION "Capture images using your digital camera"
-#define PLUG_IN_HELP "This plug-in will capture images using your digital camera"
+#define PLUG_IN_HELP "This plug-in will let you capture images using your digital camera"
 #define PLUG_IN_AUTHOR "Lutz Müller <urc8@rz.uni-karlsruhe.de>"
 #define PLUG_IN_COPYRIGHT "GPL"
 #define PLUG_IN_VERSION VERSION
@@ -81,9 +81,14 @@ query (void)
 }
 
 static void
-on_captured (GtkamPreview *preview, const gchar *path, gchar **rpath)
+on_captured (GtkamPreview *preview, const gchar *path, CameraFilePath *fpath)
 {
-	*rpath = g_strdup (path);
+	gchar *dir;
+
+	dir = g_dirname (path);
+	strncpy (fpath->folder, dir, sizeof (fpath->folder));
+	g_free (dir);
+	strncpy (fpath->name, g_basename (path), sizeof (fpath->name));
 	gtk_main_quit ();
 }
 
@@ -116,7 +121,6 @@ run (gchar *name, gint nparams, GimpParam *param, gint *nreturn_vals,
 	CameraFile *file;
 	int result;
 	GtkWidget *preview, *chooser, *dialog;
-	gchar *rpath = NULL, *dir;
 	static GimpParam values[2];
 	static PreviewParams preview_params = {0, 1.};
 	GimpDrawable *drawable;
@@ -199,15 +203,16 @@ run (gchar *name, gint nparams, GimpParam *param, gint *nreturn_vals,
 			gtkam_preview_set_zoom (GTKAM_PREVIEW (preview),
 						preview_params.zoom);
 			gtk_widget_show (preview);
+			memset (&path, 0, sizeof (CameraFilePath));
 			gtk_signal_connect (GTK_OBJECT (preview), "captured",
-				GTK_SIGNAL_FUNC (on_captured), &rpath);
+				GTK_SIGNAL_FUNC (on_captured), &path);
 			gtk_signal_connect (GTK_OBJECT (preview),
 				"delete_event",
 				GTK_SIGNAL_FUNC (gtk_main_quit), NULL);
 			gtk_main ();
 
 			/* Check if the user cancelled */
-			if (!rpath) {
+			if (!strlen (path.folder)) {
 				gp_camera_unref (camera);
 				values[0].data.d_status = GIMP_PDB_CANCEL;
 				return;
@@ -225,36 +230,6 @@ run (gchar *name, gint nparams, GimpParam *param, gint *nreturn_vals,
 			gtk_object_destroy (GTK_OBJECT (preview));
 			gimp_set_data (PLUG_IN_NAME, &preview_params,
 				       sizeof (PreviewParams));
-
-			/* Get the file */
-			dir = g_dirname (rpath);
-			gp_file_new (&file);
-			gimp_progress_init (_("Downloading file"));
-			gp_camera_set_progress_func (camera, progress_func,
-						     NULL);
-			result = gp_camera_file_get (camera, dir,
-				g_basename (rpath), GP_FILE_TYPE_NORMAL, file);
-			gp_camera_set_progress_func (camera, NULL, NULL);
-			g_free (dir);
-			g_free (rpath);
-			if (result < 0) {
-				gp_file_unref (file);
-				dialog = gtkam_error_new (_("Could not "
-					"download file"), result, camera, NULL);
-				gtk_widget_show (dialog);
-				gp_camera_unref (camera);
-
-				/* Wait until the user closes the dialog */
-				gtk_signal_connect (GTK_OBJECT (dialog),
-					"delete_event",
-					GTK_SIGNAL_FUNC (gtk_main_quit), NULL);
-				gtk_main ();
-
-				values[0].data.d_status =
-						GIMP_PDB_EXECUTION_ERROR;
-				return;
-			}
-			gp_camera_unref (camera);
 
 			break;
 		}
@@ -276,28 +251,6 @@ run (gchar *name, gint nparams, GimpParam *param, gint *nreturn_vals,
 			values[0].data.d_status = GIMP_PDB_EXECUTION_ERROR;
 			return;
 		}
-		gp_file_new (&file);
-		gimp_progress_init (_("Downloading file"));
-		gp_camera_set_progress_func (camera, progress_func, NULL);
-		result = gp_camera_file_get (camera, path.folder, path.name,
-					     GP_FILE_TYPE_NORMAL, file);
-		gp_camera_set_progress_func (camera, NULL, NULL);
-		if (result < 0) {
-			gp_file_unref (file);
-			dialog = gtkam_error_new (_("Could not "
-				"download file"), result, camera, NULL);
-			gtk_widget_show (dialog); 
-			gp_camera_unref (camera);
-
-			/* Wait until the user closes the dialog */
-			gtk_signal_connect (GTK_OBJECT (dialog), "delete_event",
-					GTK_SIGNAL_FUNC (gtk_main_quit), NULL);
-			gtk_main ();
-
-			values[0].data.d_status = GIMP_PDB_EXECUTION_ERROR;
-			return;
-		}
-		gp_camera_unref (camera);
 
 		break;
 	default:
@@ -305,6 +258,33 @@ run (gchar *name, gint nparams, GimpParam *param, gint *nreturn_vals,
 		values[0].data.d_status = GIMP_PDB_EXECUTION_ERROR;
 		return;
 	}
+
+	/*
+	 * At this point, the camera has captured an image. Download the 
+	 * file
+	 */
+	gp_file_new (&file);
+	gimp_progress_init (_("Downloading file"));
+	gp_camera_set_progress_func (camera, progress_func, NULL);
+	result = gp_camera_file_get (camera, path.folder, path.name,
+				     GP_FILE_TYPE_NORMAL, file);
+	gp_camera_set_progress_func (camera, NULL, NULL);
+	if (result < 0) {
+		gp_file_unref (file);
+		dialog = gtkam_error_new (_("Could not "
+			"download file"), result, camera, NULL);
+		gtk_widget_show (dialog);
+		gp_camera_unref (camera);
+
+		/* Wait until the user closes the dialog */
+		gtk_signal_connect (GTK_OBJECT (dialog), "delete_event",
+				    GTK_SIGNAL_FUNC (gtk_main_quit), NULL);
+		gtk_main ();
+
+		values[0].data.d_status = GIMP_PDB_EXECUTION_ERROR;
+		return;
+	}
+	gp_camera_unref (camera);
 
 	/* At this point, we've got a file. Make a pixbuf out of it. */
 	gp_file_get_data_and_size (file, &data, &size);

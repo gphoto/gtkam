@@ -161,20 +161,18 @@ gtkam_chooser_get_type (void)
 	return (chooser_type);
 }
 
-static void
-on_apply_clicked (GtkButton *button, GtkamChooser *chooser)
+static Camera *
+gtkam_chooser_get_camera (GtkamChooser *chooser)
 {
+	GtkWidget *dialog;
 	GPPortInfo info;
 	Camera *camera;
 	CameraAbilities abilities;
 	const gchar *model, *port, *speed;
 	gchar *speed_number;
-	int m, p;
+	int m, p, r;
 	gchar *port_name;
 	guint i;
-
-	if (!chooser->priv->needs_update)
-		return;
 
 	model = gtk_entry_get_text (chooser->priv->entry_model);
 	port  = gtk_entry_get_text (chooser->priv->entry_port);
@@ -209,6 +207,17 @@ on_apply_clicked (GtkButton *button, GtkamChooser *chooser)
 	if (strcmp (speed, _("Best")))
 		gp_camera_set_port_speed (camera, atoi (speed));
 
+	/* Initialize the camera */
+	r = gp_camera_init (camera);
+	if (r < 0) {
+		dialog = gtkam_error_new (_("Could not initialize camera"),
+			r, camera, GTK_WIDGET (chooser));
+		gtk_widget_show (dialog);
+		gp_camera_unref (camera);
+		return (NULL);
+	}
+
+	/* Remember the settings */
 	gp_setting_set ("gtkam", "model", (char*) model);
 	gp_setting_set ("gtkam", "port", port_name);
 	g_free (port_name);
@@ -217,14 +226,28 @@ on_apply_clicked (GtkButton *button, GtkamChooser *chooser)
 	else
 		speed_number = g_strdup (speed);
 	gp_setting_set ("gtkam", "speed", (char*) speed_number);
-	g_free (speed_number);
+	g_free (speed_number); 
 
-	gtk_signal_emit (GTK_OBJECT (chooser),
-			 signals[CAMERA_SELECTED], camera);
-	gp_camera_unref (camera);
+	return (camera);
+}
 
-	chooser->priv->needs_update = FALSE;
-	gtk_widget_set_sensitive (chooser->apply_button, FALSE);
+static void
+on_apply_clicked (GtkButton *button, GtkamChooser *chooser)
+{
+	Camera *camera;
+
+	if (!chooser->priv->needs_update)
+		return;
+
+	camera = gtkam_chooser_get_camera (chooser);
+	if (camera) {
+		gtk_signal_emit (GTK_OBJECT (chooser),
+				 signals[CAMERA_SELECTED], camera);
+		gp_camera_unref (camera);
+
+		chooser->priv->needs_update = FALSE;
+		gtk_widget_set_sensitive (chooser->apply_button, FALSE);
+	}
 }
 
 static void
@@ -237,9 +260,18 @@ on_cancel_clicked (GtkButton *button, GtkamChooser *chooser)
 static void
 on_ok_clicked (GtkButton *button, GtkamChooser *chooser)
 {
-	if (chooser->priv->needs_update)
-		on_apply_clicked (button, chooser);
-	on_cancel_clicked (button, chooser);
+	Camera *camera;
+
+	if (chooser->priv->needs_update) {
+		camera = gtkam_chooser_get_camera (chooser);
+		if (camera) {
+			gtk_signal_emit (GTK_OBJECT (chooser),
+					 signals[CAMERA_SELECTED], camera);
+			gp_camera_unref (camera);
+			gtk_object_destroy (GTK_OBJECT (chooser));
+		}
+	} else
+		gtk_object_destroy (GTK_OBJECT (chooser));
 }
 
 static void
@@ -339,6 +371,7 @@ static void
 gtkam_chooser_set_model_list (GtkamChooser *chooser, GList *list)
 {
 	gchar *model;
+	guint i;
 
 	g_return_if_fail (GTKAM_IS_CHOOSER (chooser));
 
@@ -349,7 +382,10 @@ gtkam_chooser_set_model_list (GtkamChooser *chooser, GList *list)
 					chooser->priv->entry_model));
 		gtk_combo_set_popdown_strings (chooser->priv->combo_model,
 					       list);
-		gtk_entry_set_text (chooser->priv->entry_model, model);
+		for (i = 0; i < g_list_length (list); i++)
+			if (!strcmp (g_list_nth_data (list, i), model))
+				gtk_entry_set_text (chooser->priv->entry_model,
+						    model);
 		g_free (model);
 		gtk_widget_set_sensitive (chooser->priv->ok, TRUE);
 	} else {
@@ -395,6 +431,7 @@ gtkam_chooser_new (void)
 	GdkBitmap *bitmap;
 	GdkPixbuf *pixbuf;
 	char port[1024], speed[1024], model[1024];
+	gboolean p, s, m;
 
 	chooser = gtk_type_new (GTKAM_TYPE_CHOOSER);
 
@@ -515,11 +552,23 @@ gtkam_chooser_new (void)
 	/* Fill the model combo with all models */
 	gtkam_chooser_set_camera_mask (chooser, GP_OPERATION_NONE);
 
+	gtk_signal_connect (GTK_OBJECT (chooser->priv->entry_model), "changed",
+			    GTK_SIGNAL_FUNC (on_model_changed), chooser);
+	gtk_signal_connect (GTK_OBJECT (chooser->priv->entry_port), "changed",
+			    GTK_SIGNAL_FUNC (on_port_changed), chooser);
+	gtk_signal_connect (GTK_OBJECT (chooser->priv->entry_speed), "changed",
+			    GTK_SIGNAL_FUNC (on_speed_changed), chooser);
+
+	/* Remember what we update */
+	p = m = s = FALSE;
+
 	/* Do we have a model? */
 	if ((gp_setting_get ("gtkam", "camera", model) == GP_OK) ||
 	    (gp_setting_get ("gtkam", "model", model) == GP_OK) ||
-	    (gp_setting_get ("gphoto2", "model", model) == GP_OK))
+	    (gp_setting_get ("gphoto2", "model", model) == GP_OK)) {
+		m = TRUE;
 		gtk_entry_set_text (chooser->priv->entry_model, model);
+	}
 
 	/* Do we have a port? */
 	if ((gp_setting_get ("gtkam", "port", port) == GP_OK) ||
@@ -538,6 +587,7 @@ gtkam_chooser_new (void)
 							info.name, info.path);
 				gtk_entry_set_text (chooser->priv->entry_port,
 						    name);
+				p = TRUE;
 				g_free (name);
 				break;
 			}
@@ -551,18 +601,12 @@ gtkam_chooser_new (void)
 		else
 			gtk_entry_set_text (chooser->priv->entry_speed,
 					    _("Best"));
+		s = TRUE;
 	}
 
-	/*
-	 * Connect the signals at the end in order to not mess up
-	 * sensitivity
-	 */
-	gtk_signal_connect (GTK_OBJECT (chooser->priv->entry_model), "changed",
-			    GTK_SIGNAL_FUNC (on_model_changed), chooser);
-	gtk_signal_connect (GTK_OBJECT (chooser->priv->entry_port), "changed",
-			    GTK_SIGNAL_FUNC (on_port_changed), chooser);
-	gtk_signal_connect (GTK_OBJECT (chooser->priv->entry_speed), "changed",
-			    GTK_SIGNAL_FUNC (on_speed_changed), chooser);
+	chooser->priv->needs_update = !m || !p || !s;
+	gtk_widget_set_sensitive (chooser->apply_button,
+				  chooser->priv->needs_update);
 
 	return (GTK_WIDGET (chooser));
 }

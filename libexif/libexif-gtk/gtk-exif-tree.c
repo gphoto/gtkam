@@ -141,11 +141,11 @@ gtk_exif_tree_set_data (GtkExifTree *tree, ExifData *data)
 	exif_data_ref (data);
 
 	gtk_tree_remove_items (GTK_TREE (tree), GTK_TREE (tree)->children);
-	for (i = 0; i < data->content->count; i++) {
+	for (i = 0; i < data->ifd0->count; i++) {
 		item = gtk_exif_tree_item_new ();
 		gtk_widget_show (item);
 		gtk_tree_append (GTK_TREE (tree), item);
 		gtk_exif_tree_item_set_entry (
-			GTK_EXIF_TREE_ITEM (item), data->content->entries[i]);
+			GTK_EXIF_TREE_ITEM (item), data->ifd0->entries[i]);
 	}
 }

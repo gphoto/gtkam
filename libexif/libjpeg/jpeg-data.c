@@ -23,6 +23,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <unistd.h>
 
 //#define DEBUG
 
@@ -79,6 +80,7 @@ jpeg_data_save_file (JPEGData *data, const char *path)
 	if (!d)
 		return;
 
+	unlink (path);
 	f = fopen (path, "w");
 	if (!f) {
 		free (d);
@@ -122,15 +124,15 @@ jpeg_data_save_data (JPEGData *data, unsigned char **d, unsigned int *ds)
 			break;
 		case JPEG_MARKER_APP1:
 			exif_data_save_data (s.content.app1, &ed, &eds);
-			*d = realloc (*d, sizeof (char) * (*ds + eds - 2));
-			memcpy (*d + *ds, ed + 2, eds - 2);
-			*ds += eds - 2;
+			*d = realloc (*d, sizeof (char) * (*ds + eds));
+			memcpy (*d + *ds, ed, eds);
+			*ds += eds;
 			break;
 		default:
 			*d = realloc (*d, sizeof (char) *
 					(*ds + s.content.generic.size + 2));
-			(*d)[*ds + 0] = s.content.generic.size >> 8;
-			(*d)[*ds + 1] = s.content.generic.size >> 0;
+			(*d)[*ds + 0] = (s.content.generic.size + 2) >> 8;
+			(*d)[*ds + 1] = (s.content.generic.size + 2) >> 0;
 			*ds += 2;
 			memcpy (*d + *ds, s.content.generic.data,
 				s.content.generic.size);

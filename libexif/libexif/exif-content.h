@@ -45,11 +45,6 @@ void         exif_content_ref   (ExifContent *content);
 void         exif_content_unref (ExifContent *content);
 void         exif_content_free  (ExifContent *content);
 
-void         exif_content_parse (ExifContent *content,
-				 const unsigned char *data,
-				 unsigned int size,
-				 unsigned int offset, ExifByteOrder order);
-
 void         exif_content_add_entry    (ExifContent *content, ExifEntry *e);
 void         exif_content_remove_entry (ExifContent *content, ExifEntry *e);
 ExifEntry   *exif_content_get_entry    (ExifContent *content, ExifTag tag);

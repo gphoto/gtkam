@@ -29,7 +29,15 @@ typedef struct _ExifDataPrivate ExifDataPrivate;
 
 struct _ExifData
 {
-	ExifContent *content;
+	ExifContent *ifd0;
+	ExifContent *ifd1;
+	ExifContent *ifd_exif;
+	ExifContent *ifd_gps;
+	ExifContent *ifd_interoperability;
+
+	unsigned char *data;
+	unsigned int size;
+
 	ExifDataPrivate *priv;
 };
 

@@ -52,10 +52,6 @@ void        exif_entry_ref   (ExifEntry *entry);
 void        exif_entry_unref (ExifEntry *entry);
 void        exif_entry_free  (ExifEntry *entry);
 
-void        exif_entry_parse     (ExifEntry *entry, const unsigned char *data,
-			          unsigned int size, unsigned int offset,
-			          ExifByteOrder order);
-
 void        exif_entry_initialize (ExifEntry *entry, ExifTag tag);
 
 const char *exif_entry_get_value  (ExifEntry *entry);

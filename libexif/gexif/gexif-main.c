@@ -37,6 +37,8 @@
 
 #include <libexif-gtk/gtk-exif-browser.h>
 
+#include "gexif-thumbnail.h"
+
 struct _GExifMainPrivate
 {
 	gchar *path;
@@ -251,6 +253,17 @@ on_about_activate (GtkMenuItem *item, GExifMain *m)
 	g_warning ("Implement!");
 }
 
+static void
+on_thumbnail_activate (GtkMenuItem *item, GExifMain *m)
+{
+	GtkWidget *dialog;
+
+	dialog = gexif_thumbnail_new (m->priv->data->data,
+				      m->priv->data->size);
+	gtk_window_set_transient_for (GTK_WINDOW (dialog), GTK_WINDOW (m));
+	gtk_widget_show (dialog);
+}
+
 GtkWidget *
 gexif_main_new (void)
 {
@@ -342,6 +355,31 @@ gexif_main_new (void)
 				    GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE);
 	gtk_signal_connect (GTK_OBJECT (item), "activate",
 			    GTK_SIGNAL_FUNC (on_exit_activate), m);
+	gtk_container_add (GTK_CONTAINER (menu), item);
+
+	/*
+	 * View menu
+	 */
+	item = gtk_menu_item_new_with_label ("");
+	gtk_widget_show (item);
+	key = gtk_label_parse_uline (GTK_LABEL (GTK_BIN (item)->child),
+				     _("_View"));
+	gtk_widget_add_accelerator (item, "activate_item", accel_group, key,
+				    GDK_MOD1_MASK, 0);
+	gtk_container_add (GTK_CONTAINER (menubar), item);
+
+	menu = gtk_menu_new ();
+	gtk_menu_item_set_submenu (GTK_MENU_ITEM (item), menu);
+	accels = gtk_menu_ensure_uline_accel_group (GTK_MENU (menu));
+
+	/* Thumbnail */
+	item = gtk_menu_item_new_with_label ("");
+	gtk_widget_show (item);
+	key = gtk_label_parse_uline (GTK_LABEL (GTK_BIN (item)->child),
+				     _("Thumbnail"));
+	gtk_widget_add_accelerator (item, "activate_item", accels, key, 0, 0);
+	gtk_signal_connect (GTK_OBJECT (item), "activate",
+			    GTK_SIGNAL_FUNC (on_thumbnail_activate), m);
 	gtk_container_add (GTK_CONTAINER (menu), item);
 
 	/*

@@ -71,6 +71,7 @@
 #include "gtkam-close.h"
 #include "gtkam-debug.h"
 #include "gtkam-mkdir.h"
+#include "gtkam-delete.h"
 
 #include "support.h"
 
@@ -186,21 +187,73 @@ on_exit_activate (GtkMenuItem *item, GtkamMain *m)
 }
 
 static void
+on_file_deleted (GtkamDelete *delete, const gchar *path, GtkamMain *m)
+{
+	gchar *dir;
+
+	dir = g_dirname (path);
+	if (m->priv->list->path && !strcmp (dir, m->priv->list->path))
+		gtkam_list_refresh (m->priv->list);
+	g_free (dir);
+}
+
+static void
+delete_selected (GtkamMain *m)
+{
+	GtkIconListItem *item;
+	GtkamList *list = m->priv->list;
+	guint i;
+	GtkWidget *delete;
+	GList *files = NULL;
+
+	if (!list->path || !g_list_length (GTK_ICON_LIST (list)->selection))
+		return;
+
+	for (i = 0; i < g_list_length (GTK_ICON_LIST (list)->selection); i++) {
+		item = g_list_nth_data (GTK_ICON_LIST (list)->selection, i);
+		files = g_list_append (files, item->label);
+	}
+	delete = gtkam_delete_new (m->priv->camera, list->path, files,
+				   GTK_WIDGET (m));
+	gtk_widget_show (delete);
+	gtk_signal_connect (GTK_OBJECT (delete), "file_deleted",
+			    GTK_SIGNAL_FUNC (on_file_deleted), m);
+}
+
+static void
 on_delete_selected_photos_activate (GtkMenuItem *item, GtkamMain *m)
 {
-	gtkam_list_delete_selected (m->priv->list);
+	delete_selected (m);
+}
+
+static void
+on_all_deleted (GtkamDelete *delete, const gchar *path, GtkamMain *m)
+{
+	if (m->priv->list->path && !strcmp (path, m->priv->list->path))
+		gtkam_list_refresh (m->priv->list);
 }
 
 static void
 on_delete_selected_photos_clicked (GtkButton *button, GtkamMain *m)
 {
-	gtkam_list_delete_selected (m->priv->list);
+	delete_selected (m);
 }
 
 static void
 on_delete_all_photos_activate (GtkMenuItem *item, GtkamMain *m)
 {
-	gtkam_list_delete_all (m->priv->list);
+	GtkWidget *delete;
+
+	if (!m->priv->list->path)
+		return;
+
+	delete = gtkam_delete_new (m->priv->camera, m->priv->list->path,
+				   NULL, GTK_WIDGET (m));
+	gtk_widget_show (delete);
+	gtk_signal_connect (GTK_OBJECT (delete), "file_deleted",
+			    GTK_SIGNAL_FUNC (on_file_deleted), m);
+	gtk_signal_connect (GTK_OBJECT (delete), "all_deleted",
+			    GTK_SIGNAL_FUNC (on_all_deleted), m);
 }
 
 static void

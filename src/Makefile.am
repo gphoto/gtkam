@@ -14,6 +14,7 @@ libgtkam_a_SOURCES =				\
 	gtkam-clock.c gtkam-clock.h     	\
 	gtkam-close.c gtkam-close.h     	\
 	gtkam-config.c gtkam-config.h   	\
+	gtkam-delete.c gtkam-delete.h		\
 	gtkam-error.c gtkam-error.h     	\
 	gtkam-fsel.c gtkam-fsel.h		\
 	gtkam-info.c gtkam-info.h		\

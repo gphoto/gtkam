@@ -44,10 +44,6 @@ struct _GtkamList
 struct _GtkamListClass
 {
 	GtkIconListClass parent_class;
-
-	/* Signals */
-	void (* file_deleted) (GtkamList *list, const gchar *folder,
-			       const gchar *file);
 };
 
 GtkType    gtkam_list_get_type (void);
@@ -59,8 +55,6 @@ void       gtkam_list_set_path       (GtkamList *list, const gchar *path);
 void       gtkam_list_set_thumbnails (GtkamList *list, gboolean thumbnails);
 
 void       gtkam_list_save_selected   (GtkamList *list);
-void       gtkam_list_delete_selected (GtkamList *list);
-void       gtkam_list_delete_all      (GtkamList *list);
 void       gtkam_list_refresh         (GtkamList *list);
 
 #endif /* __GTKAM_LIST_H__ */

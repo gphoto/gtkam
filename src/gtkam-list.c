@@ -58,6 +58,7 @@
 #include "gtkam-main.h"
 #include "gdk-pixbuf-hacks.h"
 #include "gtkam-info.h"
+#include "gtkam-delete.h"
 
 /* Should that be configurable? */
 #define ICON_WIDTH 80
@@ -74,7 +75,6 @@ struct _GtkamListPrivate
 static GtkIconListClass *parent_class;
 
 enum {
-	FILE_DELETED,
 	LAST_SIGNAL
 };
 
@@ -117,11 +117,6 @@ gtkam_list_class_init (GtkamListClass *klass)
 	object_class->destroy  = gtkam_list_destroy;
 	object_class->finalize = gtkam_list_finalize;
 
-	signals[FILE_DELETED] = gtk_signal_new ("file_deleted",
-		GTK_RUN_LAST, object_class->type,
-		GTK_SIGNAL_OFFSET (GtkamListClass, file_deleted),
-		gtk_marshal_NONE__POINTER_POINTER, GTK_TYPE_NONE, 2,
-		GTK_TYPE_POINTER, GTK_TYPE_POINTER);
 	gtk_object_class_add_signals (object_class, signals, LAST_SIGNAL);
 
 	parent_class = gtk_type_class (PARENT_TYPE);
@@ -240,24 +235,31 @@ on_info_activate (GtkMenuItem *item, PopupData *data)
 }
 
 static void
+on_file_deleted (GtkamDelete *delete, const gchar *path, GtkamList *list)
+{
+	gchar *dir;
+
+	dir = g_dirname (path);
+	if (!strcmp (dir, list->path))
+		gtkam_list_refresh (list);
+	g_free (dir);
+}
+
+static void
 on_delete_activate (GtkMenuItem *menu_item, PopupData *data)
 {
 	GtkamList *list = data->list;
 	GtkIconListItem *item = data->item;
-	GtkWidget *w, *d;
-	gchar *msg;
-	int result;
+	GtkWidget *delete, *w;
+	GList *files;
 
+	files = g_list_append (NULL, item->label);
 	w = gtk_widget_get_ancestor (GTK_WIDGET (list), GTK_TYPE_WINDOW);
-	result = gp_camera_file_delete (list->priv->camera,
-					list->path, item->label);
-	if (result < 0) {
-		msg = g_strdup_printf (_("Could not delete '%s' from '%s'"),
-				       item->label, list->path);
-		d = gtkam_error_new (msg, result, list->priv->camera, w);
-		gtk_widget_show (d);
-	} else
-		gtk_icon_list_remove (GTK_ICON_LIST (list), item);
+	delete = gtkam_delete_new (list->priv->camera, list->path, files, w);
+	g_list_free (files);
+	gtk_widget_show (delete);
+	gtk_signal_connect_while_alive (GTK_OBJECT (delete), "file_deleted",
+		GTK_SIGNAL_FUNC (on_file_deleted), list, GTK_OBJECT (list));
 }
 
 static gboolean
@@ -598,75 +600,6 @@ gtkam_list_save_selected (GtkamList *list)
 			       filenames, window);
 	g_slist_free (filenames);
 	gtk_widget_show (save);
-}
-
-void
-gtkam_list_delete_selected (GtkamList *list)
-{
-	GtkIconListItem *item;
-	guint i;
-	const gchar *filename;
-	gchar *msg;
-	GtkWidget *dialog, *window;
-	int result;
-
-	g_return_if_fail (GTKAM_IS_LIST (list));
-
-	if (!list->priv->camera || !list->path)
-		return;
-
-	if (!g_list_length (GTK_ICON_LIST (list)->selection)) 
-		return;
-
-	for (i = g_list_length (GTK_ICON_LIST (list)->selection); i > 0; i--) {
-		item = g_list_nth_data (GTK_ICON_LIST (list)->selection, i - 1);
-		filename = gtk_entry_get_text (GTK_ENTRY (item->entry));
-		result = gp_camera_file_delete (list->priv->camera,
-						list->path, filename);
-		if (result < 0) {
-			window = gtk_widget_get_ancestor (GTK_WIDGET (list),
-							  GTK_TYPE_WINDOW);
-			msg = g_strdup_printf (_("Could not delete '%s' in "
-					       "folder '%s'"), filename,
-					       list->path);
-			dialog = gtkam_error_new (msg, result,
-				list->priv->camera, window);
-			g_free (msg);
-			gtk_widget_show (dialog);
-		} else {
-			gtk_icon_list_freeze (GTK_ICON_LIST (list));
-			gtk_icon_list_remove (GTK_ICON_LIST (list), item);
-			gtk_icon_list_thaw   (GTK_ICON_LIST (list));
-			gtk_signal_emit (GTK_OBJECT (list),
-					 signals[FILE_DELETED],
-					 list->path, filename);
-		}
-	}
-}
-
-void
-gtkam_list_delete_all (GtkamList *list)
-{
-	int result;
-	GtkWidget *dialog, *window;
-
-	g_return_if_fail (GTKAM_IS_LIST (list));
-
-	if (!list->priv->camera || !list->path)
-		return;
-
-	result = gp_camera_folder_delete_all (list->priv->camera,
-					      list->path);
-	if (result < 0) {
-		window = gtk_widget_get_ancestor (GTK_WIDGET (list),
-						  GTK_TYPE_WINDOW);
-		dialog = gtkam_error_new (_("Could not delete all photos"),
-					  result, list->priv->camera,
-					  window);
-		gtk_widget_show (dialog);
-	}
-
-	gtkam_list_refresh (list);
 }
 
 void

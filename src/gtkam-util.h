@@ -28,4 +28,4 @@
 GdkPixbuf *gdk_pixbuf_new_from_camera_file (CameraFile *file, guint max_dim,
 					    GtkWidget *opt_window);
 
-#endif __GTKAM_UTIL_H__
+#endif /* __GTKAM_UTIL_H__ */

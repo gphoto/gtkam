@@ -75,12 +75,6 @@ struct _GtkamFSelPrivate
 #define PARENT_TYPE GTK_TYPE_DIALOG
 static GtkDialogClass *parent_class;
 
-enum {
-	LAST_SIGNAL
-};
-
-static guint signals[LAST_SIGNAL] = {0};
-
 static void
 gtkam_fsel_destroy (GtkObject *object)
 {
@@ -117,8 +111,6 @@ gtkam_fsel_class_init (GtkamFSelClass *klass)
 	object_class = GTK_OBJECT_CLASS (klass);
 	object_class->destroy  = gtkam_fsel_destroy;
 	object_class->finalize = gtkam_fsel_finalize;
-
-	gtk_object_class_add_signals (object_class, signals, LAST_SIGNAL);
 
 	parent_class = gtk_type_class (PARENT_TYPE);
 }

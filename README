@@ -6,6 +6,17 @@ Hi!
 Thank you for using GTKam and therefore supporting our efforts in providing
 free access to information on protocols of digital cameras.
 
+Requirements
+------------
+
+GTKam is a GTK-frontend to gphoto2. Therefore, you need at least those two
+libraries. In addition, gdk-pixbuf is needed.
+
+If you would like to access EXIF information, libexif(-gtk) must be installed
+prior compilation of GTKam. Get libexif and libexif-gtk
+from http://www.topfrose.de or directly from
+http://www.sourceforge.net/projects/libexif.
+
 Authors
 -------
 
@@ -13,6 +24,3 @@ GTKam has originally been written by Scott Fritzinger <scottf@unr.edu>.
 Lutz Müller <urc8@rz.uni-karlsruhe.de> rewrote everything using GTK's 
 object oriented approach. That made it possible to introduce many new
 features.
-
-The exif code has been found on http://sourceforge.net/projects/libexif.
-

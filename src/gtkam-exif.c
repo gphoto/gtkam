@@ -45,6 +45,7 @@
 #include <gtk/gtkbutton.h>
 #include <gtk/gtksignal.h>
 #include <gtk/gtkbox.h>
+#include <gtk/gtklabel.h>
 
 #ifdef HAVE_EXIF
 #  include <libexif-gtk/gtk-exif-browser.h>
@@ -179,11 +180,13 @@ gtkam_exif_new (Camera *camera, gboolean multi,
 		gtk_widget_show (dialog);
 		return (NULL);
 	}
+#endif
 
 	exif = gtk_type_new (GTKAM_TYPE_EXIF);
 	gtk_signal_connect (GTK_OBJECT (exif), "delete_event",
 			    GTK_SIGNAL_FUNC (gtk_object_destroy), NULL);
 
+#ifdef HAVE_EXIF
 	browser = gtk_exif_browser_new ();
 	gtk_exif_browser_set_data (GTK_EXIF_BROWSER (browser), edata);
 	exif_data_unref (edata);
@@ -197,7 +200,7 @@ gtkam_exif_new (Camera *camera, gboolean multi,
 	gtk_widget_show (label);
 	gtk_container_set_border_width (GTK_CONTAINER (label), 5);
 	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (exif)->vbox), label,
-			    TURE, TRUE, 0);
+			    TRUE, TRUE, 0);
 #endif
 
 	button = gtk_button_new_with_label (_("Close"));

@@ -2,7 +2,7 @@
 
 EXTRA_DIST = autogen.sh acconfig.h MANUAL
 
-SUBDIRS = po src intl art pixmaps packaging
+SUBDIRS = po src test intl art pixmaps packaging
 
 gtkamdocdir = $(prefix)/doc/gtkam
 gtkamdoc_DATA = AUTHORS COPYING MANUAL

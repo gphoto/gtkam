@@ -1,3 +1,8 @@
+2002-05-12  Lutz Müller <lutz@users.sourceforge.net>
+
+	* test/*: New
+	* src/*: First steps to get the gimp plugin to work again.
+
 2002-05-11  Lutz Müller <lutz@users.sourceforge.net>
 
 	* src/*.c: Fix some small bugs.

@@ -36,9 +36,10 @@ struct _GtkamFSel
 {
 	GtkDialog parent;
 
-	GList *selection;
-
 	GtkWidget *ok_button;
+
+	/* GtkamCList */
+	GtkWidget *clist;
 
 	GtkamFSelPrivate *priv;
 };
@@ -49,9 +50,6 @@ struct _GtkamFSelClass
 };
 
 GtkType    gtkam_fsel_get_type (void);
-GtkWidget *gtkam_fsel_new      (Camera *camera, gboolean multi,
-				GtkWidget *opt_window);
-
-const gchar *gtkam_fsel_get_path (GtkamFSel *fsel);
+GtkWidget *gtkam_fsel_new      (GtkWidget *opt_window);
 
 #endif /* __GTKAM_FSEL_H__ */

@@ -33,6 +33,7 @@
 #include "gtkam-preview.h"
 #include "gtkam-cancel.h"
 #include "gtkam-chooser.h"
+#include "gtkam-clist.h"
 #include "gtkam-error.h"
 #include "gtkam-fsel.h"
 
@@ -393,23 +394,17 @@ static void
 run_load (gchar *name, gint nparams, GimpParam *param, gint *nreturn_vals,
 	  GimpParam **return_vals)
 {
-	Camera *camera;
 	CameraFilePath path;
 	GtkWidget *fsel;
 	gint32 image_id;
 	static GimpParam values[2];
 	guint i;
 	gboolean selected = FALSE;
-	gboolean multi;
-
-	/* Create the camera */
-	camera = create_camera (GP_OPERATION_NONE, &multi,
-				nparams, param, nreturn_vals, return_vals);
-        if (!camera)
-                return;
+	GtkamCListEntry *entry;
+	GList *list;
 
 	/* Show the file selection dialog */
-	fsel = gtkam_fsel_new (camera, multi, NULL);
+	fsel = gtkam_fsel_new (NULL);
 	gtk_widget_show (fsel);
 	gtk_signal_connect (GTK_OBJECT (GTKAM_FSEL (fsel)->ok_button),
 		"clicked", GTK_SIGNAL_FUNC (on_fsel_ok_clicked), &selected);
@@ -419,7 +414,6 @@ run_load (gchar *name, gint nparams, GimpParam *param, gint *nreturn_vals,
 
 	/* Check if the user cancelled */
 	if (!selected) {
-		gp_camera_unref (camera);
 		*nreturn_vals = 1;
 		*return_vals = values;
 		values[0].type = GIMP_PDB_STATUS;
@@ -432,28 +426,20 @@ run_load (gchar *name, gint nparams, GimpParam *param, gint *nreturn_vals,
 		gtk_main_iteration ();
 
 	/* Get the file(s) and display it */
-	for (i = 0; i < g_list_length (GTKAM_FSEL (fsel)->selection); i++) {
-		strcpy (path.folder, gtkam_fsel_get_path (GTKAM_FSEL (fsel)));
-		strcpy (path.name,
-			g_list_nth_data (GTKAM_FSEL (fsel)->selection, i));
-		image_id = get_file (camera, path,
+	list = GTKAM_CLIST (GTKAM_FSEL (fsel)->clist)->selection;
+	for (i = 0; i < g_list_length (list); i++) {
+		entry = g_list_nth_data (list, i);
+		strcpy (path.folder, entry->folder);
+		strcpy (path.name, entry->name);
+		image_id = get_file (entry->camera, path,
 				     nparams, param, nreturn_vals, return_vals);
 	}
 	gtk_object_destroy (GTK_OBJECT (fsel));
-	gp_camera_unref (camera);
-#if 0
-	if (image_id < 0)
-		return;
-#endif
 
 	*nreturn_vals = 1;
 	*return_vals = values;
 	values[0].type = GIMP_PDB_STATUS;
 	values[0].data.d_status = GIMP_PDB_SUCCESS;
-#if 0
-	values[1].type = GIMP_PDB_IMAGE;
-	values[1].data.d_image = image_id;
-#endif
 }
 
 static void
@@ -461,6 +447,8 @@ run (gchar *name, gint nparams, GimpParam *params, gint *nreturn_vals,
      GimpParam **return_vals)
 {
 	static GimpParam values[1];
+
+	g_return_if_fail (name != NULL);
 
 	if (!strcmp (name, "gtkam-capture"))
 		run_capture (name, nparams, params, nreturn_vals, return_vals);

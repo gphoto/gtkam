@@ -149,6 +149,7 @@ packaging/Makefile
 packaging/rpm/Makefile
 packaging/rpm/package.spec
 src/Makefile
+test/Makefile
 po/Makefile.in
 ])
 

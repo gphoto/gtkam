@@ -50,22 +50,18 @@
 
 struct _GtkamCListPrivate
 {
-	Camera *camera;
-
 	GPtrArray *idle;
 
 	gboolean thumbnails;
-	gboolean multi;
-
-	GtkWidget *status;
 };
 
 #define PARENT_TYPE GTK_TYPE_CLIST
 static GtkCListClass *parent_class;
 
 enum {
-	FILE_SELECTED,
-	FILE_UNSELECTED,
+	ENTRY_SELECTED,
+	ENTRY_UNSELECTED,
+	NEW_STATUS,
 	LAST_SIGNAL
 };
 
@@ -74,7 +70,6 @@ static guint signals[LAST_SIGNAL] = {0};
 typedef struct {
 	gint32 id;
 	guint row;
-	gchar *file;
 	GtkamCList *clist;
 } IdleData;
 
@@ -85,21 +80,6 @@ gtkam_clist_destroy (GtkObject *object)
 	guint i;
 	IdleData *id;
 
-	if (list->priv->status) {
-		gtk_object_unref (GTK_OBJECT (list->priv->status));
-		list->priv->status = NULL;
-	}
-
-	if (list->priv->camera) {
-		gp_camera_unref (list->priv->camera);
-		list->priv->camera = NULL;
-	}
-
-	if (list->path) {
-		g_free (list->path);
-		list->path = NULL;
-	}
-
 	if (list->selection) {
 		g_list_free (list->selection);
 		list->selection = NULL;
@@ -107,8 +87,8 @@ gtkam_clist_destroy (GtkObject *object)
 
 	for (i = 0; i < list->priv->idle->len; i++) {
 		id = list->priv->idle->pdata[i];
-		g_free (id->file);
 		gtk_idle_remove (id->id);
+		g_free (id);
 	}
 	g_ptr_array_set_size (list->priv->idle, 0);
 
@@ -136,13 +116,17 @@ gtkam_clist_class_init (GtkamCListClass *klass)
 	object_class->destroy  = gtkam_clist_destroy;
 	object_class->finalize = gtkam_clist_finalize;
 
-	signals[FILE_SELECTED] = gtk_signal_new ("file_selected",
+	signals[ENTRY_SELECTED] = gtk_signal_new ("entry_selected",
 		GTK_RUN_LAST, object_class->type,
-		GTK_SIGNAL_OFFSET (GtkamCListClass, file_selected),
+		GTK_SIGNAL_OFFSET (GtkamCListClass, entry_selected),
 		gtk_marshal_NONE__POINTER, GTK_TYPE_NONE, 1, GTK_TYPE_POINTER);
-	signals[FILE_UNSELECTED] = gtk_signal_new ("file_unselected",
+	signals[ENTRY_UNSELECTED] = gtk_signal_new ("entry_unselected",
 		GTK_RUN_LAST, object_class->type,
-		GTK_SIGNAL_OFFSET (GtkamCListClass, file_unselected),
+		GTK_SIGNAL_OFFSET (GtkamCListClass, entry_unselected),
+		gtk_marshal_NONE__POINTER, GTK_TYPE_NONE, 1, GTK_TYPE_POINTER);
+	signals[NEW_STATUS] = gtk_signal_new ("new_status",
+		GTK_RUN_FIRST, object_class->type,
+		GTK_SIGNAL_OFFSET (GtkamCListClass, new_status),
 		gtk_marshal_NONE__POINTER, GTK_TYPE_NONE, 1, GTK_TYPE_POINTER);
 	gtk_object_class_add_signals (object_class, signals, LAST_SIGNAL);
 
@@ -175,61 +159,37 @@ gtkam_clist_get_type (void)
         return (list_type);
 }
 
-void
-gtkam_clist_set_camera (GtkamCList *list, Camera *camera, gboolean multi)
-{
-	g_return_if_fail (GTKAM_IS_CLIST (list));
-
-	if (list->priv->camera) {
-		gp_camera_unref (list->priv->camera);
-		list->priv->camera = NULL;
-	}
-
-	if (camera) {
-		list->priv->camera = camera;
-		gp_camera_ref (camera);
-		list->priv->multi = multi;
-	}
-
-	if (list->path) {
-		g_free (list->path);
-		list->path = NULL;
-	}
-
-	gtkam_clist_refresh (list);
-}
-
 static void
 on_select_row (GtkCList *clist, gint row, gint column, GdkEvent *event,
 	       GtkamCList *list)
 {
-	const gchar *path;
+	GtkamCListEntry *entry;
 	
-	path = gtk_clist_get_row_data (clist, row);
-	list->selection = g_list_append (list->selection, (gchar *) path);
-	gtk_signal_emit (GTK_OBJECT (list), signals[FILE_SELECTED], path);
+	entry = gtk_clist_get_row_data (clist, row);
+	list->selection = g_list_append (list->selection, entry);
+	gtk_signal_emit (GTK_OBJECT (list), signals[ENTRY_SELECTED], entry);
 }
 
 static void
 on_unselect_row (GtkCList *clist, gint row, gint column, GdkEvent *event,
 		 GtkamCList *list)
 {
-	const gchar *path; 
+	GtkamCListEntry *entry;
 
-	path = gtk_clist_get_row_data (clist, row);
-	list->selection = g_list_remove (list->selection, (gchar *) path);
-	gtk_signal_emit (GTK_OBJECT (list), signals[FILE_UNSELECTED], path);
+	entry = gtk_clist_get_row_data (clist, row);
+	list->selection = g_list_remove (list->selection, entry);
+	gtk_signal_emit (GTK_OBJECT (list), signals[ENTRY_UNSELECTED], entry);
 }
 
 GtkWidget *
-gtkam_clist_new (GtkWidget *vbox)
+gtkam_clist_new (void)
 {
 	GtkamCList *list;
 	gchar *titles[] = {N_("Preview"), N_("Filename")};
 
 	list = gtk_type_new (GTKAM_TYPE_CLIST);
 	gtk_clist_construct (GTK_CLIST (list), 2, titles);
-	gtk_clist_set_column_visibility (GTK_CLIST (list), 0, FALSE);
+	gtk_clist_set_column_visibility (GTK_CLIST (list), 0, TRUE);
 	gtk_clist_set_column_auto_resize (GTK_CLIST (list), 0, TRUE);
 	gtk_clist_set_selection_mode (GTK_CLIST (list), GTK_SELECTION_MULTIPLE);
 	gtk_clist_set_shadow_type (GTK_CLIST (list), GTK_SHADOW_NONE);
@@ -238,27 +198,7 @@ gtkam_clist_new (GtkWidget *vbox)
 	gtk_signal_connect (GTK_OBJECT (list), "unselect_row",
 			    GTK_SIGNAL_FUNC (on_unselect_row), list);
 
-	list->priv->status = vbox;
-	gtk_object_ref (GTK_OBJECT (vbox));
-
 	return (GTK_WIDGET (list));
-}
-
-void
-gtkam_clist_refresh (GtkamCList *list)
-{
-	gchar *path;
-
-	g_return_if_fail (GTKAM_IS_CLIST (list));
-
-	gtk_clist_unselect_all (GTK_CLIST (list));
-	gtk_clist_clear (GTK_CLIST (list));
-
-	if (list->path && list->priv->camera) {
-		path = g_strdup (list->path);
-		gtkam_clist_set_path (list, path);
-		g_free (path);
-	}
 }
 
 static gboolean
@@ -272,21 +212,21 @@ idle_func (gpointer idle_data)
 	GtkWidget *dialog, *win, *status;
 	GdkPixbuf *pixbuf;
 	guint w, h;
+	GtkamCListEntry *entry;
 
 	win = gtk_widget_get_ancestor (GTK_WIDGET (id->clist),
 				       GTK_TYPE_WINDOW);
 
+	entry = gtk_clist_get_row_data (GTK_CLIST (id->clist), id->row);
 	gp_file_new (&file);
 	status = gtkam_status_new (_("Getting file '%s' from folder '%s'..."),
-		id->file, id->clist->path);
-	gtk_widget_show (status);
-	gtk_box_pack_start (GTK_BOX (id->clist->priv->status), status, 
-			    FALSE, FALSE, 0);
-	result = gp_camera_file_get (id->clist->priv->camera, id->clist->path,
-				     id->file, GP_FILE_TYPE_PREVIEW, file,
+		entry->name, entry->folder);
+	gtk_signal_emit (GTK_OBJECT (id->clist), signals[NEW_STATUS], status);
+	result = gp_camera_file_get (entry->camera, entry->folder,
+				     entry->name, GP_FILE_TYPE_PREVIEW, file,
 				     GTKAM_STATUS (status)->context->context);
-	if (id->clist->priv->multi)
-		gp_camera_exit (id->clist->priv->camera, NULL);
+	if (entry->multi)
+		gp_camera_exit (entry->camera, NULL);
 	switch (result) {
 	case GP_OK:
 		pixbuf = gdk_pixbuf_new_from_camera_file (file, 40, win);
@@ -312,7 +252,7 @@ idle_func (gpointer idle_data)
 	default:
 		dialog = gtkam_error_new (result,
 			GTKAM_STATUS (status)->context, win,
-			_("Could not get file '%s'."), id->file);
+			_("Could not get file '%s'."), entry->name);
 		gtk_widget_show (dialog);
 		break;
 	}
@@ -320,64 +260,52 @@ idle_func (gpointer idle_data)
 	gp_file_unref (file);
 
 	g_ptr_array_remove (id->clist->priv->idle, id);
-	g_free (id->file);
 	g_free (id);
 
 	return (FALSE);
 }
 
+static void
+free_entry (gpointer data)
+{
+	GtkamCListEntry *entry = data;
+
+	gp_camera_unref (entry->camera);
+	g_free (entry->folder);
+	g_free (entry->name);
+	g_free (entry);
+}
+
 void
-gtkam_clist_set_path (GtkamCList *list, const gchar *path)
+gtkam_clist_add_folder (GtkamCList *list, Camera *camera, gboolean multi,
+			const gchar *folder)
 {
 	int result;
 	CameraList flist;
 	CameraAbilities a;
-	gchar *full_path;
 	GtkWidget *dialog, *window, *status;
 	gchar *text[2];
 	gint row;
 	guint i;
 	const char *name;
+	GtkamCListEntry *entry;
 
 	g_return_if_fail (GTKAM_IS_CLIST (list));
 
 	gtk_clist_unselect_all (GTK_CLIST (list));
 	gtk_clist_clear (GTK_CLIST (list));
 
-	/* If we don't have a path, that's it */
-	if (list->path) {
-		g_free (list->path);
-		list->path = NULL;
-	}
-	if (!path)
-		return;
-	else
-		list->path = g_strdup (path);
-
-	/* If we don't have a camera, we can't do anything */
-	if (!list->priv->camera)
-		return;
-
 	window = gtk_widget_get_ancestor (GTK_WIDGET (list), GTK_TYPE_WINDOW);
 
 	status = gtkam_status_new (_("Getting list of files in "
-				   "folder '%s'..."), path);
-	gtk_widget_show (status);
-	gtk_box_pack_start (GTK_BOX (list->priv->status), status,
-			    FALSE, FALSE, 0);
-	result = gp_camera_folder_list_files (list->priv->camera, path, &flist,
+				   "folder '%s'..."), folder);
+	gtk_signal_emit (GTK_OBJECT (list), signals[NEW_STATUS], status);
+	result = gp_camera_folder_list_files (camera, folder, &flist,
 				GTKAM_STATUS (status)->context->context);
-	if (list->priv->multi)
-		gp_camera_exit (list->priv->camera, NULL);
+	if (multi)
+		gp_camera_exit (camera, NULL);
 	switch (result) {
 	case GP_OK:
-		gp_camera_get_abilities (list->priv->camera, &a);
-		if (a.file_operations & GP_FILE_OPERATION_PREVIEW)
-			gtk_clist_set_column_visibility (GTK_CLIST (list),
-							 0, TRUE);
-		else
-			gtk_clist_set_column_visibility (GTK_CLIST (list),
-							 0, FALSE); 
 		break;
 	case GP_ERROR_CANCEL:
 		gp_list_reset (&flist);
@@ -385,13 +313,14 @@ gtkam_clist_set_path (GtkamCList *list, const gchar *path)
 	default:
 		dialog = gtkam_error_new (result,
 			GTKAM_STATUS (status)->context, window,
-			_("Could not get file list for folder '%s'."), path);
+			_("Could not get file list for folder '%s'."), folder);
 		gtk_widget_show (dialog);
 		gp_list_reset (&flist);
 		break;
 	}
 	gtk_object_destroy (GTK_OBJECT (status));
 
+	gp_camera_get_abilities (camera, &a);
 	for (i = 0; i < gp_list_count (&flist); i++) {
 		gp_list_get_name (&flist, i, &name);
 		text[0] = NULL;
@@ -403,16 +332,37 @@ gtkam_clist_set_path (GtkamCList *list, const gchar *path)
 
 			id = g_new0 (IdleData, 1);
 			id->row = row;
-			id->file = g_strdup (name);
 			id->clist = list;
 			id->id = gtk_idle_add (idle_func, id);
+			g_ptr_array_add (list->priv->idle, id);
 		}
 
-		if (strlen (list->path) > 1)
-			full_path = g_strdup_printf ("/%s", text[1]);
-		else
-			full_path = g_strdup_printf ("%s/%s", path, text[1]);
-		gtk_clist_set_row_data_full (GTK_CLIST (list), row, full_path,
-					     (GtkDestroyNotify) g_free);
+		entry = g_new0 (GtkamCListEntry, 1);
+		gp_camera_ref (entry->camera = camera);
+		entry->multi = multi;
+		entry->folder = g_strdup (folder);
+		entry->name = g_strdup (name);
+		gtk_clist_set_row_data_full (GTK_CLIST (list), row, entry,
+					     (GtkDestroyNotify) free_entry);
+	}
+}
+
+void
+gtkam_clist_remove_folder (GtkamCList *clist, Camera *camera,
+			   gboolean multi, const gchar *folder)
+{
+	GtkamCListEntry *entry;
+	guint i;
+
+	g_return_if_fail (GTKAM_IS_CLIST (clist));
+
+	for (i = GTK_CLIST (clist)->rows; i > 0; i--) {
+		entry = gtk_clist_get_row_data (GTK_CLIST (clist), i - 1);
+		if ((entry->camera == camera) &&
+		    !strcmp (entry->folder, folder)) {
+			clist->selection = g_list_remove (clist->selection,
+							  entry);
+			gtk_clist_remove (GTK_CLIST (clist), i - 1);
+		}
 	}
 }

@@ -36,11 +36,18 @@ struct _GtkamCList
 {
 	GtkCList parent;
 
-	gchar *path;
-
+	/* GList contains elements of type GtkamCListEntry */
 	GList *selection;
 
 	GtkamCListPrivate *priv;
+};
+
+typedef struct _GtkamCListEntry GtkamCListEntry;
+struct _GtkamCListEntry {
+	Camera *camera;
+	gboolean multi;
+	gchar *folder;
+	gchar *name;
 };
 
 struct _GtkamCListClass
@@ -48,21 +55,21 @@ struct _GtkamCListClass
 	GtkCListClass parent_class;
 
 	/* Signals */
-	void (* file_selected)   (GtkamCList *list, const gchar *path);
-	void (* file_unselected) (GtkamCList *list, const gchar *path);
+	void (* entry_selected)   (GtkamCList *list, GtkamCListEntry *entry);
+	void (* entry_unselected) (GtkamCList *list, GtkamCListEntry *entry);
+	void (* new_status)       (GtkamCList *list, GtkWidget *status);
 };
 
 GtkType    gtkam_clist_get_type (void);
-GtkWidget *gtkam_clist_new      (GtkWidget *vbox);
+GtkWidget *gtkam_clist_new      (void);
 
-void       gtkam_clist_set_camera     (GtkamCList *list, Camera *camera,
-				       gboolean multi);
-void       gtkam_clist_set_path       (GtkamCList *list, const gchar *path);
-void       gtkam_clist_set_thumbnails (GtkamCList *list, gboolean thumbnails);
+void       gtkam_clist_add_folder     (GtkamCList *list, Camera *camera,
+				       gboolean multi, const gchar *folder);
+void       gtkam_clist_remove_folder  (GtkamCList *list, Camera *camera,
+				       gboolean multi, const gchar *folder);
 
 void       gtkam_clist_save_selected   (GtkamCList *list);
 void       gtkam_clist_delete_selected (GtkamCList *list);
 void       gtkam_clist_delete_all      (GtkamCList *list);
-void       gtkam_clist_refresh         (GtkamCList *list);
 
 #endif /* __GTKAM_CLIST_H__ */

@@ -14,7 +14,6 @@
 #include <unistd.h>
 #include <gtk/gtk.h>
 
-#include "interface.h"
 #include "support.h"
 
 #include "gtkam-main.h"

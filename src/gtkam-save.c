@@ -34,6 +34,7 @@
 #include "frontend.h"
 #include "util.h"
 #include "gtkam-error.h"
+#include "gtkam-close.h"
 
 struct _GtkamSavePrivate
 {

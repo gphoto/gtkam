@@ -387,9 +387,9 @@ on_about_activate (GtkamDebug *debug, GtkamMain *m)
 	GtkWidget *dialog;
 
 	dialog = gtkam_close_new (
-		_("gtKam was written by:\n"
+		  N_("gtKam was written by:\n"
 		  " - Scott Fritzinger <scottf@unr.edu>,\n"
-		  " - Lutz Müller <urc8@rz.uni-karlsruhe.de>,\n"
+		  " - Lutz Mueller <urc8@rz.uni-karlsruhe.de>,\n"
 		  " - and many others.\n"
 		  "\n"
 		  "gtKam uses libgphoto2, a library to access a\n"

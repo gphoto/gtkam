@@ -128,6 +128,7 @@ gtkam_close_new (const gchar *msg, GtkWidget *opt_window)
 
 	label = gtk_label_new (msg);
 	gtk_widget_show (label);
+	gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
 
 	if (strlen (msg) > 1024) {
 		gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
@@ -143,7 +144,7 @@ gtkam_close_new (const gchar *msg, GtkWidget *opt_window)
 				GTK_SCROLLED_WINDOW (scrolled), label);
 	} else
 		gtk_box_pack_start (GTK_BOX (GTK_DIALOG (close)->vbox), label,
-				    FALSE, FALSE, 0);
+				    TRUE, TRUE, 0);
 
 	button = gtk_button_new_with_label (_("Close"));
 	gtk_widget_show (button);

@@ -1,3 +1,10 @@
+2003-12-07  Lutz Mueller <lutz@users.sourceforge.net>
+
+	More GUI improvements by Andrew Burton <adb@iinet.net.au>:
+
+	* src/gtkam-info.c: Check in on_apply... and on_ok... to see whether
+	  changes could be> made; if not, then filename change is reverted.
+
 2003-12-06  Lutz Mueller <lutz@users.sourceforge.net>
 
 	More GUI improvements by Andrew Burton <adb@iinet.net.au>:

@@ -185,17 +185,11 @@ gtkam_info_update (GtkamInfo *info)
 	result = gp_camera_file_set_info (info->priv->camera->camera,
 		info->priv->folder, info->priv->name, info->priv->info_new,
 		GTKAM_STATUS (s)->context->context);
+
 	gp_camera_file_get_info (info->priv->camera->camera, 
 		info->priv->folder,
 		info->priv->new_name ? info->priv->new_name : info->priv->name,
 		&info->priv->info, NULL);
-
-	/* Emit the signal */
-	memset (&data, 0, sizeof (GtkamInfoInfoUpdatedData));
-	data.camera = info->priv->camera;
-	data.folder = info->priv->folder;
-	memcpy (&data.info, &info->priv->info, sizeof (CameraFileInfo));
-	g_signal_emit (GTK_OBJECT (info), signals[INFO_UPDATED], 0, &data);
 
 	switch (result) {
 	case GP_OK:
@@ -215,6 +209,13 @@ gtkam_info_update (GtkamInfo *info)
 	}
 	gtk_object_destroy (GTK_OBJECT (s));
 
+	/* Emit the signal */
+	memset (&data, 0, sizeof (GtkamInfoInfoUpdatedData));
+	data.camera = info->priv->camera;
+	data.folder = info->priv->folder;
+	memcpy (&data.info, &info->priv->info, sizeof (CameraFileInfo));
+	g_signal_emit (GTK_OBJECT (info), signals[INFO_UPDATED], 0, &data);
+	
 	info->priv->needs_update = FALSE;
 	gtkam_info_update_sensitivity (info);
 	memset (&info->priv->info_new, 0, sizeof (CameraFileInfo));
@@ -233,7 +234,15 @@ gtkam_info_update (GtkamInfo *info)
 static void
 on_apply_clicked (GtkButton *button, GtkamInfo *info)
 {
-	gtkam_info_update (info);
+	gchar *n;
+	
+	n = g_strdup (info->priv->info.file.name);
+	if (!gtkam_info_update (info)) {
+		gtk_entry_set_text (GTK_ENTRY (info->priv->entry_name), n);
+		info->priv->needs_update = FALSE;
+		gtkam_info_update_sensitivity (info);
+	}
+	g_free (n);
 }
 
 static void
@@ -265,11 +274,20 @@ on_reset_clicked (GtkButton *button, GtkamInfo *info)
 static void
 on_ok_clicked (GtkButton *button, GtkamInfo *info)
 {
+	gchar *n;
+	
+	n = g_strdup (info->priv->info.file.name);
 	if (info->priv->needs_update) {
 		if (gtkam_info_update (info))
-			gtk_object_destroy (GTK_OBJECT (info));
+		    gtk_object_destroy (GTK_OBJECT (info));
+		else {
+		    gtk_entry_set_text (GTK_ENTRY (info->priv->entry_name), n);
+		    info->priv->needs_update = FALSE;
+		    gtkam_info_update_sensitivity (info);
+		}
 	} else
 		gtk_object_destroy (GTK_OBJECT (info));
+	g_free (n);
 }
 
 static void
@@ -596,22 +614,12 @@ gtkam_info_new (GtkamCamera *camera, const gchar *folder, const gchar *name)
                 }
 	}
 
-	button = gtk_button_new_from_stock (GTK_STOCK_OK);
+	button = gtk_button_new_from_stock (GTK_STOCK_CANCEL);
 	gtk_widget_show (button);
 	g_signal_connect (GTK_OBJECT (button), "clicked",
-			    GTK_SIGNAL_FUNC (on_ok_clicked), info);
+			    GTK_SIGNAL_FUNC (on_cancel_clicked), info);
 	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (info)->action_area),
 			   button);
-	gtk_widget_grab_focus (button);
-
-	button = gtk_button_new_from_stock (GTK_STOCK_APPLY);
-	gtk_widget_show (button);
-	gtk_widget_set_sensitive (button, FALSE);
-	g_signal_connect (GTK_OBJECT (button), "clicked",
-			    GTK_SIGNAL_FUNC (on_apply_clicked), info);
-	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (info)->action_area),
-			   button);
-	info->priv->button_apply = button;
 
 	button = gtk_button_new_from_stock (GTK_STOCK_REVERT_TO_SAVED);
 	gtk_widget_show (button);
@@ -622,12 +630,22 @@ gtkam_info_new (GtkamCamera *camera, const gchar *folder, const gchar *name)
 			   button);
 	info->priv->button_reset = button;
 
-	button = gtk_button_new_from_stock (GTK_STOCK_CANCEL);
+	button = gtk_button_new_from_stock (GTK_STOCK_APPLY);
 	gtk_widget_show (button);
+	gtk_widget_set_sensitive (button, FALSE);
 	g_signal_connect (GTK_OBJECT (button), "clicked",
-			    GTK_SIGNAL_FUNC (on_cancel_clicked), info);
+			    GTK_SIGNAL_FUNC (on_apply_clicked), info);
 	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (info)->action_area),
 			   button);
+	info->priv->button_apply = button;
+
+	button = gtk_button_new_from_stock (GTK_STOCK_OK);
+	gtk_widget_show (button);
+	g_signal_connect (GTK_OBJECT (button), "clicked",
+			    GTK_SIGNAL_FUNC (on_ok_clicked), info);
+	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (info)->action_area),
+			   button);
+	gtk_widget_grab_focus (button);
 
 	return (GTK_WIDGET (info));
 }

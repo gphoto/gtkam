@@ -559,7 +559,7 @@ msgstr ""
 #: src/gtkam-preview.c:406
 #, fuzzy
 msgid "Rotate thumbnail by -90 degrees"
-msgstr "Tourner la vignette de 90° sur la gauche"
+msgstr "Tourner la vignette de 90 degrés sur la gauche"
 
 #: src/gtkam-preview.c:408
 msgid "+90 degrees"
@@ -568,7 +568,7 @@ msgstr ""
 #: src/gtkam-preview.c:415
 #, fuzzy
 msgid "Rotate thumbnail by 90 degrees"
-msgstr "Tourner la vignette de 90° sur la droite"
+msgstr "Tourner la vignette de 90 degrés sur la droite"
 
 #: src/gtkam-preview.c:417
 msgid "180 degrees"
@@ -577,7 +577,7 @@ msgstr ""
 #: src/gtkam-preview.c:424
 #, fuzzy
 msgid "Rotate thumbnail by 180 degrees"
-msgstr "Tourner la vignette de 180°"
+msgstr "Tourner la vignette de 180 degrés"
 
 #: src/gtkam-save.c:335
 #, c-format

@@ -140,10 +140,11 @@ run (gchar *name, gint nparams, GimpParam *param, gint *nreturn_vals,
 	*nreturn_vals = 1;
 	*return_vals = values;
 
-	values[1].type = GIMP_PDB_INT32;
-	values[1].data.d_int32 = 0;
-
-	/* Create the camera */
+	/*
+	 * ----------------------------------------------------------------
+	 * Step 1: Create the camera
+	 * ----------------------------------------------------------------
+	 */
 	switch (run_mode) {
 	case GIMP_RUN_INTERACTIVE:
 
@@ -180,9 +181,13 @@ run (gchar *name, gint nparams, GimpParam *param, gint *nreturn_vals,
 
 		break;
 	}
-
 	g_assert (camera);
 
+	/*
+	 * ----------------------------------------------------------------
+	 * Step 2: Capture an image
+	 * ----------------------------------------------------------------
+	 */
 	switch (run_mode) {
 	case GIMP_RUN_INTERACTIVE:
 
@@ -251,17 +256,12 @@ run (gchar *name, gint nparams, GimpParam *param, gint *nreturn_vals,
 			values[0].data.d_status = GIMP_PDB_EXECUTION_ERROR;
 			return;
 		}
-
-		break;
-	default:
-		gp_camera_unref (camera);
-		values[0].data.d_status = GIMP_PDB_EXECUTION_ERROR;
-		return;
 	}
 
 	/*
-	 * At this point, the camera has captured an image. Download the 
-	 * file
+	 * ----------------------------------------------------------------
+	 * Step 3: Download the file
+	 * ----------------------------------------------------------------
 	 */
 	gp_file_new (&file);
 	gimp_progress_init (_("Downloading file"));
@@ -286,7 +286,11 @@ run (gchar *name, gint nparams, GimpParam *param, gint *nreturn_vals,
 	}
 	gp_camera_unref (camera);
 
-	/* At this point, we've got a file. Make a pixbuf out of it. */
+	/*
+	 * ----------------------------------------------------------------
+	 * Step 4: Convert file into pixbuf
+	 * ----------------------------------------------------------------
+	 */
 	gp_file_get_data_and_size (file, &data, &size);
 	loader = gdk_pixbuf_loader_new ();
 	gdk_pixbuf_loader_write (loader, data, size);
@@ -297,16 +301,23 @@ run (gchar *name, gint nparams, GimpParam *param, gint *nreturn_vals,
 	h = gdk_pixbuf_get_height (pixbuf);
 	r = gdk_pixbuf_get_rowstride (pixbuf);
 	pixels = gdk_pixbuf_get_pixels (pixbuf);
+	gdk_pixbuf_ref (pixbuf);
+	gtk_object_unref (GTK_OBJECT (loader));
 
-	/* Take the pixbuf and make a gimp window out of it. */
+	/*
+	 * ----------------------------------------------------------------
+	 * Step 5: Take the pixbuf and make a gimp window out of it
+	 * ----------------------------------------------------------------
+	 */
 	image_id = gimp_image_new (w, h, GIMP_RGB);
+	gimp_image_set_filename (image_id, path.name);
 	layer_id = gimp_layer_new (image_id, _("Background"), w, h,
 				   GIMP_RGB_IMAGE, 100, GIMP_NORMAL_MODE);
 	gimp_image_add_layer (image_id, layer_id, 0);
 	drawable = gimp_drawable_get (layer_id);
 	gimp_pixel_rgn_init (&pixel_rgn, drawable, 0, 0, r, h, TRUE, FALSE);
 	gimp_pixel_rgn_set_rect (&pixel_rgn, pixels, 0, 0, w, h);
-	gtk_object_unref (GTK_OBJECT (loader));
+	gdk_pixbuf_unref (pixbuf);
 	gimp_drawable_flush (drawable);
 	gimp_drawable_detach (drawable);
 	gimp_display_new (image_id);

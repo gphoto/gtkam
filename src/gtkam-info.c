@@ -483,7 +483,7 @@ gtkam_info_new (Camera *camera, const gchar *path, GtkWidget *opt_window)
 			gtk_table_attach (GTK_TABLE (page), label,
 					  0, 1, 3, 4, GTK_FILL, 0, 0, 0);
 			gtk_misc_set_alignment (GTK_MISC (label), 0, 0);
-			msg = g_strdup_printf (_("%i bytes"),
+			msg = g_strdup_printf (_("%li bytes"),
 						info->priv->info.file.size);
 			label = gtk_label_new (msg);
 			g_free (msg);
@@ -569,7 +569,7 @@ gtkam_info_new (Camera *camera, const gchar *path, GtkWidget *opt_window)
                         gtk_table_attach (GTK_TABLE (page), label,
                                           0, 1, 1, 2, GTK_FILL, 0, 0, 0);
 			gtk_misc_set_alignment (GTK_MISC (label), 0, 0);
-                        msg = g_strdup_printf ("%i bytes",
+                        msg = g_strdup_printf ("%li bytes",
                                                 info->priv->info.preview.size);
                         label = gtk_label_new (msg);
                         g_free (msg);
@@ -617,7 +617,7 @@ gtkam_info_new (Camera *camera, const gchar *path, GtkWidget *opt_window)
                         gtk_table_attach (GTK_TABLE (page), label,
                                           0, 1, 1, 2, GTK_FILL, 0, 0, 0);
 			gtk_misc_set_alignment (GTK_MISC (label), 0, 0);
-                        msg = g_strdup_printf ("%i bytes",
+                        msg = g_strdup_printf ("%li bytes",
                                                 info->priv->info.audio.size);
                         label = gtk_label_new (msg);
                         g_free (msg);

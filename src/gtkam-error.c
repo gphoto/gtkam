@@ -186,7 +186,7 @@ gtkam_error_new (const gchar *msg, int result, Camera *opt_camera,
 	gtk_box_pack_start (GTK_BOX (hbox), vbox, TRUE, TRUE, 0);
 
 	full_msg = g_strdup_printf ("%s ('%s')", msg,
-				    gp_result_as_string (result));
+				    _(gp_result_as_string (result)));
 	label = gtk_label_new (full_msg);
 	g_free (full_msg);
 	gtk_widget_show (label);
@@ -202,7 +202,7 @@ gtkam_error_new (const gchar *msg, int result, Camera *opt_camera,
 	gtk_text_set_editable (GTK_TEXT (text), FALSE);
 	gtk_box_pack_start (GTK_BOX (error->priv->hbox), text, TRUE, TRUE, 0);
 
-	error_info = gp_camera_get_error (opt_camera);
+	error_info = _(gp_camera_get_error (opt_camera));
 	gtk_text_insert (GTK_TEXT (text), NULL, NULL, NULL,
 			 error_info, strlen (error_info));
 

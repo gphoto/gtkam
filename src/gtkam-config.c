@@ -202,8 +202,8 @@ create_page (GtkamConfig *config, CameraWidget *widget)
 	if (widget) {
 		gp_widget_get_info  (widget, &info);
 		gp_widget_get_label (widget, &l);
-		label = gtk_label_new (l);
-		gtk_tooltips_set_tip (config->priv->tooltips, label, info,
+		label = gtk_label_new (_(l));
+		gtk_tooltips_set_tip (config->priv->tooltips, label, _(info),
 				      NULL);
 	} else
 		label = gtk_label_new (_("Others"));
@@ -396,7 +396,7 @@ create_widgets (GtkamConfig *config, CameraWidget *widget)
 
 		/* If window, set the window's label */
 		if (type == GP_WIDGET_WINDOW)
-			gtk_window_set_title (GTK_WINDOW (config), label);
+			gtk_window_set_title (GTK_WINDOW (config), _(label));
 
 		/* Create sub-widgets */
 		for (i = 0; i < gp_widget_count_children (widget); i++) {
@@ -410,13 +410,13 @@ create_widgets (GtkamConfig *config, CameraWidget *widget)
 
 		gtk_widget = gtk_vbox_new (FALSE, 10);
 		gtk_container_set_border_width (GTK_CONTAINER (gtk_widget), 10);
-		button = gtk_button_new_with_label (label);
+		button = gtk_button_new_with_label (_(label));
 		gtk_widget_show (button);
 		gtk_signal_connect (GTK_OBJECT (button), "clicked",
 				GTK_SIGNAL_FUNC (on_button_clicked), widget);
 		gtk_container_add (GTK_CONTAINER (gtk_widget), button);
 		gtk_tooltips_set_tip (config->priv->tooltips, button,
-				      info, NULL);
+				      _(info), NULL);
 		break;
 
 	case GP_WIDGET_DATE:
@@ -466,11 +466,12 @@ create_widgets (GtkamConfig *config, CameraWidget *widget)
 		gp_widget_get_value (widget, &value_char);
 		gtk_widget = gtk_entry_new ();
 		if (value_char)
-			gtk_entry_set_text (GTK_ENTRY (gtk_widget), value_char);
+			gtk_entry_set_text (GTK_ENTRY (gtk_widget),
+					    _(value_char));
 		gtk_signal_connect (GTK_OBJECT (gtk_widget), "changed",
 				GTK_SIGNAL_FUNC (on_entry_changed), widget);
 		gtk_tooltips_set_tip (config->priv->tooltips,
-				      gtk_widget, info, NULL);
+				      gtk_widget, _(info), NULL);
 		break;
 	
 	case GP_WIDGET_RANGE:
@@ -486,7 +487,7 @@ create_widgets (GtkamConfig *config, CameraWidget *widget)
 		gtk_range_set_update_policy (GTK_RANGE (gtk_widget),
 					     GTK_UPDATE_DISCONTINUOUS);
 		gtk_tooltips_set_tip (config->priv->tooltips,
-				      gtk_widget, info, NULL);
+				      gtk_widget, _(info), NULL);
 		break;
 
 	case GP_WIDGET_MENU:
@@ -495,11 +496,11 @@ create_widgets (GtkamConfig *config, CameraWidget *widget)
 		gp_widget_get_value (widget, &value_char);
 		for (i = 0; i < gp_widget_count_choices (widget); i++) {
 			gp_widget_get_choice (widget, i, &choice);
-			options = g_list_append (options, g_strdup (choice));
+			options = g_list_append (options, g_strdup (_(choice)));
 		}
 		gtk_combo_set_popdown_strings (GTK_COMBO (gtk_widget), options);
 		gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (gtk_widget)->entry),
-				    value_char);
+				    _(value_char));
 		gtk_signal_connect (GTK_OBJECT (GTK_COMBO (gtk_widget)->entry),
 			"changed", GTK_SIGNAL_FUNC (on_entry_changed), widget);
 		break;
@@ -514,7 +515,7 @@ create_widgets (GtkamConfig *config, CameraWidget *widget)
 		for (i = 0; i < gp_widget_count_choices (widget); i++) {
 			gp_widget_get_choice (widget, i, &choice);
 			button = gtk_radio_button_new_with_label (group,
-								  choice);
+								  _(choice));
 			gtk_widget_show (button);
 			group = gtk_radio_button_group (
 					GTK_RADIO_BUTTON (button));
@@ -529,13 +530,13 @@ create_widgets (GtkamConfig *config, CameraWidget *widget)
 				GTK_SIGNAL_FUNC (on_radio_button_toggled),
 				widget);
 			gtk_tooltips_set_tip (config->priv->tooltips,
-					      button, info, NULL);
+					      button, _(info), NULL);
 		}
 		break;
 
 	case GP_WIDGET_TOGGLE:
 
-		gtk_widget = gtk_check_button_new_with_label (label);
+		gtk_widget = gtk_check_button_new_with_label (_(label));
 		gp_widget_get_value (widget, &value_int);
 		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gtk_widget),
 					      (value_int != 0));
@@ -543,7 +544,7 @@ create_widgets (GtkamConfig *config, CameraWidget *widget)
 				    GTK_SIGNAL_FUNC (on_toggle_button_toggled),
 				    widget);
 		gtk_tooltips_set_tip (config->priv->tooltips,
-				      gtk_widget, info, NULL);
+				      gtk_widget, _(info), NULL);
 		break;
 
 	default:
@@ -553,7 +554,7 @@ create_widgets (GtkamConfig *config, CameraWidget *widget)
 	}
 
 	gtk_widget_show (gtk_widget);
-	frame = gtk_frame_new (label);
+	frame = gtk_frame_new (_(label));
 	gtk_widget_show (frame);
 	gtk_container_add (GTK_CONTAINER (frame), gtk_widget);
 

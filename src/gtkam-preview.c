@@ -202,79 +202,149 @@ struct _GdkPixbuf {
 	guint has_alpha : 1;
 };
 
-#define SWAP(c1,c2) {guchar c = (c1); (c1) = (c2); (c2) = c;}
+#define COPY90                                                  	\
+	if ((r2 < h1) && (c2 < w1)) {					\
+	  if ((w1 <= h1) && (r1 < h2))					\
+	    for (i = 0; i < c; i++)					\
+	      new->pixels[r1 * rs2 + c1 * c + i] =			\
+	        pixbuf->pixels[r2 * rs1 + c2 * c + i];			\
+	  if ((w1 > h1) && (c1 > (w1 - h2)))				\
+	    for (i = 0; i < c; i++)					\
+	      new->pixels[r1 * rs2 + (c1 - (w1 - h1)) * c + i] = 	\
+	        pixbuf->pixels[r2 * rs1 + c2 * c + i];			\
+	}
 
-static void
+#define COPY270								\
+        if ((r2 < h1) && (c2 < w1)) {					\
+	  if ((h1 > w1) && (r1 > (h1 - w1)))				\
+	    for (i = 0; i < c; i++)					\
+	      new->pixels[(r1 - (h1 - w1)) * rs2 + c1 * c + i] =	\
+		pixbuf->pixels[r2 * rs1 + c2 * c + i];			\
+	  if ((h1 <= w1) && (c1 < w2))					\
+            for (i = 0; i < c; i++)					\
+              new->pixels[r1 * rs2 + c1 * c + i] =			\
+                pixbuf->pixels[r2 * rs1 + c2 * c + i];			\
+	}
+
+static GdkPixbuf *
 gdk_pixbuf_rotate (GdkPixbuf *pixbuf, guint angle)
 {
-	guint row, col, row_len, w, h;
-	guint channels;
+	GdkPixbuf *new = NULL;
+	guint row, col, w1, h1, w2, h2;
+	guint r1, r2, c1, c2;
+	guint rs1, rs2;
+	guint c;
+	guint i;
 
-	g_return_if_fail (pixbuf != NULL);
-
-	channels = pixbuf->has_alpha ? 4 : 3;
-	row_len = pixbuf->width * channels;
-	w = pixbuf->width;
-	h = pixbuf->height;
+	g_return_val_if_fail (pixbuf != NULL, NULL);
 
 	switch (angle) {
 	case 0:
+		return (gdk_pixbuf_copy (pixbuf));
+	case 180:
+		new = gdk_pixbuf_new (pixbuf->colorspace, pixbuf->has_alpha,
+				      pixbuf->bits_per_sample,
+				      pixbuf->width, pixbuf->height);
 		break;
 	case 90:
-#if 0
-		for (row = 0; row < MAX (w, h) / 2; row++) {
-			for (col = row; col < MAX (w, h) - row - 1; col++) {
-if (col < w) {
-	c = pixbuf->pixels[row * row_len + col * channels + 0];
-	pixbuf->pixels[row * row_len + col * channels + 0] = 
-	pixbuf->pixels[col * row_len - (w - row) * channels + 0];
-}
-
-if (col < w) {
-	pixbuf->pixels[col * row_len - (w - row) * channels + 0] =
-	pixbuf->pixels[(h - row) * row_len - (w - col) * channels + 0];
-}
-
-	pixbuf->pixels[(h - row) * row_len - (w - col) * channels + 0] =
-	pixbuf->pixels[(h - col) * row_len - (w - row) * channels + 0];
-
-	pixbuf->pixels[(h - col) * row_len - (w - row) * channels + 0] = c;
-			}
-		}
-#endif
-		break;
-	case 180:
-		for (row = 0; row < pixbuf->height / 2; row++) {
-			for (col = 0; col < pixbuf->width; col++) {
-SWAP (pixbuf->pixels[row * row_len + col * channels + 0],
-      pixbuf->pixels[(pixbuf->height - row) * row_len - col * channels + 0]);
-SWAP (pixbuf->pixels[row * row_len + col * channels + 1],
-      pixbuf->pixels[(pixbuf->height - row) * row_len - col * channels + 1]);
-SWAP (pixbuf->pixels[row * row_len + col * channels + 2],
-      pixbuf->pixels[(pixbuf->height - row) * row_len - col * channels + 2]);
-			}
-		}
-		if (pixbuf->height % 2) {
-			for (col = 0; col < pixbuf->width / 2; col++) {
-SWAP (pixbuf->pixels[row * row_len + col * channels + 0],
-      pixbuf->pixels[(pixbuf->height - row) * row_len - col * channels + 0]);
-SWAP (pixbuf->pixels[row * row_len + col * channels + 1],
-      pixbuf->pixels[(pixbuf->height - row) * row_len - col * channels + 1]);
-SWAP (pixbuf->pixels[row * row_len + col * channels + 2],
-      pixbuf->pixels[(pixbuf->height - row) * row_len - col * channels + 2]);
-			}
-		}
-
-		break;
 	case 270:
+		new = gdk_pixbuf_new (pixbuf->colorspace, pixbuf->has_alpha,
+				      pixbuf->bits_per_sample,
+				      pixbuf->height, pixbuf->width);
 		break;
 	default:
 		g_warning ("Rotation by %i not implemented.", angle);
 		break;
 	}
-}
 
-#undef SWAP
+	rs1 = pixbuf->rowstride;
+	rs2 = new->rowstride;
+
+	c = pixbuf->has_alpha ? 4 : 3;
+
+	w1 = pixbuf->width;
+	h1 = pixbuf->height;
+	w2 = new->width;
+	h2 = new->height;
+
+	/*
+	 * For rotation by 90 or 270, we assume the pixbuf to be a 
+	 * square and move (r2,c2) to (r1,c1):
+	 */
+	switch (angle) {
+	case 90:
+		for (row = 0; row < MAX (w1, h1) / 2; row++) {
+			for (col = row; col < MAX (w1, h1) - row - 1; col++) {
+				r1 = row;
+				c1 = col;
+				r2 = MAX (w1, h1) - col - 1;
+				c2 = row;
+				COPY90;
+				r1 = r2;
+				c1 = c2;
+				r2 = MAX (w1, h1) - row - 1;
+				c2 = MAX (w1, h1) - col - 1;
+				COPY90;
+				r1 = r2;
+				c1 = c2;
+				r2 = col;
+				c2 = MAX (w1, h1) - row - 1;
+				COPY90;
+				r1 = r2;
+				c1 = c2;
+				r2 = row;
+				c2 = col;;
+				COPY90;
+			}
+		}
+		break;
+	case 270:
+		for (row = 0; row < MAX (w1, h1) / 2; row++) {
+			for (col = row; col < MAX (w1, h1) - row - 1; col++) {
+				r1 = row;
+				c1 = col;
+				r2 = col;
+				c2 = MAX (w1, h1) - row - 1;
+				COPY270;
+				r1 = r2;
+				c1 = c2;
+				r2 = MAX (w1, h1) - row - 1;
+				c2 = MAX (w1, h1) - col - 1;
+				COPY270;
+				r1 = r2;
+				c1 = c2;
+				r2 = MAX (w1, h1) - col - 1;
+				c2 = row;
+				COPY270;
+				r1 = r2;
+				c1 = c2;
+				r2 = row;
+				c2 = col;
+				COPY270;
+			}
+		}
+		break;
+	case 180:
+		for (row = 0; row < h1; row++) {
+			for (col = 0; col < w1; col++) {
+				r1 = row;
+				c1 = col;
+				r2 = h1 - row - 1;
+				c2 = w1 - col - 1;
+				for (i = 0; i < c; i++) {
+				  new->pixels[r2 * rs2 + c2 * c + i] =
+				    pixbuf->pixels[r1 * rs1 + c1 * c + i];
+				}
+			}
+		}
+		break;
+	default:
+		g_warning ("Rotation by %i not implemented.", angle);
+		break;
+	}
+
+	return (new);
+}
 
 static gboolean
 timeout_func (gpointer user_data)
@@ -284,7 +354,7 @@ timeout_func (gpointer user_data)
 	const char *data;
 	long int size;
 	GdkPixbufLoader *loader;
-	GdkPixbuf *pixbuf;
+	GdkPixbuf *pixbuf, *rotated;
 	GdkPixmap *pixmap;
 	GdkBitmap *bitmap;
 
@@ -306,12 +376,10 @@ timeout_func (gpointer user_data)
 	gdk_pixbuf_loader_close (loader);
 
 	pixbuf = gdk_pixbuf_loader_get_pixbuf (loader);
-	gdk_pixbuf_rotate (pixbuf, preview->priv->rotate);
-	gdk_pixbuf_render_pixmap_and_mask (pixbuf, &pixmap, &bitmap, 1);
+	rotated = gdk_pixbuf_rotate (pixbuf, preview->priv->rotate);
 	gtk_object_unref (GTK_OBJECT (loader));
-
-	if (!GTKAM_IS_PREVIEW (preview))
-		return (FALSE);
+	gdk_pixbuf_render_pixmap_and_mask (rotated, &pixmap, &bitmap, 127);
+	gdk_pixbuf_unref (rotated);
 
 	/* Show the new preview */
 	gtk_pixmap_set (preview->priv->image, pixmap, bitmap);
@@ -452,15 +520,17 @@ gtkam_preview_new (Camera *camera)
 			    GTK_SIGNAL_FUNC (on_radio_0_toggled), preview);
 	group = gtk_radio_button_group (GTK_RADIO_BUTTON (radio));
 	radio = gtk_radio_button_new_with_label (group, _("-90°"));
-//	gtk_widget_show (radio);
+	gtk_widget_show (radio);
 	gtk_box_pack_start (GTK_BOX (vbox), radio, FALSE, FALSE, 0);
 	gtk_signal_connect (GTK_OBJECT (radio), "toggled",
 			    GTK_SIGNAL_FUNC (on_radio_270_toggled), preview);
+	group = gtk_radio_button_group (GTK_RADIO_BUTTON (radio));
 	radio = gtk_radio_button_new_with_label (group, _("+90°"));
-//	gtk_widget_show (radio);
+	gtk_widget_show (radio);
 	gtk_box_pack_start (GTK_BOX (vbox), radio, FALSE, FALSE, 0);
 	gtk_signal_connect (GTK_OBJECT (radio), "toggled",
 			    GTK_SIGNAL_FUNC (on_radio_90_toggled), preview);
+	group = gtk_radio_button_group (GTK_RADIO_BUTTON (radio));
 	radio = gtk_radio_button_new_with_label (group, _("180°"));
 	gtk_widget_show (radio);
 	gtk_box_pack_start (GTK_BOX (vbox), radio, FALSE, FALSE, 0);

@@ -48,6 +48,7 @@
 #include <gtk/gtkhbox.h>
 #include <gtk/gtkvbox.h>
 #include <gtk/gtkpixmap.h>
+#include <gtk/gtkscrolledwindow.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 
 #include "gtkam-error.h"
@@ -284,7 +285,7 @@ gtkam_delete_new (Camera *camera, gboolean multi, const gchar *path,
 		  GList *files, GtkWidget *opt_window)
 {
 	GtkamDelete *delete;
-	GtkWidget *label, *button, *image, *hbox, *vbox, *check;
+	GtkWidget *label, *button, *image, *hbox, *vbox, *check, *scrolled;
 	GdkPixmap *pixmap;
 	GdkBitmap *bitmap;
 	GdkPixbuf *pixbuf;
@@ -342,6 +343,20 @@ gtkam_delete_new (Camera *camera, gboolean multi, const gchar *path,
 		gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
 		gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
 		gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
+
+		if (g_list_length (files) >= 5) {
+			scrolled = gtk_scrolled_window_new (NULL, NULL);
+			gtk_widget_show (scrolled);
+			gtk_box_pack_start (GTK_BOX (vbox), scrolled, 
+					    TRUE, TRUE, 0);
+			gtk_scrolled_window_set_policy (
+				GTK_SCROLLED_WINDOW (scrolled),
+				GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
+			vbox = gtk_vbox_new (FALSE, 0);
+			gtk_widget_show (vbox);
+			gtk_scrolled_window_add_with_viewport (
+				GTK_SCROLLED_WINDOW (scrolled), vbox);
+		}
 
 		for (i = 0; i < g_list_length (files); i++) {
 			check = gtk_check_button_new_with_label (

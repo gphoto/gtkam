@@ -7,6 +7,9 @@ INCLUDES = \
 bin_PROGRAMS = gtkam
 
 gtkam_SOURCES = \
+	gtkam-config.c gtkam-config.h \
+	gtkam-debug.c gtkam-debug.h \
+	gtkam-error.c gtkam-error.h \
 	main.c \
 	support.c support.h \
 	frontend.c frontend.h \

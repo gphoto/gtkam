@@ -17,9 +17,16 @@
 #include "globals.h"
 #include "util.h"
 
+#include <gtkam-config.h>
+#include <gtkam-debug.h>
+#include <gtkam-error.h>
+
 #include "../pixmaps/no_thumbnail.xpm"
 
 char *current_folder();
+
+#define CHECK_RESULT(res) {int r = (res); if (r < 0) { GtkWidget *dialog = gtkam_error_new (r, NULL); gtk_widget_show (dialog); return; }}
+#define CHECK_CAM_RESULT(c,res) {int r = (res); if (r < 0) { GtkWidget *dialog = gtkam_error_new (r, c); gtk_widget_show (dialog); return; }}
 
 void debug_print (char *message) {
 	if (gp_gtk_debug)
@@ -500,7 +507,7 @@ void folder_refresh (GtkWidget *widget, gpointer data) {
 	debug_print("folder refresh");
 
 	if (!gp_gtk_camera_init)
-		if (camera_set()!=GP_OK) {return;}
+		CHECK_RESULT (camera_set ());
 
 	icon_list = (GtkWidget*) lookup_widget(gp_gtk_main_window, "icons");
 	gtk_icon_list_clear (GTK_ICON_LIST(icon_list));
@@ -517,7 +524,7 @@ void folder_set (GtkWidget *tree_item, gpointer data) {
 	debug_print("folder set");
 
 	if (!gp_gtk_camera_init)
-		if (camera_set()!=GP_OK) {return;}
+		CHECK_RESULT (camera_set ());
 
 	camera_tree = (GtkWidget*) lookup_widget(gp_gtk_main_window, "camera_tree");
 	gtk_object_remove_data(GTK_OBJECT(camera_tree), "folder");
@@ -584,7 +591,7 @@ void folder_expand (GtkWidget *tree_item, gpointer data) {
 	debug_print("folder_expand");
 
 	if (!gp_gtk_camera_init)
-		if (camera_set()!=GP_OK) {return;}
+		CHECK_RESULT (camera_set ());
 
 	/* See if we've expanded this before! */
 	if (gtk_object_get_data(GTK_OBJECT(tree_item), "expanded")) return;
@@ -759,12 +766,13 @@ void camera_select_update_camera(GtkWidget *entry, gpointer data) {
 }
 
 void camera_select() {
-	GtkWidget *window, *ok, *cancel, *camera, *port, *speed;
+	GtkWidget *window, *ok, *cancel, *camera, *port, *speed, *dialog;
 	GList *camera_list;
 	int num_cameras, x;
 	char buf[128];
 	const char *name;
 	char *camera_name, *port_name, *port_path, *speed_name;
+	int result;
 	
 	debug_print("camera select");
 
@@ -853,8 +861,12 @@ camera_select_again:
 		gp_setting_set("gtkam", "speed", "");
 
 
-	if (camera_set()!=GP_OK)
-		goto camera_select_again;
+	   result = camera_set ();
+	   if (result != GP_OK) {
+		   dialog = gtkam_error_new (result, NULL);
+		   gtk_widget_show (dialog);
+		   goto camera_select_again;
+	   }
 
 	/* Clean up */
 	gtk_widget_destroy(window);
@@ -879,7 +891,7 @@ void camera_index () {
 	debug_print("camera index");
 	
 	if (!gp_gtk_camera_init)
-		if (camera_set()!=GP_OK) {return;}
+		CHECK_RESULT (camera_set ());
 
 	icon_list   = (GtkWidget*) lookup_widget(gp_gtk_main_window, "icons");
 	GTK_ICON_LIST(icon_list)->is_editable = FALSE;
@@ -959,7 +971,7 @@ void camera_delete_common(int all) {
 	int x, count=0;
 
 	if (!gp_gtk_camera_init)
-		if (camera_set()!=GP_OK) {return;}
+		CHECK_RESULT (camera_set ());
 
 	if (gp_setting_get("gtkam", "camera", buf)!=GP_OK) {
 		frontend_message(NULL, _("ERROR: please choose your camera model again"));
@@ -1029,36 +1041,26 @@ void camera_delete_selected() {
 }
 
 void camera_delete_all() {
+
 	debug_print("camera delete all");
 
 	if (!gp_gtk_camera_init)
-		if (camera_set()!=GP_OK) {return;}
+		CHECK_RESULT (camera_set ());
 
 	camera_delete_common(1);
 }
 
 void camera_configure() {
 
-        CameraWidget *window;
+	GtkWidget *config;
 
         debug_print("camera configure");
 
 	if (!gp_gtk_camera_init)
-		if (camera_set()!=GP_OK) {return;}
+		CHECK_RESULT (camera_set ());
 
-        if (gp_camera_get_config(gp_gtk_camera, &window)!=GP_OK) {
-		frontend_message(NULL, "Could not configure the camera");
-		return;
-        }
-
-        if (frontend_prompt (gp_gtk_camera, window) == GP_PROMPT_OK) {
-            if (gp_camera_set_config(gp_gtk_camera, window)!=GP_OK)
-                frontend_message(NULL, "Could not configure the camera");
-        }
-
-        if (window)
-            gp_widget_free(window);
-
+	config = gtkam_config_new (gp_gtk_camera);
+	gtk_widget_show (config);
 }
 
 void camera_show_information() {
@@ -1069,7 +1071,7 @@ void camera_show_information() {
 	debug_print("camera information");
 
 	if (!gp_gtk_camera_init)
-		if (camera_set()!=GP_OK) {return;}
+		CHECK_RESULT (camera_set ());
 
 	message = create_message_window_transient();
 	message_label = (GtkWidget*) lookup_widget(message, "message");
@@ -1094,14 +1096,12 @@ void camera_show_manual() {
 	debug_print("camera manual");
 
 	if (!gp_gtk_camera_init)
-		if (camera_set()!=GP_OK) {return;}
+		CHECK_RESULT (camera_set ());
 
-	if (gp_camera_get_manual(gp_gtk_camera, &buf)!=GP_OK) {
-		frontend_message(gp_gtk_camera, _("Could not retrieve the camera manual"));
-		return;
-	}
+	CHECK_CAM_RESULT (gp_gtk_camera,
+			  gp_camera_get_manual (gp_gtk_camera, &buf));
 
-	frontend_message(gp_gtk_camera, buf.text);
+	frontend_message (gp_gtk_camera, buf.text);
 
 }
 
@@ -1112,14 +1112,12 @@ void camera_show_about() {
 	debug_print("camera about");
 
 	if (!gp_gtk_camera_init)
-		if (camera_set()!=GP_OK) {return;}
+		CHECK_RESULT (camera_set());
 
-	if (gp_camera_get_about(gp_gtk_camera, &buf)!=GP_OK) {
-		frontend_message(gp_gtk_camera, _("Could not retrieve library information"));
-		return;
-	}
+	CHECK_CAM_RESULT (gp_gtk_camera,
+			  gp_camera_get_about (gp_gtk_camera, &buf));
 
-	frontend_message(gp_gtk_camera, buf.text);
+	frontend_message (gp_gtk_camera, buf.text);
 }
 
 
@@ -1335,48 +1333,21 @@ void on_about_activate (GtkMenuItem *menuitem, gpointer user_data) {
 	help_about();
 }
 
-static void
-on_debug_ok_clicked (GtkButton *button, GtkDialog *dialog)
-{
-	gp_debug_set_func (NULL, NULL);
-	gtk_object_destroy (GTK_OBJECT (dialog));
-}
+static GtkWidget *debug_window = NULL;
 
-static void
-debug_func (const char *id, const char *msg, void *data)
-{
-	GtkText *text = data;
+void on_debug_window_destroy (GtkObject *object, gpointer *data) {
 
-	gtk_text_insert (text, NULL, NULL, NULL, msg, strlen (msg));
-	gtk_text_insert (text, NULL, NULL, NULL, "\n", 1);
+	debug_window = NULL;
 }
 
 void on_debug_activate (GtkMenuItem *menuitem, gpointer user_data) {
-	GtkWidget *dialog, *vscrollbar, *text, *button, *hbox;
 
-	dialog = gtk_dialog_new ();
-	gtk_widget_show (dialog);
-
-	hbox = gtk_hbox_new (FALSE, 0);
-	gtk_widget_show (hbox);
-	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), hbox);
-
-	text = gtk_text_new (NULL, NULL);
-	gtk_widget_show (text);
-	gtk_text_set_editable (GTK_TEXT (text), FALSE);
-	gtk_box_pack_start (GTK_BOX (hbox), text, TRUE, TRUE, 0);
-
-	vscrollbar = gtk_vscrollbar_new (GTK_TEXT (text)->vadj);
-	gtk_widget_show (vscrollbar);
-	gtk_box_pack_end (GTK_BOX (hbox), vscrollbar, FALSE, FALSE, 0);
-
-	button = gtk_button_new_with_label ("OK");
-	gtk_widget_show (button);
-	gtk_signal_connect (GTK_OBJECT (button), "clicked",
-			    on_debug_ok_clicked, dialog);
-	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->action_area),
-			   button);
-
-	gp_debug_set_func (debug_func, text);
-	gp_debug_set_level (GP_DEBUG_HIGH);
+	if (!debug_window) {
+		debug_window = gtkam_debug_new ();
+		gtk_widget_show (debug_window);
+		gtk_signal_connect (GTK_OBJECT (debug_window), "destroy",
+				    GTK_SIGNAL_FUNC (on_debug_window_destroy),
+				    NULL);
+	}
+	gtk_widget_grab_focus (debug_window);
 }

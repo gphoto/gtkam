@@ -47,6 +47,8 @@
 #  define N_(String) (String)
 #endif
 
+#include "gtkam-close.h"
+
 #define PARENT_TYPE GTK_TYPE_HBOX
 static GtkHBoxClass *parent_class;
 
@@ -149,6 +151,21 @@ status_func (GPContext *c, const char *format, va_list args,
         g_free (msg);
         while (gtk_events_pending ())
                 gtk_main_iteration ();
+}
+
+static void
+message_func (GPContext *context, const char *format, va_list args,
+	      void *data)
+{
+	GtkamStatus *status = GTKAM_STATUS (data);
+	gchar *msg;
+	GtkWidget *d, *w;
+
+	w = gtk_widget_get_ancestor (GTK_WIDGET (status), GTK_TYPE_WINDOW);
+	msg = g_strdup_vprintf (format, args);
+	d = gtkam_close_new (msg, w);
+	g_free (msg);
+	gtk_widget_show (d);
 }
 
 static unsigned int
@@ -273,6 +290,10 @@ gtkam_status_new (const gchar *format, ...)
 	/* Progress information */
 	gp_context_set_progress_funcs (status->context->context, start_func,
 				       update_func, stop_func, status);
+
+	/* Messages */
+	gp_context_set_message_func (status->context->context, message_func,
+				     status);
 
 	return (GTK_WIDGET (status));
 }

@@ -1231,16 +1231,6 @@ gtkam_main_new (void)
 	return (GTK_WIDGET (m));
 }
 
-static void
-message_func (Camera *camera, const char *message, void *data)
-{
-	GtkamMain *m = GTKAM_MAIN (data);
-	GtkWidget *dialog;
-
-	dialog = gtkam_close_new (message, GTK_WIDGET (m));
-	gtk_widget_show (dialog);
-}
-
 void
 gtkam_main_set_camera (GtkamMain *m, Camera *camera, gboolean multi)
 {
@@ -1248,9 +1238,6 @@ gtkam_main_set_camera (GtkamMain *m, Camera *camera, gboolean multi)
 
 	g_return_if_fail (GTKAM_IS_MAIN (m));
 	g_return_if_fail (camera != NULL);
-
-	if (camera)
-		gp_camera_set_message_func (camera, message_func, m);
 
 	if (m->priv->camera)
 		gp_camera_unref (m->priv->camera);

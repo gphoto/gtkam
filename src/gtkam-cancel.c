@@ -53,6 +53,8 @@
 
 #include <gphoto2/gphoto2-result.h>
 
+#include "gtkam-close.h"
+
 struct _GtkamCancelPrivate
 {
 	GPtrArray *array_hbox, *array_progress;
@@ -166,6 +168,20 @@ cancel_func (GPContext *c, void *data)
 
 	return (cancel->priv->cancelled ? GP_CONTEXT_FEEDBACK_CANCEL :
 					  GP_CONTEXT_FEEDBACK_OK);
+}
+
+static void
+message_func (GPContext *context, const char *format, va_list args,
+              void *data)
+{
+	GtkamCancel *cancel = GTKAM_CANCEL (data);
+        gchar *msg;
+        GtkWidget *d;
+
+        msg = g_strdup_vprintf (format, args);
+        d = gtkam_close_new (msg, GTK_WIDGET (cancel));
+        g_free (msg);
+        gtk_widget_show (d);
 }
 
 static unsigned int
@@ -295,6 +311,8 @@ gtkam_cancel_new (GtkWidget *opt_window, const gchar *format, ...)
 				       update_func, stop_func, cancel);
 	gp_context_set_cancel_func (cancel->context->context,
 				    cancel_func, cancel);
+	gp_context_set_message_func (cancel->context->context,
+				     message_func, cancel);
 
 	return (GTK_WIDGET (cancel));
 }

@@ -288,7 +288,7 @@ on_button_clicked (GtkButton *button, CameraWidget *widget)
 	config = GTKAM_CONFIG (gtk_widget_get_ancestor (GTK_WIDGET (button),
 							GTKAM_TYPE_CONFIG));
 	gp_widget_get_value (widget, &callback);
-	result = callback (config->priv->camera, widget);
+	result = callback (config->priv->camera, widget, NULL);
 	if (result != GP_OK) {
 		dialog = gtkam_error_new (result, NULL, GTK_WIDGET (config),
 			_("Could not execute command"));

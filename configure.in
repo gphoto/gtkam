@@ -169,6 +169,9 @@ packaging/rpm/package.spec
 src/Makefile
 test/Makefile
 doc/Makefile
+omf-install/Makefile
+help/Makefile
+help/C/Makefile
 ])
 
 echo "

@@ -71,7 +71,7 @@ struct _GtkamChooserPrivate
 	CameraAbilitiesList *al;
 	GPPortInfoList *il;
 
-	GtkWidget *label_speed, *check_multi;
+	GtkWidget *label_speed, *check_multi, *button_add, *table;
 	GtkEntry *entry_model, *entry_port, *entry_speed;
 	GtkCombo *combo_model, *combo_port, *combo_speed;
 
@@ -300,10 +300,24 @@ on_more_options_toggled (GtkToggleButton *toggle, GtkamChooser *chooser)
 		gtk_widget_show (chooser->priv->check_multi);
 		gtk_widget_show (chooser->priv->label_speed);
 		gtk_widget_show (GTK_WIDGET (chooser->priv->combo_speed));
+		gtk_widget_show (chooser->priv->button_add);
+		gtk_widget_ref (GTK_WIDGET (chooser->priv->combo_port));
+		gtk_container_remove (GTK_CONTAINER (chooser->priv->table),
+				      GTK_WIDGET (chooser->priv->combo_port));
+		gtk_table_attach_defaults (GTK_TABLE (chooser->priv->table),
+			GTK_WIDGET (chooser->priv->combo_port), 1, 2, 1, 2);
+		gtk_widget_unref (GTK_WIDGET (chooser->priv->combo_port));
 	} else {
 		gtk_widget_hide (chooser->priv->check_multi);
 		gtk_widget_hide (chooser->priv->label_speed);
 		gtk_widget_hide (GTK_WIDGET (chooser->priv->combo_speed));
+		gtk_widget_hide (chooser->priv->button_add);
+		gtk_widget_ref (GTK_WIDGET (chooser->priv->combo_port));
+		gtk_container_remove (GTK_CONTAINER (chooser->priv->table),
+				      GTK_WIDGET (chooser->priv->combo_port));
+		gtk_table_attach_defaults (GTK_TABLE (chooser->priv->table),
+			GTK_WIDGET (chooser->priv->combo_port), 1, 3, 1, 2);
+		gtk_widget_unref (GTK_WIDGET (chooser->priv->combo_port));
 	}
 }
 
@@ -449,6 +463,12 @@ on_multi_toggled (GtkToggleButton *toggle, GtkamChooser *chooser)
 	gtk_widget_set_sensitive (chooser->apply_button, TRUE);
 }
 
+static void
+on_add_clicked (GtkButton *button, GtkamChooser *chooser)
+{
+	g_warning ("Not implemented!");
+}
+
 GtkWidget *
 gtkam_chooser_new (void)
 {
@@ -504,8 +524,8 @@ gtkam_chooser_new (void)
 	gtk_table_set_row_spacings (GTK_TABLE (table), 5);
 	gtk_table_set_col_spacings (GTK_TABLE (table), 5);
 	gtk_widget_show (table);
-	gtk_box_pack_start (GTK_BOX (vbox), table,
-			    TRUE, TRUE, 0);
+	gtk_box_pack_start (GTK_BOX (vbox), table, TRUE, TRUE, 0);
+	chooser->priv->table = table;
 
 	label = gtk_label_new (_("Model:"));
 	gtk_widget_show (label);
@@ -535,6 +555,12 @@ gtkam_chooser_new (void)
 	chooser->priv->entry_port = GTK_ENTRY (GTK_COMBO (combo)->entry);
 	chooser->priv->combo_port = GTK_COMBO (combo);
 	gtk_entry_set_editable (chooser->priv->entry_port, FALSE);
+
+	button = gtk_button_new_with_label (_("Add"));
+	gtk_table_attach_defaults (GTK_TABLE (table), button, 2, 3, 1, 2);
+	gtk_signal_connect (GTK_OBJECT (button), "clicked",
+			    GTK_SIGNAL_FUNC (on_add_clicked), chooser);
+	chooser->priv->button_add = button;
 
 	label = gtk_label_new (_("Speed:"));
 	gtk_table_attach_defaults (GTK_TABLE (table), label, 0, 1, 2, 3);

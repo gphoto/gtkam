@@ -454,15 +454,15 @@ gtkam_info_new (Camera *camera, const gchar *path, GtkWidget *opt_window)
 		}
 
 		/* Time */
-		if (info->priv->info.file.fields & GP_FILE_INFO_TIME) {
-			label = gtk_label_new (_("Creation time:"));
+		if (info->priv->info.file.fields & GP_FILE_INFO_MTIME) {
+			label = gtk_label_new (_("Last modified:"));
 			gtk_widget_show (label);
 			gtk_label_set_justify (GTK_LABEL (label),
 					       GTK_JUSTIFY_LEFT);
 			gtk_table_attach (GTK_TABLE (page), label,
 					  0, 1, 2, 3, GTK_FILL, 0, 0, 0);
 			gtk_misc_set_alignment (GTK_MISC (label), 0, 0);
-			msg = g_strdup (ctime (&info->priv->info.file.time));
+			msg = g_strdup (ctime (&info->priv->info.file.mtime));
 			msg[strlen (msg) - 1] = '\0';
 			label = gtk_label_new (msg);
 			g_free (msg);

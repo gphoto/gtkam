@@ -82,6 +82,11 @@ gtkam_debug_destroy (GtkObject *object)
 		debug->priv->debug_id = 0;
 	}
 
+	if (debug->priv->data_id) {
+		gp_log_remove_func (debug->priv->data_id);
+		debug->priv->data_id = 0;
+	}
+
 	GTK_OBJECT_CLASS (parent_class)->destroy (object);
 }
 

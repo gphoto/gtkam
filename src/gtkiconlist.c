@@ -630,7 +630,10 @@ gtk_icon_list_button_press(GtkWidget *widget, GdkEventButton *event)
         unselect_all(iconlist);
      case GTK_SELECTION_MULTIPLE:
      case GTK_SELECTION_EXTENDED:
-        select_icon(iconlist, item, (GdkEvent *)event);
+	if (item->state == GTK_STATE_SELECTED)
+	  unselect_icon(iconlist, item, (GdkEvent *)event);
+	else
+          select_icon(iconlist, item, (GdkEvent *)event);
    }
 
   return FALSE;

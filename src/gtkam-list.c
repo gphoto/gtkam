@@ -207,15 +207,8 @@ on_button_press_event (GtkWidget *widget, GdkEventButton *event,
 		gp_file_unref (file);
 	}
 
-	if (item->state == GTK_STATE_SELECTED)
-		gtk_icon_list_unselect_icon (GTK_ICON_LIST (list), item);
-	else
-		gtk_icon_list_select_icon (GTK_ICON_LIST (list), item);
-
 	while (gtk_events_pending ())
 		gtk_main_iteration ();
-
-	gtk_entry_set_position (GTK_ENTRY (item->entry), 10000);
 
 	return (TRUE);
 }

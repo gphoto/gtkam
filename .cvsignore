@@ -12,6 +12,8 @@ configure
 config.log
 config.h
 config.cache
+config.rpath
+m4
 libtool
 config.status
 stamp-h

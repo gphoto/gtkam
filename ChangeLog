@@ -1,3 +1,8 @@
+2002-11-03  Mark McLoughlin <mark@skynet.ie>
+
+	* src/main.c: (main): use #elif defined(HAVE_BONOBO) instead of
+	  #elif HAVE_BONOBO
+
 2002-09-19  Lutz Müller <lutz@users.sourceforge.net>
 
 	* configure.in: Check for the right version of libexif-gtk.

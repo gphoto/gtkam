@@ -125,7 +125,7 @@ main (int argc, char *argv[])
 			    GNOME_PARAM_HUMAN_READABLE_NAME,
 			    _("Image Download Program"),
 			    GNOME_PARAM_APP_DATADIR, APP_DATADIR, NULL);
-#elif HAVE_BONOBO
+#elif defined (HAVE_BONOBO)
 	bonobo_ui_init (PACKAGE, VERSION, &argc, argv);
 #else
 	gtk_init (&argc, &argv);

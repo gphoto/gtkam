@@ -344,6 +344,7 @@ on_select_icon (GtkIconList *ilist, GtkIconListItem *item,
 				item->state = GTK_STATE_SELECTED;
 			}
 			break;
+		case GP_ERROR_NOT_SUPPORTED:
 		case GP_ERROR_CANCEL:
 			break;
 		default:
@@ -579,6 +580,7 @@ gtkam_list_set_path (GtkamList *list, const gchar *path)
 						pixmap, bitmap);
 				}
 				break;
+			case GP_ERROR_NOT_SUPPORTED:
 			case GP_ERROR_CANCEL:
 				break;
 			default:

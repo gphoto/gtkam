@@ -131,7 +131,7 @@ main (int argc, char *argv[])
 	/* Process command-line parameters */
 	for (x = 1; x < argc; x++) {
 		if (!strcmp (argv[x], "--debug") || !strcmp (argv[x], "-d")) {
-			log = gp_log_add_func (GP_LOG_DEBUG, log_func, NULL);
+			log = gp_log_add_func (GP_LOG_DATA, log_func, NULL);
 			g_log_set_always_fatal (G_LOG_LEVEL_CRITICAL);
 		} else if (!strcmp (argv[x], "--version") ||
 			   !strcmp (argv[x], "-v")) {

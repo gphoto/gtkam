@@ -103,6 +103,13 @@ if $try_gimp; then
 		gimp_msg="yes"
 		have_gimp=true
 	fi
+	if ${PKG_CONFIG} --exists gimpui-2.0; then
+		PKG_CHECK_MODULES(GTKAM_GIMP, gimpui-2.0 libgphoto2 >= 2.1)
+		AC_SUBST(GTKAM_GIMP_CFLAGS)
+		AC_SUBST(GTKAM_GIMP_LIBS)
+		gimp_msg="yes"
+		have_gimp=true
+	fi
 fi
 AM_CONDITIONAL(HAVE_GIMP, $have_gimp)
 

@@ -972,7 +972,7 @@ void camera_delete_common(int all) {
 
 	if (all) {
 		for (x=0; x<count; x++) {
-			item = gtk_icon_list_get_nth(GTK_ICON_LIST(icon_list), x);
+			item = gtk_icon_list_get_nth(GTK_ICON_LIST(icon_list), 0);
 			if (gp_camera_file_delete(gp_gtk_camera, current_folder(), 
 			    gtk_object_get_data(GTK_OBJECT(item->pixmap), "name")) ==GP_ERROR) {
 				sprintf(buf, _("Could not delete photo #%04i. Stopping."), x);

@@ -161,6 +161,9 @@ cancel_func (GPContext *c, void *data)
 {
 	GtkamCancel *cancel = GTKAM_CANCEL (data);
 
+	while (gtk_events_pending ())
+		gtk_main_iteration ();
+
 	return (cancel->priv->cancelled ? GP_CONTEXT_FEEDBACK_CANCEL :
 					  GP_CONTEXT_FEEDBACK_OK);
 }
@@ -190,6 +193,9 @@ start_func (GPContext *c, float target, const char *format,
 	gtk_box_pack_start (GTK_BOX (hbox), progress, TRUE, TRUE, 0);
 	g_ptr_array_add (cancel->priv->array_progress, progress);
 	g_array_append_val (cancel->priv->array_target, target);
+
+	while (gtk_events_pending ())
+		gtk_main_iteration ();
 
 	return (cancel->priv->array_progress->len - 1);
 }

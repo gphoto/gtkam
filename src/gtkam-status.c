@@ -170,6 +170,9 @@ start_func (GPContext *c, float target, const char *format,
         g_free (msg);
         gtk_progress_set_show_text (GTK_PROGRESS (progress), TRUE);
 
+	while (gtk_events_pending ())
+		gtk_main_iteration ();
+
         return (status->priv->progress->len - 1);
 }
 
@@ -213,6 +216,9 @@ static GPContextFeedback
 cancel_func (GPContext *c, void *data)
 {
         GtkamStatus *status = GTKAM_STATUS (data);
+
+	while (gtk_events_pending ())
+		gtk_main_iteration ();
 
         return (status->priv->cancel ? GP_CONTEXT_FEEDBACK_CANCEL :
 				       GP_CONTEXT_FEEDBACK_OK);

@@ -239,7 +239,7 @@ void frontend_prompt_build (CameraWidget *w, GtkWidget *box, GtkWidget **window)
 
 		/* Add the first radio button */
 		button = gtk_radio_button_new_with_label (NULL, choice);
-		if (strcmp (vals, choice) == 0)
+		if (vals && !strcmp (vals, choice))
 			gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON(button),TRUE);
 		gtk_widget_show (button);
 		gtk_object_set_data (GTK_OBJECT(*window), choice, button);
@@ -258,7 +258,7 @@ void frontend_prompt_build (CameraWidget *w, GtkWidget *box, GtkWidget **window)
 					     button);
 			gtk_box_pack_start (GTK_BOX(vbox), button, TRUE, 
 					    TRUE, 0);
-			if (strcmp (vals, choice) == 0)
+			if (vals && !strcmp (vals, choice))
 				gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON(button), TRUE);
                         gp_widget_get_info (w, (const char**)(&vals));
                         if (vals) {

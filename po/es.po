@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gtKam\n"
-"POT-Creation-Date: 2002-08-31 09:34+0200\n"
+"POT-Creation-Date: 2002-09-17 08:38+0200\n"
 "PO-Revision-Date: 2002-03-01 13:40+0100\n"
 "Last-Translator: Fabian Mandelbaum <fabman@mandrakesoft.com>\n"
 "Language-Team: gphoto-devel <gphoto-devel@gphoto.net>\n"
@@ -401,19 +401,124 @@ msgstr ""
 msgid "Many others"
 msgstr ""
 
-#: src/gtkam-main.c:651
+#: src/gtkam-main.c:572
+#, fuzzy
+msgid "/_File"
+msgstr "_Archivo"
+
+#: src/gtkam-main.c:573
+#, fuzzy
+msgid "/File/_Save Photos"
+msgstr "Guardar las fotos seleccionadas"
+
+#: src/gtkam-main.c:574
+msgid "/File/Save Photos/_Selected"
+msgstr ""
+
+#: src/gtkam-main.c:576
+#, fuzzy
+msgid "/File/Save Photos/_All"
+msgstr "Guardar las fotos seleccionadas"
+
+#: src/gtkam-main.c:578
+#, fuzzy
+msgid "/File/_Delete Photos"
+msgstr "_Selección de fotos"
+
+#: src/gtkam-main.c:579
+#, fuzzy
+msgid "/File/Delete Photos/_Selected"
+msgstr "_Selección de fotos"
+
+#: src/gtkam-main.c:581
+#, fuzzy
+msgid "/File/Delete Photos/_All"
+msgstr "_Selección de fotos"
+
+#: src/gtkam-main.c:584
+msgid "/File/_Quit"
+msgstr ""
+
+#: src/gtkam-main.c:586
+msgid "/_View"
+msgstr ""
+
+#: src/gtkam-main.c:587
+msgid "/View/_View Thumbnails"
+msgstr ""
+
+#: src/gtkam-main.c:590
+msgid "/View/Zoom _In"
+msgstr ""
+
+#: src/gtkam-main.c:592
+msgid "/View/Zoom _100"
+msgstr ""
+
+#: src/gtkam-main.c:594
+msgid "/View/Zoom _Out"
+msgstr ""
+
+#: src/gtkam-main.c:596
+#, fuzzy
+msgid "/_Select"
+msgstr "_Seleccionar"
+
+#: src/gtkam-main.c:597
+#, fuzzy
+msgid "/Select/_All"
+msgstr "_Seleccionar"
+
+#: src/gtkam-main.c:598
+#, fuzzy
+msgid "/Select/_Inverse"
+msgstr "_Invertir"
+
+#: src/gtkam-main.c:599
+#, fuzzy
+msgid "/Select/_None"
+msgstr "_Seleccionar"
+
+#: src/gtkam-main.c:600
+#, fuzzy
+msgid "/_Camera"
+msgstr "_Cámara"
+
+#: src/gtkam-main.c:601
+#, fuzzy
+msgid "/Camera/_Add Camera..."
+msgstr "Seleccionar cámara"
+
+#: src/gtkam-main.c:602
+#, fuzzy
+msgid "/_Help"
+msgstr "_Ayuda"
+
+#: src/gtkam-main.c:604
+msgid "/Help/_Contents"
+msgstr ""
+
+#: src/gtkam-main.c:607
+msgid "/Help/_Debug"
+msgstr ""
+
+#: src/gtkam-main.c:608
+msgid "/Help/_About"
+msgstr ""
+
+#: src/gtkam-main.c:675
 msgid "View Thumbnails"
 msgstr ""
 
-#: src/gtkam-main.c:672
+#: src/gtkam-main.c:696
 msgid "_Help"
 msgstr "_Ayuda"
 
-#: src/gtkam-main.c:684
+#: src/gtkam-main.c:708
 msgid "_Debug..."
 msgstr ""
 
-#: src/gtkam-main.c:693
+#: src/gtkam-main.c:717
 #, fuzzy
 msgid "_About..."
 msgstr "_Autores..."
@@ -457,39 +562,39 @@ msgstr ""
 msgid "Could not capture image."
 msgstr "No se puede obtener la lista de fotos."
 
-#: src/gtkam-preview.c:362 src/gtkam-preview.c:425
+#: src/gtkam-preview.c:363 src/gtkam-preview.c:426
 msgid "Capture"
 msgstr ""
 
-#: src/gtkam-preview.c:388
+#: src/gtkam-preview.c:389
 msgid "0 degrees"
 msgstr ""
 
-#: src/gtkam-preview.c:396
+#: src/gtkam-preview.c:397
 msgid "Don't rotate thumbnail"
 msgstr ""
 
-#: src/gtkam-preview.c:398
+#: src/gtkam-preview.c:399
 msgid "-90 degrees"
 msgstr ""
 
-#: src/gtkam-preview.c:405
+#: src/gtkam-preview.c:406
 msgid "Rotate thumbnail by -90 degrees"
 msgstr ""
 
-#: src/gtkam-preview.c:407
+#: src/gtkam-preview.c:408
 msgid "+90 degrees"
 msgstr ""
 
-#: src/gtkam-preview.c:414
+#: src/gtkam-preview.c:415
 msgid "Rotate thumbnail by 90 degrees"
 msgstr ""
 
-#: src/gtkam-preview.c:416
+#: src/gtkam-preview.c:417
 msgid "180 degrees"
 msgstr ""
 
-#: src/gtkam-preview.c:423
+#: src/gtkam-preview.c:424
 msgid "Rotate thumbnail by 180 degrees"
 msgstr ""
 
@@ -765,19 +870,8 @@ msgstr ""
 #~ msgid "Could not get preview of file '%s' in folder '%s'."
 #~ msgstr "No se pueden recuperar las funcionalidades de %s"
 
-#~ msgid "_File"
-#~ msgstr "_Archivo"
-
 #~ msgid "_Save Selected Photos..."
 #~ msgstr "_Guardar las fotos seleccionadas..."
-
-#, fuzzy
-#~ msgid "_Delete Photos"
-#~ msgstr "_Selección de fotos"
-
-#, fuzzy
-#~ msgid "_Selected"
-#~ msgstr "_Seleccionar"
 
 #~ msgid "_All"
 #~ msgstr "_Todo"
@@ -785,17 +879,8 @@ msgstr ""
 #~ msgid "_Exit"
 #~ msgstr "_Salir"
 
-#~ msgid "_Select"
-#~ msgstr "_Seleccionar"
-
-#~ msgid "_Inverse"
-#~ msgstr "_Invertir"
-
 #~ msgid "_None"
 #~ msgstr "_Nada"
-
-#~ msgid "_Camera"
-#~ msgstr "_Cámara"
 
 #, fuzzy
 #~ msgid "Manual"

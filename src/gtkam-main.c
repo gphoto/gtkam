@@ -569,43 +569,63 @@ on_zoom_in_clicked (GtkButton *button, GtkamMain *m)
 
 static GtkItemFactoryEntry mi[] =
 {
-	{"/_File", NULL, 0, 0, "<Branch>"},
-	{"/File/_Save Photos", NULL, 0, 0, "<Branch>"},
-	{"/File/Save Photos/_Selected", NULL, action_save_sel, 0,
+	{N_("/_File"), NULL, 0, 0, "<Branch>"},
+	{N_("/File/_Save Photos"), NULL, 0, 0, "<Branch>"},
+	{N_("/File/Save Photos/_Selected"), NULL, action_save_sel, 0,
 					"<StockItem>", GTK_STOCK_SAVE},
-	{"/File/Save Photos/_All", NULL, action_save_all, 0,
+	{N_("/File/Save Photos/_All"), NULL, action_save_all, 0,
 					"<StockItem>", GTK_STOCK_SAVE},
-	{"/File/_Delete Photos", NULL, 0, 0, "<Branch>"},
-	{"/File/Delete Photos/_Selected", NULL, action_delete_sel, 0,
+	{N_("/File/_Delete Photos"), NULL, 0, 0, "<Branch>"},
+	{N_("/File/Delete Photos/_Selected"), NULL, action_delete_sel, 0,
 					"<StockItem>", GTK_STOCK_DELETE},
-	{"/File/Delete Photos/_All", NULL, action_delete_all, 0,
+	{N_("/File/Delete Photos/_All"), NULL, action_delete_all, 0,
 					"<StockItem>", GTK_STOCK_DELETE},
 	{"/File/sep1", NULL, 0, 0, "<Separator>"},
-	{"/File/_Quit", NULL, action_quit, 0, "<StockItem>", GTK_STOCK_QUIT},
-	{"/_View", NULL, 0, 0, "<Branch>"},
-	{"/View/_View Thumbnails", NULL, action_view_thumbnails, 0,
+	{N_("/File/_Quit"), NULL, action_quit, 0, "<StockItem>",
+						GTK_STOCK_QUIT},
+	{N_("/_View"), NULL, 0, 0, "<Branch>"},
+	{N_("/View/_View Thumbnails"), NULL, action_view_thumbnails, 0,
 						"<ToggleItem>", NULL},
 	{"/View/sep2", NULL, 0, 0, "<Separator>"},
-	{"/View/Zoom _In", NULL, action_zoom_in, 0, "<StockItem>",
+	{N_("/View/Zoom _In"), NULL, action_zoom_in, 0, "<StockItem>",
 							GTK_STOCK_ZOOM_IN},
-	{"/View/Zoom _100", NULL, action_zoom_100, 0, "<StockItem>",
+	{N_("/View/Zoom _100"), NULL, action_zoom_100, 0, "<StockItem>",
 							GTK_STOCK_ZOOM_100},
-	{"/View/Zoom _Out", NULL, action_zoom_out, 0, "<StockItem>",
+	{N_("/View/Zoom _Out"), NULL, action_zoom_out, 0, "<StockItem>",
 							GTK_STOCK_ZOOM_OUT},
-	{"/_Select", NULL, 0, 0, "<Branch>"},
-	{"/Select/_All", NULL, action_select_all, 0, NULL},
-	{"/Select/_Inverse", NULL, action_select_inverse, 0, NULL},
-	{"/Select/_None", NULL, action_select_none, 0, NULL},
-	{"/_Camera", NULL, 0, 0, "<Branch>"},
-	{"/Camera/_Add Camera...", NULL, action_add_camera, 0, NULL},
-	{"/_Help", NULL, 0, 0, "<Branch>"},
+	{N_("/_Select"), NULL, 0, 0, "<Branch>"},
+	{N_("/Select/_All"), NULL, action_select_all, 0, NULL},
+	{N_("/Select/_Inverse"), NULL, action_select_inverse, 0, NULL},
+	{N_("/Select/_None"), NULL, action_select_none, 0, NULL},
+	{N_("/_Camera"), NULL, 0, 0, "<Branch>"},
+	{N_("/Camera/_Add Camera..."), NULL, action_add_camera, 0, NULL},
+	{N_("/_Help"), NULL, 0, 0, "<Branch>"},
 #ifdef HAVE_GNOME
-	{"/Help/_Contents", NULL, action_help, 0, "<StockItem>",
+	{N_("/Help/_Contents"), NULL, action_help, 0, "<StockItem>",
 						  GTK_STOCK_HELP},
 #endif
-	{"/Help/_Debug", NULL, action_debug, 0, NULL, NULL},
-	{"/Help/_About", NULL, action_about, 0, NULL, NULL},
+	{N_("/Help/_Debug"), NULL, action_debug, 0, NULL, NULL},
+	{N_("/Help/_About"), NULL, action_about, 0, NULL, NULL},
 };
+
+#ifdef ENABLE_NLS
+
+static gchar *
+translate_func (const gchar *path, gpointer data)
+{
+	gchar *result;
+	GError *e = NULL;
+
+	result = g_locale_to_utf8 (_(path), -1, NULL, NULL, &e);
+	if (e) {
+		g_warning ("Could not convert '%s' to UTF-8: '%s'", path,
+			   e->message);
+		g_error_free (e);
+	}
+	return (result);
+}
+
+#endif
 
 GtkWidget *
 gtkam_main_new (void)
@@ -629,6 +649,10 @@ gtkam_main_new (void)
 	/* Menu */
 	ag = gtk_accel_group_new ();
 	item_factory = gtk_item_factory_new (GTK_TYPE_MENU_BAR, "<main>", ag);
+#ifdef ENABLE_NLS
+	gtk_item_factory_set_translate_func (GTK_ITEM_FACTORY (item_factory),
+					translate_func, NULL, NULL);
+#endif
 	g_object_set_data_full (G_OBJECT (m), "<main>", item_factory,
 				(GDestroyNotify) g_object_unref);
 	gtk_window_add_accel_group (GTK_WINDOW (m), ag);

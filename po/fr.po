@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gtKam\n"
-"POT-Creation-Date: 2002-08-31 09:34+0200\n"
+"POT-Creation-Date: 2002-09-17 08:38+0200\n"
 "PO-Revision-Date: 2002-01-26 21:30MET\n"
 "Last-Translator: Jérôme Fenal <jerome@fenal.org>\n"
 "Language-Team: Français <traduc@traduc.org>\n"
@@ -381,19 +381,125 @@ msgstr ""
 msgid "Many others"
 msgstr ""
 
-#: src/gtkam-main.c:651
+#: src/gtkam-main.c:572
+#, fuzzy
+msgid "/_File"
+msgstr "_Fichier"
+
+#: src/gtkam-main.c:573
+#, fuzzy
+msgid "/File/_Save Photos"
+msgstr "Enregistrer les photos"
+
+#: src/gtkam-main.c:574
+msgid "/File/Save Photos/_Selected"
+msgstr ""
+
+#: src/gtkam-main.c:576
+#, fuzzy
+msgid "/File/Save Photos/_All"
+msgstr "Enregistrer les photos"
+
+#: src/gtkam-main.c:578
+#, fuzzy
+msgid "/File/_Delete Photos"
+msgstr "E_ffacer les photos"
+
+#: src/gtkam-main.c:579
+#, fuzzy
+msgid "/File/Delete Photos/_Selected"
+msgstr "E_ffacer les photos"
+
+#: src/gtkam-main.c:581
+#, fuzzy
+msgid "/File/Delete Photos/_All"
+msgstr "E_ffacer les photos"
+
+#: src/gtkam-main.c:584
+msgid "/File/_Quit"
+msgstr ""
+
+#: src/gtkam-main.c:586
+msgid "/_View"
+msgstr ""
+
+#: src/gtkam-main.c:587
+#, fuzzy
+msgid "/View/_View Thumbnails"
+msgstr "Voir les vignettes"
+
+#: src/gtkam-main.c:590
+msgid "/View/Zoom _In"
+msgstr ""
+
+#: src/gtkam-main.c:592
+msgid "/View/Zoom _100"
+msgstr ""
+
+#: src/gtkam-main.c:594
+msgid "/View/Zoom _Out"
+msgstr ""
+
+#: src/gtkam-main.c:596
+#, fuzzy
+msgid "/_Select"
+msgstr "_Sélection"
+
+#: src/gtkam-main.c:597
+#, fuzzy
+msgid "/Select/_All"
+msgstr "_Sélection"
+
+#: src/gtkam-main.c:598
+#, fuzzy
+msgid "/Select/_Inverse"
+msgstr "_Intervertir"
+
+#: src/gtkam-main.c:599
+#, fuzzy
+msgid "/Select/_None"
+msgstr "_Sélection"
+
+#: src/gtkam-main.c:600
+#, fuzzy
+msgid "/_Camera"
+msgstr "_Appareil photo"
+
+#: src/gtkam-main.c:601
+#, fuzzy
+msgid "/Camera/_Add Camera..."
+msgstr "_Choisir un appareil photo..."
+
+#: src/gtkam-main.c:602
+#, fuzzy
+msgid "/_Help"
+msgstr "_Aide"
+
+#: src/gtkam-main.c:604
+msgid "/Help/_Contents"
+msgstr ""
+
+#: src/gtkam-main.c:607
+msgid "/Help/_Debug"
+msgstr ""
+
+#: src/gtkam-main.c:608
+msgid "/Help/_About"
+msgstr ""
+
+#: src/gtkam-main.c:675
 msgid "View Thumbnails"
 msgstr "Voir les vignettes"
 
-#: src/gtkam-main.c:672
+#: src/gtkam-main.c:696
 msgid "_Help"
 msgstr "_Aide"
 
-#: src/gtkam-main.c:684
+#: src/gtkam-main.c:708
 msgid "_Debug..."
 msgstr "_Débogage..."
 
-#: src/gtkam-main.c:693
+#: src/gtkam-main.c:717
 msgid "_About..."
 msgstr "_À propos..."
 
@@ -434,41 +540,41 @@ msgstr "Capture de l'image..."
 msgid "Could not capture image."
 msgstr "Impossible de capturer l'image."
 
-#: src/gtkam-preview.c:362 src/gtkam-preview.c:425
+#: src/gtkam-preview.c:363 src/gtkam-preview.c:426
 msgid "Capture"
 msgstr "Capture"
 
-#: src/gtkam-preview.c:388
+#: src/gtkam-preview.c:389
 msgid "0 degrees"
 msgstr ""
 
-#: src/gtkam-preview.c:396
+#: src/gtkam-preview.c:397
 msgid "Don't rotate thumbnail"
 msgstr "Ne pas tourner la vignette"
 
-#: src/gtkam-preview.c:398
+#: src/gtkam-preview.c:399
 msgid "-90 degrees"
 msgstr ""
 
-#: src/gtkam-preview.c:405
+#: src/gtkam-preview.c:406
 #, fuzzy
 msgid "Rotate thumbnail by -90 degrees"
 msgstr "Tourner la vignette de 90° sur la gauche"
 
-#: src/gtkam-preview.c:407
+#: src/gtkam-preview.c:408
 msgid "+90 degrees"
 msgstr ""
 
-#: src/gtkam-preview.c:414
+#: src/gtkam-preview.c:415
 #, fuzzy
 msgid "Rotate thumbnail by 90 degrees"
 msgstr "Tourner la vignette de 90° sur la droite"
 
-#: src/gtkam-preview.c:416
+#: src/gtkam-preview.c:417
 msgid "180 degrees"
 msgstr ""
 
-#: src/gtkam-preview.c:423
+#: src/gtkam-preview.c:424
 #, fuzzy
 msgid "Rotate thumbnail by 180 degrees"
 msgstr "Tourner la vignette de 180°"
@@ -767,17 +873,8 @@ msgstr ""
 #~ "Impossible de récupérer la prévisualisation du fichier '%s' du dossier '%"
 #~ "s'."
 
-#~ msgid "_File"
-#~ msgstr "_Fichier"
-
 #~ msgid "_Save Selected Photos..."
 #~ msgstr "Enregi_stre les photos sélectionnées..."
-
-#~ msgid "_Delete Photos"
-#~ msgstr "E_ffacer les photos"
-
-#~ msgid "_Selected"
-#~ msgstr "_Sélection"
 
 #~ msgid "_All"
 #~ msgstr "_Tout"
@@ -785,17 +882,8 @@ msgstr ""
 #~ msgid "_Exit"
 #~ msgstr "_Quitter"
 
-#~ msgid "_Select"
-#~ msgstr "_Sélection"
-
-#~ msgid "_Inverse"
-#~ msgstr "_Intervertir"
-
 #~ msgid "_None"
 #~ msgstr "_Aucun"
-
-#~ msgid "_Camera"
-#~ msgstr "_Appareil photo"
 
 #, fuzzy
 #~ msgid "Manual"

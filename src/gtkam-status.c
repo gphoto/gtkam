@@ -184,7 +184,7 @@ start_func (GPContext *c, float target, const char *format,
 {
         GtkamStatus *status = GTKAM_STATUS (data);
         GtkWidget *progress;
-        gchar *msg;
+        gchar *msg, *msg_translated;
 	guint i;
 
         progress = gtk_progress_bar_new ();
@@ -203,8 +203,10 @@ start_func (GPContext *c, float target, const char *format,
 	}
 
         msg = g_strdup_vprintf (format, args);
-        gtk_progress_bar_set_text (GTK_PROGRESS_BAR (progress), msg);
-        g_free (msg);
+	msg_translated = g_locale_to_utf8 (msg, -1, NULL, NULL, NULL);
+	g_free (msg);
+        gtk_progress_bar_set_text (GTK_PROGRESS_BAR (progress), msg_translated);
+        g_free (msg_translated);
 
         return (status->priv->progress->len - 1);
 }

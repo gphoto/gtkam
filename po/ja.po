@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gtkam 20011126\n"
-"POT-Creation-Date: 2002-08-31 09:34+0200\n"
+"POT-Creation-Date: 2002-09-17 08:38+0200\n"
 "PO-Revision-Date: 2002-02-01 21:42+0900\n"
 "Last-Translator: AMANO Kazuhiro <haa13142@jnb.odn.ne.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
@@ -378,19 +378,125 @@ msgstr ""
 msgid "Many others"
 msgstr ""
 
-#: src/gtkam-main.c:651
+#: src/gtkam-main.c:572
+#, fuzzy
+msgid "/_File"
+msgstr "ファイル(_F)"
+
+#: src/gtkam-main.c:573
+#, fuzzy
+msgid "/File/_Save Photos"
+msgstr "写真の保存"
+
+#: src/gtkam-main.c:574
+msgid "/File/Save Photos/_Selected"
+msgstr ""
+
+#: src/gtkam-main.c:576
+#, fuzzy
+msgid "/File/Save Photos/_All"
+msgstr "写真の保存"
+
+#: src/gtkam-main.c:578
+#, fuzzy
+msgid "/File/_Delete Photos"
+msgstr "写真の消去(_D)"
+
+#: src/gtkam-main.c:579
+#, fuzzy
+msgid "/File/Delete Photos/_Selected"
+msgstr "写真の消去(_D)"
+
+#: src/gtkam-main.c:581
+#, fuzzy
+msgid "/File/Delete Photos/_All"
+msgstr "写真の消去(_D)"
+
+#: src/gtkam-main.c:584
+msgid "/File/_Quit"
+msgstr ""
+
+#: src/gtkam-main.c:586
+msgid "/_View"
+msgstr ""
+
+#: src/gtkam-main.c:587
+#, fuzzy
+msgid "/View/_View Thumbnails"
+msgstr "サムネイルを表示する"
+
+#: src/gtkam-main.c:590
+msgid "/View/Zoom _In"
+msgstr ""
+
+#: src/gtkam-main.c:592
+msgid "/View/Zoom _100"
+msgstr ""
+
+#: src/gtkam-main.c:594
+msgid "/View/Zoom _Out"
+msgstr ""
+
+#: src/gtkam-main.c:596
+#, fuzzy
+msgid "/_Select"
+msgstr "選択(_S)"
+
+#: src/gtkam-main.c:597
+#, fuzzy
+msgid "/Select/_All"
+msgstr "選択(_S)"
+
+#: src/gtkam-main.c:598
+#, fuzzy
+msgid "/Select/_Inverse"
+msgstr "反転(_I)"
+
+#: src/gtkam-main.c:599
+#, fuzzy
+msgid "/Select/_None"
+msgstr "選択済(_S)"
+
+#: src/gtkam-main.c:600
+#, fuzzy
+msgid "/_Camera"
+msgstr "カメラ(_C)"
+
+#: src/gtkam-main.c:601
+#, fuzzy
+msgid "/Camera/_Add Camera..."
+msgstr "カメラの選択(_S)..."
+
+#: src/gtkam-main.c:602
+#, fuzzy
+msgid "/_Help"
+msgstr "ヘルプ(_H)"
+
+#: src/gtkam-main.c:604
+msgid "/Help/_Contents"
+msgstr ""
+
+#: src/gtkam-main.c:607
+msgid "/Help/_Debug"
+msgstr ""
+
+#: src/gtkam-main.c:608
+msgid "/Help/_About"
+msgstr ""
+
+#: src/gtkam-main.c:675
 msgid "View Thumbnails"
 msgstr "サムネイルを表示する"
 
-#: src/gtkam-main.c:672
+#: src/gtkam-main.c:696
 msgid "_Help"
 msgstr "ヘルプ(_H)"
 
-#: src/gtkam-main.c:684
+#: src/gtkam-main.c:708
 msgid "_Debug..."
 msgstr "デバッグ(_D)..."
 
-#: src/gtkam-main.c:693
+#: src/gtkam-main.c:717
 msgid "_About..."
 msgstr "gtkamについて(_A)..."
 
@@ -430,39 +536,39 @@ msgstr "画像をキャプチャしています..."
 msgid "Could not capture image."
 msgstr "キャプチャできませんでした"
 
-#: src/gtkam-preview.c:362 src/gtkam-preview.c:425
+#: src/gtkam-preview.c:363 src/gtkam-preview.c:426
 msgid "Capture"
 msgstr "キャプチャ"
 
-#: src/gtkam-preview.c:388
+#: src/gtkam-preview.c:389
 msgid "0 degrees"
 msgstr "0°"
 
-#: src/gtkam-preview.c:396
+#: src/gtkam-preview.c:397
 msgid "Don't rotate thumbnail"
 msgstr "サムネイルを回転させません"
 
-#: src/gtkam-preview.c:398
+#: src/gtkam-preview.c:399
 msgid "-90 degrees"
 msgstr "-90°"
 
-#: src/gtkam-preview.c:405
+#: src/gtkam-preview.c:406
 msgid "Rotate thumbnail by -90 degrees"
 msgstr "サムネイルを -90°回転させます"
 
-#: src/gtkam-preview.c:407
+#: src/gtkam-preview.c:408
 msgid "+90 degrees"
 msgstr "+90°"
 
-#: src/gtkam-preview.c:414
+#: src/gtkam-preview.c:415
 msgid "Rotate thumbnail by 90 degrees"
 msgstr "サムネイルを 90°回転させます"
 
-#: src/gtkam-preview.c:416
+#: src/gtkam-preview.c:417
 msgid "180 degrees"
 msgstr "180°"
 
-#: src/gtkam-preview.c:423
+#: src/gtkam-preview.c:424
 msgid "Rotate thumbnail by 180 degrees"
 msgstr "サムネイルを 180°回転させます"
 
@@ -753,17 +859,8 @@ msgstr ""
 #~ msgid "Could not get preview of file '%s' in folder '%s'."
 #~ msgstr "フォルダ '%2$s' にあるファイル '%1$s' をプレビューできません"
 
-#~ msgid "_File"
-#~ msgstr "ファイル(_F)"
-
 #~ msgid "_Save Selected Photos..."
 #~ msgstr "選択した写真の保存(_S)..."
-
-#~ msgid "_Delete Photos"
-#~ msgstr "写真の消去(_D)"
-
-#~ msgid "_Selected"
-#~ msgstr "選択済(_S)"
 
 #~ msgid "_All"
 #~ msgstr "全て(_A)"
@@ -771,17 +868,8 @@ msgstr ""
 #~ msgid "_Exit"
 #~ msgstr "終了(_E)"
 
-#~ msgid "_Select"
-#~ msgstr "選択(_S)"
-
-#~ msgid "_Inverse"
-#~ msgstr "反転(_I)"
-
 #~ msgid "_None"
 #~ msgstr "なし(_N)"
-
-#~ msgid "_Camera"
-#~ msgstr "カメラ(_C)"
 
 #, fuzzy
 #~ msgid "Manual"

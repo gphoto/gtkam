@@ -46,7 +46,7 @@ struct _GtkExifEntryClass
 };
 
 GtkType    gtk_exif_entry_get_type  (void);
-GtkWidget *gtk_exif_entry_new       (ExifEntry *entry);
-void       gtk_exif_entry_construct (GtkExifEntry *entry, ExifEntry *e);
+void       gtk_exif_entry_construct (GtkExifEntry *entry, const gchar *name,
+				     const gchar *description);
 
 #endif /* __GTK_EXIF_ENTRY_H__ */

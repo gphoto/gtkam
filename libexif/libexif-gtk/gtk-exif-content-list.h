@@ -43,6 +43,9 @@ struct _GtkExifContentList
 struct _GtkExifContentListClass
 {
 	GtkCListClass parent_class;
+
+	/* Signals */
+	void (* entry_selected) (GtkExifContentList *list, ExifEntry *entry);
 };
 
 GtkType    gtk_exif_content_list_get_type (void);

@@ -30,20 +30,18 @@ typedef struct _ExifEntryPrivate ExifEntryPrivate;
 
 typedef enum _ExifFormat ExifFormat;
 enum _ExifFormat {
-        EXIF_FORMAT_UBYTE       =  1,
-        EXIF_FORMAT_STRING      =  2,
-        EXIF_FORMAT_USHORT      =  3,
-        EXIF_FORMAT_ULONG       =  4,
-        EXIF_FORMAT_URATIONAL   =  5,
-        EXIF_FORMAT_SBYTE       =  6,
-        EXIF_FORMAT_SSHORT      =  8,
-        EXIF_FORMAT_SLONG       =  9,
-        EXIF_FORMAT_SRATIONAL   = 10,
-        EXIF_FORMAT_SINGLE      = 11,
-        EXIF_FORMAT_DOUBLE      = 12
+        EXIF_FORMAT_BYTE       =  1,
+        EXIF_FORMAT_ASCII      =  2,
+        EXIF_FORMAT_SHORT      =  3,
+        EXIF_FORMAT_LONG       =  4,
+        EXIF_FORMAT_RATIONAL   =  5,
+        EXIF_FORMAT_UNDEFINED  =  7,
+        EXIF_FORMAT_SLONG      =  9,
+        EXIF_FORMAT_SRATIONAL  = 10,
 };
 
 struct _ExifEntry {
+	ExifByteOrder order;
         ExifTag tag;
         ExifFormat format;
         unsigned long components;
@@ -53,19 +51,36 @@ struct _ExifEntry {
 
         ExifContent *content;
 
+	/* Content containing this entry */
+	ExifContent *parent;
+
 	ExifEntryPrivate *priv;
 };
 
+/* Lifecycle */
 ExifEntry  *exif_entry_new   (void);
 void        exif_entry_ref   (ExifEntry *entry);
 void        exif_entry_unref (ExifEntry *entry);
 void        exif_entry_free  (ExifEntry *entry);
 
+/* Notification */
+typedef enum _ExifEntryEvent ExifEntryEvent;
+enum _ExifEntryEvent {
+	EXIF_ENTRY_EVENT_FREE,
+	EXIF_ENTRY_EVENT_CHANGED
+};
+typedef void (* ExifEntryNotifyFunc)  (ExifEntry *entry, void *data);
+unsigned int exif_entry_add_notify    (ExifEntry *entry, ExifEntryEvent event,
+				       ExifEntryNotifyFunc func, void *data);
+void         exif_entry_remove_notify (ExifEntry *entry, unsigned int id);
+
 void        exif_entry_parse     (ExifEntry *entry, const unsigned char *data,
 			          unsigned int size, unsigned int offset,
 			          ExifByteOrder order);
 
-const char *exif_entry_get_value (ExifEntry *entry);
+void        exif_entry_initialize (ExifEntry *entry, ExifTag tag);
+
+const char *exif_entry_get_value  (ExifEntry *entry);
 
 void        exif_entry_dump      (ExifEntry *entry, unsigned int indent);
 

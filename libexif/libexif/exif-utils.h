@@ -27,9 +27,31 @@ enum _ExifByteOrder {
         EXIF_BYTE_ORDER_INTEL
 };
 
-         int  Get16s (const unsigned char *buf, ExifByteOrder order);
-unsigned int  Get16u (const unsigned char *buf, ExifByteOrder order);
-         long Get32s (const unsigned char *buf, ExifByteOrder order);
-unsigned long Get32u (const unsigned char *buf, ExifByteOrder order);
+typedef char		ExifByte;          /* 1 byte  */
+typedef char *		ExifAscii;
+typedef unsigned short	ExifShort;         /* 2 bytes */
+typedef unsigned long	ExifLong;          /* 4 bytes */
+typedef struct {ExifLong numerator; ExifLong denominator;} ExifRational;
+typedef char		ExifUndefined;     /* 1 byte  */
+typedef signed long	ExifSLong;         /* 4 bytes */
+typedef struct {ExifSLong numerator; ExifSLong denominator;} ExifSRational;
+
+
+ExifShort     exif_get_short     (const unsigned char *b, ExifByteOrder order);
+ExifLong      exif_get_long      (const unsigned char *b, ExifByteOrder order);
+ExifSLong     exif_get_slong     (const unsigned char *b, ExifByteOrder order);
+ExifRational  exif_get_rational  (const unsigned char *b, ExifByteOrder order);
+ExifSRational exif_get_srational (const unsigned char *b, ExifByteOrder order);
+
+void exif_set_short     (unsigned char *b, ExifByteOrder order,
+			 ExifShort value);
+void exif_set_long      (unsigned char *b, ExifByteOrder order,
+			 ExifLong value);
+void exif_set_slong     (unsigned char *b, ExifByteOrder order,
+			 ExifSLong value);
+void exif_set_rational  (unsigned char *b, ExifByteOrder order,
+			 ExifLong numerator, ExifLong denominator);
+void exif_set_srational (unsigned char *b, ExifByteOrder order,
+			 ExifSLong numberator, ExifSLong denominator);
 
 #endif /* __EXIF_UTILS_H__ */

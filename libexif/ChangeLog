@@ -1,3 +1,7 @@
+2001-12-20  Lutz Müller <urc8@rz.uni-karlsruhe.de>
+
+	* libexif-gtk: Added widget for resolution.
+
 2001-12-19  Lutz Müller <urc8@rz.uni-karlsruhe.de>
 
 	Initial check-in.

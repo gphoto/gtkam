@@ -1,4 +1,4 @@
-/* gtk-exif-entry-9209.h
+/* gtk-exif-entry-flash.h
  *
  * Copyright (C) 2001 Lutz Müller <lutz@users.sourceforge.net>
  *
@@ -18,33 +18,33 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GTK_EXIF_ENTRY_9209_H__
-#define __GTK_EXIF_ENTRY_9209_H__
+#ifndef __GTK_EXIF_ENTRY_FLASH_H__
+#define __GTK_EXIF_ENTRY_FLASH_H__
 
 #include <libexif-gtk/gtk-exif-entry.h>
 
-#define GTK_EXIF_TYPE_ENTRY_9209     (gtk_exif_entry_9209_get_type())
-#define GTK_EXIF_ENTRY_9209(o)       (GTK_CHECK_CAST((o),GTK_EXIF_TYPE_ENTRY_9209,GtkExifEntry9209))
-#define GTK_EXIF_ENTRY_9209_CLASS(k) (GTK_CHECK_CLASS_CAST((k),GTK_EXIF_TYPE_ENTRY_9209,GtkExifEntry9209Class))
-#define GTK_EXIF_IS_ENTRY_9209(o)    (GTK_CHECK_TYPE((o),GTK_EXIF_TYPE_ENTRY_9209))
+#define GTK_EXIF_TYPE_ENTRY_FLASH     (gtk_exif_entry_flash_get_type())
+#define GTK_EXIF_ENTRY_FLASH(o)       (GTK_CHECK_CAST((o),GTK_EXIF_TYPE_ENTRY_FLASH,GtkExifEntryFlash))
+#define GTK_EXIF_ENTRY_FLASH_CLASS(k) (GTK_CHECK_CLASS_CAST((k),GTK_EXIF_TYPE_ENTRY_FLASH,GtkExifEntryFlashClass))
+#define GTK_EXIF_IS_ENTRY_FLASH(o)    (GTK_CHECK_TYPE((o),GTK_EXIF_TYPE_ENTRY_FLASH))
 
-typedef struct _GtkExifEntry9209        GtkExifEntry9209;
-typedef struct _GtkExifEntry9209Private GtkExifEntry9209Private;
-typedef struct _GtkExifEntry9209Class   GtkExifEntry9209Class;
+typedef struct _GtkExifEntryFlash        GtkExifEntryFlash;
+typedef struct _GtkExifEntryFlashPrivate GtkExifEntryFlashPrivate;
+typedef struct _GtkExifEntryFlashClass   GtkExifEntryFlashClass;
 
-struct _GtkExifEntry9209
+struct _GtkExifEntryFlash
 {
 	GtkExifEntry parent;
 
-	GtkExifEntry9209Private *priv;
+	GtkExifEntryFlashPrivate *priv;
 };
 
-struct _GtkExifEntry9209Class
+struct _GtkExifEntryFlashClass
 {
 	GtkExifEntryClass parent_class;
 };
 
-GtkType    gtk_exif_entry_9209_get_type (void);
-GtkWidget *gtk_exif_entry_9209_new      (ExifEntry *entry);
+GtkType    gtk_exif_entry_flash_get_type (void);
+GtkWidget *gtk_exif_entry_flash_new      (ExifEntry *entry);
 
-#endif /* __GTK_EXIF_ENTRY_9209_H__ */
+#endif /* __GTK_EXIF_ENTRY_FLASH_H__ */

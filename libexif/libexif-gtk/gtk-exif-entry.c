@@ -25,9 +25,9 @@
 #include <gtk/gtklabel.h>
 #include <gtk/gtkscrolledwindow.h>
 #include <gtk/gtktable.h>
+#include <gtk/gtkhseparator.h>
 
 struct _GtkExifEntryPrivate {
-	ExifEntry *entry;
 };
 
 #define PARENT_TYPE GTK_TYPE_VBOX
@@ -44,10 +44,7 @@ gtk_exif_entry_destroy (GtkObject *object)
 {
 	GtkExifEntry *entry = GTK_EXIF_ENTRY (object);
 
-	if (entry->priv->entry) {
-		exif_entry_unref (entry->priv->entry);
-		entry->priv->entry = NULL;
-	}
+	entry = NULL;
 
 	GTK_OBJECT_CLASS (parent_class)->destroy (object);
 }
@@ -101,90 +98,47 @@ gtk_exif_entry_get_type (void)
 	return (entry_type);
 }
 
-GtkWidget *
-gtk_exif_entry_new (ExifEntry *e)
-{
-	GtkExifEntry *entry;
-	GtkWidget *table, *label;
-	gchar *txt;
-
-	entry = gtk_type_new (GTK_EXIF_TYPE_ENTRY);
-	gtk_exif_entry_construct (entry, e);
-
-	table = gtk_table_new (2, 4, FALSE);
-	gtk_widget_show (table);
-	gtk_box_pack_start (GTK_BOX (entry), table, TRUE, TRUE, 0);
-	gtk_table_set_col_spacings (GTK_TABLE (table), 5);
-	gtk_table_set_row_spacings (GTK_TABLE (table), 5);
-
-	label = gtk_label_new ("Format:");
-	gtk_widget_show (label);
-	gtk_table_attach (GTK_TABLE (table), label, 0, 1, 0, 1, 0, 0, 0, 0);
-	txt = g_strdup_printf ("%i", e->format);
-	label = gtk_label_new (txt);
-	g_free (txt);
-	gtk_widget_show (label);
-	gtk_table_attach (GTK_TABLE (table), label, 1, 2, 0, 1, 0, 0, 0, 0);
-
-	label = gtk_label_new ("Components:");
-	gtk_widget_show (label);
-	gtk_table_attach (GTK_TABLE (table), label, 0, 1, 1, 2, 0, 0, 0, 0);
-	txt = g_strdup_printf ("%i", (int) e->components);
-	label = gtk_label_new (txt);
-	g_free (txt);
-	gtk_widget_show (label);
-	gtk_table_attach (GTK_TABLE (table), label, 1, 2, 1, 2, 0, 0, 0, 0);
-
-	label = gtk_label_new ("Size:");
-	gtk_widget_show (label);
-	gtk_table_attach (GTK_TABLE (table), label, 0, 1, 2, 3, 0, 0, 0, 0);
-	txt = g_strdup_printf ("%i", e->size);
-	label = gtk_label_new (txt);
-	g_free (txt);
-	gtk_widget_show (label);
-	gtk_table_attach (GTK_TABLE (table), label, 1, 2, 2, 3, 0, 0, 0, 0);
-
-	label = gtk_label_new ("Value:");
-	gtk_widget_show (label);
-	gtk_table_attach (GTK_TABLE (table), label, 0, 1, 3, 4, 0, 0, 0, 0);
-	label = gtk_label_new (exif_entry_get_value (e));
-	gtk_widget_show (label);
-	gtk_table_attach (GTK_TABLE (table), label, 1, 2, 3, 4, 0, 0, 0, 0);
-
-	return (GTK_WIDGET (entry));
-}
-
 void
-gtk_exif_entry_construct (GtkExifEntry *entry, ExifEntry *e)
+gtk_exif_entry_construct (GtkExifEntry *entry,
+			  const gchar *name, const gchar *description)
 {
-	GtkWidget *swin, *label;
+	GtkWidget *label, *separator;
 
 	g_return_if_fail (GTK_EXIF_IS_ENTRY (entry));
-	g_return_if_fail (e != NULL);
-
-	entry->priv->entry = e;
-	exif_entry_ref (e);
+	g_return_if_fail (name != NULL);
+	g_return_if_fail (description != NULL);
 
 	gtk_box_set_spacing (GTK_BOX (entry), 5);
+	gtk_box_set_homogeneous (GTK_BOX (entry), FALSE);
 	gtk_container_set_border_width (GTK_CONTAINER (entry), 5);
 
-	label = gtk_label_new (exif_tag_get_name (e->tag));
+	label = gtk_label_new (name);
 	gtk_widget_show (label);
 	gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
-	gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
-	gtk_box_pack_start (GTK_BOX (entry), label, FALSE, FALSE, 0);
+	gtk_label_set_line_wrap (GTK_LABEL (label), FALSE);
+	gtk_box_pack_start (GTK_BOX (entry), label, TRUE, FALSE, 0);
 
+	separator = gtk_hseparator_new ();
+	gtk_widget_show (separator);
+	gtk_box_pack_start (GTK_BOX (entry), separator, TRUE, FALSE, 0);
+
+#if 0
 	swin = gtk_scrolled_window_new (NULL, NULL);
 	gtk_widget_show (swin);
 	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (swin),
 				GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
 	gtk_box_pack_start (GTK_BOX (entry), swin, TRUE, TRUE, 0);
-	label = gtk_label_new (exif_tag_get_description (e->tag));
+#endif
+	label = gtk_label_new (description);
 	gtk_widget_show (label);
 	gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
 	gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
+	gtk_misc_set_alignment (GTK_MISC (label), 0, 0);
+#if 0
 	gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (swin),
 					       label);
 	gtk_viewport_set_shadow_type (
 		GTK_VIEWPORT (GTK_BIN (swin)->child), GTK_SHADOW_NONE);
+#endif
+	gtk_box_pack_start (GTK_BOX (entry), label, TRUE, FALSE, 0);
 }

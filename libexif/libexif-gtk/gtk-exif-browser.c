@@ -27,12 +27,14 @@
 
 #include "gtk-exif-tree.h"
 #include "gtk-exif-content-list.h"
-#include "gtk-exif-entry-9209.h"
+#include "gtk-exif-entry-flash.h"
+#include "gtk-exif-entry-generic.h"
+#include "gtk-exif-entry-resolution.h"
 
 struct _GtkExifBrowserPrivate {
 	ExifData *data;
 
-	GtkExifTree *etree;
+	GtkExifContentList *list;
 	GtkWidget *empty, *current;
 };
 
@@ -113,12 +115,9 @@ gtk_exif_browser_get_type (void)
 }
 
 static void
-on_entry_selected (GtkExifTree *etree, ExifEntry *entry,
+on_entry_selected (GtkExifContentList *list, ExifEntry *entry,
 		   GtkExifBrowser *browser)
 {
-	g_return_if_fail (GTK_EXIF_IS_TREE (etree));
-	g_return_if_fail (GTK_EXIF_IS_BROWSER (browser));
-
 	gtk_container_remove (GTK_CONTAINER (browser),
 			      browser->priv->current);
 	switch (entry->tag) {
@@ -130,10 +129,16 @@ on_entry_selected (GtkExifTree *etree, ExifEntry *entry,
 			entry->content);
 		break;
 	case EXIF_TAG_FLASH:
-		browser->priv->current = gtk_exif_entry_9209_new (entry);
+		browser->priv->current = gtk_exif_entry_flash_new (entry);
+		break;
+	case EXIF_TAG_RESOLUTION_UNIT:
+	case EXIF_TAG_X_RESOLUTION:
+	case EXIF_TAG_Y_RESOLUTION:
+		browser->priv->current = gtk_exif_entry_resolution_new (
+								entry->parent);
 		break;
 	default:
-		browser->priv->current = gtk_exif_entry_new (entry);
+		browser->priv->current = gtk_exif_entry_generic_new (entry);
 		break;
 	}
 	gtk_widget_show (browser->priv->current);
@@ -155,10 +160,10 @@ gtk_exif_browser_new (void)
 	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (swin),
 				GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 	gtk_paned_pack1 (GTK_PANED (browser), swin, TRUE, TRUE);
-	et = gtk_exif_tree_new ();
+	et = gtk_exif_content_list_new ();
 	gtk_widget_show (et);
 	gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (swin), et);
-	browser->priv->etree = GTK_EXIF_TREE (et);
+	browser->priv->list = GTK_EXIF_CONTENT_LIST (et);
 	gtk_signal_connect (GTK_OBJECT (et), "entry_selected",
 			    GTK_SIGNAL_FUNC (on_entry_selected), browser);
 
@@ -183,7 +188,7 @@ gtk_exif_browser_set_data (GtkExifBrowser *browser, ExifData *data)
 	browser->priv->data = data;
 	exif_data_ref (data);
 
-	gtk_exif_tree_set_data (browser->priv->etree, data);
+	gtk_exif_content_list_set_content (browser->priv->list, data->content);
 	gtk_container_remove (GTK_CONTAINER (browser), browser->priv->current);
 	gtk_paned_add2 (GTK_PANED (browser), browser->priv->empty);
 	browser->priv->current = browser->priv->empty;

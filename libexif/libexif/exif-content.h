@@ -29,20 +29,45 @@ typedef struct _ExifContentPrivate ExifContentPrivate;
 #include <libexif/exif-utils.h>
 
 struct _ExifContent {
+	ExifByteOrder order;
+
         ExifEntry **entries;
         unsigned int count;
+
+	ExifEntry *parent;
+
 	ExifContentPrivate *priv;
 };
 
+/* Lifecycle */
 ExifContent *exif_content_new   (void);
 void         exif_content_ref   (ExifContent *content);
 void         exif_content_unref (ExifContent *content);
 void         exif_content_free  (ExifContent *content);
 
+/* Notification */
+typedef enum _ExifContentEvent ExifContentEvent;
+enum _ExifContentEvent {
+	EXIF_CONTENT_EVENT_ADD    = 1 << 0,
+	EXIF_CONTENT_EVENT_REMOVE = 1 << 1
+};
+typedef void (* ExifContentNotifyFunc)  (ExifContent *content,
+					 ExifEntry *entry, void *data);
+unsigned int exif_content_add_notify    (ExifContent *content,
+					 ExifContentEvent events,
+					 ExifContentNotifyFunc func,
+					 void *data);
+void         exif_content_remove_notify (ExifContent *content,
+					 unsigned int id);
+
 void         exif_content_parse (ExifContent *content,
 				 const unsigned char *data,
 				 unsigned int size,
 				 unsigned int offset, ExifByteOrder order);
+
+void         exif_content_add_entry    (ExifContent *content, ExifEntry *e);
+void         exif_content_remove_entry (ExifContent *content, ExifEntry *e);
+ExifEntry   *exif_content_get_entry    (ExifContent *content, ExifTag tag);
 
 void         exif_content_dump  (ExifContent *content, unsigned int indent);
 

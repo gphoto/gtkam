@@ -21,39 +21,122 @@
 #include <config.h>
 #include "exif-utils.h"
 
-int
-Get16s (const unsigned char *buf, ExifByteOrder order)
+typedef signed short ExifSShort;
+
+static ExifSShort
+exif_get_sshort (const unsigned char *buf, ExifByteOrder order)
 {
         switch (order) {
         case EXIF_BYTE_ORDER_MOTOROLA:
                 return ((buf[0] << 8) | buf[1]);
         case EXIF_BYTE_ORDER_INTEL:
-        default:
                 return ((buf[1] << 8) | buf[0]);
         }
+
+	/* Won't be reached */
+	return (0);
 }
 
-unsigned int
-Get16u (const unsigned char *buf, ExifByteOrder order)
+ExifShort
+exif_get_short (const unsigned char *buf, ExifByteOrder order)
 {
-	return (Get16s (buf, order) & 0xffff);
+	return (exif_get_sshort (buf, order) & 0xffff);
 }
 
-long
-Get32s (const unsigned char *b, ExifByteOrder order)
+void
+exif_set_short (unsigned char *b, ExifByteOrder order, ExifShort value)
+{
+	switch (order) {
+	case EXIF_BYTE_ORDER_MOTOROLA:
+		b[0] = value >> 8;
+		b[1] = value;
+		break;
+	case EXIF_BYTE_ORDER_INTEL:
+		b[0] = value;
+		b[1] = value >> 8;
+		break;
+	}
+}
+
+ExifSLong
+exif_get_slong (const unsigned char *b, ExifByteOrder order)
 {
         switch (order) {
         case EXIF_BYTE_ORDER_MOTOROLA:
                 return ((b[0] << 24) | (b[1] << 16) | (b[2] << 8) | b[3]);
         case EXIF_BYTE_ORDER_INTEL:
-        default:
                 return ((b[3] << 24) | (b[2] << 16) | (b[1] << 8) | b[0]);
         }
+
+	/* Won't be reached */
+	return (0);
 }
 
-unsigned long
-Get32u (const unsigned char *buf, ExifByteOrder order)
+void
+exif_set_slong (unsigned char *b, ExifByteOrder order, ExifSLong value)
 {
-        return (Get32s (buf, order) & 0xffffffff);
+	switch (order) {
+	case EXIF_BYTE_ORDER_MOTOROLA:
+		b[0] = value >> 24;
+		b[1] = value >> 16;
+		b[2] = value >> 8;
+		b[3] = value;
+		break;
+	case EXIF_BYTE_ORDER_INTEL:
+		b[3] = value >> 24;
+		b[2] = value >> 16;
+		b[1] = value >> 8;
+		b[0] = value;
+		break;
+	}
 }
 
+ExifLong
+exif_get_long (const unsigned char *buf, ExifByteOrder order)
+{
+        return (exif_get_slong (buf, order) & 0xffffffff);
+}
+
+void
+exif_set_long (unsigned char *b, ExifByteOrder order, ExifLong value)
+{
+	exif_set_slong (b, order, value);
+}
+
+ExifSRational
+exif_get_srational (const unsigned char *buf, ExifByteOrder order)
+{
+	ExifSRational r;
+
+	r.numerator   = exif_get_slong (buf, order);
+	r.denominator = exif_get_slong (buf + 4, order);
+
+	return (r);
+}
+
+ExifRational
+exif_get_rational (const unsigned char *buf, ExifByteOrder order)
+{
+	ExifRational r;
+
+	r.numerator   = exif_get_long (buf, order);
+	r.denominator = exif_get_long (buf + 4, order);
+
+	return (r);
+}
+
+void
+exif_set_rational (unsigned char *buf, ExifByteOrder order,
+		   ExifLong numerator, ExifLong denominator)
+{
+	exif_set_long (buf, order, numerator);
+	exif_set_long (buf + 4, order, denominator);
+}
+
+void
+exif_set_srational (unsigned char *buf, ExifByteOrder order,
+		    ExifSLong numerator, ExifSLong denominator)
+{
+	exif_set_slong (buf, order, numerator);
+	exif_set_slong (buf + 4, order, denominator);
+}

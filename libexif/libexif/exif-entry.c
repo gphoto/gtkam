@@ -37,24 +37,18 @@ static struct {
         ExifFormat format;
         unsigned char size;
 } ExifFormatSize[] = {
-        {EXIF_FORMAT_UBYTE,     1},
-        {EXIF_FORMAT_STRING,    1},
-        {EXIF_FORMAT_USHORT,    2},
-        {EXIF_FORMAT_ULONG,     4},
-        {EXIF_FORMAT_URATIONAL, 8},
-        {EXIF_FORMAT_SBYTE,     1},
-        {EXIF_FORMAT_SSHORT,    2},
+        {EXIF_FORMAT_BYTE,     1},
+        {EXIF_FORMAT_ASCII,    1},
+        {EXIF_FORMAT_SHORT,    2},
+        {EXIF_FORMAT_LONG,     4},
+        {EXIF_FORMAT_RATIONAL, 8},
         {EXIF_FORMAT_SLONG,     4},
         {EXIF_FORMAT_SRATIONAL, 8},
-        {EXIF_FORMAT_SINGLE,    4},
-        {EXIF_FORMAT_DOUBLE,    8},
         {0, 0}
 };
 
 struct _ExifEntryPrivate
 {
-	ExifByteOrder order;
-
 	unsigned int ref_count;
 };
 
@@ -80,6 +74,7 @@ exif_entry_new (void)
 		exif_entry_free (entry);
 		return (NULL);
 	}
+	entry->content->parent = entry;
 
 	return (entry);
 }
@@ -114,10 +109,10 @@ exif_entry_parse (ExifEntry *entry, const unsigned char *data,
 {
 	unsigned int j, s, doff;
 
-	entry->priv->order = order;
-	entry->tag         = Get16u (data + offset + 0, order);
-	entry->format      = Get16u (data + offset + 2, order);
-	entry->components  = Get32u (data + offset + 4, order);
+	entry->order = order;
+	entry->tag         = exif_get_short (data + offset + 0, order);
+	entry->format      = exif_get_short (data + offset + 2, order);
+	entry->components  = exif_get_long  (data + offset + 4, order);
 
 #ifdef DEBUG
 	printf ("Parsing entry (tag 0x%x - '%s')...\n", entry->tag,
@@ -137,7 +132,7 @@ exif_entry_parse (ExifEntry *entry, const unsigned char *data,
 		return;
 	if ((s > 4) || (entry->tag == EXIF_TAG_EXIF_OFFSET) ||
 		       (entry->tag == EXIF_TAG_INTEROPERABILITY_OFFSET))
-		doff = Get32u (data + offset + 8, order);
+		doff = exif_get_long (data + offset + 8, order);
 	else
 		doff = offset + 8;
 
@@ -181,50 +176,79 @@ exif_entry_dump (ExifEntry *entry, unsigned int indent)
 const char *
 exif_entry_get_value (ExifEntry *entry)
 {
+	ExifByte v_byte;
+	ExifShort v_short;
+	ExifLong v_long;
+	ExifSLong v_slong;
+	ExifRational v_rat;
+	ExifSRational v_srat;
 	static char v[1024];
-	char v_char;
-	int v_int;
-	unsigned int v_uint;
-	long v_long, p, q;
-	unsigned long v_ulong;
 
 	memset (v, 0, sizeof (v));
 	switch (entry->format) {
-	case EXIF_FORMAT_UBYTE:
-	case EXIF_FORMAT_SBYTE:
-		v_char = entry->data[0];
-		snprintf (v, sizeof (v), "%i", v_char);
+	case EXIF_FORMAT_UNDEFINED:
 		break;
-	case EXIF_FORMAT_USHORT:
-		v_uint = Get16u (entry->data, entry->priv->order);
-		snprintf (v, sizeof (v), "%i", v_uint);
+	case EXIF_FORMAT_BYTE:
+		v_byte = entry->data[0];
+		snprintf (v, sizeof (v), "%i", v_byte);
 		break;
-	case EXIF_FORMAT_SSHORT:
-		v_int = Get16s (entry->data, entry->priv->order);
-		snprintf (v, sizeof (v), "%i", v_int);
+	case EXIF_FORMAT_SHORT:
+		v_short = exif_get_short (entry->data, entry->order);
+		snprintf (v, sizeof (v), "%i", v_short);
 		break;
-	case EXIF_FORMAT_ULONG:
-		v_ulong = Get32u (entry->data, entry->priv->order);
-		snprintf (v, sizeof (v), "%i", (int) v_ulong);
-		break;
-	case EXIF_FORMAT_SLONG:
-		v_long = Get32s (entry->data, entry->priv->order);
+	case EXIF_FORMAT_LONG:
+		v_long = exif_get_long (entry->data, entry->order);
 		snprintf (v, sizeof (v), "%i", (int) v_long);
 		break;
-	case EXIF_FORMAT_STRING:
+	case EXIF_FORMAT_SLONG:
+		v_slong = exif_get_slong (entry->data, entry->order);
+		snprintf (v, sizeof (v), "%i", (int) v_slong);
+		break;
+	case EXIF_FORMAT_ASCII:
 		strncpy (v, entry->data, MIN (sizeof (v), entry->size));
 		break;
-	case EXIF_FORMAT_URATIONAL:
-	case EXIF_FORMAT_SRATIONAL:
-		p = Get32s (entry->data, entry->priv->order);
-		q = Get32s (entry->data + 4, entry->priv->order);
-		snprintf (v, sizeof (v), "%f", (double) p / q);
+	case EXIF_FORMAT_RATIONAL:
+		v_rat = exif_get_rational (entry->data, entry->order);
+		snprintf (v, sizeof (v), "%f",
+			  (double) v_rat.numerator / v_rat.denominator);
 		break;
-	case EXIF_FORMAT_SINGLE:
-	case EXIF_FORMAT_DOUBLE:
-		/* Don't know how to handle this */
+	case EXIF_FORMAT_SRATIONAL:
+		v_srat = exif_get_srational (entry->data, entry->order);
+		snprintf (v, sizeof (v), "%f",
+			  (double) v_srat.numerator / v_srat.denominator);
 		break;
 	}
 
 	return (v);
+}
+
+void
+exif_entry_initialize (ExifEntry *entry, ExifTag tag)
+{
+	if (!entry)
+		return;
+	if (!entry->content || entry->data)
+		return;
+
+	entry->order = entry->content->order;
+	entry->tag = tag;
+	switch (tag) {
+	case EXIF_TAG_X_RESOLUTION:
+	case EXIF_TAG_Y_RESOLUTION:
+		entry->components = 1;
+		entry->format = EXIF_FORMAT_RATIONAL;
+		entry->data = malloc (sizeof (ExifRational));
+		entry->size = sizeof (ExifRational);
+		exif_set_rational (entry->data, entry->order, 72, 1);
+		break;
+	case EXIF_TAG_RESOLUTION_UNIT:
+		entry->components = 1;
+		entry->format = EXIF_FORMAT_SHORT;
+		entry->data = malloc (sizeof (ExifShort));
+		entry->size = sizeof (ExifShort);
+		exif_set_rational (entry->data, entry->order, 72, 1);
+		break;
+	default:
+		break;
+	}
 }

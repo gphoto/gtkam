@@ -1,3 +1,7 @@
+2002-08-07  Lutz Müller <lutz@users.sourceforge.net>
+
+	* src/gtkam-main.c: Hook up the debug dialog.
+
 2002-08-03  Lutz Müller <lutz@users.sourceforge.net>
 
 	* src/gtkam-list.c: Make "View as" functional.

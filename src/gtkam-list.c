@@ -1307,6 +1307,11 @@ zoom_factor (GtkamList *list, GtkTreeIter *iter, Zoom zoom)
 	gtk_tree_model_get_value (GTK_TREE_MODEL (list->priv->store), iter,
 				  PREVIEW_ORIG_COLUMN, &v);
 	pixbuf_orig = g_value_peek_pointer (&v);
+	if (!GDK_IS_PIXBUF (pixbuf_orig)) {
+		g_value_unset (&v);
+		return;
+	}
+
 	g_object_ref (G_OBJECT (pixbuf_orig));
 	g_value_unset (&v);
 	gtk_tree_model_get_value (GTK_TREE_MODEL (list->priv->store), iter, 

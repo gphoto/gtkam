@@ -21,7 +21,7 @@
 #ifndef __GTKAM_DEBUG_H__
 #define __GTKAM_DEBUG_H__
 
-#include <gtk/gtkdialog.h>
+#include <gtkam-dialog.h>
 
 #define GTKAM_TYPE_DEBUG  (gtkam_debug_get_type ())
 #define GTKAM_DEBUG(o)    (GTK_CHECK_CAST((o),GTKAM_TYPE_DEBUG,GtkamDebug))
@@ -33,14 +33,14 @@ typedef struct _GtkamDebugClass   GtkamDebugClass;
 
 struct _GtkamDebug
 {
-	GtkDialog parent;
+	GtkamDialog parent;
 
 	GtkamDebugPrivate *priv;
 };
 
 struct _GtkamDebugClass
 {
-	GtkDialogClass parent_class;
+	GtkamDialogClass parent_class;
 };
 
 GtkType    gtkam_debug_get_type (void);

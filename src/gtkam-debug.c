@@ -53,6 +53,7 @@
 #include <gtk/gtkfilesel.h>
 #include <gtk/gtkbutton.h>
 #include <gtk/gtkcheckbutton.h>
+#include <gtk/gtkscrolledwindow.h>
 #include <gtk/gtkstock.h>
 
 #include <gphoto2/gphoto2-port-log.h>
@@ -64,10 +65,12 @@ struct _GtkamDebugPrivate
 	gboolean log_error, log_verbose, log_debug, log_data;
 
 	guint log_func_id;
+
+	GtkTextTagTable *tag_table;
 };
 
-#define PARENT_TYPE GTK_TYPE_DIALOG
-static GtkDialogClass *parent_class;
+#define PARENT_TYPE GTKAM_TYPE_DIALOG
+static GtkamDialogClass *parent_class;
 
 static void
 gtkam_debug_destroy (GtkObject *object)
@@ -77,6 +80,11 @@ gtkam_debug_destroy (GtkObject *object)
 	if (debug->priv->log_func_id) {
 		gp_log_remove_func (debug->priv->log_func_id);
 		debug->priv->log_func_id = 0;
+	}
+
+	if (debug->priv->tag_table) {
+		g_object_unref (G_OBJECT (debug->priv->tag_table));
+		debug->priv->tag_table = NULL;
 	}
 
 	GTK_OBJECT_CLASS (parent_class)->destroy (object);
@@ -111,8 +119,34 @@ static void
 gtkam_debug_init (GTypeInstance *instance, gpointer g_class)
 {
 	GtkamDebug *debug = GTKAM_DEBUG (instance);
+	GtkTextTag *t;
+	GdkColor c;
 
 	debug->priv = g_new0 (GtkamDebugPrivate, 1);
+
+	debug->priv->tag_table = gtk_text_tag_table_new ();
+	debug->priv->buffer = gtk_text_buffer_new (debug->priv->tag_table);
+
+	/* Font for displaying errors */
+	t = gtk_text_tag_new ("error");
+	c.red = 0xffff;
+	c.green = c.blue = 0;
+	g_object_set (G_OBJECT (t), "foreground_gdk", &c, NULL);
+	gtk_text_tag_table_add (debug->priv->tag_table, t);
+
+	/* Font for displaying debug messages */
+	t = gtk_text_tag_new ("debug");
+	c.green = 0xffff;
+	c.red = c.blue = 0;
+	g_object_set (G_OBJECT (t), "foreground_gdk", &c, NULL);
+	gtk_text_tag_table_add (debug->priv->tag_table, t);
+
+	/* Font for displaying verbose messages */
+	t = gtk_text_tag_new ("verbose");
+	c.blue = 0xffff;
+	c.red = c.green = 0;
+	g_object_set (G_OBJECT (t), "foreground_gdk", &c, NULL);
+	gtk_text_tag_table_add (debug->priv->tag_table, t);
 }
 
 GType
@@ -140,32 +174,33 @@ static void
 log_func (GPLogLevel level, const char *domain, const char *format,
 	  va_list args, void *data)
 {
-	GtkamDebug *debug;
-	const gchar *err = "*** ERROR *** ";
+	GtkamDebug *d;
 	gchar *message;
-	GtkTextIter iter;
+	GtkTextTag *t = NULL;
+	GtkTextIter i;
 
         g_return_if_fail (GTKAM_IS_DEBUG (data));
 
-        debug = GTKAM_DEBUG (data);
+        d = GTKAM_DEBUG (data);
 
 	switch (level) {
 	case GP_LOG_ERROR:
-		if (!debug->priv->log_error)
+		if (!d->priv->log_error)
 			return;
-		gtk_text_buffer_insert (debug->priv->buffer, &iter, err,
-					strlen (err));
+		t = gtk_text_tag_table_lookup (d->priv->tag_table, "error");
 		break;
 	case GP_LOG_VERBOSE:
-		if (!debug->priv->log_verbose)
+		if (!d->priv->log_verbose)
 			return;
+		t = gtk_text_tag_table_lookup (d->priv->tag_table, "verbose");
 		break;
 	case GP_LOG_DEBUG:
-		if (!debug->priv->log_debug)
+		if (!d->priv->log_debug)
 			return;
+		t = gtk_text_tag_table_lookup (d->priv->tag_table, "debug");
 		break;
 	case GP_LOG_DATA:
-		if (!debug->priv->log_data)
+		if (!d->priv->log_data)
 			return;
 		break;
 	default:
@@ -174,10 +209,12 @@ log_func (GPLogLevel level, const char *domain, const char *format,
 
 	/* Show the message */
 	message = g_strdup_vprintf (format, args);
-       	gtk_text_buffer_insert (debug->priv->buffer, &iter,
-				message, strlen (message));
+	gtk_text_buffer_get_end_iter (d->priv->buffer, &i);
+       	gtk_text_buffer_insert_with_tags (d->priv->buffer, &i, message,
+					  strlen (message), t, NULL);
 	g_free (message);
-	gtk_text_buffer_insert (debug->priv->buffer, &iter, "\n", 1);
+	gtk_text_buffer_get_end_iter (d->priv->buffer, &i);
+	gtk_text_buffer_insert (d->priv->buffer, &i, "\n", 1);
 }
 
 static void
@@ -225,10 +262,10 @@ on_debug_save_as_clicked (GtkButton *button, GtkamDebug *debug)
 	gtk_file_selection_set_filename (GTK_FILE_SELECTION (fsel),
 					 "gtkam.debug");
 	g_signal_connect (GTK_OBJECT (GTK_FILE_SELECTION (fsel)->ok_button),
-			    "clicked", GTK_SIGNAL_FUNC (on_ok_clicked), &ok);
+			    "clicked", G_CALLBACK (on_ok_clicked), &ok);
 	g_signal_connect (GTK_OBJECT (
 				GTK_FILE_SELECTION (fsel)->cancel_button),
-			    "clicked", GTK_SIGNAL_FUNC (gtk_main_quit), NULL);
+			    "clicked", G_CALLBACK (gtk_main_quit), NULL);
 
 	gtk_main ();
 
@@ -260,11 +297,20 @@ on_debug_close_clicked (GtkButton *button, GtkamDebug *debug)
 	gtk_object_destroy (GTK_OBJECT (debug));
 }
 
+static void
+on_clear_clicked (GtkButton *button, GtkamDebug *debug)
+{
+	GtkTextIter s, e;
+
+	gtk_text_buffer_get_bounds (debug->priv->buffer, &s, &e);
+	gtk_text_buffer_delete (debug->priv->buffer, &s, &e);
+}
+
 GtkWidget *
 gtkam_debug_new (void)
 {
 	GtkamDebug *debug;
-	GtkWidget *button, *text, *vscrollbar, *hbox, *check, *label;
+	GtkWidget *button, *text, *hbox, *check, *label, *s;
 
 	debug = g_object_new (GTKAM_TYPE_DEBUG, NULL);
 
@@ -273,7 +319,7 @@ gtkam_debug_new (void)
 
 	hbox = gtk_hbox_new (FALSE, 5);
 	gtk_widget_show (hbox);
-	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (debug)->vbox), hbox,
+	gtk_box_pack_start (GTK_BOX (GTKAM_DIALOG (debug)->vbox), hbox,
 			    FALSE, FALSE, 0);
 
 	label = gtk_label_new (_("Type of messages to log:"));
@@ -284,57 +330,66 @@ gtkam_debug_new (void)
 	gtk_widget_show (check);
 	gtk_box_pack_start (GTK_BOX (hbox), check, FALSE, FALSE, 0);
 	g_signal_connect (GTK_OBJECT (check), "toggled",
-			    GTK_SIGNAL_FUNC (on_error_toggled), debug);
+			    G_CALLBACK (on_error_toggled), debug);
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (check), TRUE);
 
 	check = gtk_check_button_new_with_label (_("Verbose"));
 	gtk_widget_show (check);
 	gtk_box_pack_start (GTK_BOX (hbox), check, FALSE, FALSE, 0);
 	g_signal_connect (GTK_OBJECT (check), "toggled",
-			    GTK_SIGNAL_FUNC (on_verbose_toggled), debug);
+			    G_CALLBACK (on_verbose_toggled), debug);
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (check), TRUE);
 
 	check = gtk_check_button_new_with_label (_("Debug"));
 	gtk_widget_show (check);
 	gtk_box_pack_start (GTK_BOX (hbox), check, FALSE, FALSE, 0);
 	g_signal_connect (GTK_OBJECT (check), "toggled",
-			    GTK_SIGNAL_FUNC (on_debug_toggled), debug);
+			    G_CALLBACK (on_debug_toggled), debug);
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (check), TRUE);
 
 	check = gtk_check_button_new_with_label (_("Data"));
 	gtk_widget_show (check);
 	gtk_box_pack_start (GTK_BOX (hbox), check, FALSE, FALSE, 0);
 	g_signal_connect (GTK_OBJECT (check), "toggled",
-			    GTK_SIGNAL_FUNC (on_data_toggled), debug);
+			    G_CALLBACK (on_data_toggled), debug);
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (check), FALSE); 
 
-	hbox = gtk_hbox_new (FALSE, 0);
-	gtk_widget_show (hbox);
-	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (debug)->vbox), hbox,
-			    TRUE, TRUE, 0);
-
-	debug->priv->buffer = gtk_text_buffer_new (NULL);
+	s = gtk_scrolled_window_new (NULL, NULL);
+	gtk_widget_show (s);
+	gtk_box_pack_start (GTK_BOX (GTKAM_DIALOG (debug)->vbox), s, TRUE,
+			    TRUE, 0);
+	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (s),
+			GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 
 	text = gtk_text_view_new_with_buffer (debug->priv->buffer);
+	gtk_text_view_set_wrap_mode    (GTK_TEXT_VIEW (text), GTK_WRAP_CHAR);
+	gtk_text_view_set_editable     (GTK_TEXT_VIEW (text), FALSE);
+	gtk_text_view_set_left_margin  (GTK_TEXT_VIEW (text), 1);
+	gtk_text_view_set_right_margin (GTK_TEXT_VIEW (text), 1);
 	gtk_widget_show (text);
-	gtk_text_view_set_editable (GTK_TEXT_VIEW (text), FALSE);
-	gtk_box_pack_start (GTK_BOX (hbox), text, TRUE, TRUE, 0);
+	gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (s), text);
 
-	vscrollbar = gtk_vscrollbar_new (GTK_TEXT_VIEW (text)->vadjustment);
-	gtk_widget_show (vscrollbar);
-	gtk_box_pack_end (GTK_BOX (hbox), vscrollbar, FALSE, FALSE, 0);
-
-	button = gtk_button_new_from_stock (GTK_STOCK_SAVE_AS);
+	/* Clear */
+	button = gtk_button_new_from_stock (GTK_STOCK_CLEAR);
 	gtk_widget_show (button);
-	g_signal_connect (GTK_OBJECT (button), "clicked",
-			    GTK_SIGNAL_FUNC (on_debug_save_as_clicked), debug);
+	g_signal_connect (G_OBJECT (button), "clicked",
+			  G_CALLBACK (on_clear_clicked), debug);
 	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (debug)->action_area),
 			   button);
 
+	/* Save as */
+	button = gtk_button_new_from_stock (GTK_STOCK_SAVE_AS);
+	gtk_widget_show (button);
+	g_signal_connect (G_OBJECT (button), "clicked",
+			    G_CALLBACK (on_debug_save_as_clicked), debug);
+	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (debug)->action_area),
+			   button);
+
+	/* Close */
 	button = gtk_button_new_from_stock (GTK_STOCK_CLOSE);
 	gtk_widget_show (button);
-	g_signal_connect (GTK_OBJECT (button), "clicked",
-			    GTK_SIGNAL_FUNC (on_debug_close_clicked), debug);
+	g_signal_connect (G_OBJECT (button), "clicked",
+			    G_CALLBACK (on_debug_close_clicked), debug);
 	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (debug)->action_area),
 			   button);
 	gtk_widget_grab_focus (button);

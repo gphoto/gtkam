@@ -416,23 +416,27 @@ on_new_dialog (GtkObject *object, GtkWidget *dialog, GtkamMain *m)
 	gtk_widget_show (dialog);
 }
 
-#if 0
 static void
-on_debug_activate (GtkMenuItem *item, GtkamMain *m)
+action_debug (gpointer callback_data, guint callback_action,
+	      GtkWidget *widget)
 {
-	GtkWidget *debug;
+	GtkamMain *m = GTKAM_MAIN (callback_data);
+	GtkWidget *d;
 
-	debug = gtkam_debug_new ();
-	gtk_widget_show (debug);
+	d = gtkam_debug_new ();
+	gtk_window_set_transient_for (GTK_WINDOW (d), GTK_WINDOW (m));
+	gtk_widget_show (d);
 }
 
 static void
-on_about_activate (GtkMenuItem *item, GtkamMain *m)
+action_about (gpointer callback_data, guint callback_action,
+	      GtkWidget *widget)
 {
-	GtkWidget *dialog;
-	char buf[4096];
-	
-	snprintf(buf, sizeof(buf), 
+	GtkamMain *m = GTKAM_MAIN (callback_data);
+	GtkWidget *d;
+	gchar *buf;
+
+	buf = g_strdup_printf (
 		 _("%s %s\n\n"
 		   "gtKam was written by:\n"
 		   " - Scott Fritzinger <scottf@unr.edu>,\n"
@@ -446,11 +450,10 @@ on_about_activate (GtkMenuItem *item, GtkamMain *m)
 		   "\n"
 		   "Enjoy the wonderful world of gphoto!"),
 		 PACKAGE, VERSION);
-
-	dialog = gtkam_close_new (buf, GTK_WIDGET (m));
-	gtk_widget_show (dialog);
+	d = gtkam_close_new (buf);
+	gtk_window_set_transient_for (GTK_WINDOW (d), GTK_WINDOW (m));
+	gtk_widget_show (d);
 }
-#endif
 
 static gboolean
 selection_changed_idle (gpointer data)
@@ -546,6 +549,9 @@ static GtkItemFactoryEntry mi[] =
 	{"/Select/_None", NULL, action_select_none, 0, NULL},
 	{"/_Camera", NULL, 0, 0, "<Branch>"},
 	{"/Camera/_Add Camera...", NULL, action_add_camera, 0, NULL},
+	{"/_Help", NULL, 0, 0, "<Branch>"},
+	{"/Help/_Debug", NULL, action_debug, 0, NULL, NULL},
+	{"/Help/_About", NULL, action_about, 0, NULL, NULL},
 };
 
 GtkWidget *

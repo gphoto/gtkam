@@ -1,6 +1,6 @@
 /* gtkam-save.c
  *
- * Copyright © 2001 Lutz Müller <lutz@users.sf.net>
+ * Copyright Â© 2001 Lutz MÃ¼ller <lutz@users.sf.net>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,7 +16,7 @@
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
- ADB WIP See if we can make this 'nicer'
+ADB Migrated to GtkFileChooser
  */
 
 #include "config.h"
@@ -27,7 +27,9 @@
 #include <string.h>
 #include <stdlib.h>
 
+#include <gtk/gtk.h>
 #include <gtk/gtktogglebutton.h>
+#include <gtk/gtkbutton.h>
 #include <gtk/gtkhbox.h>
 #include <gtk/gtkvbox.h>
 #include <gtk/gtkframe.h>
@@ -73,8 +75,8 @@ struct _GtkamSavePrivate
 	GtkWindow *main_window;
 };
 
-#define PARENT_TYPE GTK_TYPE_FILE_SELECTION
-static GtkFileSelection *parent_class;
+#define PARENT_TYPE GTK_TYPE_FILE_CHOOSER_DIALOG
+static GtkFileChooserDialog *parent_class;
 
 static void
 gtkam_save_destroy (GtkObject *object)
@@ -161,86 +163,48 @@ on_cancel_clicked (GtkButton *button, GtkamSave *save)
 static int
 default_numbering_start(const GtkamSave *save)
 {
+
 	GDir *dir;
 	const gchar *file;
 	gchar *tail,*prefix;
 	int max=1;
 	int plen,current;
-
+/* ADB Temporarily commented out
 	if (!(dir=g_dir_open(gtk_file_selection_get_filename(
 		GTK_FILE_SELECTION(save)),0,NULL))) return 1;
 	prefix=g_strdup(gtk_entry_get_text(GTK_ENTRY(save->priv->prefix_entry)));
 	plen=strlen(prefix);
 	while ((file=g_dir_read_name(dir))) {
-		/* compare prefix */
+		* compare prefix *
 		if (strncmp(prefix,file,plen)) continue;
-		/* check number */
+		* check number *
 		current=strtol(file+plen,&tail,10);
 		if (tail - (file+plen) != 4) continue;
-		/* FIXME: check for regular file here */
+		* FIXME: check for regular file here *
 		if (max <= current) max = current+1;
 	}
 	g_free(prefix);
-	g_dir_close(dir);
+	g_dir_close(dir);*/
 	return max;
 }
 
 static void
 on_filename_camera_toggled (GtkToggleButton *toggle, GtkamSave *save)
 {
-	switch (g_slist_length (save->priv->data)) {
-	case 1:
-
-		/*
-		 * Only one file to save - no prefix, no numbering. If the
-		 * button is toggled, users cannot specify a filename.
-		 */
-
-		gtk_widget_hide (save->priv->hbox_prefix);
-		gtk_widget_set_sensitive (save->priv->prefix_entry, FALSE);
-		gtk_widget_set_sensitive (save->priv->spin_entry, FALSE);
-
-		gtk_widget_show (GTK_FILE_SELECTION (save)->file_list);
-		gtk_widget_set_sensitive (GTK_FILE_SELECTION (save)->file_list,
-					  !toggle->active);
-
-		gtk_widget_show (GTK_FILE_SELECTION (save)->selection_entry);
-		gtk_widget_set_sensitive (
-			GTK_FILE_SELECTION (save)->selection_entry,
+	/*
+	 * Give the users the possibility to specify prefix and numbering.
+	 * No direct entry of filename is allowed.
+	 */
+	gtk_widget_show (save->priv->hbox_prefix);
+	gtk_widget_set_sensitive (GTK_WIDGET (save->priv->prefix_entry),
 			!toggle->active);
-
-		break;
-
-	default:
-
-		/*
-		 * More than one file to save. Give the users the possibility
-		 * to specify prefix and numbering. No direct entry of 
-		 * filename is allowed.
-		 */
-
-		gtk_widget_show (save->priv->hbox_prefix);
-		gtk_widget_set_sensitive (
-			GTK_WIDGET (save->priv->prefix_entry),
+	gtk_widget_set_sensitive (GTK_WIDGET (save->priv->spin_entry),
 			!toggle->active);
-		gtk_widget_set_sensitive (GTK_WIDGET (save->priv->spin_entry),
-			!toggle->active);
-		if (!toggle->active) {
-			/* calculate default start number */
-			gtk_spin_button_set_value (
-				GTK_SPIN_BUTTON (save->priv->spin_entry),
-				default_numbering_start(save));
-		}
-
-		gtk_widget_hide (GTK_FILE_SELECTION (save)->file_list);
-		gtk_widget_set_sensitive (GTK_FILE_SELECTION (save)->file_list,
-					  FALSE);
-
-		gtk_widget_hide (GTK_FILE_SELECTION (save)->selection_entry);
-		gtk_widget_set_sensitive (
-			GTK_FILE_SELECTION (save)->selection_entry, FALSE);
-
-		break;
+	if (!toggle->active) {
+		/* Calculate default start number */
+		gtk_spin_button_set_value (
+			GTK_SPIN_BUTTON (save->priv->spin_entry),
+			default_numbering_start(save));
 	}
 }
 
@@ -298,7 +262,7 @@ save_file (GtkamSave *save, CameraFile *file, guint n)
 	gp_file_get_mime_type (file, &mime_type);
 	gp_file_get_name (file, &filename);
 
-	fsel_path = gtk_file_selection_get_filename (GTK_FILE_SELECTION (save));
+	fsel_path = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER_DIALOG (save));
 
 	if (save->priv->toggle_filename_camera->active) {
 
@@ -310,7 +274,7 @@ save_file (GtkamSave *save, CameraFile *file, guint n)
 	} else {
 		if (g_slist_length (save->priv->data) == 1) {
 
-			/* Use filename provided by the GtkFileSelection */
+			/* Use filename provided by the GtkFileChooser */
 			fsel_filename = g_path_get_basename (fsel_path);
 
 			full_filename = create_full_filename (fsel_filename,
@@ -423,24 +387,27 @@ store_save_settings(GtkamSave *save)
 	gchar *savedir,*t;
 	gchar buf[5];
 
-	/* directory */
-	savedir=g_strdup(gtk_file_selection_get_filename(
-			      GTK_FILE_SELECTION (save)));
+	/* Directory */
+	savedir = g_strdup (gtk_file_chooser_get_filename (
+			      GTK_FILE_CHOOSER_DIALOG (save)));
 	if (savedir) {
-		if (strlen(savedir) > 255) savedir[255]='\0';
-		if (!g_file_test(savedir,G_FILE_TEST_IS_DIR)) {
-			t=g_path_get_dirname(savedir);
-			g_free(savedir);
-			savedir=t;
+		if (strlen (savedir) > 255)
+			savedir[255] = '\0';
+
+		if (!g_file_test (savedir, G_FILE_TEST_IS_DIR)) {
+			t = g_path_get_dirname (savedir);
+			g_free (savedir);
+			savedir = t;
 		}
-		gp_setting_set("gtkam","save-dir",savedir);
-		g_free(savedir);
+		gp_setting_set ("gtkam", "save-dir", savedir);
+		g_free (savedir);
 	}
+	
 	/* toggle buttons */
-#define STORE_TOGGLE(NAME) \
-	snprintf(buf,sizeof(buf), "%d", gtk_toggle_button_get_active(	\
+#define STORE_TOGGLE (NAME) \
+	snprintf (buf, sizeof (buf), "%d", gtk_toggle_button_get_active (	\
 		save->priv->toggle_ ## NAME)); 				\
-	gp_setting_set("gtkam","save-" #NAME,buf)
+	gp_setting_set ("gtkam","save-" #NAME,buf)
 	
 	STORE_TOGGLE(preview);
 	STORE_TOGGLE(normal);
@@ -448,11 +415,12 @@ store_save_settings(GtkamSave *save)
 	STORE_TOGGLE(audio);
 	STORE_TOGGLE(exif);
 	STORE_TOGGLE(filename_camera);
+
 	/* prefix entry */
 	if (g_slist_length (save->priv->data) > 1) {
 		/* only when saving several files */
-		gp_setting_set("gtkam","save-prefix",(gchar *)
-			gtk_entry_get_text(GTK_ENTRY(save->priv->prefix_entry)));
+		gp_setting_set("gtkam", "save-prefix", (gchar *)
+			gtk_entry_get_text (GTK_ENTRY (save->priv->prefix_entry)));
 	}
 }
 
@@ -464,16 +432,16 @@ load_save_settings(GtkamSave *save)
 
 	/* directory */
 	if (gp_setting_get("gtkam","save-dir",buf) == GP_OK) {
-		dir=g_strdup(buf);
-		strcat(buf,G_DIR_SEPARATOR_S);
-		gtk_file_selection_set_filename(GTK_FILE_SELECTION(save),buf);
+		dir = g_strdup (buf);
+		strcat (buf, G_DIR_SEPARATOR_S);
+		gtk_file_chooser_set_current_name (GTK_FILE_CHOOSER (save), buf);
 	} else {
-		dir=g_strdup(gtk_file_selection_get_filename(
-			GTK_FILE_SELECTION(save) ));
+		dir = g_strdup (gtk_file_chooser_get_filename (
+			GTK_FILE_CHOOSER (save)));
 	}
 	/* prefix entry */
-	gp_setting_get("gtkam","save-prefix",buf);
-	gtk_entry_set_text(GTK_ENTRY(save->priv->prefix_entry), buf);
+	gp_setting_get ("gtkam", "save-prefix", buf);
+	gtk_entry_set_text (GTK_ENTRY (save->priv->prefix_entry), buf);
 
 	/* toggle buttons */
 #define LOAD_TOGGLE(NAME) \
@@ -618,27 +586,39 @@ GtkWidget *
 gtkam_save_new (GtkWindow *main_window)
 {
 	GtkamSave *save;
-	GtkWidget *hbox, *frame, *check, *label, *entry;
+	GtkWidget *hbox, *frame, *main_vbox, *check, *label, *entry, *button;
 	GtkObject *a;
 	GtkTooltips *tooltips;
 
 	save = g_object_new (GTKAM_TYPE_SAVE, NULL);
 
-	g_signal_connect (G_OBJECT (GTK_FILE_SELECTION (save)->ok_button),
-			    "clicked", G_CALLBACK (on_ok_clicked), save);
-	g_signal_connect (G_OBJECT (GTK_FILE_SELECTION (save)->cancel_button),
-			  "clicked", G_CALLBACK (on_cancel_clicked), save);
+	button = gtk_button_new_from_stock (GTK_STOCK_CANCEL);
+	gtk_widget_show (button);
+	g_signal_connect (GTK_OBJECT (button),
+			  "clicked", GTK_SIGNAL_FUNC (on_cancel_clicked), save);
+	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (save)->action_area),
+			   button);
+
+	button = gtk_button_new_from_stock (GTK_STOCK_OK);
+	gtk_widget_show (button);
+	g_signal_connect (GTK_OBJECT (button), "clicked",
+			    GTK_SIGNAL_FUNC (on_ok_clicked), save);
+	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (save)->action_area),
+			   button);
 	
 	tooltips = gtk_tooltips_new ();
 
 	frame = gtk_frame_new (_("What to save:"));
 	gtk_widget_show (frame);
-	gtk_box_pack_start (GTK_BOX (GTK_FILE_SELECTION (save)->main_vbox),
-			    frame, FALSE, FALSE, 0);
+	gtk_file_chooser_set_extra_widget (GTK_FILE_CHOOSER (save), frame);
+
+	main_vbox = gtk_vbox_new (TRUE, 5);
+	gtk_widget_show (main_vbox);
+	gtk_container_add (GTK_CONTAINER (frame), main_vbox);
 
 	hbox = gtk_hbox_new (TRUE, 5);
 	gtk_widget_show (hbox);
-	gtk_container_add (GTK_CONTAINER (frame), hbox);
+	gtk_container_add (GTK_CONTAINER (main_vbox), hbox);
 
 	check = gtk_check_button_new_with_label (_("Save photos"));
 	gtk_widget_show (check);
@@ -678,7 +658,7 @@ gtkam_save_new (GtkWindow *main_window)
 
 	hbox = gtk_hbox_new (FALSE, 0);
 	gtk_widget_show (hbox);
-	gtk_box_pack_start (GTK_BOX (GTK_FILE_SELECTION (save)->main_vbox),
+	gtk_box_pack_start (GTK_BOX (main_vbox),
 			    hbox, TRUE, TRUE, 0);
 
 	label = gtk_label_new (_("Open image(s) with: "));
@@ -696,7 +676,7 @@ gtkam_save_new (GtkWindow *main_window)
 	/* Filenames provided by camera */
 	check = gtk_check_button_new_with_label (_("Use filename(s) provided by the camera"));
 	gtk_widget_show (check);
-	gtk_box_pack_start (GTK_BOX (GTK_FILE_SELECTION (save)->main_vbox),
+	gtk_box_pack_start (GTK_BOX (main_vbox),
 			    check, TRUE, TRUE, 0);
 	gtk_tooltips_set_tip (tooltips, check, _("Choose whether to use the "
 			      "filename provided by the camera"), NULL);
@@ -706,35 +686,33 @@ gtkam_save_new (GtkWindow *main_window)
 			  G_CALLBACK (on_filename_camera_toggled), save);
 
 	hbox = gtk_hbox_new (FALSE, 5);
-        gtk_widget_show (hbox);
-        gtk_box_pack_start (GTK_BOX (GTK_FILE_SELECTION (save)->main_vbox),
-                            hbox, TRUE, TRUE, 0);
-        gtk_box_reorder_child (GTK_BOX (GTK_FILE_SELECTION (save)->main_vbox),
-                               hbox, 256);
+	gtk_widget_show (hbox);
+	gtk_box_pack_start (GTK_BOX (main_vbox),
+			    hbox, TRUE, TRUE, 0);
+
 	save->priv->hbox_prefix = hbox;
 
-        label = gtk_label_new (_("Filename prefix: "));
-        gtk_widget_show (label);
-        gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
+	label = gtk_label_new (_("Filename prefix: "));
+	gtk_widget_show (label);
+	gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
 
 	save->priv->prefix_entry = gtk_entry_new ();
-        gtk_widget_show (save->priv->prefix_entry);
-        gtk_box_pack_start (GTK_BOX (hbox), save->priv->prefix_entry,
+	gtk_widget_show (save->priv->prefix_entry);
+	gtk_box_pack_start (GTK_BOX (hbox), save->priv->prefix_entry,
 			    TRUE, TRUE, 0);
 
 	label = gtk_label_new (_("Start numbering with: "));
-        gtk_widget_show (label);
-        gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
+	gtk_widget_show (label);
+	gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
 
 	a = gtk_adjustment_new (1.0, 1.0, 10000.0, 1.0, 10.0, 10.0);
 	save->priv->spin_entry = gtk_spin_button_new (GTK_ADJUSTMENT (a),
 				 1.0, 0);
-        gtk_widget_show (save->priv->spin_entry);
-        gtk_box_pack_start (GTK_BOX (hbox), save->priv->spin_entry,
+	gtk_widget_show (save->priv->spin_entry);
+	gtk_box_pack_start (GTK_BOX (hbox), save->priv->spin_entry,
 			    FALSE, FALSE, 0);
 
 	load_save_settings(save);
-	gtk_widget_grab_focus (GTK_FILE_SELECTION (save)->ok_button);
 
 	/* Remember the main window (if given) */
 	save->priv->main_window = main_window ? main_window : GTK_WINDOW (save);
@@ -769,18 +747,16 @@ gtkam_save_add (GtkamSave *save, GtkamCamera *camera,
 		gtk_window_set_title (GTK_WINDOW (save), title);
 		g_free (title);
 
+		gtk_widget_hide (save->priv->toggle_filename_camera);
+	
 		gtk_widget_hide (save->priv->hbox_prefix);
 		gtk_widget_set_sensitive (save->priv->spin_entry, FALSE);
 		gtk_widget_set_sensitive (save->priv->prefix_entry, FALSE);
 
-		gtk_widget_show (GTK_FILE_SELECTION (save)->file_list);
-		gtk_widget_set_sensitive (GTK_FILE_SELECTION (save)->file_list,
-				!save->priv->toggle_filename_camera->active);
+		gtk_file_chooser_set_action(GTK_FILE_CHOOSER (save),
+				GTK_FILE_CHOOSER_ACTION_SAVE);
 
-		gtk_widget_show (GTK_FILE_SELECTION (save)->selection_entry);
-		gtk_widget_set_sensitive (
-			GTK_FILE_SELECTION (save)->selection_entry,
-			!save->priv->toggle_filename_camera->active);
+		gtk_file_chooser_set_current_name (GTK_FILE_CHOOSER (save), name);
 
 		break;
 
@@ -789,19 +765,15 @@ gtkam_save_add (GtkamSave *save, GtkamCamera *camera,
 		/* Second case: We have multiple files to save. */
 		gtk_window_set_title (GTK_WINDOW (save), _("Save photos..."));
 
+		gtk_widget_show (save->priv->toggle_filename_camera);
+
 		gtk_widget_show (save->priv->hbox_prefix);
 		gtk_widget_set_sensitive (save->priv->spin_entry,
 				!save->priv->toggle_filename_camera->active);
 		gtk_widget_set_sensitive (save->priv->prefix_entry,
 				!save->priv->toggle_filename_camera->active);
-
-		gtk_widget_hide (GTK_FILE_SELECTION (save)->file_list);
-		gtk_widget_set_sensitive (GTK_FILE_SELECTION (save)->file_list,
-					  FALSE);
-
-		gtk_widget_hide (GTK_FILE_SELECTION (save)->selection_entry);
-	        gtk_widget_set_sensitive (
-			GTK_FILE_SELECTION (save)->selection_entry, FALSE);
+		gtk_file_chooser_set_action(GTK_FILE_CHOOSER (save),
+				GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER);
 
 		break;
 	}

@@ -1,6 +1,6 @@
 /* gtkam-save.h
  *
- * Copyright © 2001 Lutz Müller <lutz@users.sf.net>
+ * Copyright Â© 2001 Lutz MÃ¼ller <lutz@users.sf.net>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,7 +22,10 @@
 #define __GTKAM_SAVE_H__
 
 #include <gtkam-camera.h>
-#include <gtk/gtkfilesel.h>
+
+/*#include <gtk/gtkfilesel.h>*/
+#include <gtk/gtkfilechooser.h>
+#include <gtk/gtkfilechooserdialog.h>
 #include <gtk/gtkwindow.h>
 
 #define GTKAM_TYPE_SAVE  (gtkam_save_get_type ())
@@ -35,14 +38,16 @@ typedef struct _GtkamSaveClass   GtkamSaveClass;
 
 struct _GtkamSave
 {
-	GtkFileSelection parent;
+/*	GtkFileSelection parent;*/
+	GtkFileChooserDialog parent;
 
 	GtkamSavePrivate *priv;
 };
 
 struct _GtkamSaveClass
 {
-	GtkFileSelectionClass parent_class;
+	/*GtkFileSelectionClass parent_class;*/
+	GtkFileChooserDialogClass parent_class;
 };
 
 GtkType    gtkam_save_get_type (void);

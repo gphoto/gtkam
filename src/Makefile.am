@@ -27,9 +27,11 @@ libgtkam_a_SOURCES =					\
 	gtkam-error.c   	gtkam-error.h     	\
 	gtkam-fsel.c    	gtkam-fsel.h		\
 	gtkam-info.c    	gtkam-info.h		\
+	gtkam-list.c		gtkam-list.h		\
 	gtkam-mkdir.c   	gtkam-mkdir.h		\
 	gtkam-port.c    	gtkam-port.h		\
 	gtkam-preview.c 	gtkam-preview.h		\
+	gtkam-save.c		gtkam-save.h		\
 	gtkam-status.c  	gtkam-status.h		\
 	gtkam-tree.c    	gtkam-tree.h		\
 	gtkam-util.c    	gtkam-util.h		\
@@ -40,9 +42,7 @@ bin_PROGRAMS = gtkam
 gtkam_SOURCES = 				\
 	gtkam-debug.c gtkam-debug.h 		\
 	gtkam-exif.c gtkam-exif.h 		\
-	gtkam-list.c gtkam-list.h 		\
 	gtkam-main.c gtkam-main.h 		\
-	gtkam-save.c gtkam-save.h 		\
 	main.c
 gtkam_LDADD = libgtkam.a $(EXIF_LIBS) $(GTK_LIBS) $(GP_LIBS)
 
@@ -53,6 +53,7 @@ gtkam_gimp_SOURCES = gtkam-gimp.c
 gtkam_gimp_LDADD =		\
 	$(GIMP_LIBS)		\
 	$(EXIF_LIBS)		\
+	$(GTK_LIBS)		\
 	$(GP_LIBS)		\
 	libgtkam.a
 endif

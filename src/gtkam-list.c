@@ -190,7 +190,7 @@ gtkam_list_get_type (void)
 	return (type);
 }
 
-static GtkamCamera *
+GtkamCamera *
 gtkam_list_get_camera_from_iter (GtkamList *list, GtkTreeIter *iter)
 {
 	GValue value = {0};
@@ -207,7 +207,7 @@ gtkam_list_get_camera_from_iter (GtkamList *list, GtkTreeIter *iter)
 	return (camera);
 }
 
-static gchar *
+gchar *
 gtkam_list_get_folder_from_iter (GtkamList *list, GtkTreeIter *iter)
 {
 	GValue value = {0};
@@ -223,7 +223,7 @@ gtkam_list_get_folder_from_iter (GtkamList *list, GtkTreeIter *iter)
 	return (folder);
 }
 
-static gchar *
+gchar *
 gtkam_list_get_name_from_iter (GtkamList *list, GtkTreeIter *iter)
 {
 	GValue value = {0};

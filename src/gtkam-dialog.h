@@ -47,4 +47,6 @@ struct _GtkamDialogClass
 
 GType gtkam_dialog_get_type (void);
 
+void gtkam_dialog_add_status (GtkamDialog *, GtkWidget *status);
+
 #endif /* __GTKAM_DIALOG_H__ */

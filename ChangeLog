@@ -1,5 +1,10 @@
 2002-07-10  Lutz Müller <lutz@users.sourceforge.net>
 
+	* configure.in: Fix check for gimp.
+	* src/gtkam-gimp.c: Port to gimp-1.3. Compiles, but does not work yet.
+
+2002-07-10  Lutz Müller <lutz@users.sourceforge.net>
+
 	Patch by Arnaud Launay <asl@launay.org>:
 
 	* autogen.sh: Check for pkg-config.

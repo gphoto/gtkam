@@ -22,24 +22,34 @@
 #include <gtk/gtkmain.h>
 #include <gtk/gtksignal.h>
 #include <gtk/gtkbutton.h>
+#include <gtk/gtktreeselection.h>
 
 #include "gtkam-fsel.h"
-#include "gtkam-clist.h"
+#include "gtkam-list.h"
+
+static void
+selection_foreach_func (GtkTreeModel *model, GtkTreePath *path,
+			GtkTreeIter *iter, gpointer data)
+{
+	gchar *name;
+	GtkamList *list = GTKAM_LIST (data);
+
+	name = gtkam_list_get_name_from_iter (list, iter);
+	g_message (" '%s'", name);
+	g_free (name);
+}
 
 static void
 on_fsel_ok_clicked (GtkButton *button, GtkamFSel *fsel)
 {
-	GList *list;
-	guint i;
-	GtkamCListEntry *entry;
+	GtkTreeSelection *s;
 
 	g_message ("Ok clicked!");
 
-	list = GTKAM_CLIST (GTKAM_FSEL (fsel)->clist)->selection;
-	for (i = 0; i < g_list_length (list); i++) {
-		entry = g_list_nth_data (list, i);
-		g_message (" - '%s' in '%s'", entry->name, entry->folder);
-	}
+	s = gtk_tree_view_get_selection (
+				GTK_TREE_VIEW (GTKAM_FSEL (fsel)->list));
+	gtk_tree_selection_selected_foreach (s, selection_foreach_func,
+					     fsel->list);
 	gtk_object_destroy (GTK_OBJECT (fsel));
 }
 

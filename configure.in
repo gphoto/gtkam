@@ -50,7 +50,7 @@ AC_SUBST(GP_LIBS)
 dnl ---------------------------------------------------------------------------
 dnl GIMP plugin
 dnl ---------------------------------------------------------------------------
-try_gimp=false
+try_gimp=true
 gimp_msg=no
 have_gimp=false
 AC_ARG_WITH(gimp, [  --without-gimp          Don't compile GIMP plugin],
@@ -58,10 +58,16 @@ AC_ARG_WITH(gimp, [  --without-gimp          Don't compile GIMP plugin],
 		try_gimp=false
 	fi)
 if $try_gimp; then
-	AM_PATH_GIMP(1.1.24,
+	AC_PATH_PROG(GIMPTOOL, gimptool-1.3, no)
+	if test "$GIMPTOOL" = "no"; then
+		gimp_msg="no (gimptool-1.3 not found)"
+	else
+		GIMP_CFLAGS=`$GIMPTOOL --cflags`
+		GIMP_LIBS=`$GIMPTOOL --libs`
+		GIMP_PLUGIN_DIR=`$GIMPTOOL --gimpplugindir`
+		gimp_msg="yes"
 		have_gimp=true
-		gimp_msg=yes
-		AC_DEFINE(HAVE_GIMP,,[Whether to compile the gimp plugin]))
+	fi
 fi
 AM_CONDITIONAL(HAVE_GIMP, $have_gimp)
 AC_SUBST(GIMP_CFLAGS)

@@ -209,7 +209,7 @@ start_func (GPContext *c, float target, const char *format,
 
 	hbox = gtk_hbox_new (FALSE, 5);
 	gtk_widget_show (hbox);
-	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (cancel)->vbox), hbox,
+	gtk_box_pack_start (GTK_BOX (GTKAM_DIALOG (cancel)->vbox), hbox,
 			    TRUE, TRUE, 0);
 
 	msg = g_strdup_vprintf (format, args);
@@ -258,6 +258,9 @@ update_func (GPContext *c, unsigned int id, float current, void *data)
 		g_array_index (cancel->priv->last, float, id)++;
 		gtk_progress_bar_pulse (progress);
 	}
+
+	while (gtk_events_pending ())
+		gtk_main_iteration ();
 }
 
 static void

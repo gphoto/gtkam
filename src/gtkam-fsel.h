@@ -22,7 +22,7 @@
 #define __GTKAM_FSEL_H__
 
 #include <gphoto2/gphoto2-camera.h>
-#include <gtk/gtkdialog.h>
+#include <gtkam-dialog.h>
 
 #define GTKAM_TYPE_FSEL  (gtkam_fsel_get_type ())
 #define GTKAM_FSEL(o)    (GTK_CHECK_CAST((o),GTKAM_TYPE_FSEL,GtkamFSel))
@@ -34,19 +34,17 @@ typedef struct _GtkamFSelClass   GtkamFSelClass;
 
 struct _GtkamFSel
 {
-	GtkDialog parent;
+	GtkamDialog parent;
 
 	GtkWidget *ok_button;
-
-	/* GtkamCList */
-	GtkWidget *clist;
+	GtkWidget *list; /* GtkamList */
 
 	GtkamFSelPrivate *priv;
 };
 
 struct _GtkamFSelClass
 {
-	GtkDialogClass parent_class;
+	GtkamDialogClass parent_class;
 };
 
 GtkType    gtkam_fsel_get_type (void);

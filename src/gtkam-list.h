@@ -71,14 +71,15 @@ struct _GtkamListClass
 GtkType    gtkam_list_get_type (void);
 GtkWidget *gtkam_list_new      (void);
 
-void       gtkam_list_add_folder     (GtkamList *list, GtkamCamera *camera,
-				      const gchar *folder);
-void       gtkam_list_remove_folder  (GtkamList *list, GtkamCamera *camera,
-				      const gchar *folder);
-gboolean   gtkam_list_has_folder     (GtkamList *list, GtkamCamera *camera,
-				      const gchar *folder);
-void       gtkam_list_add_file       (GtkamList *list, GtkamCamera *camera,
-				      const gchar *folder, const gchar *name);
+void      gtkam_list_add_folder    (GtkamList *, GtkamCamera *, const gchar *);
+void      gtkam_list_remove_folder (GtkamList *, GtkamCamera *, const gchar *);
+gboolean  gtkam_list_has_folder    (GtkamList *, GtkamCamera *, const gchar *);
+void      gtkam_list_add_file      (GtkamList *, GtkamCamera *,
+				    const gchar *folder, const gchar *name);
+
+GtkamCamera *gtkam_list_get_camera_from_iter (GtkamList *, GtkTreeIter *);
+gchar       *gtkam_list_get_folder_from_iter (GtkamList *, GtkTreeIter *);
+gchar       *gtkam_list_get_name_from_iter   (GtkamList *, GtkTreeIter *);
 
 void       gtkam_list_show_thumbnails (GtkamList *list);
 void       gtkam_list_hide_thumbnails (GtkamList *list);

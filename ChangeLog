@@ -1,3 +1,10 @@
+2002-11-05  Patrick Mansfield <patmans@users.sourceforge.net>
+
+	* gtkam-save.c: don't try to exec a callout viewer if the program
+	  name is empty. If you specify a viewer, their is still the odd
+	  behaviour of the parent exec-ing the viewer and finishing, make
+	  it look like gtkam completed.
+
 2002-02-02  Patrick Mansfield <patmans@users.sourceforge.net>
 
 	* gtkam-info.c: use variable info->priv->name vs info->priv->info

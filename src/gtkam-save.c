@@ -334,7 +334,18 @@ save_file (GtkamSave *save, CameraFile *file, guint n)
 		gtk_widget_show (dialog);
 	} else {
 		progname = gtk_entry_get_text (save->priv->program);
-		if (progname && fork ()) {
+		if (progname && progname[0] != '\0' && fork ()) {
+			/*
+			 * The parent process execs. This means the child
+			 * becomes the gtkam, and the parent exits after
+			 * the viewer runs. 
+			 *
+			 * If you specify a viewer, the originating gtkam
+			 * appears to complete. This should really leave
+			 * the parent, and have the child exec, but then
+			 * we need a child reaper based on signal
+			 * handling.
+			 */
 			execlp (progname, progname, full_path, NULL);
 			_exit (0);
 		} 

@@ -14,6 +14,7 @@ libexif_gtkinclude_HEADERS =		\
 	gtk-exif-content-list.h		\
 	gtk-exif-entry.h		\
 	gtk-exif-entry-ascii.h		\
+	gtk-exif-entry-copyright.h	\
 	gtk-exif-entry-date.h		\
 	gtk-exif-entry-exposure.h	\
 	gtk-exif-entry-generic.h	\
@@ -33,6 +34,7 @@ libexif_gtk_la_SOURCES =			\
 	gtk-exif-content-list.c			\
 	gtk-exif-entry.c			\
 	gtk-exif-entry-ascii.c			\
+	gtk-exif-entry-copyright.c		\
 	gtk-exif-entry-date.c			\
 	gtk-exif-entry-generic.c		\
 	gtk-exif-entry-exposure.c		\

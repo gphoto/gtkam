@@ -203,6 +203,19 @@ exif_entry_get_value (ExifEntry *entry)
 		else
 			strncpy (v, "Unknown FlashPix Version", sizeof (v));
 		break;
+	case EXIF_TAG_COPYRIGHT:
+		if (strlen (entry->data))
+			strncpy (v, entry->data, sizeof (v));
+		else
+			strncpy (v, "[None]", sizeof (v));
+		strncat (v, " (Photographer) - ", sizeof (v));
+		if (strlen (entry->data + strlen (entry->data) + 1))
+			strncat (v, entry->data + strlen (entry->data) + 1,
+				 sizeof (v));
+		else
+			strncat (v, "[None]", sizeof (v));
+		strncat (v, " (Editor)", sizeof (v));
+		break;
 	default:
 		switch (entry->format) {
 		case EXIF_FORMAT_UNDEFINED:

@@ -34,6 +34,7 @@
 #include "gtk-exif-tree.h"
 #include "gtk-exif-content-list.h"
 #include "gtk-exif-entry-ascii.h"
+#include "gtk-exif-entry-copyright.h"
 #include "gtk-exif-entry-date.h"
 #include "gtk-exif-entry-exposure.h"
 #include "gtk-exif-entry-flash.h"
@@ -214,6 +215,9 @@ gtk_exif_browser_show_entry (GtkExifBrowser *browser, ExifEntry *entry)
 	case EXIF_TAG_EXIF_VERSION:
 	case EXIF_TAG_FLASH_PIX_VERSION:
 		w = gtk_exif_entry_version_new (entry);
+		break;
+	case EXIF_TAG_COPYRIGHT:
+		w = gtk_exif_entry_copyright_new (entry);
 		break;
 	case EXIF_TAG_FLASH:
 		w = gtk_exif_entry_flash_new (entry);

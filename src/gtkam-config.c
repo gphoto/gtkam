@@ -41,6 +41,7 @@
 #endif
 
 #include <stdio.h>
+#include <string.h>
 
 #include <gtk/gtktooltips.h>
 #include <gtk/gtkframe.h>

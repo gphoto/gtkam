@@ -40,6 +40,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include <gphoto2/gphoto2-camera.h>
 #include <gphoto2/gphoto2-core.h>

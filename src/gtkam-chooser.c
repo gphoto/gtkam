@@ -42,6 +42,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include <gtk/gtkvbox.h>
 #include <gtk/gtklabel.h>

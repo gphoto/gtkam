@@ -30,7 +30,7 @@ fi
 dnl ---------------------------------------------------------------------------
 dnl Libraries we need for gtkam
 dnl ---------------------------------------------------------------------------
-PKG_CHECK_MODULES(GTKAM, gtk+-2.0 libgphoto2 >= 2.1.1)
+PKG_CHECK_MODULES(GTKAM, gtk+-2.0 libgphoto2 >= 2.1.4)
 AC_SUBST(GTKAM_CFLAGS)
 AC_SUBST(GTKAM_LIBS)
 

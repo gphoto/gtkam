@@ -8,6 +8,7 @@ src/gtkam-debug.c
 src/gtkam-error.c
 src/gtkam-list.c
 src/gtkam-main.c
+src/gtkam-mkdir.c
 src/gtkam-preview.c
 src/gtkam-save.c
 src/gtkam-tree.c

@@ -330,3 +330,46 @@ gtkam_tree_get_path (GtkamTree *tree)
 
 	return (gtk_object_get_data (GTK_OBJECT (selection->data), "path"));
 }
+
+static void
+delete_item (GtkTree *tree, const gchar *path)
+{
+	guint i;
+	GtkTreeItem *item;
+	const gchar *item_path;
+
+	if (!tree)
+		return;
+
+	for (i = 0; i < g_list_length (tree->children); i++) {
+		item = g_list_nth_data (tree->children, i);
+		item_path = gtk_object_get_data (GTK_OBJECT (item), "path");
+		if (!strcmp (item_path, path)) {
+
+			/* This is the item to remove */
+			gtk_container_remove (GTK_CONTAINER (tree),
+					      GTK_WIDGET (item));
+			return;
+		} else if (!strncmp (item_path, path, strlen (item_path))) {
+
+			/* The item we are looking for is in this branch */
+			delete_item (GTK_TREE (item->subtree), path);
+			return;
+		}
+	}
+}
+
+void
+gtkam_tree_remove_dir (GtkamTree *tree, const gchar *path)
+{
+	g_return_if_fail (GTKAM_IS_TREE (tree));
+
+	delete_item (GTK_TREE (tree), path);
+}
+
+void
+gtkam_tree_refresh (GtkamTree *tree, const gchar *path)
+{
+	g_return_if_fail (GTKAM_IS_TREE (tree));
+	g_return_if_fail (path != NULL);
+}

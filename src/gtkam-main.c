@@ -70,6 +70,7 @@
 #include "gtkam-error.h"
 #include "gtkam-close.h"
 #include "gtkam-debug.h"
+#include "gtkam-mkdir.h"
 
 #include "support.h"
 
@@ -451,9 +452,22 @@ on_about_activate (GtkMenuItem *item, GtkamMain *m)
 }
 
 static void
+on_dir_created (GtkamMkdir *mkdir, const gchar *path, GtkamMain *m)
+{
+	gtkam_tree_refresh (m->priv->tree, path);
+}
+
+static void
 on_make_dir_activate (GtkMenuItem *item, GtkamMain *m)
 {
-	g_warning ("Not (yet) implemented!");
+	GtkWidget *mkdir;
+	const gchar *path;
+
+	path = gtkam_tree_get_path (m->priv->tree);
+	mkdir = gtkam_mkdir_new (m->priv->camera, path, GTK_WIDGET (m));
+	gtk_widget_show (mkdir);
+	gtk_signal_connect (GTK_OBJECT (mkdir), "dir_created",
+			    GTK_SIGNAL_FUNC (on_dir_created), m);
 }
 
 static void
@@ -475,7 +489,8 @@ on_remove_dir_activate (GtkMenuItem *item, GtkamMain *m)
 					  GTK_WIDGET (m));
 		g_free (msg);
 		gtk_widget_show (dialog);
-	}
+	} else
+		gtkam_tree_remove_dir (m->priv->tree, path);
 	g_free (dirname);
 }
 
@@ -529,7 +544,8 @@ on_upload_activate (GtkMenuItem *item, GtkamMain *m)
 					m->priv->camera, GTK_WIDGET (m));
 				g_free (msg);
 				gtk_widget_show (dialog);
-			}
+			} else
+				gtkam_list_refresh (m->priv->list);
 		}
 		gp_file_free (file);
 	}

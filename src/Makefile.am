@@ -15,6 +15,7 @@ gtkam_SOURCES = \
 	gtkam-list.c gtkam-list.h \
 	gtkam-main.c gtkam-main.h \
 	gtkam-preview.c gtkam-preview.h \
+	gtkam-mkdir.c gtkam-mkdir.h \
 	gtkam-save.c gtkam-save.h \
 	gtkam-tree.c gtkam-tree.h \
 	main.c \

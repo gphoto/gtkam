@@ -89,7 +89,7 @@ case $gettext_version in
 	;;
 	
 *)
-	gettext_opt="$gettext_opt --intl";;
+	gettext_opt="$gettext_opt --no-changelog --intl";;
 esac
 
 # do not change the sequence without understanding the implications

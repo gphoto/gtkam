@@ -311,9 +311,15 @@ gtkam_fsel_new (Camera *camera, GtkWidget *opt_window)
 			    GTK_SIGNAL_FUNC (on_folder_unselected), fsel);
 
 	/* CList */
+	scrolled = gtk_scrolled_window_new (NULL, NULL);
+	gtk_widget_show (scrolled);
+	gtk_box_pack_start (GTK_BOX (hbox), scrolled, TRUE, TRUE, 0);
+	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled),
+				GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 	clist = gtkam_clist_new ();
 	gtk_widget_show (clist);
-	gtk_box_pack_start (GTK_BOX (hbox), clist, TRUE, TRUE, 0);
+	gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (scrolled),
+					       clist);
 	gtkam_clist_set_camera (GTKAM_CLIST (clist), camera);
 	fsel->priv->clist = GTKAM_CLIST (clist);
 	gtk_signal_connect (GTK_OBJECT (clist), "file_selected",

@@ -39,11 +39,16 @@
 #  define N_(String) (String)
 #endif
 
+#include <gtk/gtkmain.h>
+#include <gdk-pixbuf/gdk-pixbuf-loader.h>
+
 #include "gtkam-error.h"
 
 struct _GtkamCListPrivate
 {
 	Camera *camera;
+
+	GPtrArray *idle;
 
 	gboolean thumbnails;
 };
@@ -59,10 +64,19 @@ enum {
 
 static guint signals[LAST_SIGNAL] = {0};
 
+typedef struct {
+	gint32 id;
+	guint row;
+	gchar *file;
+	GtkamCList *clist;
+} IdleData;
+
 static void
 gtkam_clist_destroy (GtkObject *object)
 {
 	GtkamCList *list = GTKAM_CLIST (object);
+	guint i;
+	IdleData *id;
 
 	if (list->priv->camera) {
 		gp_camera_unref (list->priv->camera);
@@ -79,6 +93,13 @@ gtkam_clist_destroy (GtkObject *object)
 		list->selection = NULL;
 	}
 
+	for (i = 0; i < list->priv->idle->len; i++) {
+		id = list->priv->idle->pdata[i];
+		g_free (id->file);
+		gtk_idle_remove (id->id);
+	}
+	g_ptr_array_set_size (list->priv->idle, 0);
+
 	GTK_OBJECT_CLASS (parent_class)->destroy (object);
 }
 
@@ -86,6 +107,8 @@ static void
 gtkam_clist_finalize (GtkObject *object)
 {
 	GtkamCList *list = GTKAM_CLIST (object);
+
+	g_ptr_array_free (list->priv->idle, TRUE);
 
 	g_free (list->priv);
 
@@ -118,6 +141,7 @@ static void
 gtkam_clist_init (GtkamCList *list)
 {
 	list->priv = g_new0 (GtkamCListPrivate, 1);
+	list->priv->idle = g_ptr_array_new ();
 }
 
 GtkType
@@ -193,6 +217,7 @@ gtkam_clist_new (void)
 	list = gtk_type_new (GTKAM_TYPE_CLIST);
 	gtk_clist_construct (GTK_CLIST (list), 2, titles);
 	gtk_clist_set_column_visibility (GTK_CLIST (list), 0, FALSE);
+	gtk_clist_set_column_auto_resize (GTK_CLIST (list), 0, TRUE);
 	gtk_signal_connect (GTK_OBJECT (list), "select_row",
 			    GTK_SIGNAL_FUNC (on_select_row), list);
 	gtk_signal_connect (GTK_OBJECT (list), "unselect_row",
@@ -218,12 +243,67 @@ gtkam_clist_refresh (GtkamCList *list)
 	}
 }
 
+static gboolean
+idle_func (gpointer idle_data)
+{
+	IdleData *id = idle_data;
+	CameraFile *file;
+	int result;
+	GdkPixmap *pixmap;
+	GdkBitmap *bitmap;
+	GtkWidget *dialog;
+	gchar *msg;
+	const char *data;
+	long int size;
+	GdkPixbufLoader *loader;
+	GdkPixbuf *pixbuf;
+	guint w, h;
+
+	gp_file_new (&file);
+	result = gp_camera_file_get (id->clist->priv->camera, id->clist->path,
+				     id->file, GP_FILE_TYPE_PREVIEW, file);
+	if (result < 0) {
+		msg = g_strdup_printf (_("Could not get file '%s'"),
+			id->file);
+		dialog = gtkam_error_new (msg, result, id->clist->priv->camera,
+					  GTK_WIDGET (id->clist));
+		g_free (msg);
+		gtk_widget_show (dialog);
+	} else {
+		gp_file_get_data_and_size (file, &data, &size);
+		loader = gdk_pixbuf_loader_new ();
+		gdk_pixbuf_loader_write (loader, data, size);
+		gdk_pixbuf_loader_close (loader);
+		pixbuf = gdk_pixbuf_loader_get_pixbuf (loader);
+		w = gdk_pixbuf_get_width (pixbuf);
+		h = gdk_pixbuf_get_height (pixbuf);
+		gdk_pixbuf_render_pixmap_and_mask (pixbuf,
+						   &pixmap, &bitmap, 127);
+		gtk_object_unref (GTK_OBJECT (loader));
+		gtk_clist_set_pixmap (GTK_CLIST (id->clist), id->row, 0,
+				      pixmap, bitmap);
+		gtk_clist_set_row_height (GTK_CLIST (id->clist),
+				MAX (h, GTK_CLIST (id->clist)->row_height));
+		if (pixmap)
+			gdk_pixmap_unref (pixmap);
+		if (bitmap)
+			gdk_bitmap_unref (bitmap);
+	}
+	gp_file_unref (file);
+
+	g_ptr_array_remove (id->clist->priv->idle, id);
+	g_free (id->file);
+	g_free (id);
+
+	return (FALSE);
+}
+
 void
 gtkam_clist_set_path (GtkamCList *list, const gchar *path)
 {
 	int result;
 	CameraList flist;
-	CameraFile *file;
+	CameraAbilities a;
 	gchar *msg, *full_path;
 	GtkWidget *dialog, *window;
 	gchar *text[2];
@@ -262,12 +342,26 @@ gtkam_clist_set_path (GtkamCList *list, const gchar *path)
 		return;
 	}
 
-	gp_file_new (&file);
+	gp_camera_get_abilities (list->priv->camera, &a);
+	if (a.file_operations & GP_FILE_OPERATION_PREVIEW)
+		gtk_clist_set_column_visibility (GTK_CLIST (list), 0, TRUE);
+	else
+		gtk_clist_set_column_visibility (GTK_CLIST (list), 0, FALSE);
 	for (i = 0; i < gp_list_count (&flist); i++) {
 		gp_list_get_name (&flist, i, &name);
 		text[0] = NULL;
 		text[1] = (gchar*) name;
 		row = gtk_clist_append (GTK_CLIST (list), text);
+
+		if (a.file_operations & GP_FILE_OPERATION_PREVIEW) {
+			IdleData *id;
+
+			id = g_new0 (IdleData, 1);
+			id->row = row;
+			id->file = g_strdup (name);
+			id->clist = list;
+			id->id = gtk_idle_add (idle_func, id);
+		}
 
 		if (strlen (list->path) > 1)
 			full_path = g_strdup_printf ("/%s", text[1]);
@@ -276,5 +370,4 @@ gtkam_clist_set_path (GtkamCList *list, const gchar *path)
 		gtk_clist_set_row_data_full (GTK_CLIST (list), row, full_path,
 					     (GtkDestroyNotify) g_free);
 	}
-	gp_file_unref (file);
 }

@@ -492,7 +492,6 @@ action_about (gpointer callback_data, guint callback_action,
 	gchar *buf;
 #endif
 
-	gchar *translated_comments = _(comments);
 	gchar *gcomments = NULL;
 	int n;
 
@@ -511,8 +510,8 @@ action_about (gpointer callback_data, guint callback_action,
 
 		features = g_strjoinv("\n - ", &v[1]);
 		if (gcomments == NULL) {
-			gcomments = g_strdup_printf("%s %s has been compiled with the following options:\n - %s\n", 
-						    name, v[0], features);
+			gcomments = g_strdup_printf("%s\n\n%s %s has been compiled with the following options:\n - %s\n", 
+						    _(comments), name, v[0], features);
 		} else {
 			gchar *old = gcomments;
 			gcomments = g_strdup_printf("%s\n%s %s has been compiled with the following options:\n - %s\n", 

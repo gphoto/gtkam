@@ -1,6 +1,6 @@
-2002-07-17  gettextize  <bug-gnu-utils@gnu.org>
+2002-08-31  Lutz Müller <lutz@users.sourceforge.net>
 
-	* Makefile.in.in: Upgrade to gettext-0.10.40.
+	* hu.po: Fixed the headers.
 
 2002-03-21  Marcus Meissner  <marcus@jet.franken.de>
 	

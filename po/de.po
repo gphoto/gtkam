@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gtKam\n"
-"POT-Creation-Date: 2002-07-23 11:19+0200\n"
+"POT-Creation-Date: 2002-08-31 09:34+0200\n"
 "PO-Revision-Date: 2002-03-21 16:33GMT\n"
 "Last-Translator: Marcus Meissner <marcus@jet.franken.de>\n"
 "Language-Team: Deutsch <de@li.org>\n"
@@ -16,84 +16,82 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 0.9.5\n"
 
-#. Port?
-#: src/gtkam-chooser.c:250 src/gtkam-chooser.c:272
+#: src/main.c:126
+msgid "Image Download Program"
+msgstr ""
+
+#: src/gtkam-chooser.c:249 src/gtkam-chooser.c:271
 msgid "None"
 msgstr "Kein"
 
-#. Speed?
-#: src/gtkam-chooser.c:280 src/gtkam-chooser.c:413 src/gtkam-chooser.c:667
+#: src/gtkam-chooser.c:279 src/gtkam-chooser.c:412 src/gtkam-chooser.c:666
 msgid "Best"
 msgstr "Beste"
 
-#.
-#. * Initialize the camera to check if it is really there. Exit
-#. * afterwards because other applications could need the camera, too.
-#.
-#: src/gtkam-chooser.c:287
+#: src/gtkam-chooser.c:286
 msgid "Initializing camera..."
 msgstr "Initialisiere Kamera..."
 
-#: src/gtkam-chooser.c:301
+#: src/gtkam-chooser.c:300
 msgid "Could not initialize camera."
 msgstr "Konnte Kamera nicht initialisieren."
 
-#: src/gtkam-chooser.c:404
+#: src/gtkam-chooser.c:403
 #, c-format
 msgid "Could not get abilities of model '%s'."
 msgstr "Konnte die Fähigkeiten des Modells »%s« nicht abfragen."
 
-#: src/gtkam-chooser.c:452
+#: src/gtkam-chooser.c:451
 msgid "Detecting cameras..."
 msgstr "Erkenne Kameras..."
 
-#: src/gtkam-chooser.c:460
+#: src/gtkam-chooser.c:459
 msgid "No cameras detected."
 msgstr "Keine Kameras gefunden"
 
-#: src/gtkam-chooser.c:477
+#: src/gtkam-chooser.c:476
 msgid "Could not detect any cameras."
 msgstr "Konnte keine Kameras finden."
 
-#: src/gtkam-chooser.c:602
+#: src/gtkam-chooser.c:601
 msgid "Select Camera"
 msgstr "Wähle Kamera aus"
 
-#: src/gtkam-chooser.c:617
+#: src/gtkam-chooser.c:616
 msgid "Model:"
 msgstr "Modell:"
 
-#: src/gtkam-chooser.c:630
+#: src/gtkam-chooser.c:629
 msgid "Detect"
 msgstr "Erkennung"
 
-#: src/gtkam-chooser.c:636
+#: src/gtkam-chooser.c:635
 #, fuzzy
 msgid "Detect USB camera"
 msgstr "Erkenne Kameras..."
 
-#: src/gtkam-chooser.c:638
+#: src/gtkam-chooser.c:637
 msgid "Port:"
 msgstr "Anschluss:"
 
-#: src/gtkam-chooser.c:659
+#: src/gtkam-chooser.c:658
 msgid "Speed:"
 msgstr "Geschwindigkeit:"
 
 # !!! kein besonders reines Deutsch... !!!
-#: src/gtkam-chooser.c:673
+#: src/gtkam-chooser.c:672
 msgid "Allow multiple frontends"
 msgstr "Erlaube mehrere Frontends"
 
-#: src/gtkam-chooser.c:680
+#: src/gtkam-chooser.c:679
 msgid "Enhanced"
 msgstr "Erweitert"
 
-#: src/gtkam-chooser.c:744
+#: src/gtkam-chooser.c:743
 msgid "Could not get number of supported camera models"
 msgstr "Konnte die Anzahl der unterstützten Kameras nicht abfragen"
 
-#: src/gtkam-chooser.c:774
+#: src/gtkam-chooser.c:773
 msgid "Could not get number of ports."
 msgstr "Konnte die Anzahl der Anschlüsse nicht abfragen."
 
@@ -121,7 +119,6 @@ msgstr "Konnte den Befehl nicht ausführen."
 msgid "No additional information available. (2)"
 msgstr "Keine zusätzlichen Informationen verfügbar. (2)"
 
-#. Make it easy for users to select the system's time
 #: src/gtkam-config.c:563
 msgid "Set to system's time"
 msgstr ""
@@ -150,32 +147,32 @@ msgstr "Frage Konfiguration ab..."
 msgid "Could not get configuration."
 msgstr "Konnte die Konfiguration nicht abfragen."
 
-#: src/gtkam-debug.c:221
+#: src/gtkam-debug.c:258
 msgid "Save As..."
 msgstr "Speichere Unter..."
 
-#: src/gtkam-debug.c:243
+#: src/gtkam-debug.c:280
 #, c-format
 msgid "Could not open '%s'!"
 msgstr "Konnte »%s« nicht öffnen!"
 
-#: src/gtkam-debug.c:279
+#: src/gtkam-debug.c:325
 msgid "Type of messages to log:"
 msgstr "Art der zu loggenden Meldungen:"
 
-#: src/gtkam-debug.c:283
+#: src/gtkam-debug.c:329
 msgid "Error"
 msgstr "Fehler"
 
-#: src/gtkam-debug.c:290
+#: src/gtkam-debug.c:336
 msgid "Verbose"
 msgstr "Gesprächig"
 
-#: src/gtkam-debug.c:297
+#: src/gtkam-debug.c:343
 msgid "Debug"
 msgstr "Debug"
 
-#: src/gtkam-debug.c:304
+#: src/gtkam-debug.c:350
 msgid "Data"
 msgstr "Daten"
 
@@ -258,7 +255,7 @@ msgstr "Lädt Dateien von digitalen Kameras"
 msgid "<Toolbox>/File/Acquire/Load from Camera..."
 msgstr "<Toolbox>/Datei/Acquire/Lade von Kamera..."
 
-#: src/gtkam-gimp.c:209
+#: src/gtkam-gimp.c:209 src/gtkam-list.c:506
 #, c-format
 msgid "Downloading '%s' from '%s'..."
 msgstr "Lade »%s« aus »%s« herunter..."
@@ -283,7 +280,6 @@ msgid "Could not set file information for '%s' in folder '%s'"
 msgstr ""
 "Konnte keine Informationen über Datei »%s« im Verzeichnis »%s« bekommen."
 
-#. Get file info
 #: src/gtkam-info.c:356
 #, c-format
 msgid "Getting information about file '%s' in folder '%s'..."
@@ -332,7 +328,7 @@ msgstr "Lesen"
 msgid "Delete"
 msgstr "Löschen"
 
-#: src/gtkam-info.c:527 src/gtkam-list.c:728
+#: src/gtkam-info.c:527 src/gtkam-list.c:947
 msgid "Preview"
 msgstr "Vorschau"
 
@@ -344,81 +340,65 @@ msgstr "Audio"
 msgid "Mime type: "
 msgstr "MIME-Typ: "
 
-#: src/gtkam-list.c:291
+#: src/gtkam-list.c:334
 #, fuzzy, c-format
 msgid "Downloading thumbnail of '%s' from folder '%s'..."
 msgstr "Hole Vorschaubild der Datei »%s« im Verzeichnis »%s«..."
 
-#: src/gtkam-list.c:650
+#: src/gtkam-list.c:872
 #, fuzzy, c-format
 msgid "Changing name of '%s' to '%s'..."
 msgstr "Lege Verzeichnis »%s« im Verzeichnis »%s« an..."
 
-#: src/gtkam-list.c:660
+#: src/gtkam-list.c:882
 #, fuzzy, c-format
 msgid "Could not change the name of '%s' to '%s'."
 msgstr "Konnte Datei »%s« nicht aus Verzeichnis »%s« löschen."
 
-#: src/gtkam-list.c:758
+#: src/gtkam-list.c:953
+#, fuzzy
+msgid "Name"
+msgstr "Name:"
+
+#: src/gtkam-list.c:975
 #, c-format
 msgid "Listing files in folder '%s'..."
 msgstr "Hole Dateiliste des Verzeichnisses »%s«..."
 
-#: src/gtkam-list.c:774
+#: src/gtkam-list.c:991
 #, c-format
 msgid "Could not get file list for folder '%s'"
 msgstr "Fehler beim Herunterladen der Dateiliste des Verzeichnisses »%s«"
 
-#: src/gtkam-main.c:385
-#, c-format
+#: src/gtkam-main.c:465
 msgid ""
-"%s %s\n"
-"\n"
-"gtKam was written by:\n"
-" - Scott Fritzinger <scottf@unr.edu>,\n"
-" - Lutz Mueller <urc8@rz.uni-karlsruhe.de>,\n"
-" - and many others.\n"
-"\n"
-"gtKam uses libgphoto2, a library to access a\n"
-"multitude of digital cameras. More \n"
-"information is available at\n"
+"gtkam is a program that lets you download\n"
+"images from many digital cameras. It uses\n"
+"libgphoto2. More info is available at\n"
 "http://www.gphoto.net.\n"
 "\n"
 "Enjoy the wonderful world of gphoto!"
 msgstr ""
-"%s %s\n"
-"\n"
-"gtKam wurde geschrieben von:\n"
-" - Scott Fritzinger <scottf@unr.edu>,\n"
-" - Lutz Müller <urc8@rz.uni-karlsruhe.de>\n"
-"und vielen anderen.\n"
-"\n"
-"gtKam verwendet libgphoto2, eine Bibliothek,\n"
-"um viele digitale Kameras anzusprechen. Mehr\n"
-"Informationen sind unter\n"
-"http://www.gphoto.net erhältlich.\n"
-"\n"
-"Viel Spaß mit gphoto!"
 
-#: src/gtkam-main.c:505
+#: src/gtkam-main.c:476
+msgid "Many others"
+msgstr ""
+
+#: src/gtkam-main.c:651
+msgid "View Thumbnails"
+msgstr "Zeige Vorschaubilder"
+
+#: src/gtkam-main.c:672
 msgid "_Help"
 msgstr "_Hilfe"
 
-#: src/gtkam-main.c:517
+#: src/gtkam-main.c:684
 msgid "_Debug..."
 msgstr "_Debug..."
 
-#: src/gtkam-main.c:526
+#: src/gtkam-main.c:693
 msgid "_About..."
 msgstr "_Über..."
-
-#: src/gtkam-main.c:558
-msgid "Index Settings"
-msgstr "Indexeinstellungen"
-
-#: src/gtkam-main.c:562
-msgid "View Thumbnails"
-msgstr "Zeige Vorschaubilder"
 
 #: src/gtkam-mkdir.c:170
 #, c-format
@@ -450,8 +430,7 @@ msgstr "Konnte Verzeichnisliste des Verzeichnisses »%s« nicht herunterladen."
 msgid "Please specify the (extended) path to the port you would like to use:"
 msgstr ""
 
-#. The camera doesn't support previews. Capture an image.
-#: src/gtkam-preview.c:205 src/gtkam-tree.c:793
+#: src/gtkam-preview.c:205 src/gtkam-tree.c:791
 msgid "Capturing image..."
 msgstr "Mache Aufnahme..."
 
@@ -533,8 +512,6 @@ msgstr "Speichere Photos"
 msgid "Photos will be saved if this is checked"
 msgstr "Photos werden gespeichert, wenn dies angekreuzt ist."
 
-#. 	gp_camera_get_abilities (camera, &a);
-#. 	if (a.file_operations & GP_FILE_OPERATION_RAW) {
 #: src/gtkam-save.c:510
 msgid "Save raw data"
 msgstr "Speichere Originaldaten"
@@ -543,8 +520,6 @@ msgstr "Speichere Originaldaten"
 msgid "Raw data will be saved if this is checked"
 msgstr "Originaldaten werden gespeichert, wenn dies angekreuzt ist"
 
-#. 	}
-#. 	if (a.file_operations & GP_FILE_OPERATION_AUDIO) {
 #: src/gtkam-save.c:519
 msgid "Save audio data"
 msgstr "Speichere Audiodaten"
@@ -553,8 +528,6 @@ msgstr "Speichere Audiodaten"
 msgid "Audio data will be saved if this is checked"
 msgstr "Audiodaten werden gespeichert, wenn dies angekreuzt ist"
 
-#. 	}
-#. 	if (a.file_operations & GP_FILE_OPERATION_PREVIEW) {
 #: src/gtkam-save.c:528
 msgid "Save thumbnails"
 msgstr "Speichere Vorschaubilder"
@@ -563,8 +536,6 @@ msgstr "Speichere Vorschaubilder"
 msgid "Thumbnails will be saved if this is checked"
 msgstr "Vorschaubilder werden gespeichert, wenn dies angekreuzt ist"
 
-#. 	}
-#. 	if (a.file_operations & GP_FILE_OPERATION_EXIF) {
 #: src/gtkam-save.c:537
 msgid "Save EXIF data"
 msgstr "Speichere EXIF-Daten"
@@ -583,7 +554,6 @@ msgstr ""
 "Name des Programmes, welches gestartet werden soll (leer: kein Programm "
 "starten)"
 
-#. Filenames provided by camera
 #: src/gtkam-save.c:563
 #, fuzzy
 msgid "Use filename(s) provided by the camera"
@@ -601,92 +571,90 @@ msgstr "Dateinamen-Präfix"
 msgid "Start numbering with: "
 msgstr ""
 
-#. First case: We have only one file.
 #: src/gtkam-save.c:631
 #, c-format
 msgid "Save '%s'..."
 msgstr "Speichere »%s«..."
 
-#. Second case: We have multiple files to save.
 #: src/gtkam-save.c:653
 msgid "Save photos..."
 msgstr "Speichere Photos..."
 
-#: src/gtkam-tree.c:311
+#: src/gtkam-tree.c:309
 #, fuzzy, c-format
 msgid "Listing folders in '%s'..."
 msgstr "Hole Dateiliste des Verzeichnisses »%s«..."
 
-#: src/gtkam-tree.c:332
+#: src/gtkam-tree.c:330
 #, fuzzy, c-format
 msgid "Could not list folders in '%s'."
 msgstr "Konnte nicht alle Dateien in »%s« löschen."
 
-#: src/gtkam-tree.c:429
+#: src/gtkam-tree.c:427
 #, c-format
 msgid "Could not open '%s'."
 msgstr "Konnte »%s« nicht öffnen."
 
-#: src/gtkam-tree.c:436
+#: src/gtkam-tree.c:434
 #, fuzzy, c-format
 msgid "Uploading '%s' into folder '%s'..."
 msgstr "Konnte Datei »%s« nicht in das Verzeichnis »%s« hochladen."
 
-#: src/gtkam-tree.c:456
+#: src/gtkam-tree.c:454
 #, fuzzy, c-format
 msgid "Could not upload '%s' into '%s'."
 msgstr "Konnte Datei »%s« nicht in das Verzeichnis »%s« hochladen."
 
-#: src/gtkam-tree.c:480
+#: src/gtkam-tree.c:478
 #, fuzzy, c-format
 msgid "Upload into '%s'..."
 msgstr "Datei _hochladen..."
 
-#: src/gtkam-tree.c:556
+#: src/gtkam-tree.c:554
 #, fuzzy, c-format
 msgid "Removing directory '%s'..."
 msgstr "Entferne »%s« aus »%s«..."
 
-#: src/gtkam-tree.c:573
+#: src/gtkam-tree.c:571
 #, fuzzy, c-format
 msgid "Could not remove directory '%s'."
 msgstr "Konnte Datei »%s« nicht aus Verzeichnis »%s« löschen."
 
-#: src/gtkam-tree.c:602
+#: src/gtkam-tree.c:600
 msgid "Getting information about the camera..."
 msgstr "Frage Informationen über die Kamera ab..."
 
-#: src/gtkam-tree.c:606
+#: src/gtkam-tree.c:604
 msgid "Getting information about the driver..."
 msgstr "Frage Treiberinformationen ab..."
 
-#: src/gtkam-tree.c:610
+#: src/gtkam-tree.c:608
 msgid "Getting manual..."
 msgstr "Hole Kameraanleitung..."
 
-#: src/gtkam-tree.c:641
+#: src/gtkam-tree.c:639
 msgid "Could not retrieve information."
 msgstr "Konnte Informationen nicht abfragen."
 
-#: src/gtkam-tree.c:811
+#: src/gtkam-tree.c:809
 msgid "Could not capture."
 msgstr "Konnte keine Aufnahme machen."
 
-#: src/gtkam-tree.c:882
+#: src/gtkam-tree.c:880
 #, fuzzy
 msgid "_Add Camera..."
 msgstr "_Wähle Kamera..."
 
-#: src/gtkam-tree.c:982
+#: src/gtkam-tree.c:980
 msgid "Please right-click to access additional menus"
 msgstr ""
 
-#: src/gtkam-tree.c:1007
+#: src/gtkam-tree.c:1005
 #, fuzzy
 msgid "Folder"
 msgstr "_Verzeichnis"
 
-#: src/gtkam-tree.c:1100
+#: src/gtkam-tree.c:1098
 #, fuzzy
 msgid "Loading cameras..."
 msgstr "Erkenne Kameras..."
@@ -700,15 +668,45 @@ msgstr ""
 "Konnte »%s« nicht anzeigen. Entweder wird der Bildtyp (»%s«) nicht von GTK "
 "unterstützt oder die Datei selbst ist nicht in Ordnung."
 
-#: src/support.c:68
-#, fuzzy, c-format
-msgid "Couldn't find pixmap file: %s"
-msgstr "Konnte Datei »%s« nicht holen."
+#~ msgid ""
+#~ "%s %s\n"
+#~ "\n"
+#~ "gtKam was written by:\n"
+#~ " - Scott Fritzinger <scottf@unr.edu>,\n"
+#~ " - Lutz Mueller <urc8@rz.uni-karlsruhe.de>,\n"
+#~ " - and many others.\n"
+#~ "\n"
+#~ "gtKam uses libgphoto2, a library to access a\n"
+#~ "multitude of digital cameras. More \n"
+#~ "information is available at\n"
+#~ "http://www.gphoto.net.\n"
+#~ "\n"
+#~ "Enjoy the wonderful world of gphoto!"
+#~ msgstr ""
+#~ "%s %s\n"
+#~ "\n"
+#~ "gtKam wurde geschrieben von:\n"
+#~ " - Scott Fritzinger <scottf@unr.edu>,\n"
+#~ " - Lutz Müller <urc8@rz.uni-karlsruhe.de>\n"
+#~ "und vielen anderen.\n"
+#~ "\n"
+#~ "gtKam verwendet libgphoto2, eine Bibliothek,\n"
+#~ "um viele digitale Kameras anzusprechen. Mehr\n"
+#~ "Informationen sind unter\n"
+#~ "http://www.gphoto.net erhältlich.\n"
+#~ "\n"
+#~ "Viel Spaß mit gphoto!"
 
-#: src/support.c:77
-#, fuzzy, c-format
-msgid "Error loading pixmap file: %s"
-msgstr "Lade %i Dateien herunter..."
+#~ msgid "Index Settings"
+#~ msgstr "Indexeinstellungen"
+
+#, fuzzy
+#~ msgid "Couldn't find pixmap file: %s"
+#~ msgstr "Konnte Datei »%s« nicht holen."
+
+#, fuzzy
+#~ msgid "Error loading pixmap file: %s"
+#~ msgstr "Lade %i Dateien herunter..."
 
 #~ msgid "Cancel"
 #~ msgstr "Abbrechen"

@@ -39,6 +39,7 @@
 #include "gtkam-error.h"
 #include "gtkam-preview.h"
 #include "gtkam-status.h"
+#include "gtkam-tree.h"
 
 #ifdef ENABLE_NLS
 #  include <libintl.h>
@@ -87,8 +88,7 @@ gtkam_tree_item_cam_finalize (GtkObject *object)
 }
 
 static void
-gtkam_tree_item_cam_set_camera (GtkamTreeItem *item, Camera *camera,
-				gboolean multi)
+gtkam_tree_item_cam_set_camera (GtkamTreeItem *item, Camera *camera)
 {
 	CameraAbilities a;
 
@@ -97,14 +97,15 @@ gtkam_tree_item_cam_set_camera (GtkamTreeItem *item, Camera *camera,
 	gp_camera_get_abilities (camera, &a);
 	gtk_label_set_text (GTK_LABEL (item->label), a.model);
 
-	parent_class->set_camera (item, camera, multi);
+	parent_class->set_camera (item, camera);
 }
 
 static void
 on_camera_selected (GtkamChooser *chooser, Camera *camera, gboolean multi,
 		    GtkamTreeItem *item)
 {
-	gtkam_tree_item_set_camera (item, camera, multi);
+	gtkam_tree_item_set_camera (item, camera);
+	gtkam_tree_item_set_multi (item, multi);
 }
 
 static void
@@ -270,6 +271,16 @@ on_online_toggled (GtkToggleButton *toggle, GtkamTreeItem *item)
 	gtk_menu_popdown (GTK_MENU (menu));
 }
 
+static void
+on_remove_camera_activate (GtkMenuItem *i, GtkamTreeItem *item)
+{
+	GtkWidget *tree;
+
+	tree = gtk_widget_get_ancestor (GTK_WIDGET (item), GTKAM_TYPE_TREE);
+	gtk_object_destroy (GTK_OBJECT (item));
+	gtkam_tree_save (GTKAM_TREE (tree));
+}
+
 static guint
 gtkam_tree_item_cam_add_menu_items (GtkamTreeItem *item, GtkWidget *menu)
 {
@@ -359,6 +370,13 @@ gtkam_tree_item_cam_add_menu_items (GtkamTreeItem *item, GtkWidget *menu)
 				      gtkam_tree_item_get_online (item));
 	gtk_signal_connect (GTK_OBJECT (t), "toggled",
 			    GTK_SIGNAL_FUNC (on_online_toggled), item);
+
+	/* Remove camera */
+	i = gtk_menu_item_new_with_label (_("Remove Camera"));
+	gtk_widget_show (i);
+	gtk_menu_append (GTK_MENU (menu), i);
+	gtk_signal_connect (GTK_OBJECT (i), "activate",
+			    GTK_SIGNAL_FUNC (on_remove_camera_activate), item);
 
 	return (8);
 }

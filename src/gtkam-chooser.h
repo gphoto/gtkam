@@ -53,6 +53,9 @@ struct _GtkamChooserClass
 GtkType    gtkam_chooser_get_type (void);
 GtkWidget *gtkam_chooser_new      (void);
 
+void       gtkam_chooser_set_camera (GtkamChooser *chooser, Camera *camera);
+void       gtkam_chooser_set_multi  (GtkamChooser *chooser, gboolean multi);
+
 void       gtkam_chooser_set_camera_mask (GtkamChooser *chooser, 
 					  CameraOperation operations);
 void       gtkam_chooser_set_port_mask   (GtkamChooser *chooser,

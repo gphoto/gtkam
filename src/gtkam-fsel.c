@@ -232,6 +232,13 @@ on_rmdir_clicked (GtkButton *button, GtkamFSel *fsel)
 #endif
 }
 
+static void
+on_new_status (GtkamTree *tree, GtkWidget *status, GtkamFSel *fsel)
+{
+	gtk_box_pack_start (GTK_BOX (fsel->priv->status), status,
+			    FALSE, FALSE, 0);
+}
+
 GtkWidget *
 gtkam_fsel_new (Camera *camera, gboolean multi, GtkWidget *opt_window)
 {
@@ -317,7 +324,7 @@ gtkam_fsel_new (Camera *camera, gboolean multi, GtkWidget *opt_window)
 	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled),
 				GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 
-	tree = gtkam_tree_new (fsel->priv->status);
+	tree = gtkam_tree_new ();
 	gtk_widget_show (tree);
 	gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (scrolled),
 					       tree);
@@ -327,6 +334,8 @@ gtkam_fsel_new (Camera *camera, gboolean multi, GtkWidget *opt_window)
 			    GTK_SIGNAL_FUNC (on_folder_selected), fsel);
 	gtk_signal_connect (GTK_OBJECT (tree), "folder_unselected",
 			    GTK_SIGNAL_FUNC (on_folder_unselected), fsel);
+	gtk_signal_connect (GTK_OBJECT (tree), "new_status",
+			    GTK_SIGNAL_FUNC (on_new_status), fsel);
 
 	/* CList */
 	scrolled = gtk_scrolled_window_new (NULL, NULL);

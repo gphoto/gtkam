@@ -50,8 +50,8 @@ struct _GtkamTreeItemClass {
 	void (* new_status)    (GtkamTreeItem *item, GtkWidget *status);
 
 	/* Virtual methods */
-	void  (* set_camera)     (GtkamTreeItem *item, Camera *camera,
-			          gboolean multi);
+	void  (* set_camera)     (GtkamTreeItem *item, Camera *camera);
+	void  (* set_multi)      (GtkamTreeItem *item, gboolean multi);
 	guint (* add_menu_items) (GtkamTreeItem *item, GtkWidget *menu);
 };
 
@@ -59,8 +59,8 @@ GtkType    gtkam_tree_item_get_type   (void);
 GtkWidget *gtkam_tree_item_new        (GdkPixbuf *pixbuf);
 void       gtkam_tree_item_construct  (GtkamTreeItem *item, GdkPixbuf *pixbuf);
 
-void       gtkam_tree_item_set_camera (GtkamTreeItem *item, Camera *camera,
-				       gboolean multi);
+void       gtkam_tree_item_set_camera (GtkamTreeItem *item, Camera *camera);
+void       gtkam_tree_item_set_multi  (GtkamTreeItem *item, gboolean multi);
 Camera    *gtkam_tree_item_get_camera (GtkamTreeItem *item);
 gboolean   gtkam_tree_item_get_multi  (GtkamTreeItem *item);
 

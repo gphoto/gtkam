@@ -183,7 +183,7 @@ gtkam_chooser_get_camera (GtkamChooser *chooser)
 	Camera *camera;
 	CameraAbilities abilities;
 	const gchar *model, *port, *speed;
-	gchar *speed_number, *port_path, *right, *tmp;
+	gchar *port_path, *right, *tmp;
 	int m, p, r;
 	gboolean multi;
 
@@ -250,21 +250,6 @@ gtkam_chooser_get_camera (GtkamChooser *chooser)
 		return (NULL);
 	}
 	gtk_object_destroy (GTK_OBJECT (status));
-
-	/* Remember the settings */
-	gp_setting_set ("gtkam", "model", (char*) model);
-	gp_setting_set ("gtkam", "path", port_path);
-	g_free (port_path);
-	if (!strcmp (speed, _("Best")))
-		speed_number = g_strdup ("0");
-	else
-		speed_number = g_strdup (speed);
-	gp_setting_set ("gtkam", "speed", (char*) speed_number);
-	g_free (speed_number);
-	if (multi)
-		gp_setting_set ("gtkam", "multi", "1");
-	else
-		gp_setting_set ("gtkam", "multi", "0");
 
 	return (camera);
 }
@@ -551,8 +536,6 @@ gtkam_chooser_new (void)
 	GdkPixmap *pixmap;
 	GdkBitmap *bitmap;
 	GdkPixbuf *pixbuf;
-	char port[1024], speed[1024], model[1024], multi[1024];
-	gboolean p, s, m, mult;
 
 	chooser = gtk_type_new (GTKAM_TYPE_CHOOSER);
 	chooser->priv->tooltips = gtk_tooltips_new ();
@@ -699,83 +682,10 @@ gtkam_chooser_new (void)
 	gtk_signal_connect (GTK_OBJECT (chooser->priv->entry_speed), "changed",
 			    GTK_SIGNAL_FUNC (on_speed_changed), chooser);
 
-	/* Remember what we update */
-	mult = p = m = s = FALSE;
-
-	/* Do we have a model? */
-	if ((gp_setting_get ("gtkam", "model", model) == GP_OK) ||
-	    (gp_setting_get ("gphoto2", "model", model) == GP_OK)) {
-		m = TRUE;
-		gtk_entry_set_text (chooser->priv->entry_model, model);
-	}
-
-	/* Do we have a port? */
-	if ((gp_setting_get ("gtkam", "path", port) == GP_OK) ||
-	    (gp_setting_get ("gphoto2", "port", port) == GP_OK)) {
-		int n, r;
-		GPPortInfo info;
-		guint i;
-		gchar *name;
-
-		n = gp_port_info_list_count (chooser->priv->il);
-		for (i = 0; i < n; i++) {
-			gp_port_info_list_get_info (chooser->priv->il, i,
-						    &info);
-			if (!strcmp (info.name, port) ||
-			    !strcmp (info.path, port)) {
-				name = g_strdup_printf ("%s (%s)",
-							info.name, info.path);
-				gtk_entry_set_text (chooser->priv->entry_port,
-						    name);
-				p = TRUE;
-				g_free (name);
-				break;
-			}
-		}
-		if (i == n) {
-			r = gp_port_info_list_lookup_path (chooser->priv->il,
-							   port);
-			if (r >= 0) {
-				gp_port_info_list_get_info (chooser->priv->il,
-							    i, &info);
-				name = g_strdup_printf ("%s (%s)",
-							info.name, info.path);
-				gtk_entry_set_text (chooser->priv->entry_port,
-						    name);
-				p = TRUE;
-				g_free (name);
-			}
-		}
-	}
-
-	/* Do we have a speed? */
-	if (gp_setting_get ("gtkam", "speed", speed) == GP_OK) {
-		if (atoi (speed))
-			gtk_entry_set_text (chooser->priv->entry_speed, speed);
-		else
-			gtk_entry_set_text (chooser->priv->entry_speed,
-					    _("Best"));
-		s = TRUE;
-	}
-
-	/* Do we have the multi option? */
-	if (gp_setting_get ("gtkam", "multi", multi) == GP_OK) {
-		if (atoi (multi))
-			gtk_toggle_button_set_active (
-				GTK_TOGGLE_BUTTON (chooser->priv->check_multi),
-				TRUE);
-		else
-			gtk_toggle_button_set_active (
-				GTK_TOGGLE_BUTTON (chooser->priv->check_multi),
-				FALSE);
-		mult = TRUE;
-	}
-
 	gtkam_chooser_update_for_model (chooser);
 
-	chooser->priv->needs_update = !m || !p || !s || !mult;
-	gtk_widget_set_sensitive (chooser->apply_button,
-				  chooser->priv->needs_update);
+	chooser->priv->needs_update = FALSE;
+	gtk_widget_set_sensitive (chooser->apply_button, FALSE);
 
 	return (GTK_WIDGET (chooser));
 }
@@ -839,4 +749,33 @@ gtkam_chooser_set_port_mask (GtkamChooser *chooser, GPPortType types)
 	}
 
 	gtkam_chooser_set_port_list (chooser, list);
+}
+
+void
+gtkam_chooser_set_camera (GtkamChooser *chooser, Camera *camera)
+{
+	CameraAbilities a;
+	GPPortInfo info;
+	gchar *full_info;
+
+	g_return_if_fail (GTKAM_IS_CHOOSER (chooser));
+	g_return_if_fail (camera != NULL);
+
+	gp_camera_get_abilities (camera, &a);
+	gp_camera_get_port_info (camera, &info);
+
+	full_info = g_strdup_printf ("%s (%s)", info.name, info.path);
+	gtk_entry_set_text (chooser->priv->entry_port, full_info);
+	g_free (full_info);
+
+	gtk_entry_set_text (chooser->priv->entry_model, a.model);
+}
+
+void
+gtkam_chooser_set_multi (GtkamChooser *chooser, gboolean multi)
+{
+	g_return_if_fail (GTKAM_IS_CHOOSER (chooser));
+
+	gtk_toggle_button_set_active (
+			GTK_TOGGLE_BUTTON (chooser->priv->check_multi), multi);
 }

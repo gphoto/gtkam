@@ -146,7 +146,8 @@ gtkam_tree_item_expand (GtkTreeItem *tree_item)
 						    folder);
 			g_free (folder);
 			gtkam_tree_item_set_camera (GTKAM_TREE_ITEM (new_item),
-						    item->priv->camera,
+						    item->priv->camera);
+			gtkam_tree_item_set_multi (GTKAM_TREE_ITEM (new_item),
 						    item->priv->multi);
 		}
 		item->priv->expanded = TRUE;
@@ -156,7 +157,13 @@ gtkam_tree_item_expand (GtkTreeItem *tree_item)
 }
 
 static void
-set_camera (GtkamTreeItem *item, Camera *camera, gboolean multi)
+set_multi (GtkamTreeItem *item, gboolean multi)
+{
+	item->priv->multi = multi;
+}
+
+static void
+set_camera (GtkamTreeItem *item, Camera *camera)
 {
 	if (item->priv->camera) {
 		gp_camera_unref (item->priv->camera);
@@ -165,7 +172,6 @@ set_camera (GtkamTreeItem *item, Camera *camera, gboolean multi)
 	if (camera) {
 		item->priv->camera = camera;
 		gp_camera_ref (camera);
-		item->priv->multi = multi;
 	}
 
 	/*
@@ -196,6 +202,7 @@ gtkam_tree_item_class_init (GtkamTreeItemClass *klass)
 	tree_item_class->expand = gtkam_tree_item_expand;
 
 	klass->set_camera = set_camera;
+	klass->set_multi = set_multi;
 
 	signals[FILE_UPLOADED] = gtk_signal_new ("file_uploaded",
 		GTK_RUN_FIRST, object_class->type,
@@ -256,7 +263,8 @@ on_dir_created (GtkamMkdir *mkdir, const gchar *path, GtkamTreeItem *item)
 
 		gtkam_tree_item_set_folder (GTKAM_TREE_ITEM (new_item), path);
 		gtkam_tree_item_set_camera (GTKAM_TREE_ITEM (new_item),
-					    item->priv->camera,
+					    item->priv->camera);
+		gtkam_tree_item_set_multi (GTKAM_TREE_ITEM (new_item),
 					    item->priv->multi);
 	}
 }
@@ -542,13 +550,21 @@ gtkam_tree_item_construct (GtkamTreeItem *item, GdkPixbuf *pixbuf)
 }
 
 void
-gtkam_tree_item_set_camera (GtkamTreeItem *item, Camera *camera,
-			    gboolean multi)
+gtkam_tree_item_set_camera (GtkamTreeItem *item, Camera *camera)
 {
 	g_return_if_fail (GTKAM_IS_TREE_ITEM (item));
 
 	GTKAM_TREE_ITEM_CLASS (GTK_OBJECT (item)->klass)->set_camera (item,
-							camera, multi);
+							camera);
+}
+
+void
+gtkam_tree_item_set_multi (GtkamTreeItem *item, gboolean multi)
+{
+	g_return_if_fail (GTKAM_IS_TREE_ITEM (item));
+
+	GTKAM_TREE_ITEM_CLASS (GTK_OBJECT (item)->klass)->set_multi (item,
+								multi);
 }
 
 void

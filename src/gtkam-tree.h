@@ -51,14 +51,18 @@ struct _GtkamTreeClass
 	void (* file_uploaded)     (GtkamTree *tree, Camera *camera,
 				    gboolean multi, const gchar *folder,
 				    const gchar *name);
+	void (* new_status)        (GtkamTree *tree, GtkWidget *status);
 };
 
 GtkType      gtkam_tree_get_type (void);
-GtkWidget   *gtkam_tree_new      (GtkWidget *vbox);
+GtkWidget   *gtkam_tree_new      (void);
 
 void         gtkam_tree_add_camera (GtkamTree *tree, Camera *camera,
 				    gboolean multi);
 void         gtkam_tree_update     (GtkamTree *tree, Camera *camera,
 				    gboolean multi, const gchar *path);
+
+void         gtkam_tree_load       (GtkamTree *tree);
+void         gtkam_tree_save       (GtkamTree *tree);
 
 #endif /* __GTKAM_TREE_H__ */

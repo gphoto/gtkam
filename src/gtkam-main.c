@@ -76,6 +76,7 @@
 #include "gtkam-status.h"
 #include "gtkam-tree.h"
 #include "gtkam-tree-item.h"
+#include "gtkam-tree-item-cam.h"
 
 #include "support.h"
 
@@ -310,11 +311,20 @@ static void
 on_camera_selected (GtkamChooser *chooser, Camera *camera,
 		    gboolean multi, GtkamMain *m)
 {
+	GtkWidget *item;
+
+	item = gtkam_tree_item_cam_new ();
+	gtk_widget_show (item);
+	gtk_tree_append (GTK_TREE (m->priv->tree), item);
+	gtkam_tree_item_set_camera (GTKAM_TREE_ITEM (item), camera);
+	gtkam_tree_item_set_multi (GTKAM_TREE_ITEM (item), multi);
+	gtkam_tree_save (GTKAM_TREE (m->priv->tree));
+
 	gtkam_main_set_camera (m, camera, multi);
 }
 
 static void
-on_select_camera_activate (GtkMenuItem *item, GtkamMain *m)
+on_add_camera_activate (GtkMenuItem *item, GtkamMain *m)
 {
 	GtkWidget *dialog;
 
@@ -476,6 +486,19 @@ static void
 on_changed (GtkamList *list, GtkamMain *m)
 {
 	gtkam_main_update_sensitivity (m);
+}
+
+static void
+on_new_status (GtkamTree *tree, GtkWidget *status, GtkamMain *m)
+{
+	gtk_box_pack_start (GTK_BOX (m->priv->status), status, FALSE, FALSE, 0);
+}
+
+static gboolean
+load_tree (gpointer data)
+{
+	gtkam_tree_load (GTKAM_TREE (data));
+	return (FALSE);
 }
 
 GtkWidget *
@@ -652,11 +675,11 @@ gtkam_main_new (void)
 	item = gtk_menu_item_new_with_label ("");
 	gtk_widget_show (item);
 	key = gtk_label_parse_uline (GTK_LABEL (GTK_BIN (item)->child),
-				     _("_Select Camera..."));
+				     _("_Add Camera..."));
 	gtk_widget_add_accelerator (item, "activate_item", accels, key, 0, 0);
 	gtk_container_add (GTK_CONTAINER (menu), item);
 	gtk_signal_connect (GTK_OBJECT (item), "activate",
-			    GTK_SIGNAL_FUNC (on_select_camera_activate), m);
+			    GTK_SIGNAL_FUNC (on_add_camera_activate), m);
 
 	/*
 	 * Help menu
@@ -788,7 +811,7 @@ gtkam_main_new (void)
 	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled),
 				GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 
-	tree = gtkam_tree_new (m->priv->status);
+	tree = gtkam_tree_new ();
 	gtk_widget_show (tree);
 	gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (scrolled),
 					       tree);
@@ -796,7 +819,10 @@ gtkam_main_new (void)
 			    GTK_SIGNAL_FUNC (on_folder_selected), m);
 	gtk_signal_connect (GTK_OBJECT (tree), "folder_unselected",
 			    GTK_SIGNAL_FUNC (on_folder_unselected), m);
+	gtk_signal_connect (GTK_OBJECT (tree), "new_status",
+			    GTK_SIGNAL_FUNC (on_new_status), m);
 	m->priv->tree = GTKAM_TREE (tree);
+	gtk_idle_add (load_tree, tree);
 
 	/*
 	 * Right
@@ -828,8 +854,6 @@ void
 gtkam_main_set_camera (GtkamMain *m, Camera *camera, gboolean multi)
 {
 	CameraAbilities a;
-	GList *list;
-	gint i;
 
 	g_return_if_fail (GTKAM_IS_MAIN (m));
 	g_return_if_fail (camera != NULL);
@@ -884,12 +908,5 @@ gtkam_main_set_camera (GtkamMain *m, Camera *camera, gboolean multi)
 	else
 		gtk_widget_set_sensitive (m->priv->item_save, FALSE);
 
-	/* FIXME! */
-	list = gtk_container_children (GTK_CONTAINER (m->priv->tree));
-	for (i = 0; i < g_list_length (list); i++)
-		gtk_container_remove (GTK_CONTAINER (m->priv->tree),
-			g_list_nth_data (list, i));
-	g_list_free (list);
-	gtkam_tree_add_camera (m->priv->tree, camera, multi);
 	gtk_icon_list_clear (GTK_ICON_LIST (m->priv->list));
 }

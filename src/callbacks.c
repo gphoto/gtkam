@@ -699,11 +699,13 @@ void camera_select_update_camera(GtkWidget *entry, gpointer data) {
 	/* Free the old port list?? */
 
 	/* populate the port list */
-	port_list = g_list_alloc();
-	for (x=0; x<num_ports; x++) {
-		append=0;
-		if (gp_port_info_get(x, &info) == GP_OK) {
-			if ((info.type == GP_PORT_SERIAL) && 
+        port_list = g_list_alloc();
+printf("%08x\n", a.port);
+        for (x=0; x<num_ports; x++) {
+                append=0;
+                if (gp_port_info_get(x, &info) == GP_OK) {
+printf("%08x\n", info.type);
+                        if ((info.type == GP_PORT_SERIAL) &&
 				SERIAL_SUPPORTED(a.port))
 				append=1;
 			if ((info.type == GP_PORT_PARALLEL) &&

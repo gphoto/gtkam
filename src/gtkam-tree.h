@@ -1,4 +1,4 @@
-/* gtkam-error.h
+/* gtkam-tree.h
  *
  * Copyright (C) 2001 Lutz Müller <urc8@rz.uni-karlsruhe.de>
  *
@@ -18,34 +18,39 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GTKAM_ERROR_H__
-#define __GTKAM_ERROR_H__
+#ifndef __GTKAM_TREE_H__
+#define __GTKAM_TREE_H__
 
 #include <gphoto2/gphoto2-camera.h>
-#include <gtk/gtkdialog.h>
+#include <gtk/gtktree.h>
 
-#define GTKAM_TYPE_ERROR  (gtkam_error_get_type ())
-#define GTKAM_ERROR(o)    (GTK_CHECK_CAST((o),GTKAM_TYPE_ERROR,GtkamError))
-#define GTKAM_IS_ERROR(o) (GTK_CHECK_TYPE((o),GTKAM_TYPE_ERROR))
+#define GTKAM_TYPE_TREE  (gtkam_tree_get_type ())
+#define GTKAM_TREE(o)    (GTK_CHECK_CAST((o),GTKAM_TYPE_TREE,GtkamTree))
+#define GTKAM_IS_TREE(o) (GTK_CHECK_TYPE((o),GTKAM_TYPE_TREE))
 
-typedef struct _GtkamError        GtkamError;
-typedef struct _GtkamErrorPrivate GtkamErrorPrivate;
-typedef struct _GtkamErrorClass   GtkamErrorClass;
+typedef struct _GtkamTree        GtkamTree;
+typedef struct _GtkamTreePrivate GtkamTreePrivate;
+typedef struct _GtkamTreeClass   GtkamTreeClass;
 
-struct _GtkamError
+struct _GtkamTree
 {
-	GtkDialog parent;
+	GtkTree parent;
 
-	GtkamErrorPrivate *priv;
+	GtkamTreePrivate *priv;
 };
 
-struct _GtkamErrorClass
+struct _GtkamTreeClass
 {
-	GtkDialogClass parent_class;
+	GtkTreeClass parent_class;
+
+	/* Signals */
+	void (* folder_selected) (GtkamTree *tree, const gchar *path);
 };
 
-GtkType    gtkam_error_get_type (void);
-GtkWidget *gtkam_error_new      (const char *msg, int result,
-				 Camera *opt_camera);
+GtkType    gtkam_tree_get_type (void);
+GtkWidget *gtkam_tree_new      (void);
 
-#endif /* __GTKAM_ERROR_H__ */
+void         gtkam_tree_set_camera (GtkamTree *tree, Camera *camera);
+const gchar *gtkam_tree_get_path   (GtkamTree *tree);
+
+#endif /* __GTKAM_TREE_H__ */

@@ -133,7 +133,8 @@ on_preview_capture_clicked (GtkButton *button, GtkamPreview *preview)
 	result = gp_camera_capture (preview->priv->camera,
 				    GP_OPERATION_CAPTURE_IMAGE, &path);
 	if (result != GP_OK) {
-		dialog = gtkam_error_new (result, preview->priv->camera);
+		dialog = gtkam_error_new ("Could not capture",
+					  result, preview->priv->camera);
 		gtk_window_set_transient_for (GTK_WINDOW (dialog),
 					      GTK_WINDOW (preview));
 		gtk_widget_show (dialog);

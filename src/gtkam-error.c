@@ -120,12 +120,12 @@ on_debug_toggled (GtkToggleButton *toggle, GtkamError *error)
 }
 
 GtkWidget *
-gtkam_error_new (int result, Camera *opt_camera)
+gtkam_error_new (const gchar *msg, int result, Camera *opt_camera)
 {
 	GtkamError *error;
 	GtkWidget *text, *vscrollbar, *button, *label;
 	const char *history;
-	const char *msg;
+	const char *gmsg;
 	gchar *full_msg;
 
 	g_return_val_if_fail (result < 0, NULL);
@@ -134,11 +134,11 @@ gtkam_error_new (int result, Camera *opt_camera)
 	gtk_window_set_policy (GTK_WINDOW (error), TRUE, TRUE, TRUE);
 
 	if (opt_camera)
-		msg = gp_camera_get_result_as_string (opt_camera, result);
+		gmsg = gp_camera_get_result_as_string (opt_camera, result);
 	else
-		msg = gp_result_as_string (result);
+		gmsg = gp_result_as_string (result);
 
-	full_msg = g_strdup_printf ("An error occurred:\n\n'%s'", msg);
+	full_msg = g_strdup_printf ("%s:\n\n'%s'", msg, gmsg);
 	label = gtk_label_new (full_msg);
 	g_free (full_msg);
 	gtk_widget_show (label);

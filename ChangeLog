@@ -1,5 +1,9 @@
 2001-10-06  Lutz Müller <urc8@rz.uni-karlsruhe.de>
 
+	* src/gtkam-tree.[c,h]: New
+
+2001-10-06  Lutz Müller <urc8@rz.uni-karlsruhe.de>
+
 	* src/gtkam-debug.c: Don't use an extra buffer - query the contents
 	of the text window instead.
 

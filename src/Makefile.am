@@ -11,6 +11,7 @@ gtkam_SOURCES = \
 	gtkam-debug.c gtkam-debug.h \
 	gtkam-error.c gtkam-error.h \
 	gtkam-preview.c gtkam-preview.h \
+	gtkam-tree.c gtkam-tree.h \
 	main.c \
 	support.c support.h \
 	frontend.c frontend.h \

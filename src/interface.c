@@ -21,6 +21,7 @@
 #include "interface.h"
 #include "support.h"
 #include "util.h"
+#include "gtkam-tree.h"
 
 void hide_progress_window (GtkWidget *widget, gpointer data) {
  
@@ -179,9 +180,6 @@ create_main_window (void)
 
   GtkWidget *main_window;
   GtkWidget *vbox1;
-  GtkWidget *hbox;
-  GtkWidget *pixmap;
-  GtkWidget *label;
   GtkWidget *menubar1;
   GtkTooltips *tooltip;
   guint tmp_key;
@@ -259,7 +257,6 @@ create_main_window (void)
   GtkWidget *scrolledwindow1;
   GtkWidget *viewport1;
   GtkWidget *tree1;
-  GtkWidget *tree_item;
   GtkWidget *scrolledwindow2;
   GtkWidget *viewport2;
   GtkWidget *icons;
@@ -932,62 +929,14 @@ create_main_window (void)
   gtk_widget_show (viewport1);
   gtk_container_add (GTK_CONTAINER (scrolledwindow1), viewport1);
 
-  tree1 = gtk_tree_new ();
+  tree1 = gtkam_tree_new ();
   gtk_widget_ref (tree1);
   gtk_object_set_data_full (GTK_OBJECT (main_window), "folder_tree", tree1,
                             (GtkDestroyNotify) gtk_widget_unref);
   gtk_widget_show (tree1);
   gtk_container_add (GTK_CONTAINER (viewport1), tree1);
-  gtk_tree_set_selection_mode(GTK_TREE(tree1), GTK_SELECTION_SINGLE);
-
-  tree_item = gtk_tree_item_new ();
-  gtk_widget_ref (tree_item);
-  gtk_object_set_data_full (GTK_OBJECT (main_window), "camera_tree", tree_item,
-                            (GtkDestroyNotify) gtk_widget_unref);
-  gtk_object_set_data (GTK_OBJECT (tree_item), "path", (gpointer)"/");
-  gtk_object_set_data (GTK_OBJECT (tree_item), "folder", (gpointer)"/");
-  gtk_signal_connect(GTK_OBJECT(tree_item), "select", 
-	GTK_SIGNAL_FUNC(folder_set),NULL);
-  gtk_signal_connect(GTK_OBJECT(tree_item), "expand", 
-	GTK_SIGNAL_FUNC(folder_expand),NULL);
-  gtk_widget_show (tree_item);
-  gtk_tree_append(GTK_TREE(tree1), tree_item);
-
-  hbox = gtk_hbox_new(FALSE, 3);
-  gtk_widget_ref (hbox);
-  gtk_object_set_data_full (GTK_OBJECT (main_window), "hbox", hbox,
-                            (GtkDestroyNotify) gtk_widget_unref);
-  gtk_widget_show (hbox);
-  gtk_container_add(GTK_CONTAINER(tree_item), hbox);
-
-  pixmap = create_pixmap (main_window, "camera.xpm");
-  gtk_widget_ref (pixmap);
-  gtk_object_set_data_full (GTK_OBJECT (main_window), "camera_pixmap", pixmap,
-                            (GtkDestroyNotify) gtk_widget_unref);
-  gtk_widget_show (pixmap);
-  gtk_box_pack_start (GTK_BOX(hbox), pixmap, FALSE, FALSE, 0);
-
-  label = gtk_label_new("No Camera Selected");
-  gtk_widget_ref (label);
-  gtk_object_set_data_full (GTK_OBJECT (main_window), "camera_label", label,
-                            (GtkDestroyNotify) gtk_widget_unref);
-  gtk_widget_show (label);
-  gtk_box_pack_start (GTK_BOX(hbox), label, FALSE, FALSE, 0);
-
-  tree1 = gtk_tree_new ();
-  gtk_widget_ref (tree1);
-  gtk_object_set_data_full (GTK_OBJECT (main_window), "camera_subtree", tree1,
-                            (GtkDestroyNotify) gtk_widget_unref);
-  gtk_widget_show (tree1);
-  gtk_tree_item_set_subtree(GTK_TREE_ITEM(tree_item), tree1);
-
-  tree_item = gtk_tree_item_new ();
-  gtk_widget_ref (tree_item);
-  gtk_object_set_data_full (GTK_OBJECT (main_window), "subtree_item", tree_item,
-                            (GtkDestroyNotify) gtk_widget_unref);
-  gtk_object_set_data (GTK_OBJECT(tree_item), "blech", "foo");
-  gtk_widget_show (tree_item);
-  gtk_tree_append(GTK_TREE(tree1), tree_item);
+  gtk_signal_connect (GTK_OBJECT (tree1), "folder_selected",
+		      GTK_SIGNAL_FUNC (on_folder_selected), main_window);
 
   scrolledwindow2 = gtk_scrolled_window_new (NULL, NULL);
   gtk_widget_ref (scrolledwindow2);

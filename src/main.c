@@ -7,12 +7,12 @@
 # include <config.h>
 #endif
 
+#include <gphoto2.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 #include <gtk/gtk.h>
-#include <gphoto2.h>
 
 #include "callbacks.h"
 #include "frontend.h"
@@ -31,7 +31,6 @@ Camera*	   gp_gtk_camera 		= NULL;
 int
 main (int argc, char *argv[])
 {
-	GtkWidget *label;
 	char buf[1024];
 	int x, y;
 
@@ -39,6 +38,8 @@ main (int argc, char *argv[])
 	bindtextdomain (PACKAGE, PACKAGE_LOCALE_DIR);
 	textdomain (PACKAGE);
 #endif
+
+	g_log_set_always_fatal (G_LOG_LEVEL_CRITICAL);
 
 	gtk_set_locale ();
 	gtk_init (&argc, &argv);
@@ -77,9 +78,7 @@ main (int argc, char *argv[])
 
 	/* Retrieve the last camera used by gtkam */
 	if (gp_setting_get("gtkam", "camera", buf)==GP_OK) {
-		/* Set the camera model label */
-		label = (GtkWidget*) lookup_widget(gp_gtk_main_window, "camera_label");
-		gtk_label_set_text(GTK_LABEL(label), buf);
+		camera_set ();
 	}
 
 	/* Set the current working directory */

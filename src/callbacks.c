@@ -21,13 +21,14 @@
 #include <gtkam-debug.h>
 #include <gtkam-error.h>
 #include <gtkam-preview.h>
+#include <gtkam-tree.h>
 
 #include "../pixmaps/no_thumbnail.xpm"
 
 char *current_folder();
 
-#define CHECK_RESULT(res) {int r = (res); if (r < 0) { GtkWidget *dialog = gtkam_error_new (r, NULL); gtk_widget_show (dialog); return; }}
-#define CHECK_CAM_RESULT(c,res) {int r = (res); if (r < 0) { GtkWidget *dialog = gtkam_error_new (r, c); gtk_widget_show (dialog); return; }}
+#define CHECK_RESULT(res) {int r = (res); if (r < 0) { GtkWidget *dialog = gtkam_error_new ("Error", r, NULL); gtk_widget_show (dialog); return; }}
+#define CHECK_CAM_RESULT(c,res) {int r = (res); if (r < 0) { GtkWidget *dialog = gtkam_error_new ("Error", r, c); gtk_widget_show (dialog); return; }}
 
 void debug_print (char *message) {
 	if (gp_gtk_debug)
@@ -124,8 +125,7 @@ void icon_resize(GtkWidget *window) {
 
 int camera_set() {
 
-	GtkWidget *camera_tree, *message, *message_label, *camera_label, *icon_list;
-	GtkWidget *subtree, *subitem;
+	GtkWidget *folder_tree, *message, *message_label, *icon_list;
 	Camera *new_camera;
 	char camera[1024], port[1024], speed[1024];
 
@@ -168,9 +168,6 @@ int camera_set() {
 		return (GP_ERROR);
 	}		
 
-	/* Set the current camera model */
-	camera_label = (GtkWidget*) lookup_widget(gp_gtk_main_window, "camera_label");
-	gtk_label_set_text(GTK_LABEL(camera_label), camera);
 	gtk_widget_destroy(message);
 
 	/* Clear out the icon listing */
@@ -178,31 +175,15 @@ int camera_set() {
 	gtk_icon_list_clear (GTK_ICON_LIST(icon_list));
 
 	/* Clear out the folder tree */
-	camera_tree = (GtkWidget*) lookup_widget(gp_gtk_main_window, "camera_tree");
-	gtk_object_remove_data(GTK_OBJECT(camera_tree), "expanded");
-
-//	gtk_tree_item_collapse(GTK_TREE_ITEM(camera_tree));
-
-	/* ????????? */
-
-	/* Remove any existing subtree */
-	if (GTK_TREE_ITEM(camera_tree)->subtree)
-		gtk_tree_item_remove_subtree(GTK_TREE_ITEM(camera_tree));
-
-	subtree = gtk_tree_new();
-	gtk_widget_show(subtree);
-	gtk_tree_item_set_subtree (GTK_TREE_ITEM(camera_tree), subtree);
-
-	subitem = gtk_tree_item_new();
-	gtk_widget_show(subitem);
-	gtk_tree_append(GTK_TREE(subtree), subitem);
+	folder_tree = (GtkWidget*) lookup_widget(gp_gtk_main_window, "folder_tree");
+	gtkam_tree_set_camera (GTKAM_TREE (folder_tree), new_camera);
 
 	/* Mark the camera as init'd */
 	gp_gtk_camera_init = 1;
 
 	/* Destroy the old camera after the new one is successfully loaded */
 	if (gp_gtk_camera)
-		gp_camera_free(gp_gtk_camera);
+		gp_camera_unref(gp_gtk_camera);
 
 	/* Set the new camera to be active */
 	gp_gtk_camera = new_camera;
@@ -495,10 +476,13 @@ void select_none() {
 
 char *current_folder () {
 
-	GtkWidget *camera_tree;
+	GtkWidget *folder_tree;
+	char *path;
 
-	camera_tree = (GtkWidget*) lookup_widget(gp_gtk_main_window, "camera_tree");
-	return ((char*)gtk_object_get_data(GTK_OBJECT(camera_tree), "folder"));
+	folder_tree = lookup_widget(gp_gtk_main_window, "folder_tree");
+	path = gtkam_tree_get_path (GTKAM_TREE (folder_tree));
+
+	return (path);
 }
 
 void folder_refresh (GtkWidget *widget, gpointer data) {
@@ -513,126 +497,8 @@ void folder_refresh (GtkWidget *widget, gpointer data) {
 	icon_list = (GtkWidget*) lookup_widget(gp_gtk_main_window, "icons");
 	gtk_icon_list_clear (GTK_ICON_LIST(icon_list));
 
-	camera_index();
-}
-
-void folder_set (GtkWidget *tree_item, gpointer data) {
-
-	GtkWidget *camera_tree;
-	char buf[1024];
-	char *path = (char*)gtk_object_get_data(GTK_OBJECT(tree_item), "path");
-
-	debug_print("folder set");
-
-	if (!gp_gtk_camera_init)
-		CHECK_RESULT (camera_set ());
-
-	camera_tree = (GtkWidget*) lookup_widget(gp_gtk_main_window, "camera_tree");
-	gtk_object_remove_data(GTK_OBJECT(camera_tree), "folder");
-	gtk_object_set_data(GTK_OBJECT(camera_tree), "folder", strdup(path)); 
-	
-	sprintf(buf, "camera folder path = %s", path);
-	debug_print(buf);
-
-	camera_index();
-}
-
-GtkWidget *folder_item (GtkWidget *tree, char *text) {
-	/* Create an item in the "tree" with the label of text and a folder icon */
-
-	return (tree_item_icon(tree, text, "folder.xpm"));
-}
-
-GtkWidget *tree_item_icon (GtkWidget *tree, char *text, char *icon_name) {
-	/* Create an item in the "tree" with the label of text and an icon */
-
-	GtkWidget *item, *hbox, *pixmap, *label, *subtree, *subitem;
-
-	item = gtk_tree_item_new();
-	gtk_widget_show(item);
-	gtk_tree_append(GTK_TREE(tree), item);
-	gtk_signal_connect(GTK_OBJECT(item), "select", 
-		GTK_SIGNAL_FUNC(folder_set),NULL);
-	gtk_signal_connect_after(GTK_OBJECT(item), "expand", 
-		GTK_SIGNAL_FUNC(folder_expand),NULL);
-
-	hbox = gtk_hbox_new(FALSE, 3);
-	gtk_widget_show(hbox);
-	gtk_container_add(GTK_CONTAINER(item), hbox);
-
-	pixmap = create_pixmap(gp_gtk_main_window, icon_name);
-	gtk_widget_show(pixmap);
-	gtk_box_pack_start(GTK_BOX(hbox), pixmap, FALSE, FALSE, 0);
-
-	label = gtk_label_new(text);
-	gtk_widget_show(label);
-	gtk_box_pack_start(GTK_BOX(hbox), label, FALSE, FALSE, 0);
-
-	subtree = gtk_tree_new();
-	gtk_widget_show(subtree);
-	gtk_tree_item_set_subtree (GTK_TREE_ITEM(item), subtree);
-
-	subitem = gtk_tree_item_new();
-	gtk_widget_show(subitem);
-	gtk_tree_append(GTK_TREE(subtree), subitem);
-//	gtk_object_set_data(GTK_OBJECT(subitem), "blech", (gpointer)"foo");
-	
-	return (item);
-}
-
-void folder_expand (GtkWidget *tree_item, gpointer data) {
-
-	GtkWidget *tree, *item;
-	CameraList list;
-	char *path = (char*)gtk_object_get_data(GTK_OBJECT(tree_item), "path");
-	char buf[1024];
-	int x, count=0;
-	const char *name;
-
-	debug_print("folder_expand");
-
-	if (!gp_gtk_camera_init)
-		CHECK_RESULT (camera_set ());
-
-	/* See if we've expanded this before! */
-	if (gtk_object_get_data(GTK_OBJECT(tree_item), "expanded")) return;
-
-	/* Count however many folders are in this folder */
-	if (gp_camera_folder_list_folders(gp_gtk_camera, path, &list)!=GP_OK) {
-		sprintf(buf, _("Could not open folder\n%s"), path);
-		frontend_message(gp_gtk_camera, buf);
-		return;
-	}
-
-	/* Remove any existing subtree */
-	gtk_tree_item_remove_subtree(GTK_TREE_ITEM(tree_item));
-
-	count = gp_list_count(&list);
-
-	if (count == 0)
-		return;
-
-	/* Create a new subtree */
-	tree = gtk_tree_new();
-	gtk_widget_show(tree);
-	gtk_tree_item_set_subtree(GTK_TREE_ITEM(tree_item), tree);
-
-	/* Append the new folders to the new subtree */
-	for (x=0; x<count; x++) {
-		gp_list_get_name (&list, x, &name);
-		if (strcmp(path, "/")==0)
-			sprintf(buf, "/%s", name);
-		   else
-			sprintf(buf, "%s/%s", path, name);
-		item = folder_item(tree, (char*)name);
-		gtk_object_set_data(GTK_OBJECT(item), "path", strdup(buf));
-	}
-
-	/* Mark this item as expanded (so we don't have to build the folder again) */
-	gtk_object_set_data(GTK_OBJECT(tree_item), "expanded", "yes");
-
-	/* Now, actually expand the newly built tree */
-	gtk_tree_item_expand(GTK_TREE_ITEM(tree_item));
+	//FIXME
+	camera_index(current_folder ());
 }
 
 /* Camera operations */
@@ -864,7 +730,7 @@ camera_select_again:
 
 	   result = camera_set ();
 	   if (result != GP_OK) {
-		   dialog = gtkam_error_new (result, NULL);
+		   dialog = gtkam_error_new ("Error", result, NULL);
 		   gtk_widget_show (dialog);
 		   goto camera_select_again;
 	   }
@@ -873,7 +739,7 @@ camera_select_again:
 	gtk_widget_destroy(window);
 }
 
-void camera_index () {
+void camera_index (const gchar *path) {
 
 	CameraFile *f;
 	CameraAbilities a;
@@ -883,7 +749,6 @@ void camera_index () {
 	GdkPixmap *pixmap;
 	GdkBitmap *bitmap;
 	char buf[1024];
-	char *folder;
 	int x, count=0, get_thumbnails = 1;
 	const char *name;
 	const char *data;
@@ -907,7 +772,7 @@ void camera_index () {
 		return;
 	}
 
-	if (gp_camera_folder_list_files(gp_gtk_camera, current_folder(), &list)!=GP_OK) {
+	if (gp_camera_folder_list_files(gp_gtk_camera, path, &list)!=GP_OK) {
 		frontend_message(NULL, _("Could not retrieve the picture list."));
 		return;
 	}
@@ -934,9 +799,8 @@ void camera_index () {
 		    (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(use_thumbs)))) {
 			/* Get the thumbnails */
 			gp_file_new(&f);
-			folder = current_folder();
 			if (gp_camera_file_get(gp_gtk_camera, 
-			    folder, name, GP_FILE_TYPE_PREVIEW, f) == GP_OK) {
+			    path, name, GP_FILE_TYPE_PREVIEW, f) == GP_OK) {
 				gp_file_get_data_and_size (f, &data, &size);
 				gdk_image_new_from_data((char*)data,size,1,&pixmap,&bitmap);
 				item = gtk_icon_list_add_from_data(GTK_ICON_LIST(icon_list),
@@ -961,6 +825,12 @@ void camera_index () {
 	}
 	gtk_widget_hide(gp_gtk_progress_window);
 	gtk_widget_set_sensitive(camera_tree, TRUE);
+}
+
+void
+on_folder_selected (GtkamTree *tree, const gchar *folder, gpointer data)
+{
+	camera_index (folder);
 }
 
 void camera_delete_common(int all) {

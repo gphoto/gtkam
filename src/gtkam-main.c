@@ -452,7 +452,7 @@ action_about (gpointer callback_data, guint callback_action,
 		N_("gtkam is a program that lets you download\n"
 		   "images from many digital cameras. It uses\n"
 		   "libgphoto2. More info is available at\n"
-		   "http:/* www.gphoto.net.\n" */
+		   "http://www.gphoto.net.\n"
 		   "\n"
 		   "Enjoy the wonderful world of gphoto!");
 #ifdef HAVE_GNOME
@@ -510,7 +510,7 @@ action_about (gpointer callback_data, guint callback_action,
 	d = gnome_about_new (PACKAGE, VERSION, "GPL", gcomments, authors,
 			     documenters, translator_credits, p);
 	g_object_unref (G_OBJECT (p));
-	w = gnome_href_new ("http:/* www.gphoto.org", "http://www.gphoto.org"); */
+	w = gnome_href_new ("http://www.gphoto.org", "http://www.gphoto.org");
 	gtk_widget_show (w);
 	gtk_box_pack_end (GTK_BOX (GTK_DIALOG (d)->vbox), w, FALSE, FALSE, 0);
 #else

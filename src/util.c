@@ -10,7 +10,8 @@
 #include <sys/types.h>
 
 #include <gdk-pixbuf/gdk-pixbuf-loader.h>
-#include <gdk-pixbuf/gdk-pixbuf.h> 
+#include <gdk-pixbuf/gdk-pixbuf.h>
+#include <gtk/gtk.h>
 #include "support.h"
 #include "util.h"
 
@@ -83,50 +84,4 @@ int gdk_image_new_from_data (char *image_data, int image_size, int scale,
 	gdk_pixbuf_unref(pixbuf);
 
 	return (GP_OK);
-}
-
-void ok_click (GtkWidget *dialog) {
-
-        gtk_object_set_data(GTK_OBJECT(dialog), "button", "OK");
-        gtk_widget_hide(dialog);
-}
- 
-int wait_for_hide (GtkWidget *dialog, 
-		   GtkWidget *ok_button,
-                   GtkWidget *cancel_button) {
-                   
-	int cont=1;
-	
-        gtk_object_set_data(GTK_OBJECT(dialog), "button", "CANCEL");
-        gtk_signal_connect_object(
-                        GTK_OBJECT(ok_button), "clicked",
-                        GTK_SIGNAL_FUNC(ok_click),
-                        GTK_OBJECT(dialog));
-	if (cancel_button)
-	        gtk_signal_connect_object(GTK_OBJECT(cancel_button),
-	                        "clicked",
-	                        GTK_SIGNAL_FUNC(gtk_widget_hide),
-	                        GTK_OBJECT(dialog));
-        gtk_widget_show(dialog);
-        while (cont) {
-		/* because the window manager could destroy the window */
-		if(!GTK_IS_OBJECT(dialog)) {
-			return 0;
-		}
-		if (GTK_WIDGET_VISIBLE(dialog))
-			gtk_main_iteration();
-		else
-			cont = 0;
-	}
-
-	if(!GTK_IS_OBJECT(dialog)) {
-		return 0;
-	}
-
-        if (strcmp("CANCEL",
-           (char*)gtk_object_get_data(GTK_OBJECT(dialog), "button"))==0) {
-		gtk_widget_destroy(dialog);
-                return 0;
-	}
-        return 1;
 }

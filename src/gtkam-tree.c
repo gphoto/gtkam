@@ -25,10 +25,12 @@
 
 #include <gtk/gtkvbox.h>
 #include <gtk/gtkhbox.h>
+#include <gtk/gtklabel.h>
 #include <gtk/gtksignal.h>
 #include <gtk/gtkmain.h>
 #include <gtk/gtkfilesel.h>
 #include <gtk/gtkbutton.h>
+#include <gtk/gtktreeitem.h>
 
 #include "support.h"
 #include "gtkam-error.h"

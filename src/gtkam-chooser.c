@@ -25,11 +25,16 @@
 #include <stdlib.h>
 
 #include <gtk/gtkvbox.h>
+#include <gtk/gtklabel.h>
+#include <gtk/gtktogglebutton.h>
 #include <gtk/gtkhbox.h>
+#include <gtk/gtktable.h>
 #include <gtk/gtksignal.h>
 #include <gtk/gtkmain.h>
 #include <gtk/gtkfilesel.h>
 #include <gtk/gtkbutton.h>
+#include <gtk/gtkentry.h>
+#include <gtk/gtkcombo.h>
 
 #include <gphoto2/gphoto2-core.h>
 #include <gphoto2/gphoto2-setting.h>

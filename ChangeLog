@@ -1,3 +1,13 @@
+2002-03-24  Lutz Müller <lutz@users.sourceforge.net>
+
+	Patch by Patrick Mansfield <patman@aracnet.com>:
+
+	* src/gtkam-config.c: Here's a patch for gtkam to get range/increments
+	  working when increment is not one - generally, set the digits 
+	  argument to a non-zero value. This patch also changes the page
+	  increment to be based on the increment as done for the command-line
+	  front end (patch just posted).
+
 2002-03-07  Colin Marquardt  <colin@marquardt-home.de>
 
 	* configure.in: Added es to ALL_LINGUAS.

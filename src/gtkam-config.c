@@ -19,6 +19,7 @@
  */
 
 #include <config.h>
+#include <math.h>
 #include "gtkam-config.h"
 
 #ifdef ENABLE_NLS
@@ -403,6 +404,31 @@ on_clock_set (GtkamClock *clock, CameraWidget *widget)
 	adjust_time (calendar, clock, widget);
 }
 
+static int 
+get_digits (double d)
+{
+	/*
+	 * Returns the number of non-zero digits to the right of the decimal
+	 * point, up to a max of 4.
+	 */
+	double x;
+	int i;
+	for (i = 0, x = d * 1.0; i < 4;  i++) {
+
+		/*
+		 * The small number really depends on how many digits (4)
+		 * we are checking for, but as long as it's small enough
+		 * this works fine. We need the "<" as the floating point
+		 * arithemtic does not always give an exact 0.0 (and can
+		 * even give a -0.0).
+		 */
+		if (fabs (x - floor (x)) < 0.000001) 
+			return(i);
+		x = x * 10.0;
+	}
+	return(i);
+}
+
 static void
 create_widgets (GtkamConfig *config, CameraWidget *widget)
 {
@@ -529,11 +555,15 @@ create_widgets (GtkamConfig *config, CameraWidget *widget)
 		gp_widget_get_value (widget, &value_float);
 		gp_widget_get_range (widget, &min, &max, &increment);
 		adjustment = gtk_adjustment_new (value_float, min, max,
-						 increment, 0, 0);
+						 increment, 
+						 MAX((max - min) / 20.0, 
+						     increment),
+						 0);
 		gtk_signal_connect (adjustment, "value_changed",
 			GTK_SIGNAL_FUNC (on_adjustment_value_changed), widget);
 		gtk_widget = gtk_hscale_new (GTK_ADJUSTMENT (adjustment));
-		gtk_scale_set_digits (GTK_SCALE (gtk_widget), 0);
+		gtk_scale_set_digits (GTK_SCALE (gtk_widget), 
+				      get_digits (increment));
 		gtk_range_set_update_policy (GTK_RANGE (gtk_widget),
 					     GTK_UPDATE_DISCONTINUOUS);
 		if (strlen (info))

@@ -1,8 +1,12 @@
+2003-01-14  Andrew Burton <adburton@users.sourceforge.net>
+
+	* src/gtkam-viewer.c: Modify built-in viewer to open image at
+	  640x480 with no camera icon, set window title to be the filename.
+
 2003-01-13  Andrew Burton <adburton@users.sourceforge.net>
 
-	Amend window title to match menu items
-	
-	* src/gtkam-chooser.c
+	* src/gtkam-chooser.c: Change window title to Add Camera for
+	consistency with menu items.
 
 	Added gtkam-specific Help
 

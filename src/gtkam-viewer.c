@@ -139,6 +139,8 @@ show_pixbuf (GtkamViewer *v, GtkAllocation *allocation, gboolean force)
 
         w = gdk_pixbuf_get_width (v->priv->pixbuf);
         h = gdk_pixbuf_get_height (v->priv->pixbuf);
+printf("Size is %d %d\n", w, h);
+printf("Allocation size is %d %d\n", allocation->width, allocation->height);
 	p = gtk_image_get_pixbuf (GTK_IMAGE (v->priv->image));
 	current_w = (p ? gdk_pixbuf_get_width (p) : 0);
 	current_h = (p ? gdk_pixbuf_get_height (p) : 0);
@@ -146,7 +148,7 @@ show_pixbuf (GtkamViewer *v, GtkAllocation *allocation, gboolean force)
         target_h = MIN (allocation->height, allocation->width * h / w);
 	if (((target_w == current_w) || (target_h == current_h)) && !force)
 		return;
-
+printf("About to scale to %d %d\n", target_w, target_h);
         scaled = gdk_pixbuf_scale_simple (v->priv->pixbuf, target_w, target_h,
                                           GDK_INTERP_HYPER);
         gtk_image_set_from_pixbuf (GTK_IMAGE (v->priv->image), scaled);
@@ -167,10 +169,17 @@ gtkam_viewer_new (void)
 	GtkWidget *button;
 
 	v = g_object_new (GTKAM_TYPE_VIEWER, NULL);
+	gtk_widget_hide (GTKAM_DIALOG (v)->image);	/* Hide camera pic */
+	GtkWidget *hbox = gtk_hbox_new (FALSE, 10);
+	gtk_widget_show (hbox);
+	gtk_box_pack_end (GTK_BOX (GTKAM_DIALOG (v)->vbox), hbox,
+			  TRUE, TRUE, 0);	
+	gtk_widget_set_size_request(GTK_WIDGET (hbox), 640, 480);
 
+	
 	v->priv->image = gtk_image_new ();
 	gtk_widget_show (v->priv->image);
-	gtk_box_pack_start (GTK_BOX (GTKAM_DIALOG (v)->vbox), v->priv->image,
+	gtk_box_pack_start (GTK_BOX (hbox), v->priv->image,
 			    TRUE, TRUE, 0);
 	g_signal_connect (G_OBJECT (v->priv->image), "size_allocate",
 			  G_CALLBACK (on_size_allocate), v);
@@ -273,6 +282,8 @@ gtkam_viewer_load_file (GtkamViewer *v, GtkamCamera *camera,
 							v->priv->loader);
 		g_object_ref (G_OBJECT (v->priv->pixbuf));
 		show_pixbuf (v, &v->priv->image->allocation, TRUE);
+
+		gtk_window_set_title (GTK_WINDOW (v), file);
 	}
 
 	/* Clean up */

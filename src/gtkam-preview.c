@@ -43,6 +43,7 @@
 #include <stdio.h>
 #include <string.h>
 
+#include <gtk/gtktooltips.h>
 #include <gtk/gtkvbox.h>
 #include <gtk/gtklabel.h>
 #include <gtk/gtkhbox.h>
@@ -74,6 +75,8 @@ struct _GtkamPreviewPrivate
 
 	guint32 idle_id;
 
+	GtkTooltips *tooltips;
+
 	gboolean multi;
 };
 
@@ -91,6 +94,11 @@ static void
 gtkam_preview_destroy (GtkObject *object)
 {
 	GtkamPreview *preview = GTKAM_PREVIEW (object);
+
+	if (preview->priv->tooltips) {
+		gtk_object_unref (GTK_OBJECT (preview->priv->tooltips));
+		preview->priv->tooltips = NULL;
+	}
 
 	if (preview->priv->idle_id) {
 		gtk_idle_remove (preview->priv->idle_id);
@@ -529,6 +537,7 @@ gtkam_preview_new (Camera *camera, gboolean multi)
 	preview->priv->camera = camera;
 	gp_camera_ref (camera);
 	preview->priv->multi = multi;
+	preview->priv->tooltips = gtk_tooltips_new ();
 
 	hbox = gtk_hbox_new (FALSE, 5);
 	gtk_container_set_border_width (GTK_CONTAINER (hbox), 5);
@@ -575,6 +584,8 @@ gtkam_preview_new (Camera *camera, gboolean multi)
 	gtk_signal_connect (GTK_OBJECT (radio), "toggled",
 			    GTK_SIGNAL_FUNC (on_radio_0_toggled), preview);
 	preview->priv->angle_0 = GTK_TOGGLE_BUTTON (radio);
+	gtk_tooltips_set_tip (preview->priv->tooltips, radio,
+			      _("Don't rotate thumbnail"), NULL);
 	group = gtk_radio_button_group (GTK_RADIO_BUTTON (radio));
 	radio = gtk_radio_button_new_with_label (group, _("-90°"));
 	gtk_widget_show (radio);
@@ -582,6 +593,8 @@ gtkam_preview_new (Camera *camera, gboolean multi)
 	gtk_signal_connect (GTK_OBJECT (radio), "toggled",
 			    GTK_SIGNAL_FUNC (on_radio_270_toggled), preview);
 	preview->priv->angle_90 = GTK_TOGGLE_BUTTON (radio);
+	gtk_tooltips_set_tip (preview->priv->tooltips, radio,
+			      _("Rotate thumbnail by -90°"), NULL);
 	group = gtk_radio_button_group (GTK_RADIO_BUTTON (radio));
 	radio = gtk_radio_button_new_with_label (group, _("+90°"));
 	gtk_widget_show (radio);
@@ -589,6 +602,8 @@ gtkam_preview_new (Camera *camera, gboolean multi)
 	gtk_signal_connect (GTK_OBJECT (radio), "toggled",
 			    GTK_SIGNAL_FUNC (on_radio_90_toggled), preview);
 	preview->priv->angle_180 = GTK_TOGGLE_BUTTON (radio);
+	gtk_tooltips_set_tip (preview->priv->tooltips, radio, 
+			      _("Rotate thumbnail by 90°"), NULL);
 	group = gtk_radio_button_group (GTK_RADIO_BUTTON (radio));
 	radio = gtk_radio_button_new_with_label (group, _("180°"));
 	gtk_widget_show (radio);
@@ -596,6 +611,8 @@ gtkam_preview_new (Camera *camera, gboolean multi)
 	gtk_signal_connect (GTK_OBJECT (radio), "toggled",
 			    GTK_SIGNAL_FUNC (on_radio_180_toggled), preview);
 	preview->priv->angle_270 = GTK_TOGGLE_BUTTON (radio);
+	gtk_tooltips_set_tip (preview->priv->tooltips, radio, 
+			      _("Rotate thumbnail by 180°"), NULL);
 
 	/* Zoom */
 	hbox = gtk_hbox_new (FALSE, 0);
@@ -609,6 +626,8 @@ gtkam_preview_new (Camera *camera, gboolean multi)
 	gtk_signal_connect (GTK_OBJECT (radio), "toggled",
 			    GTK_SIGNAL_FUNC (on_radio_100_toggled), preview);
 	preview->priv->zoom_100 = GTK_TOGGLE_BUTTON (radio);
+	gtk_tooltips_set_tip (preview->priv->tooltips, radio,
+			      _("Don't enlarge thumbnail"), NULL);
 	group = gtk_radio_button_group (GTK_RADIO_BUTTON (radio));
 	radio = gtk_radio_button_new_with_label (group, _("150%"));
 	gtk_widget_show (radio);
@@ -616,6 +635,8 @@ gtkam_preview_new (Camera *camera, gboolean multi)
 	gtk_signal_connect (GTK_OBJECT (radio), "toggled",
 			    GTK_SIGNAL_FUNC (on_radio_150_toggled), preview);
 	preview->priv->zoom_150 = GTK_TOGGLE_BUTTON (radio);
+	gtk_tooltips_set_tip (preview->priv->tooltips, radio,
+			      _("Enlarge thumbnail by 50%"), NULL);
 	group = gtk_radio_button_group (GTK_RADIO_BUTTON (radio));
 	radio = gtk_radio_button_new_with_label (group, _("200%"));
 	gtk_widget_show (radio);
@@ -623,6 +644,8 @@ gtkam_preview_new (Camera *camera, gboolean multi)
 	gtk_signal_connect (GTK_OBJECT (radio), "toggled",
 			    GTK_SIGNAL_FUNC (on_radio_200_toggled), preview);
 	preview->priv->zoom_200 = GTK_TOGGLE_BUTTON (radio);
+	gtk_tooltips_set_tip (preview->priv->tooltips, radio,
+			      _("Enlarge thumbnail by 100%"), NULL);
 	group = gtk_radio_button_group (GTK_RADIO_BUTTON (radio));
 	radio = gtk_radio_button_new_with_label (group, _("250%"));
 	gtk_widget_show (radio);
@@ -630,6 +653,8 @@ gtkam_preview_new (Camera *camera, gboolean multi)
 	gtk_signal_connect (GTK_OBJECT (radio), "toggled",
 			    GTK_SIGNAL_FUNC (on_radio_250_toggled), preview);
 	preview->priv->zoom_250 = GTK_TOGGLE_BUTTON (radio);
+	gtk_tooltips_set_tip (preview->priv->tooltips, radio,
+			      _("Enlarge thumbnail by 150%"), NULL);
 
 	button = gtk_button_new_with_label (_("Capture"));
 	gtk_widget_show (button);

@@ -120,7 +120,7 @@ gtk_exif_entry_generic_new (ExifEntry *e)
 	entry->priv->entry = e;
 	exif_entry_ref (e);
 	gtk_exif_entry_construct (GTK_EXIF_ENTRY (entry),
-		exif_tag_get_name (e->tag),
+		exif_tag_get_title (e->tag),
 		exif_tag_get_description (e->tag));
 
 	table = gtk_table_new (2, 4, FALSE);

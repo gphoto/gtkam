@@ -1,4 +1,4 @@
-/* gtk-exif-entry-ascii.c
+/* gtk-exif-entry-light.c
  *
  * Copyright (C) 2001 Lutz Müller <lutz@users.sourceforge.net>
  *
@@ -19,7 +19,7 @@
  */
 
 #include <config.h>
-#include "gtk-exif-entry-ascii.h"
+#include "gtk-exif-entry-light.h"
 
 #include <gtk/gtkcheckbutton.h>
 #include <gtk/gtkradiobutton.h>
@@ -28,15 +28,19 @@
 #include <gtk/gtkframe.h>
 #include <gtk/gtklabel.h>
 #include <gtk/gtkentry.h>
+#include <gtk/gtkoptionmenu.h>
+#include <gtk/gtkmenuitem.h>
+#include <gtk/gtkmenu.h>
+#include <gtk/gtkhbox.h>
 
-struct _GtkExifEntryAsciiPrivate {
+#include <libexif/exif-i18n.h>
+
+struct _GtkExifEntryLightPrivate {
 	ExifEntry *entry;
-
-	GtkEntry *gtk_entry;
 };
 
-#define PARENT_TYPE GTK_EXIF_TYPE_ENTRY
-static GtkExifEntryClass *parent_class;
+#define PARENT_TYPE GTK_EXIF_TYPE_ENTRY_MENU
+static GtkExifEntryMenuClass *parent_class;
 
 enum {
 	LAST_SIGNAL
@@ -45,9 +49,9 @@ enum {
 static guint signals[LAST_SIGNAL] = {0};
 
 static void
-gtk_exif_entry_ascii_destroy (GtkObject *object)
+gtk_exif_entry_light_destroy (GtkObject *object)
 {
-	GtkExifEntryAscii *entry = GTK_EXIF_ENTRY_ASCII (object);
+	GtkExifEntryLight *entry = GTK_EXIF_ENTRY_LIGHT (object);
 
 	if (entry->priv->entry) {
 		exif_entry_unref (entry->priv->entry);
@@ -58,9 +62,9 @@ gtk_exif_entry_ascii_destroy (GtkObject *object)
 }
 
 static void
-gtk_exif_entry_ascii_finalize (GtkObject *object)
+gtk_exif_entry_light_finalize (GtkObject *object)
 {
-	GtkExifEntryAscii *entry = GTK_EXIF_ENTRY_ASCII (object);
+	GtkExifEntryLight *entry = GTK_EXIF_ENTRY_LIGHT (object);
 
 	g_free (entry->priv);
 
@@ -68,13 +72,13 @@ gtk_exif_entry_ascii_finalize (GtkObject *object)
 }
 
 static void
-gtk_exif_entry_ascii_class_init (GtkExifEntryAsciiClass *klass)
+gtk_exif_entry_light_class_init (GtkExifEntryLightClass *klass)
 {
 	GtkObjectClass *object_class;
 
 	object_class = GTK_OBJECT_CLASS (klass);
-	object_class->destroy  = gtk_exif_entry_ascii_destroy;
-	object_class->finalize = gtk_exif_entry_ascii_finalize;
+	object_class->destroy  = gtk_exif_entry_light_destroy;
+	object_class->finalize = gtk_exif_entry_light_finalize;
 
 	gtk_object_class_add_signals (object_class, signals, LAST_SIGNAL);
 
@@ -82,23 +86,23 @@ gtk_exif_entry_ascii_class_init (GtkExifEntryAsciiClass *klass)
 }
 
 static void
-gtk_exif_entry_ascii_init (GtkExifEntryAscii *entry)
+gtk_exif_entry_light_init (GtkExifEntryLight *entry)
 {
-	entry->priv = g_new0 (GtkExifEntryAsciiPrivate, 1);
+	entry->priv = g_new0 (GtkExifEntryLightPrivate, 1);
 }
 
 GtkType
-gtk_exif_entry_ascii_get_type (void)
+gtk_exif_entry_light_get_type (void)
 {
 	static GtkType entry_type = 0;
 
 	if (!entry_type) {
 		static const GtkTypeInfo entry_info = {
-			"GtkExifEntryAscii",
-			sizeof (GtkExifEntryAscii),
-			sizeof (GtkExifEntryAsciiClass),
-			(GtkClassInitFunc)  gtk_exif_entry_ascii_class_init,
-			(GtkObjectInitFunc) gtk_exif_entry_ascii_init,
+			"GtkExifEntryLight",
+			sizeof (GtkExifEntryLight),
+			sizeof (GtkExifEntryLightClass),
+			(GtkClassInitFunc)  gtk_exif_entry_light_class_init,
+			(GtkObjectInitFunc) gtk_exif_entry_light_init,
 			NULL, NULL, NULL};
 		entry_type = gtk_type_unique (PARENT_TYPE, &entry_info);
 	}
@@ -106,41 +110,35 @@ gtk_exif_entry_ascii_get_type (void)
 	return (entry_type);
 }
 
-static void
-on_text_changed (GtkEditable *editable, GtkExifEntryAscii *entry)
-{
-	gchar *txt;
-
-	txt = gtk_editable_get_chars (editable, 0, -1);
-	g_free (entry->priv->entry->data);
-	entry->priv->entry->data = txt;
-	entry->priv->entry->size = strlen (txt) + 1;
-	entry->priv->entry->components = entry->priv->entry->size;
-	exif_entry_notify (entry->priv->entry, EXIF_ENTRY_EVENT_CHANGED);
-}
+static GtkExifEntryMenuList LightSource[] = {
+	{  0, N_("Unknown")},
+	{  1, N_("Daylight")},
+	{  2, N_("Fluorescent")},
+	{  3, N_("Tungsten")},
+	{ 17, N_("Standard light A")},
+	{ 18, N_("Standard light B")},
+	{ 19, N_("Standard light C")},
+	{ 20, N_("D55")},
+	{ 21, N_("D65")},
+	{ 22, N_("D75")},
+	{255, N_("Other")},
+	{  0, NULL}
+};
 
 GtkWidget *
-gtk_exif_entry_ascii_new (ExifEntry *e)
+gtk_exif_entry_light_new (ExifEntry *e)
 {
-	GtkExifEntryAscii *entry;
-	GtkWidget *widget;
+	GtkExifEntryLight *entry;
 
 	g_return_val_if_fail (e != NULL, NULL);
-	g_return_val_if_fail (e->format == EXIF_FORMAT_ASCII, NULL);
+	g_return_val_if_fail (e->tag == EXIF_TAG_LIGHT_SOURCE, NULL);
+	g_return_val_if_fail (e->format == EXIF_FORMAT_SHORT, NULL);
 
-	entry = gtk_type_new (GTK_EXIF_TYPE_ENTRY_ASCII);
+	entry = gtk_type_new (GTK_EXIF_TYPE_ENTRY_LIGHT);
 	entry->priv->entry = e;
 	exif_entry_ref (e);
-	gtk_exif_entry_construct (GTK_EXIF_ENTRY (entry),
-		exif_tag_get_title (e->tag),
-		exif_tag_get_description (e->tag));
-
-	widget = gtk_entry_new ();
-	gtk_widget_show (widget);
-	gtk_box_pack_start (GTK_BOX (entry), widget, TRUE, FALSE, 0);
-	gtk_entry_set_text (GTK_ENTRY (widget), e->data);
-	gtk_signal_connect (GTK_OBJECT (widget), "changed",
-			    GTK_SIGNAL_FUNC (on_text_changed), entry);
+	gtk_exif_entry_menu_construct (GTK_EXIF_ENTRY_MENU (entry), e,
+					_("Light Source:"), LightSource);
 
 	return (GTK_WIDGET (entry));
 }

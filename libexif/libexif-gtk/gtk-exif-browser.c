@@ -28,8 +28,11 @@
 #include "gtk-exif-tree.h"
 #include "gtk-exif-content-list.h"
 #include "gtk-exif-entry-ascii.h"
+#include "gtk-exif-entry-date.h"
 #include "gtk-exif-entry-flash.h"
 #include "gtk-exif-entry-generic.h"
+#include "gtk-exif-entry-light.h"
+#include "gtk-exif-entry-meter.h"
 #include "gtk-exif-entry-resolution.h"
 
 struct _GtkExifBrowserPrivate {
@@ -119,43 +122,53 @@ static void
 on_entry_selected (GtkExifContentList *list, ExifEntry *entry,
 		   GtkExifBrowser *browser)
 {
+	GtkWidget *w;
+
 	gtk_container_remove (GTK_CONTAINER (browser),
 			      browser->priv->current);
 	switch (entry->tag) {
 	case EXIF_TAG_EXIF_OFFSET:
 	case EXIF_TAG_INTEROPERABILITY_OFFSET:
-		browser->priv->current = gtk_exif_content_list_new ();
-		gtk_exif_content_list_set_content (
-			GTK_EXIF_CONTENT_LIST (browser->priv->current),
-			entry->content);
+		w = gtk_exif_content_list_new ();
+		gtk_exif_content_list_set_content (GTK_EXIF_CONTENT_LIST (w),
+						   entry->content);
 		break;
 	case EXIF_TAG_FLASH:
-		browser->priv->current = gtk_exif_entry_flash_new (entry);
+		w = gtk_exif_entry_flash_new (entry);
+		break;
+	case EXIF_TAG_METERING_MODE:
+		w = gtk_exif_entry_meter_new (entry);
 		break;
 	case EXIF_TAG_RESOLUTION_UNIT:
 	case EXIF_TAG_X_RESOLUTION:
 	case EXIF_TAG_Y_RESOLUTION:
-		browser->priv->current = gtk_exif_entry_resolution_new (
-							entry->parent, FALSE);
+		w = gtk_exif_entry_resolution_new (entry->parent, FALSE);
 		break;
 	case EXIF_TAG_FOCAL_PLANE_X_RESOLUTION:
 	case EXIF_TAG_FOCAL_PLANE_Y_RESOLUTION:
 	case EXIF_TAG_FOCAL_PLANE_RESOLUTION_UNIT:
-		browser->priv->current = gtk_exif_entry_resolution_new (
-							entry->parent, TRUE);
+		w = gtk_exif_entry_resolution_new (entry->parent, TRUE);
+		break;
+	case EXIF_TAG_LIGHT_SOURCE:
+		w = gtk_exif_entry_light_new (entry);
 		break;
 	case EXIF_TAG_MAKE:
 	case EXIF_TAG_MODEL:
 	case EXIF_TAG_IMAGE_DESCRIPTION:
-		browser->priv->current = gtk_exif_entry_ascii_new (entry);
+		w = gtk_exif_entry_ascii_new (entry);
+		break;
+	case EXIF_TAG_DATE_TIME:
+	case EXIF_TAG_DATE_TIME_ORIGINAL:
+	case EXIF_TAG_DATE_TIME_DIGITIZED:
+		w = gtk_exif_entry_date_new (entry);
 		break;
 	default:
-		browser->priv->current = gtk_exif_entry_generic_new (entry);
+		w = gtk_exif_entry_generic_new (entry);
 		break;
 	}
-	gtk_widget_show (browser->priv->current);
-	gtk_paned_pack2 (GTK_PANED (browser), browser->priv->current,
-			 TRUE, TRUE);
+	gtk_widget_show (w);
+	gtk_paned_pack2 (GTK_PANED (browser), w, TRUE, TRUE);
+	browser->priv->current = w;
 }
 
 GtkWidget *

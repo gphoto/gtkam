@@ -18,13 +18,21 @@ dnl ---------------------------------------------------------------------------
 dnl gtk-support
 dnl ---------------------------------------------------------------------------
 have_gtk=false
+try_gtk=true
 gtk_msg=no
-AC_PATH_PROG(GTK_CONFIG,gtk-config)
-if test "${GTK_CONFIG}"; then
-	have_gtk=true;
-	gtk_msg=yes
-	GTK_CFLAGS=`gtk-config --cflags`
-	GTK_LIBS=`gtk-config --libs`
+AC_ARG_WITH(gtk, [  --without-gtk       Don't use gtk],
+	if test x$withval = xno; then
+		try_gtk=false
+	fi
+)
+if $try_gtk; then
+	AC_PATH_PROG(GTK_CONFIG,gtk-config)
+	if test -n "$GTK_CONFIG" ; then
+		have_gtk=true
+		gtk_msg=yes
+		GTK_CFLAGS=`$GTK_CONFIG --cflags`
+		GTK_LIBS=`$GTK_CONFIG --libs`
+	fi
 fi
 AC_SUBST(GTK_CFLAGS)
 AC_SUBST(GTK_LIBS)

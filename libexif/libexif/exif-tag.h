@@ -114,6 +114,7 @@ enum _ExifTag {
 };
 
 const char *exif_tag_get_name        (ExifTag tag);
+const char *exif_tag_get_title       (ExifTag tag);
 const char *exif_tag_get_description (ExifTag tag);
 
 #endif /* __EXIF_TAG_H__ */

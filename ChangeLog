@@ -1,5 +1,12 @@
 2002-06-27  Lutz Müller <lutz@users.sourceforge.net>
 
+	Patches by Arnaud Launay <asl@launay.org>:
+
+	* acinclude.m4: Removed.
+	* autogen.sh: Reflect above.
+
+2002-06-27  Lutz Müller <lutz@users.sourceforge.net>
+
 	New file by Arnaud Launay <asl@launay.org>:
 
 	* autogen.sh: New.

@@ -295,7 +295,7 @@ save_file (GtkamSave *save, CameraFile *file, guint n)
 	result = gp_file_save (file, full_path);
 	if (result < 0) {
 		dialog = gtkam_error_new (result, NULL, GTK_WIDGET (save),
-				_("Could not save file to '%s'"), full_path);
+				_("Could not save file to '%s'."), full_path);
 		gtk_widget_show (dialog);
 	} else {
 		progname = gtk_entry_get_text (save->priv->program);
@@ -330,7 +330,7 @@ get_file (GtkamSave *save, const gchar *filename, CameraFileType type, guint n,
 		break;
 	default:
 		dialog = gtkam_error_new (result, s->context, GTK_WIDGET (save),
-			_("Could not get '%s' from folder '%s'"),
+			_("Could not get '%s' from folder '%s'."),
 			filename, save->priv->path);
 		gtk_widget_show (dialog);
 	}

@@ -447,6 +447,8 @@ create_widgets (GtkamConfig *config, CameraWidget *widget)
 
 		/* Create the clock */
 		clock = gtkam_clock_new ();
+		gtkam_clock_set (GTKAM_CLOCK (clock), tm->tm_hour, tm->tm_min,
+				 tm->tm_sec);
 		gtk_widget_show (clock);
 		gtk_box_pack_start (GTK_BOX (gtk_widget), clock,
 				    FALSE, FALSE, 0);

@@ -51,8 +51,8 @@ gtkam_LDADD =						\
 	$(GNOME_LIBS)
 
 if HAVE_GIMP
-libexecdir = $(libdir)/gimp/1.3/plug-ins
-libexec_PROGRAMS = gtkam-gimp
+gtkam_gimp_libexecdir = $(libdir)/gimp/1.3/plug-ins
+gtkam_gimp_libexec_PROGRAMS = gtkam-gimp
 gtkam_gimp_SOURCES = gtkam-gimp.c
 gtkam_gimp_LDADD =					\
 	$(GTKAM_GIMP_LIBS) $(EXIF_LIBS) $(BONOBO_LIBS)	\

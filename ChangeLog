@@ -1,3 +1,7 @@
+2003-01-10  Lutz Mueller <lutz@users.sourceforge.net>
+
+	* src/gtkam-save.c: Fix my latest commit.
+
 2003-01-08  Lutz Mueller <lutz@users.sourceforge.net>
 
 	Fix by Nils Rennebarth <Nils.Rennebarth@web.de>:

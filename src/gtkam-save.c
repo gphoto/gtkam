@@ -309,7 +309,7 @@ save_file (GtkamSave *save, CameraFile *file, guint n)
 				       full_path);
 		dialog = gtkam_close_new (msg);
 		gtk_window_set_transient_for (GTK_WINDOW (dialog),
-					      save->main_window);
+					      save->priv->main_window);
 		gtk_widget_show (dialog);
 		g_free (msg);
 		g_free (full_path);
@@ -391,7 +391,7 @@ on_ok_clicked (GtkButton *button, GtkamSave *save)
 		s = gtkam_cancel_new (_("Downloading file"));
 	else
 		s = gtkam_cancel_new (_("Downloading %i files"), count);
-	gtk_window_set_transient_for (GTK_WINDOW (s), save->main_window);
+	gtk_window_set_transient_for (GTK_WINDOW (s), save->priv->main_window);
 	gtk_widget_show (s);
 
 	if (count > 1)

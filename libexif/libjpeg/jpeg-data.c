@@ -71,11 +71,91 @@ jpeg_data_append_section (JPEGData *data)
 void
 jpeg_data_save_file (JPEGData *data, const char *path)
 {
+	FILE *f;
+	unsigned char *d = NULL;
+	unsigned int size = 0;
+
+	jpeg_data_save_data (data, &d, &size);
+	if (!d)
+		return;
+
+	f = fopen (path, "w");
+	if (!f) {
+		free (d);
+		return;
+	}
+	fwrite (d, sizeof (char), size, f);
+	fclose (f);
+	free (d);
 }
 
 void
-jpeg_data_save_data (JPEGData *data, unsigned char **d, unsigned int *size)
+jpeg_data_save_data (JPEGData *data, unsigned char **d, unsigned int *ds)
 {
+	unsigned int i, len;
+	JPEGSection s;
+
+	if (!data)
+		return;
+	if (!d)
+		return;
+	if (!ds)
+		return;
+
+	for (*ds = i = 0; i < data->count; i++) {
+		s = data->sections[i];
+#ifdef DEBUG
+		printf ("Writing marker 0x%x at position %i...\n",
+			s.marker, *ds);
+#endif
+		switch (s.marker) {
+		case JPEG_MARKER_SOF0:
+		case JPEG_MARKER_SOF1:
+		case JPEG_MARKER_SOF2:
+		case JPEG_MARKER_SOF3:
+		case JPEG_MARKER_SOF5:
+		case JPEG_MARKER_SOF6:
+		case JPEG_MARKER_SOF7:
+		case JPEG_MARKER_SOF9:
+		case JPEG_MARKER_SOF10:
+		case JPEG_MARKER_SOF11:
+		case JPEG_MARKER_SOF13:
+		case JPEG_MARKER_SOF14:
+		case JPEG_MARKER_SOF15:
+			len = 10;
+			*d = realloc (*d, sizeof (char) * (*ds + len));
+			(*d)[*ds + 0] = 0xff;
+			(*d)[*ds + 1] = s.marker;
+			(*d)[*ds + 2] = 10 >> 8;
+			(*d)[*ds + 3] = 10 >> 0;
+			(*d)[*ds + 4] = s.content.sof.precision;
+			(*d)[*ds + 5] = s.content.sof.height >> 8;
+			(*d)[*ds + 6] = s.content.sof.height >> 0;
+			(*d)[*ds + 7] = s.content.sof.width  >> 8;
+			(*d)[*ds + 8] = s.content.sof.width  >> 0;
+			(*d)[*ds + 9] = s.content.sof.components;
+			break;
+		case JPEG_MARKER_SOI:
+		case JPEG_MARKER_EOI:
+			len = 2;
+			*d = realloc (*d, sizeof (char) * (*ds + len));
+			(*d)[*ds + 0] = 0xff;
+			(*d)[*ds + 1] = s.marker;
+			break;
+		case JPEG_MARKER_SOS:
+			len = s.content.sos.size + 2;
+			*d = realloc (*d, sizeof (char) * (*ds + len));
+			(*d)[*ds + 0] = 0xff;
+			(*d)[*ds + 1] = s.marker;
+			memcpy (&((*d)[*ds + 2]), s.content.sos.data, 
+				s.content.sos.size);
+			break;
+		default:
+			len = 0;
+			break;
+		}
+		*ds += len;
+	}
 }
 
 JPEGData *

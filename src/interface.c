@@ -946,7 +946,7 @@ create_main_window (void)
 	GTK_SIGNAL_FUNC(main_quit), NULL);
   gtk_widget_show (exit_button);
   tooltip = gtk_tooltips_new();
-  gtk_tooltips_set_tip (tooltip, exit_button, _("Exit gPhoto"), NULL);
+  gtk_tooltips_set_tip (tooltip, exit_button, _("Exit gtKam"), NULL);
 
   hpaned1 = gtk_hpaned_new ();
   gtk_widget_ref (hpaned1);
@@ -965,14 +965,14 @@ create_main_window (void)
   gtk_paned_pack1 (GTK_PANED (hpaned1), vbox2, FALSE, TRUE);
 
 /* __main */
-  frame = gtk_frame_new("Index Settings");
+  frame = gtk_frame_new(_("Index Settings"));
   gtk_widget_ref (frame);
   gtk_object_set_data_full (GTK_OBJECT (main_window), "settings_frame", frame,
                             (GtkDestroyNotify) gtk_widget_unref);
   gtk_widget_show (frame);
   gtk_box_pack_start (GTK_BOX (vbox2), frame, FALSE, FALSE, 0);
   
-  checkbutton = gtk_check_button_new_with_label("View Thumbnails");
+  checkbutton = gtk_check_button_new_with_label(_("View Thumbnails"));
   gtk_widget_ref (checkbutton);
   gtk_object_set_data_full (GTK_OBJECT (main_window), "use_thumbs", checkbutton,
                             (GtkDestroyNotify) gtk_widget_unref);

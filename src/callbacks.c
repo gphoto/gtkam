@@ -1454,7 +1454,7 @@ void help_manual() {
 	sprintf(buf, "%s/MANUAL", DOCDIR);
 	f = gp_file_new();
 	if (gp_file_open(f, buf)==GP_ERROR) {
-		gp_camera_message(NULL, _("Can't find gPhoto2 GTK MANUAL file"));
+		gp_camera_message(NULL, _("Can't find gtKam MANUAL file"));
 		return;
 	}
 	window = create_message_window_notebook();

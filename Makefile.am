@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in
 
-SUBDIRS = po src
+SUBDIRS = intl po src
 
 gtkamdocdir = $(prefix)/doc/gtkam
 gtkamdoc_DATA = AUTHORS COPYING MANUAL

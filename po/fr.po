@@ -165,7 +165,7 @@ msgid "Exit"
 msgstr "Quitter"
 
 #: src/interface.c:949
-msgid "Exit gPhoto"
+msgid "Exit gtKam"
 msgstr "Quitter gtKam"
 
 #: src/interface.c:1209 src/interface.c:1326 src/interface.c:1410
@@ -382,8 +382,8 @@ msgid "gPhoto2 License"
 msgstr "License gPhoto2"
 
 #: src/callbacks.c:1420
-msgid "Can't find gPhoto2 GTK MANUAL file"
-msgstr "Fichier MANUAL GTK de gPhoto2 introuvable"
+msgid "Can't find gtKam MANUAL file"
+msgstr "Fichier MANUAL GTK de gtKam introuvable"
 
 #: src/callbacks.c:1425
 msgid "gtKam Manual"

@@ -15,4 +15,4 @@ gtkam_SOURCES = \
 	gtkiconlist.c gtkiconlist.h \
 	gtkitementry.c gtkitementry.h
 
-gtkam_LDADD = @GTK_LIBS@ $(INTLLIBS)
+gtkam_LDADD = @GTK_LIBS@

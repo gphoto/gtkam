@@ -131,6 +131,8 @@ main (int argc, char *argv[])
 	for (x = 1; x < argc; x++) {
 		if (!strcmp (argv[x], "--debug") || !strcmp (argv[x], "-d")) {
 			log = gp_log_add_func (GP_LOG_DATA, log_func, NULL);
+		} else if (!strcmp (argv[x], "--fatal") ||
+			   !strcmp (argv[x], "-f")) {
 			g_log_set_always_fatal (G_LOG_LEVEL_CRITICAL);
 		} else if (!strcmp (argv[x], "--version") ||
 			   !strcmp (argv[x], "-v")) {
@@ -144,6 +146,7 @@ main (int argc, char *argv[])
 			printf ("%s-%s\n", PACKAGE, VERSION);
 			printf (" -h --help        Print this message\n");
 			printf (" -d --debug       Print debugging output\n");
+			printf (" -f --fatal       Make warnings fatal\n");
 			printf (" -v --version     Print version\n");
 			printf (" -n --no-settings Don't read settings\n");
 			return (0);

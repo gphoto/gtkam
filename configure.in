@@ -69,17 +69,17 @@ AC_ARG_WITH(gimp, [  --without-gimp  Don't compile GIMP plugin],
 		try_gimp=false
 	fi)
 if $try_gimp; then
-	AC_PATH_PROG(GIMP_CONFIG,gimp-config)
+	AC_PATH_PROG(GIMP_CONFIG,gimptool)
 	if test -n "${GIMP_CONFIG}"; then
 		CPPFLAGS_save="$CPPFLAGS"
-		CPPFLAGS="$CPPFLAGS `gimp-config --cflags`"
+		CPPFLAGS="$CPPFLAGS `$GIMP_CONFIG --cflags`"
 		AC_CHECK_HEADER(libgimp/gimp.h,
 			have_gimp=true
 			gimp_msg=yes
 			AC_DEFINE(HAVE_GIMP)
-			GIMP_CFLAGS="`gimp-config --cflags`"
-			GIMP_LIBS="`gimp-config --libs`"
-			GIMP_PLUGIN_DIR="`gimp-config --gimpplugindir`"
+			GIMP_CFLAGS="`$GIMP_CONFIG --cflags`"
+			GIMP_LIBS="`$GIMP_CONFIG --libs`"
+			GIMP_PLUGIN_DIR="`$GIMP_CONFIG --gimpplugindir`"
 		)
 		CPPFLAGS="$CPPFLAGS_save"
 	fi

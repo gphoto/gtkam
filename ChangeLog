@@ -2,6 +2,8 @@
 
 	* src/gtkam-delete.c, src/gtkam-delete.h: Change to use
 	GtkDialog layout, to fit with Gnome HIG.
+	* src/gtkam-exif.c: Hack to work around failure to retrieve
+	EXIF data properly in the library.
 	
 2004-02-15  Andrew Burton <adburton@users.sourceforge.net>
 

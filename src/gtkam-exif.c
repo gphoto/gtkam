@@ -167,6 +167,15 @@ gtkam_exif_new (GtkamCamera *camera, const gchar *folder, const gchar *file)
 		gtk_widget_show (dialog);
 		return (NULL);
 	}
+printf("data is %s\n", data);	
+	/* FIXME Hack, since library fails to return error code, instead
+	   populating edata with 'Exif' */
+	if (g_ascii_strcasecmp (data, "Exif") == 0) {
+		dialog = gtkam_error_new (GP_ERROR_NOT_SUPPORTED, NULL,
+			NULL, _("The EXIF data could not be retrieved from the file."));
+		gtk_widget_show (dialog);
+		return (NULL);
+	}
 #endif
 
 	exif = g_object_new (GTKAM_TYPE_EXIF, NULL);

@@ -410,6 +410,7 @@ create_widgets (GtkamConfig *config, CameraWidget *widget)
 	struct tm *tm;
 
 	gp_widget_get_label (widget, &label);
+	frame = gtk_frame_new (label);
 	gp_widget_get_info  (widget, &info);
 	gp_widget_get_type  (widget, &type);
 
@@ -607,7 +608,6 @@ create_widgets (GtkamConfig *config, CameraWidget *widget)
 	}
 
 	gtk_widget_show (gtk_widget);
-	frame = gtk_frame_new (label);
 	gtk_widget_show (frame);
 	gtk_container_add (GTK_CONTAINER (frame), gtk_widget);
 

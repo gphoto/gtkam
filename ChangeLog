@@ -1,3 +1,7 @@
+2002-01-27  Lutz Müller <lutz@users.sourceforge.net>
+
+	* src/gtkam-config.c: Fix for camera config dialog.
+
 2002-01-20  Colin Marquardt  <colin@marquardt-home.de>
 
 	* configure.in: Add pt_BR and pt_PT to ALL_LINGUAS.

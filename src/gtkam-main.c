@@ -88,9 +88,8 @@ struct _GtkamMainPrivate
 
 	GtkToggleButton *toggle_preview;
 
-	GtkWidget *item_delete, *item_delete_all, *item_capture, *item_config;
-	GtkWidget *item_save, *item_information, *item_manual, *menu_delete;
-	GtkWidget *item_about_driver;
+	GtkWidget *item_delete, *item_delete_all;
+	GtkWidget *item_save, *menu_delete;
 	GtkWidget *select_all, *select_none, *select_inverse;
 
 	GtkWidget *status;
@@ -327,62 +326,6 @@ on_select_camera_activate (GtkMenuItem *item, GtkamMain *m)
 }
 
 static void
-on_captured (GtkamPreview *preview, const gchar *folder, const gchar *name,
-	     GtkamMain *m)
-{
-	gtkam_list_update_folder (m->priv->list,
-				  gtkam_preview_get_camera (preview),
-				  gtkam_preview_get_multi (preview), folder);
-}
-
-static void
-on_capture_activate (GtkMenuItem *item, GtkamMain *m)
-{
-	CameraAbilities a;
-	GtkWidget *dialog, *s;
-	int result;
-	CameraFilePath path;
-
-	if (!m->priv->camera)
-		return;
-
-	/* Let's first check if the camera supports previews */
-	gp_camera_get_abilities (m->priv->camera, &a);
-	if (a.operations & GP_OPERATION_CAPTURE_PREVIEW) {
-		dialog = gtkam_preview_new (m->priv->camera, m->priv->multi);
-		gtk_window_set_transient_for (GTK_WINDOW (dialog),
-					      GTK_WINDOW (m));
-		gtk_widget_show (dialog);
-		gtk_signal_connect (GTK_OBJECT (dialog), "captured",
-				    GTK_SIGNAL_FUNC (on_captured), m);
-		return;
-	}
-
-	/* The camera doesn't support previews. Capture an image. */
-	s = gtkam_status_new (_("Capturing image..."));
-	gtk_widget_show (s);
-	gtk_box_pack_start (GTK_BOX (m->priv->status), s, FALSE, FALSE, 0);
-	result = gp_camera_capture (m->priv->camera, GP_CAPTURE_IMAGE, &path,
-				GTKAM_STATUS (s)->context->context);
-	if (m->priv->multi)
-		gp_camera_exit (m->priv->camera, NULL);
-	switch (result) {
-	case GP_OK:
-		gtkam_list_update_folder (m->priv->list, m->priv->camera,
-					  m->priv->multi, path.folder);
-		break;
-	case GP_ERROR_CANCEL:
-		break;
-	default:
-		dialog = gtkam_error_new (result, GTKAM_STATUS (s)->context,
-			GTK_WIDGET (m), _("Could not capture."));
-		gtk_widget_show (dialog);
-		break;
-	}
-	gtk_object_destroy (GTK_OBJECT (s));
-}
-
-static void
 on_configure_activate (GtkMenuItem *item, GtkamMain *m)
 {
 	GtkWidget *dialog;
@@ -465,105 +408,6 @@ on_folder_unselected (GtkTree *tree, Camera *camera, gboolean multi,
 {
 	gtkam_list_remove_folder (m->priv->list, camera, multi, folder);
 	gtkam_main_update_sensitivity (m);
-}
-
-static void
-on_information_activate (GtkMenuItem *item, GtkamMain *m)
-{
-	int result;
-	CameraText text;
-	GtkWidget *dialog, *s;
-
-	if (!m->priv->camera)
-		return;
-
-	s = gtkam_status_new (_("Getting information about the camera..."));
-	gtk_widget_show (s);
-	gtk_box_pack_start (GTK_BOX (m->priv->status), s, FALSE, FALSE, 0);
-	result = gp_camera_get_summary (m->priv->camera, &text,
-					GTKAM_STATUS (s)->context->context);
-	if (m->priv->multi)
-		gp_camera_exit (m->priv->camera, NULL);
-	switch (result) {
-	case GP_OK:
-		dialog = gtkam_close_new (text.text, GTK_WIDGET (m));
-		gtk_widget_show (dialog);
-		break;
-	case GP_ERROR_CANCEL:
-		break;
-	default:
-		dialog = gtkam_error_new (result, GTKAM_STATUS (s)->context,
-			GTK_WIDGET (m), _("Could not retrieve information."));
-		gtk_widget_show (dialog);
-	}
-	gtk_object_destroy (GTK_OBJECT (s));
-}
-
-static void
-on_manual_activate (GtkMenuItem *item, GtkamMain *m)
-{
-	int result;
-	CameraText text;
-	GtkWidget *dialog, *s;
-
-	if (!m->priv->camera)
-		return;
-
-	s = gtkam_status_new (_("Getting manual..."));
-	gtk_widget_show (s);
-	gtk_box_pack_start (GTK_BOX (m->priv->status), s, FALSE, FALSE, 0);
-	result = gp_camera_get_manual (m->priv->camera, &text,
-				GTKAM_STATUS (s)->context->context);
-	if (m->priv->multi)
-		gp_camera_exit (m->priv->camera, NULL);
-	switch (result) {
-	case GP_OK:
-		dialog = gtkam_close_new (text.text, GTK_WIDGET (m));
-		gtk_widget_show (dialog);
-		break;
-	case GP_ERROR_CANCEL:
-		break;
-	default:
-		dialog = gtkam_error_new (result,
-			GTKAM_STATUS (s)->context, GTK_WIDGET (m),
-			_("Could not retrieve manual."));
-		gtk_widget_show (dialog);
-	}
-	gtk_object_destroy (GTK_OBJECT (s));
-}
-
-static void
-on_about_driver_activate (GtkMenuItem *item, GtkamMain *m)
-{
-	int result;
-	CameraText text;
-	GtkWidget *dialog, *s;
-
-	if (!m->priv->camera)
-		return;
-
-	s = gtkam_status_new (_("Getting information about the driver..."));
-	gtk_widget_show (s);
-	gtk_box_pack_start (GTK_BOX (m->priv->status), s, FALSE, FALSE, 0);
-	result = gp_camera_get_about (m->priv->camera, &text,
-			GTKAM_STATUS (s)->context->context);
-	if (m->priv->multi)
-		gp_camera_exit (m->priv->camera, NULL);
-	switch (result) {
-	case GP_OK:
-		dialog = gtkam_close_new (text.text, GTK_WIDGET (m));
-		gtk_widget_show (dialog);
-		break;
-	case GP_ERROR_CANCEL:
-		break;
-	default:
-		dialog = gtkam_error_new (result,
-			GTKAM_STATUS (s)->context, GTK_WIDGET (m),
-			_("Could not get information about the driver."));
-		gtk_widget_show (dialog);
-		break;
-	}
-	gtk_object_destroy (GTK_OBJECT (s));
 }
 
 static void
@@ -814,66 +658,6 @@ gtkam_main_new (void)
 	gtk_signal_connect (GTK_OBJECT (item), "activate",
 			    GTK_SIGNAL_FUNC (on_select_camera_activate), m);
 
-	separator = gtk_menu_item_new ();
-	gtk_widget_show (separator);
-	gtk_container_add (GTK_CONTAINER (menu), separator);
-	gtk_widget_set_sensitive (separator, FALSE);
-
-	item = gtk_menu_item_new_with_label ("");
-	gtk_widget_show (item);
-	gtk_widget_set_sensitive (item, FALSE);
-	key = gtk_label_parse_uline (GTK_LABEL (GTK_BIN (item)->child),
-				     _("Ca_pture..."));
-	gtk_widget_add_accelerator (item, "activate_item", accels, key, 0, 0);
-	gtk_container_add (GTK_CONTAINER (menu), item);
-	gtk_signal_connect (GTK_OBJECT (item), "activate",
-			    GTK_SIGNAL_FUNC (on_capture_activate), m);
-	m->priv->item_capture = item;
-
-	item = gtk_menu_item_new_with_label ("");
-	gtk_widget_show (item);
-	gtk_widget_set_sensitive (item, FALSE);
-	key = gtk_label_parse_uline (GTK_LABEL (GTK_BIN (item)->child),
-				     _("_Configure..."));
-	gtk_widget_add_accelerator (item, "activate_item", accels, key, 0, 0);
-	gtk_container_add (GTK_CONTAINER (menu), item);
-	gtk_signal_connect (GTK_OBJECT (item), "activate",
-			    GTK_SIGNAL_FUNC (on_configure_activate), m);
-	m->priv->item_config = item;
-
-	item = gtk_menu_item_new_with_label ("");
-	gtk_widget_show (item);
-	gtk_widget_set_sensitive (item, FALSE);
-	key = gtk_label_parse_uline (GTK_LABEL (GTK_BIN (item)->child),
-				     _("_Information"));
-	gtk_widget_add_accelerator (item, "activate_item", accels, key, 0, 0);
-	gtk_container_add (GTK_CONTAINER (menu), item);
-	gtk_signal_connect (GTK_OBJECT (item), "activate",
-			    GTK_SIGNAL_FUNC (on_information_activate), m);
-	m->priv->item_information = item;
-
-	item = gtk_menu_item_new_with_label ("");
-	gtk_widget_show (item);
-	gtk_widget_set_sensitive (item, FALSE);
-	key = gtk_label_parse_uline (GTK_LABEL (GTK_BIN (item)->child),
-				     _("_Manual"));
-	gtk_widget_add_accelerator (item, "activate_item", accels, key, 0, 0);
-	gtk_container_add (GTK_CONTAINER (menu), item);
-	gtk_signal_connect (GTK_OBJECT (item), "activate",
-			    GTK_SIGNAL_FUNC (on_manual_activate), m);
-	m->priv->item_manual = item;
-
-	item = gtk_menu_item_new_with_label ("");
-	gtk_widget_show (item);
-	gtk_widget_set_sensitive (item, FALSE);
-	key = gtk_label_parse_uline (GTK_LABEL (GTK_BIN (item)->child),
-				     _("_About the Driver..."));
-	gtk_widget_add_accelerator (item, "activate_item", accels, key, 0, 0);
-	gtk_container_add (GTK_CONTAINER (menu), item);
-	gtk_signal_connect (GTK_OBJECT (item), "activate",
-			    GTK_SIGNAL_FUNC (on_about_driver_activate), m);
-	m->priv->item_about_driver = item;
-
 	/*
 	 * Help menu
 	 */
@@ -1073,13 +857,6 @@ gtkam_main_set_camera (GtkamMain *m, Camera *camera, gboolean multi)
 		gtk_toggle_button_set_active (m->priv->toggle_preview, FALSE);
 	}
 
-	/* Capture */
-	if (camera && a.operations & (GP_OPERATION_CAPTURE_PREVIEW |
-				      GP_OPERATION_CAPTURE_IMAGE))
-		gtk_widget_set_sensitive (m->priv->item_capture, TRUE);
-	else
-		gtk_widget_set_sensitive (m->priv->item_capture, FALSE);
-
 	/* Delete */
 	if (camera && a.file_operations & GP_FILE_OPERATION_DELETE)
 		gtk_widget_set_sensitive (m->priv->item_delete, TRUE);
@@ -1099,26 +876,13 @@ gtkam_main_set_camera (GtkamMain *m, Camera *camera, gboolean multi)
 	else
 		gtk_widget_set_sensitive (m->priv->menu_delete, FALSE);
 
-	/* Configuration */
-	if (camera && a.operations & GP_OPERATION_CONFIG)
-		gtk_widget_set_sensitive (m->priv->item_config, TRUE);
-	else
-		gtk_widget_set_sensitive (m->priv->item_config, FALSE);
-
 	gtkam_main_update_sensitivity (m);
 
 	/* The remaining */
-	if (camera) {
+	if (camera)
 		gtk_widget_set_sensitive (m->priv->item_save, TRUE);
-		gtk_widget_set_sensitive (m->priv->item_information, TRUE);
-		gtk_widget_set_sensitive (m->priv->item_manual, TRUE);
-		gtk_widget_set_sensitive (m->priv->item_about_driver, TRUE);
-	} else {
+	else
 		gtk_widget_set_sensitive (m->priv->item_save, FALSE);
-		gtk_widget_set_sensitive (m->priv->item_information, FALSE);
-		gtk_widget_set_sensitive (m->priv->item_manual, FALSE);
-		gtk_widget_set_sensitive (m->priv->item_about_driver, FALSE);
-	}
 
 	/* FIXME! */
 	list = gtk_container_children (GTK_CONTAINER (m->priv->tree));

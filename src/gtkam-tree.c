@@ -261,6 +261,13 @@ gtkam_tree_new (GtkWidget *vbox)
 	return (GTK_WIDGET (tree));
 }
 
+static void
+on_new_status (GtkTreeItem *item, GtkWidget *status, GtkamTree *tree)
+{
+	gtk_box_pack_start (GTK_BOX (tree->priv->status),
+			    status, FALSE, FALSE, 0);
+}
+
 void
 gtkam_tree_add_camera (GtkamTree *tree, Camera *camera, gboolean multi)
 {
@@ -269,9 +276,11 @@ gtkam_tree_add_camera (GtkamTree *tree, Camera *camera, gboolean multi)
 	g_return_if_fail (GTKAM_IS_TREE (tree));
 	g_return_if_fail (camera != NULL);
 
-	item = gtkam_tree_item_cam_new (tree->priv->status);
+	item = gtkam_tree_item_cam_new ();
 	gtk_widget_show (item);
 	gtk_tree_append (GTK_TREE (tree), item);
+	gtk_signal_connect (GTK_OBJECT (item), "new_status",
+			    GTK_SIGNAL_FUNC (on_new_status), tree);
 
 	gtkam_tree_item_set_camera (GTKAM_TREE_ITEM (item), camera, multi);
 }

@@ -110,7 +110,7 @@ gtkam_tree_item_dir_get_type (void)
 }
 
 GtkWidget *
-gtkam_tree_item_dir_new (GtkWidget *vbox)
+gtkam_tree_item_dir_new (void)
 {
 	GtkamTreeItemDir *item;
 	GdkPixbuf *pixbuf;
@@ -118,7 +118,7 @@ gtkam_tree_item_dir_new (GtkWidget *vbox)
 	item = gtk_type_new (GTKAM_TYPE_TREE_ITEM_DIR);
 
 	pixbuf = gdk_pixbuf_new_from_file (IMAGE_DIR "/gtkam-folder.png");
-	gtkam_tree_item_construct (GTKAM_TREE_ITEM (item), vbox, pixbuf);
+	gtkam_tree_item_construct (GTKAM_TREE_ITEM (item), pixbuf);
 	gdk_pixbuf_unref (pixbuf);
 
 	return (GTK_WIDGET (item));

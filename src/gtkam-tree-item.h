@@ -36,6 +36,7 @@ typedef struct _GtkamTreeItemClass   GtkamTreeItemClass;
 struct _GtkamTreeItem {
 	GtkTreeItem parent;
 
+	/* GtkLabel */
 	GtkWidget *label, *status;
 
 	GtkamTreeItemPrivate *priv;
@@ -46,16 +47,17 @@ struct _GtkamTreeItemClass {
 
 	/* Signals */
 	void (* file_uploaded) (GtkamTreeItem *item, const gchar *name);
+	void (* new_status)    (GtkamTreeItem *item, GtkWidget *status);
 
 	/* Virtual methods */
-	void (* set_camera) (GtkamTreeItem *item, Camera *camera,
-			     gboolean multi);
+	void  (* set_camera)     (GtkamTreeItem *item, Camera *camera,
+			          gboolean multi);
+	guint (* add_menu_items) (GtkamTreeItem *item, GtkWidget *menu);
 };
 
 GtkType    gtkam_tree_item_get_type   (void);
 GtkWidget *gtkam_tree_item_new        (GdkPixbuf *pixbuf);
-void       gtkam_tree_item_construct  (GtkamTreeItem *item, GtkWidget *vbox,
-				       GdkPixbuf *pixbuf);
+void       gtkam_tree_item_construct  (GtkamTreeItem *item, GdkPixbuf *pixbuf);
 
 void       gtkam_tree_item_set_camera (GtkamTreeItem *item, Camera *camera,
 				       gboolean multi);
@@ -68,7 +70,7 @@ const gchar *gtkam_tree_item_get_folder    (GtkamTreeItem *item);
 
 void         gtkam_tree_item_update (GtkamTreeItem *item);
 
-void       gtkam_tree_item_set_online  (GtkamTreeItem *item);
-void       gtkam_tree_item_set_offline (GtkamTreeItem *item);
+gboolean gtkam_tree_item_get_online (GtkamTreeItem *item);
+void     gtkam_tree_item_set_online (GtkamTreeItem *item, gboolean online);
 
 #endif /* __GTKAM_TREE_ITEM_H__ */

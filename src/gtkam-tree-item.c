@@ -79,6 +79,7 @@ static GtkTreeItemClass *parent_class;
 
 enum {
 	FILE_UPLOADED,
+	NEW_STATUS,
 	LAST_SIGNAL
 };
 
@@ -130,7 +131,7 @@ gtkam_tree_item_expand (GtkTreeItem *tree_item)
 	if (!item->priv->expanded) {
 		for (i = 0; i < gp_list_count (item->priv->dirs); i++) {
 			gp_list_get_name (item->priv->dirs, i, &name);
-			new_item = gtkam_tree_item_dir_new (item->priv->status);
+			new_item = gtkam_tree_item_dir_new ();
 			gtk_widget_show (new_item);
 			gtk_tree_append (GTK_TREE (tree_item->subtree),
 					 new_item);
@@ -173,9 +174,9 @@ set_camera (GtkamTreeItem *item, Camera *camera, gboolean multi)
 	 */
 	if (gp_camera_folder_list_files (camera, item->priv->folder,
 					 item->priv->dirs, NULL) < 0)
-		gtkam_tree_item_set_offline (item);
+		gtkam_tree_item_set_online (item, FALSE);
 	else
-		gtkam_tree_item_set_online (item);
+		gtkam_tree_item_set_online (item, TRUE);
 
 	if (item->priv->multi)
 		gp_camera_exit (item->priv->camera, NULL);
@@ -199,6 +200,10 @@ gtkam_tree_item_class_init (GtkamTreeItemClass *klass)
 	signals[FILE_UPLOADED] = gtk_signal_new ("file_uploaded",
 		GTK_RUN_FIRST, object_class->type,
 		GTK_SIGNAL_OFFSET (GtkamTreeItemClass, file_uploaded),
+		gtk_marshal_NONE__POINTER, GTK_TYPE_NONE, 1, GTK_TYPE_POINTER);
+	signals[NEW_STATUS] = gtk_signal_new ("new_status",
+		GTK_RUN_FIRST, object_class->type,
+		GTK_SIGNAL_OFFSET (GtkamTreeItemClass, new_status),
 		gtk_marshal_NONE__POINTER, GTK_TYPE_NONE, 1, GTK_TYPE_POINTER);
 	gtk_object_class_add_signals (object_class, signals, LAST_SIGNAL);
 
@@ -244,7 +249,7 @@ on_dir_created (GtkamMkdir *mkdir, const gchar *path, GtkamTreeItem *item)
 	g_return_if_fail (GTKAM_IS_TREE_ITEM (item));
 
 	if (item->priv->expanded) {
-		new_item = gtkam_tree_item_dir_new (item->priv->status);
+		new_item = gtkam_tree_item_dir_new ();
 		gtk_widget_show (new_item);
 		gtk_tree_append (GTK_TREE (GTK_TREE_ITEM (item)->subtree),
 				 new_item);
@@ -304,8 +309,8 @@ on_upload_activate (GtkMenuItem *menu_item, PopupData *data)
                                 "folder '%s'..."), g_basename (path), 
 				item->priv->folder);
                         gtk_widget_show (s);
-                        gtk_box_pack_start (GTK_BOX (item->priv->status), s,
-                                            FALSE, FALSE, 0);
+			gtk_signal_emit (GTK_OBJECT (item),
+				signals[NEW_STATUS], s);
                         r = gp_camera_folder_put_file (item->priv->camera,
                                 item->priv->folder, file,
                                 GTKAM_STATUS (s)->context->context);
@@ -332,7 +337,7 @@ on_upload_activate (GtkMenuItem *menu_item, PopupData *data)
                                         "'%s'."), path, item->priv->folder);
                                 gtk_widget_show (dialog);
                         }
-                        gtk_object_destroy (GTK_OBJECT (s));
+                        gtk_object_unref (GTK_OBJECT (s));
                 }
                 gp_file_unref (file);
         }
@@ -364,7 +369,7 @@ on_rmdir_activate (GtkMenuItem *menu_item, PopupData *data)
 	s = gtkam_status_new (_("Removing directory '%s'..."),
 			      item->priv->folder);
 	gtk_widget_show (s);
-	gtk_box_pack_start (GTK_BOX (item->priv->status), s, FALSE, FALSE, 0);
+	gtk_signal_emit (GTK_OBJECT (item), signals[NEW_STATUS], s);
 
 	path = g_strdup (item->priv->folder);
 	while (path[strlen (path) - 1] != '/')
@@ -386,11 +391,9 @@ on_rmdir_activate (GtkMenuItem *menu_item, PopupData *data)
 		gtk_widget_show (dialog);
 		break;
 	}
-
 	if (item->priv->multi)
 		gp_camera_exit (item->priv->camera, NULL);
-
-	gtk_object_destroy (GTK_OBJECT (s));
+	gtk_object_unref (GTK_OBJECT (s));
 }
 
 static gboolean
@@ -417,8 +420,11 @@ on_button_press_event (GtkWidget *widget, GdkEventButton *event,
 	PopupData *data;
 	GtkWidget *i;
 	CameraAbilities a;
+	GtkamTreeItemClass *item_class;
 
 	g_return_val_if_fail (GTKAM_IS_TREE_ITEM (item), FALSE);
+
+	item_class = GTKAM_TREE_ITEM_CLASS (GTK_OBJECT (item)->klass);
 
 	gp_camera_get_abilities (item->priv->camera, &a);
 
@@ -461,6 +467,14 @@ on_button_press_event (GtkWidget *widget, GdkEventButton *event,
 		gtk_widget_set_sensitive (i,
 			a.folder_operations & GP_FOLDER_OPERATION_REMOVE_DIR);
 
+		/* Additional menu items (including separator if any) */
+		if (item_class->add_menu_items) {
+			i = gtk_menu_item_new ();
+			gtk_container_add (GTK_CONTAINER (data->menu), i);
+			if (item_class->add_menu_items (item, data->menu))
+				gtk_widget_show (i);
+		}
+
 		gtk_signal_connect (GTK_OBJECT (data->menu), "hide",
 				    GTK_SIGNAL_FUNC (kill_popup_menu), data);
 		gtk_menu_popup (GTK_MENU (data->menu), NULL, NULL,
@@ -473,8 +487,7 @@ on_button_press_event (GtkWidget *widget, GdkEventButton *event,
 }
 
 void
-gtkam_tree_item_construct (GtkamTreeItem *item, GtkWidget *vbox,
-			   GdkPixbuf *pixbuf)
+gtkam_tree_item_construct (GtkamTreeItem *item, GdkPixbuf *pixbuf)
 {
 	GtkWidget *hbox, *image, *label;
 	GdkPixbuf *scaled;
@@ -483,8 +496,7 @@ gtkam_tree_item_construct (GtkamTreeItem *item, GtkWidget *vbox,
 	GdkBitmap *bitmap;
 
 	g_return_if_fail (GTKAM_IS_TREE_ITEM (item));
-
-	item->priv->status = vbox;
+	g_return_if_fail (pixbuf != NULL);
 
 	hbox = gtk_hbox_new (FALSE, 3);
 	gtk_widget_show (hbox);
@@ -562,7 +574,7 @@ gtkam_tree_item_get_folder (GtkamTreeItem *item)
 }
 
 void
-gtkam_tree_item_set_online (GtkamTreeItem *item)
+gtkam_tree_item_set_online (GtkamTreeItem *item, gboolean online)
 {
 	int result;
 	GtkWidget *s, *dialog, *tree;
@@ -571,67 +583,66 @@ gtkam_tree_item_set_online (GtkamTreeItem *item)
 	g_return_if_fail (GTKAM_IS_TREE_ITEM (item));
 	g_return_if_fail (item->priv->camera != NULL);
 
-	item->priv->online = TRUE;
+	if (online) {
+		item->priv->online = TRUE;
 
-	s = gtkam_status_new (_("Listing contents of folder '%s'..."),
-			      item->priv->folder);
-	gtk_widget_show (s);
-	gtk_box_pack_start (GTK_BOX (item->priv->status), s, FALSE, FALSE, 0);
+		s = gtkam_status_new (_("Listing contents of folder '%s'..."),
+				      item->priv->folder);
+		gtk_widget_show (s);
+		gtk_signal_emit (GTK_OBJECT (item), signals[NEW_STATUS], s);
 
-	/* Get a list of files */
-	result = gp_camera_folder_list_files (item->priv->camera,
-			item->priv->folder, item->priv->files,
-			GTKAM_STATUS (s)->context->context);
-	switch (result) {
-	case GP_OK:
-		status = g_strdup_printf ("%i",
+		/* Get a list of files */
+		result = gp_camera_folder_list_files (item->priv->camera,
+				item->priv->folder, item->priv->files,
+				GTKAM_STATUS (s)->context->context);
+		switch (result) {
+		case GP_OK:
+			status = g_strdup_printf ("%i",
 					  gp_list_count (item->priv->dirs));
-		gtk_label_set_text (GTK_LABEL (item->status), status);
-		g_free (status);
-		break;
-	case GP_ERROR_CANCEL:
-		break;
-	default:
-		dialog = gtkam_error_new (result, GTKAM_STATUS (s)->context,
-			NULL,
-			_("Could not retrieve file list for folder '%s'."),
-			item->priv->folder);
-		gtk_widget_show (dialog);
-	}
-
-	/* Get a list of folders */
-	result = gp_camera_folder_list_folders (item->priv->camera,
-		item->priv->folder, item->priv->dirs, 
-		GTKAM_STATUS (s)->context->context);
-	switch (result) {
-	case GP_OK:
-		if (gp_list_count (item->priv->dirs) > 0) {
-			tree = gtk_tree_new ();
-			gtk_widget_show (tree);
-			gtk_tree_item_set_subtree (GTK_TREE_ITEM (item), tree);
+			gtk_label_set_text (GTK_LABEL (item->status), status);
+			g_free (status);
+			break;
+		case GP_ERROR_CANCEL:
+			break;
+		default:
+			dialog = gtkam_error_new (result,
+				GTKAM_STATUS (s)->context, NULL,
+				_("Could not retrieve file list "
+					"for folder '%s'."),
+				item->priv->folder);
+			gtk_widget_show (dialog);
 		}
-		break;
-	case GP_ERROR_CANCEL:
-		break;
-	default:
-		dialog = gtkam_error_new (result, GTKAM_STATUS (s)->context,
-			NULL, 
-			_("Could not get list of folders for folder '%s'."),
-			item->priv->folder);
-		gtk_widget_show (dialog);
+
+		/* Get a list of folders */
+		result = gp_camera_folder_list_folders (item->priv->camera,
+			item->priv->folder, item->priv->dirs, 
+			GTKAM_STATUS (s)->context->context);
+		switch (result) {
+		case GP_OK:
+			if (gp_list_count (item->priv->dirs) > 0) {
+				tree = gtk_tree_new ();
+				gtk_widget_show (tree);
+				gtk_tree_item_set_subtree (GTK_TREE_ITEM (item),
+							   tree);
+			}
+			break;
+		case GP_ERROR_CANCEL:
+			break;
+		default:
+			dialog = gtkam_error_new (result,
+				GTKAM_STATUS (s)->context, NULL, 
+				_("Could not get list of folders "
+					"for folder '%s'."),
+				item->priv->folder);
+			gtk_widget_show (dialog);
+		}
+		if (item->priv->multi)
+			gp_camera_exit (item->priv->camera, NULL);
+		gtk_object_destroy (GTK_OBJECT (s));
+		return;
 	}
 
-	if (item->priv->multi)
-		gp_camera_exit (item->priv->camera, NULL);
-
-	gtk_object_destroy (GTK_OBJECT (s));
-}
-
-void
-gtkam_tree_item_set_offline (GtkamTreeItem *item)
-{
-	g_return_if_fail (GTKAM_IS_TREE_ITEM (item));
-
+	/* Offline */
 	item->priv->online = FALSE;
 	gp_list_reset (item->priv->dirs);
 	gp_list_reset (item->priv->files);
@@ -640,6 +651,14 @@ gtkam_tree_item_set_offline (GtkamTreeItem *item)
 	item->priv->expanded = FALSE;
 
 	gtk_label_set_text (GTK_LABEL (item->status), _("offline"));
+}
+
+gboolean
+gtkam_tree_item_get_online (GtkamTreeItem *item)
+{
+	g_return_val_if_fail (GTKAM_IS_TREE_ITEM (item), FALSE);
+
+	return (item->priv->online);
 }
 
 gboolean 
@@ -663,6 +682,6 @@ gtkam_tree_item_update (GtkamTreeItem *item)
 {
 	g_return_if_fail (GTKAM_IS_TREE_ITEM (item));
 
-	gtkam_tree_item_set_offline (item);
-	gtkam_tree_item_set_online (item);
+	gtkam_tree_item_set_online (item, FALSE);
+	gtkam_tree_item_set_online (item, TRUE);
 }

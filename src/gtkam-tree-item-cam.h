@@ -42,6 +42,6 @@ struct _GtkamTreeItemCamClass {
 };
 
 GtkType    gtkam_tree_item_cam_get_type (void);
-GtkWidget *gtkam_tree_item_cam_new      (GtkWidget *vbox);
+GtkWidget *gtkam_tree_item_cam_new      (void);
 
 #endif /* __GTKAM_TREE_ITEM_CAM_H__ */

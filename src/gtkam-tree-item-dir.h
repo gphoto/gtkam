@@ -42,6 +42,6 @@ struct _GtkamTreeItemDirClass {
 };
 
 GtkType    gtkam_tree_item_dir_get_type (void);
-GtkWidget *gtkam_tree_item_dir_new      (GtkWidget *vbox);
+GtkWidget *gtkam_tree_item_dir_new      (void);
 
 #endif /* __GTKAM_TREE_ITEM_DIR_H__ */

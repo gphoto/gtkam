@@ -23,7 +23,7 @@ dnl Check for gPhoto2 configuration
 AC_PATH_PROG(GPHOTO_CONFIG,gphoto2-config)
 if test -n "${GPHOTO_CONFIG}"; then
   CFLAGS="$CFLAGS `$GPHOTO_CONFIG --cflags` `gphoto2-port-config --cflags`"
-  LIBS="$LIBS `$GPHOTO_CONFIG --libs`"
+  LIBS="$LIBS `$GPHOTO_CONFIG --libs` `gphoto2-port-config --libs`"
 else
   AC_MSG_ERROR([
 ***

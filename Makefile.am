@@ -1,7 +1,9 @@
 ## Process this file with automake to produce Makefile.in
 # Or rather, run autogen.sh to set up everything else.
 
-SUBDIRS = art doc help omf-install packaging pixmaps po src test
+SUBDIRS = m4m art doc help omf-install packaging pixmaps po src test
+
+ACLOCAL_AMFLAGS = -I m4m
 
 gtkamdocdir = $(datadir)/doc/gtkam
 gtkamdoc_DATA = AUTHORS COPYING NEWS README TODO

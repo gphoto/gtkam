@@ -49,7 +49,7 @@ static const char **gtkam_frontend_version(GPVersionVerbosity verbose)
 #else
 		"no gimp (plugin for The Gimp)",
 #endif
-#ifdef HAVE_EXIF
+#ifdef HAVE_LIBEXIF
 		"exif (for displaying exif information)",
 #else
 		"no exif (for displaying exif information)",
@@ -76,7 +76,7 @@ static const char **gtkam_frontend_version(GPVersionVerbosity verbose)
 #else
 		"no gimp",
 #endif
-#ifdef HAVE_EXIF
+#ifdef HAVE_LIBEXIF
 		"exif",
 #else
 		"no exif",

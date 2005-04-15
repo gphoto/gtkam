@@ -704,7 +704,7 @@ action_info (gpointer callback_data, guint callback_action, GtkWidget *widget)
 			  G_CALLBACK (on_info_destroy), data);
 }
 
-#ifdef HAVE_EXIF
+#ifdef HAVE_LIBEXIF
 static void
 action_exif (gpointer callback_data, guint callback_action, GtkWidget *widget)
 {
@@ -877,7 +877,7 @@ static GtkItemFactoryEntry mi[] =
 	{N_("/View with.../Built-in viewer"), NULL, action_view, 0, NULL},
 	{"/sep0", NULL, NULL, 0, "<Separator>"},
 	{N_("/View file _properties"), NULL, action_info, 0, NULL},
-#ifdef HAVE_EXIF
+#ifdef HAVE_LIBEXIF
 	{N_("/View _EXIF data"), NULL, action_exif, 0, NULL},
 #endif
 	{"/sep1", NULL, NULL, 0, "<Separator>"},

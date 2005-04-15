@@ -1,9 +1,14 @@
-## Process this file with automake to produce Makefile.in
-# Or rather, run autogen.sh to set up everything else.
+########################################################################
+# Process this file with automake to produce Makefile.in
+########################################################################
 
 SUBDIRS = m4m art doc help omf-install packaging pixmaps po src test
 
 ACLOCAL_AMFLAGS = -I m4m
+
+
+########################################################################
+# Install a few support and doc files
 
 gtkamdocdir = $(datadir)/doc/gtkam
 gtkamdoc_DATA = AUTHORS COPYING NEWS README TODO
@@ -14,15 +19,17 @@ desktop_DATA = gtkam.desktop
 icondir = $(datadir)/pixmaps
 icon_DATA = gtkam.png
 
-INCLUDES = \
-       -DDATADIR=\""$(datadir)"\"
-
 EXTRA_DIST = gtkam.desktop gtkam.png
+
+
+########################################################################
+# Packaging convenience
+
+.PHONY: rpm cvs-tags
 
 if ENABLE_RPM
 
 # create RPM packages
-.PHONY: rpm
 rpm: Makefile
 	$(MAKE) dist
 	$(MAKE) -C packaging/rpm rpm
@@ -30,13 +37,12 @@ rpm: Makefile
 endif
 
 
-
-if MAINTAINER_MODE
+########################################################################
+# Maintainer's convenience
 
 # add CVS tags - used only by the project maintainer to tag the files of a
 # released version
-.PHONY: cvs-tags
 cvs-tags: Makefile
 	@echo cvs tag "@PACKAGE@-$$(echo '@VERSION@' | sed 's/\./_/g')"
 
-endif
+########################################################################

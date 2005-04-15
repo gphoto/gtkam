@@ -1,18 +1,17 @@
 ## Process this file with automake to produce Makefile.in
 
-INCLUDES =					\
- -I$(top_srcdir)/intl				\
- -W -Wall -Wno-unused -pedantic			\
- -DIMAGE_DIR=\"$(datadir)/images/gtkam\" 	\
- -DGTKAM_LOCALEDIR=\"$(datadir)/locale\"	\
- -DPACKAGE_DATA_DIR=\"$(datadir)/gtkam\"	\
- -DPACKAGE_SOURCE_DIR=\"$(top_srcdir)\"		\
- -DAPP_DATADIR=\"$(datadir)/\"		\
- $(EXIF_CFLAGS) $(GNOME_CFLAGS) $(GTKAM_CFLAGS)	\
- $(BONOBO_CFLAGS)				\
- $(GTKAM_GIMP_CFLAGS)
+MY_CPPFLAGS =				\
+	$(CPPFLAGS) $(AM_CPPFLAGS)	\
+	$(LIBEXIF_CFLAGS)		\
+	$(LIBEXIF_GTK_CFLAGS)		\
+	$(LIBGPHOTO2_CFLAGS)		\
+	$(GNOME_CFLAGS) 		\
+	$(GTK_CFLAGS)			\
+	$(BONOBO_CFLAGS)		\
+	$(GTKAM_GIMP_CFLAGS)
 
 noinst_LIBRARIES = libgtkam.a
+libgtkam_a_CPPFLAGS = $(MY_CPPFLAGS)
 libgtkam_a_SOURCES =					\
 	gdk-pixbuf-hacks.c	gdk-pixbuf-hacks.h  	\
 	gtkam-camera.c		gtkam-camera.h		\
@@ -41,22 +40,36 @@ libgtkam_a_SOURCES =					\
 	util.c			util.h
 
 bin_PROGRAMS = gtkam
-gtkam_SOURCES=					\
+gtkam_CPPFLAGS = $(MY_CPPFLAGS)
+gtkam_SOURCES =					\
 	gtkam-debug.c gtkam-debug.h 		\
 	gtkam-exif.c gtkam-exif.h 		\
 	gtkam-main.c gtkam-main.h 		\
 	i18n.h main.c
-gtkam_LDADD=						\
-	libgtkam.a					\
-	$(EXIF_LIBS) $(GTKAM_LIBS) $(BONOBO_LIBS)	\
-	$(GNOME_LIBS) $(INTLLIBS)
+gtkam_LDADD = \
+	libgtkam.a	\
+	$(LIBEXIF_LIBS) \
+	$(LIBEXIF_GTK_LIBS) \
+	$(LIBGPHOTO2_LIBS)	\
+	$(GTKAM_LIBS) 	\
+	$(BONOBO_LIBS)	\
+	$(GNOME_LIBS)	\
+	$(INTLLIBS)
 
 if HAVE_GIMP
 gtkam_gimp_libexecdir = $(libdir)/gimp/$(GIMP_VERSION)/plug-ins
 gtkam_gimp_libexec_PROGRAMS = gtkam-gimp
 gtkam_gimp_SOURCES = gtkam-gimp.c
-gtkam_gimp_LDADD =					\
-	$(GTKAM_GIMP_LIBS) $(EXIF_LIBS) $(BONOBO_LIBS)	\
-	$(GNOME_LIBS) $(INTLLIBS)			\
+gtkam_gimp_CPPFLAGS = \
+	$(MY_CPPFLAGS)		\
+	$(GIMP_CFLAGS)
+gtkam_gimp_LDADD = \
+	$(GIMP_LIBS)	\
+	$(LIBEXIF_LIBS)		\
+	$(LIBEXIF_GTK_LIBS) \
+	$(LIBGPHOTO2_LIBS)	\
+	$(BONOBO_LIBS)		\
+	$(GNOME_LIBS)		\
+	$(INTLLIBS)		\
 	libgtkam.a
 endif

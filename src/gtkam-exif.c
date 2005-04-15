@@ -30,7 +30,7 @@
 #include <gtk/gtklabel.h>
 #include <gtk/gtkstock.h>
 
-#ifdef HAVE_EXIF
+#ifdef HAVE_LIBEXIF_GTK
 #  include <libexif-gtk/gtk-exif-browser.h>
 #endif
 
@@ -117,7 +117,7 @@ gtkam_exif_new (GtkamCamera *camera, const gchar *folder, const gchar *file)
 {
 	GtkamExif *exif;
 	GtkWidget *button;
-#ifdef HAVE_EXIF
+#ifdef HAVE_LIBEXIF
 	GtkWidget *dialog, *browser, *c;
 	CameraFile *cfile;
 	int result;
@@ -130,7 +130,7 @@ gtkam_exif_new (GtkamCamera *camera, const gchar *folder, const gchar *file)
 
 	g_return_val_if_fail (GTKAM_IS_CAMERA (camera), NULL);
 
-#ifdef HAVE_EXIF
+#ifdef HAVE_LIBEXIF
 	/* Get exif data */
 	gp_file_new (&cfile);
 	c = gtkam_cancel_new (
@@ -180,7 +180,7 @@ gtkam_exif_new (GtkamCamera *camera, const gchar *folder, const gchar *file)
 
 	exif = g_object_new (GTKAM_TYPE_EXIF, NULL);
 
-#ifdef HAVE_EXIF
+#ifdef HAVE_LIBEXIF_GTK
 	browser = gtk_exif_browser_new ();
 	gtk_exif_browser_set_data (GTK_EXIF_BROWSER (browser), edata);
 	exif_data_unref (edata);

@@ -32,10 +32,17 @@ AM_CPPFLAGS="$AM_CPPFLAGS -I\$(top_srcdir)/src"
 GP_CONFIG_MSG([Features])
 
 
+# ----------------------------------------------------------------------
+# References to external resources (web sites, mailing listes, etc.)
+# ----------------------------------------------------------------------
+
+GP_REFERENCES()dnl
+
+
 dnl ---------------------------------------------------------------------------
 dnl i18n support
 dnl ---------------------------------------------------------------------------
-GP_GETTEXT_HACK([],[Lutz Müller and others])
+GP_GETTEXT_HACK([],[Lutz Müller and others],[${MAIL_GPHOTO_TRANSLATION}])
 ALL_LINGUAS="cs da de es fr hu it ja nb pt_BR pt_PT ru sl sv uk"
 AM_GNU_GETTEXT_VERSION([0.14.1])
 AM_GNU_GETTEXT([external])

@@ -29,18 +29,15 @@
 #include <gdk/gdkkeysyms.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 
-#include <gtk/gtkitemfactory.h>
-#include <gtk/gtkcheckmenuitem.h>
+#include <gtk/gtkactiongroup.h>
+#include <gtk/gtkuimanager.h>
 #include <gtk/gtkprogressbar.h>
 #include <gtk/gtkstatusbar.h>
 #include <gtk/gtktoolbar.h>
-#include <gtk/gtkmenuitem.h>
 #include <gtk/gtklabel.h>
-#include <gtk/gtkmenu.h>
 #include <gtk/gtkvbox.h>
 #include <gtk/gtkhpaned.h>
 #include <gtk/gtkmain.h>
-#include <gtk/gtkmenubar.h>
 #include <gtk/gtkscrolledwindow.h>
 #include <gtk/gtkcheckbutton.h>
 #include <gtk/gtkfilesel.h>
@@ -75,15 +72,10 @@
 struct _GtkamMainPrivate
 {
 	GtkWidget *tree, *list;
-	GtkItemFactory *factory;
-
-	GtkWidget *menu_view_thumbnails, *toolbar_button_thumbnails;
-
-	GtkWidget *item_delete, *item_delete_all;
-
+	GtkUIManager *ui_manager;
 	GtkWidget *status;
-
 	GtkWidget *vbox;
+	gboolean view_thumbs;
 };
 
 #define PARENT_TYPE GTK_TYPE_WINDOW
@@ -162,47 +154,30 @@ gtkam_main_update_sensitivity (GtkamMain *m)
 	s = gtkam_list_count_selected (GTKAM_LIST (m->priv->list));
 
 	gtk_widget_set_sensitive (
-		gtk_item_factory_get_widget (m->priv->factory, "/Select/None"),
+		gtk_ui_manager_get_widget (m->priv->ui_manager, "/ui/MainMenu/SelectMenu/SelectNone"),
 		(s != 0));
 	gtk_widget_set_sensitive (
-		gtk_item_factory_get_widget (m->priv->factory,
-			"/File/Delete Photos/Selected"), (s != 0));
+		gtk_ui_manager_get_widget (m->priv->ui_manager, "/ui/MainMenu/FileMenu/DeletePhotos/DeleteSelected"),
+		(s != 0));
 	gtk_widget_set_sensitive (
-		gtk_item_factory_get_widget (m->priv->factory,
-			"/File/Save Photos/Selected"), (s != 0));
+		gtk_ui_manager_get_widget (m->priv->ui_manager, "/ui/MainMenu/FileMenu/SavePhotos/SaveSelected"),
+		(s != 0));
 	gtk_widget_set_sensitive (
-		gtk_item_factory_get_widget (m->priv->factory,
-			"/File/Delete Photos/All"), (i != 0));
+		gtk_ui_manager_get_widget (m->priv->ui_manager, "/ui/MainMenu/FileMenu/DeletePhotos/DeleteAll"),
+		(i != 0));
 	gtk_widget_set_sensitive (
-		gtk_item_factory_get_widget (m->priv->factory,
-			"/File/Save Photos/All"), (i != 0));
+		gtk_ui_manager_get_widget (m->priv->ui_manager, "/ui/MainMenu/FileMenu/SavePhotos/SaveAll"),
+		(i != 0));
 	gtk_widget_set_sensitive (
-		gtk_item_factory_get_widget (m->priv->factory, "/Select/All"),
+		gtk_ui_manager_get_widget (m->priv->ui_manager, "/ui/MainMenu/SelectMenu/SelectAll"),
 		(s != i));
 	gtk_widget_set_sensitive (
-		gtk_item_factory_get_widget (m->priv->factory,
-			"/Select/Inverse"), (i != 0));
+		gtk_ui_manager_get_widget (m->priv->ui_manager, "/ui/MainMenu/SelectMenu/SelectInverse"),
+		(i != 0));
 }
 
 static void
-on_thumbnails_toggled (GtkToggleButton *toggle, GtkamMain *m)
-{
-	if (toggle->active) {
-		gtk_check_menu_item_set_active (
-			GTK_CHECK_MENU_ITEM (m->priv->menu_view_thumbnails),
-			TRUE);
-		gtkam_list_show_thumbnails (GTKAM_LIST (m->priv->list));
-	} else {
-		gtk_check_menu_item_set_active (
-			GTK_CHECK_MENU_ITEM (m->priv->menu_view_thumbnails),
-			FALSE);
-		gtkam_list_hide_thumbnails (GTKAM_LIST (m->priv->list));
-	}
-}
-
-static void
-action_save_sel (gpointer callback_data, guint callback_action,
-		GtkWidget *widget)
+action_save_sel (GtkAction *action, gpointer callback_data)
 {
 	GtkamMain *m = GTKAM_MAIN (callback_data);
 
@@ -210,8 +185,7 @@ action_save_sel (gpointer callback_data, guint callback_action,
 }
 
 static void
-action_save_all (gpointer callback_data, guint callback_action,
-		GtkWidget *widget)
+action_save_all (GtkAction *action, gpointer callback_data)
 {
 	GtkamMain *m = GTKAM_MAIN (callback_data);
 
@@ -219,15 +193,13 @@ action_save_all (gpointer callback_data, guint callback_action,
 }
 
 static void
-action_quit (gpointer callback_data, guint callback_action,
-		GtkWidget *widget)
+action_quit (GtkAction *action, gpointer callback_data)
 {
 	gtk_main_quit ();
 }
 
 static void
-action_delete_sel (gpointer callback_data, guint callback_action,
-		GtkWidget *widget)
+action_delete_sel (GtkAction *action, gpointer callback_data)
 {
 	GtkamMain *m = GTKAM_MAIN (callback_data);
 
@@ -235,8 +207,7 @@ action_delete_sel (gpointer callback_data, guint callback_action,
 }
 
 static void
-action_delete_all (gpointer callback_data, guint callback_action,
-		GtkWidget *widget)
+action_delete_all (GtkAction *action, gpointer callback_data)
 {
 	GtkamMain *m = GTKAM_MAIN (callback_data);
 
@@ -244,8 +215,7 @@ action_delete_all (gpointer callback_data, guint callback_action,
 }
 
 static void
-action_select_all (gpointer callback_data, guint callback_action,
-		GtkWidget *widget)
+action_select_all (GtkAction *action, gpointer callback_data)
 {
 	GtkTreeSelection *s;
 	GtkamMain *m = GTKAM_MAIN (callback_data);
@@ -256,8 +226,7 @@ action_select_all (gpointer callback_data, guint callback_action,
 }
 
 static void
-action_select_none (gpointer callback_data, guint callback_action,
-		GtkWidget *widget)
+action_select_none (GtkAction *action, gpointer callback_data)
 {
 	GtkTreeSelection *s;
 	GtkamMain *m = GTKAM_MAIN (callback_data);
@@ -284,8 +253,7 @@ select_inverse_foreach_func (GtkTreeModel *model, GtkTreePath *path,
 }
 
 static void
-action_select_inverse (gpointer callback_data, guint callback_action,
-		GtkWidget *widget)
+action_select_inverse (GtkAction *action, gpointer callback_data)
 {
 	GtkTreeModel *model;
 	GtkamMain *m = GTKAM_MAIN (callback_data);
@@ -295,7 +263,7 @@ action_select_inverse (gpointer callback_data, guint callback_action,
 	gtkam_main_update_sensitivity (m);
 }
 
-	static void
+static void
 on_camera_selected (GtkamChooser *chooser, GtkamCamera *camera, GtkamMain *m)
 {
 	g_return_if_fail (GTKAM_IS_CHOOSER (chooser));
@@ -306,8 +274,7 @@ on_camera_selected (GtkamChooser *chooser, GtkamCamera *camera, GtkamMain *m)
 }
 
 static void
-action_add_camera (gpointer callback_data, guint callback_action,
-		GtkWidget *widget)
+action_add_camera (GtkAction *action, gpointer callback_data)
 {
 	GtkWidget *dialog;
 	GtkamMain *m = GTKAM_MAIN (callback_data);
@@ -320,8 +287,7 @@ action_add_camera (gpointer callback_data, guint callback_action,
 }
 
 static void
-action_rescan (gpointer callback_data, guint callback_action,
-		GtkWidget *widget)
+action_rescan (GtkAction *action, gpointer callback_data)
 {
 	GtkamMain *m = GTKAM_MAIN (callback_data);
 
@@ -332,30 +298,23 @@ action_rescan (gpointer callback_data, guint callback_action,
 }
 
 static void
-action_view_thumbnails (gpointer callback_data, guint callback_action,
-			GtkWidget *widget)
+action_view_thumbnails (GtkAction *action, gpointer callback_data)
 {
 	GtkamMain *m = GTKAM_MAIN (callback_data);
 
 	if (!m->priv->list)
 		return;
 
-	if (gtk_check_menu_item_get_active (GTK_CHECK_MENU_ITEM (widget))) {
-		gtk_toggle_button_set_active (
-			GTK_TOGGLE_BUTTON (m->priv->toolbar_button_thumbnails),
-			TRUE);
+	m->priv->view_thumbs = !m->priv->view_thumbs;
+
+	if (m->priv->view_thumbs)
 		gtkam_list_show_thumbnails (GTKAM_LIST (m->priv->list));
-	} else {
-		gtk_toggle_button_set_active (
-			GTK_TOGGLE_BUTTON (m->priv->toolbar_button_thumbnails),
-			FALSE);
+	else
 		gtkam_list_hide_thumbnails (GTKAM_LIST (m->priv->list));
-	}
 }
 
 static void
-action_zoom_in (gpointer callback_data, guint callback_action,
-		GtkWidget *widget)
+action_zoom_in (GtkAction *action, gpointer callback_data)
 {
 	GtkamMain *m = GTKAM_MAIN (callback_data);
 
@@ -363,8 +322,7 @@ action_zoom_in (gpointer callback_data, guint callback_action,
 }
 
 static void
-action_zoom_out (gpointer callback_data, guint callback_action,
-		 GtkWidget *widget)
+action_zoom_out (GtkAction *action, gpointer callback_data)
 {
 	GtkamMain *m = GTKAM_MAIN (callback_data);
 
@@ -372,8 +330,7 @@ action_zoom_out (gpointer callback_data, guint callback_action,
 }
 
 static void
-action_zoom_100 (gpointer callback_data, guint callback_action,
-		 GtkWidget *widget)
+action_zoom_100 (GtkAction *action, gpointer callback_data)
 {
 	GtkamMain *m = GTKAM_MAIN (callback_data);
 
@@ -430,8 +387,7 @@ on_new_dialog (GtkObject *object, GtkWidget *dialog, GtkamMain *m)
 #ifdef HAVE_GNOME
 
 static void
-action_help (gpointer callback_data, guint callback_action,
-	     GtkWidget *widget)
+action_help (GtkAction *action, gpointer callback_data)
 {
 	GError *e = NULL;
 	GtkamMain *m = GTKAM_MAIN (callback_data);
@@ -449,8 +405,7 @@ action_help (gpointer callback_data, guint callback_action,
 #endif
 
 static void
-action_debug (gpointer callback_data, guint callback_action,
-	      GtkWidget *widget)
+action_debug (GtkAction *action, gpointer callback_data)
 {
 	GtkamMain *m = GTKAM_MAIN (callback_data);
 	GtkWidget *d;
@@ -463,8 +418,7 @@ action_debug (gpointer callback_data, guint callback_action,
 #define CHECK_NULL(x) { if (x == NULL) { return; } }
 
 static void
-action_about (gpointer callback_data, guint callback_action,
-	      GtkWidget *widget)
+action_about (GtkAction *action, gpointer callback_data)
 {
 	GtkamMain *m = GTKAM_MAIN (callback_data);
 	GtkWidget *d;
@@ -590,73 +544,87 @@ gtkam_main_load (GtkamMain *m)
 	gtkam_tree_load (GTKAM_TREE (m->priv->tree));
 }
 
-static void
-on_zoom_out_clicked (GtkButton *button, GtkamMain *m)
-{
-	gtkam_list_zoom_out (GTKAM_LIST (m->priv->list));
-}
-
-static void
-on_zoom_100_clicked (GtkButton *button, GtkamMain *m)
-{
-	gtkam_list_zoom_100 (GTKAM_LIST (m->priv->list));
-}
-
-static void
-on_zoom_in_clicked (GtkButton *button, GtkamMain *m)
-{
-	gtkam_list_zoom_in (GTKAM_LIST (m->priv->list));
-}
-
-static void
-on_rescan_clicked (GtkButton *button, GtkamMain *m)
-{
-	gtk_tree_store_clear (GTK_TREE_STORE (
-			gtk_tree_view_get_model (GTK_TREE_VIEW (m->priv->tree))));
-	gtkam_tree_load (GTKAM_TREE (m->priv->tree));
-}
-
-static GtkItemFactoryEntry mi[] =
-{
-	{N_("/_File"), NULL, 0, 0, "<Branch>"},
-	{N_("/File/_Save Photos"), NULL, 0, 0, "<Branch>"},
-	{N_("/File/Save Photos/_Selected"), NULL, action_save_sel, 0,
-					"<StockItem>", GTK_STOCK_SAVE},
-	{N_("/File/Save Photos/_All"), NULL, action_save_all, 0,
-					"<StockItem>", GTK_STOCK_SAVE},
-	{N_("/File/_Delete Photos"), NULL, 0, 0, "<Branch>"},
-	{N_("/File/Delete Photos/_Selected"), NULL, action_delete_sel, 0,
-					"<StockItem>", GTK_STOCK_DELETE},
-	{N_("/File/Delete Photos/_All"), NULL, action_delete_all, 0,
-					"<StockItem>", GTK_STOCK_DELETE},
-	{"/File/sep1", NULL, 0, 0, "<Separator>"},
-	{N_("/File/_Quit"), NULL, action_quit, 0, "<StockItem>",
-						GTK_STOCK_QUIT},
-	{N_("/_View"), NULL, 0, 0, "<Branch>"},
-	{N_("/View/_View Thumbnails"), NULL, action_view_thumbnails, 0,
-						"<ToggleItem>", NULL},
-	{"/View/sep2", NULL, 0, 0, "<Separator>"},
-	{N_("/View/Zoom _In"), NULL, action_zoom_in, 0, "<StockItem>",
-							GTK_STOCK_ZOOM_IN},
-	{N_("/View/Zoom _100"), NULL, action_zoom_100, 0, "<StockItem>",
-							GTK_STOCK_ZOOM_100},
-	{N_("/View/Zoom _Out"), NULL, action_zoom_out, 0, "<StockItem>",
-							GTK_STOCK_ZOOM_OUT},
-	{N_("/_Select"), NULL, 0, 0, "<Branch>"},
-	{N_("/Select/_All"), NULL, action_select_all, 0, NULL},
-	{N_("/Select/_Inverse"), NULL, action_select_inverse, 0, NULL},
-	{N_("/Select/_None"), NULL, action_select_none, 0, NULL},
-	{N_("/_Camera"), NULL, 0, 0, "<Branch>"},
-	{N_("/Camera/_Add Camera..."), NULL, action_add_camera, 0, NULL},
-	{N_("/Camera/_Rescan"), NULL, action_rescan, 0, "<StockItem>", GTK_STOCK_REFRESH},
-	{N_("/_Help"), NULL, 0, 0, "<Branch>"},
+/* Normal menu items */
+static GtkActionEntry entries[] = {
+	{ "FileMenu", NULL, N_("_File") },
+	{ "SavePhotos", NULL, N_("_Save Photos") },
+	{ "DeletePhotos", NULL, N_("_Delete Photos") },
+	{ "SaveSelected", GTK_STOCK_SAVE, N_("_Selected"), NULL, NULL, G_CALLBACK (action_save_sel) },
+	{ "SaveAll", GTK_STOCK_SAVE, N_("_All"), NULL, NULL, G_CALLBACK (action_save_all) },
+	{ "DeleteSelected", GTK_STOCK_DELETE, N_("_Selected"), NULL, NULL, G_CALLBACK (action_delete_sel) },
+	{ "DeleteAll", GTK_STOCK_DELETE, N_("_All"), NULL, NULL, G_CALLBACK (action_delete_all) },
+	{ "Quit", GTK_STOCK_QUIT, N_("_Quit"), NULL, NULL, G_CALLBACK (action_quit) },
+	{ "ViewMenu", NULL, N_("_View") },
+	{ "ZoomIn", GTK_STOCK_ZOOM_IN, N_("Zoom _In"), NULL, NULL, G_CALLBACK (action_zoom_in) },
+	{ "Zoom100", GTK_STOCK_ZOOM_100, N_("Zoom _100"), NULL, NULL, G_CALLBACK (action_zoom_100) },
+	{ "ZoomOut", GTK_STOCK_ZOOM_OUT, N_("Zoom _Out"), NULL, NULL, G_CALLBACK (action_zoom_out) },
+	{ "SelectMenu", NULL, N_("_Select") },
+	{ "SelectAll", NULL, N_("_All"), NULL, NULL, G_CALLBACK (action_select_all) },
+	{ "SelectInverse", NULL, N_("_Inverse"), NULL, NULL, G_CALLBACK (action_select_inverse) },
+	{ "SelectNone", NULL, N_("_None"), NULL, NULL, G_CALLBACK (action_select_none) },
+	{ "CameraMenu", NULL, N_("_Camera") },
+	{ "AddCamera", NULL, N_("_Add Camera..."), NULL, NULL, G_CALLBACK (action_add_camera) },
+	{ "Rescan", GTK_STOCK_REFRESH, N_("_Rescan"), NULL, NULL, G_CALLBACK (action_rescan) },
+	{ "HelpMenu", NULL, N_("_Help") },
 #ifdef HAVE_GNOME
-	{N_("/Help/_Contents"), NULL, action_help, 0, "<StockItem>",
-						  GTK_STOCK_HELP},
+	{ "Help", GTK_STOCK_HELP, N_("_Contents"), NULL, NULL, G_CALLBACK (action_help) },
 #endif
-	{N_("/Help/_Debug"), NULL, action_debug, 0, NULL, NULL},
-	{N_("/Help/_About"), NULL, action_about, 0, NULL, NULL},
+	{ "Debug", NULL, N_("_Debug"), NULL, NULL, G_CALLBACK (action_debug) },
+	{ "About", GTK_STOCK_ABOUT, N_("_About"), NULL, NULL, G_CALLBACK (action_about) }
 };
+
+/* Toggle menu items */
+static GtkToggleActionEntry toggle_entries[] = {
+	{ "ViewThumbnails", NULL, N_("_View Thumbnails"), NULL, NULL, G_CALLBACK (action_view_thumbnails), TRUE }
+};
+
+static const char *ui_description =
+"<ui>"
+"	<menubar name='MainMenu'>"
+"		<menu action='FileMenu'>"
+"			<menu action='SavePhotos'>"
+"				<menuitem action='SaveSelected'/>"
+"				<menuitem action='SaveAll'/>"
+"			</menu>"
+"			<menu action='DeletePhotos'>"
+"				<menuitem action='DeleteSelected'/>"
+"				<menuitem action='DeleteAll'/>"
+"			</menu>"
+"			<separator/>"
+"			<menuitem action='Quit'/>"
+"		</menu>"
+"		<menu action='ViewMenu'>"
+"			<menuitem action='ViewThumbnails'/>"
+"			<separator/>"
+"			<menuitem action='ZoomIn'/>"
+"			<menuitem action='Zoom100'/>"
+"			<menuitem action='ZoomOut'/>"
+"		</menu>"
+"		<menu action='SelectMenu'>"
+"			<menuitem action='SelectAll'/>"
+"			<menuitem action='SelectInverse'/>"
+"			<menuitem action='SelectNone'/>"
+"		</menu>"
+"		<menu action='CameraMenu'>"
+"			<menuitem action='Rescan'/>"
+"			<menuitem action='AddCamera'/>"
+"		</menu>"
+"		<menu action='HelpMenu'>"
+#ifdef HAVE_GNOME
+"			<menuitem action='Help'/>"
+#endif
+"			<menuitem action='Debug'/>"
+"			<menuitem action='About'/>"
+"		</menu>"
+"	</menubar>"
+"	<toolbar name='MainToolbar'>"
+"		<toolitem action='ViewThumbnails'/>"
+"		<toolitem action='Rescan'/>"
+"		<toolitem action='ZoomIn'/>"
+"		<toolitem action='Zoom100'/>"
+"		<toolitem action='ZoomOut'/>"
+"	</toolbar>"
+"</ui>";
 
 #ifdef ENABLE_NLS
 
@@ -673,9 +641,10 @@ gtkam_main_new (void)
 {
 	GtkamMain *m;
 	GdkPixbuf *pixbuf;
-	GtkAccelGroup *ag;
-	GtkItemFactory *item_factory;
-	GtkWidget *widget, *vbox, *scrolled, *hpaned, *i, *t;
+	GtkActionGroup *action_group;
+	GtkUIManager *ui_manager;
+	GtkAccelGroup *accel_group;
+	GtkWidget *widget, *vbox, *scrolled, *hpaned, *t;
 
 	m = g_object_new (GTKAM_TYPE_MAIN, NULL);
 	gtk_window_set_title (GTK_WINDOW (m), PACKAGE);
@@ -683,87 +652,34 @@ gtkam_main_new (void)
 	gtk_window_set_icon (GTK_WINDOW (m), pixbuf);
 	gdk_pixbuf_unref (pixbuf);
 
+	m->priv->view_thumbs = TRUE;
+
 	vbox = gtk_vbox_new (FALSE, 1);
 	gtk_widget_show (vbox);
 	gtk_container_add (GTK_CONTAINER (m), vbox);
 
 	/* Menu */
-	ag = gtk_accel_group_new ();
-	item_factory = gtk_item_factory_new (GTK_TYPE_MENU_BAR, "<main>", ag);
-#ifdef ENABLE_NLS
-	gtk_item_factory_set_translate_func (GTK_ITEM_FACTORY (item_factory),
-					translate_func, NULL, NULL);
-#endif
-	g_object_set_data_full (G_OBJECT (m), "<main>", item_factory,
-				(GDestroyNotify) g_object_unref);
-	gtk_window_add_accel_group (GTK_WINDOW (m), ag);
-	gtk_item_factory_create_items (item_factory, G_N_ELEMENTS (mi), mi, m);
-	m->priv->menu_view_thumbnails = gtk_item_factory_get_widget (
-			item_factory, "/View/View Thumbnails");
-	gtk_check_menu_item_set_active (
-		GTK_CHECK_MENU_ITEM (m->priv->menu_view_thumbnails), TRUE);
-	widget = gtk_item_factory_get_widget (item_factory, "<main>");
+	action_group = gtk_action_group_new ("MenuActions");
+	gtk_action_group_add_actions (action_group, entries, G_N_ELEMENTS (entries), m);
+	gtk_action_group_add_toggle_actions (action_group, toggle_entries, G_N_ELEMENTS (toggle_entries), m);
+	gtk_action_group_set_translate_func (action_group, translate_func, NULL, NULL);
+
+	ui_manager = gtk_ui_manager_new ();
+	gtk_ui_manager_insert_action_group (ui_manager, action_group, 0);
+
+	accel_group = gtk_ui_manager_get_accel_group (ui_manager);
+	gtk_window_add_accel_group (GTK_WINDOW (m), accel_group);
+
+	gtk_ui_manager_add_ui_from_string(ui_manager, ui_description, -1, NULL);
+	widget = gtk_ui_manager_get_widget (ui_manager, "/MainMenu");
 	gtk_widget_show (widget);
 	gtk_box_pack_start (GTK_BOX (vbox), widget, FALSE, FALSE, 0);
-	m->priv->factory = GTK_ITEM_FACTORY (item_factory);
+	m->priv->ui_manager = GTK_UI_MANAGER (ui_manager);
 
 	/* Toolbar */
-	t = gtk_toolbar_new ();
-	gtk_widget_show (t);
-	gtk_toolbar_set_icon_size (GTK_TOOLBAR (t),
-				   GTK_ICON_SIZE_SMALL_TOOLBAR);
+	t = gtk_ui_manager_get_widget (ui_manager, "/MainToolbar");
+	gtk_toolbar_set_style (GTK_TOOLBAR (t), GTK_TOOLBAR_BOTH);
 	gtk_box_pack_start (GTK_BOX (vbox), t, FALSE, FALSE, 0);
-	i = gtk_check_button_new_with_label (_("View Thumbnails"));
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (i), TRUE);
-	gtk_widget_show (i);
-	m->priv->toolbar_button_thumbnails = i;
-	gtk_toolbar_append_widget (GTK_TOOLBAR (t), i, NULL, NULL);
-	g_signal_connect (G_OBJECT (i), "toggled",
-			  G_CALLBACK (on_thumbnails_toggled), m);
-	gtk_toolbar_insert_stock (GTK_TOOLBAR (t), GTK_STOCK_REFRESH,
-		NULL, NULL, G_CALLBACK (on_rescan_clicked), m, -1);
-	gtk_toolbar_insert_stock (GTK_TOOLBAR (t), GTK_STOCK_ZOOM_IN,
-		NULL, NULL, G_CALLBACK (on_zoom_in_clicked), m, -1);
-	gtk_toolbar_insert_stock (GTK_TOOLBAR (t), GTK_STOCK_ZOOM_100,
-		NULL, NULL, G_CALLBACK (on_zoom_100_clicked), m, -1);
-	gtk_toolbar_insert_stock (GTK_TOOLBAR (t), GTK_STOCK_ZOOM_OUT,
-		NULL, NULL, G_CALLBACK (on_zoom_out_clicked), m, -1);
-
-#if 0
-	/*
-	 * Help menu
-	 */
-	item = gtk_menu_item_new_with_label ("");
-	gtk_widget_show (item);
-	key = gtk_label_parse_uline (GTK_LABEL (GTK_BIN (item)->child),
-				     _("_Help"));
-	gtk_widget_add_accelerator (item, "activate_item", accel_group,
-				    key, 0, 0);
-	gtk_container_add (GTK_CONTAINER (menubar), item);
-
-	menu = gtk_menu_new ();
-	gtk_menu_item_set_submenu (GTK_MENU_ITEM (item), menu);
-	accels = gtk_menu_ensure_uline_accel_group (GTK_MENU (menu));
-
-	item = gtk_menu_item_new_with_label ("");
-	gtk_widget_show (item);
-	key = gtk_label_parse_uline (GTK_LABEL (GTK_BIN (item)->child),
-				     _("_Debug..."));
-	gtk_widget_add_accelerator (item, "activate_item", accels, key, 0, 0);
-	gtk_container_add (GTK_CONTAINER (menu), item);
-	gtk_signal_connect (GTK_OBJECT (item), "activate",
-			    GTK_SIGNAL_FUNC (on_debug_activate), m);
-
-	item = gtk_menu_item_new_with_label ("");
-	gtk_widget_show (item);
-	key = gtk_label_parse_uline (GTK_LABEL (GTK_BIN (item)->child),
-				     _("_About..."));
-	gtk_widget_add_accelerator (item, "activate_item", accels, key, 0, 0);
-	gtk_container_add (GTK_CONTAINER (menu), item);
-	gtk_signal_connect (GTK_OBJECT (item), "activate",
-			    GTK_SIGNAL_FUNC (on_about_activate), m);
-
-#endif
 
 	/*
 	 * Context information

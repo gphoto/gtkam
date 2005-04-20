@@ -1,3 +1,7 @@
+2005-04-20  Andrew Burton <adburton@users.sourceforge.net>
+
+	* src/gtkam-main.c: Replace deprecated GtkMenuItems with GtkActionItems
+
 2005-04-14 Hans Ulrich Niedermann <gp@n-dimensional.de>
 
 	* */configure.in, */Makefile.am, ...: updated build system.

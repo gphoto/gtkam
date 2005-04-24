@@ -408,7 +408,7 @@ gtkam_info_new (GtkamCamera *camera, const gchar *folder, const gchar *name)
 			gtk_table_attach (GTK_TABLE (page), label,
 					  0, 1, 3, 4, GTK_FILL, 0, 0, 0);
 			gtk_misc_set_alignment (GTK_MISC (label), 0, 0);
-			msg = g_strdup_printf (_("%iK (%li bytes)"),
+			msg = g_strdup_printf (_("%liK (%li bytes)"),
 						info->priv->info.file.size/1000,
 						info->priv->info.file.size);
 			label = gtk_label_new (msg);
@@ -495,9 +495,9 @@ gtkam_info_new (GtkamCamera *camera, const gchar *folder, const gchar *name)
                         gtk_table_attach (GTK_TABLE (page), label,
                                           0, 1, 1, 2, GTK_FILL, 0, 0, 0);
 			gtk_misc_set_alignment (GTK_MISC (label), 0, 0);
-                        msg = g_strdup_printf ("%iK (%li bytes)",
-												(info->priv->info.preview.size/1000),
-                                                info->priv->info.preview.size);
+                        msg = g_strdup_printf ("%liK (%li bytes)",
+						(info->priv->info.preview.size/1000),
+						info->priv->info.preview.size);
                         label = gtk_label_new (msg);
                         g_free (msg);
                         gtk_widget_show (label);
@@ -544,7 +544,8 @@ gtkam_info_new (GtkamCamera *camera, const gchar *folder, const gchar *name)
                         gtk_table_attach (GTK_TABLE (page), label,
                                           0, 1, 1, 2, GTK_FILL, 0, 0, 0);
 			gtk_misc_set_alignment (GTK_MISC (label), 0, 0);
-                        msg = g_strdup_printf (_("%iK (%li bytes)"),
+                        msg = g_strdup_printf (_("%liK (%li bytes)"),
+                                                info->priv->info.audio.size/1000,
                                                 info->priv->info.audio.size);
                         label = gtk_label_new (msg);
                         g_free (msg);

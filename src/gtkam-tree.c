@@ -25,6 +25,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <libgen.h>
 
 #include <gtk/gtkvbox.h>
 #include <gtk/gtkhbox.h>
@@ -48,6 +49,8 @@
 #include <gphoto2/gphoto2-setting.h>
 #include <gphoto2/gphoto2-camera.h>
 
+#include "util.h"
+
 #include "gtkam-camera.h"
 #include "gtkam-chooser.h"
 #include "gtkam-close.h"
@@ -56,6 +59,7 @@
 #include "gtkam-status.h"
 #include "gtkam-mkdir.h"
 #include "gtkam-preview.h"
+#include "gtkam-cancel.h"
 
 struct _GtkamTreePrivate
 {
@@ -560,6 +564,317 @@ action_rmdir (gpointer callback_data, guint callback_action,
 	gtk_object_destroy (GTK_OBJECT (s));
 }
 
+typedef struct _GtkamTreeDownloadData GtkamTreeDownloadData;
+struct _GtkamTreeDownloadData {
+	GtkWidget *fsel;
+	GtkamTree *tree;
+	GtkTreeIter *iter;
+};
+
+static void
+on_download_destroy (GtkObject *object, GtkamTreeDownloadData *dd)
+{
+	gtk_tree_iter_free (dd->iter);
+	g_free (dd);
+}
+
+static void
+on_download_cancel_clicked (GtkButton *button, GtkFileSelection *fsel)
+{
+	gtk_object_destroy (GTK_OBJECT (fsel));
+}
+
+static gchar *
+tree_concat_dir_and_file (const gchar *dirname, const gchar *filename)
+{
+	gchar *full_path;
+
+	if (!strcmp (dirname, "/"))
+		full_path = g_strdup_printf ("/%s", filename);
+	else if (dirname[strlen (dirname) - 1] == '/')
+		full_path = g_strdup_printf ("%s%s", dirname, filename);
+	else
+		full_path = g_strdup_printf ("%s/%s", dirname, filename);
+	return (full_path);
+}
+
+static int
+tree_save_file (CameraFile *file, const char *dest_path, const char *name,
+		GtkWindow *save)
+{
+	gchar *full_path, *msg;
+	GtkWidget *dialog;
+	int result;
+
+	/* Use filename provided by the CameraFile */
+	full_path = tree_concat_dir_and_file (dest_path, name);
+
+	/* FIXME Check which is user, and prompt the user */
+	if (file_exists (full_path)) {
+		msg = g_strdup_printf (_("The file '%s' already exists."),
+				       full_path);
+		dialog = gtkam_error_new (GP_ERROR_FILE_EXISTS, NULL,
+					  GTK_WIDGET (save), msg);
+		gtk_widget_show (dialog);
+		g_free (msg);
+		g_free (full_path);
+		return -1;
+	}
+
+	/* FIXME Check for sufficient disk space for this file, or
+	   calculate total disk space required for all files before
+	   save process starts */
+
+	result = gp_file_save (file, full_path);
+	if (result < 0) {
+		dialog = gtkam_error_new (result, NULL, GTK_WIDGET (save),
+				_("Could not save file to '%s'."), full_path);
+		gtk_widget_show (dialog);
+	}
+
+	g_free (full_path);
+	
+	return result;
+}
+
+static int
+tree_get_file (GtkamCamera *camera,
+	       const gchar *dest_path, const gchar *folder, const gchar *name,
+	       GtkamContext *context, GtkWindow *save)
+{
+	int result;
+	GtkWidget *dialog;
+	CameraFile *file;
+
+	gp_file_new (&file);
+	result = gp_camera_file_get (camera->camera, folder, name,
+				     GP_FILE_TYPE_NORMAL, file,
+				     context->context);
+	if (camera->multi)
+		gp_camera_exit (camera->camera, NULL);
+	switch (result) {
+	case GP_OK:
+		result = GP_OK;
+		tree_save_file (file, dest_path, name, save);
+		break;
+	case GP_ERROR_CANCEL:
+		break;
+	default:
+		dialog = gtkam_error_new (result, context, GTK_WIDGET (save),
+					  _("Could not get '%s' "
+					  "from folder '%s'."), name, folder);
+		gtk_widget_show (dialog);
+	}
+	gp_file_unref (file);
+
+	return result;
+}
+
+static int
+tree_save_dir(GtkamCamera *camera, GtkamTree *tree,
+	      const gchar *path, const gchar *folder, GtkWindow *save)
+{
+	GtkWidget *s, *dialog;
+	const gchar *name;
+	gchar *new_path;
+	CameraList flist, slist;
+	gint i, count, id;
+	int result;
+	id = 0;
+
+	s = gtkam_status_new (_("Listing files in folder '%s'..."), folder);
+	g_signal_emit (G_OBJECT (tree), signals[NEW_STATUS], 0, s);
+	result = gp_camera_folder_list_files (camera->camera, folder, &flist,
+					GTKAM_STATUS (s)->context->context);
+	switch (result) {
+	case GP_OK:
+		break;
+	case GP_ERROR_CANCEL:
+		if (camera->multi)
+			gp_camera_exit (camera->camera, NULL);
+		gtk_object_destroy (GTK_OBJECT (s));
+		return -1;
+	default:
+		if (camera->multi)
+			gp_camera_exit (camera->camera, NULL);
+		dialog = gtkam_error_new (result, GTKAM_STATUS (s)->context,
+			GTK_WIDGET (save), _("Could not get file list "
+			"for folder '%s'"), folder);
+		gtk_widget_show (dialog);
+		gtk_object_destroy (GTK_OBJECT (s));
+		return -1;
+	}
+	gtk_object_destroy (GTK_OBJECT (s));
+
+	if (strcmp (folder, "/")) {
+		new_path = g_strdup_printf ("%s/%s", path,
+					    basename ((char *) folder));
+		if (mkdir (new_path, 00755) < 0) {
+			dialog = gtkam_error_new (result,
+					GTKAM_STATUS (s)->context,
+					GTK_WIDGET (save),
+					_("Could not create directory '%s'"),
+					new_path);
+			gtk_widget_show (dialog);
+			g_free(new_path);
+			gtk_object_destroy (GTK_OBJECT (s));
+			return -1;
+		}
+	} else
+		new_path = g_strdup (path);
+
+	count = gp_list_count (&flist);
+	if (count == 1)
+		s = gtkam_cancel_new (_("Downloading file from '%s'"), folder);
+	else
+		s = gtkam_cancel_new (_("Downloading %i files from '%s'"),
+				      count, folder);
+	gtk_window_set_transient_for (GTK_WINDOW (s), save);
+	g_signal_emit (G_OBJECT (tree), signals[NEW_DIALOG], 0, s);
+	gtk_widget_show (s);
+
+	if (count > 1)
+		id = gp_context_progress_start (
+			GTKAM_CANCEL (s)->context->context, count,
+			_("Downloading %i files..."), count);
+
+	/* Loop through files */
+	for (i = 0; i < count; i++) {
+		gp_list_get_name (&flist, i, &name);
+
+		result = tree_get_file (camera, new_path, folder, name,
+					GTKAM_CANCEL (s)->context, save);
+
+		if (result < 0) {
+			if (count > 1)
+				gp_context_progress_stop (
+					GTKAM_CANCEL (s)->context->context, id);
+			dialog = gtkam_error_new (result,
+					GTKAM_CANCEL (s)->context,
+					GTK_WIDGET(save), _("Problem getting "
+					"'%s' from folder '%s'."),
+					name, folder);
+			gtk_widget_show (dialog);
+	
+			g_free(new_path);
+			gtk_object_destroy (GTK_OBJECT (s));
+			return -1;
+		}
+
+		if (count > 1)
+			gp_context_progress_update (
+				GTKAM_CANCEL (s)->context->context, id, i + 1);
+		gp_context_idle (GTKAM_CANCEL (s)->context->context);
+		if (gp_context_cancel (GTKAM_CANCEL (s)->context->context) ==
+				GP_CONTEXT_FEEDBACK_CANCEL)
+			break;
+	}
+
+	if (count > 1)
+		gp_context_progress_stop (
+				GTKAM_CANCEL (s)->context->context, id);
+	gtk_object_destroy (GTK_OBJECT (s));
+
+	/* Recurse into subfolders */
+	s = gtkam_status_new (_("Listing subfolders in folder '%s'..."),
+			      folder);
+	g_signal_emit (G_OBJECT (tree), signals[NEW_STATUS], 0, s);
+	result = gp_camera_folder_list_folders (camera->camera, folder, &slist,
+					GTKAM_STATUS (s)->context->context);
+	switch (result) {
+	case GP_OK:
+		break;
+	case GP_ERROR_CANCEL:
+		if (camera->multi)
+			gp_camera_exit (camera->camera, NULL);
+		gtk_object_destroy (GTK_OBJECT (s));
+		g_free(new_path);
+		return -1;
+	default:
+		if (camera->multi)
+			gp_camera_exit (camera->camera, NULL);
+		dialog = gtkam_error_new (result, GTKAM_STATUS (s)->context,
+			GTK_WIDGET (save), _("Could not get subfolders list "
+			"for folder '%s'"), folder);
+		gtk_widget_show (dialog);
+		gtk_object_destroy (GTK_OBJECT (s));
+		g_free(new_path);
+		return -1;
+	}
+	gtk_object_destroy (GTK_OBJECT (s));
+
+	count = gp_list_count (&slist);
+
+	for (i = 0; i < count; i++) {
+		gp_list_get_name (&slist, i, &name);
+		name = tree_concat_dir_and_file (folder, name);
+
+		result = tree_save_dir (camera, tree, new_path, name, save);
+
+		g_free((gchar *) name);
+		if (result < 0)
+			break;
+	}
+
+	g_free(new_path);
+	return result;
+}
+
+static void
+on_download_ok_clicked (GtkButton *button, GtkamTreeDownloadData *dd)
+{
+	const gchar *path, *final_path;
+	gchar *folder;
+	GtkamCamera *camera;
+
+	gtk_widget_hide (dd->fsel);
+
+	path = gtk_file_selection_get_filename (GTK_FILE_SELECTION (dd->fsel));
+	/* Get the directory path */
+	if (!g_file_test (path, G_FILE_TEST_EXISTS) ||
+			g_file_test (path, G_FILE_TEST_IS_REGULAR))
+		final_path = g_strdup (dirname ((char *) path));
+	else
+		final_path = g_strdup (path);
+
+	folder = gtkam_tree_get_path_from_iter (dd->tree, dd->iter);
+	camera = gtkam_tree_get_camera_from_iter (dd->tree, dd->iter);
+
+	tree_save_dir(camera, dd->tree, final_path, folder,
+		      GTK_WINDOW(dd->fsel));
+	g_free((gchar *) final_path);
+	gtk_object_destroy (GTK_OBJECT (dd->fsel));
+}
+
+static void
+action_download (gpointer callback_data, guint callback_action,
+		 GtkWidget *widget)
+{
+	GtkWidget *fsel;
+	GtkamTree *tree = GTKAM_TREE (callback_data);
+	GtkamTreeDownloadData *dd;
+	gchar *title, *folder;
+
+	folder = gtkam_tree_get_path_from_iter (tree, &tree->priv->iter);
+	title = g_strdup_printf (_("Download '%s' subtree to..."), folder);
+	g_free (folder);
+	fsel = gtk_file_selection_new (title);
+	g_free (title);
+	g_signal_emit (G_OBJECT (tree), signals[NEW_DIALOG], 0, fsel);
+	g_object_unref (G_OBJECT (fsel));
+
+	dd = g_new0 (GtkamTreeDownloadData, 1);
+	dd->fsel = fsel;
+	dd->tree = tree;
+	dd->iter = gtk_tree_iter_copy (&tree->priv->iter);
+	g_signal_connect (G_OBJECT (fsel), "destroy",
+		G_CALLBACK (on_download_destroy), dd);
+	g_signal_connect (G_OBJECT (GTK_FILE_SELECTION (fsel)->ok_button),
+		"clicked", G_CALLBACK (on_download_ok_clicked), dd);
+	g_signal_connect (G_OBJECT (GTK_FILE_SELECTION (fsel)->cancel_button),
+		"clicked", G_CALLBACK (on_download_cancel_clicked), fsel);
+}
+
 typedef enum _CameraTextType CameraTextType;
 enum _CameraTextType {
         CAMERA_TEXT_SUMMARY,
@@ -831,6 +1146,7 @@ static GtkItemFactoryEntry mi[] =
 	{N_("/Upload file..."), NULL, action_upload, 0, NULL},
 	{N_("/Make directory..."), NULL, action_mkdir, 0, NULL},
 	{N_("/Delete directory"), NULL, action_rmdir, 0, NULL},
+	{N_("/Save directory tree..."), NULL, action_download, 0, NULL},
 	{"/sep1", NULL, NULL, 0, "<Separator>"},
 	{N_("/Capture image..."), NULL, action_capture, 0, NULL},
 	{N_("/View camera preferences"), NULL, action_preferences, 0,

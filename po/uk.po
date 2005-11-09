@@ -1,49 +1,49 @@
 # Ukrainian translation of gPhoto.
-# Copyright ╘ 2000 Free Software Foundation, Inc.
+# Copyright Б∙≤ 2000 Free Software Foundation, Inc.
 # Yuri Syrota <rasta@renome.rovno.ua>, 2000.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gphoto\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-03-22 14:40+0100\n"
+"Report-Msgid-Bugs-To: gphoto-devel@lists.sourceforge.net\n"
+"POT-Creation-Date: 2005-09-18 19:58+0200\n"
 "PO-Revision-Date: 2000-06-27 16:33+0200\n"
 "Last-Translator: Yuri Syrota <rasta@renome.rovno.ua>\n"
 "Language-Team: Ukrainian <ru@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=koi8-u\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8-bit\n"
 
 #: src/gtkam-chooser.c:232 src/gtkam-chooser.c:254
 #, fuzzy
 msgid "None"
-msgstr "Н╕"
+msgstr "п²я√"
 
 #: src/gtkam-chooser.c:262 src/gtkam-chooser.c:369 src/gtkam-chooser.c:622
 #: src/gtkam-chooser.c:656
 #, fuzzy
 msgid "Best"
-msgstr "Скасувати"
+msgstr "п║п╨п╟я│я┐п╡п╟я┌п╦"
 
 #: src/gtkam-chooser.c:269
 #, fuzzy
 msgid "Initializing camera..."
-msgstr "Не вдалось отримати зображення."
+msgstr "п²п╣ п╡п╢п╟п╩п╬я│я▄ п╬я┌я─п╦п╪п╟я┌п╦ п╥п╬п╠я─п╟п╤п╣п╫п╫я▐."
 
 #: src/gtkam-chooser.c:283
 #, fuzzy
 msgid "Could not initialize camera."
-msgstr "Не вдалось отримати зображення."
+msgstr "п²п╣ п╡п╢п╟п╩п╬я│я▄ п╬я┌я─п╦п╪п╟я┌п╦ п╥п╬п╠я─п╟п╤п╣п╫п╫я▐."
 
 #: src/gtkam-chooser.c:360
 #, fuzzy, c-format
 msgid "Could not get abilities of model '%s'."
-msgstr "Не вдалось отримати к╕лькост╕ зображень"
+msgstr "п²п╣ п╡п╢п╟п╩п╬я│я▄ п╬я┌я─п╦п╪п╟я┌п╦ п╨я√п╩я▄п╨п╬я│я┌я√ п╥п╬п╠я─п╟п╤п╣п╫я▄"
 
 #: src/gtkam-chooser.c:408
 #, fuzzy
 msgid "Detecting cameras..."
-msgstr "Вибрать модель/порт..."
+msgstr "п▓п╦п╠я─п╟я┌я▄ п╪п╬п╢п╣п╩я▄/п©п╬я─я┌..."
 
 #: src/gtkam-chooser.c:416
 msgid "No cameras detected."
@@ -52,17 +52,17 @@ msgstr ""
 #: src/gtkam-chooser.c:433
 #, fuzzy
 msgid "Could not detect any cameras."
-msgstr "Не вдалось отримати зображення."
+msgstr "п²п╣ п╡п╢п╟п╩п╬я│я▄ п╬я┌я─п╦п╪п╟я┌п╦ п╥п╬п╠я─п╟п╤п╣п╫п╫я▐."
 
 #: src/gtkam-chooser.c:558
 #, fuzzy
 msgid "Add Camera"
-msgstr "Вибрать модель/порт..."
+msgstr "п▓п╦п╠я─п╟я┌я▄ п╪п╬п╢п╣п╩я▄/п©п╬я─я┌..."
 
 #: src/gtkam-chooser.c:573
 #, fuzzy
 msgid "Model:"
-msgstr "Модель камери:"
+msgstr "п°п╬п╢п╣п╩я▄ п╨п╟п╪п╣я─п╦:"
 
 #: src/gtkam-chooser.c:585
 msgid "Detect"
@@ -71,11 +71,11 @@ msgstr ""
 #: src/gtkam-chooser.c:591
 #, fuzzy
 msgid "Detect USB camera"
-msgstr "Вибрать модель/порт..."
+msgstr "п▓п╦п╠я─п╟я┌я▄ п╪п╬п╢п╣п╩я▄/п©п╬я─я┌..."
 
 #: src/gtkam-chooser.c:593
 msgid "Port:"
-msgstr "Порт:"
+msgstr "п÷п╬я─я┌:"
 
 #: src/gtkam-chooser.c:614 src/gtkam-chooser.c:646
 msgid "Speed:"
@@ -92,22 +92,22 @@ msgstr ""
 #: src/gtkam-chooser.c:727
 #, fuzzy
 msgid "Could not get number of supported camera models"
-msgstr "Не вдалось отримати к╕лькост╕ зображень"
+msgstr "п²п╣ п╡п╢п╟п╩п╬я│я▄ п╬я┌я─п╦п╪п╟я┌п╦ п╨я√п╩я▄п╨п╬я│я┌я√ п╥п╬п╠я─п╟п╤п╣п╫я▄"
 
 #: src/gtkam-chooser.c:757
 #, fuzzy
 msgid "Could not get number of ports."
-msgstr "Не вдалось отримати к╕лькост╕ зображень"
+msgstr "п²п╣ п╡п╢п╟п╩п╬я│я▄ п╬я┌я─п╦п╪п╟я┌п╦ п╨я√п╩я▄п╨п╬я│я┌я√ п╥п╬п╠я─п╟п╤п╣п╫я▄"
 
 #: src/gtkam-config.c:164
 #, fuzzy
 msgid "Applying configuration..."
-msgstr "Конф╕гурац╕я камери"
+msgstr "п п╬п╫я└я√пЁя┐я─п╟я├я√я▐ п╨п╟п╪п╣я─п╦"
 
 #: src/gtkam-config.c:180
 #, fuzzy
 msgid "Could not apply configuration."
-msgstr "Конф╕гурац╕я камери"
+msgstr "п п╬п╫я└я√пЁя┐я─п╟я├я√я▐ п╨п╟п╪п╣я─п╦"
 
 #: src/gtkam-config.c:241
 msgid "No additional information available. (1)"
@@ -116,12 +116,12 @@ msgstr ""
 #: src/gtkam-config.c:246
 #, fuzzy
 msgid "General Settings"
-msgstr "Налаштування кольор╕в"
+msgstr "п²п╟п╩п╟я┬я┌я┐п╡п╟п╫п╫я▐ п╨п╬п╩я▄п╬я─я√п╡"
 
 #: src/gtkam-config.c:321
 #, fuzzy
 msgid "Could not execute command."
-msgstr "ПОМИЛКА: не вдалось стерти зображення.\n"
+msgstr "п÷п·п°п≤п⌡п п░: п╫п╣ п╡п╢п╟п╩п╬я│я▄ я│я┌п╣я─я┌п╦ п╥п╬п╠я─п╟п╤п╣п╫п╫я▐.\n"
 
 #: src/gtkam-config.c:525
 msgid "No additional information available. (2)"
@@ -150,23 +150,23 @@ msgstr ""
 #: src/gtkam-config.c:729
 #, fuzzy
 msgid "Getting configuration..."
-msgstr "Не вдалось отримати перегляд"
+msgstr "п²п╣ п╡п╢п╟п╩п╬я│я▄ п╬я┌я─п╦п╪п╟я┌п╦ п©п╣я─п╣пЁп╩я▐п╢"
 
 #: src/gtkam-config.c:744
 #, fuzzy
 msgid "Could not get configuration."
-msgstr "Не вдалось отримати перегляд"
+msgstr "п²п╣ п╡п╢п╟п╩п╬я│я▄ п╬я┌я─п╦п╪п╟я┌п╦ п©п╣я─п╣пЁп╩я▐п╢"
 
 #: src/gtkam-debug.c:242
 #, fuzzy
 msgid "Save As..."
-msgstr "Зберегти зображення..."
+msgstr "п≈п╠п╣я─п╣пЁя┌п╦ п╥п╬п╠я─п╟п╤п╣п╫п╫я▐..."
 
 #: src/gtkam-debug.c:264
 #, fuzzy, c-format
 msgid "Could not open '%s'!"
 msgstr ""
-"Не вдалося в╕дкрити:\n"
+"п²п╣ п╡п╢п╟п╩п╬я│я▐ п╡я√п╢п╨я─п╦я┌п╦:\n"
 "%s"
 
 #: src/gtkam-debug.c:311
@@ -197,22 +197,22 @@ msgstr ""
 #: src/gtkam-delete.c:201
 #, fuzzy, c-format
 msgid "Could not delete all files in '%s'."
-msgstr "Не вдалось в╕дновити #%i"
+msgstr "п²п╣ п╡п╢п╟п╩п╬я│я▄ п╡я√п╢п╫п╬п╡п╦я┌п╦ #%i"
 
 #: src/gtkam-delete.c:234
 #, fuzzy, c-format
 msgid "Deleting file '%s' from folder '%s'..."
-msgstr "Не вдалось в╕дновити #%i"
+msgstr "п²п╣ п╡п╢п╟п╩п╬я│я▄ п╡я√п╢п╫п╬п╡п╦я┌п╦ #%i"
 
 #: src/gtkam-delete.c:255
 #, fuzzy, c-format
 msgid "Could not delete file '%s' in folder '%s'."
-msgstr "Не вдалось отримати перегляд"
+msgstr "п²п╣ п╡п╢п╟п╩п╬я│я▄ п╬я┌я─п╦п╪п╟я┌п╦ п©п╣я─п╣пЁп╩я▐п╢"
 
 #: src/gtkam-delete.c:384
 #, fuzzy, c-format
 msgid "Do you really want to delete all the files in '%s'?"
-msgstr "Не вдалось в╕дновити #%i"
+msgstr "п²п╣ п╡п╢п╟п╩п╬я│я▄ п╡я√п╢п╫п╬п╡п╦я┌п╦ #%i"
 
 #: src/gtkam-delete.c:387
 #, c-format
@@ -231,17 +231,17 @@ msgstr ""
 #: src/gtkam-exif.c:137
 #, fuzzy, c-format
 msgid "Getting EXIF information for file '%s' in folder '%s'..."
-msgstr "Не вдалось отримати перегляд"
+msgstr "п²п╣ п╡п╢п╟п╩п╬я│я▄ п╬я┌я─п╦п╪п╟я┌п╦ п©п╣я─п╣пЁп╩я▐п╢"
 
 #: src/gtkam-exif.c:153
 #, fuzzy, c-format
 msgid "Could not get EXIF information for '%s' in folder '%s'."
-msgstr "Не вдалось отримати перегляд"
+msgstr "п²п╣ п╡п╢п╟п╩п╬я│я▄ п╬я┌я─п╦п╪п╟я┌п╦ п©п╣я─п╣пЁп╩я▐п╢"
 
 #: src/gtkam-exif.c:166
 #, fuzzy
 msgid "Could not interpret EXIF data."
-msgstr "Не вдалось отримати зображення."
+msgstr "п²п╣ п╡п╢п╟п╩п╬я│я▄ п╬я┌я─п╦п╪п╟я┌п╦ п╥п╬п╠я─п╟п╤п╣п╫п╫я▐."
 
 #: src/gtkam-exif.c:175
 msgid "The EXIF data could not be retrieved from the file."
@@ -275,32 +275,32 @@ msgstr ""
 #: src/gtkam-gimp.c:212
 #, fuzzy, c-format
 msgid "Could not download file '%s' from folder '%s'."
-msgstr "Не вдалось отримати перегляд"
+msgstr "п²п╣ п╡п╢п╟п╩п╬я│я▄ п╬я┌я─п╦п╪п╟я┌п╦ п©п╣я─п╣пЁп╩я▐п╢"
 
 #: src/gtkam-gimp.c:245
 #, fuzzy
 msgid "Image"
-msgstr "Покажчик зображень"
+msgstr "п÷п╬п╨п╟п╤я┤п╦п╨ п╥п╬п╠я─п╟п╤п╣п╫я▄"
 
 #: src/gtkam-info.c:166
 #, fuzzy, c-format
 msgid "Setting information for file '%s' in '%s'..."
-msgstr "Не вдалось отримати перегляд"
+msgstr "п²п╣ п╡п╢п╟п╩п╬я│я▄ п╬я┌я─п╦п╪п╟я┌п╦ п©п╣я─п╣пЁп╩я▐п╢"
 
 #: src/gtkam-info.c:187
 #, fuzzy, c-format
 msgid "Could not set file information for '%s' in folder '%s'"
-msgstr "Не вдалось отримати перегляд"
+msgstr "п²п╣ п╡п╢п╟п╩п╬я│я▄ п╬я┌я─п╦п╪п╟я┌п╦ п©п╣я─п╣пЁп╩я▐п╢"
 
 #: src/gtkam-info.c:296
 #, fuzzy, c-format
 msgid "Getting information about file '%s' in folder '%s'..."
-msgstr "Не вдалось отримати перегляд"
+msgstr "п²п╣ п╡п╢п╟п╩п╬я│я▄ п╬я┌я─п╦п╪п╟я┌п╦ п©п╣я─п╣пЁп╩я▐п╢"
 
 #: src/gtkam-info.c:308
 #, fuzzy, c-format
 msgid "Could not get information about file '%s' in folder '%s'."
-msgstr "Не вдалось отримати перегляд"
+msgstr "п²п╣ п╡п╢п╟п╩п╬я│я▄ п╬я┌я─п╦п╪п╟я┌п╦ п©п╣я─п╣пЁп╩я▐п╢"
 
 #: src/gtkam-info.c:336
 msgid "File"
@@ -324,7 +324,7 @@ msgstr ""
 
 #: src/gtkam-info.c:411 src/gtkam-info.c:547
 #, c-format
-msgid "%iK (%li bytes)"
+msgid "%liK (%li bytes)"
 msgstr ""
 
 #: src/gtkam-info.c:426
@@ -342,7 +342,7 @@ msgstr ""
 #: src/gtkam-info.c:468 src/gtkam-list.c:941
 #, fuzzy
 msgid "Preview"
-msgstr "Назад"
+msgstr "п²п╟п╥п╟п╢"
 
 #: src/gtkam-info.c:474
 msgid "MIME type:"
@@ -359,17 +359,17 @@ msgstr ""
 #: src/gtkam-list.c:322
 #, fuzzy, c-format
 msgid "Downloading thumbnail of '%s' from folder '%s'..."
-msgstr "Не вдалось отримати перегляд"
+msgstr "п²п╣ п╡п╢п╟п╩п╬я│я▄ п╬я┌я─п╦п╪п╟я┌п╦ п©п╣я─п╣пЁп╩я▐п╢"
 
 #: src/gtkam-list.c:852
 #, fuzzy, c-format
 msgid "Changing name of '%s' to '%s'..."
-msgstr "Не вдалось отримати перегляд"
+msgstr "п²п╣ п╡п╢п╟п╩п╬я│я▄ п╬я┌я─п╦п╪п╟я┌п╦ п©п╣я─п╣пЁп╩я▐п╢"
 
 #: src/gtkam-list.c:862
 #, fuzzy, c-format
 msgid "Could not change the name of '%s' to '%s'."
-msgstr "Не вдалось в╕дновити #%i"
+msgstr "п²п╣ п╡п╢п╟п╩п╬я│я▄ п╡я√п╢п╫п╬п╡п╦я┌п╦ #%i"
 
 #: src/gtkam-list.c:876
 msgid "/_View with..."
@@ -394,23 +394,23 @@ msgstr ""
 #: src/gtkam-list.c:885
 #, fuzzy
 msgid "/_Delete"
-msgstr "Жива камера!"
+msgstr "п√п╦п╡п╟ п╨п╟п╪п╣я─п╟!"
 
 #: src/gtkam-list.c:947
 msgid "Name"
 msgstr ""
 
-#: src/gtkam-list.c:969
+#: src/gtkam-list.c:969 src/gtkam-tree.c:685
 #, c-format
 msgid "Listing files in folder '%s'..."
 msgstr ""
 
-#: src/gtkam-list.c:985
+#: src/gtkam-list.c:985 src/gtkam-tree.c:701
 #, c-format
 msgid "Could not get file list for folder '%s'"
 msgstr ""
 
-#: src/gtkam-main.c:472
+#: src/gtkam-main.c:426
 msgid ""
 "gtkam is a program that lets you download\n"
 "images from many digital cameras. It uses\n"
@@ -420,11 +420,11 @@ msgid ""
 "Enjoy the wonderful world of gphoto!"
 msgstr ""
 
-#: src/gtkam-main.c:483
+#: src/gtkam-main.c:437
 msgid "Many others"
 msgstr ""
 
-#: src/gtkam-main.c:516
+#: src/gtkam-main.c:470
 #, c-format
 msgid ""
 "%s\n"
@@ -433,7 +433,7 @@ msgid ""
 "    %s\n"
 msgstr ""
 
-#: src/gtkam-main.c:520
+#: src/gtkam-main.c:474
 #, c-format
 msgid ""
 "%s\n"
@@ -441,138 +441,109 @@ msgid ""
 "    %s\n"
 msgstr ""
 
-#: src/gtkam-main.c:621
-msgid "/_File"
+#: src/gtkam-main.c:549
+msgid "_File"
 msgstr ""
 
-#: src/gtkam-main.c:622
+#: src/gtkam-main.c:550
 #, fuzzy
-msgid "/File/_Save Photos"
-msgstr "Зберегти зображення..."
+msgid "_Save Photos"
+msgstr "п≈п╠п╣я─п╣пЁя┌п╦ п╥п╬п╠я─п╟п╤п╣п╫п╫я▐..."
 
-#: src/gtkam-main.c:623
-msgid "/File/Save Photos/_Selected"
-msgstr ""
-
-#: src/gtkam-main.c:625
-msgid "/File/Save Photos/_All"
-msgstr ""
-
-#: src/gtkam-main.c:627
+#: src/gtkam-main.c:551
 #, fuzzy
-msgid "/File/_Delete Photos"
-msgstr "Стерти вибран╕ зображення"
+msgid "_Delete Photos"
+msgstr "п║я┌п╣я─я┌п╦ п╡п╦п╠я─п╟п╫я√ п╥п╬п╠я─п╟п╤п╣п╫п╫я▐"
 
-#: src/gtkam-main.c:628
+#: src/gtkam-main.c:552 src/gtkam-main.c:554
 #, fuzzy
-msgid "/File/Delete Photos/_Selected"
-msgstr "Стерти вибран╕ зображення"
+msgid "_Selected"
+msgstr "п√п╦п╡п╟ п╨п╟п╪п╣я─п╟!"
 
-#: src/gtkam-main.c:630
+#: src/gtkam-main.c:553 src/gtkam-main.c:555 src/gtkam-main.c:562
+msgid "_All"
+msgstr ""
+
+#: src/gtkam-main.c:556
+msgid "_Quit"
+msgstr ""
+
+#: src/gtkam-main.c:557
+msgid "_View"
+msgstr ""
+
+#: src/gtkam-main.c:558
+msgid "Zoom _In"
+msgstr ""
+
+#: src/gtkam-main.c:559
+msgid "Zoom _100"
+msgstr ""
+
+#: src/gtkam-main.c:560
+msgid "Zoom _Out"
+msgstr ""
+
+#: src/gtkam-main.c:561
 #, fuzzy
-msgid "/File/Delete Photos/_All"
-msgstr "Стерти вибран╕ зображення"
+msgid "_Select"
+msgstr "п√п╦п╡п╟ п╨п╟п╪п╣я─п╟!"
 
-#: src/gtkam-main.c:633
-msgid "/File/_Quit"
+#: src/gtkam-main.c:563
+msgid "_Inverse"
 msgstr ""
 
-#: src/gtkam-main.c:635
-msgid "/_View"
-msgstr ""
-
-#: src/gtkam-main.c:636
-msgid "/View/_View Thumbnails"
-msgstr ""
-
-#: src/gtkam-main.c:639
-msgid "/View/Zoom _In"
-msgstr ""
-
-#: src/gtkam-main.c:641
-msgid "/View/Zoom _100"
-msgstr ""
-
-#: src/gtkam-main.c:643
-msgid "/View/Zoom _Out"
-msgstr ""
-
-#: src/gtkam-main.c:645
+#: src/gtkam-main.c:564
 #, fuzzy
-msgid "/_Select"
-msgstr "Жива камера!"
+msgid "_None"
+msgstr "п²я√"
 
-#: src/gtkam-main.c:646
-msgid "/Select/_All"
-msgstr ""
-
-#: src/gtkam-main.c:647
-msgid "/Select/_Inverse"
-msgstr ""
-
-#: src/gtkam-main.c:648
+#: src/gtkam-main.c:565
 #, fuzzy
-msgid "/Select/_None"
-msgstr "Жива камера!"
+msgid "_Camera"
+msgstr "п√п╦п╡п╟ п╨п╟п╪п╣я─п╟!"
 
-#: src/gtkam-main.c:649
+#: src/gtkam-main.c:566
 #, fuzzy
-msgid "/_Camera"
-msgstr "Жива камера!"
+msgid "_Add Camera..."
+msgstr "п▓п╦п╠я─п╟я┌я▄ п╪п╬п╢п╣п╩я▄/п©п╬я─я┌..."
 
-#: src/gtkam-main.c:650
+#: src/gtkam-main.c:567
 #, fuzzy
-msgid "/Camera/_Add Camera..."
-msgstr "Вибрать модель/порт..."
+msgid "_Rescan"
+msgstr "п√п╦п╡п╟ п╨п╟п╪п╣я─п╟!"
 
-#: src/gtkam-main.c:651
-#, fuzzy
-msgid "/Camera/_Rescan"
-msgstr "Жива камера!"
-
-#: src/gtkam-main.c:652
-#, fuzzy
-msgid "/_Help"
-msgstr "Дов╕дка"
-
-#: src/gtkam-main.c:654
-msgid "/Help/_Contents"
-msgstr ""
-
-#: src/gtkam-main.c:657
-msgid "/Help/_Debug"
-msgstr ""
-
-#: src/gtkam-main.c:658
-msgid "/Help/_About"
-msgstr ""
-
-#: src/gtkam-main.c:716
-msgid "View Thumbnails"
-msgstr ""
-
-#: src/gtkam-main.c:739
+#: src/gtkam-main.c:568
 #, fuzzy
 msgid "_Help"
-msgstr "Дов╕дка"
+msgstr "п■п╬п╡я√п╢п╨п╟"
 
-#: src/gtkam-main.c:751
-msgid "_Debug..."
+#: src/gtkam-main.c:570
+msgid "_Contents"
 msgstr ""
 
-#: src/gtkam-main.c:760
-msgid "_About..."
+#: src/gtkam-main.c:572
+msgid "_Debug"
 msgstr ""
+
+#: src/gtkam-main.c:573
+msgid "_About"
+msgstr ""
+
+#: src/gtkam-main.c:578
+#, fuzzy
+msgid "_View Thumbnails"
+msgstr "thumbnail-%03i.%s"
 
 #: src/gtkam-mkdir.c:152
 #, fuzzy, c-format
 msgid "Creating folder '%s' in folder '%s'..."
-msgstr "Не вдалось отримати перегляд"
+msgstr "п²п╣ п╡п╢п╟п╩п╬я│я▄ п╬я┌я─п╦п╪п╟я┌п╦ п©п╣я─п╣пЁп╩я▐п╢"
 
 #: src/gtkam-mkdir.c:186
 #, fuzzy, c-format
 msgid "Could not create folder '%s' in folder '%s'."
-msgstr "Не вдалось отримати перегляд"
+msgstr "п²п╣ п╡п╢п╟п╩п╬я│я▄ п╬я┌я─п╦п╪п╟я┌п╦ п©п╣я─п╣пЁп╩я▐п╢"
 
 #: src/gtkam-mkdir.c:212
 #, c-format
@@ -582,7 +553,7 @@ msgstr ""
 #: src/gtkam-mkdir.c:228
 #, fuzzy
 msgid "New directory"
-msgstr "Каталог виводу:"
+msgstr "п п╟я┌п╟п╩п╬пЁ п╡п╦п╡п╬п╢я┐:"
 
 #: src/gtkam-port.c:147
 #, c-format
@@ -594,20 +565,20 @@ msgstr ""
 msgid "Please specify the path to the port your camera is attached to:"
 msgstr ""
 
-#: src/gtkam-preview.c:187 src/gtkam-tree.c:774
+#: src/gtkam-preview.c:187 src/gtkam-tree.c:1089
 #, fuzzy
 msgid "Capturing image..."
-msgstr "Друк зображення..."
+msgstr "п■я─я┐п╨ п╥п╬п╠я─п╟п╤п╣п╫п╫я▐..."
 
 #: src/gtkam-preview.c:209
 #, fuzzy
 msgid "Could not capture image."
-msgstr "Не вдалось отримати зображення."
+msgstr "п²п╣ п╡п╢п╟п╩п╬я│я▄ п╬я┌я─п╦п╪п╟я┌п╦ п╥п╬п╠я─п╟п╤п╣п╫п╫я▐."
 
 #: src/gtkam-preview.c:347 src/gtkam-preview.c:410
 #, fuzzy
 msgid "Capture"
-msgstr "Створити"
+msgstr "п║я┌п╡п╬я─п╦я┌п╦"
 
 #: src/gtkam-preview.c:373
 msgid "0 degrees"
@@ -616,7 +587,7 @@ msgstr ""
 #: src/gtkam-preview.c:381
 #, fuzzy
 msgid "Don't rotate thumbnail"
-msgstr "Прийняти покажчик м╕н╕атюр"
+msgstr "п÷я─п╦п╧п╫я▐я┌п╦ п©п╬п╨п╟п╤я┤п╦п╨ п╪я√п╫я√п╟я┌я▌я─"
 
 #: src/gtkam-preview.c:383
 msgid "-90 degrees"
@@ -642,20 +613,20 @@ msgstr ""
 msgid "Rotate thumbnail by 180 degrees"
 msgstr ""
 
-#: src/gtkam-save.c:301
+#: src/gtkam-save.c:301 src/gtkam-tree.c:614
 #, c-format
 msgid "The file '%s' already exists."
 msgstr ""
 
-#: src/gtkam-save.c:323
+#: src/gtkam-save.c:323 src/gtkam-tree.c:631
 #, fuzzy, c-format
 msgid "Could not save file to '%s'."
-msgstr "Не вдалось зберегти #%i"
+msgstr "п²п╣ п╡п╢п╟п╩п╬я│я▄ п╥п╠п╣я─п╣пЁя┌п╦ #%i"
 
-#: src/gtkam-save.c:363
+#: src/gtkam-save.c:363 src/gtkam-tree.c:664
 #, fuzzy, c-format
 msgid "Could not get '%s' from folder '%s'."
-msgstr "Не вдалось отримати перегляд"
+msgstr "п²п╣ п╡п╢п╟п╩п╬я│я▄ п╬я┌я─п╦п╪п╟я┌п╦ п©п╣я─п╣пЁп╩я▐п╢"
 
 #: src/gtkam-save.c:494
 msgid "There is nothing to be saved."
@@ -664,22 +635,22 @@ msgstr ""
 #: src/gtkam-save.c:506
 #, fuzzy
 msgid "Downloading file"
-msgstr "Прийом завершено."
+msgstr "п÷я─п╦п╧п╬п╪ п╥п╟п╡п╣я─я┬п╣п╫п╬."
 
 #: src/gtkam-save.c:508
 #, fuzzy, c-format
 msgid "Downloading %i files"
-msgstr "Прийом завершено."
+msgstr "п÷я─п╦п╧п╬п╪ п╥п╟п╡п╣я─я┬п╣п╫п╬."
 
-#: src/gtkam-save.c:515
+#: src/gtkam-save.c:515 src/gtkam-tree.c:739
 #, fuzzy, c-format
 msgid "Downloading %i files..."
-msgstr "Прийом завершено."
+msgstr "п÷я─п╦п╧п╬п╪ п╥п╟п╡п╣я─я┬п╣п╫п╬."
 
-#: src/gtkam-save.c:566
+#: src/gtkam-save.c:566 src/gtkam-tree.c:754
 #, fuzzy, c-format
 msgid "Problem getting '%s' from folder '%s'."
-msgstr "Не вдалось отримати перегляд"
+msgstr "п²п╣ п╡п╢п╟п╩п╬я│я▄ п╬я┌я─п╦п╪п╟я┌п╦ п©п╣я─п╣пЁп╩я▐п╢"
 
 #: src/gtkam-save.c:640
 msgid "What to save:"
@@ -729,7 +700,7 @@ msgstr ""
 #: src/gtkam-save.c:693
 #, fuzzy
 msgid "Open image(s) with: "
-msgstr "В╕дкрити зображення"
+msgstr "п▓я√п╢п╨я─п╦я┌п╦ п╥п╬п╠я─п╟п╤п╣п╫п╫я▐"
 
 #: src/gtkam-save.c:700
 msgid "Type in the name of the program you want to run, leave blank for none"
@@ -746,7 +717,7 @@ msgstr ""
 #: src/gtkam-save.c:724
 #, fuzzy
 msgid "Filename prefix: "
-msgstr "Преф╕кс назви файлу:"
+msgstr "п÷я─п╣я└я√п╨я│ п╫п╟п╥п╡п╦ я└п╟п╧п╩я┐:"
 
 #: src/gtkam-save.c:733
 msgid "Start numbering with: "
@@ -755,148 +726,183 @@ msgstr ""
 #: src/gtkam-save.c:775
 #, fuzzy, c-format
 msgid "Save '%s'..."
-msgstr "Зберегти зображення..."
+msgstr "п≈п╠п╣я─п╣пЁя┌п╦ п╥п╬п╠я─п╟п╤п╣п╫п╫я▐..."
 
 #: src/gtkam-save.c:795
 #, fuzzy
 msgid "Save photos..."
-msgstr "Зберегти зображення..."
+msgstr "п≈п╠п╣я─п╣пЁя┌п╦ п╥п╬п╠я─п╟п╤п╣п╫п╫я▐..."
 
-#: src/gtkam-tree.c:291
+#: src/gtkam-tree.c:295
 #, fuzzy, c-format
 msgid "Listing folders in '%s'..."
-msgstr "Не вдалось отримати перегляд"
+msgstr "п²п╣ п╡п╢п╟п╩п╬я│я▄ п╬я┌я─п╦п╪п╟я┌п╦ п©п╣я─п╣пЁп╩я▐п╢"
 
-#: src/gtkam-tree.c:312
+#: src/gtkam-tree.c:316
 #, fuzzy, c-format
 msgid "Could not list folders in '%s'."
-msgstr "Не вдалось в╕дновити #%i"
+msgstr "п²п╣ п╡п╢п╟п╩п╬я│я▄ п╡я√п╢п╫п╬п╡п╦я┌п╦ #%i"
 
-#: src/gtkam-tree.c:409
+#: src/gtkam-tree.c:413
 #, fuzzy, c-format
 msgid "Could not open '%s'."
 msgstr ""
-"Не вдалося в╕дкрити:\n"
+"п²п╣ п╡п╢п╟п╩п╬я│я▐ п╡я√п╢п╨я─п╦я┌п╦:\n"
 "%s"
 
-#: src/gtkam-tree.c:416
+#: src/gtkam-tree.c:420
 #, fuzzy, c-format
 msgid "Uploading '%s' into folder '%s'..."
-msgstr "Не вдалось отримати перегляд"
+msgstr "п²п╣ п╡п╢п╟п╩п╬я│я▄ п╬я┌я─п╦п╪п╟я┌п╦ п©п╣я─п╣пЁп╩я▐п╢"
 
-#: src/gtkam-tree.c:436
+#: src/gtkam-tree.c:440
 #, fuzzy, c-format
 msgid "Could not upload '%s' into '%s'."
-msgstr "Не вдалось отримати перегляд"
+msgstr "п²п╣ п╡п╢п╟п╩п╬я│я▄ п╬я┌я─п╦п╪п╟я┌п╦ п©п╣я─п╣пЁп╩я▐п╢"
 
-#: src/gtkam-tree.c:460
+#: src/gtkam-tree.c:464
 #, fuzzy, c-format
 msgid "Upload into '%s'..."
-msgstr "Прийом завершено."
+msgstr "п÷я─п╦п╧п╬п╪ п╥п╟п╡п╣я─я┬п╣п╫п╬."
 
-#: src/gtkam-tree.c:536
+#: src/gtkam-tree.c:540
 #, fuzzy, c-format
 msgid "Removing directory '%s'..."
-msgstr "Не вдалось в╕дновити #%i"
+msgstr "п²п╣ п╡п╢п╟п╩п╬я│я▄ п╡я√п╢п╫п╬п╡п╦я┌п╦ #%i"
 
-#: src/gtkam-tree.c:553
+#: src/gtkam-tree.c:557
 #, fuzzy, c-format
 msgid "Could not remove directory '%s'."
-msgstr "Не вдалось в╕дновити #%i"
+msgstr "п²п╣ п╡п╢п╟п╩п╬я│я▄ п╡я√п╢п╫п╬п╡п╦я┌п╦ #%i"
 
-#: src/gtkam-tree.c:582
+#: src/gtkam-tree.c:716
+#, fuzzy, c-format
+msgid "Could not create directory '%s'"
+msgstr "п²п╣ п╡п╢п╟п╩п╬я│я▄ п╡я√п╢п╫п╬п╡п╦я┌п╦ #%i"
+
+#: src/gtkam-tree.c:728
+#, fuzzy, c-format
+msgid "Downloading file from '%s'"
+msgstr "п÷я─п╦п╧п╬п╪ п╥п╟п╡п╣я─я┬п╣п╫п╬."
+
+#: src/gtkam-tree.c:730
+#, fuzzy, c-format
+msgid "Downloading %i files from '%s'"
+msgstr "п÷я─п╦п╧п╬п╪ п╥п╟п╡п╣я─я┬п╣п╫п╬."
+
+#: src/gtkam-tree.c:779
+#, fuzzy, c-format
+msgid "Listing subfolders in folder '%s'..."
+msgstr "п²п╣ п╡п╢п╟п╩п╬я│я▄ п╬я┌я─п╦п╪п╟я┌п╦ п©п╣я─п╣пЁп╩я▐п╢"
+
+#: src/gtkam-tree.c:797
+#, fuzzy, c-format
+msgid "Could not get subfolders list for folder '%s'"
+msgstr "п²п╣ п╡п╢п╟п╩п╬я│я▄ п╬я┌я─п╦п╪п╟я┌п╦ п©п╣я─п╣пЁп╩я▐п╢"
+
+#: src/gtkam-tree.c:859
+#, fuzzy, c-format
+msgid "Download '%s' subtree to..."
+msgstr "п²п╣ п╡п╢п╟п╩п╬я│я▄ п╬я┌я─п╦п╪п╟я┌п╦ п©п╣я─п╣пЁп╩я▐п╢"
+
+#: src/gtkam-tree.c:897
 #, fuzzy
 msgid "Getting information about the camera..."
-msgstr "Не вдалось отримати перегляд"
+msgstr "п²п╣ п╡п╢п╟п╩п╬я│я▄ п╬я┌я─п╦п╪п╟я┌п╦ п©п╣я─п╣пЁп╩я▐п╢"
 
-#: src/gtkam-tree.c:586
+#: src/gtkam-tree.c:901
 #, fuzzy
 msgid "Getting information about the driver..."
-msgstr "Не вдалось отримати перегляд"
+msgstr "п²п╣ п╡п╢п╟п╩п╬я│я▄ п╬я┌я─п╦п╪п╟я┌п╦ п©п╣я─п╣пЁп╩я▐п╢"
 
-#: src/gtkam-tree.c:590
+#: src/gtkam-tree.c:905
 #, fuzzy
 msgid "Getting manual..."
-msgstr "Отримання м╕н╕атюри #%i..."
+msgstr "п·я┌я─п╦п╪п╟п╫п╫я▐ п╪я√п╫я√п╟я┌я▌я─п╦ #%i..."
 
-#: src/gtkam-tree.c:621
+#: src/gtkam-tree.c:936
 #, fuzzy
 msgid "Could not retrieve information."
-msgstr "Не вдалось в╕дновити #%i"
+msgstr "п²п╣ п╡п╢п╟п╩п╬я│я▄ п╡я√п╢п╫п╬п╡п╦я┌п╦ #%i"
 
-#: src/gtkam-tree.c:724
+#: src/gtkam-tree.c:1039
 #, fuzzy
 msgid "Select Camera"
-msgstr "Жива камера!"
+msgstr "п√п╦п╡п╟ п╨п╟п╪п╣я─п╟!"
 
-#: src/gtkam-tree.c:792
+#: src/gtkam-tree.c:1107
 #, fuzzy
 msgid "Could not capture."
-msgstr "Не вдалось отримати зображення."
+msgstr "п²п╣ п╡п╢п╟п╩п╬я│я▄ п╬я┌я─п╦п╪п╟я┌п╦ п╥п╬п╠я─п╟п╤п╣п╫п╫я▐."
 
-#: src/gtkam-tree.c:831
+#: src/gtkam-tree.c:1146
 #, fuzzy
 msgid "/Upload file..."
-msgstr "Прийом завершено."
+msgstr "п÷я─п╦п╧п╬п╪ п╥п╟п╡п╣я─я┬п╣п╫п╬."
 
-#: src/gtkam-tree.c:832
+#: src/gtkam-tree.c:1147
 #, fuzzy
 msgid "/Make directory..."
-msgstr "Каталог виводу:"
+msgstr "п п╟я┌п╟п╩п╬пЁ п╡п╦п╡п╬п╢я┐:"
 
-#: src/gtkam-tree.c:833
+#: src/gtkam-tree.c:1148
 #, fuzzy
 msgid "/Delete directory"
-msgstr "Каталог виводу:"
+msgstr "п п╟я┌п╟п╩п╬пЁ п╡п╦п╡п╬п╢я┐:"
 
-#: src/gtkam-tree.c:835
+#: src/gtkam-tree.c:1149
+#, fuzzy
+msgid "/Save directory tree..."
+msgstr "п п╟я┌п╟п╩п╬пЁ п╡п╦п╡п╬п╢я┐:"
+
+#: src/gtkam-tree.c:1151
 #, fuzzy
 msgid "/Capture image..."
-msgstr "Друк зображення..."
+msgstr "п■я─я┐п╨ п╥п╬п╠я─п╟п╤п╣п╫п╫я▐..."
 
-#: src/gtkam-tree.c:836
+#: src/gtkam-tree.c:1152
 msgid "/View camera preferences"
 msgstr ""
 
-#: src/gtkam-tree.c:838
+#: src/gtkam-tree.c:1154
 msgid "/View camera summary"
 msgstr ""
 
-#: src/gtkam-tree.c:839
+#: src/gtkam-tree.c:1155
 msgid "/View camera manual"
 msgstr ""
 
-#: src/gtkam-tree.c:840
+#: src/gtkam-tree.c:1156
 msgid "/View driver details"
 msgstr ""
 
-#: src/gtkam-tree.c:842
+#: src/gtkam-tree.c:1158
 #, fuzzy
 msgid "/Select camera..."
-msgstr "Жива камера!"
+msgstr "п√п╦п╡п╟ п╨п╟п╪п╣я─п╟!"
 
-#: src/gtkam-tree.c:843
+#: src/gtkam-tree.c:1159
 #, fuzzy
 msgid "/Remove camera"
-msgstr "Жива камера!"
+msgstr "п√п╦п╡п╟ п╨п╟п╪п╣я─п╟!"
 
-#: src/gtkam-tree.c:873
+#: src/gtkam-tree.c:1189
 #, fuzzy
 msgid "_Add camera..."
-msgstr "Вибрать модель/порт..."
+msgstr "п▓п╦п╠я─п╟я┌я▄ п╪п╬п╢п╣п╩я▄/п©п╬я─я┌..."
 
-#: src/gtkam-tree.c:973
+#: src/gtkam-tree.c:1289
 msgid "Please right-click to access additional menus"
 msgstr ""
 
-#: src/gtkam-tree.c:1002
+#: src/gtkam-tree.c:1318
 msgid "Folder"
 msgstr ""
 
-#: src/gtkam-tree.c:1095
+#: src/gtkam-tree.c:1411
 #, fuzzy
 msgid "Loading cameras..."
-msgstr "Вибрать модель/порт..."
+msgstr "п▓п╦п╠я─п╟я┌я▄ п╪п╬п╢п╣п╩я▄/п©п╬я─я┌..."
 
 #: src/gtkam-util.c:46
 #, c-format
@@ -914,29 +920,49 @@ msgstr ""
 #: src/gtkam-viewer.c:246
 #, fuzzy, c-format
 msgid "Downloading '%s' from folder '%s'..."
-msgstr "Не вдалось отримати перегляд"
+msgstr "п²п╣ п╡п╢п╟п╩п╬я│я▄ п╬я┌я─п╦п╪п╟я┌п╦ п©п╣я─п╣пЁп╩я▐п╢"
 
 #: src/gtkam-viewer.c:299
 #, fuzzy, c-format
 msgid "Could not download '%s' from folder '%s'."
-msgstr "Не вдалось отримати перегляд"
+msgstr "п²п╣ п╡п╢п╟п╩п╬я│я▄ п╬я┌я─п╦п╪п╟я┌п╦ п©п╣я─п╣пЁп╩я▐п╢"
 
 #: src/main.c:111
 msgid "Image Download Program"
 msgstr ""
 
 #, fuzzy
+#~ msgid "/File/Delete Photos/_Selected"
+#~ msgstr "п║я┌п╣я─я┌п╦ п╡п╦п╠я─п╟п╫я√ п╥п╬п╠я─п╟п╤п╣п╫п╫я▐"
+
+#, fuzzy
+#~ msgid "/File/Delete Photos/_All"
+#~ msgstr "п║я┌п╣я─я┌п╦ п╡п╦п╠я─п╟п╫я√ п╥п╬п╠я─п╟п╤п╣п╫п╫я▐"
+
+#, fuzzy
+#~ msgid "/Select/_None"
+#~ msgstr "п√п╦п╡п╟ п╨п╟п╪п╣я─п╟!"
+
+#, fuzzy
+#~ msgid "/Camera/_Add Camera..."
+#~ msgstr "п▓п╦п╠я─п╟я┌я▄ п╪п╬п╢п╣п╩я▄/п©п╬я─я┌..."
+
+#, fuzzy
+#~ msgid "/_Help"
+#~ msgstr "п■п╬п╡я√п╢п╨п╟"
+
+#, fuzzy
 #~ msgid "'%s' in folder '%s'"
-#~ msgstr "Не вдалось отримати перегляд"
+#~ msgstr "п²п╣ п╡п╢п╟п╩п╬я│я▄ п╬я┌я─п╦п╪п╟я┌п╦ п©п╣я─п╣пЁп╩я▐п╢"
 
 #, fuzzy
 #~ msgid "All files in folder '%s'"
-#~ msgstr "Не вдалось отримати перегляд"
+#~ msgstr "п²п╣ п╡п╢п╟п╩п╬я│я▄ п╬я┌я─п╦п╪п╟я┌п╦ п©п╣я─п╣пЁп╩я▐п╢"
 
 #, fuzzy
 #~ msgid "Could not find an io-driver for port '%s' ('%s')."
-#~ msgstr "Не вдалось в╕дновити #%i"
+#~ msgstr "п²п╣ п╡п╢п╟п╩п╬я│я▄ п╡я√п╢п╫п╬п╡п╦я┌п╦ #%i"
 
 #, fuzzy
 #~ msgid "/Capture"
-#~ msgstr "Створити"
+#~ msgstr "п║я┌п╡п╬я─п╦я┌п╦"

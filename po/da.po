@@ -1,18 +1,18 @@
 # Danish translation of gphoto
-# Copyright © 2000 Free Software Foundation, Inc.
+# Copyright Â© 2000 Free Software Foundation, Inc.
 # Kenneth Christiansen <kenneth@ripen.dk> 2000.
 # Keld Simonsen <keld@dkuug.dk>, 2000.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gphoto 0.4.3\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-03-22 14:40+0100\n"
+"Report-Msgid-Bugs-To: gphoto-devel@lists.sourceforge.net\n"
+"POT-Creation-Date: 2005-09-18 19:58+0200\n"
 "PO-Revision-Date: 2000-04-19 10:12+02:00\n"
 "Last-Translator: Keld Simonsen <keld@dkuug.dk>\n"
 "Language-Team: Dansk <dansk@klid.dk>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8-bit\n"
 
 #: src/gtkam-chooser.c:232 src/gtkam-chooser.c:254
@@ -24,7 +24,7 @@ msgstr "Nej"
 #: src/gtkam-chooser.c:656
 #, fuzzy
 msgid "Best"
-msgstr "Sæt tilbage"
+msgstr "SÃ¦t tilbage"
 
 #: src/gtkam-chooser.c:269
 #, fuzzy
@@ -44,7 +44,7 @@ msgstr "Kunne ikke hente antal billeder"
 #: src/gtkam-chooser.c:408
 #, fuzzy
 msgid "Detecting cameras..."
-msgstr "Vælg model/port..."
+msgstr "VÃ¦lg model/port..."
 
 #: src/gtkam-chooser.c:416
 msgid "No cameras detected."
@@ -58,7 +58,7 @@ msgstr "Kunne ikke tage billede."
 #: src/gtkam-chooser.c:558
 #, fuzzy
 msgid "Add Camera"
-msgstr "Vælg model/port..."
+msgstr "VÃ¦lg model/port..."
 
 #: src/gtkam-chooser.c:573
 #, fuzzy
@@ -72,7 +72,7 @@ msgstr ""
 #: src/gtkam-chooser.c:591
 #, fuzzy
 msgid "Detect USB camera"
-msgstr "Vælg model/port..."
+msgstr "VÃ¦lg model/port..."
 
 #: src/gtkam-chooser.c:593
 msgid "Port:"
@@ -167,7 +167,7 @@ msgstr "Gem billede(r)..."
 #, fuzzy, c-format
 msgid "Could not open '%s'!"
 msgstr ""
-"Kunne ikke åbne:\n"
+"Kunne ikke Ã¥bne:\n"
 "%s"
 
 #: src/gtkam-debug.c:311
@@ -216,9 +216,9 @@ msgid "Do you really want to delete all the files in '%s'?"
 msgstr "Kunne ikke hente #%i"
 
 #: src/gtkam-delete.c:387
-#, c-format
+#, fuzzy, c-format
 msgid "Do you really want to delete '%s'?"
-msgstr ""
+msgstr "Kunne ikke hente #%i"
 
 #: src/gtkam-delete.c:390
 #, c-format
@@ -325,7 +325,7 @@ msgstr ""
 
 #: src/gtkam-info.c:411 src/gtkam-info.c:547
 #, c-format
-msgid "%iK (%li bytes)"
+msgid "%liK (%li bytes)"
 msgstr ""
 
 #: src/gtkam-info.c:426
@@ -343,7 +343,7 @@ msgstr ""
 #: src/gtkam-info.c:468 src/gtkam-list.c:941
 #, fuzzy
 msgid "Preview"
-msgstr "Foregående"
+msgstr "ForegÃ¥ende"
 
 #: src/gtkam-info.c:474
 msgid "MIME type:"
@@ -401,17 +401,17 @@ msgstr "Levende kamera!"
 msgid "Name"
 msgstr ""
 
-#: src/gtkam-list.c:969
+#: src/gtkam-list.c:969 src/gtkam-tree.c:685
 #, c-format
 msgid "Listing files in folder '%s'..."
 msgstr ""
 
-#: src/gtkam-list.c:985
+#: src/gtkam-list.c:985 src/gtkam-tree.c:701
 #, c-format
 msgid "Could not get file list for folder '%s'"
 msgstr ""
 
-#: src/gtkam-main.c:472
+#: src/gtkam-main.c:426
 msgid ""
 "gtkam is a program that lets you download\n"
 "images from many digital cameras. It uses\n"
@@ -421,11 +421,11 @@ msgid ""
 "Enjoy the wonderful world of gphoto!"
 msgstr ""
 
-#: src/gtkam-main.c:483
+#: src/gtkam-main.c:437
 msgid "Many others"
 msgstr ""
 
-#: src/gtkam-main.c:516
+#: src/gtkam-main.c:470
 #, c-format
 msgid ""
 "%s\n"
@@ -434,7 +434,7 @@ msgid ""
 "    %s\n"
 msgstr ""
 
-#: src/gtkam-main.c:520
+#: src/gtkam-main.c:474
 #, c-format
 msgid ""
 "%s\n"
@@ -442,128 +442,99 @@ msgid ""
 "    %s\n"
 msgstr ""
 
-#: src/gtkam-main.c:621
-msgid "/_File"
+#: src/gtkam-main.c:549
+msgid "_File"
 msgstr ""
 
-#: src/gtkam-main.c:622
+#: src/gtkam-main.c:550
 #, fuzzy
-msgid "/File/_Save Photos"
+msgid "_Save Photos"
 msgstr "Gem billede(r)..."
 
-#: src/gtkam-main.c:623
-msgid "/File/Save Photos/_Selected"
-msgstr ""
-
-#: src/gtkam-main.c:625
-msgid "/File/Save Photos/_All"
-msgstr ""
-
-#: src/gtkam-main.c:627
+#: src/gtkam-main.c:551
 #, fuzzy
-msgid "/File/_Delete Photos"
+msgid "_Delete Photos"
 msgstr "Slet valgte billeder"
 
-#: src/gtkam-main.c:628
+#: src/gtkam-main.c:552 src/gtkam-main.c:554
 #, fuzzy
-msgid "/File/Delete Photos/_Selected"
-msgstr "Slet valgte billeder"
-
-#: src/gtkam-main.c:630
-#, fuzzy
-msgid "/File/Delete Photos/_All"
-msgstr "Slet valgte billeder"
-
-#: src/gtkam-main.c:633
-msgid "/File/_Quit"
-msgstr ""
-
-#: src/gtkam-main.c:635
-msgid "/_View"
-msgstr ""
-
-#: src/gtkam-main.c:636
-msgid "/View/_View Thumbnails"
-msgstr ""
-
-#: src/gtkam-main.c:639
-msgid "/View/Zoom _In"
-msgstr ""
-
-#: src/gtkam-main.c:641
-msgid "/View/Zoom _100"
-msgstr ""
-
-#: src/gtkam-main.c:643
-msgid "/View/Zoom _Out"
-msgstr ""
-
-#: src/gtkam-main.c:645
-#, fuzzy
-msgid "/_Select"
+msgid "_Selected"
 msgstr "Levende kamera!"
 
-#: src/gtkam-main.c:646
-msgid "/Select/_All"
+#: src/gtkam-main.c:553 src/gtkam-main.c:555 src/gtkam-main.c:562
+msgid "_All"
 msgstr ""
 
-#: src/gtkam-main.c:647
-msgid "/Select/_Inverse"
+#: src/gtkam-main.c:556
+msgid "_Quit"
 msgstr ""
 
-#: src/gtkam-main.c:648
+#: src/gtkam-main.c:557
+msgid "_View"
+msgstr ""
+
+#: src/gtkam-main.c:558
+msgid "Zoom _In"
+msgstr ""
+
+#: src/gtkam-main.c:559
+msgid "Zoom _100"
+msgstr ""
+
+#: src/gtkam-main.c:560
+msgid "Zoom _Out"
+msgstr ""
+
+#: src/gtkam-main.c:561
 #, fuzzy
-msgid "/Select/_None"
+msgid "_Select"
 msgstr "Levende kamera!"
 
-#: src/gtkam-main.c:649
+#: src/gtkam-main.c:563
+msgid "_Inverse"
+msgstr ""
+
+#: src/gtkam-main.c:564
 #, fuzzy
-msgid "/_Camera"
+msgid "_None"
+msgstr "Nej"
+
+#: src/gtkam-main.c:565
+#, fuzzy
+msgid "_Camera"
 msgstr "Levende kamera!"
 
-#: src/gtkam-main.c:650
+#: src/gtkam-main.c:566
 #, fuzzy
-msgid "/Camera/_Add Camera..."
-msgstr "Vælg model/port..."
+msgid "_Add Camera..."
+msgstr "VÃ¦lg model/port..."
 
-#: src/gtkam-main.c:651
+#: src/gtkam-main.c:567
 #, fuzzy
-msgid "/Camera/_Rescan"
+msgid "_Rescan"
 msgstr "Levende kamera!"
 
-#: src/gtkam-main.c:652
-#, fuzzy
-msgid "/_Help"
-msgstr "Hjælp"
-
-#: src/gtkam-main.c:654
-msgid "/Help/_Contents"
-msgstr ""
-
-#: src/gtkam-main.c:657
-msgid "/Help/_Debug"
-msgstr ""
-
-#: src/gtkam-main.c:658
-msgid "/Help/_About"
-msgstr ""
-
-#: src/gtkam-main.c:716
-msgid "View Thumbnails"
-msgstr ""
-
-#: src/gtkam-main.c:739
+#: src/gtkam-main.c:568
 #, fuzzy
 msgid "_Help"
-msgstr "Hjælp"
+msgstr "HjÃ¦lp"
 
-#: src/gtkam-main.c:751
-msgid "_Debug..."
+#: src/gtkam-main.c:570
+msgid "_Contents"
 msgstr ""
 
-#: src/gtkam-main.c:760
-msgid "_About..."
+#: src/gtkam-main.c:572
+msgid "_Debug"
 msgstr ""
+
+#: src/gtkam-main.c:573
+msgid "_About"
+msgstr ""
+
+#: src/gtkam-main.c:578
+#, fuzzy
+msgid "_View Thumbnails"
+msgstr "thumbnail-%03i.%s"
 
 #: src/gtkam-mkdir.c:152
 #, fuzzy, c-format
@@ -595,7 +566,7 @@ msgstr ""
 msgid "Please specify the path to the port your camera is attached to:"
 msgstr ""
 
-#: src/gtkam-preview.c:187 src/gtkam-tree.c:774
+#: src/gtkam-preview.c:187 src/gtkam-tree.c:1089
 #, fuzzy
 msgid "Capturing image..."
 msgstr "Udskriv billede..."
@@ -643,17 +614,17 @@ msgstr ""
 msgid "Rotate thumbnail by 180 degrees"
 msgstr ""
 
-#: src/gtkam-save.c:301
+#: src/gtkam-save.c:301 src/gtkam-tree.c:614
 #, c-format
 msgid "The file '%s' already exists."
 msgstr ""
 
-#: src/gtkam-save.c:323
+#: src/gtkam-save.c:323 src/gtkam-tree.c:631
 #, fuzzy, c-format
 msgid "Could not save file to '%s'."
 msgstr "Kunne ikke gemme #%i"
 
-#: src/gtkam-save.c:363
+#: src/gtkam-save.c:363 src/gtkam-tree.c:664
 #, fuzzy, c-format
 msgid "Could not get '%s' from folder '%s'."
 msgstr "Kunne ikke finde smugkig"
@@ -665,19 +636,19 @@ msgstr ""
 #: src/gtkam-save.c:506
 #, fuzzy
 msgid "Downloading file"
-msgstr "Nedlastning fuldført."
+msgstr "Nedlastning fuldfÃ¸rt."
 
 #: src/gtkam-save.c:508
 #, fuzzy, c-format
 msgid "Downloading %i files"
-msgstr "Nedlastning fuldført."
+msgstr "Nedlastning fuldfÃ¸rt."
 
-#: src/gtkam-save.c:515
+#: src/gtkam-save.c:515 src/gtkam-tree.c:739
 #, fuzzy, c-format
 msgid "Downloading %i files..."
-msgstr "Nedlastning fuldført."
+msgstr "Nedlastning fuldfÃ¸rt."
 
-#: src/gtkam-save.c:566
+#: src/gtkam-save.c:566 src/gtkam-tree.c:754
 #, fuzzy, c-format
 msgid "Problem getting '%s' from folder '%s'."
 msgstr "Kunne ikke finde smugkig"
@@ -730,7 +701,7 @@ msgstr ""
 #: src/gtkam-save.c:693
 #, fuzzy
 msgid "Open image(s) with: "
-msgstr "Åbn billede"
+msgstr "Ã…bn billede"
 
 #: src/gtkam-save.c:700
 msgid "Type in the name of the program you want to run, leave blank for none"
@@ -747,7 +718,7 @@ msgstr ""
 #: src/gtkam-save.c:724
 #, fuzzy
 msgid "Filename prefix: "
-msgstr "Filnavn præfiks:"
+msgstr "Filnavn prÃ¦fiks:"
 
 #: src/gtkam-save.c:733
 msgid "Start numbering with: "
@@ -763,141 +734,176 @@ msgstr "Gem billede(r)..."
 msgid "Save photos..."
 msgstr "Gem billede(r)..."
 
-#: src/gtkam-tree.c:291
+#: src/gtkam-tree.c:295
 #, fuzzy, c-format
 msgid "Listing folders in '%s'..."
 msgstr "Kunne ikke finde smugkig"
 
-#: src/gtkam-tree.c:312
+#: src/gtkam-tree.c:316
 #, fuzzy, c-format
 msgid "Could not list folders in '%s'."
 msgstr "Kunne ikke hente #%i"
 
-#: src/gtkam-tree.c:409
+#: src/gtkam-tree.c:413
 #, fuzzy, c-format
 msgid "Could not open '%s'."
 msgstr ""
-"Kunne ikke åbne:\n"
+"Kunne ikke Ã¥bne:\n"
 "%s"
 
-#: src/gtkam-tree.c:416
+#: src/gtkam-tree.c:420
 #, fuzzy, c-format
 msgid "Uploading '%s' into folder '%s'..."
 msgstr "Kunne ikke finde smugkig"
 
-#: src/gtkam-tree.c:436
+#: src/gtkam-tree.c:440
 #, fuzzy, c-format
 msgid "Could not upload '%s' into '%s'."
 msgstr "Kunne ikke finde smugkig"
 
-#: src/gtkam-tree.c:460
+#: src/gtkam-tree.c:464
 #, fuzzy, c-format
 msgid "Upload into '%s'..."
-msgstr "Nedlastning fuldført."
+msgstr "Nedlastning fuldfÃ¸rt."
 
-#: src/gtkam-tree.c:536
+#: src/gtkam-tree.c:540
 #, fuzzy, c-format
 msgid "Removing directory '%s'..."
 msgstr "Kunne ikke hente #%i"
 
-#: src/gtkam-tree.c:553
+#: src/gtkam-tree.c:557
 #, fuzzy, c-format
 msgid "Could not remove directory '%s'."
 msgstr "Kunne ikke hente #%i"
 
-#: src/gtkam-tree.c:582
+#: src/gtkam-tree.c:716
+#, fuzzy, c-format
+msgid "Could not create directory '%s'"
+msgstr "Kunne ikke hente #%i"
+
+#: src/gtkam-tree.c:728
+#, fuzzy, c-format
+msgid "Downloading file from '%s'"
+msgstr "Nedlastning fuldfÃ¸rt."
+
+#: src/gtkam-tree.c:730
+#, fuzzy, c-format
+msgid "Downloading %i files from '%s'"
+msgstr "Nedlastning fuldfÃ¸rt."
+
+#: src/gtkam-tree.c:779
+#, fuzzy, c-format
+msgid "Listing subfolders in folder '%s'..."
+msgstr "Kunne ikke finde smugkig"
+
+#: src/gtkam-tree.c:797
+#, fuzzy, c-format
+msgid "Could not get subfolders list for folder '%s'"
+msgstr "Kunne ikke finde smugkig"
+
+#: src/gtkam-tree.c:859
+#, fuzzy, c-format
+msgid "Download '%s' subtree to..."
+msgstr "Kunne ikke finde smugkig"
+
+#: src/gtkam-tree.c:897
 #, fuzzy
 msgid "Getting information about the camera..."
 msgstr "Kunne ikke finde smugkig"
 
-#: src/gtkam-tree.c:586
+#: src/gtkam-tree.c:901
 #, fuzzy
 msgid "Getting information about the driver..."
 msgstr "Kunne ikke finde smugkig"
 
-#: src/gtkam-tree.c:590
+#: src/gtkam-tree.c:905
 #, fuzzy
 msgid "Getting manual..."
 msgstr "Finder miniature #%i..."
 
-#: src/gtkam-tree.c:621
+#: src/gtkam-tree.c:936
 #, fuzzy
 msgid "Could not retrieve information."
 msgstr "Kunne ikke hente #%i"
 
-#: src/gtkam-tree.c:724
+#: src/gtkam-tree.c:1039
 #, fuzzy
 msgid "Select Camera"
 msgstr "Levende kamera!"
 
-#: src/gtkam-tree.c:792
+#: src/gtkam-tree.c:1107
 #, fuzzy
 msgid "Could not capture."
 msgstr "Kunne ikke tage billede."
 
-#: src/gtkam-tree.c:831
+#: src/gtkam-tree.c:1146
 #, fuzzy
 msgid "/Upload file..."
-msgstr "Nedlastning fuldført."
+msgstr "Nedlastning fuldfÃ¸rt."
 
-#: src/gtkam-tree.c:832
+#: src/gtkam-tree.c:1147
 #, fuzzy
 msgid "/Make directory..."
 msgstr "Uddata-katalog:"
 
-#: src/gtkam-tree.c:833
+#: src/gtkam-tree.c:1148
 #, fuzzy
 msgid "/Delete directory"
 msgstr "Uddata-katalog:"
 
-#: src/gtkam-tree.c:835
+#: src/gtkam-tree.c:1149
+#, fuzzy
+msgid "/Save directory tree..."
+msgstr "Uddata-katalog:"
+
+#: src/gtkam-tree.c:1151
 #, fuzzy
 msgid "/Capture image..."
 msgstr "Udskriv billede..."
 
-#: src/gtkam-tree.c:836
+#: src/gtkam-tree.c:1152
 msgid "/View camera preferences"
 msgstr ""
 
-#: src/gtkam-tree.c:838
+#: src/gtkam-tree.c:1154
 msgid "/View camera summary"
 msgstr ""
 
-#: src/gtkam-tree.c:839
+#: src/gtkam-tree.c:1155
 msgid "/View camera manual"
 msgstr ""
 
-#: src/gtkam-tree.c:840
+#: src/gtkam-tree.c:1156
 msgid "/View driver details"
 msgstr ""
 
-#: src/gtkam-tree.c:842
+#: src/gtkam-tree.c:1158
 #, fuzzy
 msgid "/Select camera..."
 msgstr "Levende kamera!"
 
-#: src/gtkam-tree.c:843
+#: src/gtkam-tree.c:1159
 #, fuzzy
 msgid "/Remove camera"
 msgstr "Levende kamera!"
 
-#: src/gtkam-tree.c:873
+#: src/gtkam-tree.c:1189
 #, fuzzy
 msgid "_Add camera..."
-msgstr "Vælg model/port..."
+msgstr "VÃ¦lg model/port..."
 
-#: src/gtkam-tree.c:973
+#: src/gtkam-tree.c:1289
 msgid "Please right-click to access additional menus"
 msgstr ""
 
-#: src/gtkam-tree.c:1002
+#: src/gtkam-tree.c:1318
 msgid "Folder"
 msgstr ""
 
-#: src/gtkam-tree.c:1095
+#: src/gtkam-tree.c:1411
 #, fuzzy
 msgid "Loading cameras..."
-msgstr "Vælg model/port..."
+msgstr "VÃ¦lg model/port..."
 
 #: src/gtkam-util.c:46
 #, c-format
@@ -925,6 +931,30 @@ msgstr "Kunne ikke finde smugkig"
 #: src/main.c:111
 msgid "Image Download Program"
 msgstr ""
+
+#, fuzzy
+#~ msgid "Could not get exif information for '%s' in folder '%s'"
+#~ msgstr "Kunne ikke finde smugkig"
+
+#, fuzzy
+#~ msgid "/File/Delete Photos/_Selected"
+#~ msgstr "Slet valgte billeder"
+
+#, fuzzy
+#~ msgid "/File/Delete Photos/_All"
+#~ msgstr "Slet valgte billeder"
+
+#, fuzzy
+#~ msgid "/Select/_None"
+#~ msgstr "Levende kamera!"
+
+#, fuzzy
+#~ msgid "/Camera/_Add Camera..."
+#~ msgstr "VÃ¦lg model/port..."
+
+#, fuzzy
+#~ msgid "/_Help"
+#~ msgstr "HjÃ¦lp"
 
 #, fuzzy
 #~ msgid "'%s' in folder '%s'"

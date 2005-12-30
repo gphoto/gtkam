@@ -1,0 +1,32 @@
+0.1.13 (2005/12/30)
+
+  * Translations
+    * hu
+    * it
+    * ja
+    * nb
+    * pl
+    * ru (Closes: #982905, #984513)
+
+  * Help files
+    * fix XML syntax (Closes: #984514)
+    * ru localizaiton (Closes: #987567)
+
+  * Build system
+    * Deprecate Gimp 1.3 (Closes: #984572)
+    * Updated build system to match libgphoto2's
+
+  * Various bugfixes.
+  * Restore and store camera config window size.
+  * Fix so you can actually save the debug output.
+  * Use GtkExpander rather than Enhanced button to hide advanced options
+  * Update Gtk API (Gtk 2.6 required)
+    * Use GtkFileChooser instead of GtkFileSelection (new Gtk)
+    * Replaced deprecated GtkMenuItem with GtkActionItem
+  * Various HIG changes
+  * Delete All now calls gp_camera_folder_delete_all (Closes #695074)
+  * Fixed EXIF spelling (all uppercase).
+  * Recursive save of camera picture tree.
+  * Help item shortcut is F1.(Closes #123518)
+
+0.1.12 (2005/06/30)

@@ -2,14 +2,14 @@
 # Copyright (C) 2001-2004 Free Software Foundation, Inc.
 # Takeshi Aihana <aihana@gnome.gr.jp>, 2001-2002.
 # AMANO Kazuhiro <haa13142@jnb.odn.ne.jp>, 2002.
-# Tadashi Jokagi <elf2000@users.sourceforge.net>, 2004.
+# Tadashi Jokagi <elf2000@users.sourceforge.net>, 2004-2005.
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: gtkam 0.1.10rc2\n"
-"Report-Msgid-Bugs-To: gphoto-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2005-09-18 19:58+0200\n"
-"PO-Revision-Date: 2005-09-02 14:01+0900\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2005-12-27 16:39+0900\n"
+"PO-Revision-Date: 2005-12-27 16:43+0900\n"
 "Last-Translator: Tadashi Jokagi <elf2000@users.sourceforge.net>\n"
 "Language-Team: Japanese <translation-team-ja@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -434,107 +434,88 @@ msgstr ""
 "    %s\n"
 
 #: src/gtkam-main.c:549
-#, fuzzy
 msgid "_File"
-msgstr "/ファイル(_F)"
+msgstr "ファイル(_F)"
 
 #: src/gtkam-main.c:550
-#, fuzzy
 msgid "_Save Photos"
-msgstr "写真の保存"
+msgstr "写真の保存(_S)"
 
 #: src/gtkam-main.c:551
-#, fuzzy
 msgid "_Delete Photos"
-msgstr "/ファイル(_F)/写真の削除(_D)"
+msgstr "写真の削除(_D)"
 
 #: src/gtkam-main.c:552 src/gtkam-main.c:554
-#, fuzzy
 msgid "_Selected"
-msgstr "/選択(_S)"
+msgstr "選択(_S)"
 
 #: src/gtkam-main.c:553 src/gtkam-main.c:555 src/gtkam-main.c:562
 msgid "_All"
-msgstr ""
+msgstr "すべて(_A)"
 
 #: src/gtkam-main.c:556
-#, fuzzy
 msgid "_Quit"
-msgstr "/ファイル(_F)/終了(_Q)"
+msgstr "終了(_Q)"
 
 #: src/gtkam-main.c:557
-#, fuzzy
 msgid "_View"
-msgstr "/表示(_V)"
+msgstr "表示(_V)"
 
 #: src/gtkam-main.c:558
-#, fuzzy
 msgid "Zoom _In"
-msgstr "/表示/拡大(_I)"
+msgstr "拡大(_I)"
 
 #: src/gtkam-main.c:559
-#, fuzzy
 msgid "Zoom _100"
-msgstr "/表示/拡大 100(_1)"
+msgstr "拡大 100(_1)"
 
 #: src/gtkam-main.c:560
-#, fuzzy
 msgid "Zoom _Out"
-msgstr "/表示/縮小(_O)"
+msgstr "縮小(_O)"
 
 #: src/gtkam-main.c:561
-#, fuzzy
 msgid "_Select"
-msgstr "/選択(_S)"
+msgstr "選択(_S)"
 
 #: src/gtkam-main.c:563
-#, fuzzy
 msgid "_Inverse"
-msgstr "/選択/反転(_I)"
+msgstr "反転(_I)"
 
 #: src/gtkam-main.c:564
-#, fuzzy
 msgid "_None"
-msgstr "なし"
+msgstr "なし(_N)"
 
 #: src/gtkam-main.c:565
-#, fuzzy
 msgid "_Camera"
-msgstr "/カメラ(_C)"
+msgstr "カメラ(_C)"
 
 #: src/gtkam-main.c:566
-#, fuzzy
 msgid "_Add Camera..."
 msgstr "カメラの追加(_A)..."
 
 #: src/gtkam-main.c:567
-#, fuzzy
 msgid "_Rescan"
-msgstr "/カメラ/再スキャン(_R)"
+msgstr "再スキャン(_R)"
 
 #: src/gtkam-main.c:568
 msgid "_Help"
 msgstr "ヘルプ(_H)"
 
 #: src/gtkam-main.c:570
-#, fuzzy
 msgid "_Contents"
-msgstr "/ヘルプ/目次(_C)"
+msgstr "目次(_C)"
 
 #: src/gtkam-main.c:572
-#, fuzzy
 msgid "_Debug"
-msgstr "デバッグ"
+msgstr "デバッグ(_D)"
 
 #: src/gtkam-main.c:573
-#, fuzzy
 msgid "_About"
-msgstr "情報(_A)..."
+msgstr "情報(_A)"
 
 #: src/gtkam-main.c:578
-#, fuzzy
 msgid "_View Thumbnails"
-msgstr "サムネイルを表示する"
+msgstr "サムネイルの表示(_V)"
 
 #: src/gtkam-mkdir.c:152
 #, c-format
@@ -766,29 +747,29 @@ msgid "Could not remove directory '%s'."
 msgstr "ディレクトリ '%s' を削除できませんでした。"
 
 #: src/gtkam-tree.c:716
-#, fuzzy, c-format
+#, c-format
 msgid "Could not create directory '%s'"
-msgstr "ディレクトリ '%s' を削除できませんでした。"
+msgstr "ディレクトリ '%s' を作成できませんでした。"
 
 #: src/gtkam-tree.c:728
-#, fuzzy, c-format
+#, c-format
 msgid "Downloading file from '%s'"
-msgstr "'%s' を '%s' からダウンロード中..."
+msgstr "'%s' からダウンロード中..."
 
 #: src/gtkam-tree.c:730
-#, fuzzy, c-format
+#, c-format
 msgid "Downloading %i files from '%s'"
-msgstr "'%s' を '%s' からダウンロード中..."
+msgstr "'%2$s' から %1$i 個のファイルをダウンロード中..."
 
 #: src/gtkam-tree.c:779
-#, fuzzy, c-format
+#, c-format
 msgid "Listing subfolders in folder '%s'..."
-msgstr "フォルダ '%s' にあるファイルの読み込み中..."
+msgstr "フォルダ '%s' にあるサブフォルダの一覧を取得中"
 
 #: src/gtkam-tree.c:797
-#, fuzzy, c-format
+#, c-format
 msgid "Could not get subfolders list for folder '%s'"
-msgstr "フォルダ '%s' のファイル一覧を取得できませんでした"
+msgstr "フォルダ '%s' のサブフォルダ一覧を取得できませんでした"
 
 #: src/gtkam-tree.c:859
 #, fuzzy, c-format
@@ -832,9 +813,8 @@ msgid "/Delete directory"
 msgstr "/フォルダの削除"
 
 #: src/gtkam-tree.c:1149
-#, fuzzy
 msgid "/Save directory tree..."
-msgstr "/フォルダの作成..."
+msgstr "/ディレクトリツリーの保存..."
 
 #: src/gtkam-tree.c:1151
 msgid "/Capture image..."

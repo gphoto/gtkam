@@ -24,3 +24,4 @@ ABOUT-NLS
 intl
 *.patch *.patch.new
 *.tar.gz *.tar.bz2
+mkinstalldirs

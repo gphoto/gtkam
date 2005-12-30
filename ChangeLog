@@ -1,5 +1,9 @@
 2005-12-30  Hubert Figuiere  <hub@figuiere.net>
 
+	* CHANGES: Added CHANGES file.
+
+	* configure.in: version 0.1.13
+
 	* src/gtkam-main.c: Help item shortcut is F1. bug #1235180
 
 2005-04-20  Andrew Burton <adburton@users.sourceforge.net>

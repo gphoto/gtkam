@@ -567,7 +567,7 @@ static GtkActionEntry entries[] = {
 	{ "Rescan", GTK_STOCK_REFRESH, N_("_Rescan"), NULL, NULL, G_CALLBACK (action_rescan) },
 	{ "HelpMenu", NULL, N_("_Help") },
 #ifdef HAVE_GNOME
-	{ "Help", GTK_STOCK_HELP, N_("_Contents"), NULL, NULL, G_CALLBACK (action_help) },
+	{ "Help", GTK_STOCK_HELP, N_("_Contents"), "F1", NULL, G_CALLBACK (action_help) },
 #endif
 	{ "Debug", NULL, N_("_Debug"), NULL, NULL, G_CALLBACK (action_debug) },
 	{ "About", GTK_STOCK_ABOUT, N_("_About"), NULL, NULL, G_CALLBACK (action_about) }

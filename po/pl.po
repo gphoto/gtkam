@@ -2,12 +2,12 @@
 # Copyright (C) 2005 Andrzej Zaborowski <balrog@zabor.org>.
 # This file is distributed under the same license as the gtkam package.
 # Andrzej Zaborowski <balrog@zabor.org>, 2005.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: gtkam VERSION\n"
 "Report-Msgid-Bugs-To: gphoto-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2005-09-18 19:58+0200\n"
+"POT-Creation-Date: 2005-12-30 02:16-0500\n"
 "PO-Revision-Date: 2005-08-29 20:00+0000\n"
 "Last-Translator: Andrzej Zaborowski <balrog@zabor.org>\n"
 "Language-Team: None <balrog@zabor.org>\n"
@@ -938,4 +938,3 @@ msgstr "Porgram do Pobierania Zdjęć"
 
 #~ msgid "photo"
 #~ msgstr "zdjęcie"
-

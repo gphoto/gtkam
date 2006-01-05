@@ -81,6 +81,9 @@ main (int argc, char *argv[])
 	bind_textdomain_codeset (PACKAGE, "UTF-8");
 	textdomain (PACKAGE);
 
+	/* also set libgphoto2 codeset to utf-8 */
+	gp_message_codeset("UTF-8");
+
 	/* Process command-line parameters */
 	for (x = 1; x < argc; x++) {
 		if (!strcmp (argv[x], "--debug") || !strcmp (argv[x], "-d")) {

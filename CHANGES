@@ -1,3 +1,11 @@
+0.1.14 
+
+  * Now requires libgphoto2 > 2.1.99
+    * Use gp_message_codeset("utf-8") to switch all libgphoto2 
+      messages to UTF-8.
+
+
+
 0.1.13 (2005/12/30)
 
   * Translations
@@ -29,4 +37,4 @@
   * Recursive save of camera picture tree.
   * Help item shortcut is F1.(Closes #123518)
 
-0.1.12 (2005/06/30)
+0.1.12 (2005/06/07)

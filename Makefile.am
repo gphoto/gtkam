@@ -11,7 +11,7 @@ ACLOCAL_AMFLAGS = -I m4m
 # Install a few support and doc files
 
 gtkamdocdir = $(datadir)/doc/gtkam
-gtkamdoc_DATA = AUTHORS COPYING NEWS README TODO
+gtkamdoc_DATA = AUTHORS COPYING NEWS README TODO CHANGES
 
 desktopdir = $(datadir)/applications
 desktop_DATA = gtkam.desktop

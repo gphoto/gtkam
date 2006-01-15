@@ -362,7 +362,7 @@ gtkam_info_new (GtkamCamera *camera, const gchar *folder, const gchar *name)
 
 		/* Mime type */
 		if (info->priv->info.file.fields & GP_FILE_INFO_TYPE) {
-			label = gtk_label_new (_("Mime type:"));
+			label = gtk_label_new (_("MIME type:"));
 			gtk_widget_show (label);
 			gtk_label_set_justify (GTK_LABEL (label),
 					       GTK_JUSTIFY_LEFT);
@@ -520,7 +520,7 @@ gtkam_info_new (GtkamCamera *camera, const gchar *folder, const gchar *name)
 
 		/* Mime type */
 		if (info->priv->info.audio.fields & GP_FILE_INFO_TYPE) {
-			label = gtk_label_new (_("MIME type: "));
+			label = gtk_label_new (_("MIME type:"));
 			gtk_widget_show (label);
 			gtk_label_set_justify (GTK_LABEL (label),
 					       GTK_JUSTIFY_LEFT);

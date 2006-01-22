@@ -9,5 +9,5 @@ Icon=gtkam.png
 StartupNotify=true
 Terminal=false
 Type=Application
-Categories=GNOME;GTK;Graphics;RasterGraphics;Viewer;
+Categories=GNOME;GTK;Photography;Graphics;RasterGraphics;Viewer;
 X-GNOME-DocPath=gtkam/gtkam.xml

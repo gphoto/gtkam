@@ -2,6 +2,7 @@
 
 	* gtkam.desktop (Categories): Added "GTK" as it is required by 
 	the standard and removed "Application" that is not part of it.
+	(Categories): "Added Photography"
 
 2005-12-30  Hubert Figuiere  <hub@figuiere.net>
 

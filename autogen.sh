@@ -19,7 +19,7 @@ debug="false"
 recursive="false"
 dryrun="false"
 self="$(basename "$0")"
-autogen_version="0.4.2"
+autogen_version="0.4.7"
 
 
 ########################################################################
@@ -61,9 +61,12 @@ Flags:
 
 ${self} depends on automake, autoconf, libtool and gettext.
 
-You may want to set AUTOCONF, AUTOHEADER, AUTOMAKE, ACLOCAL,
+You may want to set AUTOCONF, AUTOHEADER, AUTOMAKE, AUTORECONF, ACLOCAL,
 AUTOPOINT, LIBTOOLIZE to use specific version of these tools, and
 AUTORECONF_OPTS to add options to the call to autoreconf.
+
+If none of these variables are set, ${self} tries to find the most
+adequate version in \$PATH.
 __HELP_EOF__
 }
 
@@ -118,7 +121,7 @@ init_vars() {
     #        OK, the "init" part is done recursively by autopoint, so that is easy.
     #        But the cleaning should also work recursively, but that is difficult
     #        with the current structure of the script.
-    AG_SUBDIRS="$(for k in $(sed -n 's/^[[:space:]]*AC_CONFIG_SUBDIRS(\[\{0,1\}\([^])]*\).*/\1/p' "$CONFIGURE_AC"); do echo "${k}"; done)"
+    AG_SUBDIRS="$(for k in $(sed -n 's/^[[:space:]]*GP_AUTOGEN_SUBDIR(\[\{0,1\}\([^])]*\).*/\1/p' "$CONFIGURE_AC"); do echo "${k}"; done)"
     AG_LIBLTDL_DIR="$(sed -n 's/^[[:space:]]*AC_LIBLTDL_\(INSTALLABLE\|CONVENIENCE\)(\[\{0,1\}\([^])]*\).*/\2/p' < "$CONFIGURE_AC")"
     if test "x$AG_LIBLTDL_DIR" = "x"; then
         tmp="$(sed -n 's/^[[:space:]]*\(AC_LIBLTDL_\)\(INSTALLABLE\|CONVENIENCE\)(\[\{0,1\}\([^])]*\).*/\1/p' < "$CONFIGURE_AC")"
@@ -302,7 +305,7 @@ if cd "${dir}"; then
     if test "x$AG_LIBLTDL_DIR" != "x"; then
 	# We have to run libtoolize --ltdl ourselves because
 	#   - autoreconf doesn't run it at all
-	execute_command "${LIBTOOLIZE-"libtoolize"}" --ltdl
+	execute_command "${LIBTOOLIZE-"libtoolize"}" --ltdl --copy
 	# And we have to clean up the generated files after libtoolize because
 	#   - we still want symlinks for the files
 	#   - but we want to (implicitly) AC_CONFIG_SUBDIR and that writes to
@@ -320,7 +323,7 @@ if cd "${dir}"; then
 	if test "$status" -ne 0; then exit "$status"; fi
     fi
     if "$recursive"; then :; else
-	if execute_command autoreconf --install --symlink ${AUTORECONF_OPTS}; then
+	if execute_command ${AUTORECONF-"autoreconf"} --install --symlink ${AUTORECONF_OPTS}; then
 	    :; else
 	    status="$?"
 	    echo "autoreconf quit with exit code $status, aborting."
@@ -336,10 +339,59 @@ fi
     # Just error propagation
     status="$?"
     echo "$self:init: Left directory \`${dir}'"
-    if test "$status" -ne "0"; then
+    if "$recursive"; then 
+    	:
+    elif test "$status" -ne "0"; then
 	exit "$status"
     fi
 }
+
+
+########################################################################
+# If not explicitly given, try to find most convenient tools in $PATH
+#
+# This method only works for tools made for parallel installation with
+# a version suffix, i.e. autoconf and automake.
+#
+# libtool and gettext do not support that, so you'll still have to
+# manually set the respective variables if the default does not work
+# for you.
+
+skip="false"
+oldversion="oldversion"
+while read flag variable binary version restofline; do
+	case "$flag" in
+	+)
+		if "$skip"; then skip=false; fi
+		if test -n "`eval echo \$\{$variable+"set"\}`"; then
+			skip=:
+		else
+			if test -x "`which ${binary}${version} 2> /dev/null`"; then
+				export "$variable"="${binary}${version}"
+				oldversion="${version}"
+			else
+				skip=:
+			fi
+		fi
+		;;
+	-)
+		if "$skip"; then :; else
+			export "$variable"="${binary}${oldversion}"
+		fi
+		;;
+	esac
+done<<EOF
++ AUTOMAKE	automake	-1.9
+- ACLOCAL	aclocal
++ AUTOMAKE	automake	-1.8
+- ACLOCAL	aclocal
++ AUTOCONF	autoconf	2.59
+- AUTOHEADER	autoheader
+- AUTORECONF	autoreconf
++ AUTOCONF	autoconf	2.50
+- AUTOHEADER	autoheader
+- AUTORECONF	autoreconf
+EOF
 
 
 ########################################################################
@@ -400,26 +452,31 @@ if test "x$pdirs" != "x"; then
     dirs="$pdirs"
 fi
 
+
+########################################################################
+# Check that tool versions satisfy our needs
+
 if "$check_versions"; then
 	# check tool versions
 	errors=false
 	lf="
 "
-	while read tool minversion; do
+	while read tool minversion package; do
 		version="$("$tool" --version | sed 's/^.*(.*) *\(.*\)$/\1/g;1q')"
 		# compare version and minversion
 		first="$(echo "$version$lf$minversion" | sort -n | sed '1q')"
 		if test "x$minversion" != "x$first" && test "x$version" = "x$first"; then
-			echo "Version \`$version' of \`$tool' not sufficient. At least \`$minversion' required."
+			echo "Version \`$version' of \`$tool' from the \`$package' (dev/devel) package is not sufficient."
+			echo "At least \`$minversion' required."
 			errors=:
 		fi
 	done <<EOF
-${ACLOCAL-"aclocal"}	1.8
-${AUTOMAKE-"automake"}	1.8
-${AUTOCONF-"autoconf"}	2.59
-${AUTOHEADER-"autoheader"}	2.59
-${AUTOPOINT-"autopoint"}	0.14.1
-${LIBTOOLIZE-"libtoolize"}	1.4
+${ACLOCAL-"aclocal"}	1.8	automake
+${AUTOMAKE-"automake"}	1.8	automake
+${AUTOCONF-"autoconf"}	2.59	autoconf
+${AUTOHEADER-"autoheader"}	2.59	autoconf
+${AUTOPOINT-"autopoint"}	0.14.1	gettext
+${LIBTOOLIZE-"libtoolize"}	1.4	libtool
 EOF
 	if "$errors"; then
 		echo "Please update your toolset."
@@ -435,12 +492,13 @@ fi
 for dir in ${dirs}; do
     "$debug" && echo "Running commands on directory \`${dir}'"
     if test ! -d "$dir"; then
-	echo "Could not find directory \`${dir}'"	
+	echo "Could not find directory \`${dir}'"
+    else
+	init_vars "$dir"
+	for command in ${commands}; do
+	    "command_$command" "$dir"
+	done
     fi
-    init_vars "$dir"
-    for command in ${commands}; do
-	"command_$command" "$dir"
-    done
 done
 
 exit 0

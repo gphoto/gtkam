@@ -401,25 +401,26 @@ static void
 on_detect_clicked (GtkButton *button, GtkamChooser *chooser)
 {
 	GtkWidget *d, *status;
-	CameraList list;
+	CameraList *list;
 	int result;
 	const char *name;
 
 	status = gtkam_status_new (_("Detecting cameras..."));
 	gtkam_dialog_add_status (GTKAM_DIALOG (chooser), status);
+	gp_list_new (&list);
 	result = gp_abilities_list_detect (chooser->priv->al,
-		chooser->priv->il, &list,
+		chooser->priv->il, list,
 		GTKAM_STATUS (status)->context->context);
 	switch (result) {
 	case GP_OK:
-		if (!gp_list_count (&list)) {
+		if (!gp_list_count (list)) {
 			d = gtkam_close_new (_("No cameras detected."));
 			gtk_window_set_transient_for (GTK_WINDOW (d),
 						      GTK_WINDOW (chooser));
 			gtk_widget_show (d);
 		} else {
 			/* FIXME: Let user choose from the list */
-			gp_list_get_name (&list, 0, &name);
+			gp_list_get_name (list, 0, &name);
 			gtk_entry_set_text (chooser->priv->entry_model, name);
 			gtk_entry_set_text (chooser->priv->entry_port,
 					"Universal Serial Bus (usb:)");
@@ -434,6 +435,7 @@ on_detect_clicked (GtkButton *button, GtkamChooser *chooser)
 		gtk_widget_show (d);
 		break;
 	}
+	gp_list_unref (list);
 	gtk_object_destroy (GTK_OBJECT (status));
 }
 

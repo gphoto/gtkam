@@ -51,7 +51,7 @@ struct _GtkamDeletePrivate
 
 	GtkWidget *msg;
 	
-	gboolean *deleteall;
+	gboolean deleteall;
 };
 
 #define PARENT_TYPE GTK_TYPE_DIALOG
@@ -173,7 +173,7 @@ delete_all (GtkamDelete *delete, GtkamCamera *camera,
 {
 	GtkWidget *d, *s;
 	int result, r1, r2;
-	CameraList l1, l2;
+	CameraList *l1, *l2;
 	const char *name;
 	GtkamDeleteAllDeletedData add;
 	GtkamDeleteFileDeletedData fdd;
@@ -182,7 +182,8 @@ delete_all (GtkamDelete *delete, GtkamCamera *camera,
 	gtk_widget_show (s);
 	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (delete)->vbox), s,
 			    FALSE, FALSE, 0);
-	r1 = gp_camera_folder_list_files (camera->camera, folder, &l1, NULL);
+	gp_list_new (&l1);
+	r1 = gp_camera_folder_list_files (camera->camera, folder, l1, NULL);
 	result = gp_camera_folder_delete_all (camera->camera, folder,
 					GTKAM_STATUS (s)->context->context);
 	switch (result) {
@@ -203,13 +204,14 @@ delete_all (GtkamDelete *delete, GtkamCamera *camera,
 		gtk_widget_show (d);
 		gtk_object_destroy (GTK_OBJECT (s));
 
+		gp_list_new (&l2);
 		/* See what files have been deleted */
 		r2 = gp_camera_folder_list_files (camera->camera, folder,
-						  &l2, NULL);
+						  l2, NULL);
 		if ((r1 == GP_OK) && (r2 == GP_OK)) {
-			for (r1 = 0; r1 < gp_list_count (&l1); r1++) {
-				gp_list_get_name (&l1, r1, &name);
-				if (gp_list_lookup_name (&l2, name) >= 0) {
+			for (r1 = 0; r1 < gp_list_count (l1); r1++) {
+				gp_list_get_name (l1, r1, &name);
+				if (gp_list_lookup_name (l2, name) >= 0) {
 					fdd.camera = camera;
 					fdd.folder = folder;
 					fdd.name = name;
@@ -219,8 +221,10 @@ delete_all (GtkamDelete *delete, GtkamCamera *camera,
 				}
 			}
 		}
+		gp_list_unref (l2);
 		return (FALSE);
 	}
+	gp_list_unref (l1);
 }
 
 static gboolean

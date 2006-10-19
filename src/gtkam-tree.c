@@ -677,14 +677,15 @@ tree_save_dir(GtkamCamera *camera, GtkamTree *tree,
 	GtkWidget *s, *dialog;
 	const gchar *name;
 	gchar *new_path;
-	CameraList flist, slist;
+	CameraList *flist, *slist;
 	gint i, count, id;
 	int result;
 	id = 0;
 
 	s = gtkam_status_new (_("Listing files in folder '%s'..."), folder);
 	g_signal_emit (G_OBJECT (tree), signals[NEW_STATUS], 0, s);
-	result = gp_camera_folder_list_files (camera->camera, folder, &flist,
+	gp_list_new (&flist);
+	result = gp_camera_folder_list_files (camera->camera, folder, flist,
 					GTKAM_STATUS (s)->context->context);
 	switch (result) {
 	case GP_OK:
@@ -723,7 +724,7 @@ tree_save_dir(GtkamCamera *camera, GtkamTree *tree,
 	} else
 		new_path = g_strdup (path);
 
-	count = gp_list_count (&flist);
+	count = gp_list_count (flist);
 	if (count == 1)
 		s = gtkam_cancel_new (_("Downloading file from '%s'"), folder);
 	else
@@ -740,7 +741,7 @@ tree_save_dir(GtkamCamera *camera, GtkamTree *tree,
 
 	/* Loop through files */
 	for (i = 0; i < count; i++) {
-		gp_list_get_name (&flist, i, &name);
+		gp_list_get_name (flist, i, &name);
 
 		result = tree_get_file (camera, new_path, folder, name,
 					GTKAM_CANCEL (s)->context, save);
@@ -769,6 +770,7 @@ tree_save_dir(GtkamCamera *camera, GtkamTree *tree,
 				GP_CONTEXT_FEEDBACK_CANCEL)
 			break;
 	}
+	gp_list_unref (flist);
 
 	if (count > 1)
 		gp_context_progress_stop (
@@ -779,7 +781,8 @@ tree_save_dir(GtkamCamera *camera, GtkamTree *tree,
 	s = gtkam_status_new (_("Listing subfolders in folder '%s'..."),
 			      folder);
 	g_signal_emit (G_OBJECT (tree), signals[NEW_STATUS], 0, s);
-	result = gp_camera_folder_list_folders (camera->camera, folder, &slist,
+	gp_list_new (&slist);
+	result = gp_camera_folder_list_folders (camera->camera, folder, slist,
 					GTKAM_STATUS (s)->context->context);
 	switch (result) {
 	case GP_OK:
@@ -803,10 +806,10 @@ tree_save_dir(GtkamCamera *camera, GtkamTree *tree,
 	}
 	gtk_object_destroy (GTK_OBJECT (s));
 
-	count = gp_list_count (&slist);
+	count = gp_list_count (slist);
 
 	for (i = 0; i < count; i++) {
-		gp_list_get_name (&slist, i, &name);
+		gp_list_get_name (slist, i, &name);
 		name = tree_concat_dir_and_file (folder, name);
 
 		result = tree_save_dir (camera, tree, new_path, name, save);
@@ -815,6 +818,7 @@ tree_save_dir(GtkamCamera *camera, GtkamTree *tree,
 		if (result < 0)
 			break;
 	}
+	gp_list_unref (slist);
 
 	g_free(new_path);
 	return result;

@@ -958,7 +958,7 @@ gtkam_list_add_folder (GtkamList *list, GtkamCamera *camera,
 		       const gchar *folder)
 {
 	GtkWidget *dialog, *s;
-	CameraList flist;
+	CameraList *flist;
 	int result;
 	const char *name;
 	gint i;
@@ -968,7 +968,8 @@ gtkam_list_add_folder (GtkamList *list, GtkamCamera *camera,
 
 	s = gtkam_status_new (_("Listing files in folder '%s'..."), folder);
 	g_signal_emit (G_OBJECT (list), signals[NEW_STATUS], 0, s);
-	result = gp_camera_folder_list_files (camera->camera, folder, &flist,
+	gp_list_new (&flist);
+	result = gp_camera_folder_list_files (camera->camera, folder, flist,
 					GTKAM_STATUS (s)->context->context);
 	switch (result) {
 	case GP_OK:
@@ -990,13 +991,14 @@ gtkam_list_add_folder (GtkamList *list, GtkamCamera *camera,
 	}
 	gtk_object_destroy (GTK_OBJECT (s));
 
-	for (i = 0; i < gp_list_count (&flist); i++) {
-		gp_list_get_name (&flist, i, &name);
+	for (i = 0; i < gp_list_count (flist); i++) {
+		gp_list_get_name (flist, i, &name);
 		gtk_list_store_append (list->priv->store, &iter);
 		gtk_list_store_set (list->priv->store, &iter,
 			NAME_COLUMN, name, FOLDER_COLUMN, folder,
 			CAMERA_COLUMN, camera, IS_EDITABLE_COLUMN, TRUE, -1);
 	}
+	gp_list_unref (flist);
 
 	if (camera->multi)
 		gp_camera_exit (camera->camera, NULL);

@@ -19,7 +19,7 @@ desktop_DATA = gtkam.desktop
 icondir = $(datadir)/pixmaps
 icon_DATA = gtkam.png
 
-EXTRA_DIST = gtkam.desktop gtkam.png
+EXTRA_DIST = gtkam.desktop gtkam.png  AUTHORS COPYING NEWS README TODO CHANGES
 
 
 ########################################################################

@@ -626,16 +626,6 @@ static const char *ui_description =
 "	</toolbar>"
 "</ui>";
 
-#ifdef ENABLE_NLS
-
-static gchar *
-translate_func (const gchar *path, gpointer data)
-{
-	return (_(path));
-}
-
-#endif
-
 GtkWidget *
 gtkam_main_new (void)
 {
@@ -660,9 +650,11 @@ gtkam_main_new (void)
 
 	/* Menu */
 	action_group = gtk_action_group_new ("MenuActions");
+#ifdef GETTEXT_PACKAGE
+	gtk_action_group_set_translation_domain (action_group, GETTEXT_PACKAGE);
+#endif
 	gtk_action_group_add_actions (action_group, entries, G_N_ELEMENTS (entries), m);
 	gtk_action_group_add_toggle_actions (action_group, toggle_entries, G_N_ELEMENTS (toggle_entries), m);
-	gtk_action_group_set_translate_func (action_group, translate_func, NULL, NULL);
 
 	ui_manager = gtk_ui_manager_new ();
 	gtk_ui_manager_insert_action_group (ui_manager, action_group, 0);

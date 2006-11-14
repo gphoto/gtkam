@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gtkam VERSION\n"
 "Report-Msgid-Bugs-To: gphoto-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2005-12-30 02:16-0500\n"
+"POT-Creation-Date: 2006-11-14 21:42+0100\n"
 "PO-Revision-Date: 2003-07-12 15:49+0200\n"
 "Last-Translator: Miloslav Trmac <mitr@volny.cz>\n"
 "Language-Team: Czech <cs@li.org>\n"
@@ -19,8 +19,8 @@ msgstr ""
 msgid "None"
 msgstr "Žádný"
 
-#: src/gtkam-chooser.c:262 src/gtkam-chooser.c:369 src/gtkam-chooser.c:622
-#: src/gtkam-chooser.c:656
+#: src/gtkam-chooser.c:262 src/gtkam-chooser.c:369 src/gtkam-chooser.c:624
+#: src/gtkam-chooser.c:658
 msgid "Best"
 msgstr "Nejlepší"
 
@@ -41,52 +41,52 @@ msgstr "Nemohu získat schopnosti modelu '%s'."
 msgid "Detecting cameras..."
 msgstr "Detekuji fotoaparáty..."
 
-#: src/gtkam-chooser.c:416
+#: src/gtkam-chooser.c:417
 msgid "No cameras detected."
 msgstr "Nedetekován žádný fotoaparát."
 
-#: src/gtkam-chooser.c:433
+#: src/gtkam-chooser.c:434
 msgid "Could not detect any cameras."
 msgstr "Nemohu detekovat žádný fotoaparát."
 
-#: src/gtkam-chooser.c:558
+#: src/gtkam-chooser.c:560
 #, fuzzy
 msgid "Add Camera"
 msgstr "_Přidat fotoaparát..."
 
-#: src/gtkam-chooser.c:573
+#: src/gtkam-chooser.c:575
 msgid "Model:"
 msgstr "Model:"
 
-#: src/gtkam-chooser.c:585
+#: src/gtkam-chooser.c:587
 msgid "Detect"
 msgstr "Detekovat"
 
-#: src/gtkam-chooser.c:591
+#: src/gtkam-chooser.c:593
 msgid "Detect USB camera"
 msgstr "Detekovat USB fotoaparát"
 
-#: src/gtkam-chooser.c:593
+#: src/gtkam-chooser.c:595
 msgid "Port:"
 msgstr "Port:"
 
-#: src/gtkam-chooser.c:614 src/gtkam-chooser.c:646
+#: src/gtkam-chooser.c:616 src/gtkam-chooser.c:648
 msgid "Speed:"
 msgstr "Rychlost:"
 
-#: src/gtkam-chooser.c:627 src/gtkam-chooser.c:662
+#: src/gtkam-chooser.c:629 src/gtkam-chooser.c:664
 msgid "Allow multiple frontends"
 msgstr "Povolit více rozhraní"
 
-#: src/gtkam-chooser.c:634
+#: src/gtkam-chooser.c:636
 msgid "Enhanced"
 msgstr "Vylepšené"
 
-#: src/gtkam-chooser.c:727
+#: src/gtkam-chooser.c:729
 msgid "Could not get number of supported camera models"
 msgstr "Nemohu získat počet podporovaných modelů fotoaparátů"
 
-#: src/gtkam-chooser.c:757
+#: src/gtkam-chooser.c:759
 msgid "Could not get number of ports."
 msgstr "Nemohu získat počet portů."
 
@@ -176,37 +176,37 @@ msgstr "Data"
 msgid "Deleting all files in '%s'..."
 msgstr "Odstraňuji všechny soubory v '%s'..."
 
-#: src/gtkam-delete.c:201
+#: src/gtkam-delete.c:202
 #, c-format
 msgid "Could not delete all files in '%s'."
 msgstr "Nemohu odstranit všechny soubory v '%s'."
 
-#: src/gtkam-delete.c:234
+#: src/gtkam-delete.c:238
 #, c-format
 msgid "Deleting file '%s' from folder '%s'..."
 msgstr "Odstraňuji soubor '%s' z adresáře '%s'..."
 
-#: src/gtkam-delete.c:255
+#: src/gtkam-delete.c:259
 #, c-format
 msgid "Could not delete file '%s' in folder '%s'."
 msgstr "Nemohu odstranit soubor '%s' z adresáře '%s'."
 
-#: src/gtkam-delete.c:384
+#: src/gtkam-delete.c:388
 #, fuzzy, c-format
 msgid "Do you really want to delete all the files in '%s'?"
 msgstr "Opravdu chcete odstranit následující soubor?"
 
-#: src/gtkam-delete.c:387
+#: src/gtkam-delete.c:391
 #, fuzzy, c-format
 msgid "Do you really want to delete '%s'?"
 msgstr "Opravdu chcete odstranit následujících %i souborů?"
 
-#: src/gtkam-delete.c:390
+#: src/gtkam-delete.c:394
 #, fuzzy, c-format
 msgid "Do you really want to delete the selected %i files?"
 msgstr "Opravdu chcete odstranit následujících %i souborů?"
 
-#: src/gtkam-delete.c:396
+#: src/gtkam-delete.c:400
 msgid "Delete these files?"
 msgstr ""
 
@@ -291,8 +291,9 @@ msgstr "Soubor"
 msgid "Name:"
 msgstr "Název:"
 
-#: src/gtkam-info.c:365
-msgid "Mime type:"
+#: src/gtkam-info.c:365 src/gtkam-info.c:474 src/gtkam-info.c:523
+#, fuzzy
+msgid "MIME type:"
 msgstr "Typ mime:"
 
 #: src/gtkam-info.c:383
@@ -324,19 +325,9 @@ msgstr "Odstranění"
 msgid "Preview"
 msgstr "Náhled"
 
-#: src/gtkam-info.c:474
-#, fuzzy
-msgid "MIME type:"
-msgstr "Typ mime:"
-
 #: src/gtkam-info.c:517
 msgid "Audio"
 msgstr "Zvuk"
-
-#: src/gtkam-info.c:523
-#, fuzzy
-msgid "MIME type: "
-msgstr "Typ mime: "
 
 #: src/gtkam-list.c:322
 #, c-format
@@ -387,7 +378,7 @@ msgstr "Název"
 msgid "Listing files in folder '%s'..."
 msgstr "Vypisuji soubory v adresáři '%s'..."
 
-#: src/gtkam-list.c:985 src/gtkam-tree.c:701
+#: src/gtkam-list.c:986 src/gtkam-tree.c:702
 #, c-format
 msgid "Could not get file list for folder '%s'"
 msgstr "Nemohu získat seznam souborů v adresáři '%s'"
@@ -569,7 +560,7 @@ msgstr ""
 msgid "Please specify the path to the port your camera is attached to:"
 msgstr "Zadejte prosím (rozšířenou) cestu k portu, který chcete používat:"
 
-#: src/gtkam-preview.c:187 src/gtkam-tree.c:1089
+#: src/gtkam-preview.c:187 src/gtkam-tree.c:1093
 msgid "Capturing image..."
 msgstr "Zachytávám obrázek..."
 
@@ -641,12 +632,12 @@ msgstr "Stahuji soubor"
 msgid "Downloading %i files"
 msgstr "Stahuji %i souborů"
 
-#: src/gtkam-save.c:515 src/gtkam-tree.c:739
+#: src/gtkam-save.c:515 src/gtkam-tree.c:740
 #, c-format
 msgid "Downloading %i files..."
 msgstr "Stahuji %i souborů..."
 
-#: src/gtkam-save.c:566 src/gtkam-tree.c:754
+#: src/gtkam-save.c:566 src/gtkam-tree.c:755
 #, fuzzy, c-format
 msgid "Problem getting '%s' from folder '%s'."
 msgstr "Nemohu získat '%s' z adresáře '%s'."
@@ -768,126 +759,126 @@ msgstr "Odstraňuji adresář '%s'..."
 msgid "Could not remove directory '%s'."
 msgstr "Nemohu odstranit adresář '%s'."
 
-#: src/gtkam-tree.c:716
+#: src/gtkam-tree.c:717
 #, fuzzy, c-format
 msgid "Could not create directory '%s'"
 msgstr "Nemohu odstranit adresář '%s'."
 
-#: src/gtkam-tree.c:728
+#: src/gtkam-tree.c:729
 #, fuzzy, c-format
 msgid "Downloading file from '%s'"
 msgstr "Stahuji '%s' z '%s'..."
 
-#: src/gtkam-tree.c:730
+#: src/gtkam-tree.c:731
 #, fuzzy, c-format
 msgid "Downloading %i files from '%s'"
 msgstr "Stahuji '%s' z '%s'..."
 
-#: src/gtkam-tree.c:779
+#: src/gtkam-tree.c:781
 #, fuzzy, c-format
 msgid "Listing subfolders in folder '%s'..."
 msgstr "Vypisuji soubory v adresáři '%s'..."
 
-#: src/gtkam-tree.c:797
+#: src/gtkam-tree.c:800
 #, fuzzy, c-format
 msgid "Could not get subfolders list for folder '%s'"
 msgstr "Nemohu získat seznam souborů v adresáři '%s'"
 
-#: src/gtkam-tree.c:859
+#: src/gtkam-tree.c:863
 #, fuzzy, c-format
 msgid "Download '%s' subtree to..."
 msgstr "Stahuji '%s' z '%s'..."
 
-#: src/gtkam-tree.c:897
+#: src/gtkam-tree.c:901
 msgid "Getting information about the camera..."
 msgstr "Získávám informace o fotoaparátu..."
 
-#: src/gtkam-tree.c:901
+#: src/gtkam-tree.c:905
 msgid "Getting information about the driver..."
 msgstr "Získávám informace o ovladači..."
 
-#: src/gtkam-tree.c:905
+#: src/gtkam-tree.c:909
 msgid "Getting manual..."
 msgstr "Získávám manuál..."
 
-#: src/gtkam-tree.c:936
+#: src/gtkam-tree.c:940
 msgid "Could not retrieve information."
 msgstr "Nemohu získat informace."
 
-#: src/gtkam-tree.c:1039
+#: src/gtkam-tree.c:1043
 msgid "Select Camera"
 msgstr "Vyberte fotoaparát"
 
-#: src/gtkam-tree.c:1107
+#: src/gtkam-tree.c:1111
 msgid "Could not capture."
 msgstr "Nemohu zachytit."
 
-#: src/gtkam-tree.c:1146
+#: src/gtkam-tree.c:1150
 #, fuzzy
 msgid "/Upload file..."
 msgstr "/Odeslat soubor"
 
-#: src/gtkam-tree.c:1147
+#: src/gtkam-tree.c:1151
 #, fuzzy
 msgid "/Make directory..."
 msgstr "/Vytvořit adresář"
 
-#: src/gtkam-tree.c:1148
+#: src/gtkam-tree.c:1152
 #, fuzzy
 msgid "/Delete directory"
 msgstr "/Odstranit adresář"
 
-#: src/gtkam-tree.c:1149
+#: src/gtkam-tree.c:1153
 #, fuzzy
 msgid "/Save directory tree..."
 msgstr "/Vytvořit adresář"
 
-#: src/gtkam-tree.c:1151
+#: src/gtkam-tree.c:1155
 #, fuzzy
 msgid "/Capture image..."
 msgstr "Zachytávám obrázek..."
 
-#: src/gtkam-tree.c:1152
+#: src/gtkam-tree.c:1156
 #, fuzzy
 msgid "/View camera preferences"
 msgstr "/Nastavení"
 
-#: src/gtkam-tree.c:1154
+#: src/gtkam-tree.c:1158
 msgid "/View camera summary"
 msgstr ""
 
-#: src/gtkam-tree.c:1155
+#: src/gtkam-tree.c:1159
 msgid "/View camera manual"
 msgstr ""
 
-#: src/gtkam-tree.c:1156
+#: src/gtkam-tree.c:1160
 msgid "/View driver details"
 msgstr ""
 
-#: src/gtkam-tree.c:1158
+#: src/gtkam-tree.c:1162
 #, fuzzy
 msgid "/Select camera..."
 msgstr "/Vybrat fotoaparát"
 
-#: src/gtkam-tree.c:1159
+#: src/gtkam-tree.c:1163
 #, fuzzy
 msgid "/Remove camera"
 msgstr "/Odstranit fotoaparát"
 
-#: src/gtkam-tree.c:1189
+#: src/gtkam-tree.c:1193
 #, fuzzy
 msgid "_Add camera..."
 msgstr "_Přidat fotoaparát..."
 
-#: src/gtkam-tree.c:1289
+#: src/gtkam-tree.c:1293
 msgid "Please right-click to access additional menus"
 msgstr "Další menu vyvolejte kliknutím pravým tlačítkem"
 
-#: src/gtkam-tree.c:1318
+#: src/gtkam-tree.c:1322
 msgid "Folder"
 msgstr "Adresář"
 
-#: src/gtkam-tree.c:1411
+#: src/gtkam-tree.c:1415
 msgid "Loading cameras..."
 msgstr "Načítám fotoaparáty..."
 
@@ -917,9 +908,16 @@ msgstr "Stahuji '%s' z adresáře '%s'..."
 msgid "Could not download '%s' from folder '%s'."
 msgstr "Nemohu stáhnout '%s' z adresáře '%s'."
 
-#: src/main.c:111
+#: src/main.c:114
 msgid "Image Download Program"
 msgstr "Program pro stažení obrázků"
+
+#~ msgid "Mime type:"
+#~ msgstr "Typ mime:"
+
+#, fuzzy
+#~ msgid "MIME type: "
+#~ msgstr "Typ mime: "
 
 #, fuzzy
 #~ msgid "Could not get exif information for '%s' in folder '%s'"

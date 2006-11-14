@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gphoto 0.4.3\n"
 "Report-Msgid-Bugs-To: gphoto-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2005-12-30 02:16-0500\n"
+"POT-Creation-Date: 2006-11-14 21:42+0100\n"
 "PO-Revision-Date: 2002-11-21 00:52+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@online.no>\n"
 "Language-Team: Norwegian <i18n-nb@lister.ping.uio.no>\n"
@@ -18,8 +18,8 @@ msgstr ""
 msgid "None"
 msgstr "Ingen"
 
-#: src/gtkam-chooser.c:262 src/gtkam-chooser.c:369 src/gtkam-chooser.c:622
-#: src/gtkam-chooser.c:656
+#: src/gtkam-chooser.c:262 src/gtkam-chooser.c:369 src/gtkam-chooser.c:624
+#: src/gtkam-chooser.c:658
 msgid "Best"
 msgstr "Beste"
 
@@ -40,52 +40,52 @@ msgstr "Kunne ikke finne funksjoner for modell «%s»."
 msgid "Detecting cameras..."
 msgstr "Søker etter kamera..."
 
-#: src/gtkam-chooser.c:416
+#: src/gtkam-chooser.c:417
 msgid "No cameras detected."
 msgstr "Ingen kamera funnet."
 
-#: src/gtkam-chooser.c:433
+#: src/gtkam-chooser.c:434
 msgid "Could not detect any cameras."
 msgstr "Kunne ikke finne kamera."
 
-#: src/gtkam-chooser.c:558
+#: src/gtkam-chooser.c:560
 #, fuzzy
 msgid "Add Camera"
 msgstr "_Legg til kamera..."
 
-#: src/gtkam-chooser.c:573
+#: src/gtkam-chooser.c:575
 msgid "Model:"
 msgstr "Modell:"
 
-#: src/gtkam-chooser.c:585
+#: src/gtkam-chooser.c:587
 msgid "Detect"
 msgstr "Søk"
 
-#: src/gtkam-chooser.c:591
+#: src/gtkam-chooser.c:593
 msgid "Detect USB camera"
 msgstr "Søk etter USB-kamera"
 
-#: src/gtkam-chooser.c:593
+#: src/gtkam-chooser.c:595
 msgid "Port:"
 msgstr "Port:"
 
-#: src/gtkam-chooser.c:614 src/gtkam-chooser.c:646
+#: src/gtkam-chooser.c:616 src/gtkam-chooser.c:648
 msgid "Speed:"
 msgstr "Hastighet:"
 
-#: src/gtkam-chooser.c:627 src/gtkam-chooser.c:662
+#: src/gtkam-chooser.c:629 src/gtkam-chooser.c:664
 msgid "Allow multiple frontends"
 msgstr "Tillat flere fronter"
 
-#: src/gtkam-chooser.c:634
+#: src/gtkam-chooser.c:636
 msgid "Enhanced"
 msgstr "Forbedret"
 
-#: src/gtkam-chooser.c:727
+#: src/gtkam-chooser.c:729
 msgid "Could not get number of supported camera models"
 msgstr "Kunne ikke finne antall støttede kameramodeller"
 
-#: src/gtkam-chooser.c:757
+#: src/gtkam-chooser.c:759
 msgid "Could not get number of ports."
 msgstr "Kunne ikke finne antall porter."
 
@@ -175,37 +175,37 @@ msgstr "Data"
 msgid "Deleting all files in '%s'..."
 msgstr "Sletter alle filer i «%s»..."
 
-#: src/gtkam-delete.c:201
+#: src/gtkam-delete.c:202
 #, c-format
 msgid "Could not delete all files in '%s'."
 msgstr "Kunne ikke slette alle filer i «%s»."
 
-#: src/gtkam-delete.c:234
+#: src/gtkam-delete.c:238
 #, c-format
 msgid "Deleting file '%s' from folder '%s'..."
 msgstr "Sletter fil «%s» fra mappe «%s»..."
 
-#: src/gtkam-delete.c:255
+#: src/gtkam-delete.c:259
 #, c-format
 msgid "Could not delete file '%s' in folder '%s'."
 msgstr "Kunne ikke slette fil «%s» i mappe «%s»."
 
-#: src/gtkam-delete.c:384
+#: src/gtkam-delete.c:388
 #, fuzzy, c-format
 msgid "Do you really want to delete all the files in '%s'?"
 msgstr "Kunne ikke slette alle filer i «%s»."
 
-#: src/gtkam-delete.c:387
+#: src/gtkam-delete.c:391
 #, c-format
 msgid "Do you really want to delete '%s'?"
 msgstr ""
 
-#: src/gtkam-delete.c:390
+#: src/gtkam-delete.c:394
 #, c-format
 msgid "Do you really want to delete the selected %i files?"
 msgstr ""
 
-#: src/gtkam-delete.c:396
+#: src/gtkam-delete.c:400
 msgid "Delete these files?"
 msgstr ""
 
@@ -289,8 +289,9 @@ msgstr "Fil"
 msgid "Name:"
 msgstr "Navn:"
 
-#: src/gtkam-info.c:365
-msgid "Mime type:"
+#: src/gtkam-info.c:365 src/gtkam-info.c:474 src/gtkam-info.c:523
+#, fuzzy
+msgid "MIME type:"
 msgstr "MIME-type:"
 
 #: src/gtkam-info.c:383
@@ -322,19 +323,9 @@ msgstr "Slett"
 msgid "Preview"
 msgstr "Forhåndsvis"
 
-#: src/gtkam-info.c:474
-#, fuzzy
-msgid "MIME type:"
-msgstr "MIME-type:"
-
 #: src/gtkam-info.c:517
 msgid "Audio"
 msgstr "Lyd"
-
-#: src/gtkam-info.c:523
-#, fuzzy
-msgid "MIME type: "
-msgstr "MIME-type:"
 
 #: src/gtkam-list.c:322
 #, c-format
@@ -387,7 +378,7 @@ msgstr "Navn"
 msgid "Listing files in folder '%s'..."
 msgstr "Viser filer i mappen «%s»..."
 
-#: src/gtkam-list.c:985 src/gtkam-tree.c:701
+#: src/gtkam-list.c:986 src/gtkam-tree.c:702
 #, c-format
 msgid "Could not get file list for folder '%s'"
 msgstr "Kunne ikke hente filliste for mappe «%s»"
@@ -551,7 +542,7 @@ msgstr ""
 msgid "Please specify the path to the port your camera is attached to:"
 msgstr ""
 
-#: src/gtkam-preview.c:187 src/gtkam-tree.c:1089
+#: src/gtkam-preview.c:187 src/gtkam-tree.c:1093
 msgid "Capturing image..."
 msgstr "Tar bilde..."
 
@@ -624,12 +615,12 @@ msgstr "Laster ned fil..."
 msgid "Downloading %i files"
 msgstr "Laster ned %i filer..."
 
-#: src/gtkam-save.c:515 src/gtkam-tree.c:739
+#: src/gtkam-save.c:515 src/gtkam-tree.c:740
 #, c-format
 msgid "Downloading %i files..."
 msgstr "Laster ned %i filer..."
 
-#: src/gtkam-save.c:566 src/gtkam-tree.c:754
+#: src/gtkam-save.c:566 src/gtkam-tree.c:755
 #, fuzzy, c-format
 msgid "Problem getting '%s' from folder '%s'."
 msgstr "Kunne ikke hente «%s» fra mappe «%s»."
@@ -751,125 +742,125 @@ msgstr "Fjerner katalog «%s»..."
 msgid "Could not remove directory '%s'."
 msgstr "Kunne ikke fjerne katalog «%s»."
 
-#: src/gtkam-tree.c:716
+#: src/gtkam-tree.c:717
 #, fuzzy, c-format
 msgid "Could not create directory '%s'"
 msgstr "Kunne ikke fjerne katalog «%s»."
 
-#: src/gtkam-tree.c:728
+#: src/gtkam-tree.c:729
 #, fuzzy, c-format
 msgid "Downloading file from '%s'"
 msgstr "Laster ned fil..."
 
-#: src/gtkam-tree.c:730
+#: src/gtkam-tree.c:731
 #, fuzzy, c-format
 msgid "Downloading %i files from '%s'"
 msgstr "Laster ned %i filer..."
 
-#: src/gtkam-tree.c:779
+#: src/gtkam-tree.c:781
 #, fuzzy, c-format
 msgid "Listing subfolders in folder '%s'..."
 msgstr "Viser filer i mappen «%s»..."
 
-#: src/gtkam-tree.c:797
+#: src/gtkam-tree.c:800
 #, fuzzy, c-format
 msgid "Could not get subfolders list for folder '%s'"
 msgstr "Kunne ikke hente filliste for mappe «%s»"
 
-#: src/gtkam-tree.c:859
+#: src/gtkam-tree.c:863
 #, fuzzy, c-format
 msgid "Download '%s' subtree to..."
 msgstr "Laster ned «%s» fra mappe «%s»..."
 
-#: src/gtkam-tree.c:897
+#: src/gtkam-tree.c:901
 msgid "Getting information about the camera..."
 msgstr "Henter informasjon om kamera..."
 
-#: src/gtkam-tree.c:901
+#: src/gtkam-tree.c:905
 msgid "Getting information about the driver..."
 msgstr "Henter informasjon om driver..."
 
-#: src/gtkam-tree.c:905
+#: src/gtkam-tree.c:909
 msgid "Getting manual..."
 msgstr "Henter brukerhåndbok..."
 
-#: src/gtkam-tree.c:936
+#: src/gtkam-tree.c:940
 msgid "Could not retrieve information."
 msgstr "Kunne ikke hente informasjon."
 
-#: src/gtkam-tree.c:1039
+#: src/gtkam-tree.c:1043
 msgid "Select Camera"
 msgstr "Velg kamera"
 
-#: src/gtkam-tree.c:1107
+#: src/gtkam-tree.c:1111
 msgid "Could not capture."
 msgstr "Kunne ikke ta bilde."
 
-#: src/gtkam-tree.c:1146
+#: src/gtkam-tree.c:1150
 #, fuzzy
 msgid "/Upload file..."
 msgstr "Opplasting til «%s»..."
 
-#: src/gtkam-tree.c:1147
+#: src/gtkam-tree.c:1151
 #, fuzzy
 msgid "/Make directory..."
 msgstr "Ny katalog"
 
-#: src/gtkam-tree.c:1148
+#: src/gtkam-tree.c:1152
 #, fuzzy
 msgid "/Delete directory"
 msgstr "Ny katalog"
 
-#: src/gtkam-tree.c:1149
+#: src/gtkam-tree.c:1153
 #, fuzzy
 msgid "/Save directory tree..."
 msgstr "Ny katalog"
 
-#: src/gtkam-tree.c:1151
+#: src/gtkam-tree.c:1155
 #, fuzzy
 msgid "/Capture image..."
 msgstr "Tar bilde..."
 
-#: src/gtkam-tree.c:1152
+#: src/gtkam-tree.c:1156
 msgid "/View camera preferences"
 msgstr ""
 
-#: src/gtkam-tree.c:1154
+#: src/gtkam-tree.c:1158
 msgid "/View camera summary"
 msgstr ""
 
-#: src/gtkam-tree.c:1155
+#: src/gtkam-tree.c:1159
 msgid "/View camera manual"
 msgstr ""
 
-#: src/gtkam-tree.c:1156
+#: src/gtkam-tree.c:1160
 msgid "/View driver details"
 msgstr ""
 
-#: src/gtkam-tree.c:1158
+#: src/gtkam-tree.c:1162
 #, fuzzy
 msgid "/Select camera..."
 msgstr "Velg kamera"
 
-#: src/gtkam-tree.c:1159
+#: src/gtkam-tree.c:1163
 #, fuzzy
 msgid "/Remove camera"
 msgstr "Velg kamera"
 
-#: src/gtkam-tree.c:1189
+#: src/gtkam-tree.c:1193
 #, fuzzy
 msgid "_Add camera..."
 msgstr "_Legg til kamera..."
 
-#: src/gtkam-tree.c:1289
+#: src/gtkam-tree.c:1293
 msgid "Please right-click to access additional menus"
 msgstr ""
 
-#: src/gtkam-tree.c:1318
+#: src/gtkam-tree.c:1322
 msgid "Folder"
 msgstr "Mappe"
 
-#: src/gtkam-tree.c:1411
+#: src/gtkam-tree.c:1415
 msgid "Loading cameras..."
 msgstr "Laster kamera..."
 
@@ -896,9 +887,16 @@ msgstr "Laster ned «%s» fra mappe «%s»..."
 msgid "Could not download '%s' from folder '%s'."
 msgstr "Kunne ikke laste ned «%s» fra mappe «%s»."
 
-#: src/main.c:111
+#: src/main.c:114
 msgid "Image Download Program"
 msgstr "Program for nedlasting av bilder"
+
+#~ msgid "Mime type:"
+#~ msgstr "MIME-type:"
+
+#, fuzzy
+#~ msgid "MIME type: "
+#~ msgstr "MIME-type:"
 
 #~ msgid "/File/Delete Photos/_Selected"
 #~ msgstr "/Fil/Slett bilder/_Valgte"

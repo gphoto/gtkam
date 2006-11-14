@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gtkam VERSION\n"
 "Report-Msgid-Bugs-To: gphoto-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2005-12-30 02:16-0500\n"
+"POT-Creation-Date: 2006-11-14 21:42+0100\n"
 "PO-Revision-Date: 2005-08-29 20:00+0000\n"
 "Last-Translator: Andrzej Zaborowski <balrog@zabor.org>\n"
 "Language-Team: None <balrog@zabor.org>\n"
@@ -19,8 +19,8 @@ msgstr ""
 msgid "None"
 msgstr "Żaden"
 
-#: src/gtkam-chooser.c:262 src/gtkam-chooser.c:369 src/gtkam-chooser.c:622
-#: src/gtkam-chooser.c:656
+#: src/gtkam-chooser.c:262 src/gtkam-chooser.c:369 src/gtkam-chooser.c:624
+#: src/gtkam-chooser.c:658
 msgid "Best"
 msgstr "Najlepsza"
 
@@ -41,51 +41,51 @@ msgstr "Nie można było uzyskać właściwości modelu '%s'."
 msgid "Detecting cameras..."
 msgstr "Trwa wykrywanie aparatów..."
 
-#: src/gtkam-chooser.c:416
+#: src/gtkam-chooser.c:417
 msgid "No cameras detected."
 msgstr "Nie wykryto żadnego aparatu."
 
-#: src/gtkam-chooser.c:433
+#: src/gtkam-chooser.c:434
 msgid "Could not detect any cameras."
 msgstr "Nie można było odnaleźć aparatu."
 
-#: src/gtkam-chooser.c:558
+#: src/gtkam-chooser.c:560
 msgid "Add Camera"
 msgstr "Dodaj aparat..."
 
-#: src/gtkam-chooser.c:573
+#: src/gtkam-chooser.c:575
 msgid "Model:"
 msgstr "Model:"
 
-#: src/gtkam-chooser.c:585
+#: src/gtkam-chooser.c:587
 msgid "Detect"
 msgstr "Wykryj"
 
-#: src/gtkam-chooser.c:591
+#: src/gtkam-chooser.c:593
 msgid "Detect USB camera"
 msgstr "Wykryj aparat fotograficzny USB"
 
-#: src/gtkam-chooser.c:593
+#: src/gtkam-chooser.c:595
 msgid "Port:"
 msgstr "Port:"
 
-#: src/gtkam-chooser.c:614 src/gtkam-chooser.c:646
+#: src/gtkam-chooser.c:616 src/gtkam-chooser.c:648
 msgid "Speed:"
 msgstr "Szybkość:"
 
-#: src/gtkam-chooser.c:627 src/gtkam-chooser.c:662
+#: src/gtkam-chooser.c:629 src/gtkam-chooser.c:664
 msgid "Allow multiple frontends"
 msgstr "Zezwól na dodatkowe interfejsy"
 
-#: src/gtkam-chooser.c:634
+#: src/gtkam-chooser.c:636
 msgid "Enhanced"
 msgstr "Szczegóły"
 
-#: src/gtkam-chooser.c:727
+#: src/gtkam-chooser.c:729
 msgid "Could not get number of supported camera models"
 msgstr "Nie udało się uzyskać liczby obsługiwanych modeli."
 
-#: src/gtkam-chooser.c:757
+#: src/gtkam-chooser.c:759
 msgid "Could not get number of ports."
 msgstr "Nie udało się uzyskać liczby portów."
 
@@ -175,37 +175,37 @@ msgstr "Dane"
 msgid "Deleting all files in '%s'..."
 msgstr "Kasowanie wszystkich plików z '%s'..."
 
-#: src/gtkam-delete.c:201
+#: src/gtkam-delete.c:202
 #, c-format
 msgid "Could not delete all files in '%s'."
 msgstr "Nie wszystkie pliki w '%s' można było skasować."
 
-#: src/gtkam-delete.c:234
+#: src/gtkam-delete.c:238
 #, c-format
 msgid "Deleting file '%s' from folder '%s'..."
 msgstr "Kasowanie zbioru '%s' z katalogu '%s'..."
 
-#: src/gtkam-delete.c:255
+#: src/gtkam-delete.c:259
 #, c-format
 msgid "Could not delete file '%s' in folder '%s'."
 msgstr "Nie można skasować '%s' w katalogu '%s'."
 
-#: src/gtkam-delete.c:384
+#: src/gtkam-delete.c:388
 #, c-format
 msgid "Do you really want to delete all the files in '%s'?"
 msgstr "Wszystkie pliki w '%s' zostaną skasowane. Czy kontynuować?"
 
-#: src/gtkam-delete.c:387
+#: src/gtkam-delete.c:391
 #, c-format
 msgid "Do you really want to delete '%s'?"
 msgstr "Czy napewno chcesz usunąć '%s'?"
 
-#: src/gtkam-delete.c:390
+#: src/gtkam-delete.c:394
 #, c-format
 msgid "Do you really want to delete the selected %i files?"
 msgstr "Zaznczonych %i plików zostanie skasowanych. Czy kontynuować?"
 
-#: src/gtkam-delete.c:396
+#: src/gtkam-delete.c:400
 msgid "Delete these files?"
 msgstr "Napewno usunąć te pliki?"
 
@@ -289,8 +289,8 @@ msgstr "Plik"
 msgid "Name:"
 msgstr "Nazwa:"
 
-#: src/gtkam-info.c:365
-msgid "Mime type:"
+#: src/gtkam-info.c:365 src/gtkam-info.c:474 src/gtkam-info.c:523
+msgid "MIME type:"
 msgstr "Typ MIME:"
 
 #: src/gtkam-info.c:383
@@ -322,17 +322,9 @@ msgstr "Skasuj"
 msgid "Preview"
 msgstr "Podgląd"
 
-#: src/gtkam-info.c:474
-msgid "MIME type:"
-msgstr "Typ MIME:"
-
 #: src/gtkam-info.c:517
 msgid "Audio"
 msgstr "Audio"
-
-#: src/gtkam-info.c:523
-msgid "MIME type: "
-msgstr "Typ MIME: "
 
 #: src/gtkam-list.c:322
 #, c-format
@@ -382,7 +374,7 @@ msgstr "Nazwa"
 msgid "Listing files in folder '%s'..."
 msgstr "Pokazywanie plików w katalogu '%s'..."
 
-#: src/gtkam-list.c:985 src/gtkam-tree.c:701
+#: src/gtkam-list.c:986 src/gtkam-tree.c:702
 #, c-format
 msgid "Could not get file list for folder '%s'"
 msgstr "Nie można uzyskać listy plików katalogu '%s'."
@@ -544,7 +536,7 @@ msgstr "Nie został odnaleziony port '%s'. Upewnij się że nazwa jest poprawna.
 msgid "Please specify the path to the port your camera is attached to:"
 msgstr "Podaj ścieżkę portu do którego przyłączony jest aparat:"
 
-#: src/gtkam-preview.c:187 src/gtkam-tree.c:1089
+#: src/gtkam-preview.c:187 src/gtkam-tree.c:1093
 msgid "Capturing image..."
 msgstr "Przechwytywanie obrazu..."
 
@@ -616,12 +608,12 @@ msgstr "Pobieranie pliku"
 msgid "Downloading %i files"
 msgstr "Pobieranie %i plików"
 
-#: src/gtkam-save.c:515 src/gtkam-tree.c:739
+#: src/gtkam-save.c:515 src/gtkam-tree.c:740
 #, c-format
 msgid "Downloading %i files..."
 msgstr "Pobieranie %i plików..."
 
-#: src/gtkam-save.c:566 src/gtkam-tree.c:754
+#: src/gtkam-save.c:566 src/gtkam-tree.c:755
 #, c-format
 msgid "Problem getting '%s' from folder '%s'."
 msgstr "Przy pobieraniu '%s' z katalogu '%s' wystąpił błąd."
@@ -743,117 +735,117 @@ msgstr "Usuwanie katalogu '%s'..."
 msgid "Could not remove directory '%s'."
 msgstr "Błąd przy usuwaniu katalogu '%s'."
 
-#: src/gtkam-tree.c:716
+#: src/gtkam-tree.c:717
 #, c-format
 msgid "Could not create directory '%s'"
 msgstr "Wystąpił błąd przy tworzeniu katalogu '%s'."
 
-#: src/gtkam-tree.c:728
+#: src/gtkam-tree.c:729
 #, c-format
 msgid "Downloading file from '%s'"
 msgstr "Pobieranie pliku z '%s'..."
 
-#: src/gtkam-tree.c:730
+#: src/gtkam-tree.c:731
 #, c-format
 msgid "Downloading %i files from '%s'"
 msgstr "Pobieranie %i plików z '%s'..."
 
-#: src/gtkam-tree.c:779
+#: src/gtkam-tree.c:781
 #, c-format
 msgid "Listing subfolders in folder '%s'..."
 msgstr "Pobieranie listy podkatalogów katalogu '%s'..."
 
-#: src/gtkam-tree.c:797
+#: src/gtkam-tree.c:800
 #, c-format
 msgid "Could not get subfolders list for folder '%s'"
 msgstr "Nie można uzyskać listy podkatalogów katalogu '%s'."
 
-#: src/gtkam-tree.c:859
+#: src/gtkam-tree.c:863
 #, c-format
 msgid "Download '%s' subtree to..."
 msgstr "Zapisz drzewo '%s' do..."
 
-#: src/gtkam-tree.c:897
+#: src/gtkam-tree.c:901
 msgid "Getting information about the camera..."
 msgstr "Trwa pobieranie informacji o aparacie fotograficznym..."
 
-#: src/gtkam-tree.c:901
+#: src/gtkam-tree.c:905
 msgid "Getting information about the driver..."
 msgstr "Trwa pobieranie informacji o sterowniku..."
 
-#: src/gtkam-tree.c:905
+#: src/gtkam-tree.c:909
 msgid "Getting manual..."
 msgstr "Pobieranie podręcznika..."
 
-#: src/gtkam-tree.c:936
+#: src/gtkam-tree.c:940
 msgid "Could not retrieve information."
 msgstr "Pobieranie informacji nie powiodło się."
 
-#: src/gtkam-tree.c:1039
+#: src/gtkam-tree.c:1043
 msgid "Select Camera"
 msgstr "Wybierz aparat"
 
-#: src/gtkam-tree.c:1107
+#: src/gtkam-tree.c:1111
 msgid "Could not capture."
 msgstr "Przechwytywanie nie powiodło się."
 
-#: src/gtkam-tree.c:1146
+#: src/gtkam-tree.c:1150
 msgid "/Upload file..."
 msgstr "/Dodaj plik..."
 
-#: src/gtkam-tree.c:1147
+#: src/gtkam-tree.c:1151
 msgid "/Make directory..."
 msgstr "/Utwórz katalog..."
 
-#: src/gtkam-tree.c:1148
+#: src/gtkam-tree.c:1152
 msgid "/Delete directory"
 msgstr "/Skasuj katalog"
 
-#: src/gtkam-tree.c:1149
+#: src/gtkam-tree.c:1153
 msgid "/Save directory tree..."
 msgstr "/Ściągnij cały katalog..."
 
-#: src/gtkam-tree.c:1151
+#: src/gtkam-tree.c:1155
 msgid "/Capture image..."
 msgstr "/Przechwyć obraz..."
 
-#: src/gtkam-tree.c:1152
+#: src/gtkam-tree.c:1156
 msgid "/View camera preferences"
 msgstr "/Ustawienia aparatu..."
 
-#: src/gtkam-tree.c:1154
+#: src/gtkam-tree.c:1158
 msgid "/View camera summary"
 msgstr "/Stan aparatu..."
 
-#: src/gtkam-tree.c:1155
+#: src/gtkam-tree.c:1159
 msgid "/View camera manual"
 msgstr "/Podręcznik aparatu..."
 
-#: src/gtkam-tree.c:1156
+#: src/gtkam-tree.c:1160
 msgid "/View driver details"
 msgstr "/Dane sterownika..."
 
-#: src/gtkam-tree.c:1158
+#: src/gtkam-tree.c:1162
 msgid "/Select camera..."
 msgstr "/Wybierz aparat..."
 
-#: src/gtkam-tree.c:1159
+#: src/gtkam-tree.c:1163
 msgid "/Remove camera"
 msgstr "Usuń aparat"
 
-#: src/gtkam-tree.c:1189
+#: src/gtkam-tree.c:1193
 msgid "_Add camera..."
 msgstr "_Dodaj aparat..."
 
-#: src/gtkam-tree.c:1289
+#: src/gtkam-tree.c:1293
 msgid "Please right-click to access additional menus"
 msgstr "Kliknij prawym przyciskiem aby otworzyć menu lokalne"
 
-#: src/gtkam-tree.c:1318
+#: src/gtkam-tree.c:1322
 msgid "Folder"
 msgstr "Katalog"
 
-#: src/gtkam-tree.c:1411
+#: src/gtkam-tree.c:1415
 msgid "Loading cameras..."
 msgstr "Ładowanie aparatów fotograficznych..."
 
@@ -884,9 +876,15 @@ msgstr "Pobieranie '%s' z katalogu '%s'..."
 msgid "Could not download '%s' from folder '%s'."
 msgstr "Pobieranie '%s' z katalogu '%s' nie powiodło się."
 
-#: src/main.c:111
+#: src/main.c:114
 msgid "Image Download Program"
 msgstr "Porgram do Pobierania Zdjęć"
+
+#~ msgid "Mime type:"
+#~ msgstr "Typ MIME:"
+
+#~ msgid "MIME type: "
+#~ msgstr "Typ MIME: "
 
 #~ msgid "Do you really want to delete the following file?"
 #~ msgstr "Czy napewno skasować ten plik?"

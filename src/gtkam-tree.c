@@ -1080,7 +1080,7 @@ action_capture (gpointer callback_data, guint callback_action,
 
 	/* Let's first check if the camera supports previews */
 	gp_camera_get_abilities (camera->camera, &a);
-	if (a.operations & GP_OPERATION_CAPTURE_PREVIEW) {
+	if (TRUE /*a.operations & GP_OPERATION_CAPTURE_PREVIEW*/) {
 		d = gtkam_preview_new (camera);
 		g_signal_emit (G_OBJECT (tree), signals[NEW_DIALOG], 0, d);
 		g_object_unref (G_OBJECT (d));
@@ -1227,7 +1227,7 @@ on_button_press_event (GtkWidget *widget, GdkEventButton *event,
 		w = gtk_item_factory_get_widget (tree->priv->factory,
 						 "/Capture image...");
 		gtk_widget_set_sensitive (w,
-			a.operations & GP_OPERATION_CAPTURE_IMAGE);
+			/*a.operations & GP_OPERATION_CAPTURE_IMAGE */ TRUE);
 
 		gtk_item_factory_popup (tree->priv->factory, event->x_root,
 				event->y_root, event->button, event->time);

@@ -36,6 +36,7 @@
 static GObjectClass *parent_class;
 
 struct _GtkamContextPrivate {
+   int notused;
 };
 
 static void

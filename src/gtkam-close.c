@@ -33,6 +33,7 @@
 
 struct _GtkamClosePrivate
 {
+   int notused;
 };
 
 #define PARENT_TYPE GTKAM_TYPE_DIALOG

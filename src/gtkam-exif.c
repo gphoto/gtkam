@@ -39,6 +39,7 @@
 
 struct _GtkamExifPrivate
 {
+   int notused;
 };
 
 #define PARENT_TYPE GTK_TYPE_DIALOG

@@ -1,5 +1,5 @@
 AC_PREREQ(2.59)
-AC_INIT([GTK frontend for libgphoto2], [0.1.13.1.trunk], [gphoto-devel@lists.sourceforge.net], [gtkam])
+AC_INIT([GTK frontend for libgphoto2], [0.1.14], [gphoto-devel@lists.sourceforge.net], [gtkam])
 AC_CONFIG_SRCDIR([src/gtkam-main.c])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4m])
@@ -142,6 +142,12 @@ dnl FIXME: Isn't there something like "gnomehelpdir"?
 AC_SUBST([GTKAM_C_IDENTIFIER],
          ["file:\$(datadir)/gnome/help/gtkam/C/gtkam.xml"])
 GP_CONFIG_MSG([GTKAM_C_IDENTIFIER],[$GTKAM_C_IDENTIFIER])
+
+AC_ARG_ENABLE([scrollkeeper],
+        [AC_HELP_STRING([--disable-scrollkeeper],
+                        [do not make updates to the scrollkeeper database])],,
+        enable_scrollkeeper=yes)
+AM_CONDITIONAL(ENABLE_SK, test "x$enable_scrollkeeper" = "xyes")
 
 
 dnl ---------------------------------------------------------------------------

@@ -16,23 +16,33 @@
 
 EXTRA_DIST = gtkam-C.omf.in
 
+if ENABLE_SK 
+_ENABLE_SK = true 
+else 
+_ENABLE_SK = false 
+endif
+
+
 omf_dest_dir=$(datadir)/omf/gtkam
 scrollkeeper_localstate_dir = $(localstatedir)/scrollkeeper
 
 install-data-local:
 	$(mkinstalldirs) $(DESTDIR)$(omf_dest_dir)
-	-for file in $(srcdir)/*.omf; do \
+	-for file in ./*.omf; do \
 		$(INSTALL_DATA) $(srcdir)/$$file $(DESTDIR)$(omf_dest_dir); \
 	done
-	-scrollkeeper-update -p $(scrollkeeper_localstate_dir) 
-
+	-if test "x$(_ENABLE_SK)" == "xtrue"; then \
+		scrollkeeper-update -p $(DESTDIR)$(scrollkeeper_localstate_dir) -o $(DESTDIR)$(omf_dest_dir) ; \
+	fi
 uninstall-local:
-	-for file in $(srcdir)/*.omf; do \
+	-for file in ./*.omf; do \
 		basefile=`basename $$file`; \
-		rm -f $(omf_dest_dir)/$$basefile; \
+		rm -f $(DESTDIR)$(omf_dest_dir)/$$basefile; \
 	done
-	-rmdir $(omf_dest_dir)
-	-scrollkeeper-update -p $(scrollkeeper_localstate_dir)
+	-rmdir $(DESTDIR)$(omf_dest_dir)
+	-if test "x$(_ENABLE_SK)" == "xtrue"; then \
+		scrollkeeper-update -p $(DESTDIR)$(scrollkeeper_localstate_dir) ; \
+	fi
 
 clean-local:
 	-for file in $(omffile); do \

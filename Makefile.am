@@ -6,6 +6,8 @@ SUBDIRS = m4m art doc help omf-install packaging pixmaps po src test
 
 ACLOCAL_AMFLAGS = -I m4m
 
+# disable scrollkeeper for distcheck
+DISTCHECK_CONFIGURE_FLAGS = --disable-scrollkeeper
 
 ########################################################################
 # Install a few support and doc files

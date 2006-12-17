@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gtKam\n"
 "Report-Msgid-Bugs-To: gphoto-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2006-11-14 21:42+0100\n"
+"POT-Creation-Date: 2006-12-17 23:23+0100\n"
 "PO-Revision-Date: 2002-01-20 18:42+0100\n"
 "Last-Translator: Marcelo Toledo <rw@locked.org>\n"
 "Language-Team: Brazilian Portuguese <ldp-br@bazar.conectiva.com.br>\n"
@@ -210,26 +210,26 @@ msgstr "Você quer realmente remover os seguintes %i arquivos?"
 msgid "Delete these files?"
 msgstr ""
 
-#: src/gtkam-exif.c:137
+#: src/gtkam-exif.c:138
 #, fuzzy, c-format
 msgid "Getting EXIF information for file '%s' in folder '%s'..."
 msgstr "Pegando informação EXIF para o arquivo '%s' na pasta '%s'..."
 
-#: src/gtkam-exif.c:153
+#: src/gtkam-exif.c:154
 #, fuzzy, c-format
 msgid "Could not get EXIF information for '%s' in folder '%s'."
 msgstr "Não foi possível pegar informação EXIF para '%s' na pasta '%s'"
 
-#: src/gtkam-exif.c:166
+#: src/gtkam-exif.c:167
 #, fuzzy
 msgid "Could not interpret EXIF data."
 msgstr "Não foi possível interpretar dados EXIF."
 
-#: src/gtkam-exif.c:175
+#: src/gtkam-exif.c:176
 msgid "The EXIF data could not be retrieved from the file."
 msgstr ""
 
-#: src/gtkam-exif.c:192
+#: src/gtkam-exif.c:193
 msgid "Gtkam has been compiled without EXIF support."
 msgstr "Gtkam foi compilado sem suporte a EXIF."
 

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gtkam VERSION\n"
 "Report-Msgid-Bugs-To: gphoto-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2006-11-14 21:42+0100\n"
+"POT-Creation-Date: 2006-12-17 23:23+0100\n"
 "PO-Revision-Date: 2005-08-29 20:00+0000\n"
 "Last-Translator: Andrzej Zaborowski <balrog@zabor.org>\n"
 "Language-Team: None <balrog@zabor.org>\n"
@@ -209,25 +209,25 @@ msgstr "Zaznczonych %i plików zostanie skasowanych. Czy kontynuować?"
 msgid "Delete these files?"
 msgstr "Napewno usunąć te pliki?"
 
-#: src/gtkam-exif.c:137
+#: src/gtkam-exif.c:138
 #, c-format
 msgid "Getting EXIF information for file '%s' in folder '%s'..."
 msgstr "Pobieranie nagłówka EXIF dla pliku '%s' w katalogu '%s'..."
 
-#: src/gtkam-exif.c:153
+#: src/gtkam-exif.c:154
 #, c-format
 msgid "Could not get EXIF information for '%s' in folder '%s'."
 msgstr "Nie można pobrać nagłówka EXIF dla '%s' w katalogu '%s'."
 
-#: src/gtkam-exif.c:166
+#: src/gtkam-exif.c:167
 msgid "Could not interpret EXIF data."
 msgstr "Niezrozumiały format nagłówka EXIF."
 
-#: src/gtkam-exif.c:175
+#: src/gtkam-exif.c:176
 msgid "The EXIF data could not be retrieved from the file."
 msgstr "Odczyt nagłówka EXIF z pliku nie powiódł się."
 
-#: src/gtkam-exif.c:192
+#: src/gtkam-exif.c:193
 msgid "Gtkam has been compiled without EXIF support."
 msgstr "Gtkam został skompilowany bez obsługi EXIF."
 

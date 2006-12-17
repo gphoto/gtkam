@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gtkam\n"
 "Report-Msgid-Bugs-To: gphoto-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2006-11-14 21:42+0100\n"
+"POT-Creation-Date: 2006-12-17 23:23+0100\n"
 "PO-Revision-Date: 2002-08-31 09:34+0200\n"
 "Last-Translator: Márton Németh <nm127@freemail.hu>\n"
 "Language-Team: unknown\n"
@@ -207,27 +207,27 @@ msgstr "Tényleg töröljük a kijelölt %i fájlt?"
 msgid "Delete these files?"
 msgstr "Töröljük ezeket a fájlokat?"
 
-#: src/gtkam-exif.c:137
+#: src/gtkam-exif.c:138
 #, c-format
 msgid "Getting EXIF information for file '%s' in folder '%s'..."
 msgstr "EXIF információk kigyűjtése a(z) '%s' fájlból, a(z) '%s' mappából..."
 
-#: src/gtkam-exif.c:153
+#: src/gtkam-exif.c:154
 #, fuzzy, c-format
 msgid "Could not get EXIF information for '%s' in folder '%s'."
 msgstr ""
 "Nem tudtam kigyűjteni az EXIF információkat a(z) '%s' fájlból, a(z) '%s' "
 "mappából..."
 
-#: src/gtkam-exif.c:166
+#: src/gtkam-exif.c:167
 msgid "Could not interpret EXIF data."
 msgstr "Nem tudtam értelmezni az EXIF adatokat."
 
-#: src/gtkam-exif.c:175
+#: src/gtkam-exif.c:176
 msgid "The EXIF data could not be retrieved from the file."
 msgstr "A fájlból nem nyerhetők ki EXIF adatok."
 
-#: src/gtkam-exif.c:192
+#: src/gtkam-exif.c:193
 msgid "Gtkam has been compiled without EXIF support."
 msgstr "A Gtkam-ot EXIF támogatás nélkül fordították."
 

@@ -223,7 +223,8 @@ msgstr "Hole EXIF-Informationen über Datei »%s« im Verzeichnis »%s«..."
 #: src/gtkam-exif.c:153
 #, c-format
 msgid "Could not get EXIF information for '%s' in folder '%s'."
-msgstr "Konnte keine EXIF-Informationen über Datei »%s« im Verzeichnis »%s« bekommen."
+msgstr ""
+"Konnte keine EXIF-Informationen über Datei »%s« im Verzeichnis »%s« bekommen."
 
 #: src/gtkam-exif.c:166
 msgid "Could not interpret EXIF data."
@@ -285,7 +286,8 @@ msgstr "Hole Informationen über Datei »%s« im Verzeichnis »%s«..."
 #: src/gtkam-info.c:308
 #, c-format
 msgid "Could not get information about file '%s' in folder '%s'."
-msgstr "Konnte keine Informationen über Datei »%s« im Verzeichnis »%s« bekommen."
+msgstr ""
+"Konnte keine Informationen über Datei »%s« im Verzeichnis »%s« bekommen."
 
 #: src/gtkam-info.c:336
 msgid "File"
@@ -537,8 +539,10 @@ msgstr "Neues Verzeichnis"
 
 #: src/gtkam-port.c:147
 #, c-format
-msgid "The port '%s' could not be found. Please make sure that the port exists."
-msgstr "Der Port %s wurde nicht gefunden. Bitte stellen Sie sicher, das er existiert."
+msgid ""
+"The port '%s' could not be found. Please make sure that the port exists."
+msgstr ""
+"Der Port %s wurde nicht gefunden. Bitte stellen Sie sicher, das er existiert."
 
 #: src/gtkam-port.c:181
 msgid "Please specify the path to the port your camera is attached to:"
@@ -891,4 +895,3 @@ msgstr "Konnte »%s« nicht aus Verzeichnis »%s« holen."
 #: src/main.c:114
 msgid "Image Download Program"
 msgstr "Programm zum Herunterladen von Kamerabildern"
-

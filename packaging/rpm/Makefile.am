@@ -6,7 +6,7 @@
 
 EXTRA_DIST = package.spec.in
 
-clean-generic:
+clean-local:
 	rm -rf BUILD RPMS SPECS SOURCES SRPMS
 
 rpm: Makefile package.spec

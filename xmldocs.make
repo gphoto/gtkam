@@ -63,7 +63,7 @@ app-dist-hook:
 		cp $(srcdir)/topic.dat $(distdir); \
 	fi
 
-install-data-am: omf
+install-data-local: omf
 	-$(mkinstalldirs) $(DESTDIR)$(docdir)/figures
 	-cp $(srcdir)/$(xml_files) $(DESTDIR)$(docdir)
 	-for file in $(srcdir)/figures/*.png; do \

@@ -1,9 +1,9 @@
 AC_PREREQ(2.59)
-AC_INIT([GTK frontend for libgphoto2], [0.1.13.head], [gphoto-devel@lists.sourceforge.net], [gtkam])
+AC_INIT([GTK frontend for libgphoto2], [0.1.13.1.trunk], [gphoto-devel@lists.sourceforge.net], [gtkam])
 AC_CONFIG_SRCDIR([src/gtkam-main.c])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4m])
-AM_INIT_AUTOMAKE([gnu 1.8 dist-bzip2])
+AM_INIT_AUTOMAKE([-Wall gnu 1.9 dist-bzip2 check-news])
 
 if test ! -d "$srcdir/m4m"; then
 AC_MSG_ERROR([

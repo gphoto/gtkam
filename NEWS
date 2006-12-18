@@ -1,7 +1,10 @@
 gtkam 0.1.14
 
 * fix make distcheck
-* Bug fixes.
+* misc bug fixes.
+* always show capture/capture preview menu.
+* updated various translations
+* changed for some important fixes in libgphoto2
 
 gtkam 0.1.11 (March 5, 2004)
 

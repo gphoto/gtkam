@@ -1,5 +1,5 @@
 AC_PREREQ(2.59)
-AC_INIT([GTK frontend for libgphoto2], [0.1.14], [gphoto-devel@lists.sourceforge.net], [gtkam])
+AC_INIT([GTK frontend for libgphoto2], [0.1.14.0.trunk], [gphoto-devel@lists.sourceforge.net], [gtkam])
 AC_CONFIG_SRCDIR([src/gtkam-main.c])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4m])

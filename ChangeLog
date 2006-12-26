@@ -1,3 +1,7 @@
+2006-12-26  Hubert Figuiere  <hub@figuiere.net>
+
+	* fix .png that were corrupted from CVS to Subversion
+
 2006-01-21  Hubert Figuiere  <hub@figuiere.net>
 
 	* gtkam.desktop (Categories): Added "GTK" as it is required by 

@@ -167,9 +167,11 @@ default_numbering_start(const GtkamSave *save)
 	gchar *tail,*prefix;
 	int max = 1;
 	int plen, current;
-
-	if (!(dir = g_dir_open (gtk_file_chooser_get_filename (
-		GTK_FILE_CHOOSER (save)) , 0, NULL))) return 1;
+	gchar *filename ;
+	
+	filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (save));
+	if (filename == NULL) return 1;
+	if (!(dir = g_dir_open (filename , 0, NULL))) return 1;
 	prefix = g_strdup (gtk_entry_get_text
 					(GTK_ENTRY (save->priv->prefix_entry)));
 	plen = strlen (prefix);

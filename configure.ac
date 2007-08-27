@@ -75,7 +75,7 @@ AM_CPPFLAGS="$AM_CPPFLAGS -DLOCALEDIR=\\\"${localedir}\\\""
 dnl ---------------------------------------------------------------------------
 dnl Libraries we need for gtkam
 dnl ---------------------------------------------------------------------------
-GP_CHECK_LIBRARY([LIBGPHOTO2], [libgphoto2], [> 2.2.0])
+GP_CHECK_LIBRARY([LIBGPHOTO2], [libgphoto2], [>= 2.2.0])
 PKG_CHECK_MODULES([GTK], [gtk+-2.0])
 AC_SUBST([GTK_CFLAGS])
 AC_SUBST([GTK_LIBS])

@@ -69,6 +69,7 @@ query (void)
 	gimp_install_procedure ("gtkam-capture", _("Captures images from "
 		"digital camera"), _("Captures images from digital camera"),
 		"Lutz Mueller <lutz@users.sf.net>", "GPL", VERSION,
+		/* TRANSLATORS: do not translate <Toolbox>/File/Acquire, but only the Capture from Camera part */
 		_("<Toolbox>/File/Acquire/Capture from Camera..."),
 		NULL, GIMP_EXTENSION, ncapture_args, ncapture_return_vals,
 		capture_args, capture_return_vals);
@@ -78,6 +79,7 @@ query (void)
 		"cameras"),
 		"Lutz Mueller <lutz@users.sf.net>",
 		"GPL", VERSION,
+		/* TRANSLATORS: do not translate <Toolbox>/File/Acquire, but only the Load from Camera part */
 		_("<Toolbox>/File/Acquire/Load from Camera..."),
 		NULL, GIMP_EXTENSION, nload_args, nload_return_vals,
 		load_args, load_return_vals);

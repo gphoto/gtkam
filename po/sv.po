@@ -253,7 +253,7 @@ msgstr "Fångar bilder från digitalkamera"
 
 #: ../src/gtkam-gimp.c:72
 msgid "<Toolbox>/File/Acquire/Capture from Camera..."
-msgstr "<Toolbox>/Arkiv/Hämta in/Fånga från kamera..."
+msgstr "<Toolbox>/File/Acquire/Fånga från kamera..."
 
 #: ../src/gtkam-gimp.c:76
 #: ../src/gtkam-gimp.c:77
@@ -262,7 +262,7 @@ msgstr "Läser in filer från digitalkameror"
 
 #: ../src/gtkam-gimp.c:81
 msgid "<Toolbox>/File/Acquire/Load from Camera..."
-msgstr "<Toolbox>/Arkiv/Hämta in/Läs in från kamera..."
+msgstr "<Toolbox>/File/Acquire/Läs in från kamera..."
 
 #: ../src/gtkam-gimp.c:194
 #: ../src/gtkam-list.c:511

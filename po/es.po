@@ -241,7 +241,7 @@ msgstr "Capturar imágenes desde la cámara digital"
 
 #: src/gtkam-gimp.c:72
 msgid "<Toolbox>/File/Acquire/Capture from Camera..."
-msgstr "<Herramientas>/Fichero/Adquirir/Capturar desde cámara..."
+msgstr "<Toolbox>/File/Acquire/Capturar desde cámara..."
 
 #: src/gtkam-gimp.c:76 src/gtkam-gimp.c:77
 msgid "Loads files from digital cameras"
@@ -249,7 +249,7 @@ msgstr "Carga archivos desde cámaras digitales"
 
 #: src/gtkam-gimp.c:81
 msgid "<Toolbox>/File/Acquire/Load from Camera..."
-msgstr "<Herramientas>/Fichero/Adquirir/Cargar desde cámara..."
+msgstr "<Toolbox>/File/Acquire/Cargar desde cámara..."
 
 #: src/gtkam-gimp.c:194 src/gtkam-list.c:511
 #, c-format

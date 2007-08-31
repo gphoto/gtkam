@@ -245,7 +245,7 @@ msgstr "Zachytí obrázky z digitálneho fotoaparátu"
 
 #: src/gtkam-gimp.c:72
 msgid "<Toolbox>/File/Acquire/Capture from Camera..."
-msgstr "<Toolbox>/Súbor/Získať/Zachytiť z fotoaparátu..."
+msgstr "<Toolbox>/File/Acquire/Zachytiť z fotoaparátu..."
 
 #: src/gtkam-gimp.c:76
 #: src/gtkam-gimp.c:77
@@ -254,7 +254,7 @@ msgstr "Načíta súbory z digitálnych fotoaparátov"
 
 #: src/gtkam-gimp.c:81
 msgid "<Toolbox>/File/Acquire/Load from Camera..."
-msgstr "<Toolbox>/Súbor/Získať/Načítať z fotoaparátu..."
+msgstr "<Toolbox>/File/Acquire/Načítať z fotoaparátu..."
 
 #: src/gtkam-gimp.c:194
 #: src/gtkam-list.c:511

@@ -236,7 +236,7 @@ msgstr "Сделать снимок цифровым фотоаппаратом"
 
 #: src/gtkam-gimp.c:72
 msgid "<Toolbox>/File/Acquire/Capture from Camera..."
-msgstr "/Файл/Захватить/Изображение через фотоаппарат..."
+msgstr "<Toolbox>/File/Acquire/Изображение через фотоаппарат..."
 
 #: src/gtkam-gimp.c:76 src/gtkam-gimp.c:77
 msgid "Loads files from digital cameras"
@@ -244,7 +244,7 @@ msgstr "Скопировать файлы из памяти цифрового �
 
 #: src/gtkam-gimp.c:81
 msgid "<Toolbox>/File/Acquire/Load from Camera..."
-msgstr "/Файл/Захватить/Загрузить снимок из фотоаппарата.."
+msgstr "<Toolbox>/File/Acquire/Загрузить снимок из фотоаппарата.."
 
 #: src/gtkam-gimp.c:194 src/gtkam-list.c:511
 #, c-format

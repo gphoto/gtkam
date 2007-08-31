@@ -8,8 +8,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gphoto\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-01-19 02:20+0100\n"
+"Report-Msgid-Bugs-To: gphoto-devel@lists.sourceforge.net\n"
+"POT-Creation-Date: 2007-08-31 23:00+0200\n"
 "PO-Revision-Date: 2007-01-21 02:59+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
@@ -17,396 +17,373 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#. Port?
-#: ../src/gtkam-chooser.c:232
-#: ../src/gtkam-chooser.c:254
+#: src/gtkam-chooser.c:232 src/gtkam-chooser.c:254
 msgid "None"
 msgstr "Ingen"
 
-#. Speed?
-#. Update speed combo
-#: ../src/gtkam-chooser.c:262
-#: ../src/gtkam-chooser.c:369
-#: ../src/gtkam-chooser.c:624
-#: ../src/gtkam-chooser.c:658
+#: src/gtkam-chooser.c:262 src/gtkam-chooser.c:369 src/gtkam-chooser.c:624
+#: src/gtkam-chooser.c:658
 msgid "Best"
 msgstr "Bästa"
 
-#.
-#. * Initialize the camera to check if it is really there. Exit
-#. * afterwards because other applications could need the camera, too.
-#.
-#: ../src/gtkam-chooser.c:269
+#: src/gtkam-chooser.c:269
 msgid "Initializing camera..."
 msgstr "Initierar kameran..."
 
-#: ../src/gtkam-chooser.c:283
+#: src/gtkam-chooser.c:283
 msgid "Could not initialize camera."
 msgstr "Kunde inte initiera kameran."
 
-#: ../src/gtkam-chooser.c:360
+#: src/gtkam-chooser.c:360
 #, c-format
 msgid "Could not get abilities of model '%s'."
 msgstr "Kunde inte hämta färdigheterna för modellen \"%s\"."
 
-#: ../src/gtkam-chooser.c:408
+#: src/gtkam-chooser.c:408
 msgid "Detecting cameras..."
 msgstr "Identifierar kameror..."
 
-#: ../src/gtkam-chooser.c:417
+#: src/gtkam-chooser.c:417
 msgid "No cameras detected."
 msgstr "Inga kameror hittades."
 
-#: ../src/gtkam-chooser.c:434
+#: src/gtkam-chooser.c:434
 msgid "Could not detect any cameras."
 msgstr "Kunde inte identifiera några kameror."
 
-#: ../src/gtkam-chooser.c:560
+#: src/gtkam-chooser.c:560
 msgid "Add Camera"
 msgstr "Lägg till kamera"
 
-#: ../src/gtkam-chooser.c:575
+#: src/gtkam-chooser.c:575
 msgid "Model:"
 msgstr "Modell:"
 
-#: ../src/gtkam-chooser.c:587
+#: src/gtkam-chooser.c:587
 msgid "Detect"
 msgstr "Identifiera"
 
-#: ../src/gtkam-chooser.c:593
+#: src/gtkam-chooser.c:593
 msgid "Detect USB camera"
 msgstr "Identifera USB-kamera"
 
-#: ../src/gtkam-chooser.c:595
+#: src/gtkam-chooser.c:595
 msgid "Port:"
 msgstr "Port:"
 
-#: ../src/gtkam-chooser.c:616
-#: ../src/gtkam-chooser.c:648
+#: src/gtkam-chooser.c:616 src/gtkam-chooser.c:648
 msgid "Speed:"
 msgstr "Hastighet:"
 
-#: ../src/gtkam-chooser.c:629
-#: ../src/gtkam-chooser.c:664
+#: src/gtkam-chooser.c:629 src/gtkam-chooser.c:664
 msgid "Allow multiple frontends"
 msgstr "Tilllåt flera gränssnitt"
 
-#: ../src/gtkam-chooser.c:636
+#: src/gtkam-chooser.c:636
 msgid "Enhanced"
 msgstr "Avancerat"
 
-#: ../src/gtkam-chooser.c:729
+#: src/gtkam-chooser.c:729
 msgid "Could not get number of supported camera models"
 msgstr "Kunde inte få antalet kameramodeller som stöds"
 
-#: ../src/gtkam-chooser.c:759
+#: src/gtkam-chooser.c:759
 msgid "Could not get number of ports."
 msgstr "Kunde inte få antalet portar."
 
-#: ../src/gtkam-config.c:164
+#: src/gtkam-config.c:164
 msgid "Applying configuration..."
 msgstr "Verkställer konfiguration..."
 
-#: ../src/gtkam-config.c:180
+#: src/gtkam-config.c:180
 msgid "Could not apply configuration."
 msgstr "Kunde inte verkställa konfiguration."
 
-#: ../src/gtkam-config.c:241
+#: src/gtkam-config.c:241
 msgid "No additional information available. (1)"
 msgstr "Ingen ytterligare information tillgänglig. (1)"
 
-#: ../src/gtkam-config.c:246
+#: src/gtkam-config.c:246
 msgid "General Settings"
 msgstr "Allmänna inställningar"
 
-#: ../src/gtkam-config.c:321
+#: src/gtkam-config.c:321
 msgid "Could not execute command."
 msgstr "Kunde inte köra kommando."
 
-#: ../src/gtkam-config.c:525
+#: src/gtkam-config.c:525
 msgid "No additional information available. (2)"
 msgstr "Ingen ytterligare information tillgänglig. (2)"
 
-#. Make it easy for users to select the system's time
-#: ../src/gtkam-config.c:562
+#: src/gtkam-config.c:562
 msgid "Set to system's time"
 msgstr "Ställ in till systemtid"
 
-#: ../src/gtkam-config.c:596
+#: src/gtkam-config.c:596
 msgid "No additional information available. (3)"
 msgstr "Ingen ytterligare information tillgänglig. (3)"
 
-#: ../src/gtkam-config.c:621
+#: src/gtkam-config.c:621
 msgid "No additional information available. (4)"
 msgstr "Ingen ytterligare information tillgänglig. (4)"
 
-#: ../src/gtkam-config.c:668
+#: src/gtkam-config.c:668
 msgid "No additional information available. (5)"
 msgstr "Ingen ytterligare information tillgänglig. (5)<r"
 
-#: ../src/gtkam-config.c:688
+#: src/gtkam-config.c:688
 msgid "No additional information available. (6)"
 msgstr "Ingen ytterligare information tillgänglig. (6)"
 
-#: ../src/gtkam-config.c:729
+#: src/gtkam-config.c:729
 msgid "Getting configuration..."
 msgstr "Hämtar konfiguration..."
 
-#: ../src/gtkam-config.c:744
+#: src/gtkam-config.c:744
 msgid "Could not get configuration."
 msgstr "Kunde inte hämta konfiguration."
 
-#: ../src/gtkam-debug.c:242
+#: src/gtkam-debug.c:242
 msgid "Save As..."
 msgstr "Spara som..."
 
-#: ../src/gtkam-debug.c:264
+#: src/gtkam-debug.c:264
 #, c-format
 msgid "Could not open '%s'!"
 msgstr "Kunde inte öppna \"%s\"!"
 
-#: ../src/gtkam-debug.c:311
+#: src/gtkam-debug.c:311
 msgid "Type of messages to log:"
 msgstr "Typ av meddelade att logga:"
 
-#: ../src/gtkam-debug.c:315
+#: src/gtkam-debug.c:315
 msgid "Error"
 msgstr "Fel"
 
-#: ../src/gtkam-debug.c:322
+#: src/gtkam-debug.c:322
 msgid "Verbose"
 msgstr "Informativ"
 
-#: ../src/gtkam-debug.c:329
+#: src/gtkam-debug.c:329
 msgid "Debug"
 msgstr "Felsökning"
 
-#: ../src/gtkam-debug.c:336
+#: src/gtkam-debug.c:336
 msgid "Data"
 msgstr "Data"
 
-#: ../src/gtkam-delete.c:181
+#: src/gtkam-delete.c:181
 #, c-format
 msgid "Deleting all files in '%s'..."
 msgstr "Tar bort alla filer i \"%s\"..."
 
-#: ../src/gtkam-delete.c:202
+#: src/gtkam-delete.c:202
 #, c-format
 msgid "Could not delete all files in '%s'."
 msgstr "Kunde inte ta bort alla filer i \"%s\"."
 
-#: ../src/gtkam-delete.c:238
+#: src/gtkam-delete.c:238
 #, c-format
 msgid "Deleting file '%s' from folder '%s'..."
 msgstr "Tar bort filen \"%s\" från mappen \"%s\"..."
 
-#: ../src/gtkam-delete.c:259
+#: src/gtkam-delete.c:259
 #, c-format
 msgid "Could not delete file '%s' in folder '%s'."
 msgstr "Kunde inte ta bort filen \"%s\" i mappen \"%s\"."
 
-#: ../src/gtkam-delete.c:388
+#: src/gtkam-delete.c:388
 #, c-format
 msgid "Do you really want to delete all the files in '%s'?"
 msgstr "Vill du verkligen ta bort alla filerna i \"%s\"?"
 
-#: ../src/gtkam-delete.c:391
+#: src/gtkam-delete.c:391
 #, c-format
 msgid "Do you really want to delete '%s'?"
 msgstr "Vill du verkligen ta bort \"%s\"?"
 
-#: ../src/gtkam-delete.c:394
+#: src/gtkam-delete.c:394
 #, c-format
 msgid "Do you really want to delete the selected %i files?"
 msgstr "Vill du verkligen ta bort %i markerade filer?"
 
-#: ../src/gtkam-delete.c:400
+#: src/gtkam-delete.c:400
 msgid "Delete these files?"
 msgstr "Ta bort dessa filer?"
 
-#: ../src/gtkam-exif.c:138
+#: src/gtkam-exif.c:138
 #, c-format
 msgid "Getting EXIF information for file '%s' in folder '%s'..."
 msgstr "Hämtar EXIF-information för filen \"%s\" i mappen \"%s\"..."
 
-#: ../src/gtkam-exif.c:154
+#: src/gtkam-exif.c:154
 #, c-format
 msgid "Could not get EXIF information for '%s' in folder '%s'."
 msgstr "Kunde inte hämta EXIF-information för \"%s\" i mappen \"%s\"."
 
-#: ../src/gtkam-exif.c:167
+#: src/gtkam-exif.c:167
 msgid "Could not interpret EXIF data."
 msgstr "Kunde inte tolka EXIF-data."
 
-#: ../src/gtkam-exif.c:176
+#: src/gtkam-exif.c:176
 msgid "The EXIF data could not be retrieved from the file."
 msgstr "EXIF-data kunde inte hämtas från filen."
 
-#: ../src/gtkam-exif.c:193
+#: src/gtkam-exif.c:193
 msgid "Gtkam has been compiled without EXIF support."
 msgstr "Gtkam har byggts utan EXIF-stöd."
 
-#: ../src/gtkam-gimp.c:69
-#: ../src/gtkam-gimp.c:70
+#: src/gtkam-gimp.c:69 src/gtkam-gimp.c:70
 msgid "Captures images from digital camera"
 msgstr "Fångar bilder från digitalkamera"
 
-#: ../src/gtkam-gimp.c:72
+#. TRANSLATORS: do not translate <Toolbox>/File/Acquire, but only the Capture from Camera part
+#: src/gtkam-gimp.c:73
 msgid "<Toolbox>/File/Acquire/Capture from Camera..."
 msgstr "<Toolbox>/File/Acquire/Fånga från kamera..."
 
-#: ../src/gtkam-gimp.c:76
-#: ../src/gtkam-gimp.c:77
+#: src/gtkam-gimp.c:77 src/gtkam-gimp.c:78
 msgid "Loads files from digital cameras"
 msgstr "Läser in filer från digitalkameror"
 
-#: ../src/gtkam-gimp.c:81
+#. TRANSLATORS: do not translate <Toolbox>/File/Acquire, but only the Load from Camera part
+#: src/gtkam-gimp.c:83
 msgid "<Toolbox>/File/Acquire/Load from Camera..."
 msgstr "<Toolbox>/File/Acquire/Läs in från kamera..."
 
-#: ../src/gtkam-gimp.c:194
-#: ../src/gtkam-list.c:511
+#: src/gtkam-gimp.c:196 src/gtkam-list.c:511
 #, c-format
 msgid "Downloading '%s' from '%s'..."
 msgstr "Hämtar \"%s\" från \"%s\"..."
 
-#: ../src/gtkam-gimp.c:212
+#: src/gtkam-gimp.c:214
 #, c-format
 msgid "Could not download file '%s' from folder '%s'."
 msgstr "Kunde inte hämta filen \"%s\" från mappen \"%s\"."
 
-#: ../src/gtkam-gimp.c:245
+#: src/gtkam-gimp.c:247
 msgid "Image"
 msgstr "Bild"
 
-#: ../src/gtkam-info.c:166
+#: src/gtkam-info.c:166
 #, c-format
 msgid "Setting information for file '%s' in '%s'..."
 msgstr "Ställer in information för filen \"%s\" i \"%s\"..."
 
-#: ../src/gtkam-info.c:187
+#: src/gtkam-info.c:187
 #, c-format
 msgid "Could not set file information for '%s' in folder '%s'"
 msgstr "Kunde inte ställa in filinformation för \"%s\" i mappen \"%s\""
 
-#. Get file info
-#: ../src/gtkam-info.c:296
+#: src/gtkam-info.c:296
 #, c-format
 msgid "Getting information about file '%s' in folder '%s'..."
 msgstr "Hämtar information om filen \"%s\" i mappen \"%s\"..."
 
-#: ../src/gtkam-info.c:308
+#: src/gtkam-info.c:308
 #, c-format
 msgid "Could not get information about file '%s' in folder '%s'."
 msgstr "Kunde inte få information om filen \"%s\" i mappen \"%s\"."
 
-#: ../src/gtkam-info.c:336
+#: src/gtkam-info.c:336
 msgid "File"
 msgstr "Fil"
 
-#: ../src/gtkam-info.c:342
+#: src/gtkam-info.c:342
 msgid "Name:"
 msgstr "Namn:"
 
-#: ../src/gtkam-info.c:365
-#: ../src/gtkam-info.c:474
-#: ../src/gtkam-info.c:523
+#: src/gtkam-info.c:365 src/gtkam-info.c:474 src/gtkam-info.c:523
 msgid "MIME type:"
 msgstr "Mime-typ:"
 
-#: ../src/gtkam-info.c:383
+#: src/gtkam-info.c:383
 msgid "Last modified:"
 msgstr "Senast ändrad:"
 
-#: ../src/gtkam-info.c:404
-#: ../src/gtkam-info.c:491
-#: ../src/gtkam-info.c:540
+#: src/gtkam-info.c:404 src/gtkam-info.c:491 src/gtkam-info.c:540
 msgid "Size:"
 msgstr "Storlek:"
 
-#: ../src/gtkam-info.c:411
-#: ../src/gtkam-info.c:547
+#: src/gtkam-info.c:411 src/gtkam-info.c:547
 #, c-format
 msgid "%liK (%li bytes)"
 msgstr "%li KB (%li byte)"
 
-#: ../src/gtkam-info.c:426
+#: src/gtkam-info.c:426
 msgid "Permissions:"
 msgstr "Rättigheter:"
 
-#: ../src/gtkam-info.c:438
+#: src/gtkam-info.c:438
 msgid "Read"
 msgstr "Läs"
 
-#: ../src/gtkam-info.c:449
+#: src/gtkam-info.c:449
 msgid "Delete"
 msgstr "Ta bort"
 
-#: ../src/gtkam-info.c:468
-#: ../src/gtkam-list.c:941
+#: src/gtkam-info.c:468 src/gtkam-list.c:941
 msgid "Preview"
 msgstr "Förhandsgranskning"
 
-#: ../src/gtkam-info.c:517
+#: src/gtkam-info.c:517
 msgid "Audio"
 msgstr "Ljud"
 
-#: ../src/gtkam-list.c:322
+#: src/gtkam-list.c:322
 #, c-format
 msgid "Downloading thumbnail of '%s' from folder '%s'..."
 msgstr "Hämtar miniatyrbild av \"%s\" från mapp \"%s\"..."
 
-#: ../src/gtkam-list.c:852
+#: src/gtkam-list.c:852
 #, c-format
 msgid "Changing name of '%s' to '%s'..."
 msgstr "Ändrar namn på \"%s\" till \"%s\"..."
 
-#: ../src/gtkam-list.c:862
+#: src/gtkam-list.c:862
 #, c-format
 msgid "Could not change the name of '%s' to '%s'."
 msgstr "Kunde inte ändra namnet på \"%s\" till \"%s\"."
 
-#: ../src/gtkam-list.c:876
+#: src/gtkam-list.c:876
 msgid "/_View with..."
 msgstr "/_Visa med..."
 
-#: ../src/gtkam-list.c:877
+#: src/gtkam-list.c:877
 msgid "/View with.../Built-in viewer"
 msgstr "/Visa med.../Inbyggd visare"
 
-#: ../src/gtkam-list.c:879
+#: src/gtkam-list.c:879
 msgid "/View file _properties"
 msgstr "/Visa fil_egenskaper"
 
-#: ../src/gtkam-list.c:881
+#: src/gtkam-list.c:881
 msgid "/View _EXIF data"
 msgstr "/Visa _EXIF-data"
 
-#: ../src/gtkam-list.c:884
+#: src/gtkam-list.c:884
 msgid "/_Save"
 msgstr "_Spara"
 
-#: ../src/gtkam-list.c:885
+#: src/gtkam-list.c:885
 msgid "/_Delete"
 msgstr "_Ta bort"
 
-#: ../src/gtkam-list.c:947
+#: src/gtkam-list.c:947
 msgid "Name"
 msgstr "Namn"
 
-#: ../src/gtkam-list.c:969
-#: ../src/gtkam-tree.c:685
+#: src/gtkam-list.c:969 src/gtkam-tree.c:685
 #, c-format
 msgid "Listing files in folder '%s'..."
 msgstr "Listar filer i mappen \"%s\"..."
 
-#: ../src/gtkam-list.c:986
-#: ../src/gtkam-tree.c:702
+#: src/gtkam-list.c:986 src/gtkam-tree.c:702
 #, c-format
 msgid "Could not get file list for folder '%s'"
 msgstr "Kunde inte hämta fillistan för mappen \"%s\""
 
-#: ../src/gtkam-main.c:426
+#: src/gtkam-main.c:426
 msgid ""
 "gtkam is a program that lets you download\n"
 "images from many digital cameras. It uses\n"
@@ -422,11 +399,11 @@ msgstr ""
 "\n"
 "Upplev den underbara världen med gphoto!"
 
-#: ../src/gtkam-main.c:437
+#: src/gtkam-main.c:437
 msgid "Many others"
 msgstr "Många andra"
 
-#: ../src/gtkam-main.c:470
+#: src/gtkam-main.c:470
 #, c-format
 msgid ""
 "%s\n"
@@ -439,7 +416,7 @@ msgstr ""
 "%s %s med flaggorna:\n"
 "    %s\n"
 
-#: ../src/gtkam-main.c:474
+#: src/gtkam-main.c:474
 #, c-format
 msgid ""
 "%s\n"
@@ -450,468 +427,462 @@ msgstr ""
 "%s %s med flaggorna:\n"
 "    %s\n"
 
-#: ../src/gtkam-main.c:549
+#: src/gtkam-main.c:549
 msgid "_File"
 msgstr "_Arkiv"
 
-#: ../src/gtkam-main.c:550
+#: src/gtkam-main.c:550
 msgid "_Save Photos"
 msgstr "_Spara foton"
 
-#: ../src/gtkam-main.c:551
+#: src/gtkam-main.c:551
 msgid "_Delete Photos"
 msgstr "_Ta bort foton"
 
-#: ../src/gtkam-main.c:552
-#: ../src/gtkam-main.c:554
+#: src/gtkam-main.c:552 src/gtkam-main.c:554
 msgid "_Selected"
 msgstr "_Markerad"
 
-#: ../src/gtkam-main.c:553
-#: ../src/gtkam-main.c:555
-#: ../src/gtkam-main.c:562
+#: src/gtkam-main.c:553 src/gtkam-main.c:555 src/gtkam-main.c:562
 msgid "_All"
 msgstr "_Alla"
 
-#: ../src/gtkam-main.c:556
+#: src/gtkam-main.c:556
 msgid "_Quit"
 msgstr "_Avsluta"
 
-#: ../src/gtkam-main.c:557
+#: src/gtkam-main.c:557
 msgid "_View"
 msgstr "_Visa"
 
-#: ../src/gtkam-main.c:558
+#: src/gtkam-main.c:558
 msgid "Zoom _In"
 msgstr "Zooma _in"
 
-#: ../src/gtkam-main.c:559
+#: src/gtkam-main.c:559
 msgid "Zoom _100"
 msgstr "Zooma _100"
 
-#: ../src/gtkam-main.c:560
+#: src/gtkam-main.c:560
 msgid "Zoom _Out"
 msgstr "Zooma _ut"
 
-#: ../src/gtkam-main.c:561
+#: src/gtkam-main.c:561
 msgid "_Select"
 msgstr "_Markera"
 
-#: ../src/gtkam-main.c:563
+#: src/gtkam-main.c:563
 msgid "_Inverse"
 msgstr "_Invertera"
 
-#: ../src/gtkam-main.c:564
+#: src/gtkam-main.c:564
 msgid "_None"
 msgstr "_Ingen"
 
-#: ../src/gtkam-main.c:565
+#: src/gtkam-main.c:565
 msgid "_Camera"
 msgstr "_Kamera"
 
-#: ../src/gtkam-main.c:566
+#: src/gtkam-main.c:566
 msgid "_Add Camera..."
 msgstr "_Lägg till kamera..."
 
-#: ../src/gtkam-main.c:567
+#: src/gtkam-main.c:567
 msgid "_Rescan"
 msgstr "_Sök igen"
 
-#: ../src/gtkam-main.c:568
+#: src/gtkam-main.c:568
 msgid "_Help"
 msgstr "_Hjälp"
 
-#: ../src/gtkam-main.c:570
+#: src/gtkam-main.c:570
 msgid "_Contents"
 msgstr "_Innehåll"
 
-#: ../src/gtkam-main.c:572
+#: src/gtkam-main.c:572
 msgid "_Debug"
 msgstr "_Felsök"
 
-#: ../src/gtkam-main.c:573
+#: src/gtkam-main.c:573
 msgid "_About"
 msgstr "_Om"
 
-#: ../src/gtkam-main.c:578
+#: src/gtkam-main.c:578
 msgid "_View Thumbnails"
 msgstr "_Visa miniatyrbilder"
 
-#: ../src/gtkam-mkdir.c:152
+#: src/gtkam-mkdir.c:152
 #, c-format
 msgid "Creating folder '%s' in folder '%s'..."
 msgstr "Skapar mappen \"%s\" i mappen \"%s\"..."
 
-#: ../src/gtkam-mkdir.c:186
+#: src/gtkam-mkdir.c:186
 #, c-format
 msgid "Could not create folder '%s' in folder '%s'."
 msgstr "Kunde inte skapa mappen \"%s\" i mappen \"%s\"."
 
-#: ../src/gtkam-mkdir.c:212
+#: src/gtkam-mkdir.c:212
 #, c-format
 msgid "Please choose a name for the directory that should be created in '%s':"
 msgstr "Välj ett namn för katalogen som ska skapas i \"%s\":"
 
-#: ../src/gtkam-mkdir.c:228
+#: src/gtkam-mkdir.c:228
 msgid "New directory"
 msgstr "Ny katalog"
 
-#: ../src/gtkam-port.c:147
+#: src/gtkam-port.c:147
 #, c-format
-msgid "The port '%s' could not be found. Please make sure that the port exists."
+msgid ""
+"The port '%s' could not be found. Please make sure that the port exists."
 msgstr "Porten \"%s\" kunde inte hittas. Kontrollera att porten finns."
 
-#: ../src/gtkam-port.c:181
+#: src/gtkam-port.c:181
 msgid "Please specify the path to the port your camera is attached to:"
 msgstr "Ange sökvägen till porten din kamera är ansluten till:"
 
-#. The camera doesn't support previews. Capture an image.
-#: ../src/gtkam-preview.c:187
-#: ../src/gtkam-tree.c:1093
+#: src/gtkam-preview.c:187 src/gtkam-tree.c:1093
 msgid "Capturing image..."
 msgstr "Fångar bild..."
 
-#: ../src/gtkam-preview.c:209
+#: src/gtkam-preview.c:209
 msgid "Could not capture image."
 msgstr "Kunde inte fånga bild."
 
-#: ../src/gtkam-preview.c:347
-#: ../src/gtkam-preview.c:410
+#: src/gtkam-preview.c:347 src/gtkam-preview.c:410
 msgid "Capture"
 msgstr "Fånga"
 
 # Eller '0°', vi har ju latin1. [sverkerw]
-#: ../src/gtkam-preview.c:373
+#: src/gtkam-preview.c:373
 msgid "0 degrees"
 msgstr "0 grader"
 
-#: ../src/gtkam-preview.c:381
+#: src/gtkam-preview.c:381
 msgid "Don't rotate thumbnail"
 msgstr "Rotera inte miniatyrbild"
 
 # Är minusgrader moturs (som på en kompass) eller medurs (som i algebra)?
-#: ../src/gtkam-preview.c:383
+#: src/gtkam-preview.c:383
 msgid "-90 degrees"
 msgstr "-90 grader"
 
-#: ../src/gtkam-preview.c:390
+#: src/gtkam-preview.c:390
 msgid "Rotate thumbnail by -90 degrees"
 msgstr "Rotera miniatyrbild -90 grader"
 
-#: ../src/gtkam-preview.c:392
+#: src/gtkam-preview.c:392
 msgid "+90 degrees"
 msgstr "+90 grader"
 
-#: ../src/gtkam-preview.c:399
+#: src/gtkam-preview.c:399
 msgid "Rotate thumbnail by 90 degrees"
 msgstr "Rotera miniatyrbild 90 grader"
 
-#: ../src/gtkam-preview.c:401
+#: src/gtkam-preview.c:401
 msgid "180 degrees"
 msgstr "180 grader"
 
-#: ../src/gtkam-preview.c:408
+#: src/gtkam-preview.c:408
 msgid "Rotate thumbnail by 180 degrees"
 msgstr "Rotera miniatyrbilden 180 grader"
 
-#: ../src/gtkam-save.c:301
-#: ../src/gtkam-tree.c:614
+#: src/gtkam-save.c:303 src/gtkam-tree.c:614
 #, c-format
 msgid "The file '%s' already exists."
 msgstr "Filen \"%s\" finns redan."
 
-#: ../src/gtkam-save.c:323
-#: ../src/gtkam-tree.c:631
+#: src/gtkam-save.c:325 src/gtkam-tree.c:631
 #, c-format
 msgid "Could not save file to '%s'."
 msgstr "Kunde inte spara fil till \"%s\"."
 
-#: ../src/gtkam-save.c:363
-#: ../src/gtkam-tree.c:664
+#: src/gtkam-save.c:365 src/gtkam-tree.c:664
 #, c-format
 msgid "Could not get '%s' from folder '%s'."
 msgstr "Kunde inte hämta \"%s\" från mappen \"%s\"."
 
-#: ../src/gtkam-save.c:494
+#: src/gtkam-save.c:496
 msgid "There is nothing to be saved."
 msgstr "Det finns ingenting att spara."
 
-#: ../src/gtkam-save.c:506
+#: src/gtkam-save.c:508
 msgid "Downloading file"
 msgstr "Hämtar fil"
 
-#: ../src/gtkam-save.c:508
+#: src/gtkam-save.c:510
 #, c-format
 msgid "Downloading %i files"
 msgstr "Hämtar %i filer"
 
-#: ../src/gtkam-save.c:515
-#: ../src/gtkam-tree.c:740
+#: src/gtkam-save.c:517 src/gtkam-tree.c:740
 #, c-format
 msgid "Downloading %i files..."
 msgstr "Hämtar %i filer..."
 
-#: ../src/gtkam-save.c:566
-#: ../src/gtkam-tree.c:755
+#: src/gtkam-save.c:568 src/gtkam-tree.c:755
 #, c-format
 msgid "Problem getting '%s' from folder '%s'."
 msgstr "Problem vid hämtning av \"%s\" från mappen \"%s\"."
 
-#: ../src/gtkam-save.c:640
+#: src/gtkam-save.c:642
 msgid "What to save:"
 msgstr "Vad ska sparas:"
 
-#: ../src/gtkam-save.c:652
+#: src/gtkam-save.c:654
 msgid "Save photos"
 msgstr "Spara foton"
 
-#: ../src/gtkam-save.c:656
+#: src/gtkam-save.c:658
 msgid "Photos will be saved if this is checked"
 msgstr "Foton kommer sparas om detta alternativ är kryssat"
 
-#: ../src/gtkam-save.c:660
+#: src/gtkam-save.c:662
 msgid "Save raw data"
 msgstr "Spara rådata"
 
-#: ../src/gtkam-save.c:663
+#: src/gtkam-save.c:665
 msgid "Raw data will be saved if this is checked"
 msgstr "Rådata kommer att sparas om detta alternativ är kryssat"
 
-#: ../src/gtkam-save.c:667
+#: src/gtkam-save.c:669
 msgid "Save audio data"
 msgstr "Spara ljuddata"
 
-#: ../src/gtkam-save.c:670
+#: src/gtkam-save.c:672
 msgid "Audio data will be saved if this is checked"
 msgstr "Ljuddata kommer att sparas om detta alternativ är kryssat"
 
-#: ../src/gtkam-save.c:674
+#: src/gtkam-save.c:676
 msgid "Save thumbnails"
 msgstr "Spara miniatyrbilder"
 
-#: ../src/gtkam-save.c:677
+#: src/gtkam-save.c:679
 msgid "Thumbnails will be saved if this is checked"
 msgstr "Miniatyrbilder kommer att sparas om detta alternativ är kryssat"
 
-#: ../src/gtkam-save.c:681
+#: src/gtkam-save.c:683
 msgid "Save EXIF data"
 msgstr "Spara EXIF-data"
 
-#: ../src/gtkam-save.c:684
+#: src/gtkam-save.c:686
 msgid "EXIF data will be saved if this is checked"
 msgstr "EXIF-data kommer att sparas om detta alternativ är kryssat"
 
-#: ../src/gtkam-save.c:693
+#: src/gtkam-save.c:695
 msgid "Open image(s) with: "
 msgstr "Öppna bild(er) med: "
 
-#: ../src/gtkam-save.c:700
+#: src/gtkam-save.c:702
 msgid "Type in the name of the program you want to run, leave blank for none"
 msgstr "Skriv in namnet på programmet som du vill köra, lämna blankt för inget"
 
-#. Filenames provided by camera
-#: ../src/gtkam-save.c:706
+#: src/gtkam-save.c:708
 msgid "Use filename(s) provided by the camera"
 msgstr "Använd filnamn tillhandahållna av kameran"
 
-#: ../src/gtkam-save.c:710
+#: src/gtkam-save.c:712
 msgid "Choose whether to use the filename provided by the camera"
 msgstr "Välj huruvida du vill använda filnamn tillhandahållna av kameran"
 
-#: ../src/gtkam-save.c:724
+#: src/gtkam-save.c:726
 msgid "Filename prefix: "
 msgstr "Filnamnsprefix: "
 
-#: ../src/gtkam-save.c:733
+#: src/gtkam-save.c:735
 msgid "Start numbering with: "
 msgstr "Starta numrering med: "
 
-#. First case: We have only one file.
-#: ../src/gtkam-save.c:775
+#: src/gtkam-save.c:777
 #, c-format
 msgid "Save '%s'..."
 msgstr "Spara \"%s\"..."
 
-#. Second case: We have multiple files to save.
-#: ../src/gtkam-save.c:795
+#: src/gtkam-save.c:797
 msgid "Save photos..."
 msgstr "Spara foton..."
 
-#: ../src/gtkam-tree.c:295
+#: src/gtkam-tree.c:295
 #, c-format
 msgid "Listing folders in '%s'..."
 msgstr "Listar mappar i \"%s\"..."
 
-#: ../src/gtkam-tree.c:316
+#: src/gtkam-tree.c:316
 #, c-format
 msgid "Could not list folders in '%s'."
 msgstr "Kunde inte lista mappar i \"%s\"."
 
-#: ../src/gtkam-tree.c:413
+#: src/gtkam-tree.c:413
 #, c-format
 msgid "Could not open '%s'."
 msgstr "Kunde inte öppna \"%s\"."
 
-#: ../src/gtkam-tree.c:420
+#: src/gtkam-tree.c:420
 #, c-format
 msgid "Uploading '%s' into folder '%s'..."
 msgstr "Skickar upp \"%s\" till mappen \"%s\"..."
 
-#: ../src/gtkam-tree.c:440
+#: src/gtkam-tree.c:440
 #, c-format
 msgid "Could not upload '%s' into '%s'."
 msgstr "Kunde inte skicka upp \"%s\" till \"%s\"."
 
-#: ../src/gtkam-tree.c:464
+#: src/gtkam-tree.c:464
 #, c-format
 msgid "Upload into '%s'..."
 msgstr "Skicka upp till \"%s\"..."
 
-#: ../src/gtkam-tree.c:540
+#: src/gtkam-tree.c:540
 #, c-format
 msgid "Removing directory '%s'..."
 msgstr "Tar bort katalogen \"%s\"..."
 
-#: ../src/gtkam-tree.c:557
+#: src/gtkam-tree.c:557
 #, c-format
 msgid "Could not remove directory '%s'."
 msgstr "Kunde inte ta bort katalogen \"%s\"."
 
-#: ../src/gtkam-tree.c:717
+#: src/gtkam-tree.c:717
 #, c-format
 msgid "Could not create directory '%s'"
 msgstr "Kunde inte skapa katalogen \"%s\""
 
-#: ../src/gtkam-tree.c:729
+#: src/gtkam-tree.c:729
 #, c-format
 msgid "Downloading file from '%s'"
 msgstr "Hämtar fil från \"%s\""
 
-#: ../src/gtkam-tree.c:731
+#: src/gtkam-tree.c:731
 #, c-format
 msgid "Downloading %i files from '%s'"
 msgstr ""
 
-#. Recurse into subfolders
-#: ../src/gtkam-tree.c:781
+#: src/gtkam-tree.c:781
 #, c-format
 msgid "Listing subfolders in folder '%s'..."
 msgstr "Listar undermappar i mappen \"%s\"..."
 
-#: ../src/gtkam-tree.c:800
+#: src/gtkam-tree.c:800
 #, c-format
 msgid "Could not get subfolders list for folder '%s'"
 msgstr "Kunde inte hämta lista över undermappar för mappen \"%s\""
 
-#: ../src/gtkam-tree.c:863
+#: src/gtkam-tree.c:863
 #, c-format
 msgid "Download '%s' subtree to..."
 msgstr "Hämta underträdet \"%s\" till..."
 
-#: ../src/gtkam-tree.c:901
+#: src/gtkam-tree.c:901
 msgid "Getting information about the camera..."
 msgstr "Hämtar information om kameran..."
 
-#: ../src/gtkam-tree.c:905
+#: src/gtkam-tree.c:905
 msgid "Getting information about the driver..."
 msgstr "Hämtar information om drivrutinen..."
 
-#: ../src/gtkam-tree.c:909
+#: src/gtkam-tree.c:909
 msgid "Getting manual..."
 msgstr "Hämtar handbok..."
 
-#: ../src/gtkam-tree.c:940
+#: src/gtkam-tree.c:940
 msgid "Could not retrieve information."
 msgstr "Kunde inte hämta information."
 
-#: ../src/gtkam-tree.c:1043
+#: src/gtkam-tree.c:1043
 msgid "Select Camera"
 msgstr "Välj kamera"
 
-#: ../src/gtkam-tree.c:1111
+#: src/gtkam-tree.c:1111
 msgid "Could not capture."
 msgstr "Kunde inte fånga."
 
-#: ../src/gtkam-tree.c:1150
+#: src/gtkam-tree.c:1150
 msgid "/Upload file..."
 msgstr "/Skicka upp fil..."
 
-#: ../src/gtkam-tree.c:1151
+#: src/gtkam-tree.c:1151
 msgid "/Make directory..."
 msgstr "/Skapa katalog..."
 
-#: ../src/gtkam-tree.c:1152
+#: src/gtkam-tree.c:1152
 msgid "/Delete directory"
 msgstr "/Ta bort katalog"
 
-#: ../src/gtkam-tree.c:1153
+#: src/gtkam-tree.c:1153
 msgid "/Save directory tree..."
 msgstr "/Spara katalogträd..."
 
-#: ../src/gtkam-tree.c:1155
+#: src/gtkam-tree.c:1155
 msgid "/Capture image..."
 msgstr "/Fånga bild..."
 
-#: ../src/gtkam-tree.c:1156
+#: src/gtkam-tree.c:1156
 msgid "/View camera preferences"
 msgstr "/Visa kamerainställningar"
 
-#: ../src/gtkam-tree.c:1158
+#: src/gtkam-tree.c:1158
 msgid "/View camera summary"
 msgstr "/Visa kamerasammandrag"
 
-#: ../src/gtkam-tree.c:1159
+#: src/gtkam-tree.c:1159
 msgid "/View camera manual"
 msgstr "/Visa kamerahandbok"
 
-#: ../src/gtkam-tree.c:1160
+#: src/gtkam-tree.c:1160
 msgid "/View driver details"
 msgstr "/Visa drivrutinsdetaljer"
 
-#: ../src/gtkam-tree.c:1162
+#: src/gtkam-tree.c:1162
 msgid "/Select camera..."
 msgstr "/Välj kamera"
 
-#: ../src/gtkam-tree.c:1163
+#: src/gtkam-tree.c:1163
 msgid "/Remove camera"
 msgstr "/Ta bort kamera"
 
-#: ../src/gtkam-tree.c:1193
+#: src/gtkam-tree.c:1193
 msgid "_Add camera..."
 msgstr "_Lägg till kamera..."
 
-#: ../src/gtkam-tree.c:1293
+#: src/gtkam-tree.c:1293
 msgid "Please right-click to access additional menus"
 msgstr "Högerklicka för att komma åt ytterligare menyer"
 
-#: ../src/gtkam-tree.c:1322
+#: src/gtkam-tree.c:1322
 msgid "Folder"
 msgstr "Mapp"
 
-#: ../src/gtkam-tree.c:1415
+#: src/gtkam-tree.c:1415
 msgid "Loading cameras..."
 msgstr "Läser in kameror..."
 
-#: ../src/gtkam-util.c:46
+#: src/gtkam-util.c:46
 #, c-format
-msgid "Could not display '%s'. Either the image type ('%s') is not supported by gtk or the file itself is corrupt."
-msgstr "Kunde inte visa \"%s\". Antingen stöds inte bildtypen (\"%s\") av gtk eller så är själva filen skadad."
+msgid ""
+"Could not display '%s'. Either the image type ('%s') is not supported by gtk "
+"or the file itself is corrupt."
+msgstr ""
+"Kunde inte visa \"%s\". Antingen stöds inte bildtypen (\"%s\") av gtk eller "
+"så är själva filen skadad."
 
-#: ../src/gtkam-version.c:102
-msgid "ALWAYS INCLUDE THE FOLLOWING LINES WHEN SENDING DEBUG MESSAGES TO THE MAILING LIST:"
-msgstr "INKLUDERA ALLTID FÖLJANDE RADER NÄR DU SKICKAR FELSÖKNINGSINFORMATION TILL SÄNDLISTAN:"
+#: src/gtkam-version.c:102
+msgid ""
+"ALWAYS INCLUDE THE FOLLOWING LINES WHEN SENDING DEBUG MESSAGES TO THE "
+"MAILING LIST:"
+msgstr ""
+"INKLUDERA ALLTID FÖLJANDE RADER NÄR DU SKICKAR FELSÖKNINGSINFORMATION TILL "
+"SÄNDLISTAN:"
 
-#: ../src/gtkam-viewer.c:246
+#: src/gtkam-viewer.c:246
 #, c-format
 msgid "Downloading '%s' from folder '%s'..."
 msgstr "Hämtar \"%s\" från mappen \"%s\"..."
 
-#: ../src/gtkam-viewer.c:299
+#: src/gtkam-viewer.c:299
 #, c-format
 msgid "Could not download '%s' from folder '%s'."
 msgstr "Kunde inte hämta \"%s\" från mappen \"%s\"."
 
-#: ../src/main.c:114
+#: src/main.c:114
 msgid "Image Download Program"
 msgstr "Bildhämtningsprogram"
 
@@ -921,44 +892,62 @@ msgstr "Bildhämtningsprogram"
 #, fuzzy
 #~ msgid "MIME type: "
 #~ msgstr "Mime-typ: "
+
 #~ msgid "/File/_Save Photos"
 #~ msgstr "/Fil/_Spara fotografier"
+
 #~ msgid "/File/Save Photos/_Selected"
 #~ msgstr "/Fil/_Spara fotografier/_Valda"
+
 #~ msgid "/File/Save Photos/_All"
 #~ msgstr "/Fil/_Spara fotografier/_Alla"
+
 #~ msgid "/File/Delete Photos/_Selected"
 #~ msgstr "/Fil/_Radera fotografier/_Valda"
+
 #~ msgid "/File/Delete Photos/_All"
 #~ msgstr "/Fil/_Radera fotografier/_Alla"
+
 #~ msgid "/View/_View Thumbnails"
 #~ msgstr "/Visa/_Visa minibilder"
+
 #~ msgid "/Select/_All"
 #~ msgstr "/Välj/_Alla"
+
 #~ msgid "/Select/_None"
 #~ msgstr "/Välj/_Ingen"
+
 #~ msgid "/Camera/_Add Camera..."
 #~ msgstr "/Kamera/_Addera Kamera..."
+
 #~ msgid "/_Help"
 #~ msgstr "/_Hjälp"
+
 #~ msgid "/Help/_Debug"
 #~ msgstr "/Hjälp/_Avlusning"
+
 #~ msgid "/Help/_About"
 #~ msgstr "/Hjälp/_Om"
+
 #~ msgid "_Debug..."
 #~ msgstr "_Avlusnig..."
+
 #~ msgid "_About..."
 #~ msgstr "_Om..."
 
 #, fuzzy
 #~ msgid "photo"
 #~ msgstr "Spara fotografier"
+
 #~ msgid "'%s' in folder '%s'"
 #~ msgstr "'%s' i mapp '%s'"
+
 #~ msgid "All files in folder '%s'"
 #~ msgstr "Alla filer i mappen '%s'"
+
 #~ msgid "More"
 #~ msgstr "Mer"
+
 #~ msgid "Could not find an io-driver for port '%s' ('%s')."
 #~ msgstr "Kunde inte finna en io-drivrutin för port '%s' ('%s')."
 
@@ -969,96 +958,140 @@ msgstr "Bildhämtningsprogram"
 #, fuzzy
 #~ msgid "/Manual"
 #~ msgstr "Användarmanual"
+
 #~ msgid "Index Settings"
 #~ msgstr "Index inställningar"
+
 #~ msgid "Cancel"
 #~ msgstr "Avbryt"
+
 #~ msgid "Apply"
 #~ msgstr "Verktställ"
+
 #~ msgid "Filename"
 #~ msgstr "Filnamn"
+
 #~ msgid "Close"
 #~ msgstr "Stäng"
+
 #~ msgid "Reset"
 #~ msgstr "Nollställ"
+
 #~ msgid "Could not get preview of file '%s' in folder '%s'"
 #~ msgstr "Kunde inte få tag på förhandsgranskning av fil '%s' i mappen '%s'"
+
 #~ msgid "Getting preview of file '%s' in folder '%s'..."
 #~ msgstr "Hämtar förhandsgranskning av fil '%s' i mappen '%s'."
+
 #~ msgid "Could not get preview of file '%s' in folder '%s'."
 #~ msgstr "Kunde inte få tag på förhandsgranskning av fil '%s' i mappen '%s'."
+
 #~ msgid "Save selected photos..."
 #~ msgstr "Spara valda fotografier..."
+
 #~ msgid "Delete selected photos"
 #~ msgstr "Ta bort markerade fotografier"
+
 #~ msgid "_Create..."
 #~ msgstr "_Skapa..."
+
 #~ msgid "Ca_pture..."
 #~ msgstr "F_ånga..."
+
 #~ msgid "_Configure..."
 #~ msgstr "_Konfigurera"
+
 #~ msgid "Configure camera..."
 #~ msgstr "Konfigurera kamera"
+
 #~ msgid "Could not retrieve file list for folder '%s'."
 #~ msgstr "Kunde inte hämta fillistan för mappen '%s'."
+
 #~ msgid "Save As"
 #~ msgstr "Spara som"
+
 #~ msgid "Could not download file"
 #~ msgstr "Kunde inte ladda ner fil"
+
 #~ msgid "Creation time:"
 #~ msgstr "Skapa vid"
+
 #~ msgid "No configuration options."
 #~ msgstr "Inga konfigurationsalternativ."
+
 #~ msgid "Mail image needs to be implemented!"
 #~ msgstr "Posta bild måste implementeras!"
+
 #~ msgid "Taking picture..."
 #~ msgstr "Tar bild..."
+
 #~ msgid "New picture is #%03i"
 #~ msgstr "Ny bild är #%03i"
+
 #~ msgid "Deleting ALL pictures."
 #~ msgstr "Tar bort ALLA bilder"
+
 #~ msgid "Deleting %i...\n"
 #~ msgstr "Tar bort %i...\n"
+
 #~ msgid "Deleted all images."
 #~ msgstr "Alla bilder har tagits bort."
+
 #~ msgid "Deleting selected pictures..."
 #~ msgstr "Tar bort markerade bilder..."
+
 #~ msgid "Nothing selected to be deleted."
 #~ msgstr "Inget markerat för att tas bort."
+
 #~ msgid "Are you sure you want to DELETE the selected images?"
 #~ msgstr "Är du säker att du vill TA BORT de markerade bilderna?"
+
 #~ msgid "Are you sure you want to DELETE all the images from memory?"
 #~ msgstr "Är du säker att du vill TA BORT alla bilderna från minnet?"
+
 #~ msgid "Yes"
 #~ msgstr "Ja"
+
 #~ msgid "Saving Image #%03i..."
 #~ msgstr "Sparar bild #%03i..."
+
 #~ msgid "Saving Thumbnail #%03i..."
 #~ msgstr "Sparar minibild #%03i..."
+
 #~ msgid "%s-thumbnail-%03i"
 #~ msgstr "%s-minibild-%03i"
+
 #~ msgid "Done. Images saved in %s"
 #~ msgstr "Klar. Bilderna sparades i %s"
+
 #~ msgid "%s/gphoto-image-%03i.jpg"
 #~ msgstr "%s/gphoto-bild-%03i.jpg"
+
 #~ msgid ""
 #~ "\n"
 #~ "gPhoto user(s) that reported this model:\n"
 #~ msgstr ""
 #~ "\n"
 #~ "gPhoto-användare som har rapporterat denna modellen:\n"
+
 #~ msgid "Error: failed to open %s"
 #~ msgstr "Fel: misslyckades att öppna %s"
+
 #~ msgid "Missing Serial Device Permissions"
 #~ msgstr "Saknar seriellportsrättigheter"
+
 #~ msgid "Please check the permissions (see the manual)."
 #~ msgstr "Var vänlig kolla rättigheterna (se manualen)."
+
 #~ msgid "Opened %s."
 #~ msgstr "Öppnade %s."
+
 #~ msgid "Could not open $HOME/.gphoto/gphotorc for writing."
 #~ msgstr "Kunde inte öppna $HOME/.gphoto/gphotorc för skrivning."
+
 #~ msgid "Could not open $HOME/.gphoto/gphotorc for writing.\n"
 #~ msgstr "Kunde inte öppna $HOME/.gphoto/gphotorc för skrivning.\n"
+
 #~ msgid ""
 #~ "Version Information-------------------Current Version: %sNew features all "
 #~ "over the place. Please seethe ChangeLog for more information.As always, "
@@ -1067,8 +1100,10 @@ msgstr "Bildhämtningsprogram"
 #~ "Versjonsinformasjon-------------------Denne versjon: %sNye funksjoner "
 #~ "over det hele. Vennligst se ChangeLog for mer informasjon. Som alltid, "
 #~ "rapporter feil til gphoto-devel@gphoto.org. Takk så mye."
+
 #~ msgid "OK"
 #~ msgstr "OK"
+
 #~ msgid ""
 #~ "This program is free software; you can redistribute it and/or modifyit "
 #~ "under the terms of the GNU General Public License as published bythe Free "
@@ -1092,264 +1127,377 @@ msgstr "Bildhämtningsprogram"
 #~ "program. Om inte, skriv till Free Software Foundation, Inc., 675 Mass "
 #~ "Ave, Cambridge, MA 02139, USA.See http://www.gnu.org för mer detaljer om "
 #~ "GNU-projektet."
+
 #~ msgid "%s is not yet implemented"
 #~ msgstr "%s är inte implementerad ännu"
+
 #~ msgid "Picture #%i\n"
 #~ msgstr "Bild #%i\n"
+
 #~ msgid "Getting Index..."
 #~ msgstr "Hämtar index..."
+
 #~ msgid "num_pictures_taken is %d\n"
 #~ msgstr "num_pictures_take är %d\n"
+
 #~ msgid "Download cancelled."
 #~ msgstr "Nerladdning avbryten."
+
 #~ msgid "Done getting index."
 #~ msgstr "Hämtning av index klart."
+
 #~ msgid "Nothing selected for download."
 #~ msgstr "Inget markerat för nerladdning."
+
 #~ msgid "Getting Image #%03i..."
 #~ msgstr "Hämtar bild #%03i..."
+
 #~ msgid "Getting Thumbnail #%03i..."
 #~ msgstr "Hämtar minibild #%03i..."
+
 #~ msgid "Download halted."
 #~ msgstr "Nerladdning stoppad."
+
 #~ msgid "Save all opened images"
 #~ msgstr "Spara alla öppna bilder"
+
 #~ msgid "Saving the index is not yet supported"
 #~ msgstr "Sparning av index stöds inte än"
+
 #~ msgid "Open Image..."
 #~ msgstr "Öppna bild..."
+
 #~ msgid "Can't print the index yet."
 #~ msgstr "Kan inte skriva ut indexet än."
+
 #~ msgid "Print Command:"
 #~ msgstr "Utskriftskommando:"
+
 #~ msgid "Print"
 #~ msgstr "Skriv ut"
+
 #~ msgid "Now spooling..."
 #~ msgstr "Mellanlagrar (spooling)..."
+
 #~ msgid "Spooling done. Printing may take a minute."
 #~ msgstr "Mellanlagring (spooling) klar. Utskrivningen kan ta någon minut."
+
 #~ msgid "Can't modify the index colors."
 #~ msgstr "Kan inte ändra indexfärgerna."
+
 #~ msgid "Can't scale the index."
 #~ msgstr "Kan inte skala indexet."
+
 #~ msgid "Resize Image..."
 #~ msgstr "Ändra bildens storlek..."
+
 #~ msgid "Width:"
 #~ msgstr "Bredd:"
+
 #~ msgid "Height:"
 #~ msgstr "Höjd:"
+
 #~ msgid "Resize"
 #~ msgstr "Ändra storlek"
+
 #~ msgid "Can't manipulate the index."
 #~ msgstr "Kan inte manipulera indexet."
+
 #~ msgid "Can't scale the index!"
 #~ msgstr "Kan inte skala indexet!"
+
 #~ msgid "Scaling image by 50%..."
 #~ msgstr "Skalar bild med 50%..."
+
 #~ msgid "Scaling image by 200%..."
 #~ msgstr "Skalar bild med 200%..."
+
 #~ msgid "Post-Processing Options"
 #~ msgstr "Inställningar för efterbearbetning"
+
 #~ msgid "Enable post-processing"
 #~ msgstr "Aktivera efterbearbetning"
+
 #~ msgid "Post-processing command-line:"
 #~ msgstr "Bearbetningskommando-rad:"
+
 #~ msgid ""
 #~ "%s summary:\n"
 #~ "%s"
 #~ msgstr ""
 #~ "%s sammanfattning:\n"
 #~ "%s"
+
 #~ msgid "gPhoto %s (%s) - the GNU digital camera application\n"
 #~ msgstr "gPhoto %s (%s) - GNU's digitalkamera applikation\n"
+
 #~ msgid ""
 #~ "Copyright (C) 1998-2000 Scott Fritzinger <scottf@unr.edu>\n"
 #~ "\n"
 #~ msgstr ""
 #~ "Copyright (C) 1998-2000 Scott Fritzinger <scottf@unr.edu>\n"
 #~ "\n"
+
 #~ msgid "Usage: gphoto [-h] [-c] [-n] [-s # filename] [-t # filename]\n"
 #~ msgstr "Anvädning: gphoto [-h] [-c] [-n] [-s # filnamn] [-t # filnamn]\n"
+
 #~ msgid "              [-d #] [-p filename] [-l filename]\n"
 #~ msgstr "                 [-d #] [-p filnamn] [-l filnamn]\n"
+
 #~ msgid "\t-h                    display this help screen\n"
 #~ msgstr "-h                      visa den här hjälptexten\n"
+
 #~ msgid "\t-c                    display camera summary\n"
 #~ msgstr "\t-c                    visa kamerasummering\n"
+
 #~ msgid "\t-n                    display the # of pictures\n"
 #~ msgstr "\t-n                    visa antalet bilder\n"
+
 #~ msgid "\t-s # filename         save image # as filename\n"
 #~ msgstr "\t-s # filnamn          spara bild # som filnamn\n"
+
 #~ msgid "\t-t # filename         save thumbnail # as filename\n"
 #~ msgstr "\t-t # filnamn          spara minibild # som filnamn\n"
+
 #~ msgid "\t-d #                  delete image # from camera\n"
 #~ msgstr "\t-d #                  ta bort bild # från kameran\n"
+
 #~ msgid "\t-p filename           take picture and save as filename\n"
 #~ msgstr "\t-p filnamn            ta bild och spara som filnamn\n"
+
 #~ msgid ""
 #~ "\t-l filename           save live preview as filename\n"
 #~ "\n"
 #~ msgstr ""
 #~ "\t-l filnamn           spara nuvarande förhandsgranskning som filnamn\n"
 #~ "\n"
+
 #~ msgid "gPhoto is free GNU software; you can redistribute it and/or\n"
 #~ msgstr "gPhoto är fri GNU-mjukvara; du kan omdistribuera det och/eller\n"
+
 #~ msgid "modify it under the terms of the GNU General Public License \n"
 #~ msgstr "modifiera det under termerna i GNU General Public License \n"
+
 #~ msgid "as published by the Free Software Foundation; either version \n"
 #~ msgstr "som publicerats av Free Software Foundation; antingen version \n"
+
 #~ msgid "2 of the License, or any later version.  Visit gphoto/COPYING\n"
 #~ msgstr "2 av licensen, eller någon senare version.  Besök gphoto/COPYING\n"
+
 #~ msgid ""
 #~ "in the source distribution to read the GNU GPL license terms.\n"
 #~ "\n"
 #~ msgstr ""
 #~ "i källkods-distributionen för att läsa GNU GPL licenstermerna.\n"
 #~ "\n"
+
 #~ msgid "Report bugs and camera success to gphoto-devel@gphoto.org.\n"
 #~ msgstr ""
 #~ "Rapportera fel och framgång med kameran till gphoto-devel@gphoto.org.\n"
+
 #~ msgid "See http://www.gphoto.org for the latest news and updates.\n"
 #~ msgstr ""
 #~ "Se http://www.gphoto.org för de senaste nyheterna och uppdateringarna.\n"
+
 #~ msgid "%i\n"
 #~ msgstr "%i\n"
+
 #~ msgid "ERROR: could not get image.\n"
 #~ msgstr "FEL: kunde inte hämta bild.\n"
+
 #~ msgid "ERROR: could not save image.\n"
 #~ msgstr "FEL: kunde inte spara bild.\n"
+
 #~ msgid "ERROR: 'filename' not specified.\n"
 #~ msgstr "FEL: \"filnamn\" inte angivet.\n"
+
 #~ msgid "ERROR: '#' and 'filename' not specified.\n"
 #~ msgstr "FEL: \"#\" och \"filnamn\" inte angivet.\n"
+
 #~ msgid "ERROR: '#' not specified.\n"
 #~ msgstr "FEL: \"#\" inte angivet.\n"
+
 #~ msgid "ERROR: filename not specified.\n"
 #~ msgstr "FEL: filnamn inte angivet.\n"
+
 #~ msgid "Taking picture...\n"
 #~ msgstr "Tar bild...\n"
+
 #~ msgid "ERROR: could not take the picture.\n"
 #~ msgstr "FEL: kunde inte ta bilden.\n"
+
 #~ msgid "Saving the new image (# %i) as %s: "
 #~ msgstr "Sparar den nya bilden (# %i) som %s: "
+
 #~ msgid ""
 #~ "\n"
 #~ "ERROR: could not get image.\n"
 #~ msgstr ""
 #~ "\n"
 #~ "FEL: kunde inte hämta bild.\n"
+
 #~ msgid "gPhoto release %s was brought to you by"
 #~ msgstr "gPhoto versionen %s presenterat av"
+
 #~ msgid "Web Page"
 #~ msgstr "Webbsida"
+
 #~ msgid "Next"
 #~ msgstr "Nästa"
+
 #~ msgid ""
 #~ "The gPhoto AUTHORS file appears to be missing!\n"
 #~ "\t      There should be a file called "
 #~ msgstr ""
 #~ "gPhoto's AUTHORS-fil verkar saknas!\n"
 #~ "\t      Där borde finnas en fil kallad "
+
 #~ msgid "Select an Output Directory..."
 #~ msgstr "Välj en utdata-katalog..."
+
 #~ msgid "Gallery Name:"
 #~ msgstr "Gallerinamn:"
+
 #~ msgid "Theme:"
 #~ msgstr "Tema:"
+
 #~ msgid "Change..."
 #~ msgstr "Ändra..."
+
 #~ msgid "Export file as *.shtml?"
 #~ msgstr "Exportera fil som *.shtml?"
+
 #~ msgid "Set table border width to zero for thumbnails?"
 #~ msgstr "Sätt bredden på tabellkanten till 0 för minibilder?"
+
 #~ msgid ""
 #~ "Set image border width to zero? (so you don't see the link colors...)"
 #~ msgstr ""
 #~ "Sätt bredden på bildkanten till 0? (så att du inte ser länkfägerna...)"
+
 #~ msgid "You must select a theme!"
 #~ msgstr "Du måste välja ett tema!"
+
 #~ msgid "Not Available"
 #~ msgstr "Ej tillgänglig"
+
 #~ msgid "<a href=\"picture-%03i.html\">Click Me<\\/a>"
 #~ msgstr "<a href=\"picture-%03i.html\">Klicka mig<\\/a>"
+
 #~ msgid "Getting Image #%i..."
 #~ msgstr "Hämtar bild #%i..."
+
 #~ msgid "<img alt=\"%03i\" src=\"picture-%03i.%s\">"
 #~ msgstr "<img alt=\"%03i\" src=\"picture-%03i.%s\">"
+
 #~ msgid "picture-%03i.%s"
 #~ msgstr "bild-%03i.%s"
+
 #~ msgid "picture-%03i.html"
 #~ msgstr "bild-%03i.html"
+
 #~ msgid "%spicture-%03i.html"
 #~ msgstr "%sbild-%o3i.html"
+
 #~ msgid "Loaded file:%s%s in %s"
 #~ msgstr "Laddade filen:%s%s i %s"
+
 #~ msgid "Gallery saved in: %s"
 #~ msgstr "Galleri sparat i: %s"
+
 #~ msgid "Color Adjustment"
 #~ msgstr "Färgjustering"
+
 #~ msgid "gPhoto - Color Adjustment"
 #~ msgstr "gPhoto - Färgjustering"
+
 #~ msgid "Gray Controls"
 #~ msgstr "Gråa kontroller"
+
 #~ msgid "Red Controls"
 #~ msgstr "Röda kontroller"
+
 #~ msgid "Green Controls"
 #~ msgstr "Gröna kontroller"
+
 #~ msgid "Blue Controls"
 #~ msgstr "Blåa kontroller"
+
 #~ msgid "Colour Modifications:"
 #~ msgstr "Färgmodifieringar:"
+
 #~ msgid "Keep"
 #~ msgstr "Behåll"
+
 #~ msgid "Reset all the color changes to normal values"
 #~ msgstr "Nollställ alla färgändringar till normala värden"
+
 #~ msgid "Always Apply"
 #~ msgstr "Alltid verkställ"
+
 #~ msgid "Getting live image..."
 #~ msgstr "Hämtar nuvarande bild..."
+
 #~ msgid "Update Picture"
 #~ msgstr "Uppdatera bild"
+
 #~ msgid "Take Picture"
 #~ msgstr "Ta bild"
+
 #~ msgid ""
 #~ "\n"
 #~ "Launching Gnome Bugbuddy...\n"
 #~ msgstr ""
 #~ "\n"
 #~ "Kör Gnome Bugbuddy...\n"
+
 #~ msgid "gPhoto %s - the GNU digital camera application"
 #~ msgstr "gPhoto %s - GNU's digitala kamera-applikation"
+
 #~ msgid "Save Opened Image(s)"
 #~ msgstr "Spara öppnade bild(s)"
+
 #~ msgid "Print Image"
 #~ msgstr "Skriv ut bild"
+
 #~ msgid "Close Image"
 #~ msgstr "Stäng bild"
+
 #~ msgid "Previous page"
 #~ msgstr "Föregående sida"
+
 #~ msgid "Next page"
 #~ msgstr "Nästa sida"
+
 #~ msgid "Download Empty Index"
 #~ msgstr "Ladda ner tomt index"
+
 #~ msgid "Download Selected Images"
 #~ msgstr "Ladda ner markerade bilder"
+
 #~ msgid "Halt Download"
 #~ msgstr "Stoppa nerladdning"
+
 #~ msgid "Rotate Clockwise"
 #~ msgstr "Rotera medurs"
+
 #~ msgid "Rotate Counter-Clockwise"
 #~ msgstr "Rotera moturs"
+
 #~ msgid "Flip Horizontal"
 #~ msgstr "Vänd horisontellt"
+
 #~ msgid "Flip Vertical"
 #~ msgstr "Vänd vertikalt"
+
 #~ msgid "Colors"
 #~ msgstr "Färger"
+
 #~ msgid "Exit gPhoto"
 #~ msgstr "Avsluta gPhoto"
+
 #~ msgid "gPhoto Message"
 #~ msgstr "gPhoto Meddelande"
+
 #~ msgid "File %s exists. Overwrite?"
 #~ msgstr "Filen %s existerar. Skriva över?"
-

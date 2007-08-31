@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gtkam VERSION\n"
 "Report-Msgid-Bugs-To: gphoto-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2006-12-17 17:47-0500\n"
+"POT-Creation-Date: 2007-08-31 23:00+0200\n"
 "PO-Revision-Date: 2007-08-08 14:52+0100\n"
 "Last-Translator: Peter Tuhársky <tuharsky@misbb.sk>\n"
 "Language-Team: Slovak\n"
@@ -17,14 +17,11 @@ msgstr ""
 "X-Poedit-Language: Slovak\n"
 "X-Poedit-Country: SLOVAKIA\n"
 
-#: src/gtkam-chooser.c:232
-#: src/gtkam-chooser.c:254
+#: src/gtkam-chooser.c:232 src/gtkam-chooser.c:254
 msgid "None"
 msgstr "Žiadne"
 
-#: src/gtkam-chooser.c:262
-#: src/gtkam-chooser.c:369
-#: src/gtkam-chooser.c:624
+#: src/gtkam-chooser.c:262 src/gtkam-chooser.c:369 src/gtkam-chooser.c:624
 #: src/gtkam-chooser.c:658
 msgid "Best"
 msgstr "Najlepšie"
@@ -74,13 +71,11 @@ msgstr "Hľadať USB fotoaparát"
 msgid "Port:"
 msgstr "Port:"
 
-#: src/gtkam-chooser.c:616
-#: src/gtkam-chooser.c:648
+#: src/gtkam-chooser.c:616 src/gtkam-chooser.c:648
 msgid "Speed:"
 msgstr "Rýchlosť:"
 
-#: src/gtkam-chooser.c:629
-#: src/gtkam-chooser.c:664
+#: src/gtkam-chooser.c:629 src/gtkam-chooser.c:664
 msgid "Allow multiple frontends"
 msgstr "Povoliť viacero rozhraní"
 
@@ -238,36 +233,35 @@ msgstr "Nepodarilo sa získať zo súboru EXIF údaje."
 msgid "Gtkam has been compiled without EXIF support."
 msgstr "Gtkam bol skompilovaný bez podpory EXIF."
 
-#: src/gtkam-gimp.c:69
-#: src/gtkam-gimp.c:70
+#: src/gtkam-gimp.c:69 src/gtkam-gimp.c:70
 msgid "Captures images from digital camera"
 msgstr "Zachytí obrázky z digitálneho fotoaparátu"
 
-#: src/gtkam-gimp.c:72
+#. TRANSLATORS: do not translate <Toolbox>/File/Acquire, but only the Capture from Camera part
+#: src/gtkam-gimp.c:73
 msgid "<Toolbox>/File/Acquire/Capture from Camera..."
 msgstr "<Toolbox>/File/Acquire/Zachytiť z fotoaparátu..."
 
-#: src/gtkam-gimp.c:76
-#: src/gtkam-gimp.c:77
+#: src/gtkam-gimp.c:77 src/gtkam-gimp.c:78
 msgid "Loads files from digital cameras"
 msgstr "Načíta súbory z digitálnych fotoaparátov"
 
-#: src/gtkam-gimp.c:81
+#. TRANSLATORS: do not translate <Toolbox>/File/Acquire, but only the Load from Camera part
+#: src/gtkam-gimp.c:83
 msgid "<Toolbox>/File/Acquire/Load from Camera..."
 msgstr "<Toolbox>/File/Acquire/Načítať z fotoaparátu..."
 
-#: src/gtkam-gimp.c:194
-#: src/gtkam-list.c:511
+#: src/gtkam-gimp.c:196 src/gtkam-list.c:511
 #, c-format
 msgid "Downloading '%s' from '%s'..."
 msgstr "Sťahujem '%s' z '%s'..."
 
-#: src/gtkam-gimp.c:212
+#: src/gtkam-gimp.c:214
 #, c-format
 msgid "Could not download file '%s' from folder '%s'."
 msgstr "Nepodarilo sa stiahnuť súbor '%s' z priečinka '%s'."
 
-#: src/gtkam-gimp.c:245
+#: src/gtkam-gimp.c:247
 msgid "Image"
 msgstr "Obrázok"
 
@@ -299,9 +293,7 @@ msgstr "Súbor"
 msgid "Name:"
 msgstr "Názov:"
 
-#: src/gtkam-info.c:365
-#: src/gtkam-info.c:474
-#: src/gtkam-info.c:523
+#: src/gtkam-info.c:365 src/gtkam-info.c:474 src/gtkam-info.c:523
 msgid "MIME type:"
 msgstr "Typ MIME:"
 
@@ -309,14 +301,11 @@ msgstr "Typ MIME:"
 msgid "Last modified:"
 msgstr "Naposledy upravený:"
 
-#: src/gtkam-info.c:404
-#: src/gtkam-info.c:491
-#: src/gtkam-info.c:540
+#: src/gtkam-info.c:404 src/gtkam-info.c:491 src/gtkam-info.c:540
 msgid "Size:"
 msgstr "Veľkosť:"
 
-#: src/gtkam-info.c:411
-#: src/gtkam-info.c:547
+#: src/gtkam-info.c:411 src/gtkam-info.c:547
 #, c-format
 msgid "%liK (%li bytes)"
 msgstr "%liK (%li bajtov)"
@@ -333,8 +322,7 @@ msgstr "Čítať"
 msgid "Delete"
 msgstr "Odstrániť"
 
-#: src/gtkam-info.c:468
-#: src/gtkam-list.c:941
+#: src/gtkam-info.c:468 src/gtkam-list.c:941
 msgid "Preview"
 msgstr "Náhľad"
 
@@ -385,14 +373,12 @@ msgstr "/_Odstrániť"
 msgid "Name"
 msgstr "Názov"
 
-#: src/gtkam-list.c:969
-#: src/gtkam-tree.c:685
+#: src/gtkam-list.c:969 src/gtkam-tree.c:685
 #, c-format
 msgid "Listing files in folder '%s'..."
 msgstr "Vypisujem súbory v priečinku '%s'..."
 
-#: src/gtkam-list.c:986
-#: src/gtkam-tree.c:702
+#: src/gtkam-list.c:986 src/gtkam-tree.c:702
 #, c-format
 msgid "Could not get file list for folder '%s'"
 msgstr "Nepodarilo sa získať zoznam súborov v adresári '%s'"
@@ -453,14 +439,11 @@ msgstr "_Uložiť fotografie"
 msgid "_Delete Photos"
 msgstr "_Odstrániť fotografie"
 
-#: src/gtkam-main.c:552
-#: src/gtkam-main.c:554
+#: src/gtkam-main.c:552 src/gtkam-main.c:554
 msgid "_Selected"
 msgstr "_Označené"
 
-#: src/gtkam-main.c:553
-#: src/gtkam-main.c:555
-#: src/gtkam-main.c:562
+#: src/gtkam-main.c:553 src/gtkam-main.c:555 src/gtkam-main.c:562
 msgid "_All"
 msgstr "_Všetko"
 
@@ -549,15 +532,15 @@ msgstr "Nový priečinok"
 
 #: src/gtkam-port.c:147
 #, c-format
-msgid "The port '%s' could not be found. Please make sure that the port exists."
+msgid ""
+"The port '%s' could not be found. Please make sure that the port exists."
 msgstr "Port '%s' sa nepodarilo nájsť. Prosím overte si, či naozaj existuje."
 
 #: src/gtkam-port.c:181
 msgid "Please specify the path to the port your camera is attached to:"
 msgstr "Prosím, zadajte cestu k portu, ku ktorému je pripojený fotoaparát:"
 
-#: src/gtkam-preview.c:187
-#: src/gtkam-tree.c:1093
+#: src/gtkam-preview.c:187 src/gtkam-tree.c:1093
 msgid "Capturing image..."
 msgstr "Zachytávam obrázok..."
 
@@ -565,8 +548,7 @@ msgstr "Zachytávam obrázok..."
 msgid "Could not capture image."
 msgstr "Nepodarilo sa zachytiť obrázok."
 
-#: src/gtkam-preview.c:347
-#: src/gtkam-preview.c:410
+#: src/gtkam-preview.c:347 src/gtkam-preview.c:410
 msgid "Capture"
 msgstr "Zachytiť"
 
@@ -602,123 +584,118 @@ msgstr "180 stupňov"
 msgid "Rotate thumbnail by 180 degrees"
 msgstr "Otočiť miniatúru o 180 stupňov"
 
-#: src/gtkam-save.c:301
-#: src/gtkam-tree.c:614
+#: src/gtkam-save.c:303 src/gtkam-tree.c:614
 #, c-format
 msgid "The file '%s' already exists."
 msgstr "Súbor '%s' už existuje."
 
-#: src/gtkam-save.c:323
-#: src/gtkam-tree.c:631
+#: src/gtkam-save.c:325 src/gtkam-tree.c:631
 #, c-format
 msgid "Could not save file to '%s'."
 msgstr "Nepodarilo sa uložiť súbor do '%s'."
 
-#: src/gtkam-save.c:363
-#: src/gtkam-tree.c:664
+#: src/gtkam-save.c:365 src/gtkam-tree.c:664
 #, c-format
 msgid "Could not get '%s' from folder '%s'."
 msgstr "Nepodarilo sa získať '%s' z priečinku '%s'."
 
-#: src/gtkam-save.c:494
+#: src/gtkam-save.c:496
 msgid "There is nothing to be saved."
 msgstr "Niet čo uložiť."
 
-#: src/gtkam-save.c:506
+#: src/gtkam-save.c:508
 msgid "Downloading file"
 msgstr "Sťahujem súbor"
 
-#: src/gtkam-save.c:508
+#: src/gtkam-save.c:510
 #, c-format
 msgid "Downloading %i files"
 msgstr "Sťahujem %i súborov"
 
-#: src/gtkam-save.c:515
-#: src/gtkam-tree.c:740
+#: src/gtkam-save.c:517 src/gtkam-tree.c:740
 #, c-format
 msgid "Downloading %i files..."
 msgstr "Sťahujem %i súborov..."
 
-#: src/gtkam-save.c:566
-#: src/gtkam-tree.c:755
+#: src/gtkam-save.c:568 src/gtkam-tree.c:755
 #, c-format
 msgid "Problem getting '%s' from folder '%s'."
 msgstr "Nepodarilo sa získať '%s' z priečinku '%s'."
 
-#: src/gtkam-save.c:640
+#: src/gtkam-save.c:642
 msgid "What to save:"
 msgstr "Čo mám uložiť:"
 
-#: src/gtkam-save.c:652
+#: src/gtkam-save.c:654
 msgid "Save photos"
 msgstr "Uložiť fotografie"
 
-#: src/gtkam-save.c:656
+#: src/gtkam-save.c:658
 msgid "Photos will be saved if this is checked"
 msgstr "Ak je toto začiarknuté, uložia sa fotografie"
 
-#: src/gtkam-save.c:660
+#: src/gtkam-save.c:662
 msgid "Save raw data"
 msgstr "Uložiť raw údaje"
 
-#: src/gtkam-save.c:663
+#: src/gtkam-save.c:665
 msgid "Raw data will be saved if this is checked"
 msgstr "Ak je toto začiarknuté, uložia sa raw údaje"
 
-#: src/gtkam-save.c:667
+#: src/gtkam-save.c:669
 msgid "Save audio data"
 msgstr "Uložiť zvukové údaje"
 
-#: src/gtkam-save.c:670
+#: src/gtkam-save.c:672
 msgid "Audio data will be saved if this is checked"
 msgstr "Ak je toto začiarknuté, uložia sa zvukové údaje"
 
-#: src/gtkam-save.c:674
+#: src/gtkam-save.c:676
 msgid "Save thumbnails"
 msgstr "Uložiť miniatúry"
 
-#: src/gtkam-save.c:677
+#: src/gtkam-save.c:679
 msgid "Thumbnails will be saved if this is checked"
 msgstr "Ak je toto začiarknuté, uložia sa miniatúry"
 
-#: src/gtkam-save.c:681
+#: src/gtkam-save.c:683
 msgid "Save EXIF data"
 msgstr "Uložiť EXIF údaje"
 
-#: src/gtkam-save.c:684
+#: src/gtkam-save.c:686
 msgid "EXIF data will be saved if this is checked"
 msgstr "Ak je toto začiarknuté, uložia sa EXIF údaje"
 
-#: src/gtkam-save.c:693
+#: src/gtkam-save.c:695
 msgid "Open image(s) with: "
 msgstr "Otvoriť obrázky pomocou: "
 
-#: src/gtkam-save.c:700
+#: src/gtkam-save.c:702
 msgid "Type in the name of the program you want to run, leave blank for none"
 msgstr "Zadajte názov programu, ktorý chcete spustiť, alebo nechajte prázdne"
 
-#: src/gtkam-save.c:706
+#: src/gtkam-save.c:708
 msgid "Use filename(s) provided by the camera"
 msgstr "Použiť názvy súborov pridelené fotoaparátom"
 
-#: src/gtkam-save.c:710
+#: src/gtkam-save.c:712
 msgid "Choose whether to use the filename provided by the camera"
 msgstr "Vyberte, či sa má použiť názov súboru pridelený fotoaparátom"
 
-#: src/gtkam-save.c:724
+#: src/gtkam-save.c:726
 msgid "Filename prefix: "
 msgstr "Predpona názvu súboru: "
 
-#: src/gtkam-save.c:733
+#: src/gtkam-save.c:735
 msgid "Start numbering with: "
 msgstr "Začať číslovať od: "
 
-#: src/gtkam-save.c:775
+#: src/gtkam-save.c:777
 #, c-format
 msgid "Save '%s'..."
 msgstr "Uložiť '%s'..."
 
-#: src/gtkam-save.c:795
+#: src/gtkam-save.c:797
 msgid "Save photos..."
 msgstr "Uložiť fotografie..."
 
@@ -878,12 +855,20 @@ msgstr "Načítavam fotoaparáty..."
 
 #: src/gtkam-util.c:46
 #, c-format
-msgid "Could not display '%s'. Either the image type ('%s') is not supported by gtk or the file itself is corrupt."
-msgstr "Nepodarilo sa zobraziť '%s'. Buď formát obrázku ('%s') nie je podporovaný gtk, alebo je súbor poškodený."
+msgid ""
+"Could not display '%s'. Either the image type ('%s') is not supported by gtk "
+"or the file itself is corrupt."
+msgstr ""
+"Nepodarilo sa zobraziť '%s'. Buď formát obrázku ('%s') nie je podporovaný "
+"gtk, alebo je súbor poškodený."
 
 #: src/gtkam-version.c:102
-msgid "ALWAYS INCLUDE THE FOLLOWING LINES WHEN SENDING DEBUG MESSAGES TO THE MAILING LIST:"
-msgstr "KEĎ POSIELATE LADIACE INFORMÁCIE DO KONFERENCIE, VŽDY PRIPOJTE NASLEDUJÚCE RIADKY:"
+msgid ""
+"ALWAYS INCLUDE THE FOLLOWING LINES WHEN SENDING DEBUG MESSAGES TO THE "
+"MAILING LIST:"
+msgstr ""
+"KEĎ POSIELATE LADIACE INFORMÁCIE DO KONFERENCIE, VŽDY PRIPOJTE NASLEDUJÚCE "
+"RIADKY:"
 
 #: src/gtkam-viewer.c:246
 #, c-format
@@ -909,52 +894,75 @@ msgstr "Program pre sťahovanie obrázkov"
 #, fuzzy
 #~ msgid "Could not get exif information for '%s' in folder '%s'"
 #~ msgstr "Nepodarilo sa zistiť EXIF informácie o súbore '%s' v priečinku '%s'"
+
 #~ msgid "/File/_Save Photos"
 #~ msgstr "/Súbor/_Uložiť fotografie"
+
 #~ msgid "/File/Save Photos/_Selected"
 #~ msgstr "/Súbor/_Uložiť fotografie/Vy_brané"
+
 #~ msgid "/File/Save Photos/_All"
 #~ msgstr "/Súbor/_Uložiť fotografie/_Všetky"
+
 #~ msgid "/File/Delete Photos/_Selected"
 #~ msgstr "/Súbor/_Odstrániť fotografie/Vy_brané"
+
 #~ msgid "/File/Delete Photos/_All"
 #~ msgstr "/Súbor/_Odstrániť fotografie/_Všetky"
+
 #~ msgid "/View/_View Thumbnails"
 #~ msgstr "/Zobraziť/_Zobrazovať miniatúry"
+
 #~ msgid "/Select/_All"
 #~ msgstr "/Vybrať/_Všetko"
+
 #~ msgid "/Select/_None"
 #~ msgstr "/Vybrať/_Nič"
+
 #~ msgid "/Camera/_Add Camera..."
 #~ msgstr "/_Fotoaparát/_Pridať fotoaparát..."
+
 #~ msgid "/_Help"
 #~ msgstr "/_Pomoc"
+
 #~ msgid "/Help/_Debug"
 #~ msgstr "/Pomoc/_Ladenie"
+
 #~ msgid "/Help/_About"
 #~ msgstr "/Pomoc/O _aplikácii"
+
 #~ msgid "_Debug..."
 #~ msgstr "_Ladenie..."
+
 #~ msgid "_About..."
 #~ msgstr "O _aplikácii..."
+
 #~ msgid "photo"
 #~ msgstr "fotografia"
+
 #~ msgid "'%s' in folder '%s'"
 #~ msgstr "'%s' v priečinku '%s'"
+
 #~ msgid "All files in folder '%s'"
 #~ msgstr "Všetky súbory v priečinku '%s'"
+
 #~ msgid "More"
 #~ msgstr "Viac"
+
 #~ msgid "/_Info"
 #~ msgstr "/_Informácie"
+
 #~ msgid "/_Exif"
 #~ msgstr "/_Exif"
+
 #~ msgid "Could not find an io-driver for port '%s' ('%s')."
 #~ msgstr "Nepodarilo sa nájsť io-ovládač pre port '%s' ('%s')."
+
 #~ msgid "/Capture"
 #~ msgstr "/Zachytiť"
+
 #~ msgid "/Summary"
 #~ msgstr "/Zhrnutie"
+
 #~ msgid "/Manual"
 #~ msgstr "/Manuál"
-

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gphoto\n"
 "Report-Msgid-Bugs-To: gphoto-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2006-12-17 23:23+0100\n"
+"POT-Creation-Date: 2007-08-31 23:00+0200\n"
 "PO-Revision-Date: 2000-06-27 16:33+0200\n"
 "Last-Translator: Yuri Syrota <rasta@renome.rovno.ua>\n"
 "Language-Team: Ukrainian <ru@li.org>\n"
@@ -255,29 +255,31 @@ msgstr ""
 msgid "Captures images from digital camera"
 msgstr ""
 
-#: src/gtkam-gimp.c:72
+#. TRANSLATORS: do not translate <Toolbox>/File/Acquire, but only the Capture from Camera part
+#: src/gtkam-gimp.c:73
 msgid "<Toolbox>/File/Acquire/Capture from Camera..."
 msgstr ""
 
-#: src/gtkam-gimp.c:76 src/gtkam-gimp.c:77
+#: src/gtkam-gimp.c:77 src/gtkam-gimp.c:78
 msgid "Loads files from digital cameras"
 msgstr ""
 
-#: src/gtkam-gimp.c:81
+#. TRANSLATORS: do not translate <Toolbox>/File/Acquire, but only the Load from Camera part
+#: src/gtkam-gimp.c:83
 msgid "<Toolbox>/File/Acquire/Load from Camera..."
 msgstr ""
 
-#: src/gtkam-gimp.c:194 src/gtkam-list.c:511
+#: src/gtkam-gimp.c:196 src/gtkam-list.c:511
 #, c-format
 msgid "Downloading '%s' from '%s'..."
 msgstr ""
 
-#: src/gtkam-gimp.c:212
+#: src/gtkam-gimp.c:214
 #, fuzzy, c-format
 msgid "Could not download file '%s' from folder '%s'."
 msgstr "Не вдалось отримати перегляд"
 
-#: src/gtkam-gimp.c:245
+#: src/gtkam-gimp.c:247
 #, fuzzy
 msgid "Image"
 msgstr "Покажчик зображень"
@@ -605,122 +607,122 @@ msgstr ""
 msgid "Rotate thumbnail by 180 degrees"
 msgstr ""
 
-#: src/gtkam-save.c:301 src/gtkam-tree.c:614
+#: src/gtkam-save.c:303 src/gtkam-tree.c:614
 #, c-format
 msgid "The file '%s' already exists."
 msgstr ""
 
-#: src/gtkam-save.c:323 src/gtkam-tree.c:631
+#: src/gtkam-save.c:325 src/gtkam-tree.c:631
 #, fuzzy, c-format
 msgid "Could not save file to '%s'."
 msgstr "Не вдалось зберегти #%i"
 
-#: src/gtkam-save.c:363 src/gtkam-tree.c:664
+#: src/gtkam-save.c:365 src/gtkam-tree.c:664
 #, fuzzy, c-format
 msgid "Could not get '%s' from folder '%s'."
 msgstr "Не вдалось отримати перегляд"
 
-#: src/gtkam-save.c:494
+#: src/gtkam-save.c:496
 msgid "There is nothing to be saved."
 msgstr ""
 
-#: src/gtkam-save.c:506
+#: src/gtkam-save.c:508
 #, fuzzy
 msgid "Downloading file"
 msgstr "Прийом завершено."
 
-#: src/gtkam-save.c:508
+#: src/gtkam-save.c:510
 #, fuzzy, c-format
 msgid "Downloading %i files"
 msgstr "Прийом завершено."
 
-#: src/gtkam-save.c:515 src/gtkam-tree.c:740
+#: src/gtkam-save.c:517 src/gtkam-tree.c:740
 #, fuzzy, c-format
 msgid "Downloading %i files..."
 msgstr "Прийом завершено."
 
-#: src/gtkam-save.c:566 src/gtkam-tree.c:755
+#: src/gtkam-save.c:568 src/gtkam-tree.c:755
 #, fuzzy, c-format
 msgid "Problem getting '%s' from folder '%s'."
 msgstr "Не вдалось отримати перегляд"
 
-#: src/gtkam-save.c:640
+#: src/gtkam-save.c:642
 msgid "What to save:"
 msgstr ""
 
-#: src/gtkam-save.c:652
+#: src/gtkam-save.c:654
 msgid "Save photos"
 msgstr ""
 
-#: src/gtkam-save.c:656
+#: src/gtkam-save.c:658
 msgid "Photos will be saved if this is checked"
 msgstr ""
 
-#: src/gtkam-save.c:660
+#: src/gtkam-save.c:662
 msgid "Save raw data"
 msgstr ""
 
-#: src/gtkam-save.c:663
+#: src/gtkam-save.c:665
 msgid "Raw data will be saved if this is checked"
 msgstr ""
 
-#: src/gtkam-save.c:667
+#: src/gtkam-save.c:669
 msgid "Save audio data"
 msgstr ""
 
-#: src/gtkam-save.c:670
+#: src/gtkam-save.c:672
 msgid "Audio data will be saved if this is checked"
 msgstr ""
 
-#: src/gtkam-save.c:674
+#: src/gtkam-save.c:676
 #, fuzzy
 msgid "Save thumbnails"
 msgstr "thumbnail-%03i.%s"
 
-#: src/gtkam-save.c:677
+#: src/gtkam-save.c:679
 msgid "Thumbnails will be saved if this is checked"
 msgstr ""
 
-#: src/gtkam-save.c:681
+#: src/gtkam-save.c:683
 msgid "Save EXIF data"
 msgstr ""
 
-#: src/gtkam-save.c:684
+#: src/gtkam-save.c:686
 msgid "EXIF data will be saved if this is checked"
 msgstr ""
 
-#: src/gtkam-save.c:693
+#: src/gtkam-save.c:695
 #, fuzzy
 msgid "Open image(s) with: "
 msgstr "Відкрити зображення"
 
-#: src/gtkam-save.c:700
+#: src/gtkam-save.c:702
 msgid "Type in the name of the program you want to run, leave blank for none"
 msgstr ""
 
-#: src/gtkam-save.c:706
+#: src/gtkam-save.c:708
 msgid "Use filename(s) provided by the camera"
 msgstr ""
 
-#: src/gtkam-save.c:710
+#: src/gtkam-save.c:712
 msgid "Choose whether to use the filename provided by the camera"
 msgstr ""
 
-#: src/gtkam-save.c:724
+#: src/gtkam-save.c:726
 #, fuzzy
 msgid "Filename prefix: "
 msgstr "Префікс назви файлу:"
 
-#: src/gtkam-save.c:733
+#: src/gtkam-save.c:735
 msgid "Start numbering with: "
 msgstr ""
 
-#: src/gtkam-save.c:775
+#: src/gtkam-save.c:777
 #, fuzzy, c-format
 msgid "Save '%s'..."
 msgstr "Зберегти зображення..."
 
-#: src/gtkam-save.c:795
+#: src/gtkam-save.c:797
 #, fuzzy
 msgid "Save photos..."
 msgstr "Зберегти зображення..."

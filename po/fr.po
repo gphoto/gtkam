@@ -239,7 +239,7 @@ msgstr "Capturer les images de l'appareil numérique"
 
 #: src/gtkam-gimp.c:72
 msgid "<Toolbox>/File/Acquire/Capture from Camera..."
-msgstr "<Boîte à outils>/Fichier/Acquisition/Capture depuis l'appareil..."
+msgstr "<Toolbox>/File/Acquire/Capture depuis l'appareil..."
 
 #: src/gtkam-gimp.c:76 src/gtkam-gimp.c:77
 msgid "Loads files from digital cameras"
@@ -247,7 +247,7 @@ msgstr "Charge les fichiers depuis l'appareil numérique"
 
 #: src/gtkam-gimp.c:81
 msgid "<Toolbox>/File/Acquire/Load from Camera..."
-msgstr "<Boîte à outils>/Fichier/Acquisition/Chargement depuis l'appareil..."
+msgstr "<Toolbox>/File/Acquire/Chargement depuis l'appareil..."
 
 #: src/gtkam-gimp.c:194 src/gtkam-list.c:511
 #, c-format

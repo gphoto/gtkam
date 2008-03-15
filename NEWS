@@ -1,4 +1,6 @@
-gtkam 0.1.14.0.trunk
+gtkam 0.1.14.1
+
+* ported to use new GPPortInfo
 
 gtkam 0.1.14
 

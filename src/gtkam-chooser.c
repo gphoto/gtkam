@@ -511,6 +511,7 @@ on_port_added (GtkamPort *port, const gchar *path, GtkamChooser *chooser)
 	int index;
 	GPPortInfo info;
 	gchar *name;
+	char *xname, *xpath;
 
 	index = gp_port_info_list_lookup_path (chooser->priv->il, path);
 	if (index < 0) {
@@ -518,7 +519,9 @@ on_port_added (GtkamPort *port, const gchar *path, GtkamChooser *chooser)
 		return;
 	}
 	gp_port_info_list_get_info (chooser->priv->il, index, &info);
-	name = g_strdup_printf ("%s (%s)", info.name, info.path);
+	gp_port_info_get_name (info, &xname);
+	gp_port_info_get_path (info, &xpath);
+	name = g_strdup_printf ("%s (%s)", xname, xpath);
 	gtk_entry_set_text (chooser->priv->entry_port, name);
 	g_free (name);
 
@@ -763,10 +766,15 @@ gtkam_chooser_set_port_mask (GtkamChooser *chooser, GPPortType types)
 
 	/* Search for ports that fulfil the criteria */
 	for (i = 0; i < n; i++) {
+		GPPortType type;
+		char *xname,*xpath;
 		gp_port_info_list_get_info (chooser->priv->il, i, &info);
-		if (info.type & types)
+		gp_port_info_get_type (info, &type);
+		gp_port_info_get_name (info, &xname);
+		gp_port_info_get_path (info, &xpath);
+		if (type & types)
 			list = g_list_append (list, g_strdup_printf ("%s (%s)",
-					      info.name, info.path));
+					      xname, xpath));
 	}
 
 	gtkam_chooser_set_port_list (chooser, list);
@@ -778,14 +786,17 @@ gtkam_chooser_set_camera (GtkamChooser *chooser, GtkamCamera *camera)
 	CameraAbilities a;
 	GPPortInfo info;
 	gchar *full_info;
+	char *xname,*xpath;
 
 	g_return_if_fail (GTKAM_IS_CHOOSER (chooser));
 	g_return_if_fail (GTKAM_IS_CAMERA (camera));
 
 	gp_camera_get_abilities (camera->camera, &a);
 	gp_camera_get_port_info (camera->camera, &info);
+	gp_port_info_get_name (info, &xname);
+	gp_port_info_get_path (info, &xpath);
 
-	full_info = g_strdup_printf ("%s (%s)", info.name, info.path);
+	full_info = g_strdup_printf ("%s (%s)", xname, xpath);
 	gtk_entry_set_text (chooser->priv->entry_port, full_info);
 	g_free (full_info);
 

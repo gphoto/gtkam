@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gtkam 0.1.10rc2\n"
 "Report-Msgid-Bugs-To: gphoto-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2007-08-31 23:00+0200\n"
+"POT-Creation-Date: 2008-03-15 23:28+0100\n"
 "PO-Revision-Date: 2005-12-27 16:43+0900\n"
 "Last-Translator: Tadashi Jokagi <elf2000@users.sourceforge.net>\n"
 "Language-Team: Japanese <translation-team-ja@lists.sourceforge.net>\n"
@@ -20,8 +20,8 @@ msgstr ""
 msgid "None"
 msgstr "なし"
 
-#: src/gtkam-chooser.c:262 src/gtkam-chooser.c:369 src/gtkam-chooser.c:624
-#: src/gtkam-chooser.c:658
+#: src/gtkam-chooser.c:262 src/gtkam-chooser.c:369 src/gtkam-chooser.c:627
+#: src/gtkam-chooser.c:661
 msgid "Best"
 msgstr "最適"
 
@@ -50,43 +50,43 @@ msgstr "検出されたカメラはありません。"
 msgid "Could not detect any cameras."
 msgstr "カメラを一つも検出できませんでした。"
 
-#: src/gtkam-chooser.c:560
+#: src/gtkam-chooser.c:563
 msgid "Add Camera"
 msgstr "カメラの追加"
 
-#: src/gtkam-chooser.c:575
+#: src/gtkam-chooser.c:578
 msgid "Model:"
 msgstr "型式:"
 
-#: src/gtkam-chooser.c:587
+#: src/gtkam-chooser.c:590
 msgid "Detect"
 msgstr "検出"
 
-#: src/gtkam-chooser.c:593
+#: src/gtkam-chooser.c:596
 msgid "Detect USB camera"
 msgstr "USB カメラの検出"
 
-#: src/gtkam-chooser.c:595
+#: src/gtkam-chooser.c:598
 msgid "Port:"
 msgstr "ポート:"
 
-#: src/gtkam-chooser.c:616 src/gtkam-chooser.c:648
+#: src/gtkam-chooser.c:619 src/gtkam-chooser.c:651
 msgid "Speed:"
 msgstr "スピード:"
 
-#: src/gtkam-chooser.c:629 src/gtkam-chooser.c:664
+#: src/gtkam-chooser.c:632 src/gtkam-chooser.c:667
 msgid "Allow multiple frontends"
 msgstr "複数のフロントエンドを使用する"
 
-#: src/gtkam-chooser.c:636
+#: src/gtkam-chooser.c:639
 msgid "Enhanced"
 msgstr "拡張"
 
-#: src/gtkam-chooser.c:729
+#: src/gtkam-chooser.c:732
 msgid "Could not get number of supported camera models"
 msgstr "サポートしているカメラの型式を取得できませんでした"
 
-#: src/gtkam-chooser.c:759
+#: src/gtkam-chooser.c:762
 msgid "Could not get number of ports."
 msgstr "ポート番号が取得できませんでした。"
 

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gphoto\n"
 "Report-Msgid-Bugs-To: gphoto-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2007-08-31 23:00+0200\n"
+"POT-Creation-Date: 2008-03-15 23:28+0100\n"
 "PO-Revision-Date: 2000-06-24 12:30+0200\n"
 "Last-Translator: Andraz Tori <andraz.tori1@guest.arnes.si>\n"
 "Language-Team: Slovenian <translation-team-sl@lists.sourceforge.net>\n"
@@ -19,8 +19,8 @@ msgstr ""
 msgid "None"
 msgstr "Ne"
 
-#: src/gtkam-chooser.c:262 src/gtkam-chooser.c:369 src/gtkam-chooser.c:624
-#: src/gtkam-chooser.c:658
+#: src/gtkam-chooser.c:262 src/gtkam-chooser.c:369 src/gtkam-chooser.c:627
+#: src/gtkam-chooser.c:661
 #, fuzzy
 msgid "Best"
 msgstr "Ponastavi"
@@ -54,47 +54,47 @@ msgstr ""
 msgid "Could not detect any cameras."
 msgstr "Nisem uspel slikati."
 
-#: src/gtkam-chooser.c:560
+#: src/gtkam-chooser.c:563
 #, fuzzy
 msgid "Add Camera"
 msgstr "Izberi model/vrata..."
 
-#: src/gtkam-chooser.c:575
+#: src/gtkam-chooser.c:578
 #, fuzzy
 msgid "Model:"
 msgstr "Model fotoaparata:"
 
-#: src/gtkam-chooser.c:587
+#: src/gtkam-chooser.c:590
 msgid "Detect"
 msgstr ""
 
-#: src/gtkam-chooser.c:593
+#: src/gtkam-chooser.c:596
 #, fuzzy
 msgid "Detect USB camera"
 msgstr "Izberi model/vrata..."
 
-#: src/gtkam-chooser.c:595
+#: src/gtkam-chooser.c:598
 msgid "Port:"
 msgstr "Vrata:"
 
-#: src/gtkam-chooser.c:616 src/gtkam-chooser.c:648
+#: src/gtkam-chooser.c:619 src/gtkam-chooser.c:651
 msgid "Speed:"
 msgstr ""
 
-#: src/gtkam-chooser.c:629 src/gtkam-chooser.c:664
+#: src/gtkam-chooser.c:632 src/gtkam-chooser.c:667
 msgid "Allow multiple frontends"
 msgstr ""
 
-#: src/gtkam-chooser.c:636
+#: src/gtkam-chooser.c:639
 msgid "Enhanced"
 msgstr ""
 
-#: src/gtkam-chooser.c:729
+#: src/gtkam-chooser.c:732
 #, fuzzy
 msgid "Could not get number of supported camera models"
 msgstr "Ne morem dobiti števila slik"
 
-#: src/gtkam-chooser.c:759
+#: src/gtkam-chooser.c:762
 #, fuzzy
 msgid "Could not get number of ports."
 msgstr "Ne morem dobiti števila slik"

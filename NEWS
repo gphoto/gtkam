@@ -1,6 +1,8 @@
-gtkam 0.1.14.1
+gtkam 0.1.15
 
-* ported to use new GPPortInfo
+* updated all translations from translation project
+	- added Belarusian, Dutch, Punjabi, Polish, Slovakian, Vietnamese
+* fixed PNG files corrupted by cvs -> svn migration
 
 gtkam 0.1.14
 

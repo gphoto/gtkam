@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: gphoto-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2008-03-15 23:28+0100\n"
+"POT-Creation-Date: 2008-04-14 22:01+0200\n"
 "PO-Revision-Date: 2006-11-14 21:48+0100\n"
 "Last-Translator: Marcus Meissner <marcus@jet.franken.de>\n"
 "Language-Team:  <de@li.org>\n"
@@ -24,8 +24,8 @@ msgstr ""
 msgid "None"
 msgstr "Kein"
 
-#: src/gtkam-chooser.c:262 src/gtkam-chooser.c:369 src/gtkam-chooser.c:627
-#: src/gtkam-chooser.c:661
+#: src/gtkam-chooser.c:262 src/gtkam-chooser.c:369 src/gtkam-chooser.c:632
+#: src/gtkam-chooser.c:666
 msgid "Best"
 msgstr "Beste"
 
@@ -54,44 +54,44 @@ msgstr "Keine Kameras gefunden"
 msgid "Could not detect any cameras."
 msgstr "Konnte keine Kameras finden."
 
-#: src/gtkam-chooser.c:563
+#: src/gtkam-chooser.c:568
 msgid "Add Camera"
 msgstr "_Kamera hinzufügen..."
 
-#: src/gtkam-chooser.c:578
+#: src/gtkam-chooser.c:583
 msgid "Model:"
 msgstr "Modell:"
 
-#: src/gtkam-chooser.c:590
+#: src/gtkam-chooser.c:595
 msgid "Detect"
 msgstr "Erkennung"
 
-#: src/gtkam-chooser.c:596
+#: src/gtkam-chooser.c:601
 msgid "Detect USB camera"
 msgstr "Erkenne USB-Kamera"
 
-#: src/gtkam-chooser.c:598
+#: src/gtkam-chooser.c:603
 msgid "Port:"
 msgstr "Anschluss:"
 
-#: src/gtkam-chooser.c:619 src/gtkam-chooser.c:651
+#: src/gtkam-chooser.c:624 src/gtkam-chooser.c:656
 msgid "Speed:"
 msgstr "Geschwindigkeit:"
 
 # !!! kein besonders reines Deutsch... !!!
-#: src/gtkam-chooser.c:632 src/gtkam-chooser.c:667
+#: src/gtkam-chooser.c:637 src/gtkam-chooser.c:672
 msgid "Allow multiple frontends"
 msgstr "Erlaube mehrere Frontends"
 
-#: src/gtkam-chooser.c:639
+#: src/gtkam-chooser.c:644
 msgid "Enhanced"
 msgstr "Erweitert"
 
-#: src/gtkam-chooser.c:732
+#: src/gtkam-chooser.c:737
 msgid "Could not get number of supported camera models"
 msgstr "Konnte die Anzahl der unterstützten Kameras nicht abfragen"
 
-#: src/gtkam-chooser.c:762
+#: src/gtkam-chooser.c:767
 msgid "Could not get number of ports."
 msgstr "Konnte die Anzahl der Anschlüsse nicht abfragen."
 

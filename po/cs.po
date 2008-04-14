@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gtkam VERSION\n"
 "Report-Msgid-Bugs-To: gphoto-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2008-03-15 23:28+0100\n"
+"POT-Creation-Date: 2008-04-14 22:01+0200\n"
 "PO-Revision-Date: 2003-07-12 15:49+0200\n"
 "Last-Translator: Miloslav Trmac <mitr@volny.cz>\n"
 "Language-Team: Czech <cs@li.org>\n"
@@ -19,8 +19,8 @@ msgstr ""
 msgid "None"
 msgstr "Žádný"
 
-#: src/gtkam-chooser.c:262 src/gtkam-chooser.c:369 src/gtkam-chooser.c:627
-#: src/gtkam-chooser.c:661
+#: src/gtkam-chooser.c:262 src/gtkam-chooser.c:369 src/gtkam-chooser.c:632
+#: src/gtkam-chooser.c:666
 msgid "Best"
 msgstr "Nejlepší"
 
@@ -49,44 +49,44 @@ msgstr "Nedetekován žádný fotoaparát."
 msgid "Could not detect any cameras."
 msgstr "Nemohu detekovat žádný fotoaparát."
 
-#: src/gtkam-chooser.c:563
+#: src/gtkam-chooser.c:568
 #, fuzzy
 msgid "Add Camera"
 msgstr "_Přidat fotoaparát..."
 
-#: src/gtkam-chooser.c:578
+#: src/gtkam-chooser.c:583
 msgid "Model:"
 msgstr "Model:"
 
-#: src/gtkam-chooser.c:590
+#: src/gtkam-chooser.c:595
 msgid "Detect"
 msgstr "Detekovat"
 
-#: src/gtkam-chooser.c:596
+#: src/gtkam-chooser.c:601
 msgid "Detect USB camera"
 msgstr "Detekovat USB fotoaparát"
 
-#: src/gtkam-chooser.c:598
+#: src/gtkam-chooser.c:603
 msgid "Port:"
 msgstr "Port:"
 
-#: src/gtkam-chooser.c:619 src/gtkam-chooser.c:651
+#: src/gtkam-chooser.c:624 src/gtkam-chooser.c:656
 msgid "Speed:"
 msgstr "Rychlost:"
 
-#: src/gtkam-chooser.c:632 src/gtkam-chooser.c:667
+#: src/gtkam-chooser.c:637 src/gtkam-chooser.c:672
 msgid "Allow multiple frontends"
 msgstr "Povolit více rozhraní"
 
-#: src/gtkam-chooser.c:639
+#: src/gtkam-chooser.c:644
 msgid "Enhanced"
 msgstr "Vylepšené"
 
-#: src/gtkam-chooser.c:732
+#: src/gtkam-chooser.c:737
 msgid "Could not get number of supported camera models"
 msgstr "Nemohu získat počet podporovaných modelů fotoaparátů"
 
-#: src/gtkam-chooser.c:762
+#: src/gtkam-chooser.c:767
 msgid "Could not get number of ports."
 msgstr "Nemohu získat počet portů."
 

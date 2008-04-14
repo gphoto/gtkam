@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gtkam VERSION\n"
 "Report-Msgid-Bugs-To: gphoto-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2008-03-15 23:28+0100\n"
+"POT-Creation-Date: 2008-04-14 22:01+0200\n"
 "PO-Revision-Date: 2005-08-29 20:00+0000\n"
 "Last-Translator: Andrzej Zaborowski <balrog@zabor.org>\n"
 "Language-Team: None <balrog@zabor.org>\n"
@@ -19,8 +19,8 @@ msgstr ""
 msgid "None"
 msgstr "Żaden"
 
-#: src/gtkam-chooser.c:262 src/gtkam-chooser.c:369 src/gtkam-chooser.c:627
-#: src/gtkam-chooser.c:661
+#: src/gtkam-chooser.c:262 src/gtkam-chooser.c:369 src/gtkam-chooser.c:632
+#: src/gtkam-chooser.c:666
 msgid "Best"
 msgstr "Najlepsza"
 
@@ -49,43 +49,43 @@ msgstr "Nie wykryto żadnego aparatu."
 msgid "Could not detect any cameras."
 msgstr "Nie można było odnaleźć aparatu."
 
-#: src/gtkam-chooser.c:563
+#: src/gtkam-chooser.c:568
 msgid "Add Camera"
 msgstr "Dodaj aparat..."
 
-#: src/gtkam-chooser.c:578
+#: src/gtkam-chooser.c:583
 msgid "Model:"
 msgstr "Model:"
 
-#: src/gtkam-chooser.c:590
+#: src/gtkam-chooser.c:595
 msgid "Detect"
 msgstr "Wykryj"
 
-#: src/gtkam-chooser.c:596
+#: src/gtkam-chooser.c:601
 msgid "Detect USB camera"
 msgstr "Wykryj aparat fotograficzny USB"
 
-#: src/gtkam-chooser.c:598
+#: src/gtkam-chooser.c:603
 msgid "Port:"
 msgstr "Port:"
 
-#: src/gtkam-chooser.c:619 src/gtkam-chooser.c:651
+#: src/gtkam-chooser.c:624 src/gtkam-chooser.c:656
 msgid "Speed:"
 msgstr "Szybkość:"
 
-#: src/gtkam-chooser.c:632 src/gtkam-chooser.c:667
+#: src/gtkam-chooser.c:637 src/gtkam-chooser.c:672
 msgid "Allow multiple frontends"
 msgstr "Zezwól na dodatkowe interfejsy"
 
-#: src/gtkam-chooser.c:639
+#: src/gtkam-chooser.c:644
 msgid "Enhanced"
 msgstr "Szczegóły"
 
-#: src/gtkam-chooser.c:732
+#: src/gtkam-chooser.c:737
 msgid "Could not get number of supported camera models"
 msgstr "Nie udało się uzyskać liczby obsługiwanych modeli."
 
-#: src/gtkam-chooser.c:762
+#: src/gtkam-chooser.c:767
 msgid "Could not get number of ports."
 msgstr "Nie udało się uzyskać liczby portów."
 

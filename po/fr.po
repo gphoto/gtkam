@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gtKam\n"
 "Report-Msgid-Bugs-To: gphoto-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2008-03-15 23:28+0100\n"
+"POT-Creation-Date: 2008-04-14 22:01+0200\n"
 "PO-Revision-Date: 2002-01-26 21:30MET\n"
 "Last-Translator: Jérôme Fenal <jerome@fenal.org>\n"
 "Language-Team: Français <traduc@traduc.org>\n"
@@ -19,8 +19,8 @@ msgstr ""
 msgid "None"
 msgstr "Aucun"
 
-#: src/gtkam-chooser.c:262 src/gtkam-chooser.c:369 src/gtkam-chooser.c:627
-#: src/gtkam-chooser.c:661
+#: src/gtkam-chooser.c:262 src/gtkam-chooser.c:369 src/gtkam-chooser.c:632
+#: src/gtkam-chooser.c:666
 msgid "Best"
 msgstr "Meilleure"
 
@@ -49,43 +49,43 @@ msgstr "Pas d'appareil détecté."
 msgid "Could not detect any cameras."
 msgstr "Impossible de détecter un quelconque appareil."
 
-#: src/gtkam-chooser.c:563
+#: src/gtkam-chooser.c:568
 msgid "Add Camera"
 msgstr "_Ajouter un appareil photo..."
 
-#: src/gtkam-chooser.c:578
+#: src/gtkam-chooser.c:583
 msgid "Model:"
 msgstr "Modèle :"
 
-#: src/gtkam-chooser.c:590
+#: src/gtkam-chooser.c:595
 msgid "Detect"
 msgstr "Détection"
 
-#: src/gtkam-chooser.c:596
+#: src/gtkam-chooser.c:601
 msgid "Detect USB camera"
 msgstr "Détection des appareils USB."
 
-#: src/gtkam-chooser.c:598
+#: src/gtkam-chooser.c:603
 msgid "Port:"
 msgstr "Port :"
 
-#: src/gtkam-chooser.c:619 src/gtkam-chooser.c:651
+#: src/gtkam-chooser.c:624 src/gtkam-chooser.c:656
 msgid "Speed:"
 msgstr "Vitesse :"
 
-#: src/gtkam-chooser.c:632 src/gtkam-chooser.c:667
+#: src/gtkam-chooser.c:637 src/gtkam-chooser.c:672
 msgid "Allow multiple frontends"
 msgstr "Autoriser plusieurs interfaces"
 
-#: src/gtkam-chooser.c:639
+#: src/gtkam-chooser.c:644
 msgid "Enhanced"
 msgstr "Étendue"
 
-#: src/gtkam-chooser.c:732
+#: src/gtkam-chooser.c:737
 msgid "Could not get number of supported camera models"
 msgstr "Impossible de connaître le nombre d'appareils photo supportés"
 
-#: src/gtkam-chooser.c:762
+#: src/gtkam-chooser.c:767
 msgid "Could not get number of ports."
 msgstr "Impossible de connaître le nombre de ports."
 

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gphoto\n"
 "Report-Msgid-Bugs-To: gphoto-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2008-03-15 23:28+0100\n"
+"POT-Creation-Date: 2008-04-14 22:01+0200\n"
 "PO-Revision-Date: 2000-06-27 16:33+0200\n"
 "Last-Translator: Yuri Syrota <rasta@renome.rovno.ua>\n"
 "Language-Team: Ukrainian <ru@li.org>\n"
@@ -19,8 +19,8 @@ msgstr ""
 msgid "None"
 msgstr "Ні"
 
-#: src/gtkam-chooser.c:262 src/gtkam-chooser.c:369 src/gtkam-chooser.c:627
-#: src/gtkam-chooser.c:661
+#: src/gtkam-chooser.c:262 src/gtkam-chooser.c:369 src/gtkam-chooser.c:632
+#: src/gtkam-chooser.c:666
 #, fuzzy
 msgid "Best"
 msgstr "Скасувати"
@@ -54,47 +54,47 @@ msgstr ""
 msgid "Could not detect any cameras."
 msgstr "Не вдалось отримати зображення."
 
-#: src/gtkam-chooser.c:563
+#: src/gtkam-chooser.c:568
 #, fuzzy
 msgid "Add Camera"
 msgstr "Вибрать модель/порт..."
 
-#: src/gtkam-chooser.c:578
+#: src/gtkam-chooser.c:583
 #, fuzzy
 msgid "Model:"
 msgstr "Модель камери:"
 
-#: src/gtkam-chooser.c:590
+#: src/gtkam-chooser.c:595
 msgid "Detect"
 msgstr ""
 
-#: src/gtkam-chooser.c:596
+#: src/gtkam-chooser.c:601
 #, fuzzy
 msgid "Detect USB camera"
 msgstr "Вибрать модель/порт..."
 
-#: src/gtkam-chooser.c:598
+#: src/gtkam-chooser.c:603
 msgid "Port:"
 msgstr "Порт:"
 
-#: src/gtkam-chooser.c:619 src/gtkam-chooser.c:651
+#: src/gtkam-chooser.c:624 src/gtkam-chooser.c:656
 msgid "Speed:"
 msgstr ""
 
-#: src/gtkam-chooser.c:632 src/gtkam-chooser.c:667
+#: src/gtkam-chooser.c:637 src/gtkam-chooser.c:672
 msgid "Allow multiple frontends"
 msgstr ""
 
-#: src/gtkam-chooser.c:639
+#: src/gtkam-chooser.c:644
 msgid "Enhanced"
 msgstr ""
 
-#: src/gtkam-chooser.c:732
+#: src/gtkam-chooser.c:737
 #, fuzzy
 msgid "Could not get number of supported camera models"
 msgstr "Не вдалось отримати кількості зображень"
 
-#: src/gtkam-chooser.c:762
+#: src/gtkam-chooser.c:767
 #, fuzzy
 msgid "Could not get number of ports."
 msgstr "Не вдалось отримати кількості зображень"

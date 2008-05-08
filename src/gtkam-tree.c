@@ -1529,11 +1529,7 @@ gtkam_tree_save (GtkamTree *tree)
 
 		gp_camera_get_abilities (camera->camera, &a);
 		gp_camera_get_port_info (camera->camera, &info);
-#if 0
 		gp_port_info_get_path (info, &xpath);
-#else
-		xpath = info.path;
-#endif
 		speed = gp_camera_get_port_speed (camera->camera);
 
 		ms = g_strdup_printf ("model-%i", i + 1);

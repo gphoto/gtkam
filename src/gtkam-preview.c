@@ -233,7 +233,7 @@ timeout_func (gpointer user_data)
 			g_warning ("Could not capture: %s",
 				   gp_result_as_string (r));
 		gp_file_unref (file);
-		return (TRUE);
+		return (FALSE);
 	}
 
 	loader = gdk_pixbuf_loader_new ();

@@ -1522,7 +1522,9 @@ gtkam_tree_save (GtkamTree *tree)
 	n = gtk_tree_model_iter_n_children (GTK_TREE_MODEL (tree->priv->store),
 					    NULL);
 	for (i = 0; i < n; i++) {
+#ifdef HAVE_GP_PORT_INFO_GET_NAME
 		char *xpath;
+#endif
 		gtk_tree_model_iter_nth_child (
 					GTK_TREE_MODEL (tree->priv->store),
 					&child, NULL, i);
@@ -1530,7 +1532,6 @@ gtkam_tree_save (GtkamTree *tree)
 
 		gp_camera_get_abilities (camera->camera, &a);
 		gp_camera_get_port_info (camera->camera, &info);
-		gp_port_info_get_path (info, &xpath);
 		speed = gp_camera_get_port_speed (camera->camera);
 
 		ms = g_strdup_printf ("model-%i", i + 1);
@@ -1538,7 +1539,12 @@ gtkam_tree_save (GtkamTree *tree)
 		g_free (ms);
 
 		ms = g_strdup_printf ("port-%i", i + 1);
+#ifdef HAVE_GP_PORT_INFO_GET_NAME
+		gp_port_info_get_path (info, &xpath);
 		gp_setting_set ("gtkam", ms, xpath);
+#else
+		gp_setting_set ("gtkam", ms, info.path);
+#endif
 		g_free (ms);
 
 		ms = g_strdup_printf ("multi-%i", i + 1);

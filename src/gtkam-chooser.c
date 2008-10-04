@@ -510,7 +510,9 @@ on_port_added (GtkamPort *port, const gchar *path, GtkamChooser *chooser)
 	int index;
 	GPPortInfo info;
 	gchar *name;
+#ifdef HAVE_GP_PORT_INFO_GET_NAME
 	char *xname, *xpath;
+#endif
 
 	index = gp_port_info_list_lookup_path (chooser->priv->il, path);
 	if (index < 0) {
@@ -518,9 +520,13 @@ on_port_added (GtkamPort *port, const gchar *path, GtkamChooser *chooser)
 		return;
 	}
 	gp_port_info_list_get_info (chooser->priv->il, index, &info);
+#ifdef HAVE_GP_PORT_INFO_GET_NAME
 	gp_port_info_get_name (info, &xname);
 	gp_port_info_get_path (info, &xpath);
 	name = g_strdup_printf ("%s (%s)", xname, xpath);
+#else
+	name = g_strdup_printf ("%s (%s)", info.name, info.path);
+#endif
 	gtk_entry_set_text (chooser->priv->entry_port, name);
 	g_free (name);
 
@@ -765,15 +771,23 @@ gtkam_chooser_set_port_mask (GtkamChooser *chooser, GPPortType types)
 
 	/* Search for ports that fulfil the criteria */
 	for (i = 0; i < n; i++) {
+#ifdef HAVE_GP_PORT_INFO_GET_NAME
 		GPPortType type;
 		char *xname,*xpath;
+#endif
 		gp_port_info_list_get_info (chooser->priv->il, i, &info);
+#ifdef HAVE_GP_PORT_INFO_GET_NAME
 		gp_port_info_get_type (info, &type);
 		gp_port_info_get_name (info, &xname);
 		gp_port_info_get_path (info, &xpath);
 		if (type & types)
 			list = g_list_append (list, g_strdup_printf ("%s (%s)",
 					      xname, xpath));
+#else
+		if (info.type & types)
+			list = g_list_append (list, g_strdup_printf ("%s (%s)",
+					      info.name, info.path));
+#endif
 	}
 
 	gtkam_chooser_set_port_list (chooser, list);
@@ -785,16 +799,22 @@ gtkam_chooser_set_camera (GtkamChooser *chooser, GtkamCamera *camera)
 	CameraAbilities a;
 	GPPortInfo info;
 	gchar *full_info;
+#ifdef HAVE_GP_PORT_INFO_GET_NAME
 	char *xname,*xpath;
+#endif
 
 	g_return_if_fail (GTKAM_IS_CHOOSER (chooser));
 	g_return_if_fail (GTKAM_IS_CAMERA (camera));
 
 	gp_camera_get_abilities (camera->camera, &a);
 	gp_camera_get_port_info (camera->camera, &info);
+#ifdef HAVE_GP_PORT_INFO_GET_NAME
 	gp_port_info_get_name (info, &xname);
 	gp_port_info_get_path (info, &xpath);
 	full_info = g_strdup_printf ("%s (%s)", xname, xpath);
+#else
+	full_info = g_strdup_printf ("%s (%s)", info.name, info.path);
+#endif
 	gtk_entry_set_text (chooser->priv->entry_port, full_info);
 	g_free (full_info);
 

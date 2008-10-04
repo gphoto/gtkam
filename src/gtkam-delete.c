@@ -265,7 +265,7 @@ delete_one (GtkamDelete *delete, GtkamCamera *camera,
 static void
 on_delete_clicked (GtkButton *button, GtkamDelete *delete)
 {
-	gboolean success = TRUE;
+	gboolean success = FALSE;
 	gint i;
 	GtkamDeleteData *data;
 
@@ -279,8 +279,8 @@ on_delete_clicked (GtkButton *button, GtkamDelete *delete)
 			delete->priv->data = g_slist_remove (
 					delete->priv->data, data);
 			g_free (data);*/
-		} else
-			success = FALSE;
+			success = TRUE;
+		}
 	} else {
 		for (i = g_slist_length (delete->priv->data) - 1; i >= 0; i--) {
 			data = g_slist_nth_data (delete->priv->data, i);
@@ -293,18 +293,18 @@ on_delete_clicked (GtkButton *button, GtkamDelete *delete)
 				delete->priv->data = g_slist_remove (
 						delete->priv->data, data);
 				g_free (data);*/
-			} else
-				success = FALSE;
+				success = TRUE;
+			}
 		}
 	}
 
 	if (success) {
-				g_object_unref (data->camera);
-				g_free (data->name);
-				g_free (data->folder);
-				delete->priv->data = g_slist_remove (
-						delete->priv->data, data);
-				g_free (data);		
+		g_object_unref (data->camera);
+		g_free (data->name);
+		g_free (data->folder);
+		delete->priv->data = g_slist_remove (
+					delete->priv->data, data);
+		g_free (data);		
 		gtk_object_destroy (GTK_OBJECT (delete));
 	}
 }

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gtkam 0.1.13\n"
 "Report-Msgid-Bugs-To: gphoto-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2008-04-14 22:01+0200\n"
+"POT-Creation-Date: 2008-10-17 08:52+0200\n"
 "PO-Revision-Date: 2007-09-26 14:02+0530\n"
 "Last-Translator: Jot <JattOnTesting@gmail.com>\n"
 "Language-Team: Punjabi <punjabi-l10n@lists.sourceforge.net>\n"
@@ -16,37 +16,37 @@ msgstr ""
 "X-Generator: KBabel 1.11.4\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
-#: src/gtkam-chooser.c:232 src/gtkam-chooser.c:254
+#: src/gtkam-chooser.c:231 src/gtkam-chooser.c:253
 msgid "None"
 msgstr "ਕੋਈ ਨਹੀਂ"
 
-#: src/gtkam-chooser.c:262 src/gtkam-chooser.c:369 src/gtkam-chooser.c:632
+#: src/gtkam-chooser.c:261 src/gtkam-chooser.c:368 src/gtkam-chooser.c:632
 #: src/gtkam-chooser.c:666
 msgid "Best"
 msgstr "ਉੱਤਮ"
 
-#: src/gtkam-chooser.c:269
+#: src/gtkam-chooser.c:268
 msgid "Initializing camera..."
 msgstr "ਕੈਮਰਾ ਸ਼ੁਰੂ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ..."
 
-#: src/gtkam-chooser.c:283
+#: src/gtkam-chooser.c:282
 msgid "Could not initialize camera."
 msgstr "ਕੈਮਰਾ ਸ਼ੁਰੂ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਿਆ।"
 
-#: src/gtkam-chooser.c:360
+#: src/gtkam-chooser.c:359
 #, c-format
 msgid "Could not get abilities of model '%s'."
 msgstr "ਮਾਡਲ '%s' ਦੀ ਯੋਗਤਾ ਲਈ ਨਹੀਂ ਜਾ ਸਕੀ।"
 
-#: src/gtkam-chooser.c:408
+#: src/gtkam-chooser.c:407
 msgid "Detecting cameras..."
 msgstr "ਕੈਮਰੇ ਖੋਜੇ ਜਾ ਰਹੇ ਹਨ..."
 
-#: src/gtkam-chooser.c:417
+#: src/gtkam-chooser.c:416
 msgid "No cameras detected."
 msgstr "ਕੋਈ ਕੈਮਰਾ ਨਹੀਂ ਮਿਲਿਆ।"
 
-#: src/gtkam-chooser.c:434
+#: src/gtkam-chooser.c:433
 msgid "Could not detect any cameras."
 msgstr "ਕੋਈ ਕੈਮਰਾ ਨਹੀਂ ਖੋਜਿਆ ਨਹੀਂ ਜਾ ਸਕਿਆ।"
 
@@ -90,299 +90,299 @@ msgstr "ਸਹਿਯੋਗ ਕੈਮਰਾ ਮਾਡਲਾਂ ਦੀ ਗਿਣ�
 msgid "Could not get number of ports."
 msgstr "ਪੋਰਟਾਂ ਦੀ ਗਿਣਤੀ ਲਈ ਨਹੀਂ ਜਾ ਸਕੀ।"
 
-#: src/gtkam-config.c:164
+#: src/gtkam-config.c:163
 msgid "Applying configuration..."
 msgstr "ਸੰਰਚਨਾ ਲਾਗੂ ਕੀਤੀ ਜਾ ਰਹੀ ਹੈ..."
 
-#: src/gtkam-config.c:180
+#: src/gtkam-config.c:179
 msgid "Could not apply configuration."
 msgstr "ਸੰਰਚਨਾ ਲਾਗੂ ਨਹੀਂ ਕੀਤੀ ਜਾ ਸਕੀ।"
 
-#: src/gtkam-config.c:241
+#: src/gtkam-config.c:240
 msgid "No additional information available. (1)"
 msgstr "ਕੋਈ ਹੋਰ ਜਾਣਕਾਰੀ ਉਪਲੱਬਧ ਨਹੀਂ ਹੈ। (1)"
 
-#: src/gtkam-config.c:246
+#: src/gtkam-config.c:245
 msgid "General Settings"
 msgstr "ਸਧਾਰਨ ਸੈਟਿੰਗ"
 
-#: src/gtkam-config.c:321
+#: src/gtkam-config.c:320
 msgid "Could not execute command."
 msgstr "ਕਮਾਂਡ ਚਲਾਈ ਨਹੀਂ ਜਾ ਸਕੀ।"
 
-#: src/gtkam-config.c:525
+#: src/gtkam-config.c:524
 msgid "No additional information available. (2)"
 msgstr "ਕੋਈ ਹੋਰ ਜਾਣਕਾਰੀ ਉਪਲੱਬਧ ਨਹੀਂ ਹੈ। (2)"
 
-#: src/gtkam-config.c:562
+#: src/gtkam-config.c:561
 msgid "Set to system's time"
 msgstr "ਸਿਸਟਮ ਦਾ ਟਾਈਮ ਸੈੱਟ ਕਰੋ"
 
-#: src/gtkam-config.c:596
+#: src/gtkam-config.c:595
 msgid "No additional information available. (3)"
 msgstr "ਕੋਈ ਹੋਰ ਜਾਣਕਾਰੀ ਉਪਲੱਬਧ ਨਹੀਂ ਹੈ। (3)"
 
-#: src/gtkam-config.c:621
+#: src/gtkam-config.c:620
 msgid "No additional information available. (4)"
 msgstr "ਕੋਈ ਹੋਰ ਜਾਣਕਾਰੀ ਉਪਲੱਬਧ ਨਹੀਂ ਹੈ। (4)"
 
-#: src/gtkam-config.c:668
+#: src/gtkam-config.c:667
 msgid "No additional information available. (5)"
 msgstr "ਕੋਈ ਹੋਰ ਜਾਣਕਾਰੀ ਉਪਲੱਬਧ ਨਹੀਂ ਹੈ। (5)"
 
-#: src/gtkam-config.c:688
+#: src/gtkam-config.c:687
 msgid "No additional information available. (6)"
 msgstr "ਕੋਈ ਹੋਰ ਜਾਣਕਾਰੀ ਉਪਲੱਬਧ ਨਹੀਂ ਹੈ। (6)"
 
-#: src/gtkam-config.c:729
+#: src/gtkam-config.c:728
 msgid "Getting configuration..."
 msgstr "ਸੰਰਚਨਾ ਲਈ ਜਾ ਰਹੀ ਹੈ..."
 
-#: src/gtkam-config.c:744
+#: src/gtkam-config.c:743
 msgid "Could not get configuration."
 msgstr "ਜਾਣਕਾਰੀ ਲਈ ਨਹੀਂ ਜਾ ਸਕੀ।"
 
-#: src/gtkam-debug.c:242
+#: src/gtkam-debug.c:240
 msgid "Save As..."
 msgstr "ਇੰਝ ਸੰਭਾਲੋ..."
 
-#: src/gtkam-debug.c:264
+#: src/gtkam-debug.c:262
 #, c-format
 msgid "Could not open '%s'!"
 msgstr "'%s' ਖੋਲ੍ਹੀ ਨਹੀਂ ਜਾ ਸਕਦੀ!"
 
-#: src/gtkam-debug.c:311
+#: src/gtkam-debug.c:309
 msgid "Type of messages to log:"
 msgstr "ਲਾਗ ਲਈ ਸੁਨੇਹਿਆਂ ਦੀ ਕਿਸਮ:"
 
-#: src/gtkam-debug.c:315
+#: src/gtkam-debug.c:313
 msgid "Error"
 msgstr "ਗਲਤੀ"
 
-#: src/gtkam-debug.c:322
+#: src/gtkam-debug.c:320
 msgid "Verbose"
 msgstr "ਵੇਰਵਾ"
 
-#: src/gtkam-debug.c:329
+#: src/gtkam-debug.c:327
 msgid "Debug"
 msgstr "ਡੀਬੱਗ"
 
-#: src/gtkam-debug.c:336
+#: src/gtkam-debug.c:334
 msgid "Data"
 msgstr "ਡਾਟਾ"
 
-#: src/gtkam-delete.c:181
+#: src/gtkam-delete.c:179
 #, c-format
 msgid "Deleting all files in '%s'..."
 msgstr "'%s' ਵਿੱਚ ਸਭ ਫਾਇਲਾਂ ਹਟਾਈਆਂ ਜਾ ਰਹੀਆਂ ਹਨ..."
 
-#: src/gtkam-delete.c:202
+#: src/gtkam-delete.c:200
 #, c-format
 msgid "Could not delete all files in '%s'."
 msgstr "'%s' ਵਿੱਚ ਸਭ ਫਾਇਲਾਂ ਹਟਾਈਆਂ ਨਹੀਂ ਜਾ ਸਕੀਆਂ।"
 
-#: src/gtkam-delete.c:238
+#: src/gtkam-delete.c:236
 #, c-format
 msgid "Deleting file '%s' from folder '%s'..."
 msgstr "ਫੋਲਡਰ '%2$s' ਤੋਂ ਫਾਇਲ '%1$s' ਹਟਾਈ ਜਾ ਰਹੀ ਹੈ..."
 
-#: src/gtkam-delete.c:259
+#: src/gtkam-delete.c:257
 #, c-format
 msgid "Could not delete file '%s' in folder '%s'."
 msgstr "ਫੋਲਡਰ '%2$s' ਵਿੱਚੋਂ ਫਾਇਲ '%1$s' ਹਟਾਈ ਨਹੀਂ ਜਾ ਸਕੀ।"
 
-#: src/gtkam-delete.c:388
+#: src/gtkam-delete.c:386
 #, c-format
 msgid "Do you really want to delete all the files in '%s'?"
 msgstr "ਕੀ ਤੁਸੀਂ '%s' ਵਿੱਚੋਂ ਸਭ ਫਾਇਲਾਂ ਨੂੰ ਹਟਾਉਣਾ ਚਾਹੁੰਦੇ ਹੋ?"
 
-#: src/gtkam-delete.c:391
+#: src/gtkam-delete.c:389
 #, c-format
 msgid "Do you really want to delete '%s'?"
 msgstr "ਕੀ ਤੁਸੀਂ '%s' ਨੂੰ ਹਟਾਉਣਾ ਚਾਹੁੰਦੇ ਹੋ?"
 
-#: src/gtkam-delete.c:394
+#: src/gtkam-delete.c:392
 #, c-format
 msgid "Do you really want to delete the selected %i files?"
 msgstr "ਕੀ ਤੁਸੀਂ ਚੁਣੀਆਂ %i ਫਾਇਲਾਂ ਹਟਾਉਣੀਆਂ ਚਾਹੁੰਦੇ ਹੋ?"
 
-#: src/gtkam-delete.c:400
+#: src/gtkam-delete.c:398
 msgid "Delete these files?"
 msgstr "ਕੀ ਇਹ ਫਾਇਲਾਂ ਹਟਾਉਣੀਆਂ ਹਨ?"
 
-#: src/gtkam-exif.c:138
+#: src/gtkam-exif.c:137
 #, c-format
 msgid "Getting EXIF information for file '%s' in folder '%s'..."
 msgstr "ਫੋਲਡਰ '%2$s' ਵਿੱਚ '%1$s' ਲਈ EXIF ਜਾਣਕਾਰੀ ਲਈ ਜਾ ਰਹੀ ਹੈ..."
 
-#: src/gtkam-exif.c:154
+#: src/gtkam-exif.c:153
 #, c-format
 msgid "Could not get EXIF information for '%s' in folder '%s'."
 msgstr "ਫੋਲਡਰ '%2$s' ਵਿੱਚੋਂ '%1$s' ਲਈ EXIF ਜਾਣਕਾਰੀ ਨਹੀਂ ਲਈ ਜਾ ਸਕੀ।"
 
-#: src/gtkam-exif.c:167
+#: src/gtkam-exif.c:166
 msgid "Could not interpret EXIF data."
 msgstr "EXIF ਡਾਟੇ ਉੱਤੇ ਕਾਰਵਾਈ ਨਹੀਂ ਕੀਤੀ ਜਾ ਸਕੀ।"
 
-#: src/gtkam-exif.c:176
+#: src/gtkam-exif.c:175
 msgid "The EXIF data could not be retrieved from the file."
 msgstr "EXIF ਡਾਟਾ ਫਾਇਲ ਤੋਂ ਲਿਆ ਨਹੀਂ ਜਾ ਸਕਿਆ।"
 
-#: src/gtkam-exif.c:193
+#: src/gtkam-exif.c:192
 msgid "Gtkam has been compiled without EXIF support."
 msgstr "Gtkam EXIF ਸਹਿਯੋਗ ਨਾਲ ਕੰਪਾਇਲ ਨਹੀਂ ਹੈ।"
 
-#: src/gtkam-gimp.c:69 src/gtkam-gimp.c:70
+#: src/gtkam-gimp.c:67 src/gtkam-gimp.c:68
 msgid "Captures images from digital camera"
 msgstr "ਡਿਜ਼ੀਟਲ ਕੈਮਰੇ ਤੋਂ ਚਿੱਤਰ ਲਵੋ"
 
 #. TRANSLATORS: do not translate <Toolbox>/File/Acquire, but only the Capture from Camera part
-#: src/gtkam-gimp.c:73
+#: src/gtkam-gimp.c:71
 msgid "<Toolbox>/File/Acquire/Capture from Camera..."
 msgstr "<Toolbox>/ਫਾਇਲ/ਲਵੋ/ਕੈਮਰੋ ਤੋਂ ਲਵੋ..."
 
-#: src/gtkam-gimp.c:77 src/gtkam-gimp.c:78
+#: src/gtkam-gimp.c:75 src/gtkam-gimp.c:76
 msgid "Loads files from digital cameras"
 msgstr "ਡਿਜ਼ੀਟਲ ਕੈਮਰੇ ਤੋਂ ਫਾਇਲਾਂ ਲੋਡ ਕਰੋ"
 
 #. TRANSLATORS: do not translate <Toolbox>/File/Acquire, but only the Load from Camera part
-#: src/gtkam-gimp.c:83
+#: src/gtkam-gimp.c:81
 msgid "<Toolbox>/File/Acquire/Load from Camera..."
 msgstr "<Toolbox>/ਫਾਇਲ/ਲਵੋ/ਕੈਮਰੇ ਤੋਂ ਲੋਡ ਕਰੋ"
 
-#: src/gtkam-gimp.c:196 src/gtkam-list.c:511
+#: src/gtkam-gimp.c:194 src/gtkam-list.c:510
 #, c-format
 msgid "Downloading '%s' from '%s'..."
 msgstr "'%2$s' ਵਿੱਚੋਂ ਫਾਇਲ '%1$s' ਡਾਊਨਲੋਡ ਕੀਤੀ ਜਾ ਰਹੀ ਹੈ..."
 
-#: src/gtkam-gimp.c:214
+#: src/gtkam-gimp.c:212
 #, c-format
 msgid "Could not download file '%s' from folder '%s'."
 msgstr "ਫੋਲਡਰ '%2$s' ਵਿੱਚੋਂ ਫਾਇਲ '%1$s' ਡਾਊਨਲੋਡ ਨਹੀਂ ਕੀਤੀ ਜਾ ਸਕੀ।"
 
-#: src/gtkam-gimp.c:247
+#: src/gtkam-gimp.c:245
 msgid "Image"
 msgstr "ਚਿੱਤਰ"
 
-#: src/gtkam-info.c:166
+#: src/gtkam-info.c:165
 #, c-format
 msgid "Setting information for file '%s' in '%s'..."
 msgstr "'%2$s' ਵਿੱਚ ਫਾਇਲ '%1$s' ਬਾਰੇ ਜਾਣਕਾਰੀ ਸੈੱਟ ਕੀਤੀ ਜਾ ਰਹੀ ਹੈ..."
 
-#: src/gtkam-info.c:187
+#: src/gtkam-info.c:186
 #, c-format
 msgid "Could not set file information for '%s' in folder '%s'"
 msgstr "ਫੋਲਡਰ '%2$s' ਵਿੱਚ ਫਾਇਲ '%1$s' ਬਾਰੇ ਜਾਣਕਾਰੀ ਸੈੱਟ ਨਹੀਂ ਕੀਤੀ ਜਾ ਸਕੀ"
 
-#: src/gtkam-info.c:296
+#: src/gtkam-info.c:295
 #, c-format
 msgid "Getting information about file '%s' in folder '%s'..."
 msgstr "ਫੋਲਡਰ '%2$s' ਵਿੱਚ ਫਾਇਲ '%1$s' ਬਾਰੇ ਜਾਣਕਾਰੀ ਲਈ ਲਈ ਜਾ ਰਹੀ ਹੈ..."
 
-#: src/gtkam-info.c:308
+#: src/gtkam-info.c:307
 #, c-format
 msgid "Could not get information about file '%s' in folder '%s'."
 msgstr "ਫੋਲਡਰ '%2$s' ਵਿੱਚ ਫਾਇਲ '%1$s' ਬਾਰੇ ਜਾਣਕਾਰੀ ਨਹੀਂ ਲਈ ਜਾ ਸਕੀ।"
 
-#: src/gtkam-info.c:336
+#: src/gtkam-info.c:335
 msgid "File"
 msgstr "ਫਾਇਲ"
 
-#: src/gtkam-info.c:342
+#: src/gtkam-info.c:341
 msgid "Name:"
 msgstr "ਨਾਂ:"
 
-#: src/gtkam-info.c:365 src/gtkam-info.c:474 src/gtkam-info.c:523
+#: src/gtkam-info.c:364 src/gtkam-info.c:473 src/gtkam-info.c:522
 msgid "MIME type:"
 msgstr "MIME ਕਿਸਮ:"
 
-#: src/gtkam-info.c:383
+#: src/gtkam-info.c:382
 msgid "Last modified:"
 msgstr "ਆਖਰੀ ਸੋਧ:"
 
-#: src/gtkam-info.c:404 src/gtkam-info.c:491 src/gtkam-info.c:540
+#: src/gtkam-info.c:403 src/gtkam-info.c:490 src/gtkam-info.c:539
 msgid "Size:"
 msgstr "ਆਕਾਰ:"
 
-#: src/gtkam-info.c:411 src/gtkam-info.c:547
+#: src/gtkam-info.c:410 src/gtkam-info.c:546
 #, c-format
 msgid "%liK (%li bytes)"
 msgstr "%liK (%li ਬਾਇਟ)"
 
-#: src/gtkam-info.c:426
+#: src/gtkam-info.c:425
 msgid "Permissions:"
 msgstr "ਅਧਿਕਾਰ:"
 
-#: src/gtkam-info.c:438
+#: src/gtkam-info.c:437
 msgid "Read"
 msgstr "ਪੜ੍ਹੋ"
 
-#: src/gtkam-info.c:449
+#: src/gtkam-info.c:448
 msgid "Delete"
 msgstr "ਹਟਾਓ"
 
-#: src/gtkam-info.c:468 src/gtkam-list.c:941
+#: src/gtkam-info.c:467 src/gtkam-list.c:940
 msgid "Preview"
 msgstr "ਝਲਕ"
 
-#: src/gtkam-info.c:517
+#: src/gtkam-info.c:516
 msgid "Audio"
 msgstr "ਆਡੀਓ"
 
-#: src/gtkam-list.c:322
+#: src/gtkam-list.c:321
 #, c-format
 msgid "Downloading thumbnail of '%s' from folder '%s'..."
 msgstr "'%s' ਦੇ ਥੰਮਨੇਲ ਫੋਲਡਰ '%s' ਤੋਂ ਡਾਊਨਲੋਡ ਕੀਤੇ ਜਾ ਰਹੇ ਹਨ..."
 
-#: src/gtkam-list.c:852
+#: src/gtkam-list.c:851
 #, c-format
 msgid "Changing name of '%s' to '%s'..."
 msgstr "'%s' ਦਾ ਨਾਂ '%s' ਬਦਲਿਆ ਜਾ ਰਿਹਾ ਹੈ..."
 
-#: src/gtkam-list.c:862
+#: src/gtkam-list.c:861
 #, c-format
 msgid "Could not change the name of '%s' to '%s'."
 msgstr "'%s' ਦਾ ਨਾਂ '%s' ਬਦਲਿਆ ਨਹੀਂ ਜਾ ਸਕਿਆ।"
 
-#: src/gtkam-list.c:876
+#: src/gtkam-list.c:875
 msgid "/_View with..."
 msgstr "/ਇਸ ਨਾਲ ਖੋਲ੍ਹੋ(_V)..."
 
-#: src/gtkam-list.c:877
+#: src/gtkam-list.c:876
 msgid "/View with.../Built-in viewer"
 msgstr "/ਇਸ ਨਾਲ ਖੋਲ੍ਹੋ.../ਬਿਲਟ-ਇਨ ਦਰਸ਼ਕ"
 
-#: src/gtkam-list.c:879
+#: src/gtkam-list.c:878
 msgid "/View file _properties"
 msgstr "/ਫਾਇਲ ਵਿਸ਼ੇਸ਼ਤਾ ਵੇਖੋ(_p)"
 
-#: src/gtkam-list.c:881
+#: src/gtkam-list.c:880
 msgid "/View _EXIF data"
 msgstr "/_EXIF ਡਾਟਾ ਵੇਖੋ"
 
-#: src/gtkam-list.c:884
+#: src/gtkam-list.c:883
 msgid "/_Save"
 msgstr "/ਸੰਭਾਲੋ(_S)"
 
-#: src/gtkam-list.c:885
+#: src/gtkam-list.c:884
 msgid "/_Delete"
 msgstr "/ਹਟਾਓ(_D)"
 
-#: src/gtkam-list.c:947
+#: src/gtkam-list.c:946
 msgid "Name"
 msgstr "ਨਾਂ"
 
-#: src/gtkam-list.c:969 src/gtkam-tree.c:685
+#: src/gtkam-list.c:968 src/gtkam-tree.c:686
 #, c-format
 msgid "Listing files in folder '%s'..."
 msgstr "ਫੋਲਡਰ '%s' ਵਿੱਚ ਫਾਇਲਾਂ ਲਿਸਟ ਕੀਤੀਆਂ ਜਾ ਰਹੀਆਂ ਹਨ..."
 
-#: src/gtkam-list.c:986 src/gtkam-tree.c:702
+#: src/gtkam-list.c:985 src/gtkam-tree.c:703
 #, c-format
 msgid "Could not get file list for folder '%s'"
 msgstr "ਫੋਲਡਰ '%s' ਲਈ ਫਾਇਲ ਲਿਸਟ ਨਹੀਂ ਲਈ ਜਾ ਸਕੀ"
 
-#: src/gtkam-main.c:426
+#: src/gtkam-main.c:425
 msgid ""
 "gtkam is a program that lets you download\n"
 "images from many digital cameras. It uses\n"
@@ -398,11 +398,11 @@ msgstr ""
 "\n"
 "gphoto ਦੇ ਸ਼ਾਨਦਾਰ ਸੰਸਾਰ ਦਾ ਆਨੰਦ ਮਾਣੋ!"
 
-#: src/gtkam-main.c:437
+#: src/gtkam-main.c:436
 msgid "Many others"
 msgstr "ਕੋਈ ਹੋਰ"
 
-#: src/gtkam-main.c:470
+#: src/gtkam-main.c:469
 #, c-format
 msgid ""
 "%s\n"
@@ -415,7 +415,7 @@ msgstr ""
 "%s %s ਚੋਣ ਨਾਲ:\n"
 "    %s\n"
 
-#: src/gtkam-main.c:474
+#: src/gtkam-main.c:473
 #, c-format
 msgid ""
 "%s\n"
@@ -426,433 +426,433 @@ msgstr ""
 "%s %s ਚੋਣਾਂ ਨਾਲ:\n"
 "    %s\n"
 
-#: src/gtkam-main.c:549
+#: src/gtkam-main.c:548
 msgid "_File"
 msgstr "ਫਾਇਲ(_F)"
 
-#: src/gtkam-main.c:550
+#: src/gtkam-main.c:549
 msgid "_Save Photos"
 msgstr "ਫੋਟੋ ਸੰਭਾਲੋ(_S)"
 
-#: src/gtkam-main.c:551
+#: src/gtkam-main.c:550
 msgid "_Delete Photos"
 msgstr "ਫੋਟੋ ਹਟਾਓ(_D)"
 
-#: src/gtkam-main.c:552 src/gtkam-main.c:554
+#: src/gtkam-main.c:551 src/gtkam-main.c:553
 msgid "_Selected"
 msgstr "ਚੁਣੀਆਂ(_S)"
 
-#: src/gtkam-main.c:553 src/gtkam-main.c:555 src/gtkam-main.c:562
+#: src/gtkam-main.c:552 src/gtkam-main.c:554 src/gtkam-main.c:561
 msgid "_All"
 msgstr "ਸਭ(_A)"
 
-#: src/gtkam-main.c:556
+#: src/gtkam-main.c:555
 msgid "_Quit"
 msgstr "ਬੰਦ ਕਰੋ(_Q)"
 
-#: src/gtkam-main.c:557
+#: src/gtkam-main.c:556
 msgid "_View"
 msgstr "ਵੇਖੋ(_V)"
 
-#: src/gtkam-main.c:558
+#: src/gtkam-main.c:557
 msgid "Zoom _In"
 msgstr "ਜ਼ੂਮ ਇਨ(_I)"
 
-#: src/gtkam-main.c:559
+#: src/gtkam-main.c:558
 msgid "Zoom _100"
 msgstr "ਜ਼ੂਮ _100"
 
-#: src/gtkam-main.c:560
+#: src/gtkam-main.c:559
 msgid "Zoom _Out"
 msgstr "ਜ਼ੂਮ ਆਉਟ(_O)"
 
-#: src/gtkam-main.c:561
+#: src/gtkam-main.c:560
 msgid "_Select"
 msgstr "ਚੁਣੋ(_S)"
 
-#: src/gtkam-main.c:563
+#: src/gtkam-main.c:562
 msgid "_Inverse"
 msgstr "ਉਲਟ(_I)"
 
-#: src/gtkam-main.c:564
+#: src/gtkam-main.c:563
 msgid "_None"
 msgstr "ਕੋਈ ਨਹੀਂ(_N)"
 
-#: src/gtkam-main.c:565
+#: src/gtkam-main.c:564
 msgid "_Camera"
 msgstr "ਕੈਮਰਾ(_C)"
 
-#: src/gtkam-main.c:566
+#: src/gtkam-main.c:565
 msgid "_Add Camera..."
 msgstr "ਕੈਮਰਾ ਸ਼ਾਮਲ(_A)..."
 
-#: src/gtkam-main.c:567
+#: src/gtkam-main.c:566
 msgid "_Rescan"
 msgstr "ਮੁੜ-ਸਕੈਨ(_R)"
 
-#: src/gtkam-main.c:568
+#: src/gtkam-main.c:567
 msgid "_Help"
 msgstr "ਮੱਦਦ(_H)"
 
-#: src/gtkam-main.c:570
+#: src/gtkam-main.c:569
 msgid "_Contents"
 msgstr "ਸਮੱਗਰੀ(_C)"
 
-#: src/gtkam-main.c:572
+#: src/gtkam-main.c:571
 msgid "_Debug"
 msgstr "ਡੀਬੱਗ(_D)"
 
-#: src/gtkam-main.c:573
+#: src/gtkam-main.c:572
 msgid "_About"
 msgstr "ਇਸ ਬਾਰੇ(_A)"
 
-#: src/gtkam-main.c:578
+#: src/gtkam-main.c:577
 msgid "_View Thumbnails"
 msgstr "ਥੰਮਨੇਲ ਬਾਰੇ(_V)"
 
-#: src/gtkam-mkdir.c:152
+#: src/gtkam-mkdir.c:151
 #, c-format
 msgid "Creating folder '%s' in folder '%s'..."
 msgstr "ਫੋਲਡਰ '%2$s' ਵਿੱਚ ਫੋਲਡਰ '%1$s' ਬਣਾਇਆ ਜਾ ਰਿਹਾ ਹੈ...."
 
-#: src/gtkam-mkdir.c:186
+#: src/gtkam-mkdir.c:185
 #, c-format
 msgid "Could not create folder '%s' in folder '%s'."
 msgstr "ਫੋਲਡਰ '%2$s' ਵਿੱਚ ਫੋਲਡਰ '%1$s' ਬਣਾਇਆ ਨਹੀਂ ਜਾ ਸਕਿਆ।"
 
-#: src/gtkam-mkdir.c:212
+#: src/gtkam-mkdir.c:211
 #, c-format
 msgid "Please choose a name for the directory that should be created in '%s':"
 msgstr "'%s' ਵਿੱਚ ਬਣਾਈ ਜਾਣ ਵਾਲੀ ਡਾਇਰੈਕਟਰੀ ਦਾ ਨਾਂ ਚੁਣੋ ਜੀ:"
 
-#: src/gtkam-mkdir.c:228
+#: src/gtkam-mkdir.c:227
 msgid "New directory"
 msgstr "ਨਵੀਂ ਡਾਇਰੈਕਟਰੀ"
 
-#: src/gtkam-port.c:147
+#: src/gtkam-port.c:146
 #, c-format
 msgid ""
 "The port '%s' could not be found. Please make sure that the port exists."
 msgstr "ਪੋਰਟ '%s' ਨਹੀਂ ਲੱਭੀ ਹੈ। ਯਕੀਨੀ ਬਣਾਓ ਜੀ ਕਿ ਪੋਰਟ ਮੌਜੂਦ ਹੈ।"
 
-#: src/gtkam-port.c:181
+#: src/gtkam-port.c:180
 msgid "Please specify the path to the port your camera is attached to:"
 msgstr "ਪੋਰਟ ਲਈ ਪਾਥ ਦਿਓ, ਜਿੱਥੇ ਤੁਸੀਂ ਕੈਮਰਾ ਜੋੜਿਆ ਹੈ:"
 
-#: src/gtkam-preview.c:187 src/gtkam-tree.c:1093
+#: src/gtkam-preview.c:186 src/gtkam-tree.c:1094
 msgid "Capturing image..."
 msgstr "ਚਿੱਤਰ ਕੈਪਚਰ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ..."
 
-#: src/gtkam-preview.c:209
+#: src/gtkam-preview.c:208
 msgid "Could not capture image."
 msgstr "ਚਿੱਤਰ ਕੈਪਚਰ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਿਆ।"
 
-#: src/gtkam-preview.c:347 src/gtkam-preview.c:410
+#: src/gtkam-preview.c:346 src/gtkam-preview.c:409
 msgid "Capture"
 msgstr "ਕੈਪਚਰ"
 
-#: src/gtkam-preview.c:373
+#: src/gtkam-preview.c:372
 msgid "0 degrees"
 msgstr "0 ਡਿਗਰੀ"
 
-#: src/gtkam-preview.c:381
+#: src/gtkam-preview.c:380
 msgid "Don't rotate thumbnail"
 msgstr "ਥੰਮਨੇਲ ਘੁੰਮਾਓ ਨਾ"
 
-#: src/gtkam-preview.c:383
+#: src/gtkam-preview.c:382
 msgid "-90 degrees"
 msgstr "-90 ਡਿਗਰੀ"
 
-#: src/gtkam-preview.c:390
+#: src/gtkam-preview.c:389
 msgid "Rotate thumbnail by -90 degrees"
 msgstr "ਥੰਮਨੇਲ -90 ਡਿਗਰੀ ਲਈ ਘੁੰਮਾਓ"
 
-#: src/gtkam-preview.c:392
+#: src/gtkam-preview.c:391
 msgid "+90 degrees"
 msgstr "+90 ਡਿਗਰੀ"
 
-#: src/gtkam-preview.c:399
+#: src/gtkam-preview.c:398
 msgid "Rotate thumbnail by 90 degrees"
 msgstr "ਥੰਮਨੇਲ 90 ਡਿਗਰੀ ਲਈ ਘੁੰਮਾਓ"
 
-#: src/gtkam-preview.c:401
+#: src/gtkam-preview.c:400
 msgid "180 degrees"
 msgstr "180 ਡਿਗਰੀ"
 
-#: src/gtkam-preview.c:408
+#: src/gtkam-preview.c:407
 msgid "Rotate thumbnail by 180 degrees"
 msgstr "ਥੰਮਨੇਲ 180 ਡਿਗਰੀ ਲਈ ਘੁੰਮਾਓ"
 
-#: src/gtkam-save.c:303 src/gtkam-tree.c:614
+#: src/gtkam-save.c:302 src/gtkam-tree.c:615
 #, c-format
 msgid "The file '%s' already exists."
 msgstr "ਫਾਇਲ '%s' ਪਹਿਲਾਂ ਹੀ ਮੌਜੂਦ ਹੈ।"
 
-#: src/gtkam-save.c:325 src/gtkam-tree.c:631
+#: src/gtkam-save.c:324 src/gtkam-tree.c:632
 #, c-format
 msgid "Could not save file to '%s'."
 msgstr "ਫਾਇਲ '%s' ਲਈ ਸੰਭਾਲੀ ਨਹੀਂ ਜਾ ਸਕੀ ਹੈ।"
 
-#: src/gtkam-save.c:365 src/gtkam-tree.c:664
+#: src/gtkam-save.c:364 src/gtkam-tree.c:665
 #, c-format
 msgid "Could not get '%s' from folder '%s'."
 msgstr "ਫੋਲਡਰ '%2$s' ਤੋਂ '%1$s' ਨਹੀਂ ਲਈ ਜਾ ਸਕੀ।"
 
-#: src/gtkam-save.c:496
+#: src/gtkam-save.c:495
 msgid "There is nothing to be saved."
 msgstr "ਸੰਭਾਲਣ ਲਈ ਕੁਝ ਵੀ ਨਹੀਂ ਹੈ।"
 
-#: src/gtkam-save.c:508
+#: src/gtkam-save.c:507
 msgid "Downloading file"
 msgstr "ਫਾਇਲ ਡਾਊਨਲੋਡ ਕੀਤੀ ਜਾ ਰਹੀ ਹੈ"
 
-#: src/gtkam-save.c:510
+#: src/gtkam-save.c:509
 #, c-format
 msgid "Downloading %i files"
 msgstr "%i ਫਾਇਲਾਂ ਡਾਊਨਲੋਡ ਕੀਤੀਆਂ ਜਾ ਰਹੀਆਂ ਹਨ"
 
-#: src/gtkam-save.c:517 src/gtkam-tree.c:740
+#: src/gtkam-save.c:516 src/gtkam-tree.c:741
 #, c-format
 msgid "Downloading %i files..."
 msgstr "%i ਫਾਇਲਾਂ ਡਾਊਨਲੋਡ ਕੀਤੀਆਂ ਜਾ ਰਹੀਆਂ ਹਨ..."
 
-#: src/gtkam-save.c:568 src/gtkam-tree.c:755
+#: src/gtkam-save.c:567 src/gtkam-tree.c:756
 #, c-format
 msgid "Problem getting '%s' from folder '%s'."
 msgstr "ਫੋਲਡਰ '%2$s' ਤੋਂ '%1$s' ਲੈਣ ਦੌਰਾਨ ਸਮੱਸਿਆ ਹੈ।"
 
-#: src/gtkam-save.c:642
+#: src/gtkam-save.c:641
 msgid "What to save:"
 msgstr "ਕੀ ਸੰਭਾਲਣਾ ਹੈ:"
 
-#: src/gtkam-save.c:654
+#: src/gtkam-save.c:653
 msgid "Save photos"
 msgstr "ਫੋਟੋ ਸੰਭਾਲੋ"
 
-#: src/gtkam-save.c:658
+#: src/gtkam-save.c:657
 msgid "Photos will be saved if this is checked"
 msgstr "ਜੇ ਇਹ ਚੈੱਕ ਕੀਤਾ ਗਿਆ ਤਾਂ ਫੋਟੋ ਸੰਭਾਲੀਆਂ ਜਾਣਗੀਆਂ"
 
-#: src/gtkam-save.c:662
+#: src/gtkam-save.c:661
 msgid "Save raw data"
 msgstr "ਰਾਅ ਡਾਟਾ ਸੰਭਾਲੋ"
 
-#: src/gtkam-save.c:665
+#: src/gtkam-save.c:664
 msgid "Raw data will be saved if this is checked"
 msgstr "ਜੇ ਇਹ ਚੈੱਕ ਕੀਤਾ ਤਾਂ ਰਾਅ ਡਾਟਾ ਸੰਭਾਲਿਆ ਜਾਵੇਗਾ।"
 
-#: src/gtkam-save.c:669
+#: src/gtkam-save.c:668
 msgid "Save audio data"
 msgstr "ਆਡੀਓ ਡਾਟਾ ਸੰਭਾਲੋ"
 
-#: src/gtkam-save.c:672
+#: src/gtkam-save.c:671
 msgid "Audio data will be saved if this is checked"
 msgstr "ਜੇ ਇਹ ਚੈੱਕ ਕੀਤਾ ਤਾਂ ਆਡੀਓ ਡਾਟਾ ਸੰਭਾਲਿਆ ਜਾਵੇਗਾ"
 
-#: src/gtkam-save.c:676
+#: src/gtkam-save.c:675
 msgid "Save thumbnails"
 msgstr "ਥੰਮਨੇਲ ਸੰਭਾਲੋ"
 
-#: src/gtkam-save.c:679
+#: src/gtkam-save.c:678
 msgid "Thumbnails will be saved if this is checked"
 msgstr "ਜੇ ਇਹ ਚੈੱਕ ਕੀਤਾ ਤਾਂ ਥੰਮਨੇਲ ਸੰਭਾਲੇ ਜਾਣਗੇ।"
 
-#: src/gtkam-save.c:683
+#: src/gtkam-save.c:682
 msgid "Save EXIF data"
 msgstr "EXIF ਡਾਟਾ ਸੰਭਾਲੋ"
 
-#: src/gtkam-save.c:686
+#: src/gtkam-save.c:685
 msgid "EXIF data will be saved if this is checked"
 msgstr "ਜੇ ਇਹ ਚੈੱਕ ਕੀਤਾ ਤਾਂ EXIF ਡਾਟਾ ਸੰਭਾਲਿਆ ਜਾਵੇਗਾ"
 
-#: src/gtkam-save.c:695
+#: src/gtkam-save.c:694
 msgid "Open image(s) with: "
 msgstr "ਚਿੱਤਰ ਖੋਲ੍ਹੋ: "
 
-#: src/gtkam-save.c:702
+#: src/gtkam-save.c:701
 msgid "Type in the name of the program you want to run, leave blank for none"
 msgstr "ਪਰੋਗਰਾਮ ਦਾ ਨਾਂ, ਜਿਸ ਨੂੰ ਤੁਸੀਂ ਚਲਾਉਣਾ ਚਾਹੁੰਦੇ ਹੋ, ਦਿਓ, ਕਿਸੇ ਲਈ ਨਹੀਂ ਵਾਸਤੇ ਖਾਲੀ ਛੱਡੋ"
 
-#: src/gtkam-save.c:708
+#: src/gtkam-save.c:707
 msgid "Use filename(s) provided by the camera"
 msgstr "ਕੈਮਰੇ ਵਲੋਂ ਦਿੱਤੇ ਫਾਇਲ ਨਾਂ ਵਰਤੋਂ"
 
-#: src/gtkam-save.c:712
+#: src/gtkam-save.c:711
 msgid "Choose whether to use the filename provided by the camera"
 msgstr "ਚੋਣ ਕਰੋ ਕਿ ਕੀ ਕੈਮਰੇ ਵਲੋਂ ਵਰਤੇ ਫਾਇਲ ਨਾਂ ਹੀ ਵਰਤਣੇ ਹਨ"
 
-#: src/gtkam-save.c:726
+#: src/gtkam-save.c:725
 msgid "Filename prefix: "
 msgstr "ਫਾਇਲ-ਨਾਂ ਪ੍ਰੀ-ਫਿਕਸ: "
 
-#: src/gtkam-save.c:735
+#: src/gtkam-save.c:734
 msgid "Start numbering with: "
 msgstr "ਨੰਬਰਿੰਗ ਸ਼ੁਰੂ:"
 
-#: src/gtkam-save.c:777
+#: src/gtkam-save.c:776
 #, c-format
 msgid "Save '%s'..."
 msgstr "'%s' ਸੰਭਾਲੋ..."
 
-#: src/gtkam-save.c:797
+#: src/gtkam-save.c:796
 msgid "Save photos..."
 msgstr "ਫੋਟੋ ਸੰਭਾਲੋ..."
 
-#: src/gtkam-tree.c:295
+#: src/gtkam-tree.c:296
 #, c-format
 msgid "Listing folders in '%s'..."
 msgstr "'%s' ਵਿੱਚ ਫੋਲਡਰ ਲਿਸਟ ਕੀਤੇ ਜਾ ਰਹੇ ਹਨ..."
 
-#: src/gtkam-tree.c:316
+#: src/gtkam-tree.c:317
 #, c-format
 msgid "Could not list folders in '%s'."
 msgstr "'%s' ਵਿੱਚ ਫੋਲਡਰ ਲਿਸਟ ਨਹੀਂ ਕੀਤੇ ਜਾ ਸਕੇ।"
 
-#: src/gtkam-tree.c:413
+#: src/gtkam-tree.c:414
 #, c-format
 msgid "Could not open '%s'."
 msgstr "'%s' ਖੋਲ੍ਹੀ ਨਹੀਂ ਜਾ ਸਕੀ।"
 
-#: src/gtkam-tree.c:420
+#: src/gtkam-tree.c:421
 #, c-format
 msgid "Uploading '%s' into folder '%s'..."
 msgstr "'%s' ਨੂੰ ਫੋਲਡਰ '%s' ਵਿੱਚ ਅੱਪਲੋਡ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ..."
 
-#: src/gtkam-tree.c:440
+#: src/gtkam-tree.c:441
 #, c-format
 msgid "Could not upload '%s' into '%s'."
 msgstr "'%s' ਨੂੰ '%s' ਵਿੱਚ ਅੱਪਲੋਡ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਿਆ।"
 
-#: src/gtkam-tree.c:464
+#: src/gtkam-tree.c:465
 #, c-format
 msgid "Upload into '%s'..."
 msgstr "'%s' ਵਿੱਚ ਅੱਪਲੋਡ..."
 
-#: src/gtkam-tree.c:540
+#: src/gtkam-tree.c:541
 #, c-format
 msgid "Removing directory '%s'..."
 msgstr "'%s' ਡਾਇਰੈਕਟਰੀ ਹਟਾਈ ਜਾ ਰਹੀ ਹੈ..."
 
-#: src/gtkam-tree.c:557
+#: src/gtkam-tree.c:558
 #, c-format
 msgid "Could not remove directory '%s'."
 msgstr "ਡਾਇਰੈਕਟਰੀ '%s' ਹਟਾਈ ਨਹੀਂ ਜਾ ਸਕੀ।"
 
-#: src/gtkam-tree.c:717
+#: src/gtkam-tree.c:718
 #, c-format
 msgid "Could not create directory '%s'"
 msgstr "ਡਾਇਰੈਕਟਰੀ '%s' ਬਣਾਈ ਨਹੀਂ ਜਾ ਸਕੀ।"
 
-#: src/gtkam-tree.c:729
+#: src/gtkam-tree.c:730
 #, c-format
 msgid "Downloading file from '%s'"
 msgstr "'%s' ਤੋਂ ਫਾਇਲ ਡਾਊਨਲੋਡ ਕੀਤੀ ਜਾ ਰਹੀ ਹੈ"
 
-#: src/gtkam-tree.c:731
+#: src/gtkam-tree.c:732
 #, c-format
 msgid "Downloading %i files from '%s'"
 msgstr "'%i' ਤੋਂ %s ਫਾਇਲਾਂ ਡਾਊਨਲੋਡ ਕੀਤੀਆਂ ਜਾ ਰਹੀਆਂ ਹਨ"
 
-#: src/gtkam-tree.c:781
+#: src/gtkam-tree.c:782
 #, c-format
 msgid "Listing subfolders in folder '%s'..."
 msgstr "'%s' ਵਿੱਚ ਸਬ-ਫੋਲਡਰ ਲਿਸਟ ਕੀਤੇ ਜਾ ਰਹੇ ਹਨ..."
 
-#: src/gtkam-tree.c:800
+#: src/gtkam-tree.c:801
 #, c-format
 msgid "Could not get subfolders list for folder '%s'"
 msgstr "ਫੋਲਡਰ '%s' ਵਿੱਚ ਸਬ-ਫੋਲਡਰ ਲਿਸਟ ਨਹੀਂ ਕੀਤੇ ਜਾ ਸਕੇ।"
 
-#: src/gtkam-tree.c:863
+#: src/gtkam-tree.c:864
 #, c-format
 msgid "Download '%s' subtree to..."
 msgstr "'%s' ਸਬ-ਟਰੀ ਡਾਊਨਲੋਡ ਇੱਥੇ..."
 
-#: src/gtkam-tree.c:901
+#: src/gtkam-tree.c:902
 msgid "Getting information about the camera..."
 msgstr "ਕੈਮਰੇ ਬਾਰੇ ਜਾਣਕਾਰੀ ਲਈ ਜਾ ਰਹੀ ਹੈ..."
 
-#: src/gtkam-tree.c:905
+#: src/gtkam-tree.c:906
 msgid "Getting information about the driver..."
 msgstr "ਡਰਾਇਵਰ ਬਾਰੇ ਜਾਣਕਾਰੀ ਲਈ ਜਾ ਰਹੀ ਹੈ..."
 
-#: src/gtkam-tree.c:909
+#: src/gtkam-tree.c:910
 msgid "Getting manual..."
 msgstr "ਦਸਤਾਵੇਜ਼ ਲਏ ਜਾ ਰਹੇ ਹਨ..."
 
-#: src/gtkam-tree.c:940
+#: src/gtkam-tree.c:941
 msgid "Could not retrieve information."
 msgstr "ਜਾਣਕਾਰੀ ਲਈ ਨਹੀਂ ਜਾ ਸਕੀ।"
 
-#: src/gtkam-tree.c:1043
+#: src/gtkam-tree.c:1044
 msgid "Select Camera"
 msgstr "ਕੈਮਰਾ ਚੁਣੋ"
 
-#: src/gtkam-tree.c:1111
+#: src/gtkam-tree.c:1112
 msgid "Could not capture."
 msgstr "ਕੈਪਚਰ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਿਆ।"
 
-#: src/gtkam-tree.c:1150
+#: src/gtkam-tree.c:1151
 msgid "/Upload file..."
 msgstr "/ਫਾਇਲ ਅੱਪਲੋਡ..."
 
-#: src/gtkam-tree.c:1151
+#: src/gtkam-tree.c:1152
 msgid "/Make directory..."
 msgstr "/ਡਾਇਰੈਕਟਰੀ ਬਣਾਓ..."
 
-#: src/gtkam-tree.c:1152
+#: src/gtkam-tree.c:1153
 msgid "/Delete directory"
 msgstr "/ਡਾਇਰੈਕਟਰੀ ਹਟਾਓ"
 
-#: src/gtkam-tree.c:1153
+#: src/gtkam-tree.c:1154
 msgid "/Save directory tree..."
 msgstr "/ਡਾਇਰੈਕਟਰੀ ਟਰੀ ਸੰਭਾਲੋ..."
 
-#: src/gtkam-tree.c:1155
+#: src/gtkam-tree.c:1156
 msgid "/Capture image..."
 msgstr "/ਚਿੱਤਰ ਕੈਪਚਰ ਕਰੋ..."
 
-#: src/gtkam-tree.c:1156
+#: src/gtkam-tree.c:1157
 msgid "/View camera preferences"
 msgstr "/ਕੈਮਰਾ ਪਸੰਦ ਵੇਖੋ"
 
-#: src/gtkam-tree.c:1158
+#: src/gtkam-tree.c:1159
 msgid "/View camera summary"
 msgstr "/ਕੈਮਰਾ ਸੰਖੇਪ ਵੇਖੋ"
 
-#: src/gtkam-tree.c:1159
+#: src/gtkam-tree.c:1160
 msgid "/View camera manual"
 msgstr "/ਕੈਮਰਾ ਦਸਤਾਵੇਜ਼ ਵੇਖੋ"
 
-#: src/gtkam-tree.c:1160
+#: src/gtkam-tree.c:1161
 msgid "/View driver details"
 msgstr "/ਡਰਾਇਵਰ ਵੇਰਵਾ ਵੇਖੋ"
 
-#: src/gtkam-tree.c:1162
+#: src/gtkam-tree.c:1163
 msgid "/Select camera..."
 msgstr "/ਕੈਮਰਾ ਚੁਣੋ..."
 
-#: src/gtkam-tree.c:1163
+#: src/gtkam-tree.c:1164
 msgid "/Remove camera"
 msgstr "/ਕੈਮਰਾ ਹਟਾਓ"
 
-#: src/gtkam-tree.c:1193
+#: src/gtkam-tree.c:1194
 msgid "_Add camera..."
 msgstr "ਕੈਮਰਾ ਸ਼ਾਮਲ ਕਰੋ(_A)..."
 
-#: src/gtkam-tree.c:1293
+#: src/gtkam-tree.c:1294
 msgid "Please right-click to access additional menus"
 msgstr "ਹੋਰ ਮੇਨੂ ਅਸੈੱਸ ਕਰਨ ਲਈ ਸੱਜਾ ਕਲਿੱਕ ਕਰੋ ਜੀ"
 
-#: src/gtkam-tree.c:1322
+#: src/gtkam-tree.c:1323
 msgid "Folder"
 msgstr "ਫੋਲਡਰ"
 
-#: src/gtkam-tree.c:1415
+#: src/gtkam-tree.c:1416
 msgid "Loading cameras..."
 msgstr "ਕੈਮਰੇ ਲੋਡ ਕੀਤੇ ਜਾ ਰਹੇ ਹਨ..."
 
-#: src/gtkam-util.c:46
+#: src/gtkam-util.c:44
 #, c-format
 msgid ""
 "Could not display '%s'. Either the image type ('%s') is not supported by gtk "
@@ -861,7 +861,7 @@ msgstr ""
 "ਡਿਸਪਲੇਅ '%s' ਨਹੀਂ ਮਿਲਿਆ। ਜਾਂ ਤਾਂ ਚਿੱਤਰ ਕਿਸਮ ('%s') gtk ਵਲੋਂ ਸਹਿਯੋਗੀ ਨਹੀਂ ਜਾਂ ਫਾਇਲ ਹੀ "
 "ਨਿਕਾਰਾ ਹੈ।"
 
-#: src/gtkam-version.c:102
+#: src/gtkam-version.c:100
 msgid ""
 "ALWAYS INCLUDE THE FOLLOWING LINES WHEN SENDING DEBUG MESSAGES TO THE "
 "MAILING LIST:"
@@ -869,17 +869,17 @@ msgstr ""
 "ALWAYS INCLUDE THE FOLLOWING LINES WHEN SENDING DEBUG MESSAGES TO THE "
 "MAILING LIST:"
 
-#: src/gtkam-viewer.c:246
+#: src/gtkam-viewer.c:245
 #, c-format
 msgid "Downloading '%s' from folder '%s'..."
 msgstr "ਫੋਲਡਰ '%2$s' ਤੋਂ '%1$s' ਡਾਊਨਲੋਡ ਕੀਤੇ ਜਾ ਰਹੇ ਹਨ..."
 
-#: src/gtkam-viewer.c:299
+#: src/gtkam-viewer.c:298
 #, c-format
 msgid "Could not download '%s' from folder '%s'."
 msgstr "ਫੋਲਡਰ '%2$s' ਤੋਂ '%1$s' ਡਾਊਨਲੋਡ ਨਹੀਂ ਕੀਤੀ ਜਾ ਸਕੀ।"
 
-#: src/main.c:114
+#: src/main.c:113
 msgid "Image Download Program"
 msgstr "ਚਿੱਤਰ ਡਾਊਨਲੋਡ ਪਰੋਗਰਾਮ"
 

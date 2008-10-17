@@ -266,6 +266,10 @@ omf-install/gtkam-C.omf
 help/Makefile
 help/C/Makefile
 help/ru/Makefile
+intltool-extract
+intltool-merge
+intltool-update
+gtkam.desktop
 ])
 AC_OUTPUT()dnl
 

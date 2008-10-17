@@ -1,3 +1,8 @@
+2008-10-17  Marcus Meissner  <marcus@jet.franken.de>
+
+	* */*: integrated libtool/intltoolize patches
+	  and fixed up make distcheck
+
 2008-10-04  Marcus Meissner  <marcus@jet.franken.de>
 
 	* */*.[ch]: Adjusted copyright information, also

@@ -7,4 +7,9 @@ images_DATA =			\
 	gtkam-lock.png		\
 	gtkam-new.png
 
-EXTRA_DIST = $(images_DATA)
+icondir = $(datadir)/pixmaps
+icon_DATA = gtkam-camera.png
+EXTRA_DIST =			\
+	$(images_DATA)          \
+	$(icon_DATA)
+

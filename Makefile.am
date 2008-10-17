@@ -15,14 +15,23 @@ DISTCHECK_CONFIGURE_FLAGS = --disable-scrollkeeper
 gtkamdocdir = $(datadir)/doc/gtkam
 gtkamdoc_DATA = AUTHORS COPYING NEWS README TODO CHANGES
 
-desktopdir = $(datadir)/applications
-desktop_DATA = gtkam.desktop
-
 icondir = $(datadir)/pixmaps
 icon_DATA = gtkam.png
 
-EXTRA_DIST = gtkam.desktop gtkam.png  AUTHORS COPYING NEWS README TODO CHANGES
+@INTLTOOL_DESKTOP_RULE@
 
+DESKTOP_IN_FILES=gtkam.desktop.in
+DESKTOP_FILES=$(DESKTOP_IN_FILES:.desktop.in=.desktop)
+
+Applicationsdir = $(datadir)/applications
+Applications_DATA = $(DESKTOP_FILES)
+
+EXTRA_DIST = gtkam.png  AUTHORS COPYING NEWS README TODO CHANGES \
+	intltool-extract.in     \
+	intltool-merge.in       \
+	intltool-update.in      \
+	$(DESKTOP_IN_FILES)     \
+	$(DESKTOP_FILES)
 
 ########################################################################
 # Packaging convenience

@@ -1,3 +1,4 @@
+gtkam.desktop.in
 src/gtkam-cancel.c
 src/gtkam-chooser.c
 src/gtkam-close.c

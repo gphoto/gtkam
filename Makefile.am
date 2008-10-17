@@ -26,7 +26,7 @@ DESKTOP_FILES=$(DESKTOP_IN_FILES:.desktop.in=.desktop)
 Applicationsdir = $(datadir)/applications
 Applications_DATA = $(DESKTOP_FILES)
 
-EXTRA_DIST = gtkam.png  AUTHORS COPYING NEWS README TODO CHANGES \
+EXTRA_DIST = gtkam.png ChangeLog AUTHORS COPYING NEWS README TODO CHANGES \
 	intltool-extract.in     \
 	intltool-merge.in       \
 	intltool-update.in      \

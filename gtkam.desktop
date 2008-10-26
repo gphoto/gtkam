@@ -1,13 +1,11 @@
 [Desktop Entry]
 Encoding=UTF-8
-Name=gtkam
-Name[ru]=Цифровой фотоаппарат
-Comment=Transfer pictures from your digital camera
-Comment[ru]=Программа для получения снимков из цифрового фотоаппарата
+_Name=Gtkam Digital Camera Browser
+_Comment=Browse and download images from an attached digital camera
 Exec=gtkam
-Icon=gtkam.png
-StartupNotify=true
+Icon=gtkam-camera.png
 Terminal=false
 Type=Application
 Categories=GNOME;GTK;Photography;Graphics;RasterGraphics;Viewer;
+StartupNotify=true
 X-GNOME-DocPath=gtkam/gtkam.xml

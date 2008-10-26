@@ -6,5 +6,6 @@ Exec=gtkam
 Icon=gtkam-camera.png
 Terminal=false
 Type=Application
-Categories=Application;Graphics;
+Categories=GNOME;GTK;Photography;Graphics;RasterGraphics;Viewer;
 StartupNotify=true
+X-GNOME-DocPath=gtkam/gtkam.xml

@@ -1,3 +1,10 @@
+gtkam 0.1.16
+
+* updated translations from translationproject.org
+* fixed requires on libgphoto2
+* intltoolize from/for solaris
+* adjusted licenses in C files to be GPL, just as intended
+
 gtkam 0.1.15
 
 * updated all translations from translation project

@@ -1,5 +1,5 @@
 AC_PREREQ(2.59)
-AC_INIT([GTK frontend for libgphoto2], [0.1.16], [gphoto-devel@lists.sourceforge.net], [gtkam])
+AC_INIT([GTK frontend for libgphoto2], [0.1.16.1], [gphoto-devel@lists.sourceforge.net], [gtkam])
 AC_CONFIG_SRCDIR([src/gtkam-main.c])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4m])
@@ -65,7 +65,6 @@ GP_GETTEXT_HACK([],[Lutz Müller and others],[${MAIL_GPHOTO_TRANSLATION}])
 ALL_LINGUAS="be cs da de es fr hu it ja nb nl pa pl pt_BR pt ru sk sl sv uk vi zh_CN"
 AM_GNU_GETTEXT_VERSION([0.14.1])
 AM_GNU_GETTEXT([external])
-AM_PO_SUBDIRS()
 AM_ICONV()
 GP_GETTEXT_FLAGS()
 

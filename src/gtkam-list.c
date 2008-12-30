@@ -90,6 +90,7 @@ enum {
 	PREVIEW_ORIG_COLUMN,
 	NAME_COLUMN,
 	FOLDER_COLUMN,
+	MTIME_COLUMN,
 	CAMERA_COLUMN,
 	IS_EDITABLE_COLUMN,
 	NUM_COLUMNS
@@ -379,14 +380,12 @@ show_thumbnails_foreach_func (GtkTreeModel *model, GtkTreePath *path,
 	gchar *folder, *name;
 	CameraAbilities a;
 	GetThumbnailData *d;
-	CameraFileInfo info;
 
 	camera = gtkam_list_get_camera_from_iter (list, iter);
 	folder = gtkam_list_get_folder_from_iter (list, iter);
 	name = gtkam_list_get_name_from_iter (list, iter);
 
 	gp_camera_get_abilities (camera->camera, &a);
-	gp_camera_file_get_info (camera->camera, folder, name, &info, NULL);
 
 	if (a.file_operations & GP_FILE_OPERATION_PREVIEW) {
 		d = g_new0 (GetThumbnailData, 1);
@@ -401,12 +400,8 @@ show_thumbnails_foreach_func (GtkTreeModel *model, GtkTreePath *path,
 		if (list->priv->head == NULL)
 			list->priv->head = d;
 	}
-
 	g_free (folder);
 	g_free (name);
-	if (camera->multi)
-		gp_camera_exit (camera->camera, NULL);
-
 	return (FALSE);
 }
 
@@ -930,6 +925,7 @@ gtkam_list_new (void)
 
 	list->priv->store = gtk_list_store_new (NUM_COLUMNS,
 		GDK_TYPE_PIXBUF, GDK_TYPE_PIXBUF, G_TYPE_STRING, G_TYPE_STRING,
+		G_TYPE_STRING,
 		GTKAM_TYPE_CAMERA, G_TYPE_BOOLEAN);
 	gtk_tree_view_set_model (GTK_TREE_VIEW (list),
 				 GTK_TREE_MODEL (list->priv->store));
@@ -949,6 +945,12 @@ gtkam_list_new (void)
 	g_signal_connect (G_OBJECT (renderer), "edited",
 			  G_CALLBACK (on_edited), list);
 
+	/* Column for file attrib */
+	renderer = gtk_cell_renderer_text_new ();
+	col = gtk_tree_view_column_new_with_attributes (_("Time"), renderer,
+		"text", MTIME_COLUMN, NULL);
+	gtk_tree_view_append_column (GTK_TREE_VIEW (list), col);
+
 	return (GTK_WIDGET (list));
 }
 
@@ -962,6 +964,8 @@ gtkam_list_add_folder (GtkamList *list, GtkamCamera *camera,
 	const char *name;
 	gint i;
 	GtkTreeIter iter;
+	CameraFileInfo finfo;
+	gchar *msg;
 
 	g_return_if_fail (GTKAM_IS_LIST (list));
 
@@ -991,10 +995,19 @@ gtkam_list_add_folder (GtkamList *list, GtkamCamera *camera,
 	gtk_object_destroy (GTK_OBJECT (s));
 
 	for (i = 0; i < gp_list_count (flist); i++) {
+		int ret;
 		gp_list_get_name (flist, i, &name);
 		gtk_list_store_append (list->priv->store, &iter);
+		ret = gp_camera_file_get_info (camera->camera, folder, name, &finfo, NULL);
+		if ((ret == GP_OK) && (finfo.file.fields & GP_FILE_INFO_MTIME)) {
+			msg = g_strdup (ctime (&finfo.file.mtime));
+			msg[strlen (msg) - 1] = '\0';
+		} else {
+			msg = g_strdup (_("Unknown"));
+		}
 		gtk_list_store_set (list->priv->store, &iter,
-			NAME_COLUMN, name, FOLDER_COLUMN, folder,
+			NAME_COLUMN, name, FOLDER_COLUMN, folder, 
+			MTIME_COLUMN, msg,
 			CAMERA_COLUMN, camera, IS_EDITABLE_COLUMN, TRUE, -1);
 	}
 	gp_list_unref (flist);

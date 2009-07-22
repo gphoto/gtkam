@@ -1,5 +1,6 @@
-gtkam 0.1.16.1
+gtkam 0.1.16.2
 
+* ported to libgphoto2 2.5
 * updated italian translation
 * missing gtkam.pot file in the tarball
 

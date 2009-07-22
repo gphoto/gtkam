@@ -217,18 +217,9 @@ gtkam_info_update (GtkamInfo *info)
 static void
 on_ok_clicked (GtkButton *button, GtkamInfo *info)
 {
-	gchar *n;
-	
-	n = g_strdup (info->priv->info.file.name);
-	if (info->priv->needs_update) {
-		if (gtkam_info_update (info))
-		    gtk_object_destroy (GTK_OBJECT (info));
-		else {
-		    gtk_entry_set_text (GTK_ENTRY (info->priv->entry_name), n);
-		}
-	} else
-		gtk_object_destroy (GTK_OBJECT (info));
-	g_free (n);
+	if (info->priv->needs_update)
+		gtkam_info_update (info);
+	gtk_object_destroy (GTK_OBJECT (info));
 }
 
 static void
@@ -261,28 +252,12 @@ on_delete_toggled (GtkToggleButton *toggle, GtkamInfo *info)
 	info->priv->needs_update = TRUE;
 }
 
-static void
-on_name_changed (GtkEditable *editable, GtkamInfo *info)
-{
-	const gchar *name;
-
-	info->priv->info_new.file.fields |= GP_FILE_INFO_NAME;
-	name = gtk_entry_get_text (GTK_ENTRY (editable));
-	strncpy (info->priv->info_new.file.name, name,
-		 sizeof (info->priv->info_new.file.name) - 1);
-	info->priv->needs_update = TRUE;
-
-	if (info->priv->new_name)
-		g_free (info->priv->new_name);
-	info->priv->new_name = g_strdup (name);
-}
-
 GtkWidget *
 gtkam_info_new (GtkamCamera *camera, const gchar *folder, const gchar *name)
 {
 	GtkamInfo *info;
 	GtkWidget *button, *dialog, *notebook, *page, *label, *hbox;
-	GtkWidget *check, *entry, *c;
+	GtkWidget *check, *c;
 	gchar *msg;
 	int result;
 	CameraFileInfo i;
@@ -335,29 +310,6 @@ gtkam_info_new (GtkamCamera *camera, const gchar *folder, const gchar *name)
 		label = gtk_label_new (_("File"));
 		gtk_widget_show (label);
 		gtk_notebook_append_page (GTK_NOTEBOOK (notebook), page, label);
-
-		/* Name */
-		if (info->priv->info.file.fields & GP_FILE_INFO_NAME) {
-			label = gtk_label_new (_("Name:"));
-			gtk_widget_show (label);
-			gtk_label_set_justify (GTK_LABEL (label),
-					       GTK_JUSTIFY_LEFT);
-			gtk_table_attach (GTK_TABLE (page), label,
-					  0, 1, 0, 1, GTK_FILL, 0, 0, 0);
-			gtk_misc_set_alignment (GTK_MISC (label), 0, 0);
-
-			entry = gtk_entry_new ();
-			gtk_entry_set_max_length (GTK_ENTRY (entry),
-				sizeof (info->priv->info.file.name));
-			gtk_widget_show (entry);
-			gtk_table_attach_defaults (GTK_TABLE (page), entry,
-						   1, 2, 0, 1);
-			gtk_entry_set_text (GTK_ENTRY (entry),
-					    info->priv->info.file.name);
-			info->priv->entry_name = entry;
-			g_signal_connect (GTK_OBJECT (entry), "changed",
-				GTK_SIGNAL_FUNC (on_name_changed), info);
-		}
 
 		/* Mime type */
 		if (info->priv->info.file.fields & GP_FILE_INFO_TYPE) {

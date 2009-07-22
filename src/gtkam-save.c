@@ -250,18 +250,15 @@ concat_dir_and_file (const gchar *dirname, const gchar *filename)
 }
 
 static int
-save_file (GtkamSave *save, CameraFile *file, guint n)
+save_file (GtkamSave *save, const char *filename, CameraFile *file, CameraFileType type, guint n)
 {
 	gchar *full_path, *full_filename, *dirname, *msg, *number_filename;
-	const char *filename, *mime_type;
-	CameraFileType type;
+	const char *mime_type;
 	const gchar *fsel_filename, *fsel_path, *prefix, *suffix;
 	GtkWidget *dialog;
 	int result;
 
-	gp_file_get_type (file, &type);
 	gp_file_get_mime_type (file, &mime_type);
-	gp_file_get_name (file, &filename);
 
 	fsel_path = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER_DIALOG (save));
 
@@ -354,7 +351,7 @@ get_file (GtkamSave *save, GtkamCamera *camera,
 		gp_camera_exit (camera->camera, NULL);
 	switch (result) {
 	case GP_OK:
-		result = save_file (save, file, n);
+		result = save_file (save, name, file, type, n);
 		break;
 	case GP_ERROR_CANCEL:
 		break;

@@ -660,8 +660,12 @@ static void
 on_info_updated (GtkamInfo *info, GtkamInfoInfoUpdatedData *d,
 		 GtkamListInfoUpdatedData *data)
 {
+#if 0
+	/* FIXME: could change the name previously, cannot do
+	 * it these days */
         gtk_list_store_set (data->list->priv->store, data->iter,
                             NAME_COLUMN, d->info.file.name, -1);
+#endif
 }
 
 static void
@@ -817,54 +821,6 @@ action_view (gpointer callback_data, guint callback_action,
 	g_free (file);
 }
 
-static void
-on_edited (GtkCellRendererText *cell, const gchar *path,
-	   const gchar *new_text, GtkamList *list)
-{
-	GtkTreeIter iter;
-	gchar *folder, *name;
-	GtkamCamera *camera;
-	CameraFileInfo info;
-	GtkWidget *s, *d;
-	int r;
-
-	g_return_if_fail (GTKAM_IS_LIST (list));
-
-	g_return_if_fail (gtk_tree_model_get_iter_from_string (
-			GTK_TREE_MODEL (list->priv->store), &iter, path));
-	camera = gtkam_list_get_camera_from_iter (list, &iter);
-	folder = gtkam_list_get_folder_from_iter (list, &iter);
-	name   = gtkam_list_get_name_from_iter (list, &iter);
-
-	/* Name really changed? */
-	if (!strcmp (name, new_text)) {
-		g_free (name);
-		g_free (folder);
-		return;
-	}
-
-	s = gtkam_status_new (_("Changing name of '%s' to '%s'..."),
-			      name, new_text);
-	g_signal_emit (G_OBJECT (list), signals[NEW_STATUS], 0, s);
-	memset (&info, 0, sizeof (CameraFileInfo));
-	info.file.fields = GP_FILE_INFO_NAME;
-	strncpy (info.file.name, new_text, sizeof (info.file.name) - 1);
-	r = gp_camera_file_set_info (camera->camera, folder, name, info,
-				     GTKAM_STATUS (s)->context->context);
-	if (r < 0) {
-		d = gtkam_error_new (r, GTKAM_STATUS (s)->context, NULL, 
-			_("Could not change the name of '%s' to '%s'."),
-			name, new_text);
-		g_signal_emit (G_OBJECT (list), signals[NEW_DIALOG], 0, d);
-		g_object_unref (G_OBJECT (d));
-	} else
-		gtk_list_store_set (list->priv->store,
-				    &iter, NAME_COLUMN, new_text, -1);
-	gtk_object_destroy (GTK_OBJECT (s));
-	g_free (folder);
-	g_free (name);
-}
-
 static GtkItemFactoryEntry mi[] =
 {
 	{N_("/_View with..."), NULL, NULL, 0, "<Branch>"},
@@ -940,10 +896,8 @@ gtkam_list_new (void)
 	/* Column for file names */
 	renderer = gtk_cell_renderer_text_new ();
 	col = gtk_tree_view_column_new_with_attributes (_("Name"), renderer,
-		"text", NAME_COLUMN, "editable", IS_EDITABLE_COLUMN, NULL);
+		"text", NAME_COLUMN, NULL);
 	gtk_tree_view_append_column (GTK_TREE_VIEW (list), col);
-	g_signal_connect (G_OBJECT (renderer), "edited",
-			  G_CALLBACK (on_edited), list);
 
 	/* Column for file attrib */
 	renderer = gtk_cell_renderer_text_new ();

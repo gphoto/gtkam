@@ -421,8 +421,12 @@ on_upload_ok_clicked (GtkButton *button, GtkamTreeUploadData *ud)
 		s = gtkam_status_new (_("Uploading '%s' into "
 			"folder '%s'..."), g_basename (path), folder);
 		g_signal_emit (G_OBJECT (ud->tree), signals[NEW_STATUS], 0, s);
-		r = gp_camera_folder_put_file (c->camera, folder, file,
+#ifdef HAVE_GP_PORT_INFO_GET_NAME
+		r = gp_camera_folder_put_file (c->camera, folder, basename(path), GP_FILE_TYPE_NORMAL, file, 
 				GTKAM_STATUS (s)->context->context);
+#else
+		r = gp_camera_folder_put_file (c->camera, folder, file, GTKAM_STATUS (s)->context->context);
+#endif
 		if (c->multi)
 			gp_camera_exit (c->camera, NULL);
 		switch (r) {

@@ -64,12 +64,12 @@ gtkam_gimp_CPPFLAGS = \
 	$(MY_CPPFLAGS)		\
 	$(GIMP_CFLAGS)
 gtkam_gimp_LDADD = \
-	$(GIMP_LIBS)	\
+	libgtkam.a		\
+	$(GIMP_LIBS)		\
 	$(LIBEXIF_LIBS)		\
-	$(LIBEXIF_GTK_LIBS) \
+	$(LIBEXIF_GTK_LIBS) 	\
 	$(LIBGPHOTO2_LIBS)	\
 	$(BONOBO_LIBS)		\
 	$(GNOME_LIBS)		\
-	$(INTLLIBS)		\
-	libgtkam.a
+	$(INTLLIBS)
 endif

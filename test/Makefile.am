@@ -9,12 +9,12 @@ MY_CPPFLAGS =				\
 	$(GTKAM_GIMP_CFLAGS)
 
 MY_LIBS = \
+	$(top_builddir)/src/libgtkam.a	\
 	$(LIBEXIF_LIBS)			\
 	$(LIBEXIF_GTK_LIBS)		\
 	$(LIBGPHOTO2_LIBS)	\
 	$(GTK_LIBS)			\
 	$(BONOBO_LIBS)			\
-	$(top_builddir)/src/libgtkam.a	\
 	$(INTLLIBS)
 
 noinst_PROGRAMS = test-fsel test-cancel

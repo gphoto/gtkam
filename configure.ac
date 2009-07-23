@@ -79,12 +79,12 @@ dnl Libraries we need for gtkam
 dnl ---------------------------------------------------------------------------
 GP_CHECK_LIBRARY([LIBGPHOTO2], [libgphoto2], [>= 2.4.0])
 
-save_LDFLAGS="$LDFLAGS"
-LDFLAGS="$LDFLAGS $LIBGPHOTO2_LIBS"
+save_LIBS="$LIBS"
+LIBS="$LIBS $LIBGPHOTO2_LIBS"
 AC_CHECK_FUNC(gp_port_info_get_name,
 	AC_DEFINE(HAVE_GP_PORT_INFO_GET_NAME,1,[Define to 1 if gp_port_info_get_name is present])
 )
-LDFLAGS="$save_LDFLAGS"
+LIBS="$save_LIBS"
 
 PKG_CHECK_MODULES([GTK], [gtk+-2.0])
 AC_SUBST([GTK_CFLAGS])

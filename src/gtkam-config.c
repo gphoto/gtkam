@@ -212,6 +212,12 @@ on_config_ok_clicked (GtkButton *button, GtkamConfig *config)
 }
 
 static void
+on_config_apply_clicked (GtkButton *button, GtkamConfig *config)
+{
+	gtkam_config_apply (config);
+}
+
+static void
 on_config_close_clicked (GtkButton *button, GtkamConfig *config)
 {
 	gtkam_config_close (config);
@@ -775,6 +781,13 @@ gtkam_config_new (GtkamCamera *camera)
 	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (config)->action_area),
 			   button);	
 	
+	button = gtk_button_new_from_stock (GTK_STOCK_APPLY);
+	gtk_widget_show (button);
+	g_signal_connect (GTK_OBJECT (button), "clicked",
+			    GTK_SIGNAL_FUNC (on_config_apply_clicked), config);
+	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (config)->action_area),
+			   button);	
+
 	button = gtk_button_new_from_stock (GTK_STOCK_OK);
 	gtk_widget_show (button);
 	g_signal_connect (GTK_OBJECT (button), "clicked",

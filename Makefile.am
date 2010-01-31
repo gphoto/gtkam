@@ -47,6 +47,9 @@ rpm: Makefile
 
 endif
 
+distclean-local:
+	rm $(DESKTOP_FILES)
+
 
 ########################################################################
 # Maintainer's convenience

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gtkam 0.1.16.1\n"
 "Report-Msgid-Bugs-To: gphoto-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2008-12-05 20:23+0100\n"
+"POT-Creation-Date: 2010-01-31 19:37+0100\n"
 "PO-Revision-Date: 2009-01-22 18:37-0300\n"
 "Last-Translator: Felipe Castro <fefcas@gmail.com>\n"
 "Language-Team: Esperanto <translation-team-eo@lists.sourceforge.net>\n"
@@ -15,373 +15,385 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/gtkam-chooser.c:231 src/gtkam-chooser.c:253
+#: ../gtkam.desktop.in.h:1
+#, fuzzy
+msgid "Browse and download images from an attached digital camera"
+msgstr "Tio kaptas bildojn el cifereca kamerao"
+
+#: ../gtkam.desktop.in.h:2
+msgid "Gtkam Digital Camera Browser"
+msgstr ""
+
+#. Port?
+#: ../src/gtkam-chooser.c:231 ../src/gtkam-chooser.c:253
 msgid "None"
 msgstr "Nenio"
 
-#: src/gtkam-chooser.c:261 src/gtkam-chooser.c:368 src/gtkam-chooser.c:632
-#: src/gtkam-chooser.c:666
+#. Speed?
+#. Update speed combo
+#: ../src/gtkam-chooser.c:261 ../src/gtkam-chooser.c:368
+#: ../src/gtkam-chooser.c:632 ../src/gtkam-chooser.c:666
 msgid "Best"
 msgstr "Plejbona"
 
-#: src/gtkam-chooser.c:268
+#.
+#. * Initialize the camera to check if it is really there. Exit
+#. * afterwards because other applications could need the camera, too.
+#.
+#: ../src/gtkam-chooser.c:268
 msgid "Initializing camera..."
 msgstr "Startado de la kamerao..."
 
-#: src/gtkam-chooser.c:282
+#: ../src/gtkam-chooser.c:282
 msgid "Could not initialize camera."
 msgstr "Ne eblis startigi la kameraon."
 
-#: src/gtkam-chooser.c:359
+#: ../src/gtkam-chooser.c:359
 #, c-format
 msgid "Could not get abilities of model '%s'."
 msgstr "Ne eblis akiri informojn pri la kapabloj de la modelo '%s'."
 
-#: src/gtkam-chooser.c:407
+#: ../src/gtkam-chooser.c:407
 msgid "Detecting cameras..."
 msgstr "Detektado de kameraoj..."
 
-#: src/gtkam-chooser.c:416
+#: ../src/gtkam-chooser.c:416
 msgid "No cameras detected."
 msgstr "Neniu kamerao detektita."
 
-#: src/gtkam-chooser.c:433
+#: ../src/gtkam-chooser.c:433
 msgid "Could not detect any cameras."
 msgstr "Ne eblis detekti iun ajn kameraon."
 
-#: src/gtkam-chooser.c:568
+#: ../src/gtkam-chooser.c:568
 msgid "Add Camera"
 msgstr "Aldoni Kameraon"
 
-#: src/gtkam-chooser.c:583
+#: ../src/gtkam-chooser.c:583
 msgid "Model:"
 msgstr "Modelo:"
 
-#: src/gtkam-chooser.c:595
+#: ../src/gtkam-chooser.c:595
 msgid "Detect"
 msgstr "Detekti"
 
-#: src/gtkam-chooser.c:601
+#: ../src/gtkam-chooser.c:601
 msgid "Detect USB camera"
 msgstr "Detekti USB-kameraon"
 
-#: src/gtkam-chooser.c:603
+#: ../src/gtkam-chooser.c:603
 msgid "Port:"
 msgstr "Pordo:"
 
-#: src/gtkam-chooser.c:624 src/gtkam-chooser.c:656
+#: ../src/gtkam-chooser.c:624 ../src/gtkam-chooser.c:656
 msgid "Speed:"
 msgstr "Rapideco:"
 
-#: src/gtkam-chooser.c:637 src/gtkam-chooser.c:672
+#: ../src/gtkam-chooser.c:637 ../src/gtkam-chooser.c:672
 msgid "Allow multiple frontends"
 msgstr "Ebligi multoblajn front-interfacojn"
 
-#: src/gtkam-chooser.c:644
+#: ../src/gtkam-chooser.c:644
 msgid "Enhanced"
 msgstr "Plibonigita"
 
-#: src/gtkam-chooser.c:737
+#: ../src/gtkam-chooser.c:737
 msgid "Could not get number of supported camera models"
 msgstr "Ne eblis akiri la nombron da subtenataj modeloj de kameraoj"
 
-#: src/gtkam-chooser.c:767
+#: ../src/gtkam-chooser.c:767
 msgid "Could not get number of ports."
 msgstr "Ne eblis akiri la nombron da pordoj."
 
-#: src/gtkam-config.c:163
+#: ../src/gtkam-config.c:163
 msgid "Applying configuration..."
 msgstr "Aplikado de agordaro..."
 
-#: src/gtkam-config.c:179
+#: ../src/gtkam-config.c:179
 msgid "Could not apply configuration."
 msgstr "Ne eblis apliki la agordaron."
 
-#: src/gtkam-config.c:240
+#: ../src/gtkam-config.c:246
 msgid "No additional information available. (1)"
 msgstr "Neniu kroma informo disponeblas. (1)"
 
-#: src/gtkam-config.c:245
+#: ../src/gtkam-config.c:251
 msgid "General Settings"
 msgstr "Ĝeneralaj Difinoj"
 
-#: src/gtkam-config.c:320
+#: ../src/gtkam-config.c:326
 msgid "Could not execute command."
 msgstr "Ne eblis prenumigi la komandon."
 
-#: src/gtkam-config.c:524
+#: ../src/gtkam-config.c:530
 msgid "No additional information available. (2)"
 msgstr "Neniu kroma informo disponeblas. (2)"
 
-#: src/gtkam-config.c:561
+#. Make it easy for users to select the system's time
+#: ../src/gtkam-config.c:567
 msgid "Set to system's time"
 msgstr "Agordi al la sistem-horo"
 
-#: src/gtkam-config.c:595
+#: ../src/gtkam-config.c:601
 msgid "No additional information available. (3)"
 msgstr "Neniu kroma informo disponeblas. (3)"
 
-#: src/gtkam-config.c:620
+#: ../src/gtkam-config.c:626
 msgid "No additional information available. (4)"
 msgstr "Neniu kroma informo disponeblas. (4)"
 
-#: src/gtkam-config.c:667
+#: ../src/gtkam-config.c:673
 msgid "No additional information available. (5)"
 msgstr "Neniu kroma informo disponeblas. (5)"
 
-#: src/gtkam-config.c:687
+#: ../src/gtkam-config.c:693
 msgid "No additional information available. (6)"
 msgstr "Neniu kroma informo disponeblas. (6)"
 
-#: src/gtkam-config.c:728
+#: ../src/gtkam-config.c:734
 msgid "Getting configuration..."
 msgstr "Akirado de agordaro..."
 
-#: src/gtkam-config.c:743
+#: ../src/gtkam-config.c:749
 msgid "Could not get configuration."
 msgstr "Ne eblis akiri agordaron."
 
-#: src/gtkam-debug.c:240
+#: ../src/gtkam-debug.c:240
 msgid "Save As..."
 msgstr "Konservi Kiel..."
 
-#: src/gtkam-debug.c:262
+#: ../src/gtkam-debug.c:262
 #, c-format
 msgid "Could not open '%s'!"
 msgstr "Ne eblis malfermi '%s'!"
 
-#: src/gtkam-debug.c:309
+#: ../src/gtkam-debug.c:309
 msgid "Type of messages to log:"
 msgstr "Tipo de mesaĝoj por protokoli:"
 
-#: src/gtkam-debug.c:313
+#: ../src/gtkam-debug.c:313
 msgid "Error"
 msgstr "Eraro"
 
-#: src/gtkam-debug.c:320
+#: ../src/gtkam-debug.c:320
 msgid "Verbose"
 msgstr "Detaleme"
 
-#: src/gtkam-debug.c:327
+#: ../src/gtkam-debug.c:327
 msgid "Debug"
 msgstr "Senerarigi"
 
-#: src/gtkam-debug.c:334
+#: ../src/gtkam-debug.c:334
 msgid "Data"
 msgstr "Datumaro"
 
-#: src/gtkam-delete.c:179
+#: ../src/gtkam-delete.c:179
 #, c-format
 msgid "Deleting all files in '%s'..."
 msgstr "Forigado de ĉiuj dosieroj en '%s'..."
 
-#: src/gtkam-delete.c:200
+#: ../src/gtkam-delete.c:200
 #, c-format
 msgid "Could not delete all files in '%s'."
 msgstr "Ne eblis forigi ĉiujn dosierojn en '%s'."
 
-#: src/gtkam-delete.c:236
+#: ../src/gtkam-delete.c:236
 #, c-format
 msgid "Deleting file '%s' from folder '%s'..."
 msgstr "Forigado de la dosiero '%s' el la dosierujo '%s'..."
 
-#: src/gtkam-delete.c:257
+#: ../src/gtkam-delete.c:257
 #, c-format
 msgid "Could not delete file '%s' in folder '%s'."
 msgstr "Ne eblis forigi la dosieron '%s' en la dosierujo '%s'."
 
-#: src/gtkam-delete.c:386
+#: ../src/gtkam-delete.c:386
 #, c-format
 msgid "Do you really want to delete all the files in '%s'?"
 msgstr "Ĉu vere vi volas forigi ĉiujn dosierojn en '%s'?"
 
-#: src/gtkam-delete.c:389
+#: ../src/gtkam-delete.c:389
 #, c-format
 msgid "Do you really want to delete '%s'?"
 msgstr "Ĉu vere vi volas forigi '%s'?"
 
-#: src/gtkam-delete.c:392
+#: ../src/gtkam-delete.c:392
 #, c-format
 msgid "Do you really want to delete the selected %i files?"
 msgstr "Ĉu vere vi volas forigi la elektitajn %i dosierojn?"
 
-#: src/gtkam-delete.c:398
+#: ../src/gtkam-delete.c:398
 msgid "Delete these files?"
 msgstr "Ĉu forigi tiujn dosierojn?"
 
-#: src/gtkam-exif.c:137
+#: ../src/gtkam-exif.c:137
 #, c-format
 msgid "Getting EXIF information for file '%s' in folder '%s'..."
 msgstr "Akirado de EXIF-informo por la dosiero '%s' en la dosierujo '%s'..."
 
-#: src/gtkam-exif.c:153
+#: ../src/gtkam-exif.c:153
 #, c-format
 msgid "Could not get EXIF information for '%s' in folder '%s'."
 msgstr "Ne eblis akiri EXIF-informon por '%s' en la dosierujo '%s'."
 
-#: src/gtkam-exif.c:166
+#: ../src/gtkam-exif.c:166
 msgid "Could not interpret EXIF data."
 msgstr "Ne eblis interpreti EXIF-datumaron."
 
-#: src/gtkam-exif.c:175
+#: ../src/gtkam-exif.c:175
 msgid "The EXIF data could not be retrieved from the file."
 msgstr "La EXIF-datumaro ne povis esti ricevita el la dosiero."
 
-#: src/gtkam-exif.c:192
+#: ../src/gtkam-exif.c:192
 msgid "Gtkam has been compiled without EXIF support."
 msgstr "Gtkam estas kompilita sen subteno al EXIF."
 
-#: src/gtkam-gimp.c:67 src/gtkam-gimp.c:68
+#: ../src/gtkam-gimp.c:67 ../src/gtkam-gimp.c:68
 msgid "Captures images from digital camera"
 msgstr "Tio kaptas bildojn el cifereca kamerao"
 
 #. TRANSLATORS: do not translate <Toolbox>/File/Acquire, but only the Capture from Camera part
-#: src/gtkam-gimp.c:71
+#: ../src/gtkam-gimp.c:71
 msgid "<Toolbox>/File/Acquire/Capture from Camera..."
 msgstr "<Toolbox>/File/Acquire/Kapti el Kamerao..."
 
-#: src/gtkam-gimp.c:75 src/gtkam-gimp.c:76
+#: ../src/gtkam-gimp.c:75 ../src/gtkam-gimp.c:76
 msgid "Loads files from digital cameras"
 msgstr "Ŝargi je dosieroj el ciferecaj kameraoj"
 
 #. TRANSLATORS: do not translate <Toolbox>/File/Acquire, but only the Load from Camera part
-#: src/gtkam-gimp.c:81
+#: ../src/gtkam-gimp.c:81
 msgid "<Toolbox>/File/Acquire/Load from Camera..."
 msgstr "<Toolbox>/File/Acquire/Shargi el Kamerao..."
 
-#: src/gtkam-gimp.c:194 src/gtkam-list.c:510
+#: ../src/gtkam-gimp.c:194 ../src/gtkam-list.c:505
 #, c-format
 msgid "Downloading '%s' from '%s'..."
 msgstr "Elŝutado de '%s' el '%s'..."
 
-#: src/gtkam-gimp.c:212
+#: ../src/gtkam-gimp.c:212
 #, c-format
 msgid "Could not download file '%s' from folder '%s'."
 msgstr "Ne eblis elŝuti la dosieron '%s' el la dosierujo '%s'."
 
-#: src/gtkam-gimp.c:245
+#: ../src/gtkam-gimp.c:245
 msgid "Image"
 msgstr "Bildo"
 
-#: src/gtkam-info.c:165
+#: ../src/gtkam-info.c:165
 #, c-format
 msgid "Setting information for file '%s' in '%s'..."
 msgstr "Difinado de informo por la dosiero '%s' en '%s'..."
 
-#: src/gtkam-info.c:186
+#: ../src/gtkam-info.c:186
 #, c-format
 msgid "Could not set file information for '%s' in folder '%s'"
 msgstr "Ne eblis difini dosier-informon por '%s' en la dosierujo '%s'"
 
-#: src/gtkam-info.c:295
+#. Get file info
+#: ../src/gtkam-info.c:270
 #, c-format
 msgid "Getting information about file '%s' in folder '%s'..."
 msgstr "Akirado de informo pri la dosiero '%s' en la dosierujo '%s'..."
 
-#: src/gtkam-info.c:307
+#: ../src/gtkam-info.c:282
 #, c-format
 msgid "Could not get information about file '%s' in folder '%s'."
 msgstr "Ne eblis akiri informon pri la dosiero '%s' en la dosierujo '%s'."
 
-#: src/gtkam-info.c:335
+#: ../src/gtkam-info.c:310
 msgid "File"
 msgstr "Dosiero"
 
-#: src/gtkam-info.c:341
-msgid "Name:"
-msgstr "Nomo:"
-
-#: src/gtkam-info.c:364 src/gtkam-info.c:473 src/gtkam-info.c:522
+#: ../src/gtkam-info.c:316 ../src/gtkam-info.c:425 ../src/gtkam-info.c:474
 msgid "MIME type:"
 msgstr "MIME-tipo:"
 
-#: src/gtkam-info.c:382
+#: ../src/gtkam-info.c:334
 msgid "Last modified:"
 msgstr "Laste modifite:"
 
-#: src/gtkam-info.c:403 src/gtkam-info.c:490 src/gtkam-info.c:539
+#: ../src/gtkam-info.c:355 ../src/gtkam-info.c:442 ../src/gtkam-info.c:491
 msgid "Size:"
 msgstr "Grandeco:"
 
-#: src/gtkam-info.c:410 src/gtkam-info.c:546
+#: ../src/gtkam-info.c:362 ../src/gtkam-info.c:498
 #, c-format
 msgid "%liK (%li bytes)"
 msgstr "%liK (%li bajtoj)"
 
-#: src/gtkam-info.c:425
+#: ../src/gtkam-info.c:377
 msgid "Permissions:"
 msgstr "Permesoj:"
 
-#: src/gtkam-info.c:437
+#: ../src/gtkam-info.c:389
 msgid "Read"
 msgstr "Legi"
 
-#: src/gtkam-info.c:448
+#: ../src/gtkam-info.c:400
 msgid "Delete"
 msgstr "Forigi"
 
-#: src/gtkam-info.c:467 src/gtkam-list.c:940
+#: ../src/gtkam-info.c:419 ../src/gtkam-list.c:892
 msgid "Preview"
 msgstr "Antaŭvidi"
 
-#: src/gtkam-info.c:516
+#: ../src/gtkam-info.c:468
 msgid "Audio"
 msgstr "Sono"
 
-#: src/gtkam-list.c:321
+#: ../src/gtkam-list.c:322
 #, c-format
 msgid "Downloading thumbnail of '%s' from folder '%s'..."
 msgstr "Elŝutado de miniaturo de '%s' el la dosierujo '%s'..."
 
-#: src/gtkam-list.c:851
-#, c-format
-msgid "Changing name of '%s' to '%s'..."
-msgstr "Ŝanĝado de la nomo de '%s' al '%s'..."
-
-#: src/gtkam-list.c:861
-#, c-format
-msgid "Could not change the name of '%s' to '%s'."
-msgstr "Ne eblis ŝanĝi la nomon de '%s' al '%s'."
-
-#: src/gtkam-list.c:875
+#: ../src/gtkam-list.c:826
 msgid "/_View with..."
 msgstr "/_Vidi per..."
 
-#: src/gtkam-list.c:876
+#: ../src/gtkam-list.c:827
 msgid "/View with.../Built-in viewer"
 msgstr "/Vidi per.../Interna montrilo"
 
-#: src/gtkam-list.c:878
+#: ../src/gtkam-list.c:829
 msgid "/View file _properties"
 msgstr "/Vidi dosier_atributojn"
 
-#: src/gtkam-list.c:880
+#: ../src/gtkam-list.c:831
 msgid "/View _EXIF data"
 msgstr "/Vidi datumaron _EXIF"
 
-#: src/gtkam-list.c:883
+#: ../src/gtkam-list.c:834
 msgid "/_Save"
 msgstr "/_Konservi"
 
-#: src/gtkam-list.c:884
+#: ../src/gtkam-list.c:835
 msgid "/_Delete"
 msgstr "/_Forigi"
 
-#: src/gtkam-list.c:946
+#: ../src/gtkam-list.c:898
 msgid "Name"
 msgstr "Nomo"
 
-#: src/gtkam-list.c:968 src/gtkam-tree.c:686
+#: ../src/gtkam-list.c:904
+msgid "Time"
+msgstr ""
+
+#: ../src/gtkam-list.c:926 ../src/gtkam-tree.c:690
 #, c-format
 msgid "Listing files in folder '%s'..."
 msgstr "Listigado de dosieroj en la dosierujo '%s'..."
 
-#: src/gtkam-list.c:985 src/gtkam-tree.c:703
+#: ../src/gtkam-list.c:943 ../src/gtkam-tree.c:707
 #, c-format
 msgid "Could not get file list for folder '%s'"
 msgstr "Ne eblis akiri dosierliston el la dosierujo '%s'"
 
-#: src/gtkam-main.c:425
+#: ../src/gtkam-list.c:960
+msgid "Unknown"
+msgstr ""
+
+#: ../src/gtkam-main.c:425
 msgid ""
 "gtkam is a program that lets you download\n"
 "images from many digital cameras. It uses\n"
@@ -397,11 +409,11 @@ msgstr ""
 "\n"
 "Ĝuu la mirindan mondon de gphoto!"
 
-#: src/gtkam-main.c:436
+#: ../src/gtkam-main.c:436
 msgid "Many others"
 msgstr "Pluraj aliaj"
 
-#: src/gtkam-main.c:469
+#: ../src/gtkam-main.c:469
 #, c-format
 msgid ""
 "%s\n"
@@ -414,7 +426,7 @@ msgstr ""
 "%s %s kun opcioj:\n"
 "    %s\n"
 
-#: src/gtkam-main.c:473
+#: ../src/gtkam-main.c:473
 #, c-format
 msgid ""
 "%s\n"
@@ -425,450 +437,475 @@ msgstr ""
 "%s %s kun opcioj:\n"
 "    %s\n"
 
-#: src/gtkam-main.c:548
+#: ../src/gtkam-main.c:548
 msgid "_File"
 msgstr "_Dosiero"
 
-#: src/gtkam-main.c:549
+#: ../src/gtkam-main.c:549
 msgid "_Save Photos"
 msgstr "_Konservi Fotojn"
 
-#: src/gtkam-main.c:550
+#: ../src/gtkam-main.c:550
 msgid "_Delete Photos"
 msgstr "_Forigi Fotojn"
 
-#: src/gtkam-main.c:551 src/gtkam-main.c:553
+#: ../src/gtkam-main.c:551 ../src/gtkam-main.c:553
 msgid "_Selected"
 msgstr "_Elektite"
 
-#: src/gtkam-main.c:552 src/gtkam-main.c:554 src/gtkam-main.c:561
+#: ../src/gtkam-main.c:552 ../src/gtkam-main.c:554 ../src/gtkam-main.c:561
 msgid "_All"
 msgstr "Ĉi_uj"
 
-#: src/gtkam-main.c:555
+#: ../src/gtkam-main.c:555
 msgid "_Quit"
 msgstr "_Eliri"
 
-#: src/gtkam-main.c:556
+#: ../src/gtkam-main.c:556
 msgid "_View"
 msgstr "_Vidi"
 
-#: src/gtkam-main.c:557
+#: ../src/gtkam-main.c:557
 msgid "Zoom _In"
 msgstr "_Zomi"
 
-#: src/gtkam-main.c:558
+#: ../src/gtkam-main.c:558
 msgid "Zoom _100"
 msgstr "Zomi _100"
 
-#: src/gtkam-main.c:559
+#: ../src/gtkam-main.c:559
 msgid "Zoom _Out"
 msgstr "_Malzomi"
 
-#: src/gtkam-main.c:560
+#: ../src/gtkam-main.c:560
 msgid "_Select"
 msgstr "_Elekti"
 
-#: src/gtkam-main.c:562
+#: ../src/gtkam-main.c:562
 msgid "_Inverse"
 msgstr "_Inversigi"
 
-#: src/gtkam-main.c:563
+#: ../src/gtkam-main.c:563
 msgid "_None"
 msgstr "_Neniu"
 
-#: src/gtkam-main.c:564
+#: ../src/gtkam-main.c:564
 msgid "_Camera"
 msgstr "_Kamerao"
 
-#: src/gtkam-main.c:565
+#: ../src/gtkam-main.c:565
 msgid "_Add Camera..."
 msgstr "_Aldoni Kameraon..."
 
-#: src/gtkam-main.c:566
+#: ../src/gtkam-main.c:566
 msgid "_Rescan"
 msgstr "_Reskani"
 
-#: src/gtkam-main.c:567
+#: ../src/gtkam-main.c:567
 msgid "_Help"
 msgstr "_Helpi"
 
-#: src/gtkam-main.c:569
+#: ../src/gtkam-main.c:569
 msgid "_Contents"
 msgstr "_Enhavo"
 
-#: src/gtkam-main.c:571
+#: ../src/gtkam-main.c:571
 msgid "_Debug"
 msgstr "_Senerarigi"
 
-#: src/gtkam-main.c:572
+#: ../src/gtkam-main.c:572
 msgid "_About"
 msgstr "_Pri"
 
-#: src/gtkam-main.c:577
+#: ../src/gtkam-main.c:577
 msgid "_View Thumbnails"
 msgstr "_Vidi Miniaturojn"
 
-#: src/gtkam-mkdir.c:151
+#: ../src/gtkam-mkdir.c:151
 #, c-format
 msgid "Creating folder '%s' in folder '%s'..."
 msgstr "Kreado de la subdosierujo '%s' en la dosierujo '%s'..."
 
-#: src/gtkam-mkdir.c:185
+#: ../src/gtkam-mkdir.c:185
 #, c-format
 msgid "Could not create folder '%s' in folder '%s'."
 msgstr "Ne eblis krei la subdosierujon '%s' en la dosierujo '%s'."
 
-#: src/gtkam-mkdir.c:211
+#: ../src/gtkam-mkdir.c:211
 #, c-format
 msgid "Please choose a name for the directory that should be created in '%s':"
 msgstr "Bonvolu elekti nomon por la dosierujo, kiu devos esti kreita en '%s':"
 
-#: src/gtkam-mkdir.c:227
+#: ../src/gtkam-mkdir.c:227
 msgid "New directory"
 msgstr "Nova dosierujo"
 
-#: src/gtkam-port.c:146
+#: ../src/gtkam-port.c:146
 #, c-format
-msgid "The port '%s' could not be found. Please make sure that the port exists."
+msgid ""
+"The port '%s' could not be found. Please make sure that the port exists."
 msgstr "La pordo '%s' ne povis esti trovita. Bonvolu certigi ke ĝi ekzistas."
 
-#: src/gtkam-port.c:180
+#: ../src/gtkam-port.c:180
 msgid "Please specify the path to the port your camera is attached to:"
-msgstr "Bonvole specifu la vojon de la pordo al kie via kamerao estas konektita:"
+msgstr ""
+"Bonvole specifu la vojon de la pordo al kie via kamerao estas konektita:"
 
-#: src/gtkam-preview.c:186 src/gtkam-tree.c:1094
+#. The camera doesn't support previews. Capture an image.
+#: ../src/gtkam-preview.c:186 ../src/gtkam-tree.c:1098
 msgid "Capturing image..."
 msgstr "Kaptado de bildo..."
 
-#: src/gtkam-preview.c:208
+#: ../src/gtkam-preview.c:208
 msgid "Could not capture image."
 msgstr "Ne eblis kapti bildon."
 
-#: src/gtkam-preview.c:346 src/gtkam-preview.c:409
+#: ../src/gtkam-preview.c:346 ../src/gtkam-preview.c:409
 msgid "Capture"
 msgstr "Kapti"
 
-#: src/gtkam-preview.c:372
+#: ../src/gtkam-preview.c:372
 msgid "0 degrees"
 msgstr "0 gradoj"
 
-#: src/gtkam-preview.c:380
+#: ../src/gtkam-preview.c:380
 msgid "Don't rotate thumbnail"
 msgstr "Ne rotacii miniaturon"
 
-#: src/gtkam-preview.c:382
+#: ../src/gtkam-preview.c:382
 msgid "-90 degrees"
 msgstr "-90 gradoj"
 
-#: src/gtkam-preview.c:389
+#: ../src/gtkam-preview.c:389
 msgid "Rotate thumbnail by -90 degrees"
 msgstr "Rotacii miniaturon per -90 gradoj"
 
-#: src/gtkam-preview.c:391
+#: ../src/gtkam-preview.c:391
 msgid "+90 degrees"
 msgstr "+90 gradoj"
 
-#: src/gtkam-preview.c:398
+#: ../src/gtkam-preview.c:398
 msgid "Rotate thumbnail by 90 degrees"
 msgstr "Rotacii miniaturon per 90 gradoj"
 
-#: src/gtkam-preview.c:400
+#: ../src/gtkam-preview.c:400
 msgid "180 degrees"
 msgstr "180 gradoj"
 
-#: src/gtkam-preview.c:407
+#: ../src/gtkam-preview.c:407
 msgid "Rotate thumbnail by 180 degrees"
 msgstr "Rotacii miniaturon per 180 gradoj"
 
-#: src/gtkam-save.c:302 src/gtkam-tree.c:615
+#: ../src/gtkam-save.c:299 ../src/gtkam-tree.c:619
 #, c-format
 msgid "The file '%s' already exists."
 msgstr "La dosiero '%s' jam ekzistas."
 
-#: src/gtkam-save.c:324 src/gtkam-tree.c:632
+#: ../src/gtkam-save.c:321 ../src/gtkam-tree.c:636
 #, c-format
 msgid "Could not save file to '%s'."
 msgstr "Ne eblis konservi la dosieron al '%s'."
 
-#: src/gtkam-save.c:364 src/gtkam-tree.c:665
+#: ../src/gtkam-save.c:361 ../src/gtkam-tree.c:669
 #, c-format
 msgid "Could not get '%s' from folder '%s'."
 msgstr "Ne eblis akiri '%s' el la dosierujo '%s'."
 
-#: src/gtkam-save.c:495
+#: ../src/gtkam-save.c:492
 msgid "There is nothing to be saved."
 msgstr "Estas nenio por konservi."
 
-#: src/gtkam-save.c:507
+#: ../src/gtkam-save.c:504
 msgid "Downloading file"
 msgstr "Elŝutado de dosiero"
 
-#: src/gtkam-save.c:509
+#: ../src/gtkam-save.c:506
 #, c-format
 msgid "Downloading %i files"
 msgstr "Elŝutado de %i dosieroj"
 
-#: src/gtkam-save.c:516 src/gtkam-tree.c:741
+#: ../src/gtkam-save.c:513 ../src/gtkam-tree.c:745
 #, c-format
 msgid "Downloading %i files..."
 msgstr "Elŝutado de %i dosieroj..."
 
-#: src/gtkam-save.c:567 src/gtkam-tree.c:756
+#: ../src/gtkam-save.c:564 ../src/gtkam-tree.c:760
 #, c-format
 msgid "Problem getting '%s' from folder '%s'."
 msgstr "Problemo dum akiro de '%s' el la dosierujo '%s'."
 
-#: src/gtkam-save.c:641
+#: ../src/gtkam-save.c:638
 msgid "What to save:"
 msgstr "Kion konservi:"
 
-#: src/gtkam-save.c:653
+#: ../src/gtkam-save.c:650
 msgid "Save photos"
 msgstr "Konservi fotojn"
 
-#: src/gtkam-save.c:657
+#: ../src/gtkam-save.c:654
 msgid "Photos will be saved if this is checked"
 msgstr "Fotoj estos savitaj se tio ĉi estos markita"
 
-#: src/gtkam-save.c:661
+#: ../src/gtkam-save.c:658
 msgid "Save raw data"
 msgstr "Konservi krudan datumaron"
 
-#: src/gtkam-save.c:664
+#: ../src/gtkam-save.c:661
 msgid "Raw data will be saved if this is checked"
 msgstr "Kruda datumaro estos savita se tio ĉi estos markita"
 
-#: src/gtkam-save.c:668
+#: ../src/gtkam-save.c:665
 msgid "Save audio data"
 msgstr "Konservi son-datumaron"
 
-#: src/gtkam-save.c:671
+#: ../src/gtkam-save.c:668
 msgid "Audio data will be saved if this is checked"
 msgstr "Son-datumaro estos savita se tio ĉi estos markita"
 
-#: src/gtkam-save.c:675
+#: ../src/gtkam-save.c:672
 msgid "Save thumbnails"
 msgstr "Konservi miniaturojn"
 
-#: src/gtkam-save.c:678
+#: ../src/gtkam-save.c:675
 msgid "Thumbnails will be saved if this is checked"
 msgstr "Miniaturoj estos savitaj se tio ĉi estos markita"
 
-#: src/gtkam-save.c:682
+#: ../src/gtkam-save.c:679
 msgid "Save EXIF data"
 msgstr "Konservi EXIF-datumaron"
 
-#: src/gtkam-save.c:685
+#: ../src/gtkam-save.c:682
 msgid "EXIF data will be saved if this is checked"
 msgstr "EXIF-datumaro estos savitaj se tio ĉi estos markita"
 
-#: src/gtkam-save.c:694
+#: ../src/gtkam-save.c:691
 msgid "Open image(s) with: "
 msgstr "Malfermi bildo(j)n per: "
 
-#: src/gtkam-save.c:701
+#: ../src/gtkam-save.c:698
 msgid "Type in the name of the program you want to run, leave blank for none"
-msgstr "Entajpu la nomon de la programo vi deziras lanĉi, lasu malplene se neniu"
+msgstr ""
+"Entajpu la nomon de la programo vi deziras lanĉi, lasu malplene se neniu"
 
-#: src/gtkam-save.c:707
+#. Filenames provided by camera
+#: ../src/gtkam-save.c:704
 msgid "Use filename(s) provided by the camera"
 msgstr "Uzi dosiernomo(j)n difinitaj de la kamerao"
 
-#: src/gtkam-save.c:711
+#: ../src/gtkam-save.c:708
 msgid "Choose whether to use the filename provided by the camera"
 msgstr "Por elekti ĉu oni uzu la dosiernomon difinitan de la kamerao"
 
-#: src/gtkam-save.c:725
+#: ../src/gtkam-save.c:722
 msgid "Filename prefix: "
 msgstr "Dosiernoma prefikso: "
 
-#: src/gtkam-save.c:734
+#: ../src/gtkam-save.c:731
 msgid "Start numbering with: "
 msgstr "Eknombrigi per: "
 
-#: src/gtkam-save.c:776
+#. First case: We have only one file.
+#: ../src/gtkam-save.c:773
 #, c-format
 msgid "Save '%s'..."
 msgstr "Konservi '%s'..."
 
-#: src/gtkam-save.c:796
+#. Second case: We have multiple files to save.
+#: ../src/gtkam-save.c:793
 msgid "Save photos..."
 msgstr "Konservi fotojn..."
 
-#: src/gtkam-tree.c:296
+#: ../src/gtkam-tree.c:296
 #, c-format
 msgid "Listing folders in '%s'..."
 msgstr "Listigado de dosierujoj en '%s'..."
 
-#: src/gtkam-tree.c:317
+#: ../src/gtkam-tree.c:317
 #, c-format
 msgid "Could not list folders in '%s'."
 msgstr "Ne eblis listigi la dosierujojn en '%s'."
 
-#: src/gtkam-tree.c:414
+#: ../src/gtkam-tree.c:414
 #, c-format
 msgid "Could not open '%s'."
 msgstr "Ne eblis malfermi '%s'."
 
-#: src/gtkam-tree.c:421
+#: ../src/gtkam-tree.c:421
 #, c-format
 msgid "Uploading '%s' into folder '%s'..."
 msgstr "Alŝutado de '%s' en la dosierujon '%s'..."
 
-#: src/gtkam-tree.c:441
+#: ../src/gtkam-tree.c:445
 #, c-format
 msgid "Could not upload '%s' into '%s'."
 msgstr "Ne eblis alŝuti '%s' en '%s'-n."
 
-#: src/gtkam-tree.c:465
+#: ../src/gtkam-tree.c:469
 #, c-format
 msgid "Upload into '%s'..."
 msgstr "Alŝuti en '%s'-n..."
 
-#: src/gtkam-tree.c:541
+#: ../src/gtkam-tree.c:545
 #, c-format
 msgid "Removing directory '%s'..."
 msgstr "Forigado de la dosierujo '%s'..."
 
-#: src/gtkam-tree.c:558
+#: ../src/gtkam-tree.c:562
 #, c-format
 msgid "Could not remove directory '%s'."
 msgstr "Ne eblis forigi la dosierujon '%s'."
 
-#: src/gtkam-tree.c:718
+#: ../src/gtkam-tree.c:722
 #, c-format
 msgid "Could not create directory '%s'"
 msgstr "Ne eblis krei la disierujon '%s'"
 
-#: src/gtkam-tree.c:730
+#: ../src/gtkam-tree.c:734
 #, c-format
 msgid "Downloading file from '%s'"
 msgstr "Elŝutado de dosiero el '%s'"
 
-#: src/gtkam-tree.c:732
+#: ../src/gtkam-tree.c:736
 #, c-format
 msgid "Downloading %i files from '%s'"
 msgstr "Elŝutado de %i dosieroj el '%s'"
 
-#: src/gtkam-tree.c:782
+#. Recurse into subfolders
+#: ../src/gtkam-tree.c:786
 #, c-format
 msgid "Listing subfolders in folder '%s'..."
 msgstr "Listigado de subdosierujoj en la dosierujo '%s'..."
 
-#: src/gtkam-tree.c:801
+#: ../src/gtkam-tree.c:805
 #, c-format
 msgid "Could not get subfolders list for folder '%s'"
 msgstr "Ne eblis akiri subdosierujo-liston el la dosierujo '%s'"
 
-#: src/gtkam-tree.c:864
+#: ../src/gtkam-tree.c:868
 #, c-format
 msgid "Download '%s' subtree to..."
 msgstr "Elŝuti subarbon '%s' al..."
 
-#: src/gtkam-tree.c:902
+#: ../src/gtkam-tree.c:906
 msgid "Getting information about the camera..."
 msgstr "Akirado de informaro pri la kamerao..."
 
-#: src/gtkam-tree.c:906
+#: ../src/gtkam-tree.c:910
 msgid "Getting information about the driver..."
 msgstr "Akirado de informaro pri la pelilo..."
 
-#: src/gtkam-tree.c:910
+#: ../src/gtkam-tree.c:914
 msgid "Getting manual..."
 msgstr "Akirado de manlibro..."
 
-#: src/gtkam-tree.c:941
+#: ../src/gtkam-tree.c:945
 msgid "Could not retrieve information."
 msgstr "Ne eblis ricevi informaron."
 
-#: src/gtkam-tree.c:1044
+#: ../src/gtkam-tree.c:1048
 msgid "Select Camera"
 msgstr "Elekti Kameraon"
 
-#: src/gtkam-tree.c:1112
+#: ../src/gtkam-tree.c:1116
 msgid "Could not capture."
 msgstr "Ne eblis kapti."
 
-#: src/gtkam-tree.c:1151
+#: ../src/gtkam-tree.c:1155
 msgid "/Upload file..."
 msgstr "/Alŝuti dosieron..."
 
-#: src/gtkam-tree.c:1152
+#: ../src/gtkam-tree.c:1156
 msgid "/Make directory..."
 msgstr "/Krei dosierujon..."
 
-#: src/gtkam-tree.c:1153
+#: ../src/gtkam-tree.c:1157
 msgid "/Delete directory"
 msgstr "/Forigi dosierujon..."
 
-#: src/gtkam-tree.c:1154
+#: ../src/gtkam-tree.c:1158
 msgid "/Save directory tree..."
 msgstr "/Konservi dosieruj-arbon..."
 
-#: src/gtkam-tree.c:1156
+#: ../src/gtkam-tree.c:1160
 msgid "/Capture image..."
 msgstr "/Kapti bildon..."
 
-#: src/gtkam-tree.c:1157
+#: ../src/gtkam-tree.c:1161
 msgid "/View camera preferences"
 msgstr "/Vidi kamerao-agordojn"
 
-#: src/gtkam-tree.c:1159
+#: ../src/gtkam-tree.c:1163
 msgid "/View camera summary"
 msgstr "/Vidi kamerao-resumon"
 
-#: src/gtkam-tree.c:1160
+#: ../src/gtkam-tree.c:1164
 msgid "/View camera manual"
 msgstr "/Vidi kamerao-manlibron"
 
-#: src/gtkam-tree.c:1161
+#: ../src/gtkam-tree.c:1165
 msgid "/View driver details"
 msgstr "/Vidi detalojn pri la pelilo"
 
-#: src/gtkam-tree.c:1163
+#: ../src/gtkam-tree.c:1167
 msgid "/Select camera..."
 msgstr "/Elekti kameraon..."
 
-#: src/gtkam-tree.c:1164
+#: ../src/gtkam-tree.c:1168
 msgid "/Remove camera"
 msgstr "/Forigi kameraon..."
 
-#: src/gtkam-tree.c:1194
+#: ../src/gtkam-tree.c:1198
 msgid "_Add camera..."
 msgstr "_Aldoni kameraon..."
 
-#: src/gtkam-tree.c:1294
+#: ../src/gtkam-tree.c:1298
 msgid "Please right-click to access additional menus"
 msgstr "Bonvole dekstre-klaku por aliri aldonajn menuojn"
 
-#: src/gtkam-tree.c:1323
+#: ../src/gtkam-tree.c:1327
 msgid "Folder"
 msgstr "Dosierujo"
 
-#: src/gtkam-tree.c:1416
+#: ../src/gtkam-tree.c:1420
 msgid "Loading cameras..."
 msgstr "Ŝargado je kameraoj..."
 
-#: src/gtkam-util.c:44
+#: ../src/gtkam-util.c:44
 #, c-format
-msgid "Could not display '%s'. Either the image type ('%s') is not supported by gtk or the file itself is corrupt."
-msgstr "Ne eblis montrigi '%s'. Aŭ la bildo-tipo ('%s') ne estas subtenata de gtk aŭ la dosiero mem estas disrompita."
+msgid ""
+"Could not display '%s'. Either the image type ('%s') is not supported by gtk "
+"or the file itself is corrupt."
+msgstr ""
+"Ne eblis montrigi '%s'. Aŭ la bildo-tipo ('%s') ne estas subtenata de gtk aŭ "
+"la dosiero mem estas disrompita."
 
-#: src/gtkam-version.c:100
-msgid "ALWAYS INCLUDE THE FOLLOWING LINES WHEN SENDING DEBUG MESSAGES TO THE MAILING LIST:"
-msgstr "ĈIAM INKLUZIVU LA JENAJN LINIOJN DUM SENDADO DE SENERARIGAJ MESAĜOJ AL LA DISKUT-LISTO:"
+#: ../src/gtkam-version.c:100
+msgid ""
+"ALWAYS INCLUDE THE FOLLOWING LINES WHEN SENDING DEBUG MESSAGES TO THE "
+"MAILING LIST:"
+msgstr ""
+"ĈIAM INKLUZIVU LA JENAJN LINIOJN DUM SENDADO DE SENERARIGAJ MESAĜOJ AL LA "
+"DISKUT-LISTO:"
 
-#: src/gtkam-viewer.c:245
+#: ../src/gtkam-viewer.c:245
 #, c-format
 msgid "Downloading '%s' from folder '%s'..."
 msgstr "Elŝutado de '%s' el la dosierujo '%s'..."
 
-#: src/gtkam-viewer.c:298
+#: ../src/gtkam-viewer.c:298
 #, c-format
 msgid "Could not download '%s' from folder '%s'."
 msgstr "Ne eblis elŝuti '%s' el la dosierujo '%s'."
 
-#: src/main.c:113
+#: ../src/main.c:113
 msgid "Image Download Program"
 msgstr "Programo por Elŝuti Bildojn"
+
+#~ msgid "Name:"
+#~ msgstr "Nomo:"
+
+#~ msgid "Changing name of '%s' to '%s'..."
+#~ msgstr "Ŝanĝado de la nomo de '%s' al '%s'..."
+
+#~ msgid "Could not change the name of '%s' to '%s'."
+#~ msgstr "Ne eblis ŝanĝi la nomon de '%s' al '%s'."

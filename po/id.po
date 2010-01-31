@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gtkam 0.1.16.1\n"
 "Report-Msgid-Bugs-To: gphoto-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2008-12-05 20:23+0100\n"
+"POT-Creation-Date: 2010-01-31 19:37+0100\n"
 "PO-Revision-Date: 2008-12-27 16:52+0700\n"
 "Last-Translator: Andhika Padmawan <andhika.padmawan@gmail.com>\n"
 "Language-Team: Indonesian <translation-team-id@lists.sourceforge.net>\n"
@@ -15,373 +15,385 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/gtkam-chooser.c:231 src/gtkam-chooser.c:253
+#: ../gtkam.desktop.in.h:1
+#, fuzzy
+msgid "Browse and download images from an attached digital camera"
+msgstr "Tangkap citra dari kamera digital"
+
+#: ../gtkam.desktop.in.h:2
+msgid "Gtkam Digital Camera Browser"
+msgstr ""
+
+#. Port?
+#: ../src/gtkam-chooser.c:231 ../src/gtkam-chooser.c:253
 msgid "None"
 msgstr "Tak Ada"
 
-#: src/gtkam-chooser.c:261 src/gtkam-chooser.c:368 src/gtkam-chooser.c:632
-#: src/gtkam-chooser.c:666
+#. Speed?
+#. Update speed combo
+#: ../src/gtkam-chooser.c:261 ../src/gtkam-chooser.c:368
+#: ../src/gtkam-chooser.c:632 ../src/gtkam-chooser.c:666
 msgid "Best"
 msgstr "Terbaik"
 
-#: src/gtkam-chooser.c:268
+#.
+#. * Initialize the camera to check if it is really there. Exit
+#. * afterwards because other applications could need the camera, too.
+#.
+#: ../src/gtkam-chooser.c:268
 msgid "Initializing camera..."
 msgstr "Menginisialisasi kamera..."
 
-#: src/gtkam-chooser.c:282
+#: ../src/gtkam-chooser.c:282
 msgid "Could not initialize camera."
 msgstr "Tak dapat menginisialisasi kamera."
 
-#: src/gtkam-chooser.c:359
+#: ../src/gtkam-chooser.c:359
 #, c-format
 msgid "Could not get abilities of model '%s'."
 msgstr "Tak bisa mendapatkan kemampuan model '%s'."
 
-#: src/gtkam-chooser.c:407
+#: ../src/gtkam-chooser.c:407
 msgid "Detecting cameras..."
 msgstr "Mendeteksi kamera..."
 
-#: src/gtkam-chooser.c:416
+#: ../src/gtkam-chooser.c:416
 msgid "No cameras detected."
 msgstr "Tak ada kamera yang terdeteksi."
 
-#: src/gtkam-chooser.c:433
+#: ../src/gtkam-chooser.c:433
 msgid "Could not detect any cameras."
 msgstr "Tak dapat mendeteksi kamera apapun."
 
-#: src/gtkam-chooser.c:568
+#: ../src/gtkam-chooser.c:568
 msgid "Add Camera"
 msgstr "Tambah Kamera"
 
-#: src/gtkam-chooser.c:583
+#: ../src/gtkam-chooser.c:583
 msgid "Model:"
 msgstr "Model:"
 
-#: src/gtkam-chooser.c:595
+#: ../src/gtkam-chooser.c:595
 msgid "Detect"
 msgstr "Deteksi"
 
-#: src/gtkam-chooser.c:601
+#: ../src/gtkam-chooser.c:601
 msgid "Detect USB camera"
 msgstr "Deteksi kamera USB"
 
-#: src/gtkam-chooser.c:603
+#: ../src/gtkam-chooser.c:603
 msgid "Port:"
 msgstr "Pangkalan:"
 
-#: src/gtkam-chooser.c:624 src/gtkam-chooser.c:656
+#: ../src/gtkam-chooser.c:624 ../src/gtkam-chooser.c:656
 msgid "Speed:"
 msgstr "Kecepatan:"
 
-#: src/gtkam-chooser.c:637 src/gtkam-chooser.c:672
+#: ../src/gtkam-chooser.c:637 ../src/gtkam-chooser.c:672
 msgid "Allow multiple frontends"
 msgstr "Izinkan banyak ujung depan"
 
-#: src/gtkam-chooser.c:644
+#: ../src/gtkam-chooser.c:644
 msgid "Enhanced"
 msgstr "Tingkatkan"
 
-#: src/gtkam-chooser.c:737
+#: ../src/gtkam-chooser.c:737
 msgid "Could not get number of supported camera models"
 msgstr "Tak bisa mendapatkan jumlah model kamera yang didukung"
 
-#: src/gtkam-chooser.c:767
+#: ../src/gtkam-chooser.c:767
 msgid "Could not get number of ports."
 msgstr "Tak bisa mendapatkan jumlah pangkalan."
 
-#: src/gtkam-config.c:163
+#: ../src/gtkam-config.c:163
 msgid "Applying configuration..."
 msgstr "Menerapkan konfigurasi..."
 
-#: src/gtkam-config.c:179
+#: ../src/gtkam-config.c:179
 msgid "Could not apply configuration."
 msgstr "Tak dapat menerapkan konfigurasi."
 
-#: src/gtkam-config.c:240
+#: ../src/gtkam-config.c:246
 msgid "No additional information available. (1)"
 msgstr "Tak ada informasi tambahan yang tersedia. (1)"
 
-#: src/gtkam-config.c:245
+#: ../src/gtkam-config.c:251
 msgid "General Settings"
 msgstr "Pengaturan Umum"
 
-#: src/gtkam-config.c:320
+#: ../src/gtkam-config.c:326
 msgid "Could not execute command."
 msgstr "Tak dapat mengeksekusi perintah."
 
-#: src/gtkam-config.c:524
+#: ../src/gtkam-config.c:530
 msgid "No additional information available. (2)"
 msgstr "Tak ada informasi tambahan yang tersedia. (2)"
 
-#: src/gtkam-config.c:561
+#. Make it easy for users to select the system's time
+#: ../src/gtkam-config.c:567
 msgid "Set to system's time"
 msgstr "Atur ke waktu sistem"
 
-#: src/gtkam-config.c:595
+#: ../src/gtkam-config.c:601
 msgid "No additional information available. (3)"
 msgstr "Tak ada informasi tambahan yang tersedia. (3)"
 
-#: src/gtkam-config.c:620
+#: ../src/gtkam-config.c:626
 msgid "No additional information available. (4)"
 msgstr "Tak ada informasi tambahan yang tersedia. (4)"
 
-#: src/gtkam-config.c:667
+#: ../src/gtkam-config.c:673
 msgid "No additional information available. (5)"
 msgstr "Tak ada informasi tambahan yang tersedia. (5)"
 
-#: src/gtkam-config.c:687
+#: ../src/gtkam-config.c:693
 msgid "No additional information available. (6)"
 msgstr "Tak ada informasi tambahan yang tersedia. (6)"
 
-#: src/gtkam-config.c:728
+#: ../src/gtkam-config.c:734
 msgid "Getting configuration..."
 msgstr "Mengambil konfigurasi..."
 
-#: src/gtkam-config.c:743
+#: ../src/gtkam-config.c:749
 msgid "Could not get configuration."
 msgstr "Tak bisa mengambil konfigurasi."
 
-#: src/gtkam-debug.c:240
+#: ../src/gtkam-debug.c:240
 msgid "Save As..."
 msgstr "Simpan Sebagai..."
 
-#: src/gtkam-debug.c:262
+#: ../src/gtkam-debug.c:262
 #, c-format
 msgid "Could not open '%s'!"
 msgstr "Tak dapat membuka '%s'!"
 
-#: src/gtkam-debug.c:309
+#: ../src/gtkam-debug.c:309
 msgid "Type of messages to log:"
 msgstr "Jenis pesan untuk catatan:"
 
-#: src/gtkam-debug.c:313
+#: ../src/gtkam-debug.c:313
 msgid "Error"
 msgstr "Galat"
 
-#: src/gtkam-debug.c:320
+#: ../src/gtkam-debug.c:320
 msgid "Verbose"
 msgstr "Verbose"
 
-#: src/gtkam-debug.c:327
+#: ../src/gtkam-debug.c:327
 msgid "Debug"
 msgstr "Awakutu"
 
-#: src/gtkam-debug.c:334
+#: ../src/gtkam-debug.c:334
 msgid "Data"
 msgstr "Data"
 
-#: src/gtkam-delete.c:179
+#: ../src/gtkam-delete.c:179
 #, c-format
 msgid "Deleting all files in '%s'..."
 msgstr "Menghapus semua berkas di '%s'..."
 
-#: src/gtkam-delete.c:200
+#: ../src/gtkam-delete.c:200
 #, c-format
 msgid "Could not delete all files in '%s'."
 msgstr "Tak dapat menghapus semua berkas di '%s'."
 
-#: src/gtkam-delete.c:236
+#: ../src/gtkam-delete.c:236
 #, c-format
 msgid "Deleting file '%s' from folder '%s'..."
 msgstr "Menghapus berkas '%s' dari folder '%s'..."
 
-#: src/gtkam-delete.c:257
+#: ../src/gtkam-delete.c:257
 #, c-format
 msgid "Could not delete file '%s' in folder '%s'."
 msgstr "Tak dapat menghapus berkas '%s' di folder '%s'."
 
-#: src/gtkam-delete.c:386
+#: ../src/gtkam-delete.c:386
 #, c-format
 msgid "Do you really want to delete all the files in '%s'?"
 msgstr "Apakah anda ingin menghapus semua berkas di '%s'?"
 
-#: src/gtkam-delete.c:389
+#: ../src/gtkam-delete.c:389
 #, c-format
 msgid "Do you really want to delete '%s'?"
 msgstr "Apakah anda ingin menghapus '%s'?"
 
-#: src/gtkam-delete.c:392
+#: ../src/gtkam-delete.c:392
 #, c-format
 msgid "Do you really want to delete the selected %i files?"
 msgstr "Apakah anda ingin menghapus berkas terpilih %i?"
 
-#: src/gtkam-delete.c:398
+#: ../src/gtkam-delete.c:398
 msgid "Delete these files?"
 msgstr "Hapus berkas ini?"
 
-#: src/gtkam-exif.c:137
+#: ../src/gtkam-exif.c:137
 #, c-format
 msgid "Getting EXIF information for file '%s' in folder '%s'..."
 msgstr "Mendapatkan informasi EXIF untuk berkas '%s' di folder '%s'..."
 
-#: src/gtkam-exif.c:153
+#: ../src/gtkam-exif.c:153
 #, c-format
 msgid "Could not get EXIF information for '%s' in folder '%s'."
 msgstr "Tak bisa mendapatkan informasi EXIF untuk '%s' di folder '%s'."
 
-#: src/gtkam-exif.c:166
+#: ../src/gtkam-exif.c:166
 msgid "Could not interpret EXIF data."
 msgstr "Tak dapat menerjemahkan data EXIF."
 
-#: src/gtkam-exif.c:175
+#: ../src/gtkam-exif.c:175
 msgid "The EXIF data could not be retrieved from the file."
 msgstr "Data EXIF tak dapat diterima dari berkas."
 
-#: src/gtkam-exif.c:192
+#: ../src/gtkam-exif.c:192
 msgid "Gtkam has been compiled without EXIF support."
 msgstr "Gtkam telah dikompilasi tanpa sokongan EXIF."
 
-#: src/gtkam-gimp.c:67 src/gtkam-gimp.c:68
+#: ../src/gtkam-gimp.c:67 ../src/gtkam-gimp.c:68
 msgid "Captures images from digital camera"
 msgstr "Tangkap citra dari kamera digital"
 
 #. TRANSLATORS: do not translate <Toolbox>/File/Acquire, but only the Capture from Camera part
-#: src/gtkam-gimp.c:71
+#: ../src/gtkam-gimp.c:71
 msgid "<Toolbox>/File/Acquire/Capture from Camera..."
 msgstr "<Toolbox>/Berkas/Ambil/Tangkap dari Kamera..."
 
-#: src/gtkam-gimp.c:75 src/gtkam-gimp.c:76
+#: ../src/gtkam-gimp.c:75 ../src/gtkam-gimp.c:76
 msgid "Loads files from digital cameras"
 msgstr "Muat berkas dari kamera digital"
 
 #. TRANSLATORS: do not translate <Toolbox>/File/Acquire, but only the Load from Camera part
-#: src/gtkam-gimp.c:81
+#: ../src/gtkam-gimp.c:81
 msgid "<Toolbox>/File/Acquire/Load from Camera..."
 msgstr "<Toolbox>/Berkas/Ambil/Muat dari Kamera..."
 
-#: src/gtkam-gimp.c:194 src/gtkam-list.c:510
+#: ../src/gtkam-gimp.c:194 ../src/gtkam-list.c:505
 #, c-format
 msgid "Downloading '%s' from '%s'..."
 msgstr "Mengunduh '%s' dari '%s'..."
 
-#: src/gtkam-gimp.c:212
+#: ../src/gtkam-gimp.c:212
 #, c-format
 msgid "Could not download file '%s' from folder '%s'."
 msgstr "Tak dapat mengunduh berkas '%s' dari folder '%s."
 
-#: src/gtkam-gimp.c:245
+#: ../src/gtkam-gimp.c:245
 msgid "Image"
 msgstr "Citra"
 
-#: src/gtkam-info.c:165
+#: ../src/gtkam-info.c:165
 #, c-format
 msgid "Setting information for file '%s' in '%s'..."
 msgstr "Mengatur informasi untuk berkas '%s' di '%s'..."
 
-#: src/gtkam-info.c:186
+#: ../src/gtkam-info.c:186
 #, c-format
 msgid "Could not set file information for '%s' in folder '%s'"
 msgstr "Tak dapat mengatur informasi berkas untuk '%s' di folder '%s'"
 
-#: src/gtkam-info.c:295
+#. Get file info
+#: ../src/gtkam-info.c:270
 #, c-format
 msgid "Getting information about file '%s' in folder '%s'..."
 msgstr "Mendapatkan informasi tentang berkas '%s' di folder '%s'..."
 
-#: src/gtkam-info.c:307
+#: ../src/gtkam-info.c:282
 #, c-format
 msgid "Could not get information about file '%s' in folder '%s'."
 msgstr "Tak bisa mendapatkan informasi tentang berkas '%s' di folder '%s'."
 
-#: src/gtkam-info.c:335
+#: ../src/gtkam-info.c:310
 msgid "File"
 msgstr "Berkas"
 
-#: src/gtkam-info.c:341
-msgid "Name:"
-msgstr "Nama:"
-
-#: src/gtkam-info.c:364 src/gtkam-info.c:473 src/gtkam-info.c:522
+#: ../src/gtkam-info.c:316 ../src/gtkam-info.c:425 ../src/gtkam-info.c:474
 msgid "MIME type:"
 msgstr "Tipe MIME:"
 
-#: src/gtkam-info.c:382
+#: ../src/gtkam-info.c:334
 msgid "Last modified:"
 msgstr "Terakhir dimodifikasi:"
 
-#: src/gtkam-info.c:403 src/gtkam-info.c:490 src/gtkam-info.c:539
+#: ../src/gtkam-info.c:355 ../src/gtkam-info.c:442 ../src/gtkam-info.c:491
 msgid "Size:"
 msgstr "Ukuran:"
 
-#: src/gtkam-info.c:410 src/gtkam-info.c:546
+#: ../src/gtkam-info.c:362 ../src/gtkam-info.c:498
 #, c-format
 msgid "%liK (%li bytes)"
 msgstr "%liK (%li bita)"
 
-#: src/gtkam-info.c:425
+#: ../src/gtkam-info.c:377
 msgid "Permissions:"
 msgstr "Hak akses:"
 
-#: src/gtkam-info.c:437
+#: ../src/gtkam-info.c:389
 msgid "Read"
 msgstr "Baca"
 
-#: src/gtkam-info.c:448
+#: ../src/gtkam-info.c:400
 msgid "Delete"
 msgstr "Hapus"
 
-#: src/gtkam-info.c:467 src/gtkam-list.c:940
+#: ../src/gtkam-info.c:419 ../src/gtkam-list.c:892
 msgid "Preview"
 msgstr "Pratayang"
 
-#: src/gtkam-info.c:516
+#: ../src/gtkam-info.c:468
 msgid "Audio"
 msgstr "Audio"
 
-#: src/gtkam-list.c:321
+#: ../src/gtkam-list.c:322
 #, c-format
 msgid "Downloading thumbnail of '%s' from folder '%s'..."
 msgstr "Mengunduh miniatur '%s' dari folder '%s'..."
 
-#: src/gtkam-list.c:851
-#, c-format
-msgid "Changing name of '%s' to '%s'..."
-msgstr "Mengganti nama '%s' ke '%s'..."
-
-#: src/gtkam-list.c:861
-#, c-format
-msgid "Could not change the name of '%s' to '%s'."
-msgstr "Tak dapat mengganti nama '%s' ke '%s'."
-
-#: src/gtkam-list.c:875
+#: ../src/gtkam-list.c:826
 msgid "/_View with..."
 msgstr "/_Tampilkan dengan..."
 
-#: src/gtkam-list.c:876
+#: ../src/gtkam-list.c:827
 msgid "/View with.../Built-in viewer"
 msgstr "/Tampilkan dengan.../Penampil tertanam"
 
-#: src/gtkam-list.c:878
+#: ../src/gtkam-list.c:829
 msgid "/View file _properties"
 msgstr "/Tampilkan _properti berkas"
 
-#: src/gtkam-list.c:880
+#: ../src/gtkam-list.c:831
 msgid "/View _EXIF data"
 msgstr "/Tampilkan data _EXIF"
 
-#: src/gtkam-list.c:883
+#: ../src/gtkam-list.c:834
 msgid "/_Save"
 msgstr "/_Simpan"
 
-#: src/gtkam-list.c:884
+#: ../src/gtkam-list.c:835
 msgid "/_Delete"
 msgstr "/_Hapus"
 
-#: src/gtkam-list.c:946
+#: ../src/gtkam-list.c:898
 msgid "Name"
 msgstr "Nama"
 
-#: src/gtkam-list.c:968 src/gtkam-tree.c:686
+#: ../src/gtkam-list.c:904
+msgid "Time"
+msgstr ""
+
+#: ../src/gtkam-list.c:926 ../src/gtkam-tree.c:690
 #, c-format
 msgid "Listing files in folder '%s'..."
 msgstr "Mengurutkan berkas di folder '%s'..."
 
-#: src/gtkam-list.c:985 src/gtkam-tree.c:703
+#: ../src/gtkam-list.c:943 ../src/gtkam-tree.c:707
 #, c-format
 msgid "Could not get file list for folder '%s'"
 msgstr "Tak bisa mendapatkan senarai untuk folder '%s'"
 
-#: src/gtkam-main.c:425
+#: ../src/gtkam-list.c:960
+msgid "Unknown"
+msgstr ""
+
+#: ../src/gtkam-main.c:425
 msgid ""
 "gtkam is a program that lets you download\n"
 "images from many digital cameras. It uses\n"
@@ -397,11 +409,11 @@ msgstr ""
 "\n"
 "Nikmati dunia gphoto yang menakjubkan!"
 
-#: src/gtkam-main.c:436
+#: ../src/gtkam-main.c:436
 msgid "Many others"
 msgstr "Banyak lainnya"
 
-#: src/gtkam-main.c:469
+#: ../src/gtkam-main.c:469
 #, c-format
 msgid ""
 "%s\n"
@@ -414,7 +426,7 @@ msgstr ""
 "%s %s dengan opsi:\n"
 "    %s\n"
 
-#: src/gtkam-main.c:473
+#: ../src/gtkam-main.c:473
 #, c-format
 msgid ""
 "%s\n"
@@ -425,450 +437,474 @@ msgstr ""
 "%s %s dengan opsi:\n"
 "    %s\n"
 
-#: src/gtkam-main.c:548
+#: ../src/gtkam-main.c:548
 msgid "_File"
 msgstr "_Berkas"
 
-#: src/gtkam-main.c:549
+#: ../src/gtkam-main.c:549
 msgid "_Save Photos"
 msgstr "_Simpan Foto"
 
-#: src/gtkam-main.c:550
+#: ../src/gtkam-main.c:550
 msgid "_Delete Photos"
 msgstr "_Hapus Foto"
 
-#: src/gtkam-main.c:551 src/gtkam-main.c:553
+#: ../src/gtkam-main.c:551 ../src/gtkam-main.c:553
 msgid "_Selected"
 msgstr "_Terpilih"
 
-#: src/gtkam-main.c:552 src/gtkam-main.c:554 src/gtkam-main.c:561
+#: ../src/gtkam-main.c:552 ../src/gtkam-main.c:554 ../src/gtkam-main.c:561
 msgid "_All"
 msgstr "Sem_ua"
 
-#: src/gtkam-main.c:555
+#: ../src/gtkam-main.c:555
 msgid "_Quit"
 msgstr "_Keluar"
 
-#: src/gtkam-main.c:556
+#: ../src/gtkam-main.c:556
 msgid "_View"
 msgstr "Ta_mpilan"
 
-#: src/gtkam-main.c:557
+#: ../src/gtkam-main.c:557
 msgid "Zoom _In"
 msgstr "Pembesaran ke _Dalam"
 
-#: src/gtkam-main.c:558
+#: ../src/gtkam-main.c:558
 msgid "Zoom _100"
 msgstr "Pembesaran _100"
 
-#: src/gtkam-main.c:559
+#: ../src/gtkam-main.c:559
 msgid "Zoom _Out"
 msgstr "Pebesaran ke _Luar"
 
-#: src/gtkam-main.c:560
+#: ../src/gtkam-main.c:560
 msgid "_Select"
 msgstr "_Pilih"
 
-#: src/gtkam-main.c:562
+#: ../src/gtkam-main.c:562
 msgid "_Inverse"
 msgstr "Ke_balikan"
 
-#: src/gtkam-main.c:563
+#: ../src/gtkam-main.c:563
 msgid "_None"
 msgstr "Tak a_da"
 
-#: src/gtkam-main.c:564
+#: ../src/gtkam-main.c:564
 msgid "_Camera"
 msgstr "Kame_ra"
 
-#: src/gtkam-main.c:565
+#: ../src/gtkam-main.c:565
 msgid "_Add Camera..."
 msgstr "Tamba_h Kamera... "
 
-#: src/gtkam-main.c:566
+#: ../src/gtkam-main.c:566
 msgid "_Rescan"
 msgstr "Pindai _Ulang"
 
-#: src/gtkam-main.c:567
+#: ../src/gtkam-main.c:567
 msgid "_Help"
 msgstr "Ba_ntuan"
 
-#: src/gtkam-main.c:569
+#: ../src/gtkam-main.c:569
 msgid "_Contents"
 msgstr "I_si"
 
-#: src/gtkam-main.c:571
+#: ../src/gtkam-main.c:571
 msgid "_Debug"
 msgstr "_Awakutu"
 
-#: src/gtkam-main.c:572
+#: ../src/gtkam-main.c:572
 msgid "_About"
 msgstr "Ten_tang"
 
-#: src/gtkam-main.c:577
+#: ../src/gtkam-main.c:577
 msgid "_View Thumbnails"
 msgstr "Tampilkan _Miniatur"
 
-#: src/gtkam-mkdir.c:151
+#: ../src/gtkam-mkdir.c:151
 #, c-format
 msgid "Creating folder '%s' in folder '%s'..."
 msgstr "Membuat folder '%s' di folder '%s'..."
 
-#: src/gtkam-mkdir.c:185
+#: ../src/gtkam-mkdir.c:185
 #, c-format
 msgid "Could not create folder '%s' in folder '%s'."
 msgstr "Tak dapat membuat folder '%s' di folder '%s'."
 
-#: src/gtkam-mkdir.c:211
+#: ../src/gtkam-mkdir.c:211
 #, c-format
 msgid "Please choose a name for the directory that should be created in '%s':"
 msgstr "Silakan pilih nama untuk direktori yang harus dibuat di '%s':"
 
-#: src/gtkam-mkdir.c:227
+#: ../src/gtkam-mkdir.c:227
 msgid "New directory"
 msgstr "Direktori baru"
 
-#: src/gtkam-port.c:146
+#: ../src/gtkam-port.c:146
 #, c-format
-msgid "The port '%s' could not be found. Please make sure that the port exists."
-msgstr "Pangkalan '%s' tak dapat ditemukan. Tolong pastikan bahwa pangkalan tersebut ada."
+msgid ""
+"The port '%s' could not be found. Please make sure that the port exists."
+msgstr ""
+"Pangkalan '%s' tak dapat ditemukan. Tolong pastikan bahwa pangkalan tersebut "
+"ada."
 
-#: src/gtkam-port.c:180
+#: ../src/gtkam-port.c:180
 msgid "Please specify the path to the port your camera is attached to:"
 msgstr "Silakan tentukan alamat ke pangkalan tempat kamera anda tersambung:"
 
-#: src/gtkam-preview.c:186 src/gtkam-tree.c:1094
+#. The camera doesn't support previews. Capture an image.
+#: ../src/gtkam-preview.c:186 ../src/gtkam-tree.c:1098
 msgid "Capturing image..."
 msgstr "Menangkap citra..."
 
-#: src/gtkam-preview.c:208
+#: ../src/gtkam-preview.c:208
 msgid "Could not capture image."
 msgstr "Tak dapat menangkap citra."
 
-#: src/gtkam-preview.c:346 src/gtkam-preview.c:409
+#: ../src/gtkam-preview.c:346 ../src/gtkam-preview.c:409
 msgid "Capture"
 msgstr "Tangkap"
 
-#: src/gtkam-preview.c:372
+#: ../src/gtkam-preview.c:372
 msgid "0 degrees"
 msgstr "0 derajat"
 
-#: src/gtkam-preview.c:380
+#: ../src/gtkam-preview.c:380
 msgid "Don't rotate thumbnail"
 msgstr "Jangan rotasi miniatur"
 
-#: src/gtkam-preview.c:382
+#: ../src/gtkam-preview.c:382
 msgid "-90 degrees"
 msgstr "-90 derajat"
 
-#: src/gtkam-preview.c:389
+#: ../src/gtkam-preview.c:389
 msgid "Rotate thumbnail by -90 degrees"
 msgstr "Rotasi miniatur -90 derajat"
 
-#: src/gtkam-preview.c:391
+#: ../src/gtkam-preview.c:391
 msgid "+90 degrees"
 msgstr "+90 derajat"
 
-#: src/gtkam-preview.c:398
+#: ../src/gtkam-preview.c:398
 msgid "Rotate thumbnail by 90 degrees"
 msgstr "Rotasi miniatur 90 derajat"
 
-#: src/gtkam-preview.c:400
+#: ../src/gtkam-preview.c:400
 msgid "180 degrees"
 msgstr "180 derajat"
 
-#: src/gtkam-preview.c:407
+#: ../src/gtkam-preview.c:407
 msgid "Rotate thumbnail by 180 degrees"
 msgstr "Rotasi miniatur 180 derajat"
 
-#: src/gtkam-save.c:302 src/gtkam-tree.c:615
+#: ../src/gtkam-save.c:299 ../src/gtkam-tree.c:619
 #, c-format
 msgid "The file '%s' already exists."
 msgstr "Berkas '%s' telah ada."
 
-#: src/gtkam-save.c:324 src/gtkam-tree.c:632
+#: ../src/gtkam-save.c:321 ../src/gtkam-tree.c:636
 #, c-format
 msgid "Could not save file to '%s'."
 msgstr "Tak dapat menyimpan ke '%s'."
 
-#: src/gtkam-save.c:364 src/gtkam-tree.c:665
+#: ../src/gtkam-save.c:361 ../src/gtkam-tree.c:669
 #, c-format
 msgid "Could not get '%s' from folder '%s'."
 msgstr "Tak bisa mendapatkan '%s' dari folder '%s'."
 
-#: src/gtkam-save.c:495
+#: ../src/gtkam-save.c:492
 msgid "There is nothing to be saved."
 msgstr "Tak ada yang akan disimpan."
 
-#: src/gtkam-save.c:507
+#: ../src/gtkam-save.c:504
 msgid "Downloading file"
 msgstr "Mengunduh berkas"
 
-#: src/gtkam-save.c:509
+#: ../src/gtkam-save.c:506
 #, c-format
 msgid "Downloading %i files"
 msgstr "Mengunduh %i berkas"
 
-#: src/gtkam-save.c:516 src/gtkam-tree.c:741
+#: ../src/gtkam-save.c:513 ../src/gtkam-tree.c:745
 #, c-format
 msgid "Downloading %i files..."
 msgstr "Mengunduh %i berkas..."
 
-#: src/gtkam-save.c:567 src/gtkam-tree.c:756
+#: ../src/gtkam-save.c:564 ../src/gtkam-tree.c:760
 #, c-format
 msgid "Problem getting '%s' from folder '%s'."
 msgstr "Masalah mendapatkan '%s' dari folder '%s'."
 
-#: src/gtkam-save.c:641
+#: ../src/gtkam-save.c:638
 msgid "What to save:"
 msgstr "Apa yang ingin disimpan:"
 
-#: src/gtkam-save.c:653
+#: ../src/gtkam-save.c:650
 msgid "Save photos"
 msgstr "Simpan foto"
 
-#: src/gtkam-save.c:657
+#: ../src/gtkam-save.c:654
 msgid "Photos will be saved if this is checked"
 msgstr "Foto akan disimpan jika ini dicentang"
 
-#: src/gtkam-save.c:661
+#: ../src/gtkam-save.c:658
 msgid "Save raw data"
 msgstr "Simpan data mentah"
 
-#: src/gtkam-save.c:664
+#: ../src/gtkam-save.c:661
 msgid "Raw data will be saved if this is checked"
 msgstr "Data mentah akan disimpan jika ini dicentang"
 
-#: src/gtkam-save.c:668
+#: ../src/gtkam-save.c:665
 msgid "Save audio data"
 msgstr "Simpan data audio"
 
-#: src/gtkam-save.c:671
+#: ../src/gtkam-save.c:668
 msgid "Audio data will be saved if this is checked"
 msgstr "Data audio akan disimpan jika ini dicentang"
 
-#: src/gtkam-save.c:675
+#: ../src/gtkam-save.c:672
 msgid "Save thumbnails"
 msgstr "Simpan miniatur"
 
-#: src/gtkam-save.c:678
+#: ../src/gtkam-save.c:675
 msgid "Thumbnails will be saved if this is checked"
 msgstr "Miniatur akan disimpan jika ini dicentang"
 
-#: src/gtkam-save.c:682
+#: ../src/gtkam-save.c:679
 msgid "Save EXIF data"
 msgstr "Simpan data EXIF"
 
-#: src/gtkam-save.c:685
+#: ../src/gtkam-save.c:682
 msgid "EXIF data will be saved if this is checked"
 msgstr "Data EXIF akan disimpan jika ini dicentang"
 
-#: src/gtkam-save.c:694
+#: ../src/gtkam-save.c:691
 msgid "Open image(s) with: "
 msgstr "Buka citra dengan:"
 
-#: src/gtkam-save.c:701
+#: ../src/gtkam-save.c:698
 msgid "Type in the name of the program you want to run, leave blank for none"
-msgstr "Ketik nama program yang ingin anda jalankan, biarkan kosong jika tidak ada"
+msgstr ""
+"Ketik nama program yang ingin anda jalankan, biarkan kosong jika tidak ada"
 
-#: src/gtkam-save.c:707
+#. Filenames provided by camera
+#: ../src/gtkam-save.c:704
 msgid "Use filename(s) provided by the camera"
 msgstr "Gunakan nama berkas yang disediakan oleh kamera"
 
-#: src/gtkam-save.c:711
+#: ../src/gtkam-save.c:708
 msgid "Choose whether to use the filename provided by the camera"
 msgstr "Pilih apakah ingin menggunakan nama berkas yang disediakan oleh kamera"
 
-#: src/gtkam-save.c:725
+#: ../src/gtkam-save.c:722
 msgid "Filename prefix: "
 msgstr "Awalan nama berkas:"
 
-#: src/gtkam-save.c:734
+#: ../src/gtkam-save.c:731
 msgid "Start numbering with: "
 msgstr "Mulai penomoran dengan:"
 
-#: src/gtkam-save.c:776
+#. First case: We have only one file.
+#: ../src/gtkam-save.c:773
 #, c-format
 msgid "Save '%s'..."
 msgstr "Simpan '%s'..."
 
-#: src/gtkam-save.c:796
+#. Second case: We have multiple files to save.
+#: ../src/gtkam-save.c:793
 msgid "Save photos..."
 msgstr "Simpan foto..."
 
-#: src/gtkam-tree.c:296
+#: ../src/gtkam-tree.c:296
 #, c-format
 msgid "Listing folders in '%s'..."
 msgstr "Mengurutkan folder di '%s'..."
 
-#: src/gtkam-tree.c:317
+#: ../src/gtkam-tree.c:317
 #, c-format
 msgid "Could not list folders in '%s'."
 msgstr "Tak dapat mengurutkan folder di '%s'."
 
-#: src/gtkam-tree.c:414
+#: ../src/gtkam-tree.c:414
 #, c-format
 msgid "Could not open '%s'."
 msgstr "Tak dapat membuka '%s'."
 
-#: src/gtkam-tree.c:421
+#: ../src/gtkam-tree.c:421
 #, c-format
 msgid "Uploading '%s' into folder '%s'..."
 msgstr "Mengunggah '%s' ke folder '%s'..."
 
-#: src/gtkam-tree.c:441
+#: ../src/gtkam-tree.c:445
 #, c-format
 msgid "Could not upload '%s' into '%s'."
 msgstr "Tak dapat mengunggah '%s' ke '%s'."
 
-#: src/gtkam-tree.c:465
+#: ../src/gtkam-tree.c:469
 #, c-format
 msgid "Upload into '%s'..."
 msgstr "Unggah ke '%s'..."
 
-#: src/gtkam-tree.c:541
+#: ../src/gtkam-tree.c:545
 #, c-format
 msgid "Removing directory '%s'..."
 msgstr "Menghapus direktori '%s'..."
 
-#: src/gtkam-tree.c:558
+#: ../src/gtkam-tree.c:562
 #, c-format
 msgid "Could not remove directory '%s'."
 msgstr "Tak dapat menghapus direktori '%s'."
 
-#: src/gtkam-tree.c:718
+#: ../src/gtkam-tree.c:722
 #, c-format
 msgid "Could not create directory '%s'"
 msgstr "Tak dapat membuat direktori '%s'"
 
-#: src/gtkam-tree.c:730
+#: ../src/gtkam-tree.c:734
 #, c-format
 msgid "Downloading file from '%s'"
 msgstr "Mengunduh berkas dari '%s'"
 
-#: src/gtkam-tree.c:732
+#: ../src/gtkam-tree.c:736
 #, c-format
 msgid "Downloading %i files from '%s'"
 msgstr "Mengunduh %i berkas dari '%s'"
 
-#: src/gtkam-tree.c:782
+#. Recurse into subfolders
+#: ../src/gtkam-tree.c:786
 #, c-format
 msgid "Listing subfolders in folder '%s'..."
 msgstr "Mengurutkan subfolder di folder '%s'..."
 
-#: src/gtkam-tree.c:801
+#: ../src/gtkam-tree.c:805
 #, c-format
 msgid "Could not get subfolders list for folder '%s'"
 msgstr "Tak bisa mendapatkan senarai subfolder untuk folder '%s'"
 
-#: src/gtkam-tree.c:864
+#: ../src/gtkam-tree.c:868
 #, c-format
 msgid "Download '%s' subtree to..."
 msgstr "Unduh subpohon '%s' ke..."
 
-#: src/gtkam-tree.c:902
+#: ../src/gtkam-tree.c:906
 msgid "Getting information about the camera..."
 msgstr "Mendapatkan informasi tentang kamera..."
 
-#: src/gtkam-tree.c:906
+#: ../src/gtkam-tree.c:910
 msgid "Getting information about the driver..."
 msgstr "Mendapatkan informasi tentang penggerak..."
 
-#: src/gtkam-tree.c:910
+#: ../src/gtkam-tree.c:914
 msgid "Getting manual..."
 msgstr "Mendapatkan manual..."
 
-#: src/gtkam-tree.c:941
+#: ../src/gtkam-tree.c:945
 msgid "Could not retrieve information."
 msgstr "Tak dapat menerima informasi."
 
-#: src/gtkam-tree.c:1044
+#: ../src/gtkam-tree.c:1048
 msgid "Select Camera"
 msgstr "Pilih Kamera"
 
-#: src/gtkam-tree.c:1112
+#: ../src/gtkam-tree.c:1116
 msgid "Could not capture."
 msgstr "Tak dapat menangkap."
 
-#: src/gtkam-tree.c:1151
+#: ../src/gtkam-tree.c:1155
 msgid "/Upload file..."
 msgstr "/Unggah berkas..."
 
-#: src/gtkam-tree.c:1152
+#: ../src/gtkam-tree.c:1156
 msgid "/Make directory..."
 msgstr "/Buat direktori..."
 
-#: src/gtkam-tree.c:1153
+#: ../src/gtkam-tree.c:1157
 msgid "/Delete directory"
 msgstr "/Hapus direktori"
 
-#: src/gtkam-tree.c:1154
+#: ../src/gtkam-tree.c:1158
 msgid "/Save directory tree..."
 msgstr "/Simpan pohon direktori..."
 
-#: src/gtkam-tree.c:1156
+#: ../src/gtkam-tree.c:1160
 msgid "/Capture image..."
 msgstr "/Tangkap citra..."
 
-#: src/gtkam-tree.c:1157
+#: ../src/gtkam-tree.c:1161
 msgid "/View camera preferences"
 msgstr "/Tampilkan pengaturan kamera"
 
-#: src/gtkam-tree.c:1159
+#: ../src/gtkam-tree.c:1163
 msgid "/View camera summary"
 msgstr "/Tampilkan ringkasan kamera"
 
-#: src/gtkam-tree.c:1160
+#: ../src/gtkam-tree.c:1164
 msgid "/View camera manual"
 msgstr "/Tampilkan manual kamera"
 
-#: src/gtkam-tree.c:1161
+#: ../src/gtkam-tree.c:1165
 msgid "/View driver details"
 msgstr "/Tampilkan detail penggerak"
 
-#: src/gtkam-tree.c:1163
+#: ../src/gtkam-tree.c:1167
 msgid "/Select camera..."
 msgstr "/Pilih kamera..."
 
-#: src/gtkam-tree.c:1164
+#: ../src/gtkam-tree.c:1168
 msgid "/Remove camera"
 msgstr "/Hapus kamera"
 
-#: src/gtkam-tree.c:1194
+#: ../src/gtkam-tree.c:1198
 msgid "_Add camera..."
 msgstr "Tambah _Kamera..."
 
-#: src/gtkam-tree.c:1294
+#: ../src/gtkam-tree.c:1298
 msgid "Please right-click to access additional menus"
 msgstr "Silakan klik kanan untuk mengakses menu tambahan"
 
-#: src/gtkam-tree.c:1323
+#: ../src/gtkam-tree.c:1327
 msgid "Folder"
 msgstr "Folder"
 
-#: src/gtkam-tree.c:1416
+#: ../src/gtkam-tree.c:1420
 msgid "Loading cameras..."
 msgstr "Memuat kamera..."
 
-#: src/gtkam-util.c:44
+#: ../src/gtkam-util.c:44
 #, c-format
-msgid "Could not display '%s'. Either the image type ('%s') is not supported by gtk or the file itself is corrupt."
-msgstr "Tak dapat menampilkan '%s'. Entah apakah tipe citra ('%s') tidak disokong oleh gtk atau berkasnya sendiri yang rusak."
+msgid ""
+"Could not display '%s'. Either the image type ('%s') is not supported by gtk "
+"or the file itself is corrupt."
+msgstr ""
+"Tak dapat menampilkan '%s'. Entah apakah tipe citra ('%s') tidak disokong "
+"oleh gtk atau berkasnya sendiri yang rusak."
 
-#: src/gtkam-version.c:100
-msgid "ALWAYS INCLUDE THE FOLLOWING LINES WHEN SENDING DEBUG MESSAGES TO THE MAILING LIST:"
+#: ../src/gtkam-version.c:100
+msgid ""
+"ALWAYS INCLUDE THE FOLLOWING LINES WHEN SENDING DEBUG MESSAGES TO THE "
+"MAILING LIST:"
 msgstr "SELALU SERTAKAN BARIS BERIKUT KETIKA MENGIRIM PESAN AWAKUTU KE MILIS:"
 
-#: src/gtkam-viewer.c:245
+#: ../src/gtkam-viewer.c:245
 #, c-format
 msgid "Downloading '%s' from folder '%s'..."
 msgstr "Mengunduh '%s' dari folder '%s'..."
 
-#: src/gtkam-viewer.c:298
+#: ../src/gtkam-viewer.c:298
 #, c-format
 msgid "Could not download '%s' from folder '%s'."
 msgstr "Tak dapat mengunduh '%s' dari folder '%s'."
 
-#: src/main.c:113
+#: ../src/main.c:113
 msgid "Image Download Program"
 msgstr "Program Pengunduh Citra"
+
+#~ msgid "Name:"
+#~ msgstr "Nama:"
+
+#~ msgid "Changing name of '%s' to '%s'..."
+#~ msgstr "Mengganti nama '%s' ke '%s'..."
+
+#~ msgid "Could not change the name of '%s' to '%s'."
+#~ msgstr "Tak dapat mengganti nama '%s' ke '%s'."

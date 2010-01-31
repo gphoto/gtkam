@@ -1,7 +1,9 @@
 [Desktop Entry]
 Encoding=UTF-8
-_Name=Gtkam Digital Camera Browser
-_Comment=Browse and download images from an attached digital camera
+Name=Gtkam Digital Camera Browser
+Name[de]=GTKam Digitalkamera Browser
+Comment=Browse and download images from an attached digital camera
+Comment[de]=Bilder von angeschlossener Kamera herunterladen
 Exec=gtkam
 Icon=gtkam-camera.png
 Terminal=false

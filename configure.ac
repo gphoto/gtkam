@@ -268,7 +268,6 @@ help/ru/Makefile
 intltool-extract
 intltool-merge
 intltool-update
-gtkam.desktop
 ])
 AC_OUTPUT()dnl
 

@@ -1,16 +1,16 @@
-# ITALIAN TRANSLATION OF GTKAM-0.1.15
+# ITALIAN TRANSLATION OF GTKAM-0.1.17
 # COPYRIGHT (C) 2008 Lutz Müller and others
 # This file is distributed under the same license as the gtkam package.
 #
 # Daniele Medri <madrid@linux.it>, 2000.
 # Marco Colombo <m.colombo@ed.ac.uk>, 2005.
-# Vincenzo Campanella <vinz65@gmail.com>, 2008.
+# Vincenzo Campanella <vinz65@gmail.com>, 2008, 2010.
 msgid ""
 msgstr ""
-"Project-Id-Version: gtkam-0.1.15\n"
+"Project-Id-Version: gtkam-0.1.17\n"
 "Report-Msgid-Bugs-To: gphoto-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2010-01-31 19:37+0100\n"
-"PO-Revision-Date: 2008-11-29 12:51+0100\n"
+"PO-Revision-Date: 2010-02-01 22:56+0100\n"
 "Last-Translator: Vincenzo Campanella <vinz65@gmail.com>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "MIME-Version: 1.0\n"
@@ -20,18 +20,17 @@ msgstr ""
 "X-Generator: KBabel 1.11.4\n"
 
 #: ../gtkam.desktop.in.h:1
-#, fuzzy
 msgid "Browse and download images from an attached digital camera"
-msgstr "Cattura le immagini dalla fotocamera digitale"
+msgstr "Esplora e scarica le immagini da una fotocamera digitale connessa"
 
 #: ../gtkam.desktop.in.h:2
 msgid "Gtkam Digital Camera Browser"
-msgstr ""
+msgstr "Gtkam esploratore di fotocamere digitali"
 
 #. Port?
 #: ../src/gtkam-chooser.c:231 ../src/gtkam-chooser.c:253
 msgid "None"
-msgstr "Nessuno"
+msgstr "Nessuna"
 
 #. Speed?
 #. Update speed combo
@@ -46,7 +45,7 @@ msgstr "Migliore"
 #.
 #: ../src/gtkam-chooser.c:268
 msgid "Initializing camera..."
-msgstr "Inizializzazione della fotocamera in corso."
+msgstr "Inizializzazione della fotocamera in corso..."
 
 #: ../src/gtkam-chooser.c:282
 msgid "Could not initialize camera."
@@ -233,15 +232,12 @@ msgstr "Eliminare questi file?"
 #: ../src/gtkam-exif.c:137
 #, c-format
 msgid "Getting EXIF information for file '%s' in folder '%s'..."
-msgstr ""
-"Recupero delle informazioni EXIF per il file «%s» nella cartella «%s» in "
-"corso..."
+msgstr "Recupero delle informazioni EXIF per il file «%s» nella cartella «%s» in corso..."
 
 #: ../src/gtkam-exif.c:153
 #, c-format
 msgid "Could not get EXIF information for '%s' in folder '%s'."
-msgstr ""
-"Impossibile recuperare le informazioni EXIF per «%s» nella cartella «%s»."
+msgstr "Impossibile recuperare le informazioni EXIF per «%s» nella cartella «%s»."
 
 #: ../src/gtkam-exif.c:166
 msgid "Could not interpret EXIF data."
@@ -295,21 +291,18 @@ msgstr "Impostazione delle informazioni per il file «%s» in «%s» in corso...
 #: ../src/gtkam-info.c:186
 #, c-format
 msgid "Could not set file information for '%s' in folder '%s'"
-msgstr ""
-"Impossibile impostare le informazioni per il file «%s» nella cartella «%s»."
+msgstr "Impossibile impostare le informazioni per il file «%s» nella cartella «%s»."
 
 #. Get file info
 #: ../src/gtkam-info.c:270
 #, c-format
 msgid "Getting information about file '%s' in folder '%s'..."
-msgstr ""
-"Recupero delle informazioni sul file «%s» nella cartella «%s» in corso..."
+msgstr "Recupero delle informazioni sul file «%s» nella cartella «%s» in corso..."
 
 #: ../src/gtkam-info.c:282
 #, c-format
 msgid "Could not get information about file '%s' in folder '%s'."
-msgstr ""
-"Impossibile recuperare le informazioni sul file «%s» nella cartella «%s»."
+msgstr "Impossibile recuperare le informazioni sul file «%s» nella cartella «%s»."
 
 #: ../src/gtkam-info.c:310
 msgid "File"
@@ -387,12 +380,12 @@ msgstr "Nome"
 
 #: ../src/gtkam-list.c:904
 msgid "Time"
-msgstr ""
+msgstr "Ora"
 
 #: ../src/gtkam-list.c:926 ../src/gtkam-tree.c:690
 #, c-format
 msgid "Listing files in folder '%s'..."
-msgstr "Elencazione dei file nella cartella «%s» in corso..."
+msgstr "Creazione dell'elenco dei file nella cartella «%s» in corso..."
 
 #: ../src/gtkam-list.c:943 ../src/gtkam-tree.c:707
 #, c-format
@@ -401,7 +394,7 @@ msgstr "Impossibile ottenere l'elenco dei file per la cartella «%s»."
 
 #: ../src/gtkam-list.c:960
 msgid "Unknown"
-msgstr ""
+msgstr "Sconosciuto"
 
 #: ../src/gtkam-main.c:425
 msgid ""
@@ -461,7 +454,7 @@ msgstr "E_limina le foto"
 
 #: ../src/gtkam-main.c:551 ../src/gtkam-main.c:553
 msgid "_Selected"
-msgstr "_Selezionata"
+msgstr "_Selezionate"
 
 #: ../src/gtkam-main.c:552 ../src/gtkam-main.c:554 ../src/gtkam-main.c:561
 msgid "_All"
@@ -509,7 +502,7 @@ msgstr "_Aggiungi fotocamera..."
 
 #: ../src/gtkam-main.c:566
 msgid "_Rescan"
-msgstr "_Riscansiona"
+msgstr "_Ripeti la scansione"
 
 #: ../src/gtkam-main.c:567
 msgid "_Help"
@@ -552,15 +545,12 @@ msgstr "Nuova directory"
 
 #: ../src/gtkam-port.c:146
 #, c-format
-msgid ""
-"The port '%s' could not be found. Please make sure that the port exists."
+msgid "The port '%s' could not be found. Please make sure that the port exists."
 msgstr "Impossibile trovare la porta «%s». Verificare se la porta esiste."
 
 #: ../src/gtkam-port.c:180
 msgid "Please specify the path to the port your camera is attached to:"
-msgstr ""
-"Specificare il percorso della porta alla quale la propria fotocamera è "
-"collegata:"
+msgstr "Specificare il percorso della porta alla quale la propria fotocamera è collegata:"
 
 #. The camera doesn't support previews. Capture an image.
 #: ../src/gtkam-preview.c:186 ../src/gtkam-tree.c:1098
@@ -633,7 +623,7 @@ msgstr "Scaricamento del file in corso..."
 #: ../src/gtkam-save.c:506
 #, c-format
 msgid "Downloading %i files"
-msgstr "Scaricamento di %i file in corso.."
+msgstr "Scaricamento di %i file in corso"
 
 #: ../src/gtkam-save.c:513 ../src/gtkam-tree.c:745
 #, c-format
@@ -643,7 +633,7 @@ msgstr "Scaricamento di %i file in corso..."
 #: ../src/gtkam-save.c:564 ../src/gtkam-tree.c:760
 #, c-format
 msgid "Problem getting '%s' from folder '%s'."
-msgstr "Problemi durante l'ottenimento di «%s» dalla cartella «%s»:"
+msgstr "Si sono verificati dei problemi durante l'ottenimento di «%s» dalla cartella «%s»:"
 
 #: ../src/gtkam-save.c:638
 msgid "What to save:"
@@ -695,9 +685,7 @@ msgstr "Aprire le immagini con:"
 
 #: ../src/gtkam-save.c:698
 msgid "Type in the name of the program you want to run, leave blank for none"
-msgstr ""
-"Inserire il nome del programma che si desidera eseguire, o lasciare vuoto se "
-"non se ne desidera nessuno"
+msgstr "Inserire il nome del programma che si desidera eseguire, o lasciare vuoto se non se ne desidera nessuno"
 
 #. Filenames provided by camera
 #: ../src/gtkam-save.c:704
@@ -730,7 +718,7 @@ msgstr "Salva le foto..."
 #: ../src/gtkam-tree.c:296
 #, c-format
 msgid "Listing folders in '%s'..."
-msgstr "Elenco delle cartelle in «%s» in corso..."
+msgstr "Creazione dell'elenco delle cartelle in «%s» in corso..."
 
 #: ../src/gtkam-tree.c:317
 #, c-format
@@ -786,7 +774,7 @@ msgstr "Scaricamento di %i file da «%s» in corso..."
 #: ../src/gtkam-tree.c:786
 #, c-format
 msgid "Listing subfolders in folder '%s'..."
-msgstr "Elenco delle sottocartelle nella cartella «%s» in corso..."
+msgstr "Creazione dell'elenco delle sottocartelle nella cartella «%s» in corso..."
 
 #: ../src/gtkam-tree.c:805
 #, c-format
@@ -872,8 +860,7 @@ msgstr "_Aggiungi fotocamera..."
 
 #: ../src/gtkam-tree.c:1298
 msgid "Please right-click to access additional menus"
-msgstr ""
-"Cliccare con il tasto destro del mouse per accedere ai menu addizionali"
+msgstr "Cliccare con il tasto destro del mouse per accedere ai menu addizionali"
 
 #: ../src/gtkam-tree.c:1327
 msgid "Folder"
@@ -885,20 +872,12 @@ msgstr "Caricamento delle fotocamere in corso..."
 
 #: ../src/gtkam-util.c:44
 #, c-format
-msgid ""
-"Could not display '%s'. Either the image type ('%s') is not supported by gtk "
-"or the file itself is corrupt."
-msgstr ""
-"Impossibile visualizzare «%s». O il tipo d'immagine («%s») non è supportato da "
-"gtk, o il file è danneggiato."
+msgid "Could not display '%s'. Either the image type ('%s') is not supported by gtk or the file itself is corrupt."
+msgstr "Impossibile visualizzare «%s». O il tipo d'immagine («%s») non è supportato da gtk, o il file è danneggiato."
 
 #: ../src/gtkam-version.c:100
-msgid ""
-"ALWAYS INCLUDE THE FOLLOWING LINES WHEN SENDING DEBUG MESSAGES TO THE "
-"MAILING LIST:"
-msgstr ""
-"INCLUDERE SEMPRE LE RIGHE SEGUENTI DURANTE L'INVIO DI MESSAGGI DI DEBUG ALLA "
-"MAILING LIST:"
+msgid "ALWAYS INCLUDE THE FOLLOWING LINES WHEN SENDING DEBUG MESSAGES TO THE MAILING LIST:"
+msgstr "INCLUDERE SEMPRE LE RIGHE SEGUENTI DURANTE L'INVIO DI MESSAGGI DI DEBUG ALLA MAILING LIST:"
 
 #: ../src/gtkam-viewer.c:245
 #, c-format

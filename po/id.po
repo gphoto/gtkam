@@ -1,14 +1,14 @@
 # Indonesian translations for gtkam package.
 # Copyright (C) 2008 Lutz Müller and others
 # This file is distributed under the same license as the gtkam package.
-# Andhika Padmawan <andhika.padmawan@gmail.com>, 2008.
+# Andhika Padmawan <andhika.padmawan@gmail.com>, 2010.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: gtkam 0.1.16.1\n"
+"Project-Id-Version: gtkam 0.1.17\n"
 "Report-Msgid-Bugs-To: gphoto-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2010-01-31 19:37+0100\n"
-"PO-Revision-Date: 2008-12-27 16:52+0700\n"
+"PO-Revision-Date: 2010-02-01 14:41-0500\n"
 "Last-Translator: Andhika Padmawan <andhika.padmawan@gmail.com>\n"
 "Language-Team: Indonesian <translation-team-id@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -16,13 +16,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: ../gtkam.desktop.in.h:1
-#, fuzzy
 msgid "Browse and download images from an attached digital camera"
-msgstr "Tangkap citra dari kamera digital"
+msgstr "Ramban dan unduh gambar dari kamera digital yang tertancap"
 
 #: ../gtkam.desktop.in.h:2
 msgid "Gtkam Digital Camera Browser"
-msgstr ""
+msgstr "Peramban Kamera Digital Gtkam"
 
 #. Port?
 #: ../src/gtkam-chooser.c:231 ../src/gtkam-chooser.c:253
@@ -250,7 +249,7 @@ msgstr "Gtkam telah dikompilasi tanpa sokongan EXIF."
 
 #: ../src/gtkam-gimp.c:67 ../src/gtkam-gimp.c:68
 msgid "Captures images from digital camera"
-msgstr "Tangkap citra dari kamera digital"
+msgstr "Tangkap gambar dari kamera digital"
 
 #. TRANSLATORS: do not translate <Toolbox>/File/Acquire, but only the Capture from Camera part
 #: ../src/gtkam-gimp.c:71
@@ -278,7 +277,7 @@ msgstr "Tak dapat mengunduh berkas '%s' dari folder '%s."
 
 #: ../src/gtkam-gimp.c:245
 msgid "Image"
-msgstr "Citra"
+msgstr "Gambar"
 
 #: ../src/gtkam-info.c:165
 #, c-format
@@ -377,7 +376,7 @@ msgstr "Nama"
 
 #: ../src/gtkam-list.c:904
 msgid "Time"
-msgstr ""
+msgstr "Waktu"
 
 #: ../src/gtkam-list.c:926 ../src/gtkam-tree.c:690
 #, c-format
@@ -391,7 +390,7 @@ msgstr "Tak bisa mendapatkan senarai untuk folder '%s'"
 
 #: ../src/gtkam-list.c:960
 msgid "Unknown"
-msgstr ""
+msgstr "Tak Diketahui"
 
 #: ../src/gtkam-main.c:425
 msgid ""
@@ -403,7 +402,7 @@ msgid ""
 "Enjoy the wonderful world of gphoto!"
 msgstr ""
 "gtkam adalah program yang mengizinkan anda\n"
-"untuk mengunduh citra dari banyak kamera digital.\n"
+"untuk mengunduh gambar dari banyak kamera digital.\n"
 "gtkam menggunakan libgphoto2. Info lebih lengkap\n"
 "tersedia di http://www.gphoto.org.\n"
 "\n"
@@ -542,11 +541,8 @@ msgstr "Direktori baru"
 
 #: ../src/gtkam-port.c:146
 #, c-format
-msgid ""
-"The port '%s' could not be found. Please make sure that the port exists."
-msgstr ""
-"Pangkalan '%s' tak dapat ditemukan. Tolong pastikan bahwa pangkalan tersebut "
-"ada."
+msgid "The port '%s' could not be found. Please make sure that the port exists."
+msgstr "Pangkalan '%s' tak dapat ditemukan. Tolong pastikan bahwa pangkalan tersebut ada."
 
 #: ../src/gtkam-port.c:180
 msgid "Please specify the path to the port your camera is attached to:"
@@ -555,11 +551,11 @@ msgstr "Silakan tentukan alamat ke pangkalan tempat kamera anda tersambung:"
 #. The camera doesn't support previews. Capture an image.
 #: ../src/gtkam-preview.c:186 ../src/gtkam-tree.c:1098
 msgid "Capturing image..."
-msgstr "Menangkap citra..."
+msgstr "Menangkap gambar..."
 
 #: ../src/gtkam-preview.c:208
 msgid "Could not capture image."
-msgstr "Tak dapat menangkap citra."
+msgstr "Tak dapat menangkap gambar."
 
 #: ../src/gtkam-preview.c:346 ../src/gtkam-preview.c:409
 msgid "Capture"
@@ -681,12 +677,11 @@ msgstr "Data EXIF akan disimpan jika ini dicentang"
 
 #: ../src/gtkam-save.c:691
 msgid "Open image(s) with: "
-msgstr "Buka citra dengan:"
+msgstr "Buka gambar dengan:"
 
 #: ../src/gtkam-save.c:698
 msgid "Type in the name of the program you want to run, leave blank for none"
-msgstr ""
-"Ketik nama program yang ingin anda jalankan, biarkan kosong jika tidak ada"
+msgstr "Ketik nama program yang ingin anda jalankan, biarkan kosong jika tidak ada"
 
 #. Filenames provided by camera
 #: ../src/gtkam-save.c:704
@@ -829,7 +824,7 @@ msgstr "/Simpan pohon direktori..."
 
 #: ../src/gtkam-tree.c:1160
 msgid "/Capture image..."
-msgstr "/Tangkap citra..."
+msgstr "/Tangkap gambar..."
 
 #: ../src/gtkam-tree.c:1161
 msgid "/View camera preferences"
@@ -873,17 +868,11 @@ msgstr "Memuat kamera..."
 
 #: ../src/gtkam-util.c:44
 #, c-format
-msgid ""
-"Could not display '%s'. Either the image type ('%s') is not supported by gtk "
-"or the file itself is corrupt."
-msgstr ""
-"Tak dapat menampilkan '%s'. Entah apakah tipe citra ('%s') tidak disokong "
-"oleh gtk atau berkasnya sendiri yang rusak."
+msgid "Could not display '%s'. Either the image type ('%s') is not supported by gtk or the file itself is corrupt."
+msgstr "Tak dapat menampilkan '%s'. Entah apakah tipe gambar ('%s') tidak disokong oleh gtk atau berkasnya sendiri yang rusak."
 
 #: ../src/gtkam-version.c:100
-msgid ""
-"ALWAYS INCLUDE THE FOLLOWING LINES WHEN SENDING DEBUG MESSAGES TO THE "
-"MAILING LIST:"
+msgid "ALWAYS INCLUDE THE FOLLOWING LINES WHEN SENDING DEBUG MESSAGES TO THE MAILING LIST:"
 msgstr "SELALU SERTAKAN BARIS BERIKUT KETIKA MENGIRIM PESAN AWAKUTU KE MILIS:"
 
 #: ../src/gtkam-viewer.c:245
@@ -898,7 +887,7 @@ msgstr "Tak dapat mengunduh '%s' dari folder '%s'."
 
 #: ../src/main.c:113
 msgid "Image Download Program"
-msgstr "Program Pengunduh Citra"
+msgstr "Program Pengunduh gambar"
 
 #~ msgid "Name:"
 #~ msgstr "Nama:"

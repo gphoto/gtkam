@@ -2,8 +2,16 @@
 Encoding=UTF-8
 Name=Gtkam Digital Camera Browser
 Name[de]=GTKam Digitalkamera Browser
+Name[id]=Peramban Kamera Digital Gtkam
+Name[it]=Gtkam esploratore di fotocamere digitali
+Name[sv]=Digitalkamerabläddraren Gtkam
+Name[zh_CN]=Gtkam 数码相机浏览器
 Comment=Browse and download images from an attached digital camera
 Comment[de]=Bilder von angeschlossener Kamera herunterladen
+Comment[id]=Ramban dan unduh gambar dari kamera digital yang tertancap
+Comment[it]=Esplora e scarica le immagini da una fotocamera digitale connessa
+Comment[sv]=Bläddra och hämta bilder från en ansluten digitalkamera
+Comment[zh_CN]=浏览并从已连接的数码相机下载图片
 Exec=gtkam
 Icon=gtkam-camera.png
 Terminal=false

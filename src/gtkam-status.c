@@ -123,11 +123,9 @@ gtkam_status_get_type (void)
 }
 
 static void 
-status_func (GPContext *c, const char *format, va_list args,
-             void *data)
+status_func (GPContext *c, const char *msg, void *data)
 {
         GtkamStatus *status = GTKAM_STATUS (data);
-        gchar *msg;
 
         /* Remove old status messages */
         if (status->priv->message_id)
@@ -136,35 +134,25 @@ status_func (GPContext *c, const char *format, va_list args,
 	else
 		gtk_widget_show (status->priv->status);
 
-        msg = g_strdup_vprintf (format, args);
         status->priv->message_id = gtk_statusbar_push (
                         GTK_STATUSBAR (status->priv->status), 0, msg);
-        g_free (msg);
 }
 
 static void
-message_func (GPContext *context, const char *format, va_list args,
-	      void *data)
+message_func (GPContext *context, const char *msg, void *data)
 {
-	GtkamStatus *status = GTKAM_STATUS (data);
-	gchar *msg;
 	GtkWidget *d;
 
-	status = NULL;
-
-	msg = g_strdup_vprintf (format, args);
 	d = gtkam_close_new (msg);
-	g_free (msg);
 	gtk_widget_show (d);
 }
 
 static unsigned int
-start_func (GPContext *c, float target, const char *format,
-            va_list args, void *data)
+start_func (GPContext *c, float target, const char *msg, void *data)
 {
         GtkamStatus *status = GTKAM_STATUS (data);
         GtkWidget *progress;
-        gchar *msg, *msg_translated;
+        gchar *msg_translated;
 	guint i;
 
         progress = gtk_progress_bar_new ();
@@ -182,9 +170,7 @@ start_func (GPContext *c, float target, const char *format,
 		g_array_index (status->priv->target, gfloat, i) = target;
 	}
 
-        msg = g_strdup_vprintf (format, args);
 	msg_translated = g_locale_to_utf8 (msg, -1, NULL, NULL, NULL);
-	g_free (msg);
         gtk_progress_bar_set_text (GTK_PROGRESS_BAR (progress), msg_translated);
         g_free (msg_translated);
 

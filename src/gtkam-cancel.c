@@ -156,27 +156,22 @@ cancel_func (GPContext *c, void *data)
 }
 
 static void
-message_func (GPContext *context, const char *format, va_list args,
-              void *data)
+message_func (GPContext *context, const char *msg, void *data)
 {
 	GtkamCancel *cancel = GTKAM_CANCEL (data);
-        gchar *msg;
         GtkWidget *d;
 
 	cancel = NULL;
-        msg = g_strdup_vprintf (format, args);
         d = gtkam_close_new (msg);
-        g_free (msg);
         gtk_widget_show (d);
 }
 
 static unsigned int
-start_func (GPContext *c, float target, const char *format,
-	    va_list args, void *data)
+start_func (GPContext *c, float target, const char *msg,
+	    void *data)
 {
 	GtkamCancel *cancel = GTKAM_CANCEL (data);
 	GtkWidget *p, *label, *hbox;
-	gchar *msg;
 	unsigned int i;
 
 	hbox = gtk_hbox_new (FALSE, 5);
@@ -184,9 +179,7 @@ start_func (GPContext *c, float target, const char *format,
 	gtk_box_pack_start (GTK_BOX (GTKAM_DIALOG (cancel)->vbox), hbox,
 			    TRUE, TRUE, 0);
 
-	msg = g_strdup_vprintf (format, args);
 	label = gtk_label_new (msg);
-	g_free (msg);
 	gtk_widget_show (label);
 	gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
 

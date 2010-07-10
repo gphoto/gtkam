@@ -483,7 +483,7 @@ on_ok_clicked (GtkButton *button, GtkamSave *save)
 	unsigned int id = 0;
 	GtkamSaveData *data;
 	gchar *progname, *command;
-	GError *error;
+	GError *error = NULL;
 
 	if (count_items (save) == 0) {
 		if (!save->priv->err_shown) {
@@ -597,11 +597,12 @@ on_ok_clicked (GtkButton *button, GtkamSave *save)
 			command = g_strdup_printf ("%s%s", progname, save->priv->filelist->str);
 
 			/* FIXME Report any arising errors */
-			if (!g_spawn_command_line_async (command, &error))
+			if (!g_spawn_command_line_async (command, &error)) {
 				g_warning ("Error running command\n");
+				g_error_free (error);
+			}
 			
 			g_free (command);
-			g_free (error);	
 			g_string_free (save->priv->filelist, TRUE);
 		} 
 	}

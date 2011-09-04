@@ -254,7 +254,7 @@ msgstr "Tangkap gambar dari kamera digital"
 #. TRANSLATORS: do not translate <Toolbox>/File/Acquire, but only the Capture from Camera part
 #: ../src/gtkam-gimp.c:71
 msgid "<Toolbox>/File/Acquire/Capture from Camera..."
-msgstr "<Toolbox>/Berkas/Ambil/Tangkap dari Kamera..."
+msgstr "<Toolbox>/File/Acquire/Tangkap dari Kamera..."
 
 #: ../src/gtkam-gimp.c:75 ../src/gtkam-gimp.c:76
 msgid "Loads files from digital cameras"
@@ -263,7 +263,7 @@ msgstr "Muat berkas dari kamera digital"
 #. TRANSLATORS: do not translate <Toolbox>/File/Acquire, but only the Load from Camera part
 #: ../src/gtkam-gimp.c:81
 msgid "<Toolbox>/File/Acquire/Load from Camera..."
-msgstr "<Toolbox>/Berkas/Ambil/Muat dari Kamera..."
+msgstr "<Toolbox>/File/Acquire/Muat dari Kamera..."
 
 #: ../src/gtkam-gimp.c:194 ../src/gtkam-list.c:505
 #, c-format

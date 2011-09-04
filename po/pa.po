@@ -238,7 +238,7 @@ msgstr "ਡਿਜ਼ੀਟਲ ਕੈਮਰੇ ਤੋਂ ਚਿੱਤਰ ਲਵ�
 
 #: src/gtkam-gimp.c:72
 msgid "<Toolbox>/File/Acquire/Capture from Camera..."
-msgstr "<Toolbox>/ਫਾਇਲ/ਲਵੋ/ਕੈਮਰੋ ਤੋਂ ਲਵੋ..."
+msgstr "<Toolbox>/File/Acquire/ਕੈਮਰੋ ਤੋਂ ਲਵੋ..."
 
 #: src/gtkam-gimp.c:76 src/gtkam-gimp.c:77
 msgid "Loads files from digital cameras"
@@ -246,7 +246,7 @@ msgstr "ਡਿਜ਼ੀਟਲ ਕੈਮਰੇ ਤੋਂ ਫਾਇਲਾਂ ਲ�
 
 #: src/gtkam-gimp.c:81
 msgid "<Toolbox>/File/Acquire/Load from Camera..."
-msgstr "<Toolbox>/ਫਾਇਲ/ਲਵੋ/ਕੈਮਰੇ ਤੋਂ ਲੋਡ ਕਰੋ"
+msgstr "<Toolbox>/File/Acquire/ਕੈਮਰੇ ਤੋਂ ਲੋਡ ਕਰੋ"
 
 #: src/gtkam-gimp.c:194 src/gtkam-list.c:511
 #, c-format

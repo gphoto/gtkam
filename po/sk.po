@@ -241,7 +241,7 @@ msgstr "Zachytí obrázky z digitálneho fotoaparátu"
 #. TRANSLATORS: do not translate <Toolbox>/File/Acquire, but only the Capture from Camera part
 #: src/gtkam-gimp.c:73
 msgid "<Toolbox>/File/Acquire/Capture from Camera..."
-msgstr "<Toolbox>/Súbor/Získať/Zachytiť z fotoaparátu..."
+msgstr "<Toolbox>/File/Acquire/Zachytiť z fotoaparátu..."
 
 #: src/gtkam-gimp.c:77 src/gtkam-gimp.c:78
 msgid "Loads files from digital cameras"
@@ -250,7 +250,7 @@ msgstr "Načíta súbory z digitálnych fotoaparátov"
 #. TRANSLATORS: do not translate <Toolbox>/File/Acquire, but only the Load from Camera part
 #: src/gtkam-gimp.c:83
 msgid "<Toolbox>/File/Acquire/Load from Camera..."
-msgstr "<Toolbox>/Súbor/Získať/Načítať z fotoaparátu..."
+msgstr "<Toolbox>/File/Acquire/Načítať z fotoaparátu..."
 
 #: src/gtkam-gimp.c:196 src/gtkam-list.c:511
 #, c-format

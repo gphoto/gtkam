@@ -156,34 +156,27 @@ cancel_func (GPContext *c, void *data)
 }
 
 static void
-#ifdef HAVE_GP_PORT_INFO_GET_NAME
-message_func (GPContext *context, const char *msg, void *data)
-#else
-message_func (GPContext *context, const char *fmt, va_list args, void *data)
-#endif
+message_func (GPContext *context, const char *format, va_list args,
+              void *data)
 {
 	GtkamCancel *cancel = GTKAM_CANCEL (data);
+        gchar *msg;
         GtkWidget *d;
 
 	cancel = NULL;
-#ifdef HAVE_GP_PORT_INFO_GET_NAME
+        msg = g_strdup_vprintf (format, args);
         d = gtkam_close_new (msg);
-#else
-        d = gtkam_close_new (fmt);
-#endif
+        g_free (msg);
         gtk_widget_show (d);
 }
 
 static unsigned int
-#ifdef HAVE_GP_PORT_INFO_GET_NAME
-start_func (GPContext *c, float target, const char *msg,
-#else
-start_func (GPContext *c, float target, const char *fmt, va_list args,
-#endif
-	    void *data)
+start_func (GPContext *c, float target, const char *format,
+	    va_list args, void *data)
 {
 	GtkamCancel *cancel = GTKAM_CANCEL (data);
 	GtkWidget *p, *label, *hbox;
+	gchar *msg;
 	unsigned int i;
 
 	hbox = gtk_hbox_new (FALSE, 5);
@@ -191,11 +184,9 @@ start_func (GPContext *c, float target, const char *fmt, va_list args,
 	gtk_box_pack_start (GTK_BOX (GTKAM_DIALOG (cancel)->vbox), hbox,
 			    TRUE, TRUE, 0);
 
-#ifdef HAVE_GP_PORT_INFO_GET_NAME
+	msg = g_strdup_vprintf (format, args);
 	label = gtk_label_new (msg);
-#else
-	label = gtk_label_new (fmt);
-#endif
+	g_free (msg);
 	gtk_widget_show (label);
 	gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 0);
 

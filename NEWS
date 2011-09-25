@@ -1,3 +1,7 @@
+gtkam 0.1.18
+
+* fixed translation issues for GIMP
+
 gtkam 0.1.17
 
 * ported to libgphoto2 2.5

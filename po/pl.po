@@ -257,7 +257,7 @@ msgstr "Uzyskaj obraz z aparatu cyfrowego"
 #. TRANSLATORS: do not translate <Toolbox>/File/Acquire, but only the Capture from Camera part
 #: ../src/gtkam-gimp.c:71
 msgid "<Toolbox>/File/Acquire/Capture from Camera..."
-msgstr "<Narzędzia>/File/Acquire/Obraz z aparatu..."
+msgstr "<Toolbox>/File/Acquire/Obraz z aparatu..."
 
 #: ../src/gtkam-gimp.c:75 ../src/gtkam-gimp.c:76
 msgid "Loads files from digital cameras"
@@ -266,7 +266,7 @@ msgstr "Ładuje pliki z aparatu cyfrowego"
 #. TRANSLATORS: do not translate <Toolbox>/File/Acquire, but only the Load from Camera part
 #: ../src/gtkam-gimp.c:81
 msgid "<Toolbox>/File/Acquire/Load from Camera..."
-msgstr "<Narzędzia>/File/Acquire/Załaduj z aparatu..."
+msgstr "<Toolbox>/File/Acquire/Załaduj z aparatu..."
 
 #: ../src/gtkam-gimp.c:194 ../src/gtkam-list.c:505
 #, c-format

@@ -104,11 +104,11 @@ gtkam_context_get_type (void)
 }
 
 static void
-error_func (GPContext *c, const char *format, va_list args, void *data)
+error_func (GPContext *c, const char *msg, void *data)
 {
 	GtkamContext *context = GTKAM_CONTEXT (data);
 
-	g_ptr_array_add (context->errors, g_strdup_vprintf (format, args));
+	g_ptr_array_add (context->errors, g_strdup (msg));
 }
 
 GtkamContext *

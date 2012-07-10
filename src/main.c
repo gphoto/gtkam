@@ -46,13 +46,9 @@
 #include "util.h"
 
 static void
-log_func (GPLogLevel level, const char *domain, const char *format,
-	  va_list args, void *data)
+log_func (GPLogLevel level, const char *domain, const char *msg, void *data)
 {
-	fprintf (stderr, domain);
-	fprintf (stderr, ": ");
-	vfprintf (stderr, format, args);
-	fprintf (stderr, "\n");
+	fprintf (stderr, "%s: %s\n", domain, msg);
 }
 
 static void

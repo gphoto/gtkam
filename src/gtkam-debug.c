@@ -152,11 +152,10 @@ gtkam_debug_get_type (void)
 }
 
 static void
-log_func (GPLogLevel level, const char *domain, const char *format,
-	  va_list args, void *data)
+log_func (GPLogLevel level, const char *domain, const char *msg,
+	  void *data)
 {
 	GtkamDebug *d;
-	gchar *message;
 	GtkTextTag *t = NULL;
 	GtkTextIter i;
 
@@ -189,11 +188,9 @@ log_func (GPLogLevel level, const char *domain, const char *format,
 	}
 
 	/* Show the message */
-	message = g_strdup_vprintf (format, args);
 	gtk_text_buffer_get_end_iter (d->priv->buffer, &i);
-       	gtk_text_buffer_insert_with_tags (d->priv->buffer, &i, message,
-					  strlen (message), t, NULL);
-	g_free (message);
+       	gtk_text_buffer_insert_with_tags (d->priv->buffer, &i, msg,
+					  strlen (msg), t, NULL);
 	gtk_text_buffer_get_end_iter (d->priv->buffer, &i);
 	gtk_text_buffer_insert (d->priv->buffer, &i, "\n", 1);
 }

@@ -1,5 +1,5 @@
 AC_PREREQ(2.59)
-AC_INIT([GTK frontend for libgphoto2], [0.1.18], [gphoto-devel@lists.sourceforge.net], [gtkam])
+AC_INIT([GTK frontend for libgphoto2], [0.2.0], [gphoto-devel@lists.sourceforge.net], [gtkam])
 AC_CONFIG_SRCDIR([src/gtkam-main.c])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4m])
@@ -77,7 +77,7 @@ AM_CPPFLAGS="$AM_CPPFLAGS -DLOCALEDIR=\\\"${localedir}\\\""
 dnl ---------------------------------------------------------------------------
 dnl Libraries we need for gtkam
 dnl ---------------------------------------------------------------------------
-GP_CHECK_LIBRARY([LIBGPHOTO2], [libgphoto2], [>= 2.4.0])
+GP_CHECK_LIBRARY([LIBGPHOTO2], [libgphoto2], [>= 2.5.0])
 
 save_LIBS="$LIBS"
 LIBS="$LIBS $LIBGPHOTO2_LIBS"

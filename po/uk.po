@@ -1,416 +1,384 @@
-# Ukrainian translation of gPhoto.
-# Copyright ╘ 2000 Free Software Foundation, Inc.
-# Yuri Syrota <rasta@renome.rovno.ua>, 2000.
+# Ukrainian translation of gtkam
+# Copyright (C) 2000 Free Software Foundation, Inc.
+# This file is distributed under the same license as the gtkam package.
 #
+# Yuri Chornoivan <yurchor@ukr.net>, 2012.
 msgid ""
 msgstr ""
-"Project-Id-Version: gphoto\n"
+"Project-Id-Version: gtkam 0.2.0\n"
 "Report-Msgid-Bugs-To: gphoto-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2005-12-30 02:16-0500\n"
-"PO-Revision-Date: 2000-06-27 16:33+0200\n"
-"Last-Translator: Yuri Syrota <rasta@renome.rovno.ua>\n"
-"Language-Team: Ukrainian <ru@li.org>\n"
+"POT-Creation-Date: 2012-07-10 09:51+0200\n"
+"PO-Revision-Date: 2012-07-28 21:11+0300\n"
+"Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
+"Language-Team: Ukrainian <translation-team-uk@lists.sourceforge.net>\n"
+"Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8-bit\n"
+"Plural-Forms: nplurals=4; plural=n==1 ? 3 : n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Generator: Lokalize 1.5\n"
 
-#: src/gtkam-chooser.c:232 src/gtkam-chooser.c:254
-#, fuzzy
+#: src/gtkam-chooser.c:231 src/gtkam-chooser.c:253
 msgid "None"
-msgstr "Ні"
+msgstr "Немає"
 
-#: src/gtkam-chooser.c:262 src/gtkam-chooser.c:369 src/gtkam-chooser.c:622
-#: src/gtkam-chooser.c:656
-#, fuzzy
+#: src/gtkam-chooser.c:261 src/gtkam-chooser.c:368 src/gtkam-chooser.c:632
+#: src/gtkam-chooser.c:666
 msgid "Best"
-msgstr "Скасувати"
+msgstr "Найкращий"
 
-#: src/gtkam-chooser.c:269
-#, fuzzy
+#: src/gtkam-chooser.c:268
 msgid "Initializing camera..."
-msgstr "Не вдалось отримати зображення."
+msgstr "Ініціалізуємо фотоапарат…"
 
-#: src/gtkam-chooser.c:283
-#, fuzzy
+#: src/gtkam-chooser.c:282
 msgid "Could not initialize camera."
-msgstr "Не вдалось отримати зображення."
+msgstr "Не вдалося ініціалізувати фотоапарат."
 
-#: src/gtkam-chooser.c:360
-#, fuzzy, c-format
+#: src/gtkam-chooser.c:359
+#, c-format
 msgid "Could not get abilities of model '%s'."
-msgstr "Не вдалось отримати кількості зображень"
+msgstr "Не вдалося визначити можливості моделі «%s»."
 
-#: src/gtkam-chooser.c:408
-#, fuzzy
+#: src/gtkam-chooser.c:407
 msgid "Detecting cameras..."
-msgstr "Вибрать модель/порт..."
+msgstr "Виявлення фотоапаратів…"
 
 #: src/gtkam-chooser.c:416
 msgid "No cameras detected."
-msgstr ""
+msgstr "Фотоапаратів не виявлено."
 
 #: src/gtkam-chooser.c:433
-#, fuzzy
 msgid "Could not detect any cameras."
-msgstr "Не вдалось отримати зображення."
+msgstr "Не вдалося виявити жодного фотоапарата."
 
-#: src/gtkam-chooser.c:558
-#, fuzzy
+#: src/gtkam-chooser.c:568
 msgid "Add Camera"
-msgstr "Вибрать модель/порт..."
+msgstr "Додати фотоапарат"
 
-#: src/gtkam-chooser.c:573
-#, fuzzy
+#: src/gtkam-chooser.c:583
 msgid "Model:"
-msgstr "Модель камери:"
+msgstr "Модель:"
 
-#: src/gtkam-chooser.c:585
+#: src/gtkam-chooser.c:595
 msgid "Detect"
-msgstr ""
+msgstr "Виявити"
 
-#: src/gtkam-chooser.c:591
-#, fuzzy
+#: src/gtkam-chooser.c:601
 msgid "Detect USB camera"
-msgstr "Вибрать модель/порт..."
+msgstr "Виявити фотоапарат, з’єднаний з USB"
 
-#: src/gtkam-chooser.c:593
+#: src/gtkam-chooser.c:603
 msgid "Port:"
 msgstr "Порт:"
 
-#: src/gtkam-chooser.c:614 src/gtkam-chooser.c:646
+#: src/gtkam-chooser.c:624 src/gtkam-chooser.c:656
 msgid "Speed:"
-msgstr ""
+msgstr "Швидкість:"
 
-#: src/gtkam-chooser.c:627 src/gtkam-chooser.c:662
+#: src/gtkam-chooser.c:637 src/gtkam-chooser.c:672
 msgid "Allow multiple frontends"
-msgstr ""
+msgstr "Дозволити декілька оболонок"
 
-#: src/gtkam-chooser.c:634
+#: src/gtkam-chooser.c:644
 msgid "Enhanced"
-msgstr ""
+msgstr "Покращений"
 
-#: src/gtkam-chooser.c:727
-#, fuzzy
+#: src/gtkam-chooser.c:737
 msgid "Could not get number of supported camera models"
-msgstr "Не вдалось отримати кількості зображень"
+msgstr "Не вдалося отримати дані щодо кількості підтримуваних моделей фотоапаратів."
 
-#: src/gtkam-chooser.c:757
-#, fuzzy
+#: src/gtkam-chooser.c:767
 msgid "Could not get number of ports."
-msgstr "Не вдалось отримати кількості зображень"
+msgstr "Не вдалося отримати дані щодо кількості портів."
 
-#: src/gtkam-config.c:164
-#, fuzzy
+#: src/gtkam-config.c:163
 msgid "Applying configuration..."
-msgstr "Конфігурація камери"
+msgstr "Застосування налаштувань…"
 
-#: src/gtkam-config.c:180
-#, fuzzy
+#: src/gtkam-config.c:179
 msgid "Could not apply configuration."
-msgstr "Конфігурація камери"
-
-#: src/gtkam-config.c:241
-msgid "No additional information available. (1)"
-msgstr ""
+msgstr "Не вдалося застосувати налаштування."
 
 #: src/gtkam-config.c:246
-#, fuzzy
+msgid "No additional information available. (1)"
+msgstr "Додаткові дані недоступні. (1)"
+
+#: src/gtkam-config.c:251
 msgid "General Settings"
-msgstr "Налаштування кольорів"
+msgstr "Загальні параметри"
 
-#: src/gtkam-config.c:321
-#, fuzzy
+#: src/gtkam-config.c:326
 msgid "Could not execute command."
-msgstr "ПОМИЛКА: не вдалось стерти зображення.\n"
+msgstr "Не вдалося виконати команду."
 
-#: src/gtkam-config.c:525
+#: src/gtkam-config.c:530
 msgid "No additional information available. (2)"
-msgstr ""
+msgstr "Додаткові дані недоступні. (2)"
 
-#: src/gtkam-config.c:562
+#: src/gtkam-config.c:567
 msgid "Set to system's time"
-msgstr ""
+msgstr "Встановити у час системи"
 
-#: src/gtkam-config.c:596
+#: src/gtkam-config.c:601
 msgid "No additional information available. (3)"
-msgstr ""
+msgstr "Додаткові дані недоступні. (3)"
 
-#: src/gtkam-config.c:621
+#: src/gtkam-config.c:626
 msgid "No additional information available. (4)"
-msgstr ""
+msgstr "Додаткові дані недоступні. (4)"
 
-#: src/gtkam-config.c:668
+#: src/gtkam-config.c:673
 msgid "No additional information available. (5)"
-msgstr ""
+msgstr "Додаткові дані недоступні. (5)"
 
-#: src/gtkam-config.c:688
+#: src/gtkam-config.c:693
 msgid "No additional information available. (6)"
-msgstr ""
+msgstr "Додаткові дані недоступні. (6)"
 
-#: src/gtkam-config.c:729
-#, fuzzy
+#: src/gtkam-config.c:734
 msgid "Getting configuration..."
-msgstr "Не вдалось отримати перегляд"
+msgstr "Отримання налаштувань…"
 
-#: src/gtkam-config.c:744
-#, fuzzy
+#: src/gtkam-config.c:749
 msgid "Could not get configuration."
-msgstr "Не вдалось отримати перегляд"
+msgstr "Не вдалося отримати налаштування."
 
-#: src/gtkam-debug.c:242
-#, fuzzy
+#: src/gtkam-debug.c:237
 msgid "Save As..."
-msgstr "Зберегти зображення..."
+msgstr "Зберегти як…"
 
-#: src/gtkam-debug.c:264
-#, fuzzy, c-format
+#: src/gtkam-debug.c:259
+#, c-format
 msgid "Could not open '%s'!"
-msgstr ""
-"Не вдалося відкрити:\n"
-"%s"
+msgstr "Не вдалося відкрити «%s»!"
 
-#: src/gtkam-debug.c:311
+#: src/gtkam-debug.c:306
 msgid "Type of messages to log:"
-msgstr ""
+msgstr "Тип повідомлень для журналу:"
 
-#: src/gtkam-debug.c:315
+#: src/gtkam-debug.c:310
 msgid "Error"
-msgstr ""
+msgstr "Помилка"
 
-#: src/gtkam-debug.c:322
+#: src/gtkam-debug.c:317
 msgid "Verbose"
-msgstr ""
+msgstr "Докладні"
 
-#: src/gtkam-debug.c:329
+#: src/gtkam-debug.c:324
 msgid "Debug"
-msgstr ""
+msgstr "Діагностика"
 
-#: src/gtkam-debug.c:336
+#: src/gtkam-debug.c:331
 msgid "Data"
-msgstr ""
+msgstr "Дані"
 
-#: src/gtkam-delete.c:181
+#: src/gtkam-delete.c:179
 #, c-format
 msgid "Deleting all files in '%s'..."
-msgstr ""
+msgstr "Вилучення всіх файлів у «%s»…"
 
-#: src/gtkam-delete.c:201
-#, fuzzy, c-format
+#: src/gtkam-delete.c:200
+#, c-format
 msgid "Could not delete all files in '%s'."
-msgstr "Не вдалось відновити #%i"
+msgstr "Не вдалося вилучити всі файли у «%s»."
 
-#: src/gtkam-delete.c:234
-#, fuzzy, c-format
+#: src/gtkam-delete.c:236
+#, c-format
 msgid "Deleting file '%s' from folder '%s'..."
-msgstr "Не вдалось відновити #%i"
+msgstr "Вилучення файла «%s» з теки «%s»…"
 
-#: src/gtkam-delete.c:255
-#, fuzzy, c-format
+#: src/gtkam-delete.c:257
+#, c-format
 msgid "Could not delete file '%s' in folder '%s'."
-msgstr "Не вдалось отримати перегляд"
+msgstr "Не вдалося вилучити файл «%s» у теці «%s»."
 
-#: src/gtkam-delete.c:384
-#, fuzzy, c-format
+#: src/gtkam-delete.c:386
+#, c-format
 msgid "Do you really want to delete all the files in '%s'?"
-msgstr "Не вдалось відновити #%i"
+msgstr "Ви справді хочете вилучити всі файли у «%s»?"
 
-#: src/gtkam-delete.c:387
+#: src/gtkam-delete.c:389
 #, c-format
 msgid "Do you really want to delete '%s'?"
-msgstr ""
+msgstr "Ви справді хочете вилучити %s?"
 
-#: src/gtkam-delete.c:390
+#: src/gtkam-delete.c:392
 #, c-format
 msgid "Do you really want to delete the selected %i files?"
-msgstr ""
+msgstr "Ви справді бажаєте вилучити позначені %i файлів?"
 
-#: src/gtkam-delete.c:396
+#: src/gtkam-delete.c:398
 msgid "Delete these files?"
-msgstr ""
+msgstr "Вилучити ці файли?"
 
 #: src/gtkam-exif.c:137
-#, fuzzy, c-format
+#, c-format
 msgid "Getting EXIF information for file '%s' in folder '%s'..."
-msgstr "Не вдалось отримати перегляд"
+msgstr "Отримання даних EXIF для файла «%s» у теці «%s»…"
 
 #: src/gtkam-exif.c:153
-#, fuzzy, c-format
+#, c-format
 msgid "Could not get EXIF information for '%s' in folder '%s'."
-msgstr "Не вдалось отримати перегляд"
+msgstr "Не вдалося отримати дані EXIF щодо «%s» у теці «%s»."
 
 #: src/gtkam-exif.c:166
-#, fuzzy
 msgid "Could not interpret EXIF data."
-msgstr "Не вдалось отримати зображення."
+msgstr "Не вдалося обробити дані EXIF."
 
 #: src/gtkam-exif.c:175
 msgid "The EXIF data could not be retrieved from the file."
-msgstr ""
+msgstr "Не вдалося отримати дані EXIF з файла."
 
 #: src/gtkam-exif.c:192
 msgid "Gtkam has been compiled without EXIF support."
-msgstr ""
+msgstr "Gtkam було зібрано без підтримки EXIF."
 
-#: src/gtkam-gimp.c:69 src/gtkam-gimp.c:70
+#: src/gtkam-gimp.c:67 src/gtkam-gimp.c:68
 msgid "Captures images from digital camera"
-msgstr ""
+msgstr "Отримує зображення з цифрових фотоапаратів"
 
-#: src/gtkam-gimp.c:72
+#. TRANSLATORS: do not translate <Toolbox>/File/Acquire, but only the Capture from Camera part
+#: src/gtkam-gimp.c:71
 msgid "<Toolbox>/File/Acquire/Capture from Camera..."
-msgstr ""
+msgstr "<Toolbox>/Файл/Отримати/Захопити з фотоапарата…"
 
-#: src/gtkam-gimp.c:76 src/gtkam-gimp.c:77
+#: src/gtkam-gimp.c:75 src/gtkam-gimp.c:76
 msgid "Loads files from digital cameras"
-msgstr ""
+msgstr "Завантажує файли з цифрових фотоапаратів"
 
+#. TRANSLATORS: do not translate <Toolbox>/File/Acquire, but only the Load from Camera part
 #: src/gtkam-gimp.c:81
 msgid "<Toolbox>/File/Acquire/Load from Camera..."
-msgstr ""
+msgstr "<Toolbox>/Файл/Отримати/Завантажити з фотоапарата…"
 
-#: src/gtkam-gimp.c:194 src/gtkam-list.c:511
+#: src/gtkam-gimp.c:194 src/gtkam-list.c:505
 #, c-format
 msgid "Downloading '%s' from '%s'..."
-msgstr ""
+msgstr "Отримання «%s» з «%s»…"
 
 #: src/gtkam-gimp.c:212
-#, fuzzy, c-format
+#, c-format
 msgid "Could not download file '%s' from folder '%s'."
-msgstr "Не вдалось отримати перегляд"
+msgstr "Не вдалося отримати файл «%s» з теки «%s»."
 
 #: src/gtkam-gimp.c:245
-#, fuzzy
 msgid "Image"
-msgstr "Покажчик зображень"
+msgstr "Зображення"
 
-#: src/gtkam-info.c:166
-#, fuzzy, c-format
+#: src/gtkam-info.c:165
+#, c-format
 msgid "Setting information for file '%s' in '%s'..."
-msgstr "Не вдалось отримати перегляд"
+msgstr "Встановлення даних для файла «%s» у «%s»…"
 
-#: src/gtkam-info.c:187
-#, fuzzy, c-format
+#: src/gtkam-info.c:186
+#, c-format
 msgid "Could not set file information for '%s' in folder '%s'"
-msgstr "Не вдалось отримати перегляд"
+msgstr "Не вдалося встановити дані для «%s» у теці «%s»"
 
-#: src/gtkam-info.c:296
-#, fuzzy, c-format
+#: src/gtkam-info.c:270
+#, c-format
 msgid "Getting information about file '%s' in folder '%s'..."
-msgstr "Не вдалось отримати перегляд"
+msgstr "Отримання даних щодо файла «%s» у теці «%s»…"
 
-#: src/gtkam-info.c:308
-#, fuzzy, c-format
+#: src/gtkam-info.c:282
+#, c-format
 msgid "Could not get information about file '%s' in folder '%s'."
-msgstr "Не вдалось отримати перегляд"
+msgstr "Не вдалося отримати дані щодо файла «%s» у теці «%s»."
 
-#: src/gtkam-info.c:336
+#: src/gtkam-info.c:310
 msgid "File"
-msgstr ""
+msgstr "Файл"
 
-#: src/gtkam-info.c:342
-msgid "Name:"
-msgstr ""
+#: src/gtkam-info.c:316 src/gtkam-info.c:425 src/gtkam-info.c:474
+msgid "MIME type:"
+msgstr "Тип MIME:"
 
-#: src/gtkam-info.c:365
-msgid "Mime type:"
-msgstr ""
-
-#: src/gtkam-info.c:383
+#: src/gtkam-info.c:334
 msgid "Last modified:"
-msgstr ""
+msgstr "Останні зміни:"
 
-#: src/gtkam-info.c:404 src/gtkam-info.c:491 src/gtkam-info.c:540
+#: src/gtkam-info.c:355 src/gtkam-info.c:442 src/gtkam-info.c:491
 msgid "Size:"
-msgstr ""
+msgstr "Розмір:"
 
-#: src/gtkam-info.c:411 src/gtkam-info.c:547
+#: src/gtkam-info.c:362 src/gtkam-info.c:498
 #, c-format
 msgid "%liK (%li bytes)"
-msgstr ""
+msgstr "%liкБ (%li байтів)"
 
-#: src/gtkam-info.c:426
+#: src/gtkam-info.c:377
 msgid "Permissions:"
-msgstr ""
+msgstr "Права доступу:"
 
-#: src/gtkam-info.c:438
+#: src/gtkam-info.c:389
 msgid "Read"
-msgstr ""
+msgstr "Читати"
 
-#: src/gtkam-info.c:449
+#: src/gtkam-info.c:400
 msgid "Delete"
-msgstr ""
+msgstr "Вилучити"
 
-#: src/gtkam-info.c:468 src/gtkam-list.c:941
-#, fuzzy
+#: src/gtkam-info.c:419 src/gtkam-list.c:892
 msgid "Preview"
-msgstr "Назад"
+msgstr "Перегляд"
 
-#: src/gtkam-info.c:474
-msgid "MIME type:"
-msgstr ""
-
-#: src/gtkam-info.c:517
+#: src/gtkam-info.c:468
 msgid "Audio"
-msgstr ""
-
-#: src/gtkam-info.c:523
-msgid "MIME type: "
-msgstr ""
+msgstr "Аудіо"
 
 #: src/gtkam-list.c:322
-#, fuzzy, c-format
+#, c-format
 msgid "Downloading thumbnail of '%s' from folder '%s'..."
-msgstr "Не вдалось отримати перегляд"
+msgstr "Отримання мініатюри «%s» з теки «%s»…"
 
-#: src/gtkam-list.c:852
-#, fuzzy, c-format
-msgid "Changing name of '%s' to '%s'..."
-msgstr "Не вдалось отримати перегляд"
-
-#: src/gtkam-list.c:862
-#, fuzzy, c-format
-msgid "Could not change the name of '%s' to '%s'."
-msgstr "Не вдалось відновити #%i"
-
-#: src/gtkam-list.c:876
+#: src/gtkam-list.c:826
 msgid "/_View with..."
-msgstr ""
+msgstr "/П_ереглянути за допомогою…"
 
-#: src/gtkam-list.c:877
+#: src/gtkam-list.c:827
 msgid "/View with.../Built-in viewer"
-msgstr ""
+msgstr "/Переглянути за допомогою…/Вбудованої панелі перегляду"
 
-#: src/gtkam-list.c:879
+#: src/gtkam-list.c:829
 msgid "/View file _properties"
-msgstr ""
+msgstr "/Переглянути в_ластивості файла"
 
-#: src/gtkam-list.c:881
+#: src/gtkam-list.c:831
 msgid "/View _EXIF data"
-msgstr ""
+msgstr "/Пе_реглянути дані EXIF"
 
-#: src/gtkam-list.c:884
+#: src/gtkam-list.c:834
 msgid "/_Save"
-msgstr ""
+msgstr "/З_берегти"
 
-#: src/gtkam-list.c:885
-#, fuzzy
+#: src/gtkam-list.c:835
 msgid "/_Delete"
-msgstr "Жива камера!"
+msgstr "/В_илучити"
 
-#: src/gtkam-list.c:947
+#: src/gtkam-list.c:898
 msgid "Name"
-msgstr ""
+msgstr "Назва"
 
-#: src/gtkam-list.c:969 src/gtkam-tree.c:685
+#: src/gtkam-list.c:904
+msgid "Time"
+msgstr "Час"
+
+#: src/gtkam-list.c:926 src/gtkam-tree.c:690
 #, c-format
 msgid "Listing files in folder '%s'..."
-msgstr ""
+msgstr "Побудова списку файлів у теці «%s»…"
 
-#: src/gtkam-list.c:985 src/gtkam-tree.c:701
+#: src/gtkam-list.c:943 src/gtkam-tree.c:707
 #, c-format
 msgid "Could not get file list for folder '%s'"
-msgstr ""
+msgstr "Не вдалося отримати список файлів для теки «%s»"
 
-#: src/gtkam-main.c:426
+#: src/gtkam-list.c:960
+msgid "Unknown"
+msgstr "Невідомо"
+
+#: src/gtkam-main.c:425
 msgid ""
 "gtkam is a program that lets you download\n"
 "images from many digital cameras. It uses\n"
@@ -419,12 +387,19 @@ msgid ""
 "\n"
 "Enjoy the wonderful world of gphoto!"
 msgstr ""
+"gtkam — програма, за допомогою якої ви можете\n"
+"отримувати зображення з багатьох цифрових\n"
+"фотоапаратів. Вона використовує libgphoto2.\n"
+"Докладніші дані можна знайти на\n"
+"http://www.gphoto.org.\n"
+"\n"
+"Отримайте задоволення від чудового світу gphoto!"
 
-#: src/gtkam-main.c:437
+#: src/gtkam-main.c:436
 msgid "Many others"
-msgstr ""
+msgstr "Багато інших"
 
-#: src/gtkam-main.c:470
+#: src/gtkam-main.c:469
 #, c-format
 msgid ""
 "%s\n"
@@ -432,537 +407,466 @@ msgid ""
 "%s %s with options:\n"
 "    %s\n"
 msgstr ""
+"%s\n"
+"\n"
+"%s %s з параметрами:\n"
+"    %s\n"
 
-#: src/gtkam-main.c:474
+#: src/gtkam-main.c:473
 #, c-format
 msgid ""
 "%s\n"
 "%s %s with options:\n"
 "    %s\n"
 msgstr ""
+"%s\n"
+"%s %s з параметрами:\n"
+"    %s\n"
+
+#: src/gtkam-main.c:548
+msgid "_File"
+msgstr "_Файл"
 
 #: src/gtkam-main.c:549
-msgid "_File"
-msgstr ""
+msgid "_Save Photos"
+msgstr "З_берегти фотографії"
 
 #: src/gtkam-main.c:550
-#, fuzzy
-msgid "_Save Photos"
-msgstr "Зберегти зображення..."
-
-#: src/gtkam-main.c:551
-#, fuzzy
 msgid "_Delete Photos"
-msgstr "Стерти вибрані зображення"
+msgstr "Ви_лучити фотографії"
 
-#: src/gtkam-main.c:552 src/gtkam-main.c:554
-#, fuzzy
+#: src/gtkam-main.c:551 src/gtkam-main.c:553
 msgid "_Selected"
-msgstr "Жива камера!"
+msgstr "_Позначені"
 
-#: src/gtkam-main.c:553 src/gtkam-main.c:555 src/gtkam-main.c:562
+#: src/gtkam-main.c:552 src/gtkam-main.c:554 src/gtkam-main.c:561
 msgid "_All"
-msgstr ""
+msgstr "_Всі"
+
+#: src/gtkam-main.c:555
+msgid "_Quit"
+msgstr "Ви_йти"
 
 #: src/gtkam-main.c:556
-msgid "_Quit"
-msgstr ""
+msgid "_View"
+msgstr "П_ерегляд"
 
 #: src/gtkam-main.c:557
-msgid "_View"
-msgstr ""
+msgid "Zoom _In"
+msgstr "З_більшити"
 
 #: src/gtkam-main.c:558
-msgid "Zoom _In"
-msgstr ""
+msgid "Zoom _100"
+msgstr "Масштаб _1:1"
 
 #: src/gtkam-main.c:559
-msgid "Zoom _100"
-msgstr ""
+msgid "Zoom _Out"
+msgstr "З_меншити"
 
 #: src/gtkam-main.c:560
-msgid "Zoom _Out"
-msgstr ""
-
-#: src/gtkam-main.c:561
-#, fuzzy
 msgid "_Select"
-msgstr "Жива камера!"
+msgstr "По_значити"
+
+#: src/gtkam-main.c:562
+msgid "_Inverse"
+msgstr "_Інвертувати"
 
 #: src/gtkam-main.c:563
-msgid "_Inverse"
-msgstr ""
+msgid "_None"
+msgstr "_Жодних"
 
 #: src/gtkam-main.c:564
-#, fuzzy
-msgid "_None"
-msgstr "Ні"
+msgid "_Camera"
+msgstr "_Фотоапарат"
 
 #: src/gtkam-main.c:565
-#, fuzzy
-msgid "_Camera"
-msgstr "Жива камера!"
+msgid "_Add Camera..."
+msgstr "_Додати фотоапарат…"
 
 #: src/gtkam-main.c:566
-#, fuzzy
-msgid "_Add Camera..."
-msgstr "Вибрать модель/порт..."
+msgid "_Rescan"
+msgstr "Перес_канувати"
 
 #: src/gtkam-main.c:567
-#, fuzzy
-msgid "_Rescan"
-msgstr "Жива камера!"
-
-#: src/gtkam-main.c:568
-#, fuzzy
 msgid "_Help"
-msgstr "Довідка"
+msgstr "_Довідка"
 
-#: src/gtkam-main.c:570
+#: src/gtkam-main.c:569
 msgid "_Contents"
-msgstr ""
+msgstr "_Вміст"
+
+#: src/gtkam-main.c:571
+msgid "_Debug"
+msgstr "Ді_агностика"
 
 #: src/gtkam-main.c:572
-msgid "_Debug"
-msgstr ""
-
-#: src/gtkam-main.c:573
 msgid "_About"
-msgstr ""
+msgstr "_Про програму"
 
-#: src/gtkam-main.c:578
-#, fuzzy
+#: src/gtkam-main.c:577
 msgid "_View Thumbnails"
-msgstr "thumbnail-%03i.%s"
+msgstr "Переглянути _мініатюри"
 
-#: src/gtkam-mkdir.c:152
-#, fuzzy, c-format
+#: src/gtkam-mkdir.c:151
+#, c-format
 msgid "Creating folder '%s' in folder '%s'..."
-msgstr "Не вдалось отримати перегляд"
+msgstr "Створення теки «%s» у теці «%s»…"
 
-#: src/gtkam-mkdir.c:186
-#, fuzzy, c-format
+#: src/gtkam-mkdir.c:185
+#, c-format
 msgid "Could not create folder '%s' in folder '%s'."
-msgstr "Не вдалось отримати перегляд"
+msgstr "Не вдалося створити теку «%s» у теці «%s»."
 
-#: src/gtkam-mkdir.c:212
+#: src/gtkam-mkdir.c:211
 #, c-format
 msgid "Please choose a name for the directory that should be created in '%s':"
-msgstr ""
+msgstr "Будь ласка, виберіть назву каталогу, який слід створити у «%s»:"
 
-#: src/gtkam-mkdir.c:228
-#, fuzzy
+#: src/gtkam-mkdir.c:227
 msgid "New directory"
-msgstr "Каталог виводу:"
+msgstr "Створити каталог"
 
-#: src/gtkam-port.c:147
+#: src/gtkam-port.c:146
 #, c-format
-msgid ""
-"The port '%s' could not be found. Please make sure that the port exists."
-msgstr ""
+msgid "The port '%s' could not be found. Please make sure that the port exists."
+msgstr "Не вдалося знайти порт «%s». Будь ласка, переконайтеся, що порт існує."
 
-#: src/gtkam-port.c:181
+#: src/gtkam-port.c:180
 msgid "Please specify the path to the port your camera is attached to:"
-msgstr ""
+msgstr "Будь ласка, вкажіть шлях до порту, з яким з’єднано ваш фотоапарат:"
 
-#: src/gtkam-preview.c:187 src/gtkam-tree.c:1089
-#, fuzzy
+#: src/gtkam-preview.c:186 src/gtkam-tree.c:1098
 msgid "Capturing image..."
-msgstr "Друк зображення..."
+msgstr "Захоплення зображення…"
 
-#: src/gtkam-preview.c:209
-#, fuzzy
+#: src/gtkam-preview.c:208
 msgid "Could not capture image."
-msgstr "Не вдалось отримати зображення."
+msgstr "Не вдалося захопити зображення."
 
-#: src/gtkam-preview.c:347 src/gtkam-preview.c:410
-#, fuzzy
+#: src/gtkam-preview.c:346 src/gtkam-preview.c:409
 msgid "Capture"
-msgstr "Створити"
+msgstr "Захоплення"
 
-#: src/gtkam-preview.c:373
+#: src/gtkam-preview.c:372
 msgid "0 degrees"
-msgstr ""
+msgstr "0 градусів"
 
-#: src/gtkam-preview.c:381
-#, fuzzy
+#: src/gtkam-preview.c:380
 msgid "Don't rotate thumbnail"
-msgstr "Прийняти покажчик мініатюр"
+msgstr "Не обертати мініатюру"
 
-#: src/gtkam-preview.c:383
+#: src/gtkam-preview.c:382
 msgid "-90 degrees"
-msgstr ""
+msgstr "-90 градусів"
 
-#: src/gtkam-preview.c:390
+#: src/gtkam-preview.c:389
 msgid "Rotate thumbnail by -90 degrees"
-msgstr ""
+msgstr "Обернути мініатюру на -90 градусів"
 
-#: src/gtkam-preview.c:392
+#: src/gtkam-preview.c:391
 msgid "+90 degrees"
-msgstr ""
+msgstr "+90 градусів"
 
-#: src/gtkam-preview.c:399
+#: src/gtkam-preview.c:398
 msgid "Rotate thumbnail by 90 degrees"
-msgstr ""
+msgstr "Обернути мініатюру на 90 градусів"
 
-#: src/gtkam-preview.c:401
+#: src/gtkam-preview.c:400
 msgid "180 degrees"
-msgstr ""
+msgstr "180 градусів"
 
-#: src/gtkam-preview.c:408
+#: src/gtkam-preview.c:407
 msgid "Rotate thumbnail by 180 degrees"
-msgstr ""
+msgstr "Обернути мініатюру на 180 градусів"
 
-#: src/gtkam-save.c:301 src/gtkam-tree.c:614
+#: src/gtkam-save.c:299 src/gtkam-tree.c:619
 #, c-format
 msgid "The file '%s' already exists."
-msgstr ""
+msgstr "Файл з назвою «%s» вже існує."
 
-#: src/gtkam-save.c:323 src/gtkam-tree.c:631
-#, fuzzy, c-format
+#: src/gtkam-save.c:321 src/gtkam-tree.c:636
+#, c-format
 msgid "Could not save file to '%s'."
-msgstr "Не вдалось зберегти #%i"
+msgstr "Не вдалося зберегти файл до «%s»."
 
-#: src/gtkam-save.c:363 src/gtkam-tree.c:664
-#, fuzzy, c-format
+#: src/gtkam-save.c:361 src/gtkam-tree.c:669
+#, c-format
 msgid "Could not get '%s' from folder '%s'."
-msgstr "Не вдалось отримати перегляд"
+msgstr "Не вдалося отримати «%s» з теки «%s»."
 
-#: src/gtkam-save.c:494
+#: src/gtkam-save.c:492
 msgid "There is nothing to be saved."
-msgstr ""
+msgstr "Нічого зберігати."
+
+#: src/gtkam-save.c:504
+msgid "Downloading file"
+msgstr "Отримання файла"
 
 #: src/gtkam-save.c:506
-#, fuzzy
-msgid "Downloading file"
-msgstr "Прийом завершено."
-
-#: src/gtkam-save.c:508
-#, fuzzy, c-format
+#, c-format
 msgid "Downloading %i files"
-msgstr "Прийом завершено."
+msgstr "Отримання %i файлів"
 
-#: src/gtkam-save.c:515 src/gtkam-tree.c:739
-#, fuzzy, c-format
+#: src/gtkam-save.c:513 src/gtkam-tree.c:745
+#, c-format
 msgid "Downloading %i files..."
-msgstr "Прийом завершено."
+msgstr "Отримання %i файлів…"
 
-#: src/gtkam-save.c:566 src/gtkam-tree.c:754
-#, fuzzy, c-format
+#: src/gtkam-save.c:564 src/gtkam-tree.c:760
+#, c-format
 msgid "Problem getting '%s' from folder '%s'."
-msgstr "Не вдалось отримати перегляд"
+msgstr "Проблема під час спроби отримання «%s» з теки «%s»."
 
-#: src/gtkam-save.c:640
+#: src/gtkam-save.c:639
 msgid "What to save:"
-msgstr ""
+msgstr "Що зберігати:"
 
-#: src/gtkam-save.c:652
+#: src/gtkam-save.c:651
 msgid "Save photos"
-msgstr ""
+msgstr "Зберегти фотографії"
 
-#: src/gtkam-save.c:656
+#: src/gtkam-save.c:655
 msgid "Photos will be saved if this is checked"
-msgstr ""
+msgstr "Якщо буде позначено цей пункт, фотографії буде збережено"
 
-#: src/gtkam-save.c:660
+#: src/gtkam-save.c:659
 msgid "Save raw data"
-msgstr ""
+msgstr "Зберегти дані негативів"
 
-#: src/gtkam-save.c:663
+#: src/gtkam-save.c:662
 msgid "Raw data will be saved if this is checked"
-msgstr ""
+msgstr "Якщо буде позначено цей пункт, буде збережено дані цифрових негативів"
 
-#: src/gtkam-save.c:667
+#: src/gtkam-save.c:666
 msgid "Save audio data"
-msgstr ""
+msgstr "Зберегти звукові дані"
 
-#: src/gtkam-save.c:670
+#: src/gtkam-save.c:669
 msgid "Audio data will be saved if this is checked"
-msgstr ""
+msgstr "Якщо буде позначено цей пункт, буде збережено звукові дані"
 
-#: src/gtkam-save.c:674
-#, fuzzy
+#: src/gtkam-save.c:673
 msgid "Save thumbnails"
-msgstr "thumbnail-%03i.%s"
+msgstr "Зберегти мініатюри"
 
-#: src/gtkam-save.c:677
+#: src/gtkam-save.c:676
 msgid "Thumbnails will be saved if this is checked"
-msgstr ""
+msgstr "Якщо буде позначено цей пункт, мініатюри буде збережено"
 
-#: src/gtkam-save.c:681
+#: src/gtkam-save.c:680
 msgid "Save EXIF data"
-msgstr ""
+msgstr "Зберегти дані EXIF"
 
-#: src/gtkam-save.c:684
+#: src/gtkam-save.c:683
 msgid "EXIF data will be saved if this is checked"
-msgstr ""
+msgstr "Якщо буде позначено цей пункт, буде збережено дані EXIF"
 
-#: src/gtkam-save.c:693
-#, fuzzy
+#: src/gtkam-save.c:692
 msgid "Open image(s) with: "
-msgstr "Відкрити зображення"
+msgstr "Відкрити зображення за допомогою: "
 
-#: src/gtkam-save.c:700
+#: src/gtkam-save.c:699
 msgid "Type in the name of the program you want to run, leave blank for none"
-msgstr ""
+msgstr "Введіть назву програми, яку ви хочете запустити. Не заповнюйте, якщо ніяких програм не слід запускати."
 
-#: src/gtkam-save.c:706
+#: src/gtkam-save.c:705
 msgid "Use filename(s) provided by the camera"
-msgstr ""
+msgstr "Використовувати назви файлів з фотоапарата"
 
-#: src/gtkam-save.c:710
+#: src/gtkam-save.c:709
 msgid "Choose whether to use the filename provided by the camera"
-msgstr ""
+msgstr "Визначтеся, чи слід використовувати назви файлів з фотоапарата"
 
-#: src/gtkam-save.c:724
-#, fuzzy
+#: src/gtkam-save.c:723
 msgid "Filename prefix: "
-msgstr "Префікс назви файлу:"
+msgstr "Префікс назв файлів: "
 
-#: src/gtkam-save.c:733
+#: src/gtkam-save.c:732
 msgid "Start numbering with: "
-msgstr ""
+msgstr "Починати нумерацію з: "
 
-#: src/gtkam-save.c:775
-#, fuzzy, c-format
+#: src/gtkam-save.c:774
+#, c-format
 msgid "Save '%s'..."
-msgstr "Зберегти зображення..."
+msgstr "Зберегти «%s»…"
 
-#: src/gtkam-save.c:795
-#, fuzzy
+#: src/gtkam-save.c:794
 msgid "Save photos..."
-msgstr "Зберегти зображення..."
+msgstr "Зберегти фотографії…"
 
-#: src/gtkam-tree.c:295
-#, fuzzy, c-format
+#: src/gtkam-tree.c:296
+#, c-format
 msgid "Listing folders in '%s'..."
-msgstr "Не вдалось отримати перегляд"
+msgstr "Побудова списку тек у «%s»…"
 
-#: src/gtkam-tree.c:316
-#, fuzzy, c-format
+#: src/gtkam-tree.c:317
+#, c-format
 msgid "Could not list folders in '%s'."
-msgstr "Не вдалось відновити #%i"
+msgstr "Не вдалося побудувати список тек у «%s»."
 
-#: src/gtkam-tree.c:413
-#, fuzzy, c-format
+#: src/gtkam-tree.c:414
+#, c-format
 msgid "Could not open '%s'."
-msgstr ""
-"Не вдалося відкрити:\n"
-"%s"
+msgstr "Не вдалося відкрити «%s»."
 
-#: src/gtkam-tree.c:420
-#, fuzzy, c-format
+#: src/gtkam-tree.c:421
+#, c-format
 msgid "Uploading '%s' into folder '%s'..."
-msgstr "Не вдалось отримати перегляд"
+msgstr "Вивантаження «%s» до теки «%s»…"
 
-#: src/gtkam-tree.c:440
-#, fuzzy, c-format
+#: src/gtkam-tree.c:445
+#, c-format
 msgid "Could not upload '%s' into '%s'."
-msgstr "Не вдалось отримати перегляд"
+msgstr "Не вдалося вивантажити «%s» до «%s»."
 
-#: src/gtkam-tree.c:464
-#, fuzzy, c-format
+#: src/gtkam-tree.c:469
+#, c-format
 msgid "Upload into '%s'..."
-msgstr "Прийом завершено."
+msgstr "Вивантажити до «%s»…"
 
-#: src/gtkam-tree.c:540
-#, fuzzy, c-format
+#: src/gtkam-tree.c:545
+#, c-format
 msgid "Removing directory '%s'..."
-msgstr "Не вдалось відновити #%i"
+msgstr "Вилучення каталогу «%s»…"
 
-#: src/gtkam-tree.c:557
-#, fuzzy, c-format
+#: src/gtkam-tree.c:562
+#, c-format
 msgid "Could not remove directory '%s'."
-msgstr "Не вдалось відновити #%i"
+msgstr "Не вдалося вилучити каталог «%s»."
 
-#: src/gtkam-tree.c:716
-#, fuzzy, c-format
+#: src/gtkam-tree.c:722
+#, c-format
 msgid "Could not create directory '%s'"
-msgstr "Не вдалось відновити #%i"
+msgstr "Не вдалося створити каталог «%s»"
 
-#: src/gtkam-tree.c:728
-#, fuzzy, c-format
+#: src/gtkam-tree.c:734
+#, c-format
 msgid "Downloading file from '%s'"
-msgstr "Прийом завершено."
+msgstr "Отримання файла з «%s»"
 
-#: src/gtkam-tree.c:730
-#, fuzzy, c-format
+#: src/gtkam-tree.c:736
+#, c-format
 msgid "Downloading %i files from '%s'"
-msgstr "Прийом завершено."
+msgstr "Отримання %i файлів з «%s»"
 
-#: src/gtkam-tree.c:779
-#, fuzzy, c-format
+#: src/gtkam-tree.c:786
+#, c-format
 msgid "Listing subfolders in folder '%s'..."
-msgstr "Не вдалось отримати перегляд"
+msgstr "Побудова списку підтек у теці «%s»…"
 
-#: src/gtkam-tree.c:797
-#, fuzzy, c-format
+#: src/gtkam-tree.c:805
+#, c-format
 msgid "Could not get subfolders list for folder '%s'"
-msgstr "Не вдалось отримати перегляд"
+msgstr "Не вдалося отримати список підтек для теки «%s»"
 
-#: src/gtkam-tree.c:859
-#, fuzzy, c-format
+#: src/gtkam-tree.c:868
+#, c-format
 msgid "Download '%s' subtree to..."
-msgstr "Не вдалось отримати перегляд"
+msgstr "Отримання ієрархії «%s» до…"
 
-#: src/gtkam-tree.c:897
-#, fuzzy
+#: src/gtkam-tree.c:906
 msgid "Getting information about the camera..."
-msgstr "Не вдалось отримати перегляд"
+msgstr "Отримання даних щодо фотоапарата…"
 
-#: src/gtkam-tree.c:901
-#, fuzzy
+#: src/gtkam-tree.c:910
 msgid "Getting information about the driver..."
-msgstr "Не вдалось отримати перегляд"
+msgstr "Отримання даних щодо драйвера…"
 
-#: src/gtkam-tree.c:905
-#, fuzzy
+#: src/gtkam-tree.c:914
 msgid "Getting manual..."
-msgstr "Отримання мініатюри #%i..."
+msgstr "Отримання підручника…"
 
-#: src/gtkam-tree.c:936
-#, fuzzy
+#: src/gtkam-tree.c:945
 msgid "Could not retrieve information."
-msgstr "Не вдалось відновити #%i"
+msgstr "Не вдалося отримати дані."
 
-#: src/gtkam-tree.c:1039
-#, fuzzy
+#: src/gtkam-tree.c:1048
 msgid "Select Camera"
-msgstr "Жива камера!"
+msgstr "Вибір фотоапарата"
 
-#: src/gtkam-tree.c:1107
-#, fuzzy
+#: src/gtkam-tree.c:1116
 msgid "Could not capture."
-msgstr "Не вдалось отримати зображення."
-
-#: src/gtkam-tree.c:1146
-#, fuzzy
-msgid "/Upload file..."
-msgstr "Прийом завершено."
-
-#: src/gtkam-tree.c:1147
-#, fuzzy
-msgid "/Make directory..."
-msgstr "Каталог виводу:"
-
-#: src/gtkam-tree.c:1148
-#, fuzzy
-msgid "/Delete directory"
-msgstr "Каталог виводу:"
-
-#: src/gtkam-tree.c:1149
-#, fuzzy
-msgid "/Save directory tree..."
-msgstr "Каталог виводу:"
-
-#: src/gtkam-tree.c:1151
-#, fuzzy
-msgid "/Capture image..."
-msgstr "Друк зображення..."
-
-#: src/gtkam-tree.c:1152
-msgid "/View camera preferences"
-msgstr ""
-
-#: src/gtkam-tree.c:1154
-msgid "/View camera summary"
-msgstr ""
+msgstr "Не вдалося захопити."
 
 #: src/gtkam-tree.c:1155
-msgid "/View camera manual"
-msgstr ""
+msgid "/Upload file..."
+msgstr "/Вивантажити файл…"
 
 #: src/gtkam-tree.c:1156
-msgid "/View driver details"
-msgstr ""
+msgid "/Make directory..."
+msgstr "/Створити каталог…"
+
+#: src/gtkam-tree.c:1157
+msgid "/Delete directory"
+msgstr "/Вилучити каталог"
 
 #: src/gtkam-tree.c:1158
-#, fuzzy
+msgid "/Save directory tree..."
+msgstr "/Зберегти ієрархію каталогів…"
+
+#: src/gtkam-tree.c:1160
+msgid "/Capture image..."
+msgstr "/Захопити зображення…"
+
+#: src/gtkam-tree.c:1161
+msgid "/View camera preferences"
+msgstr "/Переглянути параметри фотоапарата"
+
+#: src/gtkam-tree.c:1163
+msgid "/View camera summary"
+msgstr "/Переглянути резюме щодо фотоапарата"
+
+#: src/gtkam-tree.c:1164
+msgid "/View camera manual"
+msgstr "/Переглянути підручник з фотоапарата"
+
+#: src/gtkam-tree.c:1165
+msgid "/View driver details"
+msgstr "/Переглянути дані щодо драйвера"
+
+#: src/gtkam-tree.c:1167
 msgid "/Select camera..."
-msgstr "Жива камера!"
+msgstr "/Вибрати фотоапарат…"
 
-#: src/gtkam-tree.c:1159
-#, fuzzy
+#: src/gtkam-tree.c:1168
 msgid "/Remove camera"
-msgstr "Жива камера!"
+msgstr "/Вилучити фотоапарат"
 
-#: src/gtkam-tree.c:1189
-#, fuzzy
+#: src/gtkam-tree.c:1198
 msgid "_Add camera..."
-msgstr "Вибрать модель/порт..."
+msgstr "_Додати фотоапарат…"
 
-#: src/gtkam-tree.c:1289
+#: src/gtkam-tree.c:1298
 msgid "Please right-click to access additional menus"
-msgstr ""
+msgstr "Будь ласка, клацніть правою кнопкою, щоб отримати доступ до додаткових меню"
 
-#: src/gtkam-tree.c:1318
+#: src/gtkam-tree.c:1327
 msgid "Folder"
-msgstr ""
+msgstr "Тека"
 
-#: src/gtkam-tree.c:1411
-#, fuzzy
+#: src/gtkam-tree.c:1420
 msgid "Loading cameras..."
-msgstr "Вибрать модель/порт..."
+msgstr "Завантаження фотоапаратів…"
 
-#: src/gtkam-util.c:46
+#: src/gtkam-util.c:44
 #, c-format
-msgid ""
-"Could not display '%s'. Either the image type ('%s') is not supported by gtk "
-"or the file itself is corrupt."
-msgstr ""
+msgid "Could not display '%s'. Either the image type ('%s') is not supported by gtk or the file itself is corrupt."
+msgstr "Не вдалося показати «%s». Або тип зображення («%s») не підтримується gtk, або файл пошкоджено."
 
-#: src/gtkam-version.c:102
-msgid ""
-"ALWAYS INCLUDE THE FOLLOWING LINES WHEN SENDING DEBUG MESSAGES TO THE "
-"MAILING LIST:"
-msgstr ""
+#: src/gtkam-version.c:100
+msgid "ALWAYS INCLUDE THE FOLLOWING LINES WHEN SENDING DEBUG MESSAGES TO THE MAILING LIST:"
+msgstr "ЗАВЖДИ ДОДАВАЙТЕ ВКАЗАНІ НИЖЧЕ РЯДКИ ПІД ЧАС НАДСИЛАННЯ ДІАГНОСТИЧНИХ ПОВІДОМЛЕНЬ ДО СПИСКУ ЛИСТУВАННЯ:"
 
-#: src/gtkam-viewer.c:246
-#, fuzzy, c-format
+#: src/gtkam-viewer.c:245
+#, c-format
 msgid "Downloading '%s' from folder '%s'..."
-msgstr "Не вдалось отримати перегляд"
+msgstr "Отримання «%s» з теки «%s»…"
 
-#: src/gtkam-viewer.c:299
-#, fuzzy, c-format
+#: src/gtkam-viewer.c:298
+#, c-format
 msgid "Could not download '%s' from folder '%s'."
-msgstr "Не вдалось отримати перегляд"
+msgstr "Не вдалося отримати «%s» з теки «%s»."
 
-#: src/main.c:111
+#: src/main.c:109
 msgid "Image Download Program"
-msgstr ""
-
-#, fuzzy
-#~ msgid "/File/Delete Photos/_Selected"
-#~ msgstr "Стерти вибрані зображення"
-
-#, fuzzy
-#~ msgid "/File/Delete Photos/_All"
-#~ msgstr "Стерти вибрані зображення"
-
-#, fuzzy
-#~ msgid "/Select/_None"
-#~ msgstr "Жива камера!"
-
-#, fuzzy
-#~ msgid "/Camera/_Add Camera..."
-#~ msgstr "Вибрать модель/порт..."
-
-#, fuzzy
-#~ msgid "/_Help"
-#~ msgstr "Довідка"
-
-#, fuzzy
-#~ msgid "'%s' in folder '%s'"
-#~ msgstr "Не вдалось отримати перегляд"
-
-#, fuzzy
-#~ msgid "All files in folder '%s'"
-#~ msgstr "Не вдалось отримати перегляд"
-
-#, fuzzy
-#~ msgid "Could not find an io-driver for port '%s' ('%s')."
-#~ msgstr "Не вдалось відновити #%i"
-
-#, fuzzy
-#~ msgid "/Capture"
-#~ msgstr "Створити"
+msgstr "Програма для отримання зображень"

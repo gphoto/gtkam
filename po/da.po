@@ -239,7 +239,7 @@ msgstr "Optager billeder fra digitalkamera"
 
 #: src/gtkam-gimp.c:72
 msgid "<Toolbox>/File/Acquire/Capture from Camera..."
-msgstr "<Toolbox>/File/Acquire/Optag fra kamera..."
+msgstr "<Toolbox>/Fil/Indhent/Optag fra kamera..."
 
 #: src/gtkam-gimp.c:76 src/gtkam-gimp.c:77
 msgid "Loads files from digital cameras"
@@ -247,7 +247,7 @@ msgstr "Henter filer fra digitalkameraer"
 
 #: src/gtkam-gimp.c:81
 msgid "<Toolbox>/File/Acquire/Load from Camera..."
-msgstr "<Toolbox>/File/Acquire/Hent fra kamera..."
+msgstr "<Toolbox>/Fil/Indhent/Hent fra kamera..."
 
 #: src/gtkam-gimp.c:194 src/gtkam-list.c:511
 #, c-format

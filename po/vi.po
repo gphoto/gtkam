@@ -256,7 +256,7 @@ msgstr "Bắt ảnh từ máy ảnh số"
 #. TRANSLATORS: do not translate <Toolbox>/File/Acquire, but only the Capture from Camera part
 #: ../src/gtkam-gimp.c:71
 msgid "<Toolbox>/File/Acquire/Capture from Camera..."
-msgstr "<Toolbox>/File/Acquire/Bắt từ máy ảnh..."
+msgstr "<Toolbox>/Tập tin/Bắt/Bắt từ máy ảnh..."
 
 #: ../src/gtkam-gimp.c:75 ../src/gtkam-gimp.c:76
 msgid "Loads files from digital cameras"
@@ -265,7 +265,7 @@ msgstr "Tải tập tin từ máy ảnh số"
 #. TRANSLATORS: do not translate <Toolbox>/File/Acquire, but only the Load from Camera part
 #: ../src/gtkam-gimp.c:81
 msgid "<Toolbox>/File/Acquire/Load from Camera..."
-msgstr "<Toolbox>/File/Acquire/Tải từ máy ảnh..."
+msgstr "<Toolbox>/Tập tin/Bắt/Tải từ máy ảnh..."
 
 #: ../src/gtkam-gimp.c:194 ../src/gtkam-list.c:505
 #, c-format

@@ -238,7 +238,7 @@ msgstr "Få tak i bilder fra digitalkamera"
 #. TRANSLATORS: do not translate <Toolbox>/File/Acquire, but only the Capture from Camera part
 #: src/gtkam-gimp.c:73
 msgid "<Toolbox>/File/Acquire/Capture from Camera..."
-msgstr "<Toolbox>/File/Acquire/Hent fra kamera..."
+msgstr "<Toolbox>/Fil/Hente/Hent fra kamera..."
 
 #: src/gtkam-gimp.c:77 src/gtkam-gimp.c:78
 msgid "Loads files from digital cameras"
@@ -247,7 +247,7 @@ msgstr "Laster filer fra digitalkameraer"
 #. TRANSLATORS: do not translate <Toolbox>/File/Acquire, but only the Load from Camera part
 #: src/gtkam-gimp.c:83
 msgid "<Toolbox>/File/Acquire/Load from Camera..."
-msgstr "<Toolbox>/File/Acquire/Last fra kamera..."
+msgstr "<Toolbox>/Fil/Hente/Last fra kamera..."
 
 #: src/gtkam-gimp.c:196 src/gtkam-list.c:511
 #, c-format

@@ -238,7 +238,7 @@ msgstr "Захоплівае выявы з лічбавага здымача"
 
 #: src/gtkam-gimp.c:72
 msgid "<Toolbox>/File/Acquire/Capture from Camera..."
-msgstr "<Toolbox>/File/Acquire/Захапіць са здымача..."
+msgstr "<Toolbox>/Файл/Набыццё/Захапіць са здымача..."
 
 #: src/gtkam-gimp.c:76 src/gtkam-gimp.c:77
 msgid "Loads files from digital cameras"
@@ -246,7 +246,7 @@ msgstr "Загружае файлы з лічбавага здымача"
 
 #: src/gtkam-gimp.c:81
 msgid "<Toolbox>/File/Acquire/Load from Camera..."
-msgstr "<Toolbox>/File/Acquire/Загрузіць са здымача..."
+msgstr "<Toolbox>/Файл/Набыццё/Загрузіць са здымача..."
 
 #: src/gtkam-gimp.c:194 src/gtkam-list.c:511
 #, c-format

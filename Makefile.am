@@ -52,11 +52,3 @@ distclean-local:
 
 
 ########################################################################
-# Maintainer's convenience
-
-# add CVS tags - used only by the project maintainer to tag the files of a
-# released version
-cvs-tags: Makefile
-	@echo cvs tag "@PACKAGE@-$$(echo '@VERSION@' | sed 's/\./_/g')"
-
-########################################################################

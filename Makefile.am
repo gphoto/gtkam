@@ -2,9 +2,9 @@
 # Process this file with automake to produce Makefile.in
 ########################################################################
 
-SUBDIRS = m4m art doc help omf-install packaging pixmaps po src test
+SUBDIRS = gphoto-m4 art doc help omf-install packaging pixmaps po src test
 
-ACLOCAL_AMFLAGS = -I m4m
+ACLOCAL_AMFLAGS = -I m4 -I gphoto-m4
 
 # disable scrollkeeper for distcheck
 DISTCHECK_CONFIGURE_FLAGS = --disable-scrollkeeper

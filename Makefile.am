@@ -18,7 +18,9 @@ gtkamdoc_DATA = AUTHORS COPYING NEWS README TODO CHANGES
 icondir = $(datadir)/pixmaps
 icon_DATA = gtkam.png
 
-@INTLTOOL_DESKTOP_RULE@
+# This fixes broken INTLTOOL_DESKTOP_RULE@ (original lacks \n\t)
+%.desktop:   %.desktop.in
+	$(INTLTOOL_MERGE) $(wildcard $(top_srcdir)/po/*.po) ; $(INTLTOOL_V_MERGE)LC_ALL=C $(INTLTOOL_MERGE) $(INTLTOOL_V_MERGE_OPTIONS) -d -u -c $(top_builddir)/po/.intltool-merge-cache $(top_srcdir)/po $< $@
 
 DESKTOP_IN_FILES=gtkam.desktop.in
 DESKTOP_FILES=$(DESKTOP_IN_FILES:.desktop.in=.desktop)

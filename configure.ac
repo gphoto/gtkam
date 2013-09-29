@@ -20,6 +20,7 @@ dnl ---------------------------------------------------------------------------
 AC_PROG_CC
 AM_PROG_CC_STDC
 AC_HEADER_STDC
+m4_ifdef([AM_PROG_AR],[AM_PROG_AR])
 AM_PROG_LIBTOOL
 AC_PROG_INSTALL
 AM_PROG_CC_C_O

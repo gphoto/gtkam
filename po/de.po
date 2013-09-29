@@ -893,8 +893,10 @@ msgstr "Konnte »%s« nicht aus Verzeichnis »%s« holen."
 msgid "Image Download Program"
 msgstr "Programm zum Herunterladen von Kamerabildern"
 
-#~ msgid "Browse and download images from an attached digital camera"
-#~ msgstr "Bilder von angeschlossener Kamera herunterladen"
+#: gtkam.desktop.in:4
+msgid "Gtkam Digital Camera Browser"
+msgstr "GTKam Digitalkamera Browser"
 
-#~ msgid "Gtkam Digital Camera Browser"
-#~ msgstr "GTKam Digitalkamera Browser"
+#: gtkam.desktop.in:5
+msgid "Browse and download images from an attached digital camera"
+msgstr "Bilder von angeschlossener Kamera herunterladen"

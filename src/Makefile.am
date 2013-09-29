@@ -52,6 +52,7 @@ gtkam_LDADD = \
 	$(LIBEXIF_GTK_LIBS) \
 	$(LIBGPHOTO2_LIBS)	\
 	$(GTKAM_LIBS) 	\
+	$(GTK_LIBS) 	\
 	$(BONOBO_LIBS)	\
 	$(GNOME_LIBS)	\
 	$(INTLLIBS)

@@ -48,7 +48,7 @@ rpm: Makefile
 endif
 
 distclean-local:
-	rm $(DESKTOP_FILES)
+	rm -f $(DESKTOP_FILES)
 
 
 ########################################################################

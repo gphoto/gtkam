@@ -39,7 +39,7 @@ EXTRA_DIST = gtkam.png ChangeLog AUTHORS COPYING NEWS README TODO CHANGES \
 ########################################################################
 # Packaging convenience
 
-.PHONY: rpm cvs-tags
+.PHONY: rpm
 
 if ENABLE_RPM
 

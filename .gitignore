@@ -1,0 +1,59 @@
+# created by autogen/intltool/autoreconf run
+/ABOUT-NLS
+/aclocal.m4
+/auto-aux/
+/autom4te.cache/
+/config.h.in
+/configure
+/intltool-extract.in
+/intltool-merge.in
+/intltool-update.in
+/m4/
+/po/Makefile.in.in
+/po/Makevars.template
+/po/Rules-quot
+/po/boldquot.sed
+/po/en@boldquot.header
+/po/en@quot.header
+/po/insert-header.sin
+/po/quot.sed
+/po/remove-potcdate.sin
+Makefile.in
+
+# Created by configure run
+/config.h
+/config.log
+/config.status
+/gtkam.desktop
+/intltool-extract
+/intltool-merge
+/intltool-update
+/libtool
+/omf-install/gtkam-C.omf
+/packaging/rpm/package.spec
+/po/Makevars
+/po/POTFILES
+/po/stamp-it
+/stamp-h1
+.deps/
+Makefile
+
+# Created by make run
+/help/C/omf_timestamp
+/help/ru/omf_timestamp
+/omf-install/gtkam-ru.omf
+/po/*.gmo
+/src/gtkam
+/test/test-cancel
+/test/test-fsel
+*.a
+*.o
+
+# Created by "make dist"
+/gtkam-*.tar.*
+
+# Miscellaneous
+/_build/
+/_install/
+/_b/
+/_i/

@@ -2,23 +2,9 @@ AC_PREREQ(2.59)
 AC_INIT([GTK frontend for libgphoto2], [0.2.0], [gphoto-devel@lists.sourceforge.net], [gtkam])
 AC_CONFIG_SRCDIR([src/gtkam-main.c])
 AC_CONFIG_HEADERS([config.h])
-AC_CONFIG_MACRO_DIR([m4m])
+AC_CONFIG_MACRO_DIR([m4])
+AC_CONFIG_AUX_DIR([auto-aux])
 AM_INIT_AUTOMAKE([-Wall gnu 1.9 dist-bzip2 check-news])
-
-if test ! -d "$srcdir/m4m"; then
-AC_MSG_ERROR([
-You are missing the m4m/ directory in your top
-$PACKAGE_TARNAME source directory.
-
-You are probably using an ill-maintained CVS tree.
-Running
-
-    cd $srcdir
-    cvs co m4m
-
-and re-running autogen.sh might help.
-])
-fi
 
 GP_CHECK_SHELL_ENVIRONMENT
 GP_CONFIG_MSG([Build])
@@ -34,6 +20,7 @@ dnl ---------------------------------------------------------------------------
 AC_PROG_CC
 AM_PROG_CC_STDC
 AC_HEADER_STDC
+m4_ifdef([AM_PROG_AR],[AM_PROG_AR])
 AM_PROG_LIBTOOL
 AC_PROG_INSTALL
 AM_PROG_CC_C_O
@@ -250,7 +237,7 @@ AC_SUBST([AM_LDFLAGS])
 # ---------------------------------------------------------------------------
 AC_CONFIG_FILES([
 po/Makefile.in
-m4m/Makefile
+gphoto-m4/Makefile
 Makefile
 art/Makefile
 pixmaps/Makefile

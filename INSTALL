@@ -10,8 +10,8 @@ SKIP THIS STEP.
 You must have libgphoto2 installed. If you have compiled libgphoto2, then 
 you already have the required tools for compiling gtkam.
 
-If you got libgphoto2 from CVS, then you will have to prepare for step 1,
-the configuration of the sources.
+If you got libgphoto2 using git, then you will have to prepare for
+step 1, the configuration of the sources.
 
 For that, we supply you with a script called 'autogen.sh'. It calls
 several tools in a certain sequence. For autogen.sh to work, you

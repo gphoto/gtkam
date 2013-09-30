@@ -2,9 +2,9 @@
 # Process this file with automake to produce Makefile.in
 ########################################################################
 
-SUBDIRS = m4m art doc help omf-install packaging pixmaps po src test
+SUBDIRS = gphoto-m4 art doc help omf-install packaging pixmaps po src test
 
-ACLOCAL_AMFLAGS = -I m4m
+ACLOCAL_AMFLAGS = -I m4 -I gphoto-m4
 
 # disable scrollkeeper for distcheck
 DISTCHECK_CONFIGURE_FLAGS = --disable-scrollkeeper
@@ -18,7 +18,10 @@ gtkamdoc_DATA = AUTHORS COPYING NEWS README TODO CHANGES
 icondir = $(datadir)/pixmaps
 icon_DATA = gtkam.png
 
-@INTLTOOL_DESKTOP_RULE@
+# This fixes broken INTLTOOL_DESKTOP_RULE@ (original lacks \n\t)
+%.desktop:   %.desktop.in
+	$(INTLTOOL_MERGE) $(top_srcdir)/po/*.po
+	$(INTLTOOL_V_MERGE)LC_ALL=C $(INTLTOOL_MERGE) $(INTLTOOL_V_MERGE_OPTIONS) -d -u -c $(top_builddir)/po/.intltool-merge-cache $(top_srcdir)/po $< $@
 
 DESKTOP_IN_FILES=gtkam.desktop.in
 DESKTOP_FILES=$(DESKTOP_IN_FILES:.desktop.in=.desktop)
@@ -36,7 +39,7 @@ EXTRA_DIST = gtkam.png ChangeLog AUTHORS COPYING NEWS README TODO CHANGES \
 ########################################################################
 # Packaging convenience
 
-.PHONY: rpm cvs-tags
+.PHONY: rpm
 
 if ENABLE_RPM
 
@@ -48,15 +51,7 @@ rpm: Makefile
 endif
 
 distclean-local:
-	rm $(DESKTOP_FILES)
+	rm -f $(DESKTOP_FILES)
 
-
-########################################################################
-# Maintainer's convenience
-
-# add CVS tags - used only by the project maintainer to tag the files of a
-# released version
-cvs-tags: Makefile
-	@echo cvs tag "@PACKAGE@-$$(echo '@VERSION@' | sed 's/\./_/g')"
 
 ########################################################################

@@ -10,8 +10,7 @@ Requirements
 ------------
 
 GTKam is a GTK-frontend to gphoto2. Therefore, you need at least those two
-libraries. If you are using CVS, you can get an old version of gtkam for
-GTK+-1.2 by running "cvs update -r gtkam-gtk-1".
+libraries (GTK and libgphoto2).
 
 If you would like to access EXIF information, libexif(-gtk) must be installed
 prior to compilation of GTKam. Get libexif and libexif-gtk

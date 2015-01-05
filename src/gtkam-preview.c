@@ -23,6 +23,9 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
 #include <gtk/gtktooltips.h>
 #include <gtk/gtkvbox.h>
@@ -180,18 +183,89 @@ on_preview_close_clicked (GtkButton *button, GtkamPreview *preview)
 }
 
 static void
+download_captured_image(GtkWidget *parent, GtkamContext *context,
+		Camera *camera, const char *path_folder, const char *path_name,
+		const gchar *store_dir)
+{
+	int result;
+	GTimeVal time;
+	gchar *store_path, *suffix_pos, *time_s;
+	int fd;
+	CameraFile *camera_file;
+	GtkWidget *dialog;
+
+	g_get_current_time(&time);
+	time.tv_usec = 0;
+	time_s = g_time_val_to_iso8601(&time);
+	store_path = g_build_filename(store_dir, time_s, NULL);
+	g_free(time_s);
+
+	suffix_pos = strrchr(path_name, '.');
+	if (suffix_pos) {
+		gchar *s = store_path;
+		store_path = g_strconcat(s, suffix_pos, NULL);
+		g_free(s);
+	}
+
+	fd = open(store_path, O_CREAT | O_WRONLY, 0644);
+	if (fd == -1) {
+		dialog = gtkam_error_new (-1, context,
+			    parent, _("Failed to open target file '%s'."), store_path);
+		gtk_widget_show (dialog);
+		g_free(store_path);
+		return;
+	}
+	g_free(store_path);
+
+	result = gp_file_new_from_fd(&camera_file, fd);
+	if (result != GP_OK) {
+		g_warning("gphoto error, gp_file_new_from_fd");
+		close(fd);
+		return;
+	}
+
+	result = gp_camera_file_get (camera,
+		    path_folder, path_name, GP_FILE_TYPE_NORMAL, camera_file,
+		    context->context);
+	if (result != GP_OK) {
+		result = gp_camera_file_delete(camera,
+			    path_folder, path_name,
+			    context->context);
+		if (result != GP_OK) {
+			g_warning("Failed to erase file %s/%s", path_folder, path_name);
+		}
+	}
+
+	gp_file_free(camera_file);
+}
+
+static void
 on_preview_capture_clicked (GtkButton *button, GtkamPreview *preview)
 {
 	int result;
 	CameraFilePath path;
 	GtkWidget *dialog, *s;
 	GtkamPreviewCapturedData data;
+	gchar *filename = NULL;
 
 	s = gtkam_status_new (_("Capturing image..."));
 	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (preview)->vbox), s,
 			    FALSE, FALSE, 0);
 	gtk_widget_show_now (s);
-	
+
+	if (gtk_toggle_button_get_active(
+				GTK_TOGGLE_BUTTON (preview->priv->check_download))) {
+		filename = gtk_file_chooser_get_filename (
+				GTK_FILE_CHOOSER (preview->priv->button_file));
+		if (!filename) {
+			dialog = gtkam_error_new (-1, GTKAM_STATUS (s)->context,
+				GTK_WIDGET (preview), _("Download directory not selected."));
+			gtk_widget_show (dialog);
+			gtk_object_destroy (GTK_OBJECT (s));
+			return;
+		}
+	}
+
 	result = gp_camera_capture (preview->priv->camera->camera,
 		GP_CAPTURE_IMAGE, &path, GTKAM_STATUS (s)->context->context);
 	if (preview->priv->camera->multi)
@@ -204,6 +278,11 @@ on_preview_capture_clicked (GtkButton *button, GtkamPreview *preview)
 		data.name = path.name;
 		g_signal_emit (GTK_OBJECT (preview), signals[CAPTURED], 0,
 			       &data);
+		if (filename) {
+			download_captured_image(GTK_WIDGET(preview), GTKAM_STATUS (s)->context,
+				    preview->priv->camera->camera,
+				    data.folder, data.name, filename);
+		 }
 		break;
 	case GP_ERROR_CANCEL:
 		break;
@@ -213,6 +292,7 @@ on_preview_capture_clicked (GtkButton *button, GtkamPreview *preview)
 		gtk_widget_show (dialog);
 		break;
 	}
+	g_free(filename);
 	gtk_object_destroy (GTK_OBJECT (s));
 }
 

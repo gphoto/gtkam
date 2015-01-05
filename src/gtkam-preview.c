@@ -58,6 +58,10 @@ struct _GtkamPreviewPrivate
 
 	GtkToggleButton *angle_0, *angle_90, *angle_180, *angle_270;
 
+	GtkCheckButton *check_download;
+	GtkEntry *entry_download;
+	GtkFileChooserButton *button_file;
+
 	guint32 timeout_id;
 
 	GtkTooltips *tooltips;
@@ -337,7 +341,7 @@ gtkam_preview_new (GtkamCamera *camera)
 {
 	CameraAbilities abilities;
 	GtkamPreview *preview;
-	GtkWidget *button, *hbox, *vbox, *radio;
+	GtkWidget *button, *check, *hbox, *vbox, *radio;
 	GSList *group;
 
 	g_return_val_if_fail (GTKAM_IS_CAMERA (camera), NULL);
@@ -406,6 +410,28 @@ gtkam_preview_new (GtkamCamera *camera)
 	gtk_tooltips_set_tip (preview->priv->tooltips, radio, 
 			      _("Rotate thumbnail by 180 degrees"), NULL);
 
+	/* Immediate image download */
+	hbox = gtk_hbox_new (FALSE, 10);
+	gtk_widget_show (hbox);
+	gtk_box_pack_start (GTK_BOX (GTKAM_DIALOG (preview)->vbox), hbox,
+			    TRUE, TRUE, 0);
+
+	check = gtk_check_button_new_with_label (_("Download"));
+	gtk_widget_show (check);
+	gtk_box_pack_start (GTK_BOX (hbox), check, FALSE, FALSE, 0);
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (check), FALSE);
+	gtk_tooltips_set_tip (preview->priv->tooltips, check, _(
+			    _("Download captured images into specified directory.")), NULL);
+	preview->priv->check_download = GTK_CHECK_BUTTON (check);
+
+	button = gtk_file_chooser_button_new(_("Download target directory"),
+			    GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER);
+	gtk_widget_show (button);
+	gtk_box_pack_start (GTK_BOX (hbox), button, TRUE, TRUE, 0);
+	gtk_file_chooser_set_local_only( GTK_FILE_CHOOSER (button), TRUE);
+	preview->priv->button_file = GTK_FILE_CHOOSER_BUTTON (button);
+
+	/* Buttons in action area */
 	button = gtk_button_new_with_label (_("Capture"));
 	gtk_widget_show (button);
 	g_signal_connect (GTK_OBJECT (button), "clicked",

@@ -362,6 +362,8 @@ get_thumbnail_idle (gpointer data)
 	gtk_tree_iter_free (d->iter);
 	list->priv->head = d->next;
 	g_free (d);
+	if (!list->priv->head)
+		list->priv->tail = NULL;
 
 	gtk_widget_destroy (s);
 	

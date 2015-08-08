@@ -252,15 +252,15 @@ concat_dir_and_file (const gchar *dirname, const gchar *filename)
 static int
 save_file (GtkamSave *save, const char *filename, CameraFile *file, CameraFileType type, guint n)
 {
-	gchar *full_path, *full_filename, *dirname, *msg, *number_filename;
+	gchar *full_path, *full_filename, *msg, *number_filename;
 	const char *mime_type;
-	const gchar *fsel_filename, *fsel_path, *prefix, *suffix;
+	const gchar *fsel_path, *prefix, *suffix;
 	GtkWidget *dialog;
 	int result;
 
 	gp_file_get_mime_type (file, &mime_type);
 
-	fsel_path = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER_DIALOG (save));
+	fsel_path = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (save));
 
 	if ((save->priv->toggle_filename_camera->active) ||
 		(g_slist_length (save->priv->data) == 1)) {
@@ -378,7 +378,7 @@ store_save_settings(GtkamSave *save)
 
 	/* Directory */
 	savedir = g_strdup (gtk_file_chooser_get_filename (
-			      GTK_FILE_CHOOSER_DIALOG (save)));
+			      GTK_FILE_CHOOSER (save)));
 	if (savedir) {
 		if (strlen (savedir) > 255)
 			savedir[255] = '\0';
@@ -482,7 +482,8 @@ on_ok_clicked (GtkButton *button, GtkamSave *save)
 	GtkWidget *s, *dialog;
 	unsigned int id = 0;
 	GtkamSaveData *data;
-	gchar *progname, *command;
+	gchar *command;
+	const gchar *progname;
 	GError *error = NULL;
 
 	if (count_items (save) == 0) {
@@ -775,8 +776,8 @@ gtkam_save_add (GtkamSave *save, GtkamCamera *camera,
 		gtk_window_set_title (GTK_WINDOW (save), title);
 		g_free (title);
 
-		gtk_widget_hide (save->priv->toggle_filename_camera);
-	
+		gtk_widget_hide ( GTK_WIDGET(save->priv->toggle_filename_camera));
+
 		gtk_widget_hide (save->priv->hbox_prefix);
 		gtk_widget_set_sensitive (save->priv->spin_entry, FALSE);
 		gtk_widget_set_sensitive (save->priv->prefix_entry, FALSE);
@@ -793,7 +794,7 @@ gtkam_save_add (GtkamSave *save, GtkamCamera *camera,
 		/* Second case: We have multiple files to save. */
 		gtk_window_set_title (GTK_WINDOW (save), _("Save photos..."));
 
-		gtk_widget_show (save->priv->toggle_filename_camera);
+		gtk_widget_show (GTK_WIDGET (save->priv->toggle_filename_camera));
 
 		gtk_widget_show (save->priv->hbox_prefix);
 		gtk_widget_set_sensitive (save->priv->spin_entry,

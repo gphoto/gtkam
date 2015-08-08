@@ -218,7 +218,7 @@ timeout_func (gpointer user_data)
 	int r;
 	CameraFile *file;
 	const char *data = NULL;
-	long int size = 0;
+	unsigned long int size = 0;
 	GdkPixbufLoader *loader;
 	GdkPixbuf *pixbuf, *rotated;
 	GtkamPreview *p = GTKAM_PREVIEW (user_data);

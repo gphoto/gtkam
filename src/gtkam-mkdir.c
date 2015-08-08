@@ -144,18 +144,19 @@ on_ok_clicked (GtkButton *button, GtkamMkdir *mkdir)
 	GtkWidget *dialog, *s;
 	int r;
 	const gchar *path;
-	gchar *full_path;
+	gchar *basename, *full_path;
 	GtkamMkdirDirCreatedData data;
 
 	path = gtk_entry_get_text (mkdir->priv->entry);
+	basename = g_path_get_basename (path);
 	s = gtkam_status_new (_("Creating folder '%s' in "
-		"folder '%s'..."), g_basename (path), mkdir->priv->path);
+		"folder '%s'..."), basename, mkdir->priv->path);
 	gtk_widget_show (s);
 	gtk_box_pack_end (GTK_BOX (GTK_DIALOG (mkdir)->vbox), s,
 			  FALSE, FALSE, 0);
 	r = gp_camera_folder_make_dir (mkdir->priv->camera->camera,
 		mkdir->priv->path,
-		g_basename (path), GTKAM_STATUS (s)->context->context);
+		basename, GTKAM_STATUS (s)->context->context);
 	if (mkdir->priv->camera->multi)
 		gp_camera_exit (mkdir->priv->camera->camera, NULL);
 	switch (r) {
@@ -183,11 +184,12 @@ on_ok_clicked (GtkButton *button, GtkamMkdir *mkdir)
 		dialog = gtkam_error_new (r, GTKAM_STATUS (s)->context,
 			GTK_WIDGET (mkdir),
 			_("Could not create folder '%s' in folder '%s'."),
-			g_basename (path), mkdir->priv->path);
+			basename, mkdir->priv->path);
 		gtk_widget_show (dialog);
 		gtk_object_destroy (GTK_OBJECT (s));
 		break;
 	}
+	g_free (basename);
 }
 
 GtkWidget *

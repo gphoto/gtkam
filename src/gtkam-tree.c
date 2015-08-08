@@ -402,7 +402,7 @@ on_upload_ok_clicked (GtkButton *button, GtkamTreeUploadData *ud)
 	GtkamTreeErrorData e;
 	GtkamTreeFileAddedData fud;
 	GtkWidget *s;
-	gchar *folder, *msg;
+	gchar *basename, *folder, *msg;
 	GtkamCamera *c;
 
 	path = gtk_file_selection_get_filename (GTK_FILE_SELECTION (ud->fsel));
@@ -418,11 +418,12 @@ on_upload_ok_clicked (GtkButton *button, GtkamTreeUploadData *ud)
 		gtk_widget_hide (ud->fsel);
 		folder = gtkam_tree_get_path_from_iter (ud->tree, ud->iter);
 		c = gtkam_tree_get_camera_from_iter (ud->tree, ud->iter);
+		basename = g_path_get_basename (path);
 		s = gtkam_status_new (_("Uploading '%s' into "
-			"folder '%s'..."), g_basename (path), folder);
+			"folder '%s'..."), basename, folder);
 		g_signal_emit (G_OBJECT (ud->tree), signals[NEW_STATUS], 0, s);
 #ifdef HAVE_GP_PORT_INFO_GET_NAME
-		r = gp_camera_folder_put_file (c->camera, folder, basename(path), GP_FILE_TYPE_NORMAL, file, 
+		r = gp_camera_folder_put_file (c->camera, folder, basename, GP_FILE_TYPE_NORMAL, file,
 				GTKAM_STATUS (s)->context->context);
 #else
 		r = gp_camera_folder_put_file (c->camera, folder, file, GTKAM_STATUS (s)->context->context);
@@ -433,7 +434,7 @@ on_upload_ok_clicked (GtkButton *button, GtkamTreeUploadData *ud)
 		case GP_OK:
 			fud.camera = c;
 			fud.folder = folder;
-			fud.name = g_basename (path);
+			fud.name = basename;
 			g_signal_emit (G_OBJECT (ud->tree),
 				       signals[FILE_ADDED], 0, &fud);
 			break;
@@ -449,6 +450,7 @@ on_upload_ok_clicked (GtkButton *button, GtkamTreeUploadData *ud)
 			g_free (msg);
 			break;
 		}
+		g_free (basename);
 		g_free (folder);
 		gtk_object_destroy (GTK_OBJECT (s));
 	}
@@ -535,7 +537,7 @@ action_rmdir (gpointer callback_data, guint callback_action,
 {
 	GtkWidget *s;
 	GtkamTree *tree = GTKAM_TREE (callback_data);
-	gchar *folder, *path, *msg;
+	gchar *basename, *folder, *path, *msg;
 	int r;
 	GtkamCamera *camera;
 	GtkamTreeErrorData e;
@@ -547,9 +549,11 @@ action_rmdir (gpointer callback_data, guint callback_action,
 	path = g_strdup (folder);
 	while (path[strlen (path) - 1] != '/')
 		path[strlen (path) - 1] = '\0';
+	basename = g_path_get_basename (folder);
 	r = gp_camera_folder_remove_dir (camera->camera, path,
-		g_basename (folder), GTKAM_STATUS (s)->context->context);
+		basename, GTKAM_STATUS (s)->context->context);
 	g_free (path);
+	g_free (basename);
 	switch (r) {
 	case GP_OK:
 		gtk_tree_store_remove (tree->priv->store, &tree->priv->iter);

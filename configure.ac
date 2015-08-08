@@ -1,4 +1,4 @@
-AC_PREREQ(2.59)
+AC_PREREQ([2.59])
 AC_INIT([GTK frontend for libgphoto2], [0.2.0], [gphoto-devel@lists.sourceforge.net], [gtkam])
 AC_CONFIG_SRCDIR([src/gtkam-main.c])
 AC_CONFIG_HEADERS([config.h])
@@ -17,6 +17,7 @@ AM_LDFLAGS="$LDFLAGS"
 dnl ---------------------------------------------------------------------------
 dnl Some programs we need
 dnl ---------------------------------------------------------------------------
+AM_PROG_AR
 AC_PROG_CC
 AM_PROG_CC_STDC
 AC_HEADER_STDC
@@ -25,8 +26,8 @@ AM_PROG_LIBTOOL
 AC_PROG_INSTALL
 AM_PROG_CC_C_O
 GP_PKG_CONFIG
-AC_PROG_INTLTOOL
-AC_PROG_LIBTOOL
+IT_PROG_INTLTOOL
+LT_INIT
 AC_SUBST(POMAKEFILEDEPS)
 
 GP_CONFIG_MSG([Compiler],[${CC}])
@@ -42,7 +43,7 @@ GP_CONFIG_MSG([Features])
 # References to external resources (web sites, mailing listes, etc.)
 # ----------------------------------------------------------------------
 
-GP_REFERENCES()dnl
+GP_REFERENCES()
 
 
 dnl ---------------------------------------------------------------------------
@@ -256,6 +257,6 @@ intltool-extract
 intltool-merge
 intltool-update
 ])
-AC_OUTPUT()dnl
+AC_OUTPUT()
 
-GP_CONFIG_OUTPUT()dnl
+GP_CONFIG_OUTPUT()

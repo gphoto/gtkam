@@ -150,7 +150,7 @@ show_pixbuf (GtkamViewer *v, GtkAllocation *allocation, gboolean force)
 	scaled = gdk_pixbuf_scale_simple (v->priv->pixbuf, target_w, target_h,
 	                                  GDK_INTERP_HYPER);
 	gtk_image_set_from_pixbuf (GTK_IMAGE (v->priv->image), scaled);
-	gdk_pixbuf_unref (scaled);
+	g_object_unref (G_OBJECT (scaled));
 }
 
 static void

@@ -640,7 +640,7 @@ gtkam_main_new (void)
 	pixbuf = gdk_pixbuf_new_from_file (IMAGE_DIR "/gtkam-camera.png", NULL);
 	if (pixbuf != NULL) {
 		gtk_window_set_icon (GTK_WINDOW (m), pixbuf);
-		gdk_pixbuf_unref (pixbuf);
+		g_object_unref (G_OBJECT (pixbuf));
 	}
 
 	m->priv->view_thumbs = TRUE;

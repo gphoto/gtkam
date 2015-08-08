@@ -347,7 +347,7 @@ get_thumbnail_idle (gpointer data)
 		
 		gtk_list_store_set (list->priv->store, d->iter,
 				PREVIEW_COLUMN, pixbuf, -1);
-		gdk_pixbuf_unref (pixbuf);
+		g_object_unref (G_OBJECT (pixbuf));
 	} 
 	
 	gp_file_unref (file);
@@ -978,7 +978,7 @@ gtkam_list_add_folder (GtkamList *list, GtkamCamera *camera,
 		 */
 		if (!gdk_pixbuf_get_has_alpha (pixbuf)) {
 			tmp = gdk_pixbuf_add_alpha (pixbuf, FALSE, 0, 0, 0);
-			gdk_pixbuf_unref (pixbuf);
+			g_object_unref (G_OBJECT (pixbuf));
 			pixbuf = tmp;
 		}
 
@@ -987,7 +987,7 @@ gtkam_list_add_folder (GtkamList *list, GtkamCamera *camera,
 			tmp = gdk_pixbuf_new_from_file (
 				IMAGE_DIR "/gtkam-audio.png");
 			gdk_pixbuf_add (pixbuf, 0, 0, tmp);
-			gdk_pixbuf_unref (tmp);
+			g_object_unref (G_OBJECT (tmp));
 		}
 
 		/* Check for read-only flag */
@@ -1001,7 +1001,7 @@ gtkam_list_add_folder (GtkamList *list, GtkamCamera *camera,
 				gdk_pixbuf_get_width (pixbuf) - w,
 				gdk_pixbuf_get_height (pixbuf) - h,
 				tmp);
-			gdk_pixbuf_unref (tmp);
+			g_object_unref ( G_OBJECT(tmp));
 		}
 
 		/* Check for downloaded flag */
@@ -1012,7 +1012,7 @@ gtkam_list_add_folder (GtkamList *list, GtkamCamera *camera,
 			w = gdk_pixbuf_get_width (tmp);
 			gdk_pixbuf_add (pixbuf,
 				gdk_pixbuf_get_width (pixbuf) - w, 0, tmp);
-			gdk_pixbuf_unref (tmp);
+			g_object_unref ( G_OBJECT(tmp));
 		}
 
 		gdk_pixbuf_render_pixmap_and_mask (pixbuf,
@@ -1328,8 +1328,8 @@ zoom_factor (GtkamList *list, GtkTreeIter *iter, Zoom zoom)
 		}
 		break;
 	}
-	gdk_pixbuf_unref (pixbuf);
-	gdk_pixbuf_unref (pixbuf_orig);
+	g_object_unref (G_OBJECT (pixbuf));
+	g_object_unref (G_OBJECT (pixbuf_orig));
 
 	gtk_tree_view_columns_autosize (GTK_TREE_VIEW (list));
 }

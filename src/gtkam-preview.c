@@ -244,7 +244,7 @@ timeout_func (gpointer user_data)
 	rotated = gdk_pixbuf_rotate (pixbuf, p->priv->rotate);
 	g_object_unref (G_OBJECT (loader));
 	gtk_image_set_from_pixbuf (GTK_IMAGE (p->priv->image), rotated);
-	gdk_pixbuf_unref (rotated);
+	g_object_unref (G_OBJECT (rotated));
 
 	while (g_main_pending ())
 		g_main_iteration (TRUE);
@@ -329,7 +329,7 @@ on_size_allocate (GtkWidget *widget, GtkAllocation *allocation,
 	scaled = gdk_pixbuf_scale_simple (pixbuf, target_w, target_h,
 					  GDK_INTERP_HYPER);
 	gtk_image_set_from_pixbuf (GTK_IMAGE (preview->priv->image), scaled);
-	gdk_pixbuf_unref (scaled);
+	g_object_unref (G_OBJECT (scaled));
 }
 
 GtkWidget *

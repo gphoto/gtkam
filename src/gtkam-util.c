@@ -59,7 +59,7 @@ gdk_pixbuf_new_from_camera_file (CameraFile *file, guint max_dim,
                 pixbuf = gdk_pixbuf_scale_simple (pixbuf, scale * w, scale * h,
                                                   GDK_INTERP_NEAREST);
         } else
-                gdk_pixbuf_ref (pixbuf);
+                g_object_ref (G_OBJECT (pixbuf));
         g_object_unref (G_OBJECT (loader));
 
         return (pixbuf);

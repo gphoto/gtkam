@@ -98,7 +98,7 @@ on_camera_selected (GtkamChooser *chooser, GtkamCamera *camera,
 		    GtkamCamera **ret_camera)
 {
 	*ret_camera = camera;
-	g_object_ref (*ret_camera);
+	g_object_ref (G_OBJECT (*ret_camera));
 }
 
 typedef struct {
@@ -237,7 +237,7 @@ get_file (GtkamCamera *camera, const gchar *folder, const gchar *name,
         h = gdk_pixbuf_get_height (pixbuf);
         r = gdk_pixbuf_get_rowstride (pixbuf);
         pixels = gdk_pixbuf_get_pixels (pixbuf);
-        gdk_pixbuf_ref (pixbuf);
+        g_object_ref (G_OBJECT (pixbuf));
         g_object_unref (G_OBJECT (loader));
 
 	image_id = gimp_image_new (w, h, GIMP_RGB);
@@ -249,7 +249,7 @@ get_file (GtkamCamera *camera, const gchar *folder, const gchar *name,
         gimp_pixel_rgn_init (&pixel_rgn, d, 0, 0, d->width, d->height,
 			     TRUE, FALSE);
         gimp_pixel_rgn_set_rect (&pixel_rgn, pixels, 0, 0, w, h);
-        gdk_pixbuf_unref (pixbuf);
+        g_object_unref (G_OBJECT (pixbuf));
         gimp_drawable_flush (d);
         gimp_drawable_detach (d);
         gimp_display_new (image_id);

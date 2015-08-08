@@ -291,7 +291,7 @@ gtkam_info_new (GtkamCamera *camera, const gchar *folder, const gchar *name)
 	gtk_window_set_title (GTK_WINDOW (info), name);
 
 	info->priv->camera = camera;
-	g_object_ref (camera);
+	g_object_ref (G_OBJECT (camera));
 	info->priv->folder = g_strdup (folder);
 	info->priv->name = g_strdup (name);
 	memcpy (&info->priv->info, &i, sizeof (CameraFileInfo));

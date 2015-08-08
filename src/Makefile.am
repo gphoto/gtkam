@@ -70,6 +70,7 @@ gtkam_gimp_LDADD = \
 	$(LIBEXIF_LIBS)		\
 	$(LIBEXIF_GTK_LIBS) 	\
 	$(LIBGPHOTO2_LIBS)	\
+	$(GTK_LIBS)		\
 	$(BONOBO_LIBS)		\
 	$(GNOME_LIBS)		\
 	$(INTLLIBS)

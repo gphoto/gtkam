@@ -306,7 +306,7 @@ static gboolean
 get_thumbnail_idle (gpointer data)
 {
 	GtkamList *list = GTKAM_LIST (data);
-	GetThumbnailData *d = data;
+	GetThumbnailData *d;
 	CameraFile *file;
 	GtkWidget *s;
 	GdkPixbuf *pixbuf;

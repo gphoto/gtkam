@@ -239,63 +239,6 @@ download_captured_image(GtkWidget *parent, GtkamContext *context,
 	gp_file_free(camera_file);
 }
 
-static void
-on_preview_capture_clicked (GtkButton *button, GtkamPreview *preview)
-{
-	int result;
-	CameraFilePath path;
-	GtkWidget *dialog, *s;
-	GtkamPreviewCapturedData data;
-	gchar *filename = NULL;
-
-	s = gtkam_status_new (_("Capturing image..."));
-	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (preview)->vbox), s,
-			    FALSE, FALSE, 0);
-	gtk_widget_show_now (s);
-
-	if (gtk_toggle_button_get_active(
-				GTK_TOGGLE_BUTTON (preview->priv->check_download))) {
-		filename = gtk_file_chooser_get_filename (
-				GTK_FILE_CHOOSER (preview->priv->button_file));
-		if (!filename) {
-			dialog = gtkam_error_new (-1, GTKAM_STATUS (s)->context,
-				GTK_WIDGET (preview), _("Download directory not selected."));
-			gtk_widget_show (dialog);
-			gtk_object_destroy (GTK_OBJECT (s));
-			return;
-		}
-	}
-
-	result = gp_camera_capture (preview->priv->camera->camera,
-		GP_CAPTURE_IMAGE, &path, GTKAM_STATUS (s)->context->context);
-	if (preview->priv->camera->multi)
-		gp_camera_exit (preview->priv->camera->camera, NULL);
-	switch (result) {
-	case GP_OK:
-		memset (&data, 0, sizeof (GtkamPreviewCapturedData));
-		data.camera = preview->priv->camera;
-		data.folder = path.folder;
-		data.name = path.name;
-		g_signal_emit (GTK_OBJECT (preview), signals[CAPTURED], 0,
-			       &data);
-		if (filename) {
-			download_captured_image(GTK_WIDGET(preview), GTKAM_STATUS (s)->context,
-				    preview->priv->camera->camera,
-				    data.folder, data.name, filename);
-		 }
-		break;
-	case GP_ERROR_CANCEL:
-		break;
-	default:
-		dialog = gtkam_error_new (result, GTKAM_STATUS (s)->context,
-			GTK_WIDGET (preview), _("Could not capture image."));
-		gtk_widget_show (dialog);
-		break;
-	}
-	g_free(filename);
-	gtk_object_destroy (GTK_OBJECT (s));
-}
-
 static gboolean
 timeout_func (gpointer user_data)
 {
@@ -334,6 +277,80 @@ timeout_func (gpointer user_data)
 		g_main_iteration (TRUE);
 
 	return (TRUE);
+}
+
+static void
+preview_enable(GtkamPreview *preview, gboolean enable)
+{
+	if (enable) {
+		if (preview->priv->timeout_id) {
+			return;
+		}
+		preview->priv->timeout_id = gtk_timeout_add (200, timeout_func,
+				preview);
+	} else {
+		gtk_timeout_remove (preview->priv->timeout_id);
+		preview->priv->timeout_id = 0;
+	}
+}
+
+static void
+on_preview_capture_clicked (GtkButton *button, GtkamPreview *preview)
+{
+	int result;
+	CameraFilePath path;
+	GtkWidget *dialog, *s;
+	GtkamPreviewCapturedData data;
+	gchar *filename = NULL;
+
+	s = gtkam_status_new (_("Capturing image..."));
+	gtk_box_pack_start (GTK_BOX (GTK_DIALOG (preview)->vbox), s,
+			    FALSE, FALSE, 0);
+	gtk_widget_show_now (s);
+
+	if (gtk_toggle_button_get_active(
+				GTK_TOGGLE_BUTTON (preview->priv->check_download))) {
+		filename = gtk_file_chooser_get_filename (
+				GTK_FILE_CHOOSER (preview->priv->button_file));
+		if (!filename) {
+			dialog = gtkam_error_new (-1, GTKAM_STATUS (s)->context,
+				GTK_WIDGET (preview), _("Download directory not selected."));
+			gtk_widget_show (dialog);
+			gtk_object_destroy (GTK_OBJECT (s));
+			return;
+		}
+	}
+
+	preview_enable(preview, 0);
+	result = gp_camera_capture (preview->priv->camera->camera,
+		GP_CAPTURE_IMAGE, &path, GTKAM_STATUS (s)->context->context);
+	if (preview->priv->camera->multi)
+		gp_camera_exit (preview->priv->camera->camera, NULL);
+	switch (result) {
+	case GP_OK:
+		memset (&data, 0, sizeof (GtkamPreviewCapturedData));
+		data.camera = preview->priv->camera;
+		data.folder = path.folder;
+		data.name = path.name;
+		g_signal_emit (GTK_OBJECT (preview), signals[CAPTURED], 0,
+			       &data);
+		if (filename) {
+			download_captured_image(GTK_WIDGET(preview), GTKAM_STATUS (s)->context,
+				    preview->priv->camera->camera,
+				    data.folder, data.name, filename);
+		 }
+		break;
+	case GP_ERROR_CANCEL:
+		break;
+	default:
+		dialog = gtkam_error_new (result, GTKAM_STATUS (s)->context,
+			GTK_WIDGET (preview), _("Could not capture image."));
+		gtk_widget_show (dialog);
+		break;
+	}
+	g_free(filename);
+	gtk_object_destroy (GTK_OBJECT (s));
+	preview_enable(preview, 1);
 }
 
 static void
@@ -539,9 +556,7 @@ gtkam_preview_new (GtkamCamera *camera)
 	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (preview)->action_area),
 			   button);
 
-	/* Start capturing previews */
-	preview->priv->timeout_id = gtk_timeout_add (200, timeout_func,
-						     preview);
+	preview_enable(preview, 1);
 
 	return (GTK_WIDGET (preview));
 }

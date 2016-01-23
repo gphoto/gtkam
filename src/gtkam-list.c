@@ -729,28 +729,6 @@ action_exif (gpointer callback_data, guint callback_action, GtkWidget *widget)
 #endif
 
 static void
-action_save (gpointer callback_data, guint callback_action, GtkWidget *widget)
-{
-	GtkWidget *s;
-	GtkamList *list = GTKAM_LIST (callback_data);
-	GtkamCamera *camera;
-	gchar *folder;
-	gchar *name;
-
-	camera = gtkam_list_get_camera_from_iter (list, &list->priv->iter);
-	folder = gtkam_list_get_folder_from_iter (list, &list->priv->iter);
-	name   = gtkam_list_get_name_from_iter   (list, &list->priv->iter);
-
-	s = gtkam_save_new (GTK_WINDOW (gtk_widget_get_toplevel(
-			GTK_WIDGET(list) )));
-	gtkam_save_add (GTKAM_SAVE (s), camera, folder, name);
-	g_free (folder);
-	g_free (name);
-	g_signal_emit (G_OBJECT (list), signals[NEW_DIALOG], 0, s);
-	g_object_unref (G_OBJECT (s));
-}
-
-static void
 on_file_deleted (GtkamDelete *delete, GtkamDeleteFileDeletedData *data,
 		 GtkamList *list)
 {

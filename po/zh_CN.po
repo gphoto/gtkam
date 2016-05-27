@@ -1,398 +1,382 @@
 # Chinese translations for gtkam package.
 # Copyright (C) 2008 Lutz Müller and others
 # This file is distributed under the same license as the gtkam package.
-# Ji ZhengYu <zhengyuji@gmail.com>, 2008, 2009, 2010
+# Ji ZhengYu <zhengyuji@gmail.com>, 2008, 2009, 2010, 2011, 2012, 2013
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: gtkam 0.1.17\n"
+"Project-Id-Version: gtkam 0.2.0\n"
 "Report-Msgid-Bugs-To: gphoto-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2010-01-31 19:37+0100\n"
-"PO-Revision-Date: 2010-02-02 18:21+0800\n"
+"POT-Creation-Date: 2012-07-10 09:51+0200\n"
+"PO-Revision-Date: 2013-03-08 12:46+0800\n"
 "Last-Translator: Ji ZhengYu <zhengyuji@gmail.com>\n"
 "Language-Team: Chinese (simplified) <i18n-zh@googlegroups.com>\n"
+"Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../gtkam.desktop.in.h:1
-msgid "Browse and download images from an attached digital camera"
-msgstr "浏览并从已连接的数码相机下载图片"
-
-#: ../gtkam.desktop.in.h:2
-msgid "Gtkam Digital Camera Browser"
-msgstr "Gtkam 数码相机浏览器"
-
-#. Port?
-#: ../src/gtkam-chooser.c:231 ../src/gtkam-chooser.c:253
+#: src/gtkam-chooser.c:231 src/gtkam-chooser.c:253
 msgid "None"
 msgstr "无"
 
-#. Speed?
-#. Update speed combo
-#: ../src/gtkam-chooser.c:261 ../src/gtkam-chooser.c:368
-#: ../src/gtkam-chooser.c:632 ../src/gtkam-chooser.c:666
+#: src/gtkam-chooser.c:261 src/gtkam-chooser.c:368 src/gtkam-chooser.c:632
+#: src/gtkam-chooser.c:666
 msgid "Best"
 msgstr "最佳"
 
-#.
-#. * Initialize the camera to check if it is really there. Exit
-#. * afterwards because other applications could need the camera, too.
-#.
-#: ../src/gtkam-chooser.c:268
+#: src/gtkam-chooser.c:268
 msgid "Initializing camera..."
 msgstr "初始化相机..."
 
-#: ../src/gtkam-chooser.c:282
+#: src/gtkam-chooser.c:282
 msgid "Could not initialize camera."
 msgstr "无法初始化相机。"
 
-#: ../src/gtkam-chooser.c:359
+#: src/gtkam-chooser.c:359
 #, c-format
 msgid "Could not get abilities of model '%s'."
 msgstr "无法获取型号‘%s’的信息。"
 
-#: ../src/gtkam-chooser.c:407
+#: src/gtkam-chooser.c:407
 msgid "Detecting cameras..."
 msgstr "检测相机..."
 
-#: ../src/gtkam-chooser.c:416
+#: src/gtkam-chooser.c:416
 msgid "No cameras detected."
 msgstr "未检测到任何相机。"
 
-#: ../src/gtkam-chooser.c:433
+#: src/gtkam-chooser.c:433
 msgid "Could not detect any cameras."
 msgstr "无法检测相机。"
 
-#: ../src/gtkam-chooser.c:568
+#: src/gtkam-chooser.c:568
 msgid "Add Camera"
 msgstr "添加相机"
 
-#: ../src/gtkam-chooser.c:583
+#: src/gtkam-chooser.c:583
 msgid "Model:"
 msgstr "型号:"
 
-#: ../src/gtkam-chooser.c:595
+#: src/gtkam-chooser.c:595
 msgid "Detect"
 msgstr "检测"
 
-#: ../src/gtkam-chooser.c:601
+#: src/gtkam-chooser.c:601
 msgid "Detect USB camera"
 msgstr "检测 USB 相机"
 
-#: ../src/gtkam-chooser.c:603
+#: src/gtkam-chooser.c:603
 msgid "Port:"
 msgstr "端口:"
 
-#: ../src/gtkam-chooser.c:624 ../src/gtkam-chooser.c:656
+#: src/gtkam-chooser.c:624 src/gtkam-chooser.c:656
 msgid "Speed:"
 msgstr "速度:"
 
-#: ../src/gtkam-chooser.c:637 ../src/gtkam-chooser.c:672
+#: src/gtkam-chooser.c:637 src/gtkam-chooser.c:672
 msgid "Allow multiple frontends"
 msgstr "可有多个前端程序"
 
-#: ../src/gtkam-chooser.c:644
+#: src/gtkam-chooser.c:644
 msgid "Enhanced"
 msgstr "增强"
 
-#: ../src/gtkam-chooser.c:737
+#: src/gtkam-chooser.c:737
 msgid "Could not get number of supported camera models"
 msgstr "无法获取受支持的相机的型号数目"
 
-#: ../src/gtkam-chooser.c:767
+#: src/gtkam-chooser.c:767
 msgid "Could not get number of ports."
 msgstr "无法获取端口数目。"
 
-#: ../src/gtkam-config.c:163
+#: src/gtkam-config.c:163
 msgid "Applying configuration..."
 msgstr "正在应用配置..."
 
-#: ../src/gtkam-config.c:179
+#: src/gtkam-config.c:179
 msgid "Could not apply configuration."
 msgstr "无法应用配置。"
 
-#: ../src/gtkam-config.c:246
+#: src/gtkam-config.c:246
 msgid "No additional information available. (1)"
 msgstr "无额外信息可用。(1)"
 
-#: ../src/gtkam-config.c:251
+#: src/gtkam-config.c:251
 msgid "General Settings"
 msgstr "一般设置"
 
-#: ../src/gtkam-config.c:326
+#: src/gtkam-config.c:326
 msgid "Could not execute command."
 msgstr "无法运行命令。"
 
-#: ../src/gtkam-config.c:530
+#: src/gtkam-config.c:530
 msgid "No additional information available. (2)"
 msgstr "无额外信息可用。(2)"
 
-#. Make it easy for users to select the system's time
-#: ../src/gtkam-config.c:567
+#: src/gtkam-config.c:567
 msgid "Set to system's time"
 msgstr "设为系统时间"
 
-#: ../src/gtkam-config.c:601
+#: src/gtkam-config.c:601
 msgid "No additional information available. (3)"
 msgstr "无额外信息可用。(3)"
 
-#: ../src/gtkam-config.c:626
+#: src/gtkam-config.c:626
 msgid "No additional information available. (4)"
 msgstr "无额外信息可用。(4)"
 
-#: ../src/gtkam-config.c:673
+#: src/gtkam-config.c:673
 msgid "No additional information available. (5)"
 msgstr "无额外信息可用。(5)"
 
-#: ../src/gtkam-config.c:693
+#: src/gtkam-config.c:693
 msgid "No additional information available. (6)"
 msgstr "无额外信息可用。(6)"
 
-#: ../src/gtkam-config.c:734
+#: src/gtkam-config.c:734
 msgid "Getting configuration..."
 msgstr "正在获取配置..."
 
-#: ../src/gtkam-config.c:749
+#: src/gtkam-config.c:749
 msgid "Could not get configuration."
 msgstr "无法获取配置。"
 
-#: ../src/gtkam-debug.c:240
+#: src/gtkam-debug.c:237
 msgid "Save As..."
 msgstr "另存为..."
 
-#: ../src/gtkam-debug.c:262
+#: src/gtkam-debug.c:259
 #, c-format
 msgid "Could not open '%s'!"
 msgstr "无法打开‘%s’！"
 
-#: ../src/gtkam-debug.c:309
+#: src/gtkam-debug.c:306
 msgid "Type of messages to log:"
 msgstr "要记录的消息类型:"
 
-#: ../src/gtkam-debug.c:313
+#: src/gtkam-debug.c:310
 msgid "Error"
 msgstr "错误"
 
-#: ../src/gtkam-debug.c:320
+#: src/gtkam-debug.c:317
 msgid "Verbose"
 msgstr "详细"
 
-#: ../src/gtkam-debug.c:327
+#: src/gtkam-debug.c:324
 msgid "Debug"
 msgstr "调试"
 
-#: ../src/gtkam-debug.c:334
+#: src/gtkam-debug.c:331
 msgid "Data"
 msgstr "数据"
 
-#: ../src/gtkam-delete.c:179
+#: src/gtkam-delete.c:179
 #, c-format
 msgid "Deleting all files in '%s'..."
 msgstr "正在删除‘%s’中的所有文件..."
 
-#: ../src/gtkam-delete.c:200
+#: src/gtkam-delete.c:200
 #, c-format
 msgid "Could not delete all files in '%s'."
 msgstr "无法删除‘%s’中的所有文件。"
 
-#: ../src/gtkam-delete.c:236
+#: src/gtkam-delete.c:236
 #, c-format
 msgid "Deleting file '%s' from folder '%s'..."
 msgstr "正在从‘%2$s’目录中删除文件‘%1$s’..."
 
-#: ../src/gtkam-delete.c:257
+#: src/gtkam-delete.c:257
 #, c-format
 msgid "Could not delete file '%s' in folder '%s'."
 msgstr "无法删除位于‘%2$s’目录中的文件‘%1$s’。"
 
-#: ../src/gtkam-delete.c:386
+#: src/gtkam-delete.c:386
 #, c-format
 msgid "Do you really want to delete all the files in '%s'?"
 msgstr "您确实想删除‘%s’中的所有文件吗？"
 
-#: ../src/gtkam-delete.c:389
+#: src/gtkam-delete.c:389
 #, c-format
 msgid "Do you really want to delete '%s'?"
 msgstr "您确实想删除‘%s’吗？"
 
-#: ../src/gtkam-delete.c:392
+#: src/gtkam-delete.c:392
 #, c-format
 msgid "Do you really want to delete the selected %i files?"
 msgstr "您确实想删除选中的 %i 个文件吗？"
 
-#: ../src/gtkam-delete.c:398
+#: src/gtkam-delete.c:398
 msgid "Delete these files?"
 msgstr "删除这些文件？"
 
-#: ../src/gtkam-exif.c:137
+#: src/gtkam-exif.c:137
 #, c-format
 msgid "Getting EXIF information for file '%s' in folder '%s'..."
 msgstr "正在获取‘%2$s’目录中‘%1$s’文件的 EXIF 信息..."
 
-#: ../src/gtkam-exif.c:153
+#: src/gtkam-exif.c:153
 #, c-format
 msgid "Could not get EXIF information for '%s' in folder '%s'."
 msgstr "无法获取‘%2$s’目录中‘%1$s’文件的 EXIF 信息。"
 
-#: ../src/gtkam-exif.c:166
+#: src/gtkam-exif.c:166
 msgid "Could not interpret EXIF data."
 msgstr "无法解析 EXIF 数据。"
 
-#: ../src/gtkam-exif.c:175
+#: src/gtkam-exif.c:175
 msgid "The EXIF data could not be retrieved from the file."
 msgstr "无法从文件中取得 EXIF 数据。"
 
-#: ../src/gtkam-exif.c:192
+#: src/gtkam-exif.c:192
 msgid "Gtkam has been compiled without EXIF support."
 msgstr "Gtkam 编译时未加入 EXIF 支持。"
 
-#: ../src/gtkam-gimp.c:67 ../src/gtkam-gimp.c:68
+#: src/gtkam-gimp.c:67 src/gtkam-gimp.c:68
 msgid "Captures images from digital camera"
 msgstr "从数码相机捕获图片"
 
 #. TRANSLATORS: do not translate <Toolbox>/File/Acquire, but only the Capture from Camera part
-#: ../src/gtkam-gimp.c:71
+#: src/gtkam-gimp.c:71
 msgid "<Toolbox>/File/Acquire/Capture from Camera..."
 msgstr "<Toolbox>/File/Acquire/从相机捕获..."
 
-#: ../src/gtkam-gimp.c:75 ../src/gtkam-gimp.c:76
+#: src/gtkam-gimp.c:75 src/gtkam-gimp.c:76
 msgid "Loads files from digital cameras"
 msgstr "从数码相机载入文件"
 
 #. TRANSLATORS: do not translate <Toolbox>/File/Acquire, but only the Load from Camera part
-#: ../src/gtkam-gimp.c:81
+#: src/gtkam-gimp.c:81
 msgid "<Toolbox>/File/Acquire/Load from Camera..."
 msgstr "<Toolbox>/File/Acquire/从相机载入..."
 
-#: ../src/gtkam-gimp.c:194 ../src/gtkam-list.c:505
+#: src/gtkam-gimp.c:194 src/gtkam-list.c:505
 #, c-format
 msgid "Downloading '%s' from '%s'..."
 msgstr "正从‘%2$s’下载‘%1$s’..."
 
-#: ../src/gtkam-gimp.c:212
+#: src/gtkam-gimp.c:212
 #, c-format
 msgid "Could not download file '%s' from folder '%s'."
 msgstr "无法从‘%s’目录下载文件‘%s’。"
 
-#: ../src/gtkam-gimp.c:245
+#: src/gtkam-gimp.c:245
 msgid "Image"
 msgstr "图片"
 
-#: ../src/gtkam-info.c:165
+#: src/gtkam-info.c:165
 #, c-format
 msgid "Setting information for file '%s' in '%s'..."
 msgstr "正在设定‘%2$s’中文件‘%1$s’的信息..."
 
-#: ../src/gtkam-info.c:186
+#: src/gtkam-info.c:186
 #, c-format
 msgid "Could not set file information for '%s' in folder '%s'"
 msgstr "无法设定‘%2$s’目录中‘%1$s’的文件信息"
 
-#. Get file info
-#: ../src/gtkam-info.c:270
+#: src/gtkam-info.c:270
 #, c-format
 msgid "Getting information about file '%s' in folder '%s'..."
 msgstr "正确获取‘%2$s’目录中‘%1$s’的文件信息..."
 
-#: ../src/gtkam-info.c:282
+#: src/gtkam-info.c:282
 #, c-format
 msgid "Could not get information about file '%s' in folder '%s'."
 msgstr "无法获取‘%2$s’目录中‘%1$s’的文件信息。"
 
-#: ../src/gtkam-info.c:310
+#: src/gtkam-info.c:310
 msgid "File"
 msgstr "文件"
 
-#: ../src/gtkam-info.c:316 ../src/gtkam-info.c:425 ../src/gtkam-info.c:474
+#: src/gtkam-info.c:316 src/gtkam-info.c:425 src/gtkam-info.c:474
 msgid "MIME type:"
 msgstr "MIME 类型:"
 
-#: ../src/gtkam-info.c:334
+#: src/gtkam-info.c:334
 msgid "Last modified:"
 msgstr "最近一次修改:"
 
-#: ../src/gtkam-info.c:355 ../src/gtkam-info.c:442 ../src/gtkam-info.c:491
+#: src/gtkam-info.c:355 src/gtkam-info.c:442 src/gtkam-info.c:491
 msgid "Size:"
 msgstr "大小:"
 
-#: ../src/gtkam-info.c:362 ../src/gtkam-info.c:498
+#: src/gtkam-info.c:362 src/gtkam-info.c:498
 #, c-format
 msgid "%liK (%li bytes)"
 msgstr "%liK (%li 字节)"
 
-#: ../src/gtkam-info.c:377
+#: src/gtkam-info.c:377
 msgid "Permissions:"
 msgstr "权限:"
 
-#: ../src/gtkam-info.c:389
+#: src/gtkam-info.c:389
 msgid "Read"
 msgstr "读"
 
-#: ../src/gtkam-info.c:400
+#: src/gtkam-info.c:400
 msgid "Delete"
 msgstr "删除"
 
-#: ../src/gtkam-info.c:419 ../src/gtkam-list.c:892
+#: src/gtkam-info.c:419 src/gtkam-list.c:892
 msgid "Preview"
 msgstr "预览"
 
-#: ../src/gtkam-info.c:468
+#: src/gtkam-info.c:468
 msgid "Audio"
 msgstr "音频"
 
-#: ../src/gtkam-list.c:322
+#: src/gtkam-list.c:322
 #, c-format
 msgid "Downloading thumbnail of '%s' from folder '%s'..."
 msgstr "正在从‘%2$s’目录中下载‘%1$s’的缩略图..."
 
-#: ../src/gtkam-list.c:826
+#: src/gtkam-list.c:826
 msgid "/_View with..."
 msgstr "/以...查看(_V)"
 
-#: ../src/gtkam-list.c:827
+#: src/gtkam-list.c:827
 msgid "/View with.../Built-in viewer"
 msgstr "/以...查看/内建浏览器"
 
-#: ../src/gtkam-list.c:829
+#: src/gtkam-list.c:829
 msgid "/View file _properties"
 msgstr "/查看文件属性(_P)"
 
-#: ../src/gtkam-list.c:831
+#: src/gtkam-list.c:831
 msgid "/View _EXIF data"
 msgstr "/查看 EXIF 数据(_E)"
 
-#: ../src/gtkam-list.c:834
+#: src/gtkam-list.c:834
 msgid "/_Save"
 msgstr "/保存(_S)"
 
-#: ../src/gtkam-list.c:835
+#: src/gtkam-list.c:835
 msgid "/_Delete"
 msgstr "/删除(_D)"
 
-#: ../src/gtkam-list.c:898
+#: src/gtkam-list.c:898
 msgid "Name"
 msgstr "名字"
 
-#: ../src/gtkam-list.c:904
+#: src/gtkam-list.c:904
 msgid "Time"
 msgstr "时间"
 
-#: ../src/gtkam-list.c:926 ../src/gtkam-tree.c:690
+#: src/gtkam-list.c:926 src/gtkam-tree.c:690
 #, c-format
 msgid "Listing files in folder '%s'..."
 msgstr "列出目录‘%s’中的文件..."
 
-#: ../src/gtkam-list.c:943 ../src/gtkam-tree.c:707
+#: src/gtkam-list.c:943 src/gtkam-tree.c:707
 #, c-format
 msgid "Could not get file list for folder '%s'"
 msgstr "无法获取‘%s’目录中的文件列表"
 
-#: ../src/gtkam-list.c:960
+#: src/gtkam-list.c:960
 msgid "Unknown"
 msgstr "未知"
 
-#: ../src/gtkam-main.c:425
+#: src/gtkam-main.c:425
 msgid ""
 "gtkam is a program that lets you download\n"
 "images from many digital cameras. It uses\n"
@@ -407,11 +391,11 @@ msgstr ""
 "\n"
 "尽情享受 gphoto 的精彩世界吧！"
 
-#: ../src/gtkam-main.c:436
+#: src/gtkam-main.c:436
 msgid "Many others"
 msgstr "其他"
 
-#: ../src/gtkam-main.c:469
+#: src/gtkam-main.c:469
 #, c-format
 msgid ""
 "%s\n"
@@ -424,7 +408,7 @@ msgstr ""
 "%s %s 附带选项:\n"
 "    %s\n"
 
-#: ../src/gtkam-main.c:473
+#: src/gtkam-main.c:473
 #, c-format
 msgid ""
 "%s\n"
@@ -435,458 +419,459 @@ msgstr ""
 "%s %s 附带选项:\n"
 "    %s\n"
 
-#: ../src/gtkam-main.c:548
+#: src/gtkam-main.c:548
 msgid "_File"
 msgstr "文件(_F)"
 
-#: ../src/gtkam-main.c:549
+#: src/gtkam-main.c:549
 msgid "_Save Photos"
 msgstr "保存照片(_S)"
 
-#: ../src/gtkam-main.c:550
+#: src/gtkam-main.c:550
 msgid "_Delete Photos"
 msgstr "删除照片(_D)"
 
-#: ../src/gtkam-main.c:551 ../src/gtkam-main.c:553
+#: src/gtkam-main.c:551 src/gtkam-main.c:553
 msgid "_Selected"
 msgstr "选中的(_S)"
 
-#: ../src/gtkam-main.c:552 ../src/gtkam-main.c:554 ../src/gtkam-main.c:561
+#: src/gtkam-main.c:552 src/gtkam-main.c:554 src/gtkam-main.c:561
 msgid "_All"
 msgstr "所有(_A)"
 
-#: ../src/gtkam-main.c:555
+#: src/gtkam-main.c:555
 msgid "_Quit"
 msgstr "退出(_Q)"
 
-#: ../src/gtkam-main.c:556
+#: src/gtkam-main.c:556
 msgid "_View"
 msgstr "查看(_V)"
 
-#: ../src/gtkam-main.c:557
+#: src/gtkam-main.c:557
 msgid "Zoom _In"
 msgstr "放大(_I)"
 
-#: ../src/gtkam-main.c:558
+#: src/gtkam-main.c:558
 msgid "Zoom _100"
 msgstr "放大100%(_1)"
 
-#: ../src/gtkam-main.c:559
+#: src/gtkam-main.c:559
 msgid "Zoom _Out"
 msgstr "缩小(_O)"
 
-#: ../src/gtkam-main.c:560
+#: src/gtkam-main.c:560
 msgid "_Select"
 msgstr "选择(_S)"
 
-#: ../src/gtkam-main.c:562
+#: src/gtkam-main.c:562
 msgid "_Inverse"
 msgstr "反转(_I)"
 
-#: ../src/gtkam-main.c:563
+#: src/gtkam-main.c:563
 msgid "_None"
 msgstr "无(_N)"
 
-#: ../src/gtkam-main.c:564
+#: src/gtkam-main.c:564
 msgid "_Camera"
 msgstr "相机(_C)"
 
-#: ../src/gtkam-main.c:565
+#: src/gtkam-main.c:565
 msgid "_Add Camera..."
 msgstr "添加相机...(_A)"
 
-#: ../src/gtkam-main.c:566
+#: src/gtkam-main.c:566
 msgid "_Rescan"
 msgstr "重新扫描(_R)"
 
-#: ../src/gtkam-main.c:567
+#: src/gtkam-main.c:567
 msgid "_Help"
 msgstr "帮助(_H)"
 
-#: ../src/gtkam-main.c:569
+#: src/gtkam-main.c:569
 msgid "_Contents"
 msgstr "内容(_C)"
 
-#: ../src/gtkam-main.c:571
+#: src/gtkam-main.c:571
 msgid "_Debug"
 msgstr "调试(_D)"
 
-#: ../src/gtkam-main.c:572
+#: src/gtkam-main.c:572
 msgid "_About"
 msgstr "关于(_A)"
 
-#: ../src/gtkam-main.c:577
+#: src/gtkam-main.c:577
 msgid "_View Thumbnails"
 msgstr "查看缩略图(_V)"
 
-#: ../src/gtkam-mkdir.c:151
+#: src/gtkam-mkdir.c:151
 #, c-format
 msgid "Creating folder '%s' in folder '%s'..."
 msgstr "正在‘%2$s’目录下创建‘%1$s’目录..."
 
-#: ../src/gtkam-mkdir.c:185
+#: src/gtkam-mkdir.c:185
 #, c-format
 msgid "Could not create folder '%s' in folder '%s'."
 msgstr "无法在‘%2$s’目录下创建‘%1$s’目录。"
 
-#: ../src/gtkam-mkdir.c:211
+#: src/gtkam-mkdir.c:211
 #, c-format
 msgid "Please choose a name for the directory that should be created in '%s':"
 msgstr "请为即将在‘%s’下创建的目录选择一个名字:"
 
-#: ../src/gtkam-mkdir.c:227
+#: src/gtkam-mkdir.c:227
 msgid "New directory"
 msgstr "新建目录"
 
-#: ../src/gtkam-port.c:146
+#: src/gtkam-port.c:146
 #, c-format
 msgid "The port '%s' could not be found. Please make sure that the port exists."
 msgstr "无法找到‘%s’端口。请确认端口是否存在。"
 
-#: ../src/gtkam-port.c:180
+#: src/gtkam-port.c:180
 msgid "Please specify the path to the port your camera is attached to:"
 msgstr "请为您的相机接入的端口指定一个路径:"
 
-#. The camera doesn't support previews. Capture an image.
-#: ../src/gtkam-preview.c:186 ../src/gtkam-tree.c:1098
+#: src/gtkam-preview.c:186 src/gtkam-tree.c:1098
 msgid "Capturing image..."
 msgstr "正在捕获图片..."
 
-#: ../src/gtkam-preview.c:208
+#: src/gtkam-preview.c:208
 msgid "Could not capture image."
 msgstr "无法捕获图片。"
 
-#: ../src/gtkam-preview.c:346 ../src/gtkam-preview.c:409
+#: src/gtkam-preview.c:346 src/gtkam-preview.c:409
 msgid "Capture"
 msgstr "捕获"
 
-#: ../src/gtkam-preview.c:372
+#: src/gtkam-preview.c:372
 msgid "0 degrees"
 msgstr "0 度"
 
-#: ../src/gtkam-preview.c:380
+#: src/gtkam-preview.c:380
 msgid "Don't rotate thumbnail"
 msgstr "不旋转缩略图"
 
-#: ../src/gtkam-preview.c:382
+#: src/gtkam-preview.c:382
 msgid "-90 degrees"
 msgstr "-90 度"
 
-#: ../src/gtkam-preview.c:389
+#: src/gtkam-preview.c:389
 msgid "Rotate thumbnail by -90 degrees"
 msgstr "旋转缩略图 -90 度"
 
-#: ../src/gtkam-preview.c:391
+#: src/gtkam-preview.c:391
 msgid "+90 degrees"
 msgstr "+90 度"
 
-#: ../src/gtkam-preview.c:398
+#: src/gtkam-preview.c:398
 msgid "Rotate thumbnail by 90 degrees"
 msgstr "旋转缩略图 90 度"
 
-#: ../src/gtkam-preview.c:400
+#: src/gtkam-preview.c:400
 msgid "180 degrees"
 msgstr "180 度"
 
-#: ../src/gtkam-preview.c:407
+#: src/gtkam-preview.c:407
 msgid "Rotate thumbnail by 180 degrees"
 msgstr "旋转缩略图 180 度"
 
-#: ../src/gtkam-save.c:299 ../src/gtkam-tree.c:619
+#: src/gtkam-save.c:299 src/gtkam-tree.c:619
 #, c-format
 msgid "The file '%s' already exists."
 msgstr "文件‘%s’已经存在。"
 
-#: ../src/gtkam-save.c:321 ../src/gtkam-tree.c:636
+#: src/gtkam-save.c:321 src/gtkam-tree.c:636
 #, c-format
 msgid "Could not save file to '%s'."
 msgstr "无法将文件保存为‘%s’。"
 
-#: ../src/gtkam-save.c:361 ../src/gtkam-tree.c:669
+#: src/gtkam-save.c:361 src/gtkam-tree.c:669
 #, c-format
 msgid "Could not get '%s' from folder '%s'."
 msgstr "无法从‘%2$s’目录中获取‘%1$s’。"
 
-#: ../src/gtkam-save.c:492
+#: src/gtkam-save.c:492
 msgid "There is nothing to be saved."
 msgstr "没有要保存的内容。"
 
-#: ../src/gtkam-save.c:504
+#: src/gtkam-save.c:504
 msgid "Downloading file"
 msgstr "正在下载文件"
 
-#: ../src/gtkam-save.c:506
+#: src/gtkam-save.c:506
 #, c-format
 msgid "Downloading %i files"
 msgstr "正在下载 %i 个文件"
 
-#: ../src/gtkam-save.c:513 ../src/gtkam-tree.c:745
+#: src/gtkam-save.c:513 src/gtkam-tree.c:745
 #, c-format
 msgid "Downloading %i files..."
 msgstr "正在下载 %i 个文件..."
 
-#: ../src/gtkam-save.c:564 ../src/gtkam-tree.c:760
+#: src/gtkam-save.c:564 src/gtkam-tree.c:760
 #, c-format
 msgid "Problem getting '%s' from folder '%s'."
 msgstr "从‘%2$s’目录获取‘%1$s’时出错了。"
 
-#: ../src/gtkam-save.c:638
+#: src/gtkam-save.c:639
 msgid "What to save:"
 msgstr "所要保存的:"
 
-#: ../src/gtkam-save.c:650
+#: src/gtkam-save.c:651
 msgid "Save photos"
 msgstr "保存照片"
 
-#: ../src/gtkam-save.c:654
+#: src/gtkam-save.c:655
 msgid "Photos will be saved if this is checked"
 msgstr "如果确认的话将会保存照片"
 
-#: ../src/gtkam-save.c:658
+#: src/gtkam-save.c:659
 msgid "Save raw data"
 msgstr "保存原始数据"
 
-#: ../src/gtkam-save.c:661
+#: src/gtkam-save.c:662
 msgid "Raw data will be saved if this is checked"
 msgstr "如果确认的话将会保存原始数据"
 
-#: ../src/gtkam-save.c:665
+#: src/gtkam-save.c:666
 msgid "Save audio data"
 msgstr "保存音频数据"
 
-#: ../src/gtkam-save.c:668
+#: src/gtkam-save.c:669
 msgid "Audio data will be saved if this is checked"
 msgstr "如果确认的话将会保存音频数据"
 
-#: ../src/gtkam-save.c:672
+#: src/gtkam-save.c:673
 msgid "Save thumbnails"
 msgstr "保存缩略图"
 
-#: ../src/gtkam-save.c:675
+#: src/gtkam-save.c:676
 msgid "Thumbnails will be saved if this is checked"
 msgstr "如果确认的话将会保存缩略图"
 
-#: ../src/gtkam-save.c:679
+#: src/gtkam-save.c:680
 msgid "Save EXIF data"
 msgstr "保存 EXIF 数据"
 
-#: ../src/gtkam-save.c:682
+#: src/gtkam-save.c:683
 msgid "EXIF data will be saved if this is checked"
 msgstr "如果确认的话将会保存 EXIF 数据"
 
-#: ../src/gtkam-save.c:691
+#: src/gtkam-save.c:692
 msgid "Open image(s) with: "
 msgstr "打开图片以:"
 
-#: ../src/gtkam-save.c:698
+#: src/gtkam-save.c:699
 msgid "Type in the name of the program you want to run, leave blank for none"
 msgstr "您想运行的程序的类型名称，无则不填"
 
-#. Filenames provided by camera
-#: ../src/gtkam-save.c:704
+#: src/gtkam-save.c:705
 msgid "Use filename(s) provided by the camera"
 msgstr "使用由相机提供的文件名"
 
-#: ../src/gtkam-save.c:708
+#: src/gtkam-save.c:709
 msgid "Choose whether to use the filename provided by the camera"
 msgstr "选择是否使用由相机提供的文件名"
 
-#: ../src/gtkam-save.c:722
+#: src/gtkam-save.c:723
 msgid "Filename prefix: "
 msgstr "文件名前缀:"
 
-#: ../src/gtkam-save.c:731
+#: src/gtkam-save.c:732
 msgid "Start numbering with: "
 msgstr "开始编号以:"
 
-#. First case: We have only one file.
-#: ../src/gtkam-save.c:773
+#: src/gtkam-save.c:774
 #, c-format
 msgid "Save '%s'..."
 msgstr "保存‘%s’..."
 
-#. Second case: We have multiple files to save.
-#: ../src/gtkam-save.c:793
+#: src/gtkam-save.c:794
 msgid "Save photos..."
 msgstr "保存照片..."
 
-#: ../src/gtkam-tree.c:296
+#: src/gtkam-tree.c:296
 #, c-format
 msgid "Listing folders in '%s'..."
 msgstr "列出‘%s’中的目录..."
 
-#: ../src/gtkam-tree.c:317
+#: src/gtkam-tree.c:317
 #, c-format
 msgid "Could not list folders in '%s'."
 msgstr "无法列出‘%s’中的目录。"
 
-#: ../src/gtkam-tree.c:414
+#: src/gtkam-tree.c:414
 #, c-format
 msgid "Could not open '%s'."
 msgstr "无法打开‘%s’。"
 
-#: ../src/gtkam-tree.c:421
+#: src/gtkam-tree.c:421
 #, c-format
 msgid "Uploading '%s' into folder '%s'..."
 msgstr "上传‘%s’至‘%s’目录..."
 
-#: ../src/gtkam-tree.c:445
+#: src/gtkam-tree.c:445
 #, c-format
 msgid "Could not upload '%s' into '%s'."
 msgstr "无法上传‘%s’至‘%s’。"
 
-#: ../src/gtkam-tree.c:469
+#: src/gtkam-tree.c:469
 #, c-format
 msgid "Upload into '%s'..."
 msgstr "上传至‘%s’..."
 
-#: ../src/gtkam-tree.c:545
+#: src/gtkam-tree.c:545
 #, c-format
 msgid "Removing directory '%s'..."
 msgstr "正在移除目录‘%s’..."
 
-#: ../src/gtkam-tree.c:562
+#: src/gtkam-tree.c:562
 #, c-format
 msgid "Could not remove directory '%s'."
 msgstr "无法移除目录‘%s’。"
 
-#: ../src/gtkam-tree.c:722
+#: src/gtkam-tree.c:722
 #, c-format
 msgid "Could not create directory '%s'"
 msgstr "无法创建目录‘%s’"
 
-#: ../src/gtkam-tree.c:734
+#: src/gtkam-tree.c:734
 #, c-format
 msgid "Downloading file from '%s'"
 msgstr "正在从‘%s’中下载文件"
 
-#: ../src/gtkam-tree.c:736
+#: src/gtkam-tree.c:736
 #, c-format
 msgid "Downloading %i files from '%s'"
 msgstr "正在从 ‘%2$s’ 中下载 %1$i 个文件"
 
-#. Recurse into subfolders
-#: ../src/gtkam-tree.c:786
+#: src/gtkam-tree.c:786
 #, c-format
 msgid "Listing subfolders in folder '%s'..."
 msgstr "正在列出‘%s’目录下的子目录..."
 
-#: ../src/gtkam-tree.c:805
+#: src/gtkam-tree.c:805
 #, c-format
 msgid "Could not get subfolders list for folder '%s'"
 msgstr "无法获取‘%s’下的子目录列表"
 
-#: ../src/gtkam-tree.c:868
+#: src/gtkam-tree.c:868
 #, c-format
 msgid "Download '%s' subtree to..."
 msgstr "下载‘%s’子树至..."
 
-#: ../src/gtkam-tree.c:906
+#: src/gtkam-tree.c:906
 msgid "Getting information about the camera..."
 msgstr "正在获取相机信息..."
 
-#: ../src/gtkam-tree.c:910
+#: src/gtkam-tree.c:910
 msgid "Getting information about the driver..."
 msgstr "正在获取驱动信息..."
 
-#: ../src/gtkam-tree.c:914
+#: src/gtkam-tree.c:914
 msgid "Getting manual..."
 msgstr "正在获取手册..."
 
-#: ../src/gtkam-tree.c:945
+#: src/gtkam-tree.c:945
 msgid "Could not retrieve information."
 msgstr "无法取得信息。"
 
-#: ../src/gtkam-tree.c:1048
+#: src/gtkam-tree.c:1048
 msgid "Select Camera"
 msgstr "选择相机"
 
-#: ../src/gtkam-tree.c:1116
+#: src/gtkam-tree.c:1116
 msgid "Could not capture."
 msgstr "无法捕获。"
 
-#: ../src/gtkam-tree.c:1155
+#: src/gtkam-tree.c:1155
 msgid "/Upload file..."
 msgstr "/上传文件..."
 
-#: ../src/gtkam-tree.c:1156
+#: src/gtkam-tree.c:1156
 msgid "/Make directory..."
 msgstr "/新建目录..."
 
-#: ../src/gtkam-tree.c:1157
+#: src/gtkam-tree.c:1157
 msgid "/Delete directory"
 msgstr "/删除目录"
 
-#: ../src/gtkam-tree.c:1158
+#: src/gtkam-tree.c:1158
 msgid "/Save directory tree..."
 msgstr "/保存目录树..."
 
-#: ../src/gtkam-tree.c:1160
+#: src/gtkam-tree.c:1160
 msgid "/Capture image..."
 msgstr "/捕获图片..."
 
-#: ../src/gtkam-tree.c:1161
+#: src/gtkam-tree.c:1161
 msgid "/View camera preferences"
 msgstr "/查看相机选项"
 
-#: ../src/gtkam-tree.c:1163
+#: src/gtkam-tree.c:1163
 msgid "/View camera summary"
 msgstr "/查看相机信息汇总"
 
-#: ../src/gtkam-tree.c:1164
+#: src/gtkam-tree.c:1164
 msgid "/View camera manual"
 msgstr "/查看相机手册"
 
-#: ../src/gtkam-tree.c:1165
+#: src/gtkam-tree.c:1165
 msgid "/View driver details"
 msgstr "/查看详细驱动信息"
 
-#: ../src/gtkam-tree.c:1167
+#: src/gtkam-tree.c:1167
 msgid "/Select camera..."
 msgstr "/选择相机..."
 
-#: ../src/gtkam-tree.c:1168
+#: src/gtkam-tree.c:1168
 msgid "/Remove camera"
 msgstr "/移除相机"
 
-#: ../src/gtkam-tree.c:1198
+#: src/gtkam-tree.c:1198
 msgid "_Add camera..."
 msgstr "添加相机...(_A)"
 
-#: ../src/gtkam-tree.c:1298
+#: src/gtkam-tree.c:1298
 msgid "Please right-click to access additional menus"
 msgstr "请右击进入其余菜单"
 
-#: ../src/gtkam-tree.c:1327
+#: src/gtkam-tree.c:1327
 msgid "Folder"
 msgstr "目录"
 
-#: ../src/gtkam-tree.c:1420
+#: src/gtkam-tree.c:1420
 msgid "Loading cameras..."
 msgstr "正在载入相机..."
 
-#: ../src/gtkam-util.c:44
+#: src/gtkam-util.c:44
 #, c-format
 msgid "Could not display '%s'. Either the image type ('%s') is not supported by gtk or the file itself is corrupt."
 msgstr "无法显示‘%s’。要么是 gtk 不支持此图片类型(‘%s’) 要么就是此文件已损坏。"
 
-#: ../src/gtkam-version.c:100
+#: src/gtkam-version.c:100
 msgid "ALWAYS INCLUDE THE FOLLOWING LINES WHEN SENDING DEBUG MESSAGES TO THE MAILING LIST:"
 msgstr "当发送信息至邮件列表时，总是包括以下这些信息:"
 
-#: ../src/gtkam-viewer.c:245
+#: src/gtkam-viewer.c:245
 #, c-format
 msgid "Downloading '%s' from folder '%s'..."
 msgstr "正在从目录‘%2$s’中下载‘%1$s’..."
 
-#: ../src/gtkam-viewer.c:298
+#: src/gtkam-viewer.c:298
 #, c-format
 msgid "Could not download '%s' from folder '%s'."
 msgstr "无法从目录‘%2$s’中下载‘%1$s’..."
 
-#: ../src/main.c:113
+#: src/main.c:109
 msgid "Image Download Program"
 msgstr "图片下载程序"
+
+#~ msgid "Browse and download images from an attached digital camera"
+#~ msgstr "浏览并从已连接的数码相机下载图片"
+
+#~ msgid "Gtkam Digital Camera Browser"
+#~ msgstr "Gtkam 数码相机浏览器"
 
 #~ msgid "Name:"
 #~ msgstr "名字:"

@@ -1,3 +1,9 @@
+gtkam 1.0
+
+* various bugfixes and improvements
+* translation updates: belarus, danish, french, hungarian, brazilian portuguese, svensk, vietnamese, chinese
+* new translations for: finnish, serbian
+
 gtkam 0.2.0
 
 * ported to libgphoto2 2.5.0

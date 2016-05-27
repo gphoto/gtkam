@@ -1,400 +1,385 @@
 # Vietnamese translation for GTKam.
-# Copyright © 2010 Free Software Foundation, Inc.
+# Copyright © 2014 Free Software Foundation, Inc.
 # This file is distributed under the same license as the gtkam package.
 # Clytie Siddall <clytie@riverland.net.au>, 2006-2010.
+# Trần Ngọc Quân <vnwildman@gmail.com>, 2014.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: gtkam 0.1.17\n"
+"Project-Id-Version: gtkam 0.2.0\n"
 "Report-Msgid-Bugs-To: gphoto-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2010-01-31 19:37+0100\n"
-"PO-Revision-Date: 2010-02-09 22:10+0930\n"
-"Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
-"Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
+"POT-Creation-Date: 2012-07-10 09:51+0200\n"
+"PO-Revision-Date: 2014-03-27 15:12+0700\n"
+"Last-Translator: Trần Ngọc Quân <vnwildman@gmail.com>\n"
+"Language-Team: Vietnamese <translation-team-vi@lists.sourceforge.net>\n"
+"Language: vi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: LocFactoryEditor 1.8\n"
 
-#: ../gtkam.desktop.in.h:1
-msgid "Browse and download images from an attached digital camera"
-msgstr "Duyệt và truyền ảnh từ máy ảnh số được kết nối"
-
-#: ../gtkam.desktop.in.h:2
-msgid "Gtkam Digital Camera Browser"
-msgstr "Bộ Duyệt Máy Ảnh Điện Số Gtkam"
-
-#. Port?
-#: ../src/gtkam-chooser.c:231 ../src/gtkam-chooser.c:253
+#: src/gtkam-chooser.c:231 src/gtkam-chooser.c:253
 msgid "None"
 msgstr "Không có"
 
-#. Speed?
-#. Update speed combo
-#: ../src/gtkam-chooser.c:261 ../src/gtkam-chooser.c:368
-#: ../src/gtkam-chooser.c:632 ../src/gtkam-chooser.c:666
+#: src/gtkam-chooser.c:261 src/gtkam-chooser.c:368 src/gtkam-chooser.c:632
+#: src/gtkam-chooser.c:666
 msgid "Best"
 msgstr "Tốt nhất"
 
-#.
-#. * Initialize the camera to check if it is really there. Exit
-#. * afterwards because other applications could need the camera, too.
-#.
-#: ../src/gtkam-chooser.c:268
+#: src/gtkam-chooser.c:268
 msgid "Initializing camera..."
-msgstr "Đang sở khởi máy ảnh..."
+msgstr "Đang khởi tạo máy ảnh..."
 
-#: ../src/gtkam-chooser.c:282
+#: src/gtkam-chooser.c:282
 msgid "Could not initialize camera."
-msgstr "Không thể sở khởi máy ảnh."
+msgstr "Không thể khởi tạo máy ảnh."
 
-#: ../src/gtkam-chooser.c:359
+#: src/gtkam-chooser.c:359
 #, c-format
 msgid "Could not get abilities of model '%s'."
-msgstr "Không thể lấy khả năng của mô hình « %s »."
+msgstr "Không thể lấy khả năng của mô hình “%s”."
 
-#: ../src/gtkam-chooser.c:407
+#: src/gtkam-chooser.c:407
 msgid "Detecting cameras..."
 msgstr "Đang phát hiện máy ảnh.."
 
-#: ../src/gtkam-chooser.c:416
+#: src/gtkam-chooser.c:416
 msgid "No cameras detected."
-msgstr "Chưa phát hiện máy ảnh nào."
+msgstr "Không dò tìm thấy máy ảnh nào."
 
-#: ../src/gtkam-chooser.c:433
+#: src/gtkam-chooser.c:433
 msgid "Could not detect any cameras."
 msgstr "Không thể phát hiện máy ảnh nào."
 
-#: ../src/gtkam-chooser.c:568
+#: src/gtkam-chooser.c:568
 msgid "Add Camera"
 msgstr "Thêm máy ảnh"
 
-#: ../src/gtkam-chooser.c:583
+#: src/gtkam-chooser.c:583
 msgid "Model:"
 msgstr "Mô hình:"
 
-#: ../src/gtkam-chooser.c:595
+#: src/gtkam-chooser.c:595
 msgid "Detect"
-msgstr "Phát hiện"
+msgstr "Dò tìm"
 
-#: ../src/gtkam-chooser.c:601
+#: src/gtkam-chooser.c:601
 msgid "Detect USB camera"
-msgstr "Phát hiện máy ảnh USB"
+msgstr "Dò tìm máy ảnh USB"
 
-#: ../src/gtkam-chooser.c:603
+#: src/gtkam-chooser.c:603
 msgid "Port:"
 msgstr "Cổng:"
 
-#: ../src/gtkam-chooser.c:624 ../src/gtkam-chooser.c:656
+#: src/gtkam-chooser.c:624 src/gtkam-chooser.c:656
 msgid "Speed:"
 msgstr "Tốc độ:"
 
-#: ../src/gtkam-chooser.c:637 ../src/gtkam-chooser.c:672
+#: src/gtkam-chooser.c:637 src/gtkam-chooser.c:672
 msgid "Allow multiple frontends"
-msgstr "Cho phép nhiều tiền tiêu"
+msgstr "Cho phép nhiều ứng dụng mặt tiền"
 
-#: ../src/gtkam-chooser.c:644
+#: src/gtkam-chooser.c:644
 msgid "Enhanced"
 msgstr "Tăng cường"
 
-#: ../src/gtkam-chooser.c:737
+#: src/gtkam-chooser.c:737
 msgid "Could not get number of supported camera models"
 msgstr "Không thể lấy số mô hình máy ảnh được hỗ trợ"
 
-#: ../src/gtkam-chooser.c:767
+#: src/gtkam-chooser.c:767
 msgid "Could not get number of ports."
 msgstr "Không thể lấy số cổng."
 
-#: ../src/gtkam-config.c:163
+#: src/gtkam-config.c:163
 msgid "Applying configuration..."
 msgstr "Đang áp dụng cấu hình..."
 
-#: ../src/gtkam-config.c:179
+#: src/gtkam-config.c:179
 msgid "Could not apply configuration."
 msgstr "Không thể áp dụng cấu hình."
 
-#: ../src/gtkam-config.c:246
+#: src/gtkam-config.c:246
 msgid "No additional information available. (1)"
 msgstr "Không có thông tin thêm. (1)"
 
-#: ../src/gtkam-config.c:251
+#: src/gtkam-config.c:251
 msgid "General Settings"
-msgstr "Thiết lập chung"
+msgstr "Cài đặt chung"
 
-#: ../src/gtkam-config.c:326
+#: src/gtkam-config.c:326
 msgid "Could not execute command."
-msgstr "Không thể thưc hiện lệnh."
+msgstr "Không thể thực hiện lệnh."
 
-#: ../src/gtkam-config.c:530
+#: src/gtkam-config.c:530
 msgid "No additional information available. (2)"
 msgstr "Không có thông tin thêm. (2)"
 
-#. Make it easy for users to select the system's time
-#: ../src/gtkam-config.c:567
+#: src/gtkam-config.c:567
 msgid "Set to system's time"
-msgstr "Lập thành giờ hệ thống"
+msgstr "Đặt thành giờ của hệ thống"
 
-#: ../src/gtkam-config.c:601
+#: src/gtkam-config.c:601
 msgid "No additional information available. (3)"
 msgstr "Không có thông tin thêm. (3)"
 
-#: ../src/gtkam-config.c:626
+#: src/gtkam-config.c:626
 msgid "No additional information available. (4)"
 msgstr "Không có thông tin thêm. (4)"
 
-#: ../src/gtkam-config.c:673
+#: src/gtkam-config.c:673
 msgid "No additional information available. (5)"
 msgstr "Không có thông tin thêm. (5)"
 
-#: ../src/gtkam-config.c:693
+#: src/gtkam-config.c:693
 msgid "No additional information available. (6)"
 msgstr "Không có thông tin thêm. (6)"
 
-#: ../src/gtkam-config.c:734
+#: src/gtkam-config.c:734
 msgid "Getting configuration..."
 msgstr "Đang lấy cấu hình..."
 
-#: ../src/gtkam-config.c:749
+#: src/gtkam-config.c:749
 msgid "Could not get configuration."
 msgstr "Không thể lấy cấu hình."
 
-#: ../src/gtkam-debug.c:240
+#: src/gtkam-debug.c:237
 msgid "Save As..."
 msgstr "Lưu dạng..."
 
-#: ../src/gtkam-debug.c:262
+#: src/gtkam-debug.c:259
 #, c-format
 msgid "Could not open '%s'!"
-msgstr "Không thể mở « %s »."
+msgstr "Không thể mở “%s”!"
 
-#: ../src/gtkam-debug.c:309
+#: src/gtkam-debug.c:306
 msgid "Type of messages to log:"
-msgstr "Kiểu thông điệp cần ghi lưu :"
+msgstr "Kiểu thông điệp cần ghi nhật ký:"
 
-#: ../src/gtkam-debug.c:313
+#: src/gtkam-debug.c:310
 msgid "Error"
 msgstr "Lỗi"
 
-#: ../src/gtkam-debug.c:320
+#: src/gtkam-debug.c:317
 msgid "Verbose"
 msgstr "Chi tiết"
 
-#: ../src/gtkam-debug.c:327
+#: src/gtkam-debug.c:324
 msgid "Debug"
 msgstr "Gỡ lỗi"
 
-#: ../src/gtkam-debug.c:334
+#: src/gtkam-debug.c:331
 msgid "Data"
 msgstr "Dữ liệu"
 
-#: ../src/gtkam-delete.c:179
+#: src/gtkam-delete.c:179
 #, c-format
 msgid "Deleting all files in '%s'..."
-msgstr "Đang xóa bỏ mọi tập tin trong « %s »..."
+msgstr "Đang xóa bỏ mọi tập tin trong “%s”..."
 
-#: ../src/gtkam-delete.c:200
+#: src/gtkam-delete.c:200
 #, c-format
 msgid "Could not delete all files in '%s'."
-msgstr "Không thể xóa bỏ mọi tập tin trong « %s »."
+msgstr "Không thể xóa bỏ mọi tập tin trong “%s”."
 
-#: ../src/gtkam-delete.c:236
+#: src/gtkam-delete.c:236
 #, c-format
 msgid "Deleting file '%s' from folder '%s'..."
-msgstr "Đang xóa bỏ tập tin « %s » ra thư mục « %s » ..."
+msgstr "Đang xóa bỏ tập tin “%s” ra thư mục “%s” ..."
 
-#: ../src/gtkam-delete.c:257
+#: src/gtkam-delete.c:257
 #, c-format
 msgid "Could not delete file '%s' in folder '%s'."
-msgstr "Không thể xóa bỏ tập tin « %s » ra thư mục « %s »."
+msgstr "Không thể xóa bỏ tập tin “%s” ra thư mục “%s”."
 
-#: ../src/gtkam-delete.c:386
+#: src/gtkam-delete.c:386
 #, c-format
 msgid "Do you really want to delete all the files in '%s'?"
-msgstr "Bạn thật sự muốn xóa bỏ mọi tập tin trong « %s » không?"
+msgstr "Bạn thật sự muốn xóa bỏ mọi tập tin trong “%s” không?"
 
-#: ../src/gtkam-delete.c:389
+#: src/gtkam-delete.c:389
 #, c-format
 msgid "Do you really want to delete '%s'?"
-msgstr "Bạn thật sự muốn xóa bỏ « %s » không?"
+msgstr "Bạn có thật sự muốn xóa bỏ “%s” không?"
 
-#: ../src/gtkam-delete.c:392
+#: src/gtkam-delete.c:392
 #, c-format
 msgid "Do you really want to delete the selected %i files?"
-msgstr "Bạn thật sự muốn xóa bỏ %i tập tin đã chọn không?"
+msgstr "Bạn có thật sự muốn xóa bỏ %i tập tin đã chọn không?"
 
-#: ../src/gtkam-delete.c:398
+#: src/gtkam-delete.c:398
 msgid "Delete these files?"
-msgstr "Xoá bỏ những tập tin này chứ?"
+msgstr "Có xoá bỏ những tập tin này không?"
 
-#: ../src/gtkam-exif.c:137
+#: src/gtkam-exif.c:137
 #, c-format
 msgid "Getting EXIF information for file '%s' in folder '%s'..."
-msgstr "Đang lấy thông tin EXIF về tập tin « %s »  trong thư mục « %s »..."
+msgstr "Đang lấy thông tin EXIF về tập tin “%s”  trong thư mục “%s”..."
 
-#: ../src/gtkam-exif.c:153
+#: src/gtkam-exif.c:153
 #, c-format
 msgid "Could not get EXIF information for '%s' in folder '%s'."
-msgstr "Không thể lấy thông tin EXIF về tập tin « %s »  trong thư mục « %s »."
+msgstr "Không thể lấy thông tin EXIF về tập tin “%s”  trong thư mục “%s”."
 
-#: ../src/gtkam-exif.c:166
+#: src/gtkam-exif.c:166
 msgid "Could not interpret EXIF data."
 msgstr "Không thể thông dịch dữ liệu EXIF."
 
-#: ../src/gtkam-exif.c:175
+#: src/gtkam-exif.c:175
 msgid "The EXIF data could not be retrieved from the file."
 msgstr "Không thể lấy dữ liệu EXIF từ tập tin."
 
-#: ../src/gtkam-exif.c:192
+#: src/gtkam-exif.c:192
 msgid "Gtkam has been compiled without EXIF support."
-msgstr "Trình gtkam đã được biên dịch không có hỗ trợ EXIF."
+msgstr "Trình gtkam đã được biên dịch không hỗ trợ EXIF."
 
-#: ../src/gtkam-gimp.c:67 ../src/gtkam-gimp.c:68
+#: src/gtkam-gimp.c:67 src/gtkam-gimp.c:68
 msgid "Captures images from digital camera"
-msgstr "Bắt ảnh từ máy ảnh số"
+msgstr "Chụp ảnh từ máy ảnh số"
 
 #. TRANSLATORS: do not translate <Toolbox>/File/Acquire, but only the Capture from Camera part
-#: ../src/gtkam-gimp.c:71
+#: src/gtkam-gimp.c:71
 msgid "<Toolbox>/File/Acquire/Capture from Camera..."
-msgstr "<Toolbox>/Tập tin/Bắt/Bắt từ máy ảnh..."
+msgstr "<Toolbox>/File/Acquire/Chụp từ máy ảnh..."
 
-#: ../src/gtkam-gimp.c:75 ../src/gtkam-gimp.c:76
+#: src/gtkam-gimp.c:75 src/gtkam-gimp.c:76
 msgid "Loads files from digital cameras"
 msgstr "Tải tập tin từ máy ảnh số"
 
 #. TRANSLATORS: do not translate <Toolbox>/File/Acquire, but only the Load from Camera part
-#: ../src/gtkam-gimp.c:81
+#: src/gtkam-gimp.c:81
 msgid "<Toolbox>/File/Acquire/Load from Camera..."
-msgstr "<Toolbox>/Tập tin/Bắt/Tải từ máy ảnh..."
+msgstr "<Toolbox>/File/Acquire/Tải từ máy ảnh..."
 
-#: ../src/gtkam-gimp.c:194 ../src/gtkam-list.c:505
+#: src/gtkam-gimp.c:194 src/gtkam-list.c:505
 #, c-format
 msgid "Downloading '%s' from '%s'..."
-msgstr "Đang tải « %s » xuống « %s » ..."
+msgstr "Đang tải “%s” xuống “%s” ..."
 
-#: ../src/gtkam-gimp.c:212
+#: src/gtkam-gimp.c:212
 #, c-format
 msgid "Could not download file '%s' from folder '%s'."
-msgstr "Không thể tải tập tin « %s » xuống thư mục «%s»."
+msgstr "Không thể tải tập tin “%s” xuống thư mục “%s”."
 
-#: ../src/gtkam-gimp.c:245
+#: src/gtkam-gimp.c:245
 msgid "Image"
 msgstr "Ảnh"
 
-#: ../src/gtkam-info.c:165
+#: src/gtkam-info.c:165
 #, c-format
 msgid "Setting information for file '%s' in '%s'..."
-msgstr "Đang đặt thông tin cho tập tin « %s » trong « %s »..."
+msgstr "Đang đặt thông tin cho tập tin “%s” trong “%s”..."
 
-#: ../src/gtkam-info.c:186
+#: src/gtkam-info.c:186
 #, c-format
 msgid "Could not set file information for '%s' in folder '%s'"
-msgstr "Không thể đặt thông tin tập tin cho « %s » trong thư mục « %s »"
+msgstr "Không thể đặt thông tin tập tin cho “%s” trong thư mục “%s”"
 
-#. Get file info
-#: ../src/gtkam-info.c:270
+#: src/gtkam-info.c:270
 #, c-format
 msgid "Getting information about file '%s' in folder '%s'..."
-msgstr "Đang lấy thông tin về tập tin « %s » trong thư mục « %s »..."
+msgstr "Đang lấy thông tin về tập tin “%s” trong thư mục “%s”..."
 
-#: ../src/gtkam-info.c:282
+#: src/gtkam-info.c:282
 #, c-format
 msgid "Could not get information about file '%s' in folder '%s'."
-msgstr "Không thể lấy thông tin về tập tin « %s » trong thư mục « %s »."
+msgstr "Không thể lấy thông tin về tập tin “%s” trong thư mục “%s”."
 
-#: ../src/gtkam-info.c:310
+#: src/gtkam-info.c:310
 msgid "File"
 msgstr "Tập tin"
 
-#: ../src/gtkam-info.c:316 ../src/gtkam-info.c:425 ../src/gtkam-info.c:474
+#: src/gtkam-info.c:316 src/gtkam-info.c:425 src/gtkam-info.c:474
 msgid "MIME type:"
 msgstr "Kiểu MIME:"
 
-#: ../src/gtkam-info.c:334
+#: src/gtkam-info.c:334
 msgid "Last modified:"
-msgstr "Sửa đổi cuối cùng:"
+msgstr "Sửa lần cuối:"
 
-#: ../src/gtkam-info.c:355 ../src/gtkam-info.c:442 ../src/gtkam-info.c:491
+#: src/gtkam-info.c:355 src/gtkam-info.c:442 src/gtkam-info.c:491
 msgid "Size:"
-msgstr "Cỡ :"
+msgstr "Cỡ:"
 
-#: ../src/gtkam-info.c:362 ../src/gtkam-info.c:498
+#: src/gtkam-info.c:362 src/gtkam-info.c:498
 #, c-format
 msgid "%liK (%li bytes)"
 msgstr "%liK (%li byte)"
 
-#: ../src/gtkam-info.c:377
+#: src/gtkam-info.c:377
 msgid "Permissions:"
 msgstr "Quyền hạn:"
 
-#: ../src/gtkam-info.c:389
+#: src/gtkam-info.c:389
 msgid "Read"
 msgstr "Đọc"
 
-#: ../src/gtkam-info.c:400
+#: src/gtkam-info.c:400
 msgid "Delete"
 msgstr "Xóa bỏ"
 
-#: ../src/gtkam-info.c:419 ../src/gtkam-list.c:892
+#: src/gtkam-info.c:419 src/gtkam-list.c:892
 msgid "Preview"
 msgstr "Xem thử"
 
-#: ../src/gtkam-info.c:468
+#: src/gtkam-info.c:468
 msgid "Audio"
 msgstr "Âm thanh"
 
-#: ../src/gtkam-list.c:322
+#: src/gtkam-list.c:322
 #, c-format
 msgid "Downloading thumbnail of '%s' from folder '%s'..."
-msgstr "Đang tải hình thu nhỏ của « %s » xuống thư mọuc « %s » ..."
+msgstr "Đang tải hình thu nhỏ của “%s” xuống thư mục “%s” ..."
 
-#: ../src/gtkam-list.c:826
+#: src/gtkam-list.c:826
 msgid "/_View with..."
-msgstr "/_View with..."
+msgstr "/_Xem bằng..."
 
-#: ../src/gtkam-list.c:827
+#: src/gtkam-list.c:827
 msgid "/View with.../Built-in viewer"
-msgstr "/Xem bằngViewBộ xem có sẵnin viewer"
+msgstr "/Xem bằng.../Bộ xem có sẵn"
 
-#: ../src/gtkam-list.c:829
+#: src/gtkam-list.c:829
 msgid "/View file _properties"
 msgstr "/Xem th_uộc tính tập tin"
 
-#: ../src/gtkam-list.c:831
+#: src/gtkam-list.c:831
 msgid "/View _EXIF data"
 msgstr "/Xem dữ liệu _EXIF"
 
-#: ../src/gtkam-list.c:834
+#: src/gtkam-list.c:834
 msgid "/_Save"
 msgstr "/_Lưu"
 
-#: ../src/gtkam-list.c:835
+#: src/gtkam-list.c:835
 msgid "/_Delete"
 msgstr "/_Xóa bỏ"
 
-#: ../src/gtkam-list.c:898
+#: src/gtkam-list.c:898
 msgid "Name"
 msgstr "Tên"
 
-#: ../src/gtkam-list.c:904
+#: src/gtkam-list.c:904
 msgid "Time"
 msgstr "Giờ"
 
-#: ../src/gtkam-list.c:926 ../src/gtkam-tree.c:690
+#: src/gtkam-list.c:926 src/gtkam-tree.c:690
 #, c-format
 msgid "Listing files in folder '%s'..."
-msgstr "Đang liệt kê các tập tin trong thư mục « %s »..."
+msgstr "Đang liệt kê các tập tin trong thư mục “%s”..."
 
-#: ../src/gtkam-list.c:943 ../src/gtkam-tree.c:707
+#: src/gtkam-list.c:943 src/gtkam-tree.c:707
 #, c-format
 msgid "Could not get file list for folder '%s'"
-msgstr "Không thể lấy danh sách tập tin cho thư mục « %s »."
+msgstr "Không thể lấy danh sách tập tin cho thư mục “%s”."
 
-#: ../src/gtkam-list.c:960
+#: src/gtkam-list.c:960
 msgid "Unknown"
 msgstr "Không rõ"
 
-#: ../src/gtkam-main.c:425
+#: src/gtkam-main.c:425
 msgid ""
 "gtkam is a program that lets you download\n"
 "images from many digital cameras. It uses\n"
@@ -409,13 +394,13 @@ msgstr ""
 "Có thể tìm thông tin thêm tại\n"
 "<http://www.gphoto.org>.\n"
 "\n"
-"Dùng gphoto vui nhé. :)"
+"Dùng gphoto vui nhé!"
 
-#: ../src/gtkam-main.c:436
+#: src/gtkam-main.c:436
 msgid "Many others"
 msgstr "Nhiều điều khác"
 
-#: ../src/gtkam-main.c:469
+#: src/gtkam-main.c:469
 #, c-format
 msgid ""
 "%s\n"
@@ -428,7 +413,7 @@ msgstr ""
 "%s %s với tùy chọn:\n"
 "    %s\n"
 
-#: ../src/gtkam-main.c:473
+#: src/gtkam-main.c:473
 #, c-format
 msgid ""
 "%s\n"
@@ -439,459 +424,460 @@ msgstr ""
 "%s %s với tùy chọn:\n"
 "    %s\n"
 
-#: ../src/gtkam-main.c:548
+#: src/gtkam-main.c:548
 msgid "_File"
 msgstr "_Tập tin"
 
-#: ../src/gtkam-main.c:549
+#: src/gtkam-main.c:549
 msgid "_Save Photos"
 msgstr "_Lưu ảnh chụp"
 
-#: ../src/gtkam-main.c:550
+#: src/gtkam-main.c:550
 msgid "_Delete Photos"
 msgstr "_Xóa bỏ ảnh chụp"
 
-#: ../src/gtkam-main.c:551 ../src/gtkam-main.c:553
+#: src/gtkam-main.c:551 src/gtkam-main.c:553
 msgid "_Selected"
 msgstr "Đã _chọn"
 
-#: ../src/gtkam-main.c:552 ../src/gtkam-main.c:554 ../src/gtkam-main.c:561
+#: src/gtkam-main.c:552 src/gtkam-main.c:554 src/gtkam-main.c:561
 msgid "_All"
 msgstr "_Hết"
 
-#: ../src/gtkam-main.c:555
+#: src/gtkam-main.c:555
 msgid "_Quit"
 msgstr "T_hoát"
 
-#: ../src/gtkam-main.c:556
+#: src/gtkam-main.c:556
 msgid "_View"
 msgstr "_Xem"
 
-#: ../src/gtkam-main.c:557
+#: src/gtkam-main.c:557
 msgid "Zoom _In"
 msgstr "Phóng _to"
 
-#: ../src/gtkam-main.c:558
+#: src/gtkam-main.c:558
 msgid "Zoom _100"
 msgstr "Phóng to _100"
 
-#: ../src/gtkam-main.c:559
+#: src/gtkam-main.c:559
 msgid "Zoom _Out"
 msgstr "Thu _nhỏ"
 
-#: ../src/gtkam-main.c:560
+#: src/gtkam-main.c:560
 msgid "_Select"
 msgstr "_Chọn"
 
-#: ../src/gtkam-main.c:562
+#: src/gtkam-main.c:562
 msgid "_Inverse"
-msgstr "_Đảo"
+msgstr "_Đảo ngược"
 
-#: ../src/gtkam-main.c:563
+#: src/gtkam-main.c:563
 msgid "_None"
 msgstr "_Không có"
 
-#: ../src/gtkam-main.c:564
+#: src/gtkam-main.c:564
 msgid "_Camera"
 msgstr "_Máy ảnh"
 
-#: ../src/gtkam-main.c:565
+#: src/gtkam-main.c:565
 msgid "_Add Camera..."
 msgstr "Th_êm máy ảnh.."
 
-#: ../src/gtkam-main.c:566
+#: src/gtkam-main.c:566
 msgid "_Rescan"
 msgstr "_Quét lại"
 
-#: ../src/gtkam-main.c:567
+#: src/gtkam-main.c:567
 msgid "_Help"
 msgstr "Trợ _giúp"
 
-#: ../src/gtkam-main.c:569
+#: src/gtkam-main.c:569
 msgid "_Contents"
 msgstr "_Nội dung"
 
-#: ../src/gtkam-main.c:571
+#: src/gtkam-main.c:571
 msgid "_Debug"
 msgstr "_Gỡ lỗi"
 
-#: ../src/gtkam-main.c:572
+#: src/gtkam-main.c:572
 msgid "_About"
 msgstr "_Giới thiệu"
 
-#: ../src/gtkam-main.c:577
+#: src/gtkam-main.c:577
 msgid "_View Thumbnails"
-msgstr "ì_Xem hình thu nhỏ"
+msgstr "_Xem hình thu nhỏ"
 
-#: ../src/gtkam-mkdir.c:151
+#: src/gtkam-mkdir.c:151
 #, c-format
 msgid "Creating folder '%s' in folder '%s'..."
-msgstr "Đang tạo thư mục « %s » trong thư mục « %s »..."
+msgstr "Đang tạo thư mục “%s” trong thư mục “%s”..."
 
-#: ../src/gtkam-mkdir.c:185
+#: src/gtkam-mkdir.c:185
 #, c-format
 msgid "Could not create folder '%s' in folder '%s'."
-msgstr "Không thể tạo thư mục « %s » trong thư mục « %s »."
+msgstr "Không thể tạo thư mục “%s” trong thư mục “%s”."
 
 # Type: select
 # Description
-#: ../src/gtkam-mkdir.c:211
+#: src/gtkam-mkdir.c:211
 #, c-format
 msgid "Please choose a name for the directory that should be created in '%s':"
-msgstr "Hãy chọn tên cho thư mục cần tạo trong « %s »."
+msgstr "Hãy chọn tên cho thư mục cần tạo trong “%s”."
 
-#: ../src/gtkam-mkdir.c:227
+#: src/gtkam-mkdir.c:227
 msgid "New directory"
-msgstr "Thư mục mới"
+msgstr "Tạo thư mục mới"
 
-#: ../src/gtkam-port.c:146
+#: src/gtkam-port.c:146
 #, c-format
 msgid "The port '%s' could not be found. Please make sure that the port exists."
-msgstr "Không tìm thấy cổng « %s ». Hãy kiểm tra lại cổng này tồn tại."
+msgstr "Không tìm thấy cổng “%s”. Hãy kiểm tra lại để chắc là cổng này có tồn tại."
 
-#: ../src/gtkam-port.c:180
+#: src/gtkam-port.c:180
 msgid "Please specify the path to the port your camera is attached to:"
-msgstr "Hãy ghi rõ đường dẫn đến cổng mà máy ảnh bạn có kết nối đến nó :"
+msgstr "Hãy chỉnh định đường dẫn đến cổng mà máy ảnh bạn có kết nối đến nó:"
 
-#. The camera doesn't support previews. Capture an image.
-#: ../src/gtkam-preview.c:186 ../src/gtkam-tree.c:1098
+#: src/gtkam-preview.c:186 src/gtkam-tree.c:1098
 msgid "Capturing image..."
-msgstr "Đang bắt ảnh..."
+msgstr "Đang chụp ảnh..."
 
-#: ../src/gtkam-preview.c:208
+#: src/gtkam-preview.c:208
 msgid "Could not capture image."
-msgstr "Không thể bắt ảnh."
+msgstr "Không thể chụp ảnh."
 
-#: ../src/gtkam-preview.c:346 ../src/gtkam-preview.c:409
+#: src/gtkam-preview.c:346 src/gtkam-preview.c:409
 msgid "Capture"
-msgstr "Bắt"
+msgstr "Chụp"
 
-#: ../src/gtkam-preview.c:372
+#: src/gtkam-preview.c:372
 msgid "0 degrees"
 msgstr "0º"
 
-#: ../src/gtkam-preview.c:380
+#: src/gtkam-preview.c:380
 msgid "Don't rotate thumbnail"
-msgstr "Dùng xoay hình thu nhỏ"
+msgstr "Đừng xoay hình thu nhỏ"
 
-#: ../src/gtkam-preview.c:382
+#: src/gtkam-preview.c:382
 msgid "-90 degrees"
 msgstr "-90º"
 
-#: ../src/gtkam-preview.c:389
+#: src/gtkam-preview.c:389
 msgid "Rotate thumbnail by -90 degrees"
 msgstr "Xoay hình thu nhỏ -90º"
 
-#: ../src/gtkam-preview.c:391
+#: src/gtkam-preview.c:391
 msgid "+90 degrees"
 msgstr "+90º"
 
-#: ../src/gtkam-preview.c:398
+#: src/gtkam-preview.c:398
 msgid "Rotate thumbnail by 90 degrees"
 msgstr "Xoay hình thu nhỏ +90º"
 
-#: ../src/gtkam-preview.c:400
+#: src/gtkam-preview.c:400
 msgid "180 degrees"
 msgstr "180º"
 
-#: ../src/gtkam-preview.c:407
+#: src/gtkam-preview.c:407
 msgid "Rotate thumbnail by 180 degrees"
 msgstr "Xoay hình thu nhỏ +180°"
 
-#: ../src/gtkam-save.c:299 ../src/gtkam-tree.c:619
+#: src/gtkam-save.c:299 src/gtkam-tree.c:619
 #, c-format
 msgid "The file '%s' already exists."
-msgstr "Tập tin « %s » đã có."
+msgstr "Tập tin “%s” đã có."
 
-#: ../src/gtkam-save.c:321 ../src/gtkam-tree.c:636
+#: src/gtkam-save.c:321 src/gtkam-tree.c:636
 #, c-format
 msgid "Could not save file to '%s'."
-msgstr "Không thể lưu tập tin vào « %s »."
+msgstr "Không thể lưu tập tin vào “%s”."
 
-#: ../src/gtkam-save.c:361 ../src/gtkam-tree.c:669
+#: src/gtkam-save.c:361 src/gtkam-tree.c:669
 #, c-format
 msgid "Could not get '%s' from folder '%s'."
-msgstr "Không thể lấy « %s » từ thư mục « %s »."
+msgstr "Không thể lấy “%s” từ thư mục “%s”."
 
-#: ../src/gtkam-save.c:492
+#: src/gtkam-save.c:492
 msgid "There is nothing to be saved."
 msgstr "Không có gì cần lưu."
 
-#: ../src/gtkam-save.c:504
+#: src/gtkam-save.c:504
 msgid "Downloading file"
 msgstr "Đang tải về tập tin"
 
-#: ../src/gtkam-save.c:506
+#: src/gtkam-save.c:506
 #, c-format
 msgid "Downloading %i files"
 msgstr "Đang tải về %i tập tin"
 
-#: ../src/gtkam-save.c:513 ../src/gtkam-tree.c:745
+#: src/gtkam-save.c:513 src/gtkam-tree.c:745
 #, c-format
 msgid "Downloading %i files..."
 msgstr "Đang tải về %i tập tin..."
 
-#: ../src/gtkam-save.c:564 ../src/gtkam-tree.c:760
+#: src/gtkam-save.c:564 src/gtkam-tree.c:760
 #, c-format
 msgid "Problem getting '%s' from folder '%s'."
-msgstr "Gặp khó khăn lấy « %s » từ thư mục « %s »."
+msgstr "Gặp trục trặc khi lấy “%s” từ thư mục “%s”."
 
-#: ../src/gtkam-save.c:638
+#: src/gtkam-save.c:639
 msgid "What to save:"
 msgstr "Lưu :"
 
-#: ../src/gtkam-save.c:650
+#: src/gtkam-save.c:651
 msgid "Save photos"
 msgstr "Lưu ảnh"
 
-#: ../src/gtkam-save.c:654
+#: src/gtkam-save.c:655
 msgid "Photos will be saved if this is checked"
-msgstr "Chọn điều này để lưu ảnh"
+msgstr "Chọn cái này để lưu ảnh chụp"
 
-#: ../src/gtkam-save.c:658
+#: src/gtkam-save.c:659
 msgid "Save raw data"
 msgstr "Lưu dữ liệu thô"
 
-#: ../src/gtkam-save.c:661
+#: src/gtkam-save.c:662
 msgid "Raw data will be saved if this is checked"
 msgstr "Chọn điều này để lưu dữ liệu thô"
 
-#: ../src/gtkam-save.c:665
+#: src/gtkam-save.c:666
 msgid "Save audio data"
 msgstr "Lưu dữ liệu âm thanh"
 
-#: ../src/gtkam-save.c:668
+#: src/gtkam-save.c:669
 msgid "Audio data will be saved if this is checked"
 msgstr "Chọn điều này để lưu dữ liệu âm thanh"
 
-#: ../src/gtkam-save.c:672
+#: src/gtkam-save.c:673
 msgid "Save thumbnails"
 msgstr "Lưu hình thu nhỏ"
 
-#: ../src/gtkam-save.c:675
+#: src/gtkam-save.c:676
 msgid "Thumbnails will be saved if this is checked"
-msgstr "Chọn điều này để lưu hình thu nhỏ"
+msgstr "Chọn cái này để lưu hình thu nhỏ"
 
-#: ../src/gtkam-save.c:679
+#: src/gtkam-save.c:680
 msgid "Save EXIF data"
 msgstr "Lưu dữ liệu EXIF"
 
-#: ../src/gtkam-save.c:682
+#: src/gtkam-save.c:683
 msgid "EXIF data will be saved if this is checked"
-msgstr "Chọn điều này để lưu dữ liệu EXIF"
+msgstr "Chọn cái này để lưu dữ liệu EXIF"
 
-#: ../src/gtkam-save.c:691
+#: src/gtkam-save.c:692
 msgid "Open image(s) with: "
 msgstr "Mở ảnh bằng:"
 
 # Type: string
 # Description
-#: ../src/gtkam-save.c:698
+#: src/gtkam-save.c:699
 msgid "Type in the name of the program you want to run, leave blank for none"
-msgstr "Hãy gõ tên chương trình cần chạy, bỏ trống nếu không"
+msgstr "Hãy nhập vào tên chương trình cần chạy, bỏ trống nếu không"
 
-#. Filenames provided by camera
-#: ../src/gtkam-save.c:704
+#: src/gtkam-save.c:705
 msgid "Use filename(s) provided by the camera"
 msgstr "Dùng tên tập tin do máy ảnh cung cấp"
 
-#: ../src/gtkam-save.c:708
+#: src/gtkam-save.c:709
 msgid "Choose whether to use the filename provided by the camera"
 msgstr "Chọn có nên dùng tên tập tin do máy ảnh cung cấp hay không"
 
-#: ../src/gtkam-save.c:722
+#: src/gtkam-save.c:723
 msgid "Filename prefix: "
-msgstr "Tiền tố tên tập tin:"
+msgstr "Tiền tố tên tập tin: "
 
-#: ../src/gtkam-save.c:731
+#: src/gtkam-save.c:732
 msgid "Start numbering with: "
-msgstr "Bắt đầu từ số :"
+msgstr "Bắt đầu từ số: "
 
-#. First case: We have only one file.
-#: ../src/gtkam-save.c:773
+#: src/gtkam-save.c:774
 #, c-format
 msgid "Save '%s'..."
-msgstr "Lưu « %s »..."
+msgstr "Lưu “%s”..."
 
-#. Second case: We have multiple files to save.
-#: ../src/gtkam-save.c:793
+#: src/gtkam-save.c:794
 msgid "Save photos..."
 msgstr "Lưu ảnh chụp..."
 
-#: ../src/gtkam-tree.c:296
+#: src/gtkam-tree.c:296
 #, c-format
 msgid "Listing folders in '%s'..."
-msgstr "Đang liệt kê các thư mục trong « %s » ..."
+msgstr "Đang liệt kê các thư mục trong “%s” ..."
 
-#: ../src/gtkam-tree.c:317
+#: src/gtkam-tree.c:317
 #, c-format
 msgid "Could not list folders in '%s'."
-msgstr "Không thể liệt các kê thư mục trong « %s »."
+msgstr "Không thể liệt các kê thư mục trong “%s”."
 
-#: ../src/gtkam-tree.c:414
+#: src/gtkam-tree.c:414
 #, c-format
 msgid "Could not open '%s'."
-msgstr "Không thể mở « %s »."
+msgstr "Không thể mở “%s”."
 
-#: ../src/gtkam-tree.c:421
+#: src/gtkam-tree.c:421
 #, c-format
 msgid "Uploading '%s' into folder '%s'..."
-msgstr "Đang tải « %s » lên thư mục « %s » ..."
+msgstr "Đang tải “%s” lên thư mục “%s” ..."
 
-#: ../src/gtkam-tree.c:445
+#: src/gtkam-tree.c:445
 #, c-format
 msgid "Could not upload '%s' into '%s'."
-msgstr "Không thể tải « %s » lên «%s»."
+msgstr "Không thể tải “%s” lên “%s”."
 
-#: ../src/gtkam-tree.c:469
+#: src/gtkam-tree.c:469
 #, c-format
 msgid "Upload into '%s'..."
-msgstr "Tải lên « %s »..."
+msgstr "Tải lên “%s”..."
 
-#: ../src/gtkam-tree.c:545
+#: src/gtkam-tree.c:545
 #, c-format
 msgid "Removing directory '%s'..."
-msgstr "Đang gỡ bỏ thư mục « %s »..."
+msgstr "Đang gỡ bỏ thư mục “%s”..."
 
-#: ../src/gtkam-tree.c:562
+#: src/gtkam-tree.c:562
 #, c-format
 msgid "Could not remove directory '%s'."
-msgstr "Không thể gỡ bỏ thư mục « %s »."
+msgstr "Không thể gỡ bỏ thư mục “%s”."
 
-#: ../src/gtkam-tree.c:722
+#: src/gtkam-tree.c:722
 #, c-format
 msgid "Could not create directory '%s'"
-msgstr "Không thể tạo thư mục « %s »."
+msgstr "Không thể tạo thư mục “%s”."
 
-#: ../src/gtkam-tree.c:734
+#: src/gtkam-tree.c:734
 #, c-format
 msgid "Downloading file from '%s'"
-msgstr "Đang tải tập tin xuống « %s »..."
+msgstr "Đang tải tập tin xuống “%s”..."
 
-#: ../src/gtkam-tree.c:736
+#: src/gtkam-tree.c:736
 #, c-format
 msgid "Downloading %i files from '%s'"
-msgstr "Đang tải %i tập tin xuống « %s »..."
+msgstr "Đang tải %i tập tin xuống “%s”..."
 
-#. Recurse into subfolders
-#: ../src/gtkam-tree.c:786
+#: src/gtkam-tree.c:786
 #, c-format
 msgid "Listing subfolders in folder '%s'..."
-msgstr "Đang liệt kê các thư mục con trong thư mục « %s »..."
+msgstr "Đang liệt kê các thư mục con trong thư mục “%s”..."
 
-#: ../src/gtkam-tree.c:805
+#: src/gtkam-tree.c:805
 #, c-format
 msgid "Could not get subfolders list for folder '%s'"
-msgstr "Không thể lấy danh sách các thư mục con cho thư mục « %s »"
+msgstr "Không thể lấy danh sách các thư mục con cho thư mục “%s”"
 
-#: ../src/gtkam-tree.c:868
+#: src/gtkam-tree.c:868
 #, c-format
 msgid "Download '%s' subtree to..."
-msgstr "Tải cây phụ « %s » về..."
+msgstr "Tải cây con “%s” về..."
 
-#: ../src/gtkam-tree.c:906
+#: src/gtkam-tree.c:906
 msgid "Getting information about the camera..."
 msgstr "Đang lấy thông tin về máy ảnh..."
 
-#: ../src/gtkam-tree.c:910
+#: src/gtkam-tree.c:910
 msgid "Getting information about the driver..."
 msgstr "Đang lấy thông tin về trình điều khiển..."
 
-#: ../src/gtkam-tree.c:914
+#: src/gtkam-tree.c:914
 msgid "Getting manual..."
-msgstr "Đang lấy sổ tay..."
+msgstr "Đang lấy hướng dẫn sử dụng..."
 
-#: ../src/gtkam-tree.c:945
+#: src/gtkam-tree.c:945
 msgid "Could not retrieve information."
 msgstr "Không thể lấy thông tin."
 
-#: ../src/gtkam-tree.c:1048
+#: src/gtkam-tree.c:1048
 msgid "Select Camera"
 msgstr "Chọn máy ảnh"
 
-#: ../src/gtkam-tree.c:1116
+#: src/gtkam-tree.c:1116
 msgid "Could not capture."
-msgstr "Không thể bắt."
+msgstr "Không thể chụp."
 
-#: ../src/gtkam-tree.c:1155
+#: src/gtkam-tree.c:1155
 msgid "/Upload file..."
 msgstr "/Tải lên tập tin..."
 
-#: ../src/gtkam-tree.c:1156
+#: src/gtkam-tree.c:1156
 msgid "/Make directory..."
 msgstr "/Tạo thư mục..."
 
-#: ../src/gtkam-tree.c:1157
+#: src/gtkam-tree.c:1157
 msgid "/Delete directory"
 msgstr "/Xóa bỏ thư mục"
 
-#: ../src/gtkam-tree.c:1158
+#: src/gtkam-tree.c:1158
 msgid "/Save directory tree..."
 msgstr "/Lưu cây thư mục..."
 
-#: ../src/gtkam-tree.c:1160
+#: src/gtkam-tree.c:1160
 msgid "/Capture image..."
-msgstr "/Bắt ảnh..."
+msgstr "/Chụp ảnh..."
 
-#: ../src/gtkam-tree.c:1161
+#: src/gtkam-tree.c:1161
 msgid "/View camera preferences"
 msgstr "/Xem tùy thích máy ảnh"
 
-#: ../src/gtkam-tree.c:1163
+#: src/gtkam-tree.c:1163
 msgid "/View camera summary"
 msgstr "/Xem tóm tắt máy ảnh"
 
-#: ../src/gtkam-tree.c:1164
+#: src/gtkam-tree.c:1164
 msgid "/View camera manual"
 msgstr "/Xem sổ tay máy ảnh"
 
-#: ../src/gtkam-tree.c:1165
+#: src/gtkam-tree.c:1165
 msgid "/View driver details"
 msgstr "/Xem chi tiết trình điều khiển"
 
-#: ../src/gtkam-tree.c:1167
+#: src/gtkam-tree.c:1167
 msgid "/Select camera..."
 msgstr "/Chọn máy ảnh..."
 
-#: ../src/gtkam-tree.c:1168
+#: src/gtkam-tree.c:1168
 msgid "/Remove camera"
 msgstr "/Gỡ bỏ máy ảnh"
 
-#: ../src/gtkam-tree.c:1198
+#: src/gtkam-tree.c:1198
 msgid "_Add camera..."
 msgstr "Th_êm máy ảnh..."
 
-#: ../src/gtkam-tree.c:1298
+#: src/gtkam-tree.c:1298
 msgid "Please right-click to access additional menus"
-msgstr "Hãy nhắp-phải để truy cập trình đơn thêm"
+msgstr "Hãy nhắp-chuột-phải để truy cập trình đơn thêm"
 
-#: ../src/gtkam-tree.c:1327
+#: src/gtkam-tree.c:1327
 msgid "Folder"
 msgstr "Thư mục"
 
-#: ../src/gtkam-tree.c:1420
+#: src/gtkam-tree.c:1420
 msgid "Loading cameras..."
 msgstr "Đang tải máy ảnh..."
 
-#: ../src/gtkam-util.c:44
+#: src/gtkam-util.c:44
 #, c-format
 msgid "Could not display '%s'. Either the image type ('%s') is not supported by gtk or the file itself is corrupt."
-msgstr "Không thể hiển thị « %s ». Hoặc vì kiểu ảnh (%s) không được hỗ trợ bởi gtk, hoặc vì tập tin bị hỏng."
+msgstr "Không thể hiển thị “%s”. Hoặc vì kiểu ảnh ('%s”) không được hỗ trợ bởi gtk, hoặc vì tập tin bị hỏng."
 
-#: ../src/gtkam-version.c:100
+#: src/gtkam-version.c:100
 msgid "ALWAYS INCLUDE THE FOLLOWING LINES WHEN SENDING DEBUG MESSAGES TO THE MAILING LIST:"
 msgstr "LUÔN LUÔN HÃY GỒM NHỮNG DÒNG THEO ĐÂY, KHI THÔNG BÁO LỖI CHO HỘP THƯ CHUNG:"
 
-#: ../src/gtkam-viewer.c:245
+#: src/gtkam-viewer.c:245
 #, c-format
 msgid "Downloading '%s' from folder '%s'..."
-msgstr "Đang tải « %s » xuống thư mục « %s »..."
+msgstr "Đang tải “%s” xuống thư mục “%s”..."
 
-#: ../src/gtkam-viewer.c:298
+#: src/gtkam-viewer.c:298
 #, c-format
 msgid "Could not download '%s' from folder '%s'."
-msgstr "Không thể tải « %s » xuống thư mục «%s»."
+msgstr "Không thể tải “%s” xuống thư mục “%s”."
 
-#: ../src/main.c:113
+#: src/main.c:109
 msgid "Image Download Program"
 msgstr "Chương trình Tải về Ảnh"
+
+#~ msgid "Browse and download images from an attached digital camera"
+#~ msgstr "Duyệt và truyền ảnh từ máy ảnh số được kết nối"
+
+#~ msgid "Gtkam Digital Camera Browser"
+#~ msgstr "Bộ Duyệt Máy Ảnh Điện Số Gtkam"

@@ -26,7 +26,6 @@ AM_PROG_LIBTOOL
 AC_PROG_INSTALL
 AM_PROG_CC_C_O
 GP_PKG_CONFIG
-IT_PROG_INTLTOOL
 LT_INIT
 AC_SUBST(POMAKEFILEDEPS)
 
@@ -51,7 +50,7 @@ dnl i18n support
 dnl ---------------------------------------------------------------------------
 GP_GETTEXT_HACK([],[Lutz Müller and others],[${MAIL_GPHOTO_TRANSLATION}])
 ALL_LINGUAS="be cs da de eo es fi fr hu id it is ja nb nl pa pl pt_BR pt ru sk sl sr sv uk vi zh_CN"
-AM_GNU_GETTEXT_VERSION([0.14.1])
+AM_GNU_GETTEXT_VERSION([0.19.7])
 AM_GNU_GETTEXT([external])
 AM_ICONV()
 GP_GETTEXT_FLAGS()
@@ -237,7 +236,6 @@ AC_SUBST([AM_LDFLAGS])
 # Output files
 # ---------------------------------------------------------------------------
 AC_CONFIG_FILES([
-po/Makefile.in
 gphoto-m4/Makefile
 Makefile
 art/Makefile
@@ -253,9 +251,12 @@ omf-install/gtkam-C.omf
 help/Makefile
 help/C/Makefile
 help/ru/Makefile
-intltool-extract
-intltool-merge
-intltool-update
+])
+AC_CONFIG_FILES([po/Makefile.in], [
+cat >> po/Makefile.in <<'EOF'
+print-pofiles:
+	@echo $(POFILES)
+EOF
 ])
 AC_OUTPUT()
 

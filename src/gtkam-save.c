@@ -531,27 +531,23 @@ on_ok_clicked (GtkButton *button, GtkamSave *save)
 				  GP_FILE_TYPE_NORMAL, i + j,
 				  GTKAM_CANCEL (s)->context);
 		if (save->priv->toggle_preview &&
-		    save->priv->toggle_preview->active &&
-		    (!result < 0))
+		    save->priv->toggle_preview->active)
 			result = get_file (save, data->camera,
 				  data->folder, data->name,
 				  GP_FILE_TYPE_PREVIEW, i + j,
 				  GTKAM_CANCEL (s)->context);
 		if (save->priv->toggle_raw &&
-		    save->priv->toggle_raw->active &&
-		    (!result < 0))
+		    save->priv->toggle_raw->active)
 			result = get_file (save, data->camera,
 				  data->folder, data->name, GP_FILE_TYPE_RAW,
 				  i + j, GTKAM_CANCEL (s)->context);
 		if (save->priv->toggle_audio &&
-		    save->priv->toggle_audio->active &&
-		    (!result < 0))
+		    save->priv->toggle_audio->active)
 			result = get_file (save, data->camera,
 				  data->folder, data->name, GP_FILE_TYPE_AUDIO,
 				  i + j, GTKAM_CANCEL (s)->context);
 		if (save->priv->toggle_exif &&
-		    save->priv->toggle_exif->active &&
-		    (!result < 0))
+		    save->priv->toggle_exif->active)
 			result = get_file (save, data->camera,
 				  data->folder, data->name, GP_FILE_TYPE_EXIF,
 				  i + j, GTKAM_CANCEL (s)->context);

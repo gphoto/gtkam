@@ -299,7 +299,7 @@ save_file (GtkamSave *save, const char *filename, CameraFile *file, CameraFileTy
 		msg = g_strdup_printf (_("The file '%s' already exists."),
 				       full_path);
 		if (!save->priv->err_shown) {
-			dialog = gtkam_error_new (GP_ERROR_FILE_EXISTS, NULL, GTK_WIDGET (save), msg);
+			dialog = gtkam_error_new (GP_ERROR_FILE_EXISTS, NULL, GTK_WIDGET (save), "%s", msg);
 			gtk_window_set_transient_for (GTK_WINDOW (dialog),
 						      save->priv->main_window);
 			gtk_widget_show (dialog);

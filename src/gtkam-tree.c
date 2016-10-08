@@ -623,7 +623,7 @@ tree_save_file (CameraFile *file, const char *dest_path, const char *name,
 		msg = g_strdup_printf (_("The file '%s' already exists."),
 				       full_path);
 		dialog = gtkam_error_new (GP_ERROR_FILE_EXISTS, NULL,
-					  GTK_WIDGET (save), msg);
+					  GTK_WIDGET (save), "%s", msg);
 		gtk_widget_show (dialog);
 		g_free (msg);
 		g_free (full_path);

@@ -145,7 +145,7 @@ on_ok_clicked (GtkButton *button, GtkamPort *port)
 	if (index < 0) {
 		msg = g_strdup_printf (_("The port '%s' could not be found. Please make sure "
 		        "that the port exists."), path);
-		d = gtkam_error_new (index, NULL, GTK_WIDGET (port), msg);
+		d = gtkam_error_new (index, NULL, GTK_WIDGET (port), "%s", msg);
 		g_free (msg);
 		gtk_window_set_transient_for (GTK_WINDOW (d),
 					      GTK_WINDOW (port));

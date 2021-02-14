@@ -42,6 +42,7 @@ Makefile
 /help/ru/omf_timestamp
 /omf-install/gtkam-ru.omf
 /po/*.gmo
+/po/gtkam.pot
 /src/gtkam
 /test/test-cancel
 /test/test-fsel

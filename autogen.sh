@@ -9,17 +9,8 @@ set -x
 
 cd "$(dirname "$0")"
 
-if test -f intltool-extract.in
-then
-    :
-else
-    rm -f po/Makefile.in.in
-    autoreconf -vis || :
-    intltoolize --force --automake --debug
-fi
-
+intltoolize --force --automake --debug
 rm -f po/Makefile.in.in
 autoreconf -vis
-intltoolize --force --automake --debug
 
 # End of file.

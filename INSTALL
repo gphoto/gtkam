@@ -4,27 +4,26 @@ The installation procedure should be quite simple:
 Step 0: Preparing configuration
 ===============================
 
-If you got your copy of libgphoto2 packaged as a .tar.gz or .tar.bz2 tarball, 
-SKIP THIS STEP. 
-
-You must have libgphoto2 installed. If you have compiled libgphoto2, then 
-you already have the required tools for compiling gtkam.
+If you got your copy of libgphoto2 packaged as a tarball, SKIP THIS STEP.
 
 If you got libgphoto2 using git, then you will have to prepare for
 step 1, the configuration of the sources.
 
-For that, we supply you with a script called 'autogen.sh'. It calls
-several tools in a certain sequence. For autogen.sh to work, you
-require the following tools
+For that, you need to run the `autoreconf` tool from the Autoconf package.
+It calls several tools in a certain sequence. For autoreconf to work, you
+need (at least) the following tools:
 
 	automake
 	autoconf
 	gettext
 	libtool
 
-in versions compatible to each other and to libgphoto2. Most
-combinations on current GNU/Linux systems work, whereas BSD systems
-tend to have some compatibility problems.
+in versions compatible to each other and with gphoto2. In 2021, most
+halfway current systems should work.
+
+If you have just successfully built libgphoto2, then you already have
+the tools required for building gtkam.
+
 
 =============================
 Step 1: Configure the sources

@@ -6,7 +6,7 @@ MY_CPPFLAGS =				\
 	$(LIBEXIF_GTK_CFLAGS)		\
 	$(LIBGPHOTO2_CFLAGS)		\
 	$(GNOME_CFLAGS) 		\
-	$(GTK_CFLAGS)			\
+	$(GTK2_CFLAGS)			\
 	$(BONOBO_CFLAGS)		\
 	$(GTKAM_GIMP_CFLAGS)
 
@@ -52,7 +52,7 @@ gtkam_LDADD = \
 	$(LIBEXIF_GTK_LIBS) \
 	$(LIBGPHOTO2_LIBS)	\
 	$(GTKAM_LIBS) 	\
-	$(GTK_LIBS) 	\
+	$(GTK2_LIBS) 	\
 	$(BONOBO_LIBS)	\
 	$(GNOME_LIBS)	\
 	$(INTLLIBS)
@@ -70,7 +70,7 @@ gtkam_gimp_LDADD = \
 	$(LIBEXIF_LIBS)		\
 	$(LIBEXIF_GTK_LIBS) 	\
 	$(LIBGPHOTO2_LIBS)	\
-	$(GTK_LIBS)		\
+	$(GTK2_LIBS)		\
 	$(BONOBO_LIBS)		\
 	$(GNOME_LIBS)		\
 	$(INTLLIBS)

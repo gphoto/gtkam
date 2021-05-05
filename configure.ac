@@ -78,9 +78,9 @@ AC_CHECK_FUNC(gp_port_info_get_name,
 )
 LIBS="$save_LIBS"
 
-PKG_CHECK_MODULES([GTK], [gtk+-2.0])
-AC_SUBST([GTK_CFLAGS])
-AC_SUBST([GTK_LIBS])
+PKG_CHECK_MODULES([GTK2], [gtk+-2.0], [], [dnl
+AC_MSG_ERROR([pkg-config could not find gtk+-2.0.])
+])
 
 
 dnl ---------------------------------------------------------------------------

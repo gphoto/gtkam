@@ -1,4 +1,4 @@
-AC_PREREQ([2.59])
+AC_PREREQ([2.69])
 AC_INIT([GTK frontend for libgphoto2], [1.0], [gphoto-devel@lists.sourceforge.net], [gtkam])
 AC_CONFIG_SRCDIR([src/gtkam-main.c])
 AC_CONFIG_HEADERS([config.h])
@@ -7,7 +7,7 @@ AC_CONFIG_AUX_DIR([auto-aux])
 AM_INIT_AUTOMAKE([
   -Wall
   gnu
-  1.9
+  1.14.1
   dist-bzip2
   check-news
 ])

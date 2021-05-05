@@ -4,7 +4,13 @@ AC_CONFIG_SRCDIR([src/gtkam-main.c])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_AUX_DIR([auto-aux])
-AM_INIT_AUTOMAKE([-Wall gnu 1.9 dist-bzip2 check-news])
+AM_INIT_AUTOMAKE([
+  -Wall
+  gnu
+  1.9
+  dist-bzip2
+  check-news
+])
 
 GP_CHECK_SHELL_ENVIRONMENT
 GP_CONFIG_MSG([Build])
@@ -236,21 +242,21 @@ AC_SUBST([AM_LDFLAGS])
 # Output files
 # ---------------------------------------------------------------------------
 AC_CONFIG_FILES([
-gphoto-m4/Makefile
-Makefile
-art/Makefile
-pixmaps/Makefile
-packaging/Makefile
-packaging/rpm/Makefile
-packaging/rpm/package.spec
-src/Makefile
-test/Makefile
-doc/Makefile
-omf-install/Makefile
-omf-install/gtkam-C.omf
-help/Makefile
-help/C/Makefile
-help/ru/Makefile
+  gphoto-m4/Makefile
+  Makefile
+  art/Makefile
+  pixmaps/Makefile
+  packaging/Makefile
+  packaging/rpm/Makefile
+  packaging/rpm/package.spec
+  src/Makefile
+  test/Makefile
+  doc/Makefile
+  omf-install/Makefile
+  omf-install/gtkam-C.omf
+  help/Makefile
+  help/C/Makefile
+  help/ru/Makefile
 ])
 AC_CONFIG_FILES([po/Makefile.in], [
 cat >> po/Makefile.in <<'EOF'

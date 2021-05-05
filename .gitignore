@@ -16,7 +16,9 @@
 /po/en@quot.header
 /po/insert-header.sin
 /po/quot.sed
+/po/remove-potcdate.sed
 /po/remove-potcdate.sin
+/po/stamp-po
 Makefile.in
 
 # Created by configure run

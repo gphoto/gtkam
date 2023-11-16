@@ -149,7 +149,7 @@ gtkam_clock_get_type (void)
 static void
 gtkam_clock_update (GtkamClock *clock)
 {
-	struct tm *tm;
+	struct tm tm;
 	time_t time;
 	gdouble elapsed;
 	gchar *string;
@@ -160,16 +160,16 @@ gtkam_clock_update (GtkamClock *clock)
 
 	elapsed = g_timer_elapsed (clock->priv->timer, NULL);
 	time = (time_t) ((guint) clock->priv->time + (guint) elapsed);
-	tm = localtime (&time);
-	string = g_strdup_printf ("%02i:%02i:%02i", tm->tm_hour, tm->tm_min,
-				  tm->tm_sec);
+	localtime_r (&time, &tm);
+	string = g_strdup_printf ("%02i:%02i:%02i", tm.tm_hour, tm.tm_min,
+				  tm.tm_sec);
 	gtk_label_set_text (clock->priv->label, string);
 	g_free (string);
 
 	g_signal_emit (G_OBJECT (clock), signals[CHANGED], 0);
 
 	/* New day? */
-	date = g_date_new_dmy (tm->tm_mday, tm->tm_mon + 1, tm->tm_year + 1900);
+	date = g_date_new_dmy (tm.tm_mday, tm.tm_mon + 1, tm.tm_year + 1900);
 	weekday = g_date_weekday (date);
 	g_date_free (date);
 	if (!clock->priv->weekday) {
@@ -394,30 +394,32 @@ gtkam_clock_new (void)
 void
 gtkam_clock_set (GtkamClock *clock, guchar hour, guchar minute, guchar second)
 {
-	struct tm *tm;
+	struct tm tm;
 
 	g_return_if_fail (GTKAM_IS_CLOCK (clock));
 
-	tm = localtime (&clock->priv->time);
-	tm->tm_hour = hour;
-	tm->tm_min  = minute;
-	tm->tm_sec  = second;
-	clock->priv->time = mktime (tm);
+	localtime_r (&clock->priv->time, &tm);
+	tm.tm_hour = hour;
+	tm.tm_min  = minute;
+	tm.tm_sec  = second;
+	clock->priv->time = mktime (&tm);
+
+	g_signal_emit (G_OBJECT (clock), signals[SET], 0);
 }
 
 void
 gtkam_clock_get (GtkamClock *clock, guchar *hour, guchar *minute,
 		 guchar *second)
 {
-	struct tm *tm;
+	struct tm tm;
 
 	g_return_if_fail (GTKAM_IS_CLOCK (clock));
 	g_return_if_fail (hour && minute && second);
 
-	tm = localtime (&clock->priv->time);
-	*hour = tm->tm_hour;
-	*minute = tm->tm_min;
-	*second = tm->tm_sec;
+	localtime_r (&clock->priv->time, &tm);
+	*hour = tm.tm_hour;
+	*minute = tm.tm_min;
+	*second = tm.tm_sec;
 }
 
 void

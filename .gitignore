@@ -46,6 +46,7 @@ Makefile
 /po/*.gmo
 /po/gtkam.pot
 /src/gtkam
+/src/gtkam-gimp
 /test/test-cancel
 /test/test-fsel
 *.a

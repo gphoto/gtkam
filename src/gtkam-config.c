@@ -459,14 +459,16 @@ on_set_system_time_clicked (GtkButton *button, GtkamClock *clock)
 {
 	GtkCalendar *c;
 	time_t t;
-	struct tm *tm;
+	struct tm tm;
 
 	c = GTK_CALENDAR (g_object_get_data (G_OBJECT (clock), "calendar"));
 	t = time (NULL);
-	tm = localtime (&t);
-	gtk_calendar_select_month (c, tm->tm_mon, tm->tm_year + 1900);
-	gtk_calendar_select_day (c, tm->tm_mday);
-	gtkam_clock_set (clock, tm->tm_hour, tm->tm_min, tm->tm_sec);
+
+	localtime_r(&t, &tm);
+
+	gtk_calendar_select_month (c, tm.tm_mon, tm.tm_year + 1900);
+	gtk_calendar_select_day (c, tm.tm_mday);
+	gtkam_clock_set (clock, tm.tm_hour, tm.tm_min, tm.tm_sec);
 }
 
 static void

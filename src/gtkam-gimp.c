@@ -457,7 +457,7 @@ run_load (gchar *name, gint nparams, GimpParam *param, gint *nreturn_vals,
 }
 
 static void
-run (gchar *name, gint nparams, GimpParam *params, gint *nreturn_vals,
+run (const gchar *name, gint nparams, const GimpParam *params, gint *nreturn_vals,
      GimpParam **return_vals)
 {
 	static GimpParam values[1];

@@ -45,6 +45,8 @@
 
 #include <gdk-pixbuf/gdk-pixbuf-loader.h>
 
+#include <gphoto2/gphoto2-setting.h>
+
 #include "gdk-pixbuf-hacks.h"
 
 #include <gphoto2/gphoto2-setting.h>
@@ -564,7 +566,7 @@ gtkam_preview_new (GtkamCamera *camera)
             G_CALLBACK (on_button_file_selection_changed), preview);
 
 	if (gp_setting_get ("gtkam-preview", "download_folder", buf) == GP_OK) {
-		gtk_file_chooser_set_filename (preview->priv->button_file, buf);
+		gtk_file_chooser_set_filename (GTK_FILE_CHOOSER (preview->priv->button_file), buf);
 	}
 	if (gp_setting_get ("gtkam-preview", "direct_download", buf) == GP_OK) {
 		gtk_toggle_button_set_active (

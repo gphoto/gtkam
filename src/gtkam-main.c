@@ -452,12 +452,12 @@ action_about (GtkAction *action, gpointer callback_data)
 
 	for (n = 0; module_versions[n].name != NULL; n++) {
 		gchar *features;
-		const char **v = NULL;
+		char **v = NULL;
 		char *name = module_versions[n].name;
 		GPVersionFunc func = module_versions[n].version_func;
 		CHECK_NULL (name);
 		CHECK_NULL (func);
-		v = func(GP_VERSION_SHORT);
+		v = (char**)func(GP_VERSION_SHORT);
 		CHECK_NULL (v);
 		CHECK_NULL (v[0]);
 		CHECK_NULL (v[1]);

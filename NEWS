@@ -1,3 +1,8 @@
+gtkam 1.1
+
+* various bugfixes, buildfixes with gcc14
+* translation updates: added hebrew and romanian, updated icelandic and spanish
+
 gtkam 1.0
 
 * various bugfixes and improvements

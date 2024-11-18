@@ -1,0 +1,884 @@
+# translation of gtkam-0.2.0.he.po to Hebrew
+# Copyright (C) 2014 Lutz Müller and others
+# This file is distributed under the same license as the gtkam package.
+# Yaron Shahrabani <sh.yaron@gmail.com>, 2021.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: gtkam 0.2.0\n"
+"Report-Msgid-Bugs-To: gphoto-devel@lists.sourceforge.net\n"
+"POT-Creation-Date: 2012-07-10 09:51+0200\n"
+"PO-Revision-Date: 2021-03-17 23:35+0200\n"
+"Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
+"Language-Team: Hebrew <heb-bugzap@hamakor.org.il>\n"
+"Language: he\n"
+"X-Bugs: Report translation errors to the Language-Team address.\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.4.2\n"
+"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : n==2 ? 1 : n>10 && n%10==0 ? 2 : 3);\n"
+
+#: src/gtkam-chooser.c:231 src/gtkam-chooser.c:253
+msgid "None"
+msgstr "ללא"
+
+#: src/gtkam-chooser.c:261 src/gtkam-chooser.c:368 src/gtkam-chooser.c:632
+#: src/gtkam-chooser.c:666
+msgid "Best"
+msgstr "מיטבי"
+
+#: src/gtkam-chooser.c:268
+msgid "Initializing camera..."
+msgstr "המצלמה מאותחלת…"
+
+#: src/gtkam-chooser.c:282
+msgid "Could not initialize camera."
+msgstr "לא ניתן לאתחל את המצלמה."
+
+#: src/gtkam-chooser.c:359
+#, c-format
+msgid "Could not get abilities of model '%s'."
+msgstr "לא ניתן לקבל את היכולות של הדגם ‚%s’."
+
+#: src/gtkam-chooser.c:407
+msgid "Detecting cameras..."
+msgstr "המצלמות נסרקות…"
+
+#: src/gtkam-chooser.c:416
+msgid "No cameras detected."
+msgstr "לא נמצאו מצלמות."
+
+#: src/gtkam-chooser.c:433
+msgid "Could not detect any cameras."
+msgstr "לא ניתן לזהות מצלמות כלשהן."
+
+#: src/gtkam-chooser.c:568
+msgid "Add Camera"
+msgstr "הוספת מצלמה"
+
+#: src/gtkam-chooser.c:583
+msgid "Model:"
+msgstr "דגם:"
+
+#: src/gtkam-chooser.c:595
+msgid "Detect"
+msgstr "איתור"
+
+#: src/gtkam-chooser.c:601
+msgid "Detect USB camera"
+msgstr "איתור מצלמת USB"
+
+#: src/gtkam-chooser.c:603
+msgid "Port:"
+msgstr "פתחה:"
+
+#: src/gtkam-chooser.c:624 src/gtkam-chooser.c:656
+msgid "Speed:"
+msgstr "מהירות:"
+
+#: src/gtkam-chooser.c:637 src/gtkam-chooser.c:672
+msgid "Allow multiple frontends"
+msgstr "לאפשר מגוון מנשקי משתמש"
+
+#: src/gtkam-chooser.c:644
+msgid "Enhanced"
+msgstr "מורחב"
+
+#: src/gtkam-chooser.c:737
+msgid "Could not get number of supported camera models"
+msgstr "לא ניתן לקבל מספר דגמים מצלמה נתמכים"
+
+#: src/gtkam-chooser.c:767
+msgid "Could not get number of ports."
+msgstr "לא ניתן לקבל מספר פתחות."
+
+#: src/gtkam-config.c:163
+msgid "Applying configuration..."
+msgstr "ההגדרות מוחלות…"
+
+#: src/gtkam-config.c:179
+msgid "Could not apply configuration."
+msgstr "לא ניתן להחיל את ההגדרות."
+
+#: src/gtkam-config.c:246
+msgid "No additional information available. (1)"
+msgstr "אין עוד מידע זמין. (1)"
+
+#: src/gtkam-config.c:251
+msgid "General Settings"
+msgstr "הגדרות כלליות"
+
+#: src/gtkam-config.c:326
+msgid "Could not execute command."
+msgstr "לא ניתן להפעיל פקודה."
+
+#: src/gtkam-config.c:530
+msgid "No additional information available. (2)"
+msgstr "‫אין עוד מידע זמין. (2)"
+
+#: src/gtkam-config.c:567
+msgid "Set to system's time"
+msgstr "הגדרה לשעת המערכת"
+
+#: src/gtkam-config.c:601
+msgid "No additional information available. (3)"
+msgstr "‫אין עוד מידע זמין. (3)"
+
+#: src/gtkam-config.c:626
+msgid "No additional information available. (4)"
+msgstr "‫אין עוד מידע זמין. (4)"
+
+#: src/gtkam-config.c:673
+msgid "No additional information available. (5)"
+msgstr "‫אין עוד מידע זמין. (5)"
+
+#: src/gtkam-config.c:693
+msgid "No additional information available. (6)"
+msgstr "‫אין עוד מידע זמין. (6)"
+
+#: src/gtkam-config.c:734
+msgid "Getting configuration..."
+msgstr "ההגדרות נמשכות…"
+
+#: src/gtkam-config.c:749
+msgid "Could not get configuration."
+msgstr "לא ניתן למשוך את ההגדרות."
+
+#: src/gtkam-debug.c:237
+msgid "Save As..."
+msgstr "לשמור בשם…"
+
+#: src/gtkam-debug.c:259
+#, c-format
+msgid "Could not open '%s'!"
+msgstr "לא ניתן לפתוח את ‚%s’!"
+
+#: src/gtkam-debug.c:306
+msgid "Type of messages to log:"
+msgstr "סוג ההודעות לתיעוד:"
+
+#: src/gtkam-debug.c:310
+msgid "Error"
+msgstr "שגיאה"
+
+#: src/gtkam-debug.c:317
+msgid "Verbose"
+msgstr "פירוט"
+
+#: src/gtkam-debug.c:324
+msgid "Debug"
+msgstr "ניפוי שגיאות"
+
+#: src/gtkam-debug.c:331
+msgid "Data"
+msgstr "נתונים"
+
+#: src/gtkam-delete.c:179
+#, c-format
+msgid "Deleting all files in '%s'..."
+msgstr "כל הקבצים שב־‚%s’ נמחקים…"
+
+#: src/gtkam-delete.c:200
+#, c-format
+msgid "Could not delete all files in '%s'."
+msgstr "לא ניתן למחוק את כל הקבצים שב־‚%s’."
+
+#: src/gtkam-delete.c:236
+#, c-format
+msgid "Deleting file '%s' from folder '%s'..."
+msgstr "הקובץ ‚%s’ נמחק מהתיקייה ‚%s’…"
+
+#: src/gtkam-delete.c:257
+#, c-format
+msgid "Could not delete file '%s' in folder '%s'."
+msgstr "לא ניתן למחוק את הקובץ ‚%s’ מהתיקייה ‚%s’."
+
+#: src/gtkam-delete.c:386
+#, c-format
+msgid "Do you really want to delete all the files in '%s'?"
+msgstr "למחוק את כל הקבצים שב־‚%s’?"
+
+#: src/gtkam-delete.c:389
+#, c-format
+msgid "Do you really want to delete '%s'?"
+msgstr "למחוק את ‚%s’?"
+
+#: src/gtkam-delete.c:392
+#, c-format
+msgid "Do you really want to delete the selected %i files?"
+msgstr "למחוק את %i הקבצים שנבחרו?"
+
+#: src/gtkam-delete.c:398
+msgid "Delete these files?"
+msgstr "למחוק את הקבצים האלו?"
+
+#: src/gtkam-exif.c:137
+#, c-format
+msgid "Getting EXIF information for file '%s' in folder '%s'..."
+msgstr "פרטי ה־EXIF של הקובץ ‚%s’ בתיקייה ‚%s’ מתקבלים…"
+
+#: src/gtkam-exif.c:153
+#, c-format
+msgid "Could not get EXIF information for '%s' in folder '%s'."
+msgstr "לא ניתן לקבל את פרטי ה־EXIF של ‚%s’ מהתיקייה ‚%s’."
+
+#: src/gtkam-exif.c:166
+msgid "Could not interpret EXIF data."
+msgstr "לא ניתן לפענח את נתוני ה־EXIF."
+
+#: src/gtkam-exif.c:175
+msgid "The EXIF data could not be retrieved from the file."
+msgstr "לא ניתן למשוך את נתוני ה־EXIF מהקובץ."
+
+#: src/gtkam-exif.c:192
+msgid "Gtkam has been compiled without EXIF support."
+msgstr "‫Gtkam עבר הידור ללא תמיכה ב־EXIF."
+
+#: src/gtkam-gimp.c:67 src/gtkam-gimp.c:68
+msgid "Captures images from digital camera"
+msgstr "לוכד תמונות ממצלמות דיגיטליות"
+
+#. TRANSLATORS: do not translate <Toolbox>/File/Acquire, but only the Capture from Camera part
+#: src/gtkam-gimp.c:71
+msgid "<Toolbox>/File/Acquire/Capture from Camera..."
+msgstr "‫<Toolbox>/File/Acquire/צילום ממצלמה…"
+
+#: src/gtkam-gimp.c:75 src/gtkam-gimp.c:76
+msgid "Loads files from digital cameras"
+msgstr "טוען קבצים ממצלמות דיגיטליות"
+
+#. TRANSLATORS: do not translate <Toolbox>/File/Acquire, but only the Load from Camera part
+#: src/gtkam-gimp.c:81
+msgid "<Toolbox>/File/Acquire/Load from Camera..."
+msgstr "‫<Toolbox>/File/Acquire/טעינה ממצלמה…"
+
+#: src/gtkam-gimp.c:194 src/gtkam-list.c:505
+#, c-format
+msgid "Downloading '%s' from '%s'..."
+msgstr "‫‚%s’ מתקבל מ־‚%s’…"
+
+#: src/gtkam-gimp.c:212
+#, c-format
+msgid "Could not download file '%s' from folder '%s'."
+msgstr "לא ניתן להוריד את הקובץ ‚%s’ מהתיקייה ‚%s’."
+
+#: src/gtkam-gimp.c:245
+msgid "Image"
+msgstr "תמונה"
+
+#: src/gtkam-info.c:165
+#, c-format
+msgid "Setting information for file '%s' in '%s'..."
+msgstr "המידע של הקובץ ‚%s’ ב־‚%s’ מוגדר…"
+
+#: src/gtkam-info.c:186
+#, c-format
+msgid "Could not set file information for '%s' in folder '%s'"
+msgstr "לא ניתן להגדיר את פרטי הקובץ ‚%s’ שבתיקייה ‚%s’"
+
+#: src/gtkam-info.c:270
+#, c-format
+msgid "Getting information about file '%s' in folder '%s'..."
+msgstr "נמשך מידע על הקובץ ‚%s’ מהתיקייה ‚%s’…"
+
+#: src/gtkam-info.c:282
+#, c-format
+msgid "Could not get information about file '%s' in folder '%s'."
+msgstr "לא ניתן למשוך מידע על הקובץ ‚%s’ מהתיקייה ‚%s’."
+
+#: src/gtkam-info.c:310
+msgid "File"
+msgstr "קובץ"
+
+#: src/gtkam-info.c:316 src/gtkam-info.c:425 src/gtkam-info.c:474
+msgid "MIME type:"
+msgstr "סוג MIME:"
+
+#: src/gtkam-info.c:334
+msgid "Last modified:"
+msgstr "מועד שינוי אחרון:"
+
+#: src/gtkam-info.c:355 src/gtkam-info.c:442 src/gtkam-info.c:491
+msgid "Size:"
+msgstr "גודל:"
+
+#: src/gtkam-info.c:362 src/gtkam-info.c:498
+#, c-format
+msgid "%liK (%li bytes)"
+msgstr "‫%li ק׳ (%li בתים)"
+
+#: src/gtkam-info.c:377
+msgid "Permissions:"
+msgstr "הרשאות:"
+
+#: src/gtkam-info.c:389
+msgid "Read"
+msgstr "קריאה"
+
+#: src/gtkam-info.c:400
+msgid "Delete"
+msgstr "מחיקה"
+
+#: src/gtkam-info.c:419 src/gtkam-list.c:892
+msgid "Preview"
+msgstr "תצוגה מקדימה"
+
+#: src/gtkam-info.c:468
+msgid "Audio"
+msgstr "שמע"
+
+#: src/gtkam-list.c:322
+#, c-format
+msgid "Downloading thumbnail of '%s' from folder '%s'..."
+msgstr "התמונה הממוזערת של ‚%s’ מתקבלת מהתיקייה ‚%s’…"
+
+#: src/gtkam-list.c:826
+msgid "/_View with..."
+msgstr "/לה_ציג עם…"
+
+#: src/gtkam-list.c:827
+msgid "/View with.../Built-in viewer"
+msgstr "/להציג עם…/מציג מובנה"
+
+#: src/gtkam-list.c:829
+msgid "/View file _properties"
+msgstr "/הצגת מ_אפייני הקובץ"
+
+#: src/gtkam-list.c:831
+msgid "/View _EXIF data"
+msgstr "/הצ_גת נתוני EXIT"
+
+#: src/gtkam-list.c:834
+msgid "/_Save"
+msgstr "/ש_מירה"
+
+#: src/gtkam-list.c:835
+msgid "/_Delete"
+msgstr "/מ_חיקה"
+
+#: src/gtkam-list.c:898
+msgid "Name"
+msgstr "שם"
+
+#: src/gtkam-list.c:904
+msgid "Time"
+msgstr "מועד"
+
+#: src/gtkam-list.c:926 src/gtkam-tree.c:690
+#, c-format
+msgid "Listing files in folder '%s'..."
+msgstr "הקבצים שבתיקייה ‚%s’ נחשפים…"
+
+#: src/gtkam-list.c:943 src/gtkam-tree.c:707
+#, c-format
+msgid "Could not get file list for folder '%s'"
+msgstr "לא ניתן לקבל את רשימת הקבצים לתיקייה ‚%s’"
+
+#: src/gtkam-list.c:960
+msgid "Unknown"
+msgstr "לא ידוע"
+
+#: src/gtkam-main.c:425
+msgid ""
+"gtkam is a program that lets you download\n"
+"images from many digital cameras. It uses\n"
+"libgphoto2. More info is available at\n"
+"http://www.gphoto.org.\n"
+"\n"
+"Enjoy the wonderful world of gphoto!"
+msgstr ""
+"‫gtkam היא תכנית שמאפשרת לך להוריד\n"
+"‬\n"
+"‫תמונות ממגוון מצלמות דיגיטליות. משתמשת\n"
+"‬\n"
+"‫ב־libgphoto2. ניתן למצוע מידע נוסף בכתובת\n"
+"‬\n"
+"‏‫http://www.gphoto.org.\n"
+"‬\n"
+"‏‫\n"
+"‬\n"
+"‫מאחלים לך הנאה מרובה מהעולם של gphoto!"
+
+#: src/gtkam-main.c:436
+msgid "Many others"
+msgstr "רבים נוספים"
+
+#: src/gtkam-main.c:469
+#, c-format
+msgid ""
+"%s\n"
+"\n"
+"%s %s with options:\n"
+"    %s\n"
+msgstr ""
+"‫%s\n"
+"‬\n"
+"‏‫\n"
+"‬\n"
+"‏‫%s %s עם אפשרויות:\n"
+"‬\n"
+"‏‫    %s\n"
+"‬\n"
+
+#: src/gtkam-main.c:473
+#, c-format
+msgid ""
+"%s\n"
+"%s %s with options:\n"
+"    %s\n"
+msgstr ""
+"‫%s\n"
+"‬\n"
+"‏‫%s %s עם אפשרויות:\n"
+"‬\n"
+"‏‫    %s\n"
+"‬\n"
+
+#: src/gtkam-main.c:548
+msgid "_File"
+msgstr "_קובץ"
+
+#: src/gtkam-main.c:549
+msgid "_Save Photos"
+msgstr "ל_שמור תמונות"
+
+#: src/gtkam-main.c:550
+msgid "_Delete Photos"
+msgstr "למ_חוק תמונות"
+
+#: src/gtkam-main.c:551 src/gtkam-main.c:553
+msgid "_Selected"
+msgstr "_נבחרות"
+
+#: src/gtkam-main.c:552 src/gtkam-main.c:554 src/gtkam-main.c:561
+msgid "_All"
+msgstr "ה_כול"
+
+#: src/gtkam-main.c:555
+msgid "_Quit"
+msgstr "י_ציאה"
+
+#: src/gtkam-main.c:556
+msgid "_View"
+msgstr "_תצוגה"
+
+#: src/gtkam-main.c:557
+msgid "Zoom _In"
+msgstr "להת_קרב"
+
+#: src/gtkam-main.c:558
+msgid "Zoom _100"
+msgstr "תקריב _100"
+
+#: src/gtkam-main.c:559
+msgid "Zoom _Out"
+msgstr "להת_רחק"
+
+#: src/gtkam-main.c:560
+msgid "_Select"
+msgstr "_בחירה"
+
+#: src/gtkam-main.c:562
+msgid "_Inverse"
+msgstr "הי_פוך"
+
+#: src/gtkam-main.c:563
+msgid "_None"
+msgstr "_ללא"
+
+#: src/gtkam-main.c:564
+msgid "_Camera"
+msgstr "מ_צלמה"
+
+#: src/gtkam-main.c:565
+msgid "_Add Camera..."
+msgstr "הו_ספת מצלמה…"
+
+#: src/gtkam-main.c:566
+msgid "_Rescan"
+msgstr "_סריקה מחדש"
+
+#: src/gtkam-main.c:567
+msgid "_Help"
+msgstr "ע_זרה"
+
+#: src/gtkam-main.c:569
+msgid "_Contents"
+msgstr "ת_כנים"
+
+#: src/gtkam-main.c:571
+msgid "_Debug"
+msgstr "_ניפוי שגיאות"
+
+#: src/gtkam-main.c:572
+msgid "_About"
+msgstr "_על אודות"
+
+#: src/gtkam-main.c:577
+msgid "_View Thumbnails"
+msgstr "הצגת תמונות ממו_זערות"
+
+#: src/gtkam-mkdir.c:151
+#, c-format
+msgid "Creating folder '%s' in folder '%s'..."
+msgstr "התיקייה ‚%s’ נוצרת בתוך ‚%s’…"
+
+#: src/gtkam-mkdir.c:185
+#, c-format
+msgid "Could not create folder '%s' in folder '%s'."
+msgstr "לא ניתן ליצור את התיקייה ‚%s’ בתיקייה ‚%s’."
+
+#: src/gtkam-mkdir.c:211
+#, c-format
+msgid "Please choose a name for the directory that should be created in '%s':"
+msgstr "נא לבחור שם לתיקייה שאמור להיווצר בתוך ‚%s’:"
+
+#: src/gtkam-mkdir.c:227
+msgid "New directory"
+msgstr "תיקייה חדשה"
+
+#: src/gtkam-port.c:146
+#, c-format
+msgid "The port '%s' could not be found. Please make sure that the port exists."
+msgstr "לא ניתן למצוא את הפתחה ‚%s’. נא לוודא שהפתחה קיימת."
+
+#: src/gtkam-port.c:180
+msgid "Please specify the path to the port your camera is attached to:"
+msgstr "נא לציין את הנתיב לפתחה אליה מחוברת המצלמה שלך:"
+
+#: src/gtkam-preview.c:186 src/gtkam-tree.c:1098
+msgid "Capturing image..."
+msgstr "התמונות נלכדות…"
+
+#: src/gtkam-preview.c:208
+msgid "Could not capture image."
+msgstr "לא ניתן ללכוד תמונ."
+
+#: src/gtkam-preview.c:346 src/gtkam-preview.c:409
+msgid "Capture"
+msgstr "לכידה"
+
+#: src/gtkam-preview.c:372
+msgid "0 degrees"
+msgstr "0 מעלות"
+
+#: src/gtkam-preview.c:380
+msgid "Don't rotate thumbnail"
+msgstr "לא להטות תמונות ממוזערות"
+
+#: src/gtkam-preview.c:382
+msgid "-90 degrees"
+msgstr "‫‎-90 מעלות"
+
+#: src/gtkam-preview.c:389
+msgid "Rotate thumbnail by -90 degrees"
+msgstr "להטות את התמונה הממוזערת ב־‎-90 מעלות"
+
+#: src/gtkam-preview.c:391
+msgid "+90 degrees"
+msgstr "+90 מעלות"
+
+#: src/gtkam-preview.c:398
+msgid "Rotate thumbnail by 90 degrees"
+msgstr "להטות את התמונה הממוזערת ב־90 מעלות"
+
+#: src/gtkam-preview.c:400
+msgid "180 degrees"
+msgstr "180 מעלות"
+
+#: src/gtkam-preview.c:407
+msgid "Rotate thumbnail by 180 degrees"
+msgstr "להטות את התמונה הממוזערת ב־180 מעלות"
+
+#: src/gtkam-save.c:299 src/gtkam-tree.c:619
+#, c-format
+msgid "The file '%s' already exists."
+msgstr "הקובץ ‚%s’ כבר קיים."
+
+#: src/gtkam-save.c:321 src/gtkam-tree.c:636
+#, c-format
+msgid "Could not save file to '%s'."
+msgstr "לא ניתן לשמור את הקובץ אל ‚%s’."
+
+#: src/gtkam-save.c:361 src/gtkam-tree.c:669
+#, c-format
+msgid "Could not get '%s' from folder '%s'."
+msgstr "לא ניתן לקבל את ‚%s’ מהתיקייה ‚%s’."
+
+#: src/gtkam-save.c:492
+msgid "There is nothing to be saved."
+msgstr "אין מה לשמור."
+
+#: src/gtkam-save.c:504
+msgid "Downloading file"
+msgstr "הקובץ מתקבל"
+
+#: src/gtkam-save.c:506
+#, c-format
+msgid "Downloading %i files"
+msgstr "מתקבלים %i קבצים"
+
+#: src/gtkam-save.c:513 src/gtkam-tree.c:745
+#, c-format
+msgid "Downloading %i files..."
+msgstr "מתקבלים %i קבצים…"
+
+#: src/gtkam-save.c:564 src/gtkam-tree.c:760
+#, c-format
+msgid "Problem getting '%s' from folder '%s'."
+msgstr "תקלה במשיכת ‚%s’ מהתיקייה ‚%s’."
+
+#: src/gtkam-save.c:639
+msgid "What to save:"
+msgstr "מה לשמור:"
+
+#: src/gtkam-save.c:651
+msgid "Save photos"
+msgstr "שמירת תמונות"
+
+#: src/gtkam-save.c:655
+msgid "Photos will be saved if this is checked"
+msgstr "התמונות תישמרנה אם זה מסומן"
+
+#: src/gtkam-save.c:659
+msgid "Save raw data"
+msgstr "שמירת נתונים גולמיים"
+
+#: src/gtkam-save.c:662
+msgid "Raw data will be saved if this is checked"
+msgstr "הנתונים הגולמיים יישמרו אם זה מסומן"
+
+#: src/gtkam-save.c:666
+msgid "Save audio data"
+msgstr "שמירת נתוני שמע"
+
+#: src/gtkam-save.c:669
+msgid "Audio data will be saved if this is checked"
+msgstr "נתוני השמע יישמרו אם זה מסומן"
+
+#: src/gtkam-save.c:673
+msgid "Save thumbnails"
+msgstr "שמירת תמונות ממוזערות"
+
+#: src/gtkam-save.c:676
+msgid "Thumbnails will be saved if this is checked"
+msgstr "התמונות הממוזערות תישמרנה אם זה מסומן"
+
+#: src/gtkam-save.c:680
+msgid "Save EXIF data"
+msgstr "שמירת נתוני EXIF"
+
+#: src/gtkam-save.c:683
+msgid "EXIF data will be saved if this is checked"
+msgstr "נתוני ה־EXIF יישמרו אם זה מסומן"
+
+#: src/gtkam-save.c:692
+msgid "Open image(s) with: "
+msgstr "לפתוח את התמונות עם: "
+
+#: src/gtkam-save.c:699
+msgid "Type in the name of the program you want to run, leave blank for none"
+msgstr "נא למלא את שם התכנית שברצונך להפעיל, ריק - לא תופעל תכנית"
+
+#: src/gtkam-save.c:705
+msgid "Use filename(s) provided by the camera"
+msgstr "להשתמש בשמות הקבצים שסיפקה המצלמה"
+
+#: src/gtkam-save.c:709
+msgid "Choose whether to use the filename provided by the camera"
+msgstr "נא לבחור האם להשתמש בשמות הקבצים שסיפקה המצלמה"
+
+#: src/gtkam-save.c:723
+msgid "Filename prefix: "
+msgstr "קידומת שם קובץ: "
+
+#: src/gtkam-save.c:732
+msgid "Start numbering with: "
+msgstr "להתחיל מספור עם: "
+
+#: src/gtkam-save.c:774
+#, c-format
+msgid "Save '%s'..."
+msgstr "לשמור את ‚%s’…"
+
+#: src/gtkam-save.c:794
+msgid "Save photos..."
+msgstr "לשמור תמונות…"
+
+#: src/gtkam-tree.c:296
+#, c-format
+msgid "Listing folders in '%s'..."
+msgstr "התיקיות שב־‚%s’ מוצגות…"
+
+#: src/gtkam-tree.c:317
+#, c-format
+msgid "Could not list folders in '%s'."
+msgstr "לא ניתן להציג את התיקיות שבתוך ‚%s’."
+
+#: src/gtkam-tree.c:414
+#, c-format
+msgid "Could not open '%s'."
+msgstr "לא ניתן לפתוח את ‚%s’."
+
+#: src/gtkam-tree.c:421
+#, c-format
+msgid "Uploading '%s' into folder '%s'..."
+msgstr "‫‚%s’ מועלה לתיקייה ‚%s’…"
+
+#: src/gtkam-tree.c:445
+#, c-format
+msgid "Could not upload '%s' into '%s'."
+msgstr "לא ניתן להעלות את ‚%s’ אל ‚%s’."
+
+#: src/gtkam-tree.c:469
+#, c-format
+msgid "Upload into '%s'..."
+msgstr "מתבצעת העלאה לתוך ‚%s’…"
+
+#: src/gtkam-tree.c:545
+#, c-format
+msgid "Removing directory '%s'..."
+msgstr "התיקייה ‚%s’ נמחקת…"
+
+#: src/gtkam-tree.c:562
+#, c-format
+msgid "Could not remove directory '%s'."
+msgstr "לא ניתן להסיר את התייקיה ‚%s’."
+
+#: src/gtkam-tree.c:722
+#, c-format
+msgid "Could not create directory '%s'"
+msgstr "לא ניתן ליצור את התיקייה ‚%s’"
+
+#: src/gtkam-tree.c:734
+#, c-format
+msgid "Downloading file from '%s'"
+msgstr "מתקבלים קבצים מ־‚%s’"
+
+#: src/gtkam-tree.c:736
+#, c-format
+msgid "Downloading %i files from '%s'"
+msgstr "מתקבלים %i קבצים מ־‚%s’"
+
+#: src/gtkam-tree.c:786
+#, c-format
+msgid "Listing subfolders in folder '%s'..."
+msgstr "תת־התיקיות בתיקייה ‚%s’ מוצגות…"
+
+#: src/gtkam-tree.c:805
+#, c-format
+msgid "Could not get subfolders list for folder '%s'"
+msgstr "לא ניתן לקבל את תת־התיקיות של התיקייה ‚%s’"
+
+#: src/gtkam-tree.c:868
+#, c-format
+msgid "Download '%s' subtree to..."
+msgstr "הורדת תת־העץ ‚%s’ אל…"
+
+#: src/gtkam-tree.c:906
+msgid "Getting information about the camera..."
+msgstr "נמשך מידע על המצלמה…"
+
+#: src/gtkam-tree.c:910
+msgid "Getting information about the driver..."
+msgstr "נמשך מידע על מנהל ההתקן…"
+
+#: src/gtkam-tree.c:914
+msgid "Getting manual..."
+msgstr "המדריך מתקבל…"
+
+#: src/gtkam-tree.c:945
+msgid "Could not retrieve information."
+msgstr "לא ניתן למשוך את המידע."
+
+#: src/gtkam-tree.c:1048
+msgid "Select Camera"
+msgstr "לבחור מצלמה"
+
+#: src/gtkam-tree.c:1116
+msgid "Could not capture."
+msgstr "לא ניתן ללכוד."
+
+#: src/gtkam-tree.c:1155
+msgid "/Upload file..."
+msgstr "/העלאת קובץ…"
+
+#: src/gtkam-tree.c:1156
+msgid "/Make directory..."
+msgstr "/יצירת תיקייה…"
+
+#: src/gtkam-tree.c:1157
+msgid "/Delete directory"
+msgstr "/מחיקת תיקייה"
+
+#: src/gtkam-tree.c:1158
+msgid "/Save directory tree..."
+msgstr "/שמירת עץ התיקייה…"
+
+#: src/gtkam-tree.c:1160
+msgid "/Capture image..."
+msgstr "/צילום תמונה…"
+
+#: src/gtkam-tree.c:1161
+msgid "/View camera preferences"
+msgstr "/הצגת העדפות המצלמה"
+
+#: src/gtkam-tree.c:1163
+msgid "/View camera summary"
+msgstr "/הצגת תקציר המצלמה"
+
+#: src/gtkam-tree.c:1164
+msgid "/View camera manual"
+msgstr "/הצגת מדריך המצלמה"
+
+#: src/gtkam-tree.c:1165
+msgid "/View driver details"
+msgstr "/הצגת פרטי מנהל ההתקן"
+
+#: src/gtkam-tree.c:1167
+msgid "/Select camera..."
+msgstr "/בחירת מצלמה…"
+
+#: src/gtkam-tree.c:1168
+msgid "/Remove camera"
+msgstr "/הסרת מצלמה"
+
+#: src/gtkam-tree.c:1198
+msgid "_Add camera..."
+msgstr "הו_ספת מצלמה…"
+
+#: src/gtkam-tree.c:1298
+msgid "Please right-click to access additional menus"
+msgstr "ניתן לגשת לתפריטים נוספים עם הכפתור הימני בעכבר"
+
+#: src/gtkam-tree.c:1327
+msgid "Folder"
+msgstr "תיקייה"
+
+#: src/gtkam-tree.c:1420
+msgid "Loading cameras..."
+msgstr "המצלמות נטענות…"
+
+#: src/gtkam-util.c:44
+#, c-format
+msgid "Could not display '%s'. Either the image type ('%s') is not supported by gtk or the file itself is corrupt."
+msgstr "לא ניתן להציג את ‚%s’. או שסוג התמונה (‚%s’) אינו נתמך על ידי gtk או שהקובץ עצמו פגום."
+
+#: src/gtkam-version.c:100
+msgid "ALWAYS INCLUDE THE FOLLOWING LINES WHEN SENDING DEBUG MESSAGES TO THE MAILING LIST:"
+msgstr "תמיד לכלול את השורות הבאות בעת שליחת הודעות ניפוי שגיאות לרשימת הדיוור:"
+
+#: src/gtkam-viewer.c:245
+#, c-format
+msgid "Downloading '%s' from folder '%s'..."
+msgstr "מתבצעת הורדה של ‚%s’ מהתיקייה ‚%s’…"
+
+#: src/gtkam-viewer.c:298
+#, c-format
+msgid "Could not download '%s' from folder '%s'."
+msgstr "לא ניתן להוריד את ‚%s’ מהתיקייה ‚%s’."
+
+#: src/main.c:109
+msgid "Image Download Program"
+msgstr "תכנית הורדת תמונות"

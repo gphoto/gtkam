@@ -227,15 +227,17 @@ gtkam_chooser_get_camera (GtkamChooser *chooser)
 	speed = gtk_entry_get_text (chooser->priv->entry_speed);
 	multi = GTK_TOGGLE_BUTTON (chooser->priv->check_multi)->active;
 
-	if (!port || !*port)
+	if (!port || !*port) {
 		port_path = g_strdup (_("None"));
-	else {
+	} else {
 		port_path = g_strdup (port);
-		right = strrchr (port_path, ')');
-		*right = '\0';
-		tmp = g_strdup (strrchr (port_path, '(') + 1);
-		g_free (port_path);
-		port_path = tmp;
+		if (strchr(port, '(') && strchr(port, ')')) {
+			right = strrchr (port_path, ')');
+			*right = '\0';
+			tmp = g_strdup (strrchr (port_path, '(') + 1);
+			g_free (port_path);
+			port_path = tmp;
+		} /* else assume we have the direct port string, likely manually typed. */
 	}
 
 	gp_camera_new (&camera);

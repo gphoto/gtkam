@@ -1,0 +1,1 @@
+install_man('gtkam.1')

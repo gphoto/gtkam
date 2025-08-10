@@ -39,6 +39,7 @@ AC_DEFINE_UNQUOTED(HAVE_CC,"$CC",[The C compiler we're using])
 AM_CPPFLAGS="$AM_CPPFLAGS -I\$(top_srcdir)"
 AM_CPPFLAGS="$AM_CPPFLAGS -I\$(top_srcdir)/src"
 
+AC_CHECK_FUNC([pow], [],[ AC_CHECK_LIB([m],[pow])])
 
 GP_CONFIG_MSG([Features])
 

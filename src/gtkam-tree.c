@@ -1156,20 +1156,20 @@ on_add_camera_activate (GtkMenuItem *item, GtkamTree *tree)
 
 static GtkItemFactoryEntry mi[] =
 {
-	{N_("/Upload file..."), NULL, action_upload, 0, NULL},
-	{N_("/Make directory..."), NULL, action_mkdir, 0, NULL},
-	{N_("/Delete directory"), NULL, action_rmdir, 0, NULL},
-	{N_("/Save directory tree..."), NULL, action_download, 0, NULL},
+	{N_("/Upload file..."), NULL, (void*)action_upload, 0, NULL},
+	{N_("/Make directory..."), NULL, (void*)action_mkdir, 0, NULL},
+	{N_("/Delete directory"), NULL, (void*)action_rmdir, 0, NULL},
+	{N_("/Save directory tree..."), NULL, (void*)action_download, 0, NULL},
 	{"/sep1", NULL, NULL, 0, "<Separator>"},
-	{N_("/Capture image..."), NULL, action_capture, 0, NULL},
-	{N_("/View camera preferences"), NULL, action_preferences, 0,
+	{N_("/Capture image..."), NULL, (void*)action_capture, 0, NULL},
+	{N_("/View camera preferences"), NULL, (void*)action_preferences, 0,
 	 "<StockItem>", GTK_STOCK_PREFERENCES},
-	{N_("/View camera summary"), NULL, action_summary, 0, NULL},
-	{N_("/View camera manual"), NULL, action_manual, 0, NULL},
-	{N_("/View driver details"), NULL, action_about, 0, NULL},
+	{N_("/View camera summary"), NULL, (void*)action_summary, 0, NULL},
+	{N_("/View camera manual"), NULL, (void*)action_manual, 0, NULL},
+	{N_("/View driver details"), NULL, (void*)action_about, 0, NULL},
 	{"/sep2", NULL, NULL, 0, "<Separator>"},
-	{N_("/Select camera..."), NULL, action_select_camera, 0, NULL},
-	{N_("/Remove camera"), NULL, action_remove_camera, 0, NULL},
+	{N_("/Select camera..."), NULL, (void*)action_select_camera, 0, NULL},
+	{N_("/Remove camera"), NULL, (void*)action_remove_camera, 0, NULL},
 };
 
 #ifdef ENABLE_NLS

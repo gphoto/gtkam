@@ -804,15 +804,15 @@ action_view (gpointer callback_data, guint callback_action,
 static GtkItemFactoryEntry mi[] =
 {
 	{N_("/_View with..."), NULL, NULL, 0, "<Branch>"},
-	{N_("/View with.../Built-in viewer"), NULL, action_view, 0, NULL},
+	{N_("/View with.../Built-in viewer"), NULL, (void*)action_view, 0, NULL},
 	{"/sep0", NULL, NULL, 0, "<Separator>"},
-	{N_("/View file _properties"), NULL, action_info, 0, NULL},
+	{N_("/View file _properties"), NULL, (void*)action_info, 0, NULL},
 #ifdef HAVE_LIBEXIF
-	{N_("/View _EXIF data"), NULL, action_exif, 0, NULL},
+	{N_("/View _EXIF data"), NULL, (void*)action_exif, 0, NULL},
 #endif
 	{"/sep1", NULL, NULL, 0, "<Separator>"},
-	{N_("/_Save"), NULL, gtkam_list_save_selected, 0, "<StockItem>", GTK_STOCK_SAVE},
-	{N_("/_Delete"), NULL, gtkam_list_delete_selected, 0, "<StockItem>", GTK_STOCK_DELETE}
+	{N_("/_Save"), NULL, (void*)gtkam_list_save_selected, 0, "<StockItem>", GTK_STOCK_SAVE},
+	{N_("/_Delete"), NULL, (void*)gtkam_list_delete_selected, 0, "<StockItem>", GTK_STOCK_DELETE}
 };
 
 #ifdef ENABLE_NLS

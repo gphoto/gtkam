@@ -155,13 +155,13 @@ AM_CONDITIONAL(ENABLE_SK, test "x$enable_scrollkeeper" = "xyes")
 
 
 dnl ---------------------------------------------------------------------------
-dnl GIMP plugin
+dnl GIMP (Gimp 2) plugin
 dnl ---------------------------------------------------------------------------
 try_gimp=:
 gimp_msg=no
 have_gimp=false
 AC_ARG_WITH([gimp],
-            AS_HELP_STRING([--without-gimp],[do not compile GIMP plugin]),[
+            AS_HELP_STRING([--without-gimp],[do not compile GIMP 2 plugin]),[
        if test x$withval = xno; then
                try_gimp=false
        fi
@@ -182,7 +182,7 @@ if $try_gimp; then
 fi
 AM_CONDITIONAL([HAVE_GIMP], [$have_gimp])
 AC_SUBST([GIMP_VERSION])
-GP_CONFIG_MSG([Gimp support],[$gimp_msg])
+GP_CONFIG_MSG([Gimp 2 support],[$gimp_msg])
 
 
 dnl ---------------------------------------------------------------------------

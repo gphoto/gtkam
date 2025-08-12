@@ -1,0 +1,3 @@
+option('bonobo', type : 'feature', value : 'auto')
+option('gnomeui', type : 'feature', value : 'auto')
+option('gimpui', type : 'feature', value : 'auto')
